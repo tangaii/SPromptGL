@@ -1,0 +1,188 @@
+STRICT_PROTOCOL=True
+CONFIG=S0_STRICT_BASELINE
+SEED=2
+DATA_SHAPE=(871, 321)
+MODAL_DIMS=[48, 6, 10, 256]
+INTERNAL_LABEL_COUNTS=[403, 468]
+SPLIT=outer StratifiedKFold(seed)+inner StratifiedShuffleSplit(seed+1000+fold)
+CHECKPOINT_SELECTION=inner_validation_acc
+NEPOCH=450 EARLY=200
+ALIGN_MODE=none ALIGN_LAMBDA=0.0 ALIGN_TEMPERATURE=0.1 ALIGN_WARMUP=20
+CLIP_PROMPT_CACHE=loading
+CLIP_PROMPT_CACHE=ready
+=== FOLD 1/10 train=704 val=79 test=88 split_sha=353e93bf03ee42a850f1a81fed3b738048396e038889b7c86ac805118a37920c init_sha=efc01dc5de2c9eacf77f794e367d9dfcdd8de154d78a8051212f66fa38c9a46d ===
+epoch=1 val_acc=0.468354 best=0.468354
+epoch=25 val_acc=0.506329 best=0.607595
+epoch=50 val_acc=0.746835 best=0.822785
+epoch=75 val_acc=0.822785 best=0.873418
+epoch=100 val_acc=0.569620 best=0.898734
+epoch=125 val_acc=0.873418 best=0.911392
+epoch=150 val_acc=0.822785 best=0.911392
+epoch=175 val_acc=0.873418 best=0.911392
+epoch=200 val_acc=0.886076 best=0.911392
+epoch=225 val_acc=0.848101 best=0.911392
+epoch=250 val_acc=0.835443 best=0.911392
+epoch=275 val_acc=0.886076 best=0.911392
+epoch=300 val_acc=0.873418 best=0.911392
+fold=1 best_epoch=117 ACC=0.72727 BA=0.73223 ASD-AUC=0.87494 runtime_sec=30.34
+=== FOLD 2/10 train=705 val=79 test=87 split_sha=4898ea681a182809b7192bedf473eaacc3a64863721044101192777193ea4c14 init_sha=08cd4a38d9ba3da5103a9d5a4046cc45f1ac606f94dc37a60d7d6614290c54f4 ===
+epoch=1 val_acc=0.544304 best=0.544304
+epoch=25 val_acc=0.468354 best=0.544304
+epoch=50 val_acc=0.683544 best=0.734177
+epoch=75 val_acc=0.493671 best=0.860759
+epoch=100 val_acc=0.822785 best=0.860759
+epoch=125 val_acc=0.835443 best=0.886076
+epoch=150 val_acc=0.860759 best=0.911392
+epoch=175 val_acc=0.898734 best=0.949367
+epoch=200 val_acc=0.936709 best=0.962025
+epoch=225 val_acc=0.746835 best=0.962025
+epoch=250 val_acc=0.860759 best=0.962025
+epoch=275 val_acc=0.924051 best=0.962025
+epoch=300 val_acc=0.886076 best=0.962025
+epoch=325 val_acc=0.886076 best=0.962025
+epoch=350 val_acc=0.936709 best=0.962025
+epoch=375 val_acc=0.873418 best=0.962025
+fold=2 best_epoch=198 ACC=0.87356 BA=0.87646 ASD-AUC=0.95599 runtime_sec=34.62
+=== FOLD 3/10 train=705 val=79 test=87 split_sha=3a0759fe3f75a7e0b238734ac0b288f4cf5209b90a8636f171de1f08dbc7e30e init_sha=5eb13a44b9fb3f423d8b12be2da3bb1fd5799a8f4c2edcd97331e914a43e182f ===
+epoch=1 val_acc=0.544304 best=0.544304
+epoch=25 val_acc=0.544304 best=0.582278
+epoch=50 val_acc=0.607595 best=0.810127
+epoch=75 val_acc=0.734177 best=0.835443
+epoch=100 val_acc=0.784810 best=0.860759
+epoch=125 val_acc=0.886076 best=0.886076
+epoch=150 val_acc=0.898734 best=0.924051
+epoch=175 val_acc=0.911392 best=0.924051
+epoch=200 val_acc=0.898734 best=0.924051
+epoch=225 val_acc=0.835443 best=0.924051
+epoch=250 val_acc=0.898734 best=0.949367
+epoch=275 val_acc=0.873418 best=0.949367
+epoch=300 val_acc=0.860759 best=0.949367
+epoch=325 val_acc=0.848101 best=0.949367
+epoch=350 val_acc=0.835443 best=0.949367
+epoch=375 val_acc=0.670886 best=0.949367
+epoch=400 val_acc=0.848101 best=0.949367
+epoch=425 val_acc=0.886076 best=0.949367
+fold=3 best_epoch=246 ACC=0.81609 BA=0.81151 ASD-AUC=0.90933 runtime_sec=38.49
+=== FOLD 4/10 train=705 val=79 test=87 split_sha=67f5d631c6c9a9c6df8521b763a2a6b2fc2be392b22e758e0c45b0e64871c990 init_sha=57d509c575c428772de4b11967f978404e78cee8c6599e1e05f6e69d1d069332 ===
+epoch=1 val_acc=0.544304 best=0.544304
+epoch=25 val_acc=0.734177 best=0.772152
+epoch=50 val_acc=0.835443 best=0.848101
+epoch=75 val_acc=0.759494 best=0.873418
+epoch=100 val_acc=0.873418 best=0.886076
+epoch=125 val_acc=0.873418 best=0.898734
+epoch=150 val_acc=0.886076 best=0.898734
+epoch=175 val_acc=0.873418 best=0.898734
+epoch=200 val_acc=0.873418 best=0.898734
+epoch=225 val_acc=0.898734 best=0.898734
+epoch=250 val_acc=0.848101 best=0.898734
+epoch=275 val_acc=0.620253 best=0.898734
+epoch=300 val_acc=0.860759 best=0.898734
+fold=4 best_epoch=103 ACC=0.80460 BA=0.80239 ASD-AUC=0.86649 runtime_sec=26.58
+=== FOLD 5/10 train=705 val=79 test=87 split_sha=8f9ab0c73ae1a189c3c2e6a0d0671436ec0ef4677fba105940ac25952c1ab2ac init_sha=c00685d826bfef1d14f73711eff05794d8f108908b141424f4157bbdfbd39b3b ===
+epoch=1 val_acc=0.531646 best=0.531646
+epoch=25 val_acc=0.481013 best=0.569620
+epoch=50 val_acc=0.658228 best=0.696203
+epoch=75 val_acc=0.772152 best=0.860759
+epoch=100 val_acc=0.582278 best=0.924051
+epoch=125 val_acc=0.835443 best=0.924051
+epoch=150 val_acc=0.898734 best=0.924051
+epoch=175 val_acc=0.848101 best=0.924051
+epoch=200 val_acc=0.911392 best=0.936709
+epoch=225 val_acc=0.493671 best=0.936709
+epoch=250 val_acc=0.898734 best=0.936709
+epoch=275 val_acc=0.886076 best=0.936709
+epoch=300 val_acc=0.911392 best=0.936709
+epoch=325 val_acc=0.848101 best=0.936709
+epoch=350 val_acc=0.924051 best=0.936709
+epoch=375 val_acc=0.873418 best=0.936709
+fold=5 best_epoch=192 ACC=0.86207 BA=0.85372 ASD-AUC=0.93138 runtime_sec=33.85
+=== FOLD 6/10 train=705 val=79 test=87 split_sha=c11edb1b1915517865eab41ab930fbb1490130d625ffc4b430649f02e8b33d80 init_sha=8ba34b9edbf14a7c3be158af37059a22c73e050af2fa3502857c6a5c25925776 ===
+epoch=1 val_acc=0.481013 best=0.481013
+epoch=25 val_acc=0.569620 best=0.582278
+epoch=50 val_acc=0.620253 best=0.734177
+epoch=75 val_acc=0.708861 best=0.873418
+epoch=100 val_acc=0.797468 best=0.873418
+epoch=125 val_acc=0.848101 best=0.898734
+epoch=150 val_acc=0.607595 best=0.911392
+epoch=175 val_acc=0.898734 best=0.911392
+epoch=200 val_acc=0.860759 best=0.911392
+epoch=225 val_acc=0.556962 best=0.911392
+epoch=250 val_acc=0.873418 best=0.911392
+epoch=275 val_acc=0.721519 best=0.911392
+epoch=300 val_acc=0.658228 best=0.911392
+epoch=325 val_acc=0.797468 best=0.911392
+fold=6 best_epoch=126 ACC=0.81609 BA=0.80745 ASD-AUC=0.92181 runtime_sec=28.52
+=== FOLD 7/10 train=705 val=79 test=87 split_sha=a7db7d8b88f9b8442135d882b21a1202a21eaae342744cef64baf62c1ca40a0d init_sha=eefcbdb0cd819ea2ad025bb59988d6edfd97c8d5af6d844001b8b8cd8f6d3e57 ===
+epoch=1 val_acc=0.531646 best=0.531646
+epoch=25 val_acc=0.544304 best=0.620253
+epoch=50 val_acc=0.734177 best=0.759494
+epoch=75 val_acc=0.734177 best=0.822785
+epoch=100 val_acc=0.708861 best=0.860759
+epoch=125 val_acc=0.810127 best=0.860759
+epoch=150 val_acc=0.696203 best=0.860759
+epoch=175 val_acc=0.746835 best=0.886076
+epoch=200 val_acc=0.848101 best=0.886076
+epoch=225 val_acc=0.696203 best=0.898734
+epoch=250 val_acc=0.848101 best=0.898734
+epoch=275 val_acc=0.810127 best=0.898734
+epoch=300 val_acc=0.873418 best=0.898734
+epoch=325 val_acc=0.835443 best=0.898734
+epoch=350 val_acc=0.860759 best=0.898734
+epoch=375 val_acc=0.810127 best=0.898734
+epoch=400 val_acc=0.810127 best=0.911392
+epoch=425 val_acc=0.822785 best=0.911392
+epoch=450 val_acc=0.810127 best=0.911392
+fold=7 best_epoch=384 ACC=0.83908 BA=0.82686 ASD-AUC=0.88351 runtime_sec=38.73
+=== FOLD 8/10 train=705 val=79 test=87 split_sha=86f83d4dd93b5ba7fcc748f70dbe9bd5b52c5ce10abfd1ea1bada9a1422165b2 init_sha=affc85a939872095f331a13b7804db1e165cdfc479c87d4ffa1b29cd69abc8e7 ===
+epoch=1 val_acc=0.468354 best=0.468354
+epoch=25 val_acc=0.569620 best=0.569620
+epoch=50 val_acc=0.632911 best=0.772152
+epoch=75 val_acc=0.784810 best=0.886076
+epoch=100 val_acc=0.886076 best=0.911392
+epoch=125 val_acc=0.822785 best=0.911392
+epoch=150 val_acc=0.873418 best=0.911392
+epoch=175 val_acc=0.645570 best=0.911392
+epoch=200 val_acc=0.810127 best=0.911392
+epoch=225 val_acc=0.873418 best=0.911392
+epoch=250 val_acc=0.746835 best=0.911392
+epoch=275 val_acc=0.860759 best=0.911392
+fold=8 best_epoch=95 ACC=0.82759 BA=0.83112 ASD-AUC=0.89840 runtime_sec=25.22
+=== FOLD 9/10 train=705 val=79 test=87 split_sha=acb729fc539ec5d2b7d01ce4e2ab583e66df5b9ff11f50ecd68ee5482e7e09ad init_sha=70afbe95c0abf7458e2e75f8f8b01753e1cb98fb2969c8b0a0f303aaf90d9785 ===
+epoch=1 val_acc=0.531646 best=0.531646
+epoch=25 val_acc=0.481013 best=0.531646
+epoch=50 val_acc=0.645570 best=0.696203
+epoch=75 val_acc=0.810127 best=0.822785
+epoch=100 val_acc=0.835443 best=0.848101
+epoch=125 val_acc=0.873418 best=0.886076
+epoch=150 val_acc=0.822785 best=0.898734
+epoch=175 val_acc=0.873418 best=0.911392
+epoch=200 val_acc=0.835443 best=0.911392
+epoch=225 val_acc=0.873418 best=0.911392
+epoch=250 val_acc=0.784810 best=0.911392
+epoch=275 val_acc=0.886076 best=0.911392
+epoch=300 val_acc=0.886076 best=0.911392
+epoch=325 val_acc=0.886076 best=0.924051
+epoch=350 val_acc=0.886076 best=0.924051
+epoch=375 val_acc=0.746835 best=0.924051
+epoch=400 val_acc=0.886076 best=0.924051
+epoch=425 val_acc=0.898734 best=0.924051
+epoch=450 val_acc=0.620253 best=0.924051
+fold=9 best_epoch=307 ACC=0.79310 BA=0.80293 ASD-AUC=0.88723 runtime_sec=38.47
+=== FOLD 10/10 train=705 val=79 test=87 split_sha=b0f985d771956607d4fe9a8e5b11258fd0e8462f5737db3446b8ce4655e16775 init_sha=81a91801ca0f6bd0fccbea394e1d98118cec42b4f3ae720f4ed9d54b999dfb6b ===
+epoch=1 val_acc=0.493671 best=0.493671
+epoch=25 val_acc=0.594937 best=0.607595
+epoch=50 val_acc=0.670886 best=0.683544
+epoch=75 val_acc=0.734177 best=0.759494
+epoch=100 val_acc=0.759494 best=0.797468
+epoch=125 val_acc=0.797468 best=0.810127
+epoch=150 val_acc=0.797468 best=0.810127
+epoch=175 val_acc=0.531646 best=0.848101
+epoch=200 val_acc=0.734177 best=0.848101
+epoch=225 val_acc=0.759494 best=0.848101
+epoch=250 val_acc=0.734177 best=0.848101
+epoch=275 val_acc=0.822785 best=0.848101
+epoch=300 val_acc=0.822785 best=0.848101
+epoch=325 val_acc=0.721519 best=0.848101
+epoch=350 val_acc=0.784810 best=0.848101
+fold=10 best_epoch=162 ACC=0.91954 BA=0.92181 ASD-AUC=0.96383 runtime_sec=31.08
+WROTE_FOLDS=10 WROTE_OOF=871
