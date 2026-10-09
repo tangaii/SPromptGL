@@ -1,1 +1,27 @@
-Starting 12 task(s), workers_per_device=6, devices=['cuda:0', 'cuda:1']
+
+PARALLEL_START tasks=12 workers_per_gpu=6 gpus=0,1
+LAUNCH config=P0 seed=0 gpu=0 pid=2144790
+LAUNCH config=P0 seed=1 gpu=0 pid=2144791
+LAUNCH config=P0 seed=2 gpu=0 pid=2144792
+LAUNCH config=P1 seed=0 gpu=0 pid=2144793
+LAUNCH config=P1 seed=1 gpu=0 pid=2144794
+LAUNCH config=P1 seed=2 gpu=0 pid=2144795
+LAUNCH config=P2 seed=0 gpu=1 pid=2144796
+LAUNCH config=P2 seed=1 gpu=1 pid=2144797
+LAUNCH config=P2 seed=2 gpu=1 pid=2144798
+LAUNCH config=P3 seed=0 gpu=1 pid=2144800
+LAUNCH config=P3 seed=1 gpu=1 pid=2144801
+LAUNCH config=P3 seed=2 gpu=1 pid=2144802
+DONE config=P0 seed=0 gpu=0 pid=2144790 returncode=0
+DONE config=P0 seed=1 gpu=0 pid=2144791 returncode=0
+DONE config=P1 seed=0 gpu=0 pid=2144793 returncode=0
+DONE config=P3 seed=1 gpu=1 pid=2144801 returncode=0
+DONE config=P0 seed=2 gpu=0 pid=2144792 returncode=0
+DONE config=P1 seed=1 gpu=0 pid=2144794 returncode=0
+DONE config=P3 seed=2 gpu=1 pid=2144802 returncode=0
+DONE config=P2 seed=0 gpu=1 pid=2144796 returncode=0
+DONE config=P2 seed=1 gpu=1 pid=2144797 returncode=0
+DONE config=P2 seed=2 gpu=1 pid=2144798 returncode=0
+DONE config=P1 seed=2 gpu=0 pid=2144795 returncode=0
+DONE config=P3 seed=0 gpu=1 pid=2144800 returncode=0
+PARALLEL_END

@@ -1,75 +1,62 @@
 # 实验一：模态感知语义提示增强（MASPE）
 
-## 执行状态
+状态：**全部完成**。任务 12/12 已结束，当前记录 120/120 个测试折。
 
-正式实验完成 120/120 folds，产生 10,452 条 OOF 预测（4 组配置 × 3 seeds × 871 名受试者）。模型选择仅使用 outer-train 内部验证集 ACC；test 折标签只在 checkpoint 固定后用于最终统计。
+## 协议与来源
 
-输入保持用户指定的已处理数据不变：871×320 特征，PHENO/ANAT/FUNC/Correlation 维度分别为 48/6/10/256。所有图传播读取全体受试者特征，评估属于 transductive；只有 outer-train 内部 train 标签参与监督图和分类损失。全体标准化与历史 RFE 的预处理范围没有在本实验重算，仍是可能的泄漏来源。
+P0 在隔离副本中逐字节运行根目录原始源码及 `ABIDE-simple-2-concat-weighted-cosine.sh` 参数。P1–P3 只在隔离副本的 `network.py` 应用 `prompt_patch.diff`；四组均使用根目录 `main.py`、`model.py` 的训练与评价路径。
 
-P0 前向 parity：原始代码和实验副本的可训练参数量相同，prompt 原型、增强特征、输出和隐藏表示最大绝对误差均为 0。P0/P1/P2/P3 的同 fold 初始参数由同一随机种子生成并显式复制，参数 SHA 一致。
+保持 `StratifiedKFold(n_splits=10, random_state=10, shuffle=True)`、原始 `val_idx == tst_idx`、ACC 最优 checkpoint、450 epoch 上限、200 patience、原始 hard-label AUC 和根代码提前终止条件。没有额外验证集或调参。图特征传播保持原始 transductive 方式。
 
-## 主结果
+数据固定为 `data/ABIDE/processed_standard_data.csv` 和 `modal_feat_dict.npy`。根代码使用的测试折同时参与 checkpoint 选择；这里如实沿用原始协议，不将其称作独立测试评估。输入文件已按要求固定，既有全队列标准化/RFE 预处理不在本实验中重做。
 
-下表的均值和标准差以每个 seed 完整 871 人 OOF 指标为单位（n=3）；fold 间标准差另列在 `summary.csv`，不与 seed 波动混合。
+源码和数据哈希见 `source_hashes.json`；P1/P2/P3 提示文本见 `prompts.json`。CLIP 使用 OpenAI RN50，权重 SHA256 应为 `afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762`。
 
-| Config | BA mean±SD | prob-AUC mean±SD | ACC | ASD SEN | NC SPE | F1 (ASD) |
-|---|---:|---:|---:|---:|---:|---:|
-| P0 | 84.50±0.79% | 90.39±0.55% | 84.65±0.88% | 82.46±0.76% | 86.54±2.04% | 83.26±0.74% |
-| P1 | 84.34±0.18% | 90.60±0.32% | 84.50±0.23% | 82.13±0.66% | 86.54±0.93% | 83.06±0.14% |
-| P2 | 84.77±0.54% | 90.29±1.04% | 84.88±0.57% | 83.21±2.01% | 86.32±2.06% | 83.59±0.61% |
-| P3 | 84.66±1.44% | 90.97±0.84% | 84.81±1.44% | 82.63±1.97% | 86.68±1.82% | 83.42±1.57% |
+## P0 论文参考核对
 
-## 配对比较
+P0 seed=0 当前完成 10/10 折；ACC 91.73% ± 2.95%，Hard-AUC 91.56% ± 2.94%。
+论文参考为 ACC 92.30±2.58%，AUC 92.22±2.57%；当前与参考差值：ACC -0.57 个百分点，Hard-AUC -0.66 个百分点。论文值与本地复现的协议/指标实现是否完全同口径无法仅凭数值确认。
 
-Δ 为百分点。bootstrap 按受试者进行 2,000 次成簇重采样，并在所有 seed/config 中共享同一受试者抽样；三个 seed 对同一人的重复预测不会当作独立受试者。区间是描述性 paired bootstrap 95% percentile CI，不替代独立外部验证。
+## 各配置结果
 
-| 比较 | 指标 | 完整 OOF seed Δ mean±SD | paired fold Δ mean±SD | fold wins / 30 | participant bootstrap 95% CI |
-|---|---|---:|---:|---:|---:|
-| P1-P0 | balanced_accuracy | -0.17±0.62 | -0.18±3.30 | 12/30 | [-1.03, +0.74] |
-| P1-P0 | probability_auc_asd_positive | +0.21±0.29 | +0.80±1.84 | 19/30 | [-0.45, +0.83] |
-| P2-P1 | balanced_accuracy | +0.43±0.42 | +0.44±2.50 | 15/30 | [-0.37, +1.25] |
-| P2-P1 | probability_auc_asd_positive | -0.31±0.84 | -0.50±1.61 | 12/30 | [-0.88, +0.19] |
-| P3-P1 | balanced_accuracy | +0.32±1.29 | +0.33±3.36 | 14/30 | [-0.57, +1.21] |
-| P3-P1 | probability_auc_asd_positive | +0.37±1.16 | -0.18±1.54 | 12/30 | [-0.18, +0.91] |
+下表为每个 seed 的 10 折均值，再报告 seed 均值及 seed 间标准差；`fold_sd` 与 `seed_sd` 分开存于 `summary.csv`。SEN/SPE 以 ASD（label 0）为阳性类，另一类结果也保存在逐折 CSV 中。
 
-## 语义机制检查
+| 配置 | 完整 seeds | ACC (%; seed mean±SD) | Hard-AUC (%; seed mean±SD) | SEN-ASD (%) | SPE-ASD (%) |
+|---|---:|---:|---:|---:|---:|
+| P0 | 3/3 | 91.69 ± 0.05 | 91.54 ± 0.08 | 89.66 | 93.42 |
+| P1 | 3/3 | 91.80 ± 0.11 | 91.62 ± 0.12 | 89.17 | 94.06 |
+| P2 | 3/3 | 91.69 ± 0.05 | 91.52 ± 0.07 | 89.25 | 93.78 |
+| P3 | 3/3 | 91.54 ± 0.22 | 91.31 ± 0.22 | 88.27 | 94.35 |
 
-`prompt_analysis.csv` 汇总各模态的主题原型余弦、局部相似度、两个主题的平均 softmax 权重和 prompt 加权前后的局部 token 相对变化。它们仅用于描述模型如何使用冻结语义向量，不用于调参。
+## 对照与稳定性
 
-| Config | 模态 | 原型余弦均值 | 相对 token 变化 | theme 1 / 2 平均权重 | 塌缩 folds |
-|---|---|---:|---:|---:|---:|
-| P0 | ANAT | 0.9201±0.2186 | 0.4865±0.0325 | 0.499 / 0.501 | 25/30 |
-| P0 | Correlation | 0.9201±0.2186 | 0.4821±0.0426 | 0.501 / 0.499 | 25/30 |
-| P0 | FUNC | 0.9201±0.2186 | 0.4867±0.0317 | 0.500 / 0.500 | 25/30 |
-| P0 | PHENO | 0.9201±0.2186 | 0.4846±0.0353 | 0.495 / 0.505 | 25/30 |
-| P1 | ANAT | 0.9965±0.0090 | 0.4965±0.0065 | 0.500 / 0.500 | 28/30 |
-| P1 | Correlation | 0.8153±0.2739 | 0.4683±0.0437 | 0.499 / 0.501 | 16/30 |
-| P1 | FUNC | 0.9655±0.0886 | 0.4902±0.0175 | 0.501 / 0.499 | 23/30 |
-| P1 | PHENO | 0.9860±0.0509 | 0.4949±0.0118 | 0.500 / 0.500 | 27/30 |
-| P2 | ANAT | 0.9556±0.1837 | 0.4946±0.0124 | 0.500 / 0.500 | 26/30 |
-| P2 | Correlation | 0.8046±0.3348 | 0.4765±0.0363 | 0.498 / 0.502 | 15/30 |
-| P2 | FUNC | 0.9632±0.1822 | 0.4975±0.0050 | 0.500 / 0.500 | 26/30 |
-| P2 | PHENO | 0.9596±0.1820 | 0.4953±0.0084 | 0.500 / 0.500 | 27/30 |
-| P3 | ANAT | 0.9840±0.0360 | 0.4934±0.0120 | 0.500 / 0.500 | 25/30 |
-| P3 | Correlation | 0.7528±0.3521 | 0.4609±0.0570 | 0.500 / 0.500 | 17/30 |
-| P3 | FUNC | 0.9931±0.0159 | 0.4946±0.0082 | 0.500 / 0.500 | 26/30 |
-| P3 | PHENO | 0.9901±0.0268 | 0.4947±0.0091 | 0.500 / 0.500 | 26/30 |
+seed=0: P1-P0 的 ACC -0.00 个百分点，Hard-AUC +0.00 个百分点。
+seed=1: P1-P0 的 ACC +0.11 个百分点，Hard-AUC +0.08 个百分点。
+seed=2: P1-P0 的 ACC +0.23 个百分点，Hard-AUC +0.16 个百分点。
+在 3 个可配对 seed 中，P1 的 ACC 提升 2 个、Hard-AUC 提升 2 个；此处只作描述性稳定性检查，不作显著性推断。
+目前没有看到 P1 在 ACC 与 Hard-AUC 上跨 seed 同时稳定超过 P0；请结合 P2/P3 的同协议结果判断收益是否来自模态语义对应。
 
-## 科学解释
+P2 使用固定错配映射，P3 使用 32 条数量匹配通用提示。它们的逐 seed 差异以上表及 `summary.csv` 为准；当前有效完整 seed 不足时不作科学结论。
 
-P1 相对 P0 的完整 OOF 差异为 BA -0.17 pp、prob-AUC +0.21 pp； 相对固定错配 P2 为 BA -0.43 pp、prob-AUC +0.31 pp； 相对数量匹配 P3 为 BA -0.32 pp、prob-AUC -0.37 pp。 至少一项主指标/比较未同时满足正向均值与配对 bootstrap 区间下界大于 0，因此证据不足以支持“模态感知语义在各项对照下稳定优越”。需分别解释 BA 与 AUC、seed 稳定性及置信区间，不把单一指标提升扩大为总体机制证明。 按完整 OOF 的三 seed 均值，P1 的 BA 未超过 P0。
+## 逐任务状态
 
-四个 prompt 组共享相同的 GFR、跨模态注意力/Transformer、分类器、可训练 MLP、优化器、训练/验证/测试索引和训练预算。P0 的 8 条原始 prompt 在四个模态之间共享；P1 每模态使用 8 条特征定义驱动的 prompt；P2 使用固定错配四循环；P3 为 32 条组织和语言复杂度相近的通用 prompt。
+| 配置 | Seed | 状态 | 已记录折数 |
+|---|---:|---|---:|
+| P0 | 0 | COMPLETE | 10/10 |
+| P0 | 1 | COMPLETE | 10/10 |
+| P0 | 2 | COMPLETE | 10/10 |
+| P1 | 0 | COMPLETE | 10/10 |
+| P1 | 1 | COMPLETE | 10/10 |
+| P1 | 2 | COMPLETE | 10/10 |
+| P2 | 0 | COMPLETE | 10/10 |
+| P2 | 1 | COMPLETE | 10/10 |
+| P2 | 2 | COMPLETE | 10/10 |
+| P3 | 0 | COMPLETE | 10/10 |
+| P3 | 1 | COMPLETE | 10/10 |
+| P3 | 2 | COMPLETE | 10/10 |
 
-## 可复现产物
+## 解释与限制
 
-- 折级结果：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/fold_results.csv`
-- seed 级 OOF 汇总：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/seed_summary.csv`
-- 主表：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/summary.csv`
-- 全部预测：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/oof_predictions.csv`
-- 配对比较：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/paired_comparisons.csv`
-- prompt 机制：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/results/prompt_analysis.csv`
-- 参数/数据/prompt 哈希：`/data/adodas/SPromptGL-main/experiment/experiment1_modality_aware_semantic_prompt/manifest.json`
-- 项目交接：`/data/adodas/SPromptGL-main/handoff.md`
+若 P1 未优于 P0，结果支持的结论仅是：在当前原始模型和冻结 ABIDE 特征下，这组模态描述没有带来稳定分类收益。数据中的 PHENO 含站点/人口学信息，ANAT 与 FUNC 主要包含图像质量和运动/信号质量量，Correlation 为预先 RFE 选出的连接边；提示语义可能与这些压缩后的质量和混合特征并不完全对应。最终解释以完整结果为准。
 
-结果对应用户给定 shell 的训练参数；论文实现段落公开的 ABIDE 参数不同，差异已记录在 `audit.md`。不据此宣称复现论文报告的 92.30% 数值。
+测试折被用于原始验证 ACC 和 checkpoint 选择，因此不能把本实验表述为独立测试集估计。执行中不修正该协议。

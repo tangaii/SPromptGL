@@ -1,0 +1,69 @@
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -34,9 +35,27 @@
+     """Encode the fixed semantic prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        prompt_tokens = text
++        config = os.environ.get("MASPE_CONFIG")
++        if config:
++            with open(os.environ["MASPE_PROMPTS_FILE"], encoding="utf-8") as stream:
++                prompt_data = json.load(stream)
++            if config == "P2":
++                source = prompt_data["p1"]
++                mapping = prompt_data["p2"]["mapping"]
++            else:
++                source = prompt_data[config.lower()]
++                mapping = {key: key for key in prompt_data["modality_order"]}
++            sentences = []
++            for modality in prompt_data["modality_order"]:
++                for theme in source[mapping[modality]]["themes"]:
++                    sentences.extend(item["text"] for item in theme["prompts"])
++            if len(sentences) != 32:
++                raise ValueError("MASPE variants require 32 ordered prompt sentences.")
++            prompt_tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++            _prompt_text_features = clip_model.encode_text(prompt_tokens).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -103,20 +122,22 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        if text_features.size(0) == 8:
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        else:
++            text_features = self.MLP(text_features.view(4, 2, 4096))
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
+ 
+         # 进行数值截断以避免数值问题
