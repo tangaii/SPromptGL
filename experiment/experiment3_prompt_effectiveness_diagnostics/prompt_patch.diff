@@ -1,0 +1,275 @@
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,12 +32,28 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode the frozen PEPCA prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        config = os.environ.get("PEPCA_CONFIG", "D0")
++        prompt_tokens = text
++        if config in ("D1", "D4"):
++            with open(os.environ["PEPCA_CONTROLS_FILE"], encoding="utf-8") as stream:
++                controls = json.load(stream)
++            if config == "D1":
++                sentences = []
++                source = controls["d1"]["modalities"]
++                for modality in controls["modality_order"]:
++                    for theme in source[modality]["themes"]:
++                        sentences.extend(item["text"] for item in theme["prompts"])
++            else:
++                sentences = controls["d4"]["prompts"]
++            if len(sentences) != (32 if config == "D1" else 8):
++                raise ValueError("PEPCA prompt count is invalid.")
++            prompt_tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++            _prompt_text_features = clip_model.encode_text(prompt_tokens).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -89,7 +106,106 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+-        
++        self.pepca_config = os.environ.get("PEPCA_CONFIG", "D0")
++        self.pepca_diag_enabled = os.environ.get("PEPCA_DIAGNOSTIC", "0") == "1"
++        self._pepca_last = None
++        
++    @staticmethod
++    def _pepca_scalar_stats(values):
++        values = values.reshape(-1).float()
++        finite = torch.isfinite(values)
++        clean = values[finite]
++        if clean.numel() == 0:
++            return {
++                "mean": None, "std": None, "min": None, "max": None,
++                "p5": None, "median": None, "p95": None,
++                "nonfinite": int((~finite).sum().item()),
++            }
++        q = torch.quantile(clean, torch.tensor([0.05, 0.50, 0.95], device=clean.device))
++        return {
++            "mean": float(clean.mean().item()),
++            "std": float(clean.std(unbiased=False).item()),
++            "min": float(clean.min().item()),
++            "max": float(clean.max().item()),
++            "p5": float(q[0].item()),
++            "median": float(q[1].item()),
++            "p95": float(q[2].item()),
++            "nonfinite": int((~finite).sum().item()),
++        }
++
++    def _pepca_diagnostics(self, raw_similarity, softmax_similarity, text_features):
++        rows = []
++        sample_index = getattr(self, "_pepca_eval_idx", None)
++        if sample_index is not None:
++            if not torch.is_tensor(sample_index):
++                sample_index = torch.as_tensor(sample_index, device=raw_similarity.device, dtype=torch.long)
++            else:
++                sample_index = sample_index.to(raw_similarity.device, dtype=torch.long)
++            raw_similarity = raw_similarity.index_select(0, sample_index)
++            softmax_similarity = softmax_similarity.index_select(0, sample_index)
++        if self.pepca_config in ("D2", "D3"):
++            for modality in ["PHENO", "ANAT", "FUNC", "Correlation"]:
++                rows.append({
++                    "modality": modality,
++                    "semantic_status": "not_applicable",
++                    "prototype_scope": "not_applicable",
++                    "effective_scale": 0.5 if self.pepca_config == "D2" else 1.0,
++                })
++            return {
++                "config": self.pepca_config,
++                "semantic_status": "not_applicable",
++                "prototype_rows": rows,
++                "mlp_effective_gradient": False,
++            }
++        if text_features.dim() == 2:
++            prototypes = text_features.unsqueeze(0).expand(4, -1, -1)
++            scope = "shared"
++        else:
++            prototypes = text_features
++            scope = "modality_specific"
++        proto_norm = torch.linalg.vector_norm(prototypes, dim=-1)
++        proto_cos = F.cosine_similarity(prototypes[:, 0, :], prototypes[:, 1, :], dim=-1)
++        zero = proto_norm <= 1e-12
++        nonfinite_proto = ~torch.isfinite(prototypes).all(dim=-1)
++        for index, modality in enumerate(["PHENO", "ANAT", "FUNC", "Correlation"]):
++            raw = raw_similarity[:, index, :, :].reshape(-1, 2)
++            weights = softmax_similarity[:, index, :, :].max(dim=-1).values.reshape(-1)
++            delta = (raw[:, 0] - raw[:, 1]).abs()
++            weight_stats = self._pepca_scalar_stats(weights)
++            rows.append({
++                "modality": modality,
++                "semantic_status": "valid",
++                "prototype_scope": scope,
++                "prototype_cosine": float(proto_cos[index].item()),
++                "prototype_abs_cosine": float(proto_cos[index].abs().item()),
++                "prototype_abs_cosine_gt_0_98": bool(proto_cos[index].abs().item() > 0.98),
++                "prototype_norm_1": float(proto_norm[index, 0].item()),
++                "prototype_norm_2": float(proto_norm[index, 1].item()),
++                "prototype_zero_vector": bool(zero[index].any().item()),
++                "prototype_nonfinite": bool(nonfinite_proto[index].any().item()),
++                "mean_s1": float(raw[:, 0].mean().item()),
++                "mean_s2": float(raw[:, 1].mean().item()),
++                "mean_abs_delta": float(delta.mean().item()),
++                "std_abs_delta": float(delta.std(unbiased=False).item()),
++                "weight_mean": weight_stats["mean"],
++                "weight_std": weight_stats["std"],
++                "weight_min": weight_stats["min"],
++                "weight_max": weight_stats["max"],
++                "weight_p5": weight_stats["p5"],
++                "weight_median": weight_stats["median"],
++                "weight_p95": weight_stats["p95"],
++                "weight_le_0_51": float((weights <= 0.51).float().mean().item()),
++                "weight_gt_0_55": float((weights > 0.55).float().mean().item()),
++                "weight_gt_0_60": float((weights > 0.60).float().mean().item()),
++                "weight_nonfinite": weight_stats["nonfinite"],
++            })
++        return {
++            "config": self.pepca_config,
++            "semantic_status": "valid",
++            "prototype_rows": rows,
++            "mlp_effective_gradient": True,
++        }
++
+     def forward(self, x):
+         bs = x.size(0)
+         attn_map = []
+@@ -103,21 +219,24 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        if text_features.size(0) == 8:
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        else:
++            text_features = self.MLP(text_features.view(4, 2, 4096))
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
++        raw_similarity_matrix = similarity_matrix
+ 
+         # 进行数值截断以避免数值问题
+         similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+@@ -128,8 +247,21 @@
+         # 获取 similarity_matrix 的最大值
+         similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+ 
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        # D2/D3 keep the original MLP registered and initialized, but remove
++        # its output from this path by replacing only the final scalar.
++        if self.pepca_config == "D2":
++            part_x = 0.5 * part_x
++        elif self.pepca_config == "D3":
++            part_x = 1.0 * part_x
++        else:
++            part_x = similarity_max.unsqueeze(-1) * part_x
++
++        if self.pepca_diag_enabled and not self.training:
++            self._pepca_last = self._pepca_diagnostics(
++                raw_similarity_matrix.detach(),
++                similarity_matrix.detach(),
++                text_features.detach(),
++            )
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -46,6 +47,8 @@
+         self.best_acc_2 = 0
+         self.MF_sav = tempfile.TemporaryFile()
+         self.GCMP_sav = tempfile.TemporaryFile()
++        self._pepca_fold_counter = 0
++        self._pepca_gradient_written = False
+         num = train_index.shape[0]
+         self.trn_idx = train_index
+ 
+@@ -143,6 +146,27 @@
+             loss = cls_loss + all_graph_loss
+             
+             loss.backward()
++            if os.environ.get("PEPCA_GRADIENT_PATH") and not self._pepca_gradient_written:
++                mlp_parameters = list(self.ModalFusion.MLP.named_parameters())
++                gradient_rows = []
++                for name, parameter in mlp_parameters:
++                    gradient = parameter.grad
++                    gradient_rows.append({
++                        "name": name,
++                        "numel": int(parameter.numel()),
++                        "grad_present": gradient is not None,
++                        "grad_nonzero": bool(gradient is not None and torch.count_nonzero(gradient.detach()).item() > 0),
++                        "grad_norm": None if gradient is None else float(torch.linalg.vector_norm(gradient.detach()).item()),
++                    })
++                payload = {
++                    "config": os.environ.get("PEPCA_CONFIG"),
++                    "total_parameters": int(sum(parameter.numel() for parameter in self.ModalFusion.parameters())),
++                    "mlp_parameters": int(sum(parameter.numel() for _, parameter in mlp_parameters)),
++                    "mlp_gradients": gradient_rows,
++                }
++                with open(os.environ["PEPCA_GRADIENT_PATH"], "w", encoding="utf-8") as stream:
++                    json.dump(payload, stream, ensure_ascii=False, indent=2)
++                self._pepca_gradient_written = True
+             
+             self.optimizer_MP0.step()            
+             self.optimizer_MF.step()
+@@ -278,12 +302,24 @@
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
++        if tst and os.environ.get("PEPCA_DIAGNOSTIC_PATH"):
++            self.ModalFusion._pepca_eval_idx = eval_idx
++        else:
++            self.ModalFusion._pepca_eval_idx = None
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+             
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        if tst and os.environ.get("PEPCA_DIAGNOSTIC_PATH"):
++            diagnostics = getattr(self.ModalFusion, "_pepca_last", None)
++            if diagnostics is not None:
++                self._pepca_fold_counter += 1
++                with open(os.environ["PEPCA_DIAGNOSTIC_PATH"], "a", encoding="utf-8") as stream:
++                    json.dump({"fold": self._pepca_fold_counter, "diagnostics": diagnostics}, stream, ensure_ascii=False)
++                    stream.write("\n")
++        self.ModalFusion._pepca_eval_idx = None
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)

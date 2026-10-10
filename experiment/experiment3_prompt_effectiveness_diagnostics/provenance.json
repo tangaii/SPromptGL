@@ -1,0 +1,621 @@
+{
+  "experiment": "PEPCA",
+  "schema_version": 1,
+  "created_utc": "2026-10-10T04:51:23Z",
+  "source_root": "/data/adodas/SPromptGL-main",
+  "source_files": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "CLIP/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/build/lib/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/build/lib/clip/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/build/lib/clip/clip.py": "c28fdadfc140ce89c525cd6c29c0dc71c462e8fa45315e6524f080a4dafcdf75",
+    "CLIP/build/lib/clip/model.py": "429489552b2610903b82c9c3215cbb50ca8552e60f0b17dfc4233c1ea0f8422c",
+    "CLIP/build/lib/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "CLIP/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/clip/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "CLIP/clip/old.py": "754a05697e7605629b7aff28b77c24e334ae1effc1605f10f31c666013c26c9c",
+    "CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "CLIP/clip.py": "4ab4d5187823792c14997808854fe219dc485042606d439757a704a20d57aaf4",
+    "CLIP/model.py": "acce23b761dc90950229eadf2e58f6da5f9dac3facff4cc05730b7c8bd2b8bb3",
+    "CLIP/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad"
+  },
+  "inputs": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "clip_rn50": {
+    "path": "/root/.cache/clip/RN50.pt",
+    "expected_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "actual_sha256_at_snapshot": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "protocol": {
+    "folds": 10,
+    "stratified_random_state": 10,
+    "val_equals_test": true,
+    "checkpoint_metric": "ACC",
+    "epoch_cap": 450,
+    "early_patience": 200,
+    "auc": "hard_label",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "shell": "ABIDE-simple-2-concat-weighted-cosine.sh"
+  },
+  "github_audit": {
+    "remote": "https://github.com/tangaii/SPromptGL",
+    "default_branch_commit": "79b3a620fefcd434d049e0ff118379673a0b1341",
+    "root_source_sha256_matches_remote": true
+  },
+  "controls_sha256": "a16ecf028feb1c3e964b30d5ab0c0bfa67766a419bb1ee24fe441268843bc669",
+  "reference_sha256": "135433462893565e2d4bf4256115cf55fc461140a1c7855538b777ba2e8cc24c",
+  "patch_sha256": "19a269dd61ac9ba8048870e252d1efc10b332f557b84c2329a7e484c6da57de0",
+  "validation": {
+    "patch_compiles": true,
+    "controls_valid": true,
+    "reference_rows": 60,
+    "diagnostics_after_selected_checkpoint": true
+  },
+  "parity_checks": {
+    "D0_seed0": {
+      "config": "D0",
+      "seed": 0,
+      "pass": true,
+      "max_abs_difference": 4.636228435606071e-07,
+      "differences": []
+    },
+    "D1_seed0": {
+      "config": "D1",
+      "seed": 0,
+      "pass": true,
+      "max_abs_difference": 4.780623817923768e-07,
+      "differences": []
+    }
+  },
+  "gradient_checks": {
+    "D0": [
+      {
+        "config": "D0",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.04104502499103546
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0015426109312102199
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.006404617801308632
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0013091751607134938
+          }
+        ]
+      },
+      {
+        "config": "D0",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.059830259531736374
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.00173336046282202
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.007853465154767036
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.000983205740340054
+          }
+        ]
+      },
+      {
+        "config": "D0",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.024026449769735336
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0008223917684517801
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0030957215931266546
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0005045874859206378
+          }
+        ]
+      }
+    ],
+    "D1": [
+      {
+        "config": "D1",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.04213910549879074
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0014247777871787548
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.005770017858594656
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0011356071336194873
+          }
+        ]
+      },
+      {
+        "config": "D1",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.030404120683670044
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0011351574212312698
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.004444990772753954
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0009054958936758339
+          }
+        ]
+      },
+      {
+        "config": "D1",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.05302945524454117
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0018205229425802827
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.007805016823112965
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0013216149527579546
+          }
+        ]
+      }
+    ],
+    "D2": [
+      {
+        "config": "D2",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      },
+      {
+        "config": "D2",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      },
+      {
+        "config": "D2",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      }
+    ],
+    "D3": [
+      {
+        "config": "D3",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      },
+      {
+        "config": "D3",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      },
+      {
+        "config": "D3",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": false,
+            "grad_nonzero": false,
+            "grad_norm": null
+          }
+        ]
+      }
+    ],
+    "D4": [
+      {
+        "config": "D4",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.03872109204530716
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0015028384514153004
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.005299474578350782
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0013034217990934849
+          }
+        ]
+      },
+      {
+        "config": "D4",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.03478940948843956
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.001306548248976469
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.005005029030144215
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0009820617269724607
+          }
+        ]
+      },
+      {
+        "config": "D4",
+        "total_parameters": 575121,
+        "mlp_parameters": 525577,
+        "mlp_gradients": [
+          {
+            "name": "t1.weight",
+            "numel": 524288,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.03585955500602722
+          },
+          {
+            "name": "t1.bias",
+            "numel": 128,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.0011859892401844263
+          },
+          {
+            "name": "t2.weight",
+            "numel": 1152,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.004175887908786535
+          },
+          {
+            "name": "t2.bias",
+            "numel": 9,
+            "grad_present": true,
+            "grad_nonzero": true,
+            "grad_norm": 0.00044243759475648403
+          }
+        ]
+      }
+    ]
+  }
+}
