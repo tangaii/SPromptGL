@@ -1,0 +1,15 @@
+
+PARALLEL_START tasks=6 workers_gpu0=3 workers_gpu1=3 gpus=0,1
+LAUNCH config=V2 seed=0 gpu=0 pid=2587888
+LAUNCH config=V2 seed=1 gpu=0 pid=2587891
+LAUNCH config=V2 seed=2 gpu=0 pid=2587892
+LAUNCH config=V2S seed=0 gpu=1 pid=2587897
+LAUNCH config=V2S seed=1 gpu=1 pid=2587909
+LAUNCH config=V2S seed=2 gpu=1 pid=2587924
+DONE config=V2S seed=1 gpu=1 pid=2587909 returncode=0
+DONE config=V2 seed=0 gpu=0 pid=2587888 returncode=0
+DONE config=V2S seed=2 gpu=1 pid=2587924 returncode=0
+DONE config=V2S seed=0 gpu=1 pid=2587897 returncode=0
+DONE config=V2 seed=1 gpu=0 pid=2587891 returncode=0
+DONE config=V2 seed=2 gpu=0 pid=2587892 returncode=0
+PARALLEL_END

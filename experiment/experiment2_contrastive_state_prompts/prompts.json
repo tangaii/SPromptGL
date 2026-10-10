@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "experiment": "CSMP",
+  "modality_order": ["PHENO", "ANAT", "FUNC", "Correlation"],
+  "v2": {
+    "name": "CONTRASTIVE_STATE_PROMPT",
+    "themes": {
+      "PHENO": [
+        {
+          "theme": "developmental_and_demographic_variation",
+          "prompts": [
+            "Brain development varies from childhood through adolescence into adulthood.",
+            "Age at scanning provides context for developmental differences in brain organization.",
+            "Age and sex can influence variation in population brain measurements.",
+            "Developmental stage helps interpret differences among individual brain profiles."
+          ]
+        },
+        {
+          "theme": "acquisition_and_site_variability",
+          "prompts": [
+            "MRI scans collected at different sites may use different acquisition settings.",
+            "Scanner and site differences can affect measured brain features.",
+            "Multisite measurement differences may reflect acquisition conditions rather than biology.",
+            "Demographic distributions can differ across MRI collection sites."
+          ]
+        }
+      ],
+      "ANAT": [
+        {
+          "theme": "reliable_anatomical_image_quality",
+          "prompts": [
+            "Clear anatomical MRI shows strong tissue contrast and low image noise.",
+            "High signal-to-noise supports reliable anatomical image measurements.",
+            "Sharp anatomical scans preserve visible boundaries between brain tissues.",
+            "Low artifact contamination supports high-quality structural MRI."
+          ]
+        },
+        {
+          "theme": "degraded_anatomical_image_quality",
+          "prompts": [
+            "Noisy anatomical MRI has weak tissue contrast and reduced signal clarity.",
+            "Blurred structural images have limited sharpness and spatial detail.",
+            "Imaging artifacts can distort intensity patterns in anatomical MRI.",
+            "Low signal-to-noise reduces the reliability of structural MRI measurements."
+          ]
+        }
+      ],
+      "FUNC": [
+        {
+          "theme": "stable_functional_mri_measurements",
+          "prompts": [
+            "Low head motion supports stable resting-state fMRI recordings.",
+            "Small framewise displacement indicates limited movement between image volumes.",
+            "Few outlier volumes suggest fewer motion-related artifacts in fMRI.",
+            "Stable temporal signals support reliable functional MRI analysis."
+          ]
+        },
+        {
+          "theme": "motion_and_signal_contamination",
+          "prompts": [
+            "High head motion introduces unwanted variation into resting-state fMRI signals.",
+            "Large framewise displacement indicates substantial movement between image volumes.",
+            "Sudden DVARS changes can indicate transient signal intensity fluctuations.",
+            "Outlier frames and imaging noise can reduce fMRI measurement reliability."
+          ]
+        }
+      ],
+      "Correlation": [
+        {
+          "theme": "coordinated_functional_connectivity",
+          "prompts": [
+            "Strong positive BOLD correlations indicate synchronized fluctuations between brain regions.",
+            "Coherent functional coupling reflects coordinated regional brain activity.",
+            "Resting-state networks can show synchronized activity across distributed brain areas.",
+            "High functional correlations indicate stronger statistical coupling between regional signals."
+          ]
+        },
+        {
+          "theme": "weak_or_altered_functional_connectivity",
+          "prompts": [
+            "Weak BOLD correlations indicate limited covariation between regional time series.",
+            "Negative functional correlations represent opposing patterns of BOLD fluctuations.",
+            "Functional connection strengths can vary across regions and participants.",
+            "Altered network coupling may reflect differences in resting-state brain organization."
+          ]
+        }
+      ]
+    }
+  },
+  "v2s": {
+    "name": "SHUFFLED_CONTRASTIVE_PROMPT",
+    "mapping": {
+      "PHENO": "FUNC",
+      "FUNC": "PHENO",
+      "ANAT": "Correlation",
+      "Correlation": "ANAT"
+    },
+    "mapping_type": "fixed_modality_derangement",
+    "source": "v2"
+  }
+}
