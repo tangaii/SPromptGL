@@ -1,0 +1,204 @@
+--- a/main.py
++++ b/main.py
+@@ -168,6 +168,8 @@
+         agent.MessagePassing0.load_state_dict(dict_list[0])
+         agent.ModalFusion.load_state_dict(dict_list[1])
+         
++        if os.environ.get("DAFCP_DIAGNOSTIC_PATH"):
++            agent._dafcp_fold_number = clk
+         val_acc.append(best_val_acc)
+         cur_tst_acc, cur_tst_auc, conf_mat = agent.print_tst_acc(hyperpm.mode)
+         sens.append(sen(conf_mat, hyperpm.nclass))
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -278,12 +279,24 @@
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
++        if tst and os.environ.get("DAFCP_DIAGNOSTIC_PATH"):
++            self.ModalFusion._dafcp_eval_idx = eval_idx
++        else:
++            self.ModalFusion._dafcp_eval_idx = None
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+             
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        if tst and os.environ.get("DAFCP_DIAGNOSTIC_PATH"):
++            diagnostics = getattr(self.ModalFusion, "_dafcp_last", None)
++            fold = getattr(self, "_dafcp_fold_number", None)
++            if diagnostics is not None and fold is not None:
++                with open(os.environ["DAFCP_DIAGNOSTIC_PATH"], "a", encoding="utf-8") as stream:
++                    json.dump({"fold": int(fold), "diagnostics": diagnostics}, stream, ensure_ascii=False)
++                    stream.write("\n")
++        self.ModalFusion._dafcp_eval_idx = None
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,12 +32,25 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode the frozen DAFCP P1/Correlation prompt set once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        prompt_tokens = text
++        config = os.environ.get("DAFCP_CONFIG")
++        if config:
++            with open(os.environ["DAFCP_PROMPTS_FILE"], encoding="utf-8") as stream:
++                prompt_data = json.load(stream)
++            sentences = []
++            modalities = prompt_data["configs"][config]["modalities"]
++            for modality in prompt_data["modality_order"]:
++                for theme_item in modalities[modality]["themes"]:
++                    sentences.extend(item["text"] for item in theme_item["prompts"])
++            if len(sentences) != 32:
++                raise ValueError("DAFCP configurations require 32 ordered prompts.")
++            prompt_tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++            _prompt_text_features = clip_model.encode_text(prompt_tokens).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -89,7 +103,72 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+-        
++        self.dafcp_config = os.environ.get("DAFCP_CONFIG", "C1")
++        self.dafcp_diag_enabled = os.environ.get("DAFCP_DIAGNOSTIC", "0") == "1"
++        self._dafcp_eval_idx = None
++        self._dafcp_last = None
++        
++    @staticmethod
++    def _scalar_stats(values):
++        values = values.reshape(-1).float()
++        finite = torch.isfinite(values)
++        clean = values[finite]
++        if clean.numel() == 0:
++            return {"mean": None, "std": None, "min": None, "max": None,
++                    "p5": None, "median": None, "p95": None, "nonfinite": int((~finite).sum().item())}
++        q = torch.quantile(clean, torch.tensor([0.05, 0.50, 0.95], device=clean.device))
++        return {"mean": float(clean.mean().item()),
++                "std": float(clean.std(unbiased=False).item()),
++                "min": float(clean.min().item()),
++                "max": float(clean.max().item()),
++                "p5": float(q[0].item()), "median": float(q[1].item()),
++                "p95": float(q[2].item()), "nonfinite": int((~finite).sum().item())}
++
++    def _dafcp_diagnostics(self, raw_similarity, softmax_similarity, text_features):
++        with torch.no_grad():
++            sample_index = self._dafcp_eval_idx
++            if not torch.is_tensor(sample_index):
++                sample_index = torch.as_tensor(sample_index, device=raw_similarity.device, dtype=torch.long)
++            else:
++                sample_index = sample_index.to(raw_similarity.device, dtype=torch.long)
++            raw_similarity = raw_similarity.index_select(0, sample_index)
++            softmax_similarity = softmax_similarity.index_select(0, sample_index)
++            prototypes = text_features if text_features.dim() == 3 else text_features.unsqueeze(0).expand(4, -1, -1)
++            norms = torch.linalg.vector_norm(prototypes, dim=-1)
++            finite_proto = torch.isfinite(prototypes).all(dim=-1)
++            rows = []
++            for index, modality in enumerate(["PHENO", "ANAT", "FUNC", "Correlation"]):
++                p1, p2 = prototypes[index, 0], prototypes[index, 1]
++                valid_proto = bool(finite_proto[index].all().item() and (norms[index] > 1e-12).all().item())
++                cosine = None if not valid_proto else float(F.cosine_similarity(p1.unsqueeze(0), p2.unsqueeze(0)).item())
++                raw = raw_similarity[:, index, :, :].reshape(-1, 2)
++                weights = softmax_similarity[:, index, :, :].max(dim=-1).values.reshape(-1)
++                delta = (raw[:, 0] - raw[:, 1]).abs()
++                stats = self._scalar_stats(weights)
++                rows.append({
++                    "modality": modality,
++                    "semantic_status": "valid",
++                    "prototype_cosine": cosine,
++                    "prototype_abs_cosine": None if cosine is None else abs(cosine),
++                    "prototype_abs_cosine_gt_0_98": None if cosine is None else abs(cosine) > 0.98,
++                    "prototype_norm_1": float(norms[index, 0].item()),
++                    "prototype_norm_2": float(norms[index, 1].item()),
++                    "prototype_zero_vector": bool((norms[index] <= 1e-12).any().item()),
++                    "prototype_nonfinite": bool((~finite_proto[index]).any().item()),
++                    "mean_s1": float(raw[:, 0].mean().item()),
++                    "mean_s2": float(raw[:, 1].mean().item()),
++                    "mean_abs_delta": float(delta.mean().item()),
++                    "std_abs_delta": float(delta.std(unbiased=False).item()),
++                    "weight_mean": stats["mean"], "weight_std": stats["std"],
++                    "weight_min": stats["min"], "weight_max": stats["max"],
++                    "weight_p5": stats["p5"], "weight_median": stats["median"], "weight_p95": stats["p95"],
++                    "weight_le_0_51": float((weights <= 0.51).float().mean().item()),
++                    "weight_gt_0_55": float((weights > 0.55).float().mean().item()),
++                    "weight_gt_0_60": float((weights > 0.60).float().mean().item()),
++                    "weight_nonfinite": stats["nonfinite"],
++                })
++            return {"config": self.dafcp_config, "prototype_rows": rows}
++
+     def forward(self, x):
+         bs = x.size(0)
+         attn_map = []
+@@ -103,21 +182,24 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        if text_features.size(0) == 8:
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        else:
++            text_features = self.MLP(text_features.view(4, 2, 4096))
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
++        raw_similarity_matrix = similarity_matrix
+ 
+         # 进行数值截断以避免数值问题
+         similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+@@ -128,8 +210,14 @@
+         # 获取 similarity_matrix 的最大值
+         similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+ 
+-        # 进行最终的计算
++        # Preserve the original Softmax-Max semantic weighting and fusion.
+         part_x = similarity_max.unsqueeze(-1) * part_x
++        if self.dafcp_diag_enabled and not self.training and self._dafcp_eval_idx is not None:
++            self._dafcp_last = self._dafcp_diagnostics(
++                raw_similarity_matrix.detach(), similarity_matrix.detach(), text_features.detach()
++            )
++        else:
++            self._dafcp_last = None
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式

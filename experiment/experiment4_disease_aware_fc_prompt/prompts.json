@@ -1,0 +1,689 @@
+{
+  "schema_version": 1,
+  "experiment": "DAFCP",
+  "modality_order": [
+    "PHENO",
+    "ANAT",
+    "FUNC",
+    "Correlation"
+  ],
+  "source_experiment1_p1_sha256": "01e29dd1b8362564ff12d2659efafe6b6fa38ba453e7760e06b0736ed064f000",
+  "configs": {
+    "C0": {
+      "name": "P1_BASELINE",
+      "source": "experiment1 P1 frozen verbatim",
+      "modalities": {
+        "PHENO": {
+          "themes": [
+            {
+              "theme": "demographic_and_developmental_context",
+              "prompts": [
+                {
+                  "text": "Age at scan places a participant within a developmental stage.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Developmental stage provides context for population-level measurements.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Sex category records demographic composition without defining diagnosis.",
+                  "feature_basis": "One-hot SEX categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Age-group encoding summarizes participant age at assessment.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "site_and_collection_context",
+              "prompts": [
+                {
+                  "text": "Acquisition site records the center where a scan was collected.",
+                  "feature_basis": "One-hot SITE_ID categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Multisite cohorts can differ in scanner setup and acquisition conditions.",
+                  "feature_basis": "One-hot SITE_ID categories; collection context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Site categories describe data collection context, not a clinical finding.",
+                  "feature_basis": "One-hot SITE_ID categories; explicitly non-diagnostic.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Participant background may vary across centers and age distributions.",
+                  "feature_basis": "One-hot SITE_ID and AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "ANAT": {
+          "themes": [
+            {
+              "theme": "structural_contrast_and_signal_quality",
+              "prompts": [
+                {
+                  "text": "Anatomical contrast-to-noise summarizes tissue signal separation.",
+                  "feature_basis": "anat_cnr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Signal-to-noise reflects image signal relative to background noise.",
+                  "feature_basis": "anat_snr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Foreground-to-background energy ratio summarizes image intensity distribution.",
+                  "feature_basis": "anat_fber.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Structural image quality metrics describe contrast and signal clarity.",
+                  "feature_basis": "anat_cnr, anat_snr, and anat_fber.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "structural_artifact_and_image_quality",
+              "prompts": [
+                {
+                  "text": "Entropy focus criterion measures intensity distribution and image disorder.",
+                  "feature_basis": "anat_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Full width at half maximum summarizes image smoothness and blurring.",
+                  "feature_basis": "anat_fwhm.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Quality index captures artifacts in structural MRI image intensity.",
+                  "feature_basis": "anat_qi1.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Image artifact measures characterize acquisition and preprocessing quality.",
+                  "feature_basis": "anat_efc, anat_fwhm, and anat_qi1.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "FUNC": {
+          "themes": [
+            {
+              "theme": "head_motion_and_time_series_change",
+              "prompts": [
+                {
+                  "text": "Framewise displacement summarizes head movement between volumes.",
+                  "feature_basis": "func_mean_fd and func_num_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Mean framewise displacement captures average motion during an fMRI scan.",
+                  "feature_basis": "func_mean_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Outlier fraction describes volumes flagged for motion-related artifacts.",
+                  "feature_basis": "func_outlier and func_perc_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "DVARS tracks signal changes between consecutive image volumes.",
+                  "feature_basis": "func_dvars.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "functional_image_quality_and_noise",
+              "prompts": [
+                {
+                  "text": "Functional contrast-to-noise metrics summarize image signal distribution.",
+                  "feature_basis": "func_fber and func_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Temporal signal fluctuations can affect measured functional connectivity.",
+                  "feature_basis": "func_dvars and func_quality; measurement context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Global signal regression records a functional preprocessing characteristic.",
+                  "feature_basis": "func_gsr; preprocessing descriptor only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Functional scan quality measures characterize noise and motion artifacts.",
+                  "feature_basis": "func_quality, func_fwhm, func_outlier, and func_mean_fd.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "Correlation": {
+          "themes": [
+            {
+              "theme": "resting_state_functional_connectivity",
+              "prompts": [
+                {
+                  "text": "Resting-state BOLD correlations summarize pairwise signal covariation.",
+                  "feature_basis": "Selected Fisher-transformed rs-fMRI correlation edges.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Functional connections reflect dependence between regional time series.",
+                  "feature_basis": "Selected pairwise rs-fMRI connectivity features.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Correlation strength describes synchronized BOLD fluctuations across regions.",
+                  "feature_basis": "Selected pairwise rs-fMRI correlation edges.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Selected connectivity edges encode pairwise resting-state network relationships.",
+                  "feature_basis": "256 RFE-selected features from the upper triangle of 111-region correlation matrices; exact edge identities were not retained.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "network_interaction_and_distributed_patterns",
+              "prompts": [
+                {
+                  "text": "Brain networks coordinate distributed activity through functional connections.",
+                  "feature_basis": "Network-level interpretation of selected rs-fMRI edges.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Long-range connectivity links activity across separated brain regions.",
+                  "feature_basis": "General functional-connectivity concept; no selected edge identity is asserted.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Network patterns summarize interactions across multiple brain systems.",
+                  "feature_basis": "Network-level interpretation of selected rs-fMRI edges.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Connectivity profiles capture distributed organization without a single-region label.",
+                  "feature_basis": "256 selected edge values have no retained ROI-pair identifiers.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "C1": {
+      "name": "ASD_DISEASE_FC",
+      "source": "P1 with fixed ASD-aware Correlation Prompt",
+      "modalities": {
+        "PHENO": {
+          "themes": [
+            {
+              "theme": "demographic_and_developmental_context",
+              "prompts": [
+                {
+                  "text": "Age at scan places a participant within a developmental stage.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Developmental stage provides context for population-level measurements.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Sex category records demographic composition without defining diagnosis.",
+                  "feature_basis": "One-hot SEX categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Age-group encoding summarizes participant age at assessment.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "site_and_collection_context",
+              "prompts": [
+                {
+                  "text": "Acquisition site records the center where a scan was collected.",
+                  "feature_basis": "One-hot SITE_ID categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Multisite cohorts can differ in scanner setup and acquisition conditions.",
+                  "feature_basis": "One-hot SITE_ID categories; collection context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Site categories describe data collection context, not a clinical finding.",
+                  "feature_basis": "One-hot SITE_ID categories; explicitly non-diagnostic.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Participant background may vary across centers and age distributions.",
+                  "feature_basis": "One-hot SITE_ID and AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "ANAT": {
+          "themes": [
+            {
+              "theme": "structural_contrast_and_signal_quality",
+              "prompts": [
+                {
+                  "text": "Anatomical contrast-to-noise summarizes tissue signal separation.",
+                  "feature_basis": "anat_cnr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Signal-to-noise reflects image signal relative to background noise.",
+                  "feature_basis": "anat_snr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Foreground-to-background energy ratio summarizes image intensity distribution.",
+                  "feature_basis": "anat_fber.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Structural image quality metrics describe contrast and signal clarity.",
+                  "feature_basis": "anat_cnr, anat_snr, and anat_fber.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "structural_artifact_and_image_quality",
+              "prompts": [
+                {
+                  "text": "Entropy focus criterion measures intensity distribution and image disorder.",
+                  "feature_basis": "anat_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Full width at half maximum summarizes image smoothness and blurring.",
+                  "feature_basis": "anat_fwhm.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Quality index captures artifacts in structural MRI image intensity.",
+                  "feature_basis": "anat_qi1.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Image artifact measures characterize acquisition and preprocessing quality.",
+                  "feature_basis": "anat_efc, anat_fwhm, and anat_qi1.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "FUNC": {
+          "themes": [
+            {
+              "theme": "head_motion_and_time_series_change",
+              "prompts": [
+                {
+                  "text": "Framewise displacement summarizes head movement between volumes.",
+                  "feature_basis": "func_mean_fd and func_num_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Mean framewise displacement captures average motion during an fMRI scan.",
+                  "feature_basis": "func_mean_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Outlier fraction describes volumes flagged for motion-related artifacts.",
+                  "feature_basis": "func_outlier and func_perc_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "DVARS tracks signal changes between consecutive image volumes.",
+                  "feature_basis": "func_dvars.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "functional_image_quality_and_noise",
+              "prompts": [
+                {
+                  "text": "Functional contrast-to-noise metrics summarize image signal distribution.",
+                  "feature_basis": "func_fber and func_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Temporal signal fluctuations can affect measured functional connectivity.",
+                  "feature_basis": "func_dvars and func_quality; measurement context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Global signal regression records a functional preprocessing characteristic.",
+                  "feature_basis": "func_gsr; preprocessing descriptor only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Functional scan quality measures characterize noise and motion artifacts.",
+                  "feature_basis": "func_quality, func_fwhm, func_outlier, and func_mean_fd.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "Correlation": {
+          "themes": [
+            {
+              "theme": "typical_functional_network_organization",
+              "prompts": [
+                {
+                  "text": "Typical resting-state brain networks coordinate activity across distributed regions.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Functional connectivity describes interactions within and between brain networks.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Typical connectivity patterns include coupling among sensory and cognitive systems.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Resting-state connectivity organization can vary across individuals and ages.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                }
+              ]
+            },
+            {
+              "theme": "autism_associated_connectivity_alterations",
+              "prompts": [
+                {
+                  "text": "Autism-associated resting-state functional connectivity can show heterogeneous differences across brain networks.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Autism-associated connectivity changes have been reported across default-mode and attention-related brain systems.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Autism-associated functional connections may exhibit both higher and lower coupling across brain regions.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Autism-associated connectivity profiles can vary among individuals and across developmental stages.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "C2": {
+      "name": "MATCHED_GENERIC_FC",
+      "source": "P1 with fixed matched generic Correlation Prompt",
+      "modalities": {
+        "PHENO": {
+          "themes": [
+            {
+              "theme": "demographic_and_developmental_context",
+              "prompts": [
+                {
+                  "text": "Age at scan places a participant within a developmental stage.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Developmental stage provides context for population-level measurements.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Sex category records demographic composition without defining diagnosis.",
+                  "feature_basis": "One-hot SEX categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Age-group encoding summarizes participant age at assessment.",
+                  "feature_basis": "One-hot AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "site_and_collection_context",
+              "prompts": [
+                {
+                  "text": "Acquisition site records the center where a scan was collected.",
+                  "feature_basis": "One-hot SITE_ID categories.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Multisite cohorts can differ in scanner setup and acquisition conditions.",
+                  "feature_basis": "One-hot SITE_ID categories; collection context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Site categories describe data collection context, not a clinical finding.",
+                  "feature_basis": "One-hot SITE_ID categories; explicitly non-diagnostic.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Participant background may vary across centers and age distributions.",
+                  "feature_basis": "One-hot SITE_ID and AGE_AT_SCAN bins.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "ANAT": {
+          "themes": [
+            {
+              "theme": "structural_contrast_and_signal_quality",
+              "prompts": [
+                {
+                  "text": "Anatomical contrast-to-noise summarizes tissue signal separation.",
+                  "feature_basis": "anat_cnr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Signal-to-noise reflects image signal relative to background noise.",
+                  "feature_basis": "anat_snr.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Foreground-to-background energy ratio summarizes image intensity distribution.",
+                  "feature_basis": "anat_fber.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Structural image quality metrics describe contrast and signal clarity.",
+                  "feature_basis": "anat_cnr, anat_snr, and anat_fber.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "structural_artifact_and_image_quality",
+              "prompts": [
+                {
+                  "text": "Entropy focus criterion measures intensity distribution and image disorder.",
+                  "feature_basis": "anat_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Full width at half maximum summarizes image smoothness and blurring.",
+                  "feature_basis": "anat_fwhm.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Quality index captures artifacts in structural MRI image intensity.",
+                  "feature_basis": "anat_qi1.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Image artifact measures characterize acquisition and preprocessing quality.",
+                  "feature_basis": "anat_efc, anat_fwhm, and anat_qi1.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "FUNC": {
+          "themes": [
+            {
+              "theme": "head_motion_and_time_series_change",
+              "prompts": [
+                {
+                  "text": "Framewise displacement summarizes head movement between volumes.",
+                  "feature_basis": "func_mean_fd and func_num_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Mean framewise displacement captures average motion during an fMRI scan.",
+                  "feature_basis": "func_mean_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Outlier fraction describes volumes flagged for motion-related artifacts.",
+                  "feature_basis": "func_outlier and func_perc_fd.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "DVARS tracks signal changes between consecutive image volumes.",
+                  "feature_basis": "func_dvars.",
+                  "review_status": "reviewed"
+                }
+              ]
+            },
+            {
+              "theme": "functional_image_quality_and_noise",
+              "prompts": [
+                {
+                  "text": "Functional contrast-to-noise metrics summarize image signal distribution.",
+                  "feature_basis": "func_fber and func_efc.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Temporal signal fluctuations can affect measured functional connectivity.",
+                  "feature_basis": "func_dvars and func_quality; measurement context only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Global signal regression records a functional preprocessing characteristic.",
+                  "feature_basis": "func_gsr; preprocessing descriptor only.",
+                  "review_status": "reviewed"
+                },
+                {
+                  "text": "Functional scan quality measures characterize noise and motion artifacts.",
+                  "feature_basis": "func_quality, func_fwhm, func_outlier, and func_mean_fd.",
+                  "review_status": "reviewed"
+                }
+              ]
+            }
+          ]
+        },
+        "Correlation": {
+          "themes": [
+            {
+              "theme": "typical_functional_network_organization",
+              "prompts": [
+                {
+                  "text": "Typical resting-state brain networks coordinate activity across distributed regions.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Functional connectivity describes interactions within and between brain networks.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Typical connectivity patterns include coupling among sensory and cognitive systems.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Resting-state connectivity organization can vary across individuals and ages.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                }
+              ]
+            },
+            {
+              "theme": "population_level_connectivity_variations",
+              "prompts": [
+                {
+                  "text": "Population-level resting-state functional connectivity can show heterogeneous differences across brain networks.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Population-level connectivity changes have been reported across default-mode and attention-related brain systems.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Population-level functional connections may exhibit both higher and lower coupling across brain regions.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                },
+                {
+                  "text": "Population-level connectivity profiles can vary among individuals and across developmental stages.",
+                  "feature_basis": "DAFCP fixed Correlation control",
+                  "review_status": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "correlation_design": {
+    "C1_theme_B": "Autism-associated connectivity alterations",
+    "C2_theme_B": "Population-level connectivity variations",
+    "matched_substitution": "Autism-associated -> Population-level",
+    "evidence": [
+      "Lin et al., 2025, Autism Research, DOI: 10.1002/aur.70128",
+      "Nature Mental Health, 2025, DOI: 10.1038/s44220-025-00431-5"
+    ],
+    "scope_note": "The 256-dimensional Correlation input contains selected edges without retained ROI identities; prompts express candidate network-level semantics, not ROI supervision or an invariant ASD signature."
+  }
+}

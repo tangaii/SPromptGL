@@ -1,0 +1,15 @@
+
+PARALLEL_START utc=2026-10-10T11:54:04Z tasks=6 assignments=C10->GPU0,C11->GPU1,C12->GPU0,C20->GPU1,C21->GPU0,C22->GPU1
+LAUNCH config=C1 seed=0 gpu=0 pid=70483
+LAUNCH config=C1 seed=1 gpu=1 pid=70620
+LAUNCH config=C1 seed=2 gpu=0 pid=70811
+LAUNCH config=C2 seed=0 gpu=1 pid=71131
+LAUNCH config=C2 seed=1 gpu=0 pid=71516
+LAUNCH config=C2 seed=2 gpu=1 pid=71827
+EXIT config=C2 seed=0 gpu=1 pid=71131 returncode=0
+EXIT config=C1 seed=1 gpu=1 pid=70620 returncode=0
+EXIT config=C1 seed=2 gpu=0 pid=70811 returncode=0
+EXIT config=C2 seed=1 gpu=0 pid=71516 returncode=0
+EXIT config=C1 seed=0 gpu=0 pid=70483 returncode=0
+EXIT config=C2 seed=2 gpu=1 pid=71827 returncode=0
+PARALLEL_END utc=2026-10-10T12:55:01Z
