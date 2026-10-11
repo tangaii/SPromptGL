@@ -1,0 +1,90 @@
+{
+  "experiment": "SDPG",
+  "schema_version": 1,
+  "created_utc": "2026-10-11T11:42:48Z",
+  "source_root": "/data/adodas/SPromptGL-main",
+  "github_main_commit_at_prepare": "0bf4d3420249e4fdc7c9421071241fa3cfb39841",
+  "source_files": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "CLIP/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/build/lib/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/build/lib/clip/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/build/lib/clip/clip.py": "c28fdadfc140ce89c525cd6c29c0dc71c462e8fa45315e6524f080a4dafcdf75",
+    "CLIP/build/lib/clip/model.py": "429489552b2610903b82c9c3215cbb50ca8552e60f0b17dfc4233c1ea0f8422c",
+    "CLIP/build/lib/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "CLIP/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "CLIP/clip/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "CLIP/clip/old.py": "754a05697e7605629b7aff28b77c24e334ae1effc1605f10f31c666013c26c9c",
+    "CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "CLIP/clip.py": "4ab4d5187823792c14997808854fe219dc485042606d439757a704a20d57aaf4",
+    "CLIP/model.py": "acce23b761dc90950229eadf2e58f6da5f9dac3facff4cc05730b7c8bd2b8bb3",
+    "CLIP/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad"
+  },
+  "inputs": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "clip_rn50": {
+    "path": "/root/.cache/clip/RN50.pt",
+    "expected_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "actual_sha256_at_snapshot": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "prompts_sha256": "213cac941691f4a6470fce312f1976a803ff63aed8228eebdc3ccd7300b3db7e",
+  "patch_sha256": "0421ae91ca099d9727866db41c9b8694dbdfe38b9ab57dcc87926396d8f4b3b5",
+  "reference_sha256": "9df0828370cba704d805f48e15c871aaa8d462933ae0a48213d6cf7f13b194d6",
+  "reference_source_sha256": "ec37b0ae5389d2555910bff77ee6d72dac6765fe1472768fa10e4d09809d71db",
+  "p1_source_sha256": "161713d671bd4a86dbd3fe52edd6b48a254035261ba4cf8c7a064ad95a1cf137",
+  "audit": {
+    "original_mlp": "4096 -> 128 -> 9, both original ReLUs",
+    "direction_parameters": 4,
+    "theta_initialization": "zeros after original random-consuming modules",
+    "gate": "rho=.5*tanh(theta); B1 d; B2 abs(d)",
+    "optimizer": "base ModalFusion decay=.11, theta decay=0, lr=.0038; MessagePassing unchanged",
+    "theta_zero_equivalence": true,
+    "optimizer_group_audit": true
+  },
+  "protocol": {
+    "folds": 10,
+    "stratified_random_state": 10,
+    "checkpoint_metric": "ACC",
+    "epoch_cap": 450,
+    "early_patience": 200,
+    "auc": "hard_label",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "configs": {
+      "B0": "frozen Experiment 5 E0 cross-checked with Experiment 1 P1",
+      "B1": "signed direction",
+      "B2": "magnitude-only"
+    },
+    "gpu_assignments": {
+      "B1_seed0": 0,
+      "B1_seed1": 1,
+      "B1_seed2": 0,
+      "B2_seed0": 1,
+      "B2_seed1": 0,
+      "B2_seed2": 1
+    }
+  },
+  "validation": {
+    "prompt_count": 32,
+    "new_fold_rows_expected": 60,
+    "diagnostic_rows_expected": 240
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-5.10.134-17.2.al8.x86_64-x86_64-with-glibc2.39"
+  },
+  "run_status": "PREPARED"
+}

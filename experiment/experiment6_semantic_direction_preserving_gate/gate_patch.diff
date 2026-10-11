@@ -1,0 +1,183 @@
+--- a/main.py
++++ b/main.py
+@@ -143,6 +143,7 @@
+     for train_index, test_index in skf.split(input_data, label):
+         clk += 1
+         agent = EvalHelper(input_data_dims, input_data, label, hyperpm, train_index, test_index) #input_data.shape=(598,365) label.ahape=(598,)
++        if os.environ.get("SDPG_DIAGNOSTIC_PATH"): agent._sdpg_fold_number = clk
+         tm = time.time()
+         best_val_acc, wait_cnt  = 0.0, 0
+         model_sav = tempfile.TemporaryFile()
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -75,7 +76,16 @@
+             
+         self.optimizer_MP0 = optim.Adam(self.MessagePassing0.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         
+-        self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
++        sdpg_config = os.environ.get("SDPG_CONFIG", "B0")
++        if sdpg_config in ("B1", "B2"):
++            theta = self.ModalFusion.direction_theta
++            all_parameters = list(self.ModalFusion.parameters())
++            base_parameters = [parameter for parameter in all_parameters if id(parameter) != id(theta)]
++            if theta is None or theta.numel() != 4 or len({id(parameter) for parameter in all_parameters}) != len(all_parameters):
++                raise RuntimeError("SDPG direction parameter audit failed")
++            self.optimizer_MF = optim.Adam([{"params": base_parameters, "weight_decay": hyperpm.reg}, {"params": [theta], "weight_decay": 0.0}], lr=hyperpm.lr)
++        else:
++            self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+@@ -143,7 +153,10 @@
+             loss = cls_loss + all_graph_loss
+             
+             loss.backward()
+-            
++            theta = getattr(self.ModalFusion, "direction_theta", None)
++            if theta is not None:
++                gradient = theta.grad
++                self.ModalFusion._sdpg_grad_valid_seen = bool(gradient is not None and torch.isfinite(gradient).all().item())
+             self.optimizer_MP0.step()            
+             self.optimizer_MF.step()
+             
+@@ -277,6 +290,8 @@
+         
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
++        if tst and os.environ.get("SDPG_DIAGNOSTIC_PATH"): self.ModalFusion._sdpg_eval_idx = eval_idx
++        else: self.ModalFusion._sdpg_eval_idx = None
+         
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+@@ -284,6 +299,12 @@
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        if tst and os.environ.get("SDPG_DIAGNOSTIC_PATH"):
++            payload=getattr(self.ModalFusion,"_sdpg_last",None); fold=getattr(self,"_sdpg_fold_number",None)
++            if payload is not None and fold is not None:
++                with open(os.environ["SDPG_DIAGNOSTIC_PATH"],"a",encoding="utf-8") as stream:
++                    json.dump({"fold":int(fold),"phase":"BEST","diagnostics":payload},stream,ensure_ascii=False); stream.write("\n")
++        self.ModalFusion._sdpg_eval_idx = None
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,12 +32,20 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode frozen Experiment 1 P1 prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        prompt_tokens = text
++        prompt_path = os.environ.get("SDPG_PROMPTS_FILE")
++        if prompt_path:
++            with open(prompt_path, encoding="utf-8") as stream:
++                prompt_data = json.load(stream)
++            sentences = [item["text"] for modality in prompt_data["modality_order"]
++                         for theme in prompt_data["p1"][modality]["themes"] for item in theme["prompts"]]
++            if len(sentences) != 32: raise ValueError("SDPG requires exactly 32 P1 prompts")
++            prompt_tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+-        with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++        with torch.no_grad(): _prompt_text_features = clip_model.encode_text(prompt_tokens).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -89,6 +98,11 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
++        self.sdpg_config = os.environ.get("SDPG_CONFIG", "B0")
++        self.direction_theta = nn.Parameter(torch.zeros(4)) if self.sdpg_config in ("B1", "B2") else None
++        self._sdpg_eval_idx = None
++        self._sdpg_last = None
++        self._sdpg_grad_valid_seen = False
+         
+     def forward(self, x):
+         bs = x.size(0)
+@@ -103,20 +117,23 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        if text_features.size(0) == 8:
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        else:
++            text_features = self.MLP(text_features.view(4, 2, 4096))
++
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
+ 
+         # 进行数值截断以避免数值问题
+@@ -125,11 +142,30 @@
+         # 计算 softmax
+         similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+ 
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        # Original P1 is Softmax-Max; SDPG changes only the final gate.
++        similarity_prob = similarity_matrix
++        similarity_max, _ = torch.max(similarity_prob, dim=-1)
++        direction = similarity_prob[..., 0] - similarity_prob[..., 1]
++        if self.sdpg_config in ("B1", "B2"):
++            rho = (0.5 * torch.tanh(self.direction_theta)).view(1, 4, 1)
++            signal = direction if self.sdpg_config == "B1" else direction.abs()
++            similarity_final = similarity_max * (1.0 + rho * signal)
++        else:
++            rho = torch.zeros(4, device=similarity_matrix.device); similarity_final = similarity_max
++        part_x = similarity_final.unsqueeze(-1) * part_x
++        if self.sdpg_config in ("B1", "B2") and not self.training and self._sdpg_eval_idx is not None:
++            idx=torch.as_tensor(self._sdpg_eval_idx,device=similarity_matrix.device,dtype=torch.long)
++            raw=similarity_matrix.detach().index_select(0,idx); prob=similarity_prob.detach().index_select(0,idx)
++            base=similarity_max.detach().index_select(0,idx); final=similarity_final.detach().index_select(0,idx)
++            rows=[]
++            proto_values=F.cosine_similarity(text_features[:,0,:],text_features[:,1,:],dim=-1)
++            zero_values=(torch.linalg.vector_norm(text_features,dim=-1)<=1e-12).any(dim=-1)
++            nonfinite_values=(~torch.isfinite(text_features)).any(dim=-1).any(dim=-1)
++            for mi,modality in enumerate(["PHENO","ANAT","FUNC","Correlation"]):
++                d=(prob[:,mi,:,0]-prob[:,mi,:,1]).reshape(-1); b=base[:,mi,:].reshape(-1); f=final[:,mi,:].reshape(-1); rho_i=float(rho[0,mi,0].detach().item())
++                rows.append({"modality":modality,"prototype_cosine":float(proto_values[mi].item()),"prototype_zero":bool(zero_values[mi].item()),"prototype_same_high":bool(proto_values[mi].item()>.98),"prototype_nonfinite":bool(nonfinite_values[mi].item()),"d_mean":float(d.mean().item()),"d_abs_mean":float(d.abs().mean().item()),"d_std":float(d.std(unbiased=False).item()),"d_frac_positive":float((d>0).float().mean().item()),"d_frac_negative":float((d<0).float().mean().item()),"d_frac_near_zero":float((d.abs()<.02).float().mean().item()),"base_mean":float(b.mean().item()),"final_mean":float(f.mean().item()),"final_std":float(f.std(unbiased=False).item()),"abs_weight_diff_mean":float((f-b).abs().mean().item()),"final_frac_le_051":float((f<=.51).float().mean().item()),"final_frac_gt_055":float((f>.55).float().mean().item()),"final_frac_gt_060":float((f>.60).float().mean().item()),"final_min":float(f.min().item()),"final_max":float(f.max().item()),"semantic_nonfinite":bool((~torch.isfinite(raw)).any().item() or (~torch.isfinite(prob)).any().item()),"theta":float(self.direction_theta.detach()[mi].item()),"rho":rho_i,"gradient_valid":bool(self._sdpg_grad_valid_seen),"rho_near_zero":abs(rho_i)<.01})
++            self._sdpg_last={"config":self.sdpg_config,"rows":rows}
++        else: self._sdpg_last=None
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
