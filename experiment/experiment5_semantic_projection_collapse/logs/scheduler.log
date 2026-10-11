@@ -1,0 +1,27 @@
+
+PARALLEL_START utc=2026-10-10T14:51:56Z tasks=12 assignments=E00->GPU0,E01->GPU1,E02->GPU0,E10->GPU1,E11->GPU0,E12->GPU1,E20->GPU0,E21->GPU1,E22->GPU0,E30->GPU1,E31->GPU0,E32->GPU1
+LAUNCH config=E0 seed=0 gpu=0 pid=376869
+LAUNCH config=E0 seed=1 gpu=1 pid=376963
+LAUNCH config=E0 seed=2 gpu=0 pid=377131
+LAUNCH config=E1 seed=0 gpu=1 pid=377311
+LAUNCH config=E1 seed=1 gpu=0 pid=377402
+LAUNCH config=E1 seed=2 gpu=1 pid=377775
+LAUNCH config=E2 seed=0 gpu=0 pid=377891
+LAUNCH config=E2 seed=1 gpu=1 pid=378197
+LAUNCH config=E2 seed=2 gpu=0 pid=378574
+LAUNCH config=E3 seed=0 gpu=1 pid=378821
+LAUNCH config=E3 seed=1 gpu=0 pid=379134
+LAUNCH config=E3 seed=2 gpu=1 pid=379450
+EXIT config=E3 seed=0 gpu=1 pid=378821 returncode=0
+EXIT config=E3 seed=1 gpu=0 pid=379134 returncode=0
+EXIT config=E1 seed=1 gpu=0 pid=377402 returncode=0
+EXIT config=E1 seed=2 gpu=1 pid=377775 returncode=0
+EXIT config=E2 seed=0 gpu=0 pid=377891 returncode=0
+EXIT config=E0 seed=1 gpu=1 pid=376963 returncode=0
+EXIT config=E0 seed=0 gpu=0 pid=376869 returncode=0
+EXIT config=E2 seed=1 gpu=1 pid=378197 returncode=0
+EXIT config=E3 seed=2 gpu=1 pid=379450 returncode=0
+EXIT config=E1 seed=0 gpu=1 pid=377311 returncode=0
+EXIT config=E2 seed=2 gpu=0 pid=378574 returncode=0
+EXIT config=E0 seed=2 gpu=0 pid=377131 returncode=0
+PARALLEL_END utc=2026-10-10T17:14:37Z

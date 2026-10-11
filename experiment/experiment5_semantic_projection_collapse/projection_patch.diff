@@ -1,0 +1,295 @@
+--- a/main.py
++++ b/main.py
+@@ -1,5 +1,6 @@
+ import argparse
+ import os
++import json
+ import pickle
+ import random
+ import sys
+@@ -143,6 +144,11 @@
+     for train_index, test_index in skf.split(input_data, label):
+         clk += 1
+         agent = EvalHelper(input_data_dims, input_data, label, hyperpm, train_index, test_index) #input_data.shape=(598,365) label.ahape=(598,)
++        if os.environ.get("SPCR_DIAGNOSTIC_PATH"):
++            agent._spcr_fold_number = clk
++            with open(os.environ["SPCR_DIAGNOSTIC_PATH"], "a", encoding="utf-8") as stream:
++                json.dump({"fold": int(clk), "phase": "INIT", "diagnostics": agent._spcr_init_snapshot}, stream, ensure_ascii=False)
++                stream.write("\n")
+         tm = time.time()
+         best_val_acc, wait_cnt  = 0.0, 0
+         model_sav = tempfile.TemporaryFile()
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -75,8 +76,29 @@
+             
+         self.optimizer_MP0 = optim.Adam(self.MessagePassing0.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         
+-        self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
++        if os.environ.get("SPCR_CONFIG", "E0") in ("E2", "E3"):
++            all_parameters = list(self.ModalFusion.parameters())
++            mlp_parameters = list(self.ModalFusion.MLP.parameters())
++            mlp_ids = {id(parameter) for parameter in mlp_parameters}
++            other_parameters = [parameter for parameter in all_parameters if id(parameter) not in mlp_ids]
++            if len(mlp_parameters) != 4 or len(mlp_ids) != 4:
++                raise RuntimeError("SPCR MLP parameter group is not exactly t1/t2 weight and bias")
++            if len({id(parameter) for parameter in all_parameters}) != len(all_parameters):
++                raise RuntimeError("SPCR ModalFusion parameters contain duplicates")
++            if mlp_ids.intersection({id(parameter) for parameter in other_parameters}):
++                raise RuntimeError("SPCR optimizer groups overlap")
++            if mlp_ids.union({id(parameter) for parameter in other_parameters}) != {id(parameter) for parameter in all_parameters}:
++                raise RuntimeError("SPCR optimizer groups omit parameters")
++            self.optimizer_MF = optim.Adam([
++                {"params": mlp_parameters, "weight_decay": 0.0},
++                {"params": other_parameters, "weight_decay": hyperpm.reg},
++            ], lr=hyperpm.lr)
++        else:
++            self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        with torch.no_grad():
++            _, _spcr_init_stages = self.ModalFusion._spcr_project()
++            self._spcr_init_snapshot = self.ModalFusion._spcr_snapshot(_spcr_init_stages)
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -278,12 +300,24 @@
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
++        if tst and os.environ.get("SPCR_DIAGNOSTIC_PATH"):
++            self.ModalFusion._spcr_eval_idx = eval_idx
++        else:
++            self.ModalFusion._spcr_eval_idx = None
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+             
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        if tst and os.environ.get("SPCR_DIAGNOSTIC_PATH"):
++            diagnostics = getattr(self.ModalFusion, "_spcr_last", None)
++            fold = getattr(self, "_spcr_fold_number", None)
++            if diagnostics is not None and fold is not None:
++                with open(os.environ["SPCR_DIAGNOSTIC_PATH"], "a", encoding="utf-8") as stream:
++                    json.dump({"fold": int(fold), "phase": "BEST", "diagnostics": diagnostics}, stream, ensure_ascii=False)
++                    stream.write("\n")
++        self.ModalFusion._spcr_eval_idx = None
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,12 +32,23 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode frozen Experiment 1 P1 prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        prompt_tokens = text
++        if os.environ.get("SPCR_PROMPTS_FILE"):
++            with open(os.environ["SPCR_PROMPTS_FILE"], encoding="utf-8") as stream:
++                prompt_data = json.load(stream)
++            sentences = []
++            for modality in prompt_data["modality_order"]:
++                for theme in prompt_data["p1"][modality]["themes"]:
++                    sentences.extend(item["text"] for item in theme["prompts"])
++            if len(sentences) != 32:
++                raise ValueError("SPCR requires exactly 32 P1 prompts.")
++            prompt_tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++            _prompt_text_features = clip_model.encode_text(prompt_tokens).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -47,8 +59,10 @@
+ 
+     def forward(self, x):
+         x = F.relu(self.t1(x))
+-        x = F.relu(self.t2(x))
+-        return x
++        x = self.t2(x)
++        if os.environ.get("SPCR_CONFIG", "E0") in ("E1", "E3"):
++            return x
++        return F.relu(x)
+ 
+ class PLN(nn.Module):
+     def __init__(self, input_data_dims, hyperpm):
+@@ -89,7 +103,114 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+-        
++        self.spcr_config = os.environ.get("SPCR_CONFIG", "E0")
++        self.spcr_output_relu = self.spcr_config in ("E0", "E2")
++        self.spcr_diag_enabled = os.environ.get("SPCR_DIAGNOSTIC", "0") == "1"
++        self._spcr_eval_idx = None
++        self._spcr_last = None
++        
++    @staticmethod
++    def _spcr_stage_rows(values):
++        values = values.detach().float()
++        norms = torch.linalg.vector_norm(values, dim=-1)
++        finite = torch.isfinite(values).all(dim=-1)
++        rows = []
++        for index, modality in enumerate(["PHENO", "ANAT", "FUNC", "Correlation"]):
++            valid = bool(finite[index].all().item() and (norms[index] > 1e-12).all().item())
++            cosine = None
++            if valid:
++                cosine = float(F.cosine_similarity(values[index, 0].unsqueeze(0), values[index, 1].unsqueeze(0)).item())
++            rows.append({
++                "modality": modality,
++                "cosine": cosine,
++                "abs_cosine": None if cosine is None else abs(cosine),
++                "cosine_gt_0_98": None if cosine is None else bool(cosine > 0.98),
++                "cosine_lt_neg_0_98": None if cosine is None else bool(cosine < -0.98),
++                "norm_1": float(norms[index, 0].item()),
++                "norm_2": float(norms[index, 1].item()),
++                "zero_vector": bool((norms[index] <= 1e-12).any().item()),
++                "nonfinite": bool((~finite[index]).any().item()),
++                "zero_fraction_1": float((values[index, 0] == 0).float().mean().item()),
++                "zero_fraction_2": float((values[index, 1] == 0).float().mean().item()),
++            })
++        return rows
++
++    @staticmethod
++    def _spcr_scalar_stats(values):
++        values = values.reshape(-1).float()
++        finite = torch.isfinite(values)
++        clean = values[finite]
++        if clean.numel() == 0:
++            return {
++                "mean": None, "std": None, "le_0_51": None,
++                "gt_0_55": None, "gt_0_60": None,
++                "nonfinite": int((~finite).sum().item()),
++            }
++        return {
++            "mean": float(clean.mean().item()),
++            "std": float(clean.std(unbiased=False).item()),
++            "le_0_51": float((clean <= 0.51).float().mean().item()),
++            "gt_0_55": float((clean > 0.55).float().mean().item()),
++            "gt_0_60": float((clean > 0.60).float().mean().item()),
++            "nonfinite": int((~finite).sum().item()),
++        }
++
++    def _spcr_project(self):
++        grouped = self.prompt_text_features.view(4, 2, 4096)
++        h_pre = self.MLP.t1(grouped)
++        h_post = F.relu(h_pre)
++        z_pre = self.MLP.t2(h_post)
++        final = F.relu(z_pre) if self.spcr_output_relu else z_pre
++        stages = {
++            "CLIP_GROUP_INPUT": grouped,
++            "LINEAR1_PRE": h_pre,
++            "RELU1_POST": h_post,
++            "LINEAR2_PRE": z_pre,
++            "FINAL_OUTPUT": final,
++        }
++        return final, stages
++
++    def _spcr_snapshot(self, stages, raw_similarity=None, softmax_similarity=None):
++        snapshot = {
++            "config": self.spcr_config,
++            "stage_rows": {name: self._spcr_stage_rows(stages[name]) for name in stages},
++            "params": {
++                "t1_weight_fro": float(torch.linalg.matrix_norm(self.MLP.t1.weight.detach()).item()),
++                "t1_bias_l2": float(torch.linalg.vector_norm(self.MLP.t1.bias.detach()).item()),
++                "t2_weight_fro": float(torch.linalg.matrix_norm(self.MLP.t2.weight.detach()).item()),
++                "t2_bias_l2": float(torch.linalg.vector_norm(self.MLP.t2.bias.detach()).item()),
++                "mlp_parameters": int(sum(parameter.numel() for parameter in self.MLP.parameters())),
++                "modal_fusion_parameters": int(sum(parameter.numel() for parameter in self.parameters())),
++            },
++            "gate_rows": [],
++        }
++        if raw_similarity is None or softmax_similarity is None or self._spcr_eval_idx is None:
++            return snapshot
++        sample_index = self._spcr_eval_idx
++        if not torch.is_tensor(sample_index):
++            sample_index = torch.as_tensor(sample_index, device=raw_similarity.device, dtype=torch.long)
++        else:
++            sample_index = sample_index.to(raw_similarity.device, dtype=torch.long)
++        raw_similarity = raw_similarity.index_select(0, sample_index)
++        softmax_similarity = softmax_similarity.index_select(0, sample_index)
++        semantic_nonfinite = bool((~torch.isfinite(raw_similarity)).any().item() or (~torch.isfinite(softmax_similarity)).any().item())
++        for index, modality in enumerate(["PHENO", "ANAT", "FUNC", "Correlation"]):
++            raw = raw_similarity[:, index, :, :].reshape(-1, 2)
++            weights = softmax_similarity[:, index, :, :].max(dim=-1).values.reshape(-1)
++            stats = self._spcr_scalar_stats(weights)
++            delta = (raw[:, 0] - raw[:, 1]).abs()
++            snapshot["gate_rows"].append({
++                "modality": modality,
++                "mean_abs_delta": float(delta.mean().item()),
++                "weight_mean": stats["mean"],
++                "weight_std": stats["std"],
++                "weight_le_0_51": stats["le_0_51"],
++                "weight_gt_0_55": stats["gt_0_55"],
++                "weight_gt_0_60": stats["gt_0_60"],
++                "semantic_nonfinite": semantic_nonfinite or stats["nonfinite"] > 0,
++            })
++        return snapshot
++
+     def forward(self, x):
+         bs = x.size(0)
+         attn_map = []
+@@ -102,22 +223,20 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+-        text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        text_features, spcr_stages = self._spcr_project()
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
++        raw_similarity_matrix = similarity_matrix
+ 
+         # 进行数值截断以避免数值问题
+         similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+@@ -128,8 +247,14 @@
+         # 获取 similarity_matrix 的最大值
+         similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+ 
+-        # 进行最终的计算
++        # Preserve the original Softmax-Max semantic weighting.
+         part_x = similarity_max.unsqueeze(-1) * part_x
++        if self.spcr_diag_enabled and not self.training and self._spcr_eval_idx is not None:
++            self._spcr_last = self._spcr_snapshot(
++                spcr_stages, raw_similarity_matrix.detach(), similarity_matrix.detach()
++            )
++        else:
++            self._spcr_last = None
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
