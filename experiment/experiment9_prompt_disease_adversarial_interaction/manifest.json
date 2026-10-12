@@ -1,0 +1,211 @@
+{
+  "experiment": "PDAI",
+  "schema_version": 1,
+  "created_utc": "2026-10-12T17:02:21Z",
+  "source_root": "/data/adodas/SPromptGL-main",
+  "git": {
+    "local_head": "0bf4d3420249e4fdc7c9421071241fa3cfb39841",
+    "github_main_at_prepare": "ed5c7bc1de7385538aa53e54cf3467b6da3260cf",
+    "local_core_source_hashes": {
+      "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+    }
+  },
+  "source_files": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "inputs": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "clip_rn50": {
+    "path": "/root/.cache/clip/RN50.pt",
+    "sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "prompts_sha256": "6df8b7389a2519718a72e76ac5e9ab6aaf6f98f9f7dbbd914f9f78dab780fabb",
+  "patch_sha256": "77ba4c07a82c76458355522b5969ab3661d3204658b83c7c31b2427d512d65a7",
+  "reference_sha256": "f2f568bbc4d87e23676ab1f9cf4b9b61e8af8afb130ce723121d7c8701ba43ea",
+  "prompt_sources": {
+    "experiment1_prompts_sha256": "01e29dd1b8362564ff12d2659efafe6b6fa38ba453e7760e06b0736ed064f000",
+    "experiment8_prompts_sha256": "3ba9acc6df3647d9b2aeaf517519af48bb0a2ca789186fe3fe8aa661e63266c7"
+  },
+  "reference_sources": {
+    "experiment/experiment1_modality_aware_semantic_prompt/results/fold_results.csv": "161713d671bd4a86dbd3fe52edd6b48a254035261ba4cf8c7a064ad95a1cf137",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/fold_metrics.csv": "36fdc054c096a88e9bfcd2ed7f02b2270ce96949814a949655f8c0f7668fe532",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/disease_diagnostics.csv": "44c8097bfebb2decf05a665854d2a471559b4606811f19869e4cb9a1865a26df"
+  },
+  "protocol": {
+    "folds": 10,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epoch_cap": 450,
+    "early_patience": 200,
+    "stratified_random_state": 10,
+    "checkpoint": "validation ACC",
+    "auc": "hard-label",
+    "new_folds": 240,
+    "new_diagnostics": 240,
+    "args": {
+      "GC_mode": "weighted-cosine",
+      "MF_mode": "concat",
+      "MP_mode": "GCN",
+      "dropout": 0.35,
+      "lr": 0.0038,
+      "n_head": 2,
+      "n_hidden": 18,
+      "nlayer": 1,
+      "reg": 0.11
+    },
+    "factor_levels": {
+      "prompt": [
+        "P0",
+        "P1",
+        "P3"
+      ],
+      "disease": [
+        "D0",
+        "D1"
+      ],
+      "adversarial": [
+        "A0",
+        "A1"
+      ]
+    },
+    "gpu_assignments": {
+      "E1_seed0": 0,
+      "E1_seed1": 1,
+      "E1_seed2": 0,
+      "E2_seed0": 1,
+      "E2_seed1": 0,
+      "E2_seed2": 1,
+      "E3_seed0": 0,
+      "E3_seed1": 1,
+      "E3_seed2": 0,
+      "E6_seed0": 1,
+      "E6_seed1": 0,
+      "E6_seed2": 1,
+      "E7_seed0": 0,
+      "E7_seed1": 1,
+      "E7_seed2": 0,
+      "E9_seed0": 1,
+      "E9_seed1": 0,
+      "E9_seed2": 1,
+      "E10_seed0": 0,
+      "E10_seed1": 1,
+      "E10_seed2": 0,
+      "E11_seed0": 1,
+      "E11_seed1": 0,
+      "E11_seed2": 1
+    },
+    "max_active_per_gpu": {
+      "0": 4,
+      "1": 4
+    }
+  },
+  "parameters": {
+    "disease_branch": 36865,
+    "adversarial_discriminator": 1388,
+    "adversarial_grl_scale": 0.03
+  },
+  "audit": {
+    "root_source_modified": false,
+    "experiment1_to_8_untouched": true,
+    "p0_p1_p3_and_disease_prompts_frozen": true,
+    "historical_reference_rows": 120,
+    "deepasd_checked": true,
+    "preflight_checks": [
+      "prompt source equality",
+      "patch apply and py_compile",
+      "GRL identity/sign/scale",
+      "discriminator CE gradient unchanged",
+      "same-seed A0/A1 initial PLN and disease outputs equal",
+      "[N,4,36] V shape and w_v adversarial gradient",
+      "real fold diagnostic writer"
+    ]
+  },
+  "run_status": "COMPLETE",
+  "task_status": {
+    "E1_seed0": "COMPLETE",
+    "E1_seed1": "COMPLETE",
+    "E1_seed2": "COMPLETE",
+    "E2_seed0": "COMPLETE",
+    "E2_seed1": "COMPLETE",
+    "E2_seed2": "COMPLETE",
+    "E3_seed0": "COMPLETE",
+    "E3_seed1": "COMPLETE",
+    "E3_seed2": "COMPLETE",
+    "E6_seed0": "COMPLETE",
+    "E6_seed1": "COMPLETE",
+    "E6_seed2": "COMPLETE",
+    "E7_seed0": "COMPLETE",
+    "E7_seed1": "COMPLETE",
+    "E7_seed2": "COMPLETE",
+    "E9_seed0": "COMPLETE",
+    "E9_seed1": "COMPLETE",
+    "E9_seed2": "COMPLETE",
+    "E10_seed0": "COMPLETE",
+    "E10_seed1": "COMPLETE",
+    "E10_seed2": "COMPLETE",
+    "E11_seed0": "COMPLETE",
+    "E11_seed1": "COMPLETE",
+    "E11_seed2": "COMPLETE"
+  },
+  "preflight": {
+    "patch_applies": true,
+    "py_compile": true,
+    "runtime_grl_and_parameter_checks": true,
+    "new_parameters": {
+      "disease": 36865,
+      "discriminator": 1388
+    }
+  },
+  "completed_utc": "2026-10-12T17:36:48Z",
+  "completion": {
+    "reference_rows": 120,
+    "fold_metrics": 240,
+    "alignment_diagnostics": 240,
+    "tasks": 24,
+    "gpu0_tasks": 12,
+    "gpu1_tasks": 12,
+    "no_failed_attempt_mixed": true
+  },
+  "successful_attempts": {
+    "E1_seed0": 1,
+    "E1_seed1": 1,
+    "E1_seed2": 1,
+    "E2_seed0": 1,
+    "E2_seed1": 1,
+    "E2_seed2": 1,
+    "E3_seed0": 1,
+    "E3_seed1": 1,
+    "E3_seed2": 1,
+    "E6_seed0": 1,
+    "E6_seed1": 1,
+    "E6_seed2": 1,
+    "E7_seed0": 1,
+    "E7_seed1": 1,
+    "E7_seed2": 1,
+    "E9_seed0": 1,
+    "E9_seed1": 1,
+    "E9_seed2": 1,
+    "E10_seed0": 1,
+    "E10_seed1": 1,
+    "E10_seed2": 1,
+    "E11_seed0": 1,
+    "E11_seed1": 1,
+    "E11_seed2": 1
+  },
+  "temporary_attempts_cleaned": true
+}

@@ -1,0 +1,483 @@
+{
+  "schema_version": 1,
+  "experiment": "PDAI",
+  "modality_order": [
+    "PHENO",
+    "ANAT",
+    "FUNC",
+    "Correlation"
+  ],
+  "p0": [
+    "Nromal brain volume",
+    "Uniform cortical thickness",
+    "Symmetrical brain structure",
+    "Normal ventricular morphology",
+    "Altered brain volume",
+    "Abnormal functional connectivity",
+    "White matter integrity issues",
+    "Different activation patterns"
+  ],
+  "p1": {
+    "PHENO": {
+      "themes": [
+        {
+          "theme": "demographic_and_developmental_context",
+          "prompts": [
+            {
+              "text": "Age at scan places a participant within a developmental stage.",
+              "feature_basis": "One-hot AGE_AT_SCAN bins.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Developmental stage provides context for population-level measurements.",
+              "feature_basis": "One-hot AGE_AT_SCAN bins.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Sex category records demographic composition without defining diagnosis.",
+              "feature_basis": "One-hot SEX categories.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Age-group encoding summarizes participant age at assessment.",
+              "feature_basis": "One-hot AGE_AT_SCAN bins.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "site_and_collection_context",
+          "prompts": [
+            {
+              "text": "Acquisition site records the center where a scan was collected.",
+              "feature_basis": "One-hot SITE_ID categories.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Multisite cohorts can differ in scanner setup and acquisition conditions.",
+              "feature_basis": "One-hot SITE_ID categories; collection context only.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Site categories describe data collection context, not a clinical finding.",
+              "feature_basis": "One-hot SITE_ID categories; explicitly non-diagnostic.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Participant background may vary across centers and age distributions.",
+              "feature_basis": "One-hot SITE_ID and AGE_AT_SCAN bins.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "ANAT": {
+      "themes": [
+        {
+          "theme": "structural_contrast_and_signal_quality",
+          "prompts": [
+            {
+              "text": "Anatomical contrast-to-noise summarizes tissue signal separation.",
+              "feature_basis": "anat_cnr.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Signal-to-noise reflects image signal relative to background noise.",
+              "feature_basis": "anat_snr.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Foreground-to-background energy ratio summarizes image intensity distribution.",
+              "feature_basis": "anat_fber.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Structural image quality metrics describe contrast and signal clarity.",
+              "feature_basis": "anat_cnr, anat_snr, and anat_fber.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "structural_artifact_and_image_quality",
+          "prompts": [
+            {
+              "text": "Entropy focus criterion measures intensity distribution and image disorder.",
+              "feature_basis": "anat_efc.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Full width at half maximum summarizes image smoothness and blurring.",
+              "feature_basis": "anat_fwhm.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Quality index captures artifacts in structural MRI image intensity.",
+              "feature_basis": "anat_qi1.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Image artifact measures characterize acquisition and preprocessing quality.",
+              "feature_basis": "anat_efc, anat_fwhm, and anat_qi1.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "FUNC": {
+      "themes": [
+        {
+          "theme": "head_motion_and_time_series_change",
+          "prompts": [
+            {
+              "text": "Framewise displacement summarizes head movement between volumes.",
+              "feature_basis": "func_mean_fd and func_num_fd.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Mean framewise displacement captures average motion during an fMRI scan.",
+              "feature_basis": "func_mean_fd.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Outlier fraction describes volumes flagged for motion-related artifacts.",
+              "feature_basis": "func_outlier and func_perc_fd.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "DVARS tracks signal changes between consecutive image volumes.",
+              "feature_basis": "func_dvars.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "functional_image_quality_and_noise",
+          "prompts": [
+            {
+              "text": "Functional contrast-to-noise metrics summarize image signal distribution.",
+              "feature_basis": "func_fber and func_efc.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Temporal signal fluctuations can affect measured functional connectivity.",
+              "feature_basis": "func_dvars and func_quality; measurement context only.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Global signal regression records a functional preprocessing characteristic.",
+              "feature_basis": "func_gsr; preprocessing descriptor only.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Functional scan quality measures characterize noise and motion artifacts.",
+              "feature_basis": "func_quality, func_fwhm, func_outlier, and func_mean_fd.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "Correlation": {
+      "themes": [
+        {
+          "theme": "resting_state_functional_connectivity",
+          "prompts": [
+            {
+              "text": "Resting-state BOLD correlations summarize pairwise signal covariation.",
+              "feature_basis": "Selected Fisher-transformed rs-fMRI correlation edges.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Functional connections reflect dependence between regional time series.",
+              "feature_basis": "Selected pairwise rs-fMRI connectivity features.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Correlation strength describes synchronized BOLD fluctuations across regions.",
+              "feature_basis": "Selected pairwise rs-fMRI correlation edges.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Selected connectivity edges encode pairwise resting-state network relationships.",
+              "feature_basis": "256 RFE-selected features from the upper triangle of 111-region correlation matrices; exact edge identities were not retained.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "network_interaction_and_distributed_patterns",
+          "prompts": [
+            {
+              "text": "Brain networks coordinate distributed activity through functional connections.",
+              "feature_basis": "Network-level interpretation of selected rs-fMRI edges.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Long-range connectivity links activity across separated brain regions.",
+              "feature_basis": "General functional-connectivity concept; no selected edge identity is asserted.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Network patterns summarize interactions across multiple brain systems.",
+              "feature_basis": "Network-level interpretation of selected rs-fMRI edges.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Connectivity profiles capture distributed organization without a single-region label.",
+              "feature_basis": "256 selected edge values have no retained ROI-pair identifiers.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "p3": {
+    "PHENO": {
+      "themes": [
+        {
+          "theme": "generic_measurement_context_a",
+          "prompts": [
+            {
+              "text": "Brain measurements describe variation across a population sample.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Observed values summarize subject-level biological and collection variation.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Different measurements capture complementary aspects of a complex system.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Quantitative patterns reflect relationships among measured values.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "generic_measurement_context_b",
+          "prompts": [
+            {
+              "text": "Data representations vary across individuals and recording conditions.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Multivariate profiles combine measured detail with broader context.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Patterns should be interpreted with their measurement scale in mind.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Population variation can include signal, context, and noise.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "ANAT": {
+      "themes": [
+        {
+          "theme": "generic_measurement_context_a",
+          "prompts": [
+            {
+              "text": "Measurements provide a structured summary of observed system properties.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "A population profile can contain both shared and individual patterns.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Quantitative summaries help compare observations across participants.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Measured values describe patterns within a larger biological system.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "generic_measurement_context_b",
+          "prompts": [
+            {
+              "text": "A complex profile combines multiple sources of measured information.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Observed differences can reflect biology and measurement conditions.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Patterns across subjects require careful and consistent interpretation.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Structured measurements can reveal variation at several levels.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "FUNC": {
+      "themes": [
+        {
+          "theme": "generic_measurement_context_a",
+          "prompts": [
+            {
+              "text": "Biological systems show variation across people and observations.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "A measured pattern can summarize several interacting components.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Population data combine diverse profiles into a shared representation.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Measurements may contain meaningful structure at different scales.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "generic_measurement_context_b",
+          "prompts": [
+            {
+              "text": "Observed values can reflect both stable and changing influences.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "A data profile represents one view of a complex system.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Related measurements can provide complementary information about subjects.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Variation across observations should be described without assumptions.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    },
+    "Correlation": {
+      "themes": [
+        {
+          "theme": "generic_measurement_context_a",
+          "prompts": [
+            {
+              "text": "Measured features describe selected properties of a wider system.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Patterns can emerge when observations are considered together.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "A subject profile combines information from multiple measurements.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Quantitative observations can represent several forms of variation.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        },
+        {
+          "theme": "generic_measurement_context_b",
+          "prompts": [
+            {
+              "text": "Interpretation depends on the context of each measurement.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Shared patterns and individual differences coexist in populations.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Structured observations can support comparisons across subjects.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            },
+            {
+              "text": "Data summaries retain broad context while describing measured detail.",
+              "feature_basis": "Generic control; no modality-specific feature claim.",
+              "review_status": "reviewed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "disease_prompts": {
+    "ASD": {
+      "class_index": 0,
+      "source": "fixed cautious group-level background statements",
+      "prompts": [
+        "Autism spectrum disorder is a heterogeneous neurodevelopmental condition involving differences in social communication and restricted or repetitive behaviors.",
+        "Autism spectrum disorder has been associated with heterogeneous resting-state functional connectivity patterns rather than one universal abnormal connection.",
+        "Studies of autism report variable interactions involving default mode, salience, and executive-control networks across individuals and cohorts.",
+        "Autism research reports diverse functional connectivity patterns in sensory, attention, and social-processing networks, with changes varying across people."
+      ]
+    },
+    "TD": {
+      "class_index": 1,
+      "source": "fixed cautious group-level background statements",
+      "prompts": [
+        "Typically developing individuals show diverse age-related social communication and behavioral development without an autism spectrum diagnosis.",
+        "Typical development involves heterogeneous resting-state functional connectivity patterns rather than one universal reference connection.",
+        "Typical development includes age-dependent interactions among default mode, salience, and executive-control networks across individuals.",
+        "Typical development includes variable functional connectivity patterns in sensory, attention, and social-processing networks across people."
+      ]
+    }
+  },
+  "source_sha256": {
+    "p1_p3": "01e29dd1b8362564ff12d2659efafe6b6fa38ba453e7760e06b0736ed064f000",
+    "disease": "3ba9acc6df3647d9b2aeaf517519af48bb0a2ca789186fe3fe8aa661e63266c7"
+  },
+  "freeze_rule": "P0/P1/P3 and ASD/TD statements are copied verbatim before training and never edited from results."
+}
