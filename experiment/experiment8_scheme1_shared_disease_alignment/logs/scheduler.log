@@ -1,0 +1,74 @@
+SCHEDULER_START utc=2026-10-12T09:06:26Z assignments={('S1', 0): 0, ('S1', 2): 0, ('S2', 1): 0, ('S3', 0): 0, ('S3', 2): 0, ('S4', 1): 0, ('S5', 0): 0, ('S5', 2): 0, ('S1', 1): 1, ('S2', 0): 1, ('S2', 2): 1, ('S3', 1): 1, ('S4', 0): 1, ('S4', 2): 1, ('S5', 1): 1}
+GPU_STATUS 0, 98304 MiB, 2 MiB | 1, 98304 MiB, 2 MiB
+SCHEDULER_START_TASK S1 seed=0 gpu=0
+SCHEDULER_START_TASK S1 seed=2 gpu=0
+SCHEDULER_START_TASK S2 seed=1 gpu=0
+SCHEDULER_START_TASK S3 seed=0 gpu=0
+SCHEDULER_START_TASK S3 seed=2 gpu=0
+SCHEDULER_START_TASK S4 seed=1 gpu=0
+SCHEDULER_START_TASK S1 seed=1 gpu=1
+SCHEDULER_START_TASK S2 seed=0 gpu=1
+SCHEDULER_START_TASK S2 seed=2 gpu=1
+SCHEDULER_START_TASK S3 seed=1 gpu=1
+SCHEDULER_START_TASK S4 seed=0 gpu=1
+SCHEDULER_START_TASK S4 seed=2 gpu=1
+S1 seed=2 attempt=1 returncode=-15 status=RUNNING
+S3 seed=2 attempt=1 returncode=-15 status=RUNNING
+S4 seed=0 attempt=1 returncode=-15 status=RUNNING
+S3 seed=1 attempt=1 returncode=-15 status=RUNNING
+S3 seed=0 attempt=1 returncode=-15 status=RUNNING
+S2 seed=2 attempt=1 returncode=-15 status=RUNNING
+S1 seed=0 attempt=1 returncode=-15 status=RUNNING
+S4 seed=2 attempt=1 returncode=-15 status=RUNNING
+S2 seed=0 attempt=1 returncode=-15 status=RUNNING
+S4 seed=1 attempt=1 returncode=-15 status=RUNNING
+S2 seed=1 attempt=1 returncode=-15 status=RUNNING
+S1 seed=1 attempt=1 returncode=-15 status=RUNNING
+SCHEDULER_START utc=2026-10-12T11:12:26Z assignments={('S1', 0): 0, ('S1', 2): 0, ('S2', 1): 0, ('S3', 0): 0, ('S3', 2): 0, ('S4', 1): 0, ('S5', 0): 0, ('S5', 2): 0, ('S1', 1): 1, ('S2', 0): 1, ('S2', 2): 1, ('S3', 1): 1, ('S4', 0): 1, ('S4', 2): 1, ('S5', 1): 1}
+GPU_STATUS 0, 98304 MiB, 2 MiB | 1, 98304 MiB, 2 MiB
+SCHEDULER_START_TASK S1 seed=0 gpu=0
+SCHEDULER_START_TASK S1 seed=2 gpu=0
+SCHEDULER_START_TASK S2 seed=1 gpu=0
+SCHEDULER_START_TASK S3 seed=0 gpu=0
+SCHEDULER_START_TASK S3 seed=2 gpu=0
+SCHEDULER_START_TASK S4 seed=1 gpu=0
+SCHEDULER_START_TASK S5 seed=0 gpu=0
+SCHEDULER_START_TASK S5 seed=2 gpu=0
+SCHEDULER_START_TASK S1 seed=1 gpu=1
+SCHEDULER_START_TASK S2 seed=0 gpu=1
+SCHEDULER_START_TASK S2 seed=2 gpu=1
+SCHEDULER_START_TASK S3 seed=1 gpu=1
+SCHEDULER_START_TASK S4 seed=0 gpu=1
+SCHEDULER_START_TASK S4 seed=2 gpu=1
+SCHEDULER_START_TASK S5 seed=1 gpu=1
+S2 seed=2 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S2 seed=2 gpu=1 returncode=0
+S4 seed=2 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S4 seed=2 gpu=1 returncode=0
+S1 seed=1 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S1 seed=1 gpu=1 returncode=0
+S1 seed=0 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S1 seed=0 gpu=0 returncode=0
+S2 seed=1 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S2 seed=1 gpu=0 returncode=0
+S2 seed=0 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S2 seed=0 gpu=1 returncode=0
+S3 seed=1 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S3 seed=1 gpu=1 returncode=0
+S4 seed=0 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S4 seed=0 gpu=1 returncode=0
+S5 seed=1 attempt=1 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S5 seed=1 gpu=1 returncode=0
+S3 seed=2 attempt=2 returncode=0 status=COMPLETE
+S1 seed=2 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S1 seed=2 gpu=0 returncode=0
+SCHEDULER_FINISH_TASK S3 seed=2 gpu=0 returncode=0
+S3 seed=0 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S3 seed=0 gpu=0 returncode=0
+S5 seed=2 attempt=1 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S5 seed=2 gpu=0 returncode=0
+S4 seed=1 attempt=2 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S4 seed=1 gpu=0 returncode=0
+S5 seed=0 attempt=1 returncode=0 status=COMPLETE
+SCHEDULER_FINISH_TASK S5 seed=0 gpu=0 returncode=0
+SCHEDULER_END utc=2026-10-12T14:11:43Z complete=True metrics=150 diagnostics=150 counterfactual=150

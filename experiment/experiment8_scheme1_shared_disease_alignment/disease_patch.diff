@@ -1,0 +1,365 @@
+--- a/main.py
++++ b/main.py
+@@ -143,6 +143,8 @@
+     for train_index, test_index in skf.split(input_data, label):
+         clk += 1
+         agent = EvalHelper(input_data_dims, input_data, label, hyperpm, train_index, test_index) #input_data.shape=(598,365) label.ahape=(598,)
++        if os.environ.get("SDPA_CONFIG"):
++            agent._sdpa_fold_number = clk
+         tm = time.time()
+         best_val_acc, wait_cnt  = 0.0, 0
+         model_sav = tempfile.TemporaryFile()
+@@ -170,6 +172,10 @@
+         
+         val_acc.append(best_val_acc)
+         cur_tst_acc, cur_tst_auc, conf_mat = agent.print_tst_acc(hyperpm.mode)
++        if os.environ.get("SDPA_CONFIG"):
++            agent.write_sdpa_fold_metrics(clk, cur_tst_acc, cur_tst_auc, conf_mat)
++            agent.write_sdpa_diagnostics(clk)
++            agent.run_sdpa_counterfactual(clk)
+         sens.append(sen(conf_mat, hyperpm.nclass))
+         spes.append(spe(conf_mat, hyperpm.nclass))
+         print('sens:',sens)
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -77,6 +78,29 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        sdpa_config = os.environ.get("SDPA_CONFIG", "S0")
++        self.ModalFusion.sdpa_config = sdpa_config
++        self.ModalFusion._sdpa_grad_valid = {"projector": False, "alpha": False}
++        self.ModalFusion._sdpa_prediction_finite = True
++        if sdpa_config in ("S1", "S2", "S3", "S4", "S5"):
++            prototype_bank = get_sdpa_text_prototypes()
++            if sdpa_config == "S2":
++                selected = ("ADHD", "TD")
++            elif sdpa_config == "S3":
++                selected = ("NEUTRAL_CLASS0", "NEUTRAL_CLASS1")
++            else:
++                selected = ("ASD", "TD")
++            self.ModalFusion.register_buffer("disease_prototypes", torch.stack([prototype_bank[name] for name in selected]))
++            self.ModalFusion.register_buffer("sdpa_adhd_prototypes", torch.stack([prototype_bank["ADHD"], prototype_bank["TD"]]))
++            self.ModalFusion.register_buffer("sdpa_neutral_prototypes", torch.stack([prototype_bank["NEUTRAL_CLASS0"], prototype_bank["NEUTRAL_CLASS1"]]))
++            self.ModalFusion.disease_projector = nn.Linear(36, 1024, bias=False).to(dev)
++            my_weight_init(self.ModalFusion.disease_projector)
++            self.ModalFusion.disease_alpha = nn.Parameter(torch.zeros((), device=dev))
++            self.ModalFusion.sdpa_enabled = True
++            disease_parameters = list(self.ModalFusion.disease_projector.parameters()) + [self.ModalFusion.disease_alpha]
++            if sum(parameter.numel() for parameter in disease_parameters) != 36865:
++                raise RuntimeError("SDPA must add exactly 36865 parameters")
++            self.optimizer_MF.add_param_group({"params": disease_parameters, "weight_decay": 0.0})
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -139,12 +163,23 @@
+             prob,_,_ = self.ModalFusion(feat)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+-            
+-            loss = cls_loss + all_graph_loss
+-            
++            if self.ModalFusion.sdpa_enabled:
++                train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
++                align_loss = F.cross_entropy(self.ModalFusion.last_disease_logits[train_idx], self.targ[train_idx], weight=self.weight)
++                self.ModalFusion._sdpa_last_alignment_loss = float(align_loss.detach().item())
++                lambda_align = 0.0 if os.environ.get("SDPA_CONFIG") == "S5" else 0.1
++                loss = cls_loss + all_graph_loss + lambda_align * align_loss
++            else:
++                loss = cls_loss + all_graph_loss
++
+             loss.backward()
+-            
+-            self.optimizer_MP0.step()            
++            if self.ModalFusion.sdpa_enabled:
++                for key, parameter in (("projector", self.ModalFusion.disease_projector.weight), ("alpha", self.ModalFusion.disease_alpha)):
++                    grad = parameter.grad
++                    valid = grad is not None and bool(torch.isfinite(grad).all().item()) and bool((grad.abs().sum() > 0).item())
++                    self.ModalFusion._sdpa_grad_valid[key] = self.ModalFusion._sdpa_grad_valid[key] or valid
++
++            self.optimizer_MP0.step()
+             self.optimizer_MF.step()
+             
+             print('trn-loss-MF: %.4f ' % cls_loss, end=' ')
+@@ -277,13 +312,22 @@
+         
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+-        
++        if tst and self.ModalFusion.sdpa_enabled:
++            self._sdpa_eval_feat = feat.detach()
++
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+             
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        if tst and self.ModalFusion.sdpa_enabled:
++            eval_tensor = torch.as_tensor(eval_idx, dtype=torch.long, device=prob.device)
++            self._sdpa_test_probability = prob.index_select(0, eval_tensor).detach().exp().cpu().numpy()
++            self._sdpa_test_base_probability = self.ModalFusion.last_base_logprob.index_select(0, eval_tensor).detach().exp().cpu().numpy()
++            self._sdpa_test_disease_logits = self.ModalFusion.last_disease_logits.index_select(0, eval_tensor).detach().cpu().numpy()
++            self._sdpa_test_prelogits = self.ModalFusion.last_sdpa_prelogits.index_select(0, eval_tensor).detach().cpu().numpy()
++        self.ModalFusion._sdpa_prediction_finite = bool(torch.isfinite(prob).all().item())
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)
+@@ -302,6 +346,128 @@
+             
+         return acc, auc, targ, pred
+     
++    def write_sdpa_fold_metrics(self, fold, acc, hard_auc, conf_mat):
++        if not os.environ.get("SDPA_METRIC_PATH") or not self.ModalFusion.sdpa_enabled:
++            return
++        labels = self.targ[torch.as_tensor(self.tst_idx, dtype=torch.long, device=self.targ.device)].detach().cpu().numpy()
++        probability = self._sdpa_test_probability
++        sensitivity = float(conf_mat[0, 0] / max(1, conf_mat[0].sum()))
++        specificity = float(conf_mat[1, 1] / max(1, conf_mat[1].sum()))
++        row = {
++            "config": os.environ["SDPA_CONFIG"], "seed": int(self.hyperpm.seed), "fold": int(fold),
++            "acc": float(acc), "hard_auc": float(hard_auc),
++            "probability_auc": float(roc_auc_score((labels == 0).astype(int), probability[:, 0])),
++            "balanced_accuracy": (sensitivity + specificity) / 2.0,
++            "sensitivity_asd": sensitivity, "specificity_asd": specificity,
++        }
++        with open(os.environ["SDPA_METRIC_PATH"], "a", encoding="utf-8") as stream:
++            json.dump(row, stream); stream.write("\n")
++
++    def write_sdpa_diagnostics(self, fold):
++        if not os.environ.get("SDPA_DIAGNOSTIC_PATH") or not self.ModalFusion.sdpa_enabled:
++            return
++        logits = self.ModalFusion.last_disease_logits
++        projected = self.ModalFusion.last_subject_projection
++        semantic = self.ModalFusion.last_subject_semantic
++        base = self.ModalFusion.last_base_logprob
++        fused = self.ModalFusion.last_sdpa_prelogits
++        prototypes = self.ModalFusion.disease_prototypes
++        train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
++        test_idx = torch.as_tensor(self.tst_idx, dtype=torch.long, device=self.targ.device)
++        target = self.targ.index_select(0, test_idx)
++        with torch.no_grad():
++            align = F.cross_entropy(logits.index_select(0, train_idx), self.targ.index_select(0, train_idx), weight=self.weight)
++            disease_probability = torch.softmax(logits.index_select(0, test_idx), dim=-1)
++            disease_prediction = disease_probability.argmax(dim=1)
++            test_margin = (logits[:, 0] - logits[:, 1]).index_select(0, test_idx)
++            base_asd_probability = base.index_select(0, test_idx).exp()[:, 0].cpu().numpy()
++            disease_asd_probability = disease_probability[:, 0].cpu().numpy()
++            correlation = 0.0
++            if np.std(base_asd_probability) > 0 and np.std(disease_asd_probability) > 0:
++                correlation = float(np.corrcoef(base_asd_probability, disease_asd_probability)[0, 1])
++            prediction = self.ModalFusion.last_sdpa_output.index_select(0, test_idx)
++            row = {
++                "config": os.environ["SDPA_CONFIG"], "seed": int(self.hyperpm.seed), "fold": int(fold),
++                "prototype_cosine": float(F.cosine_similarity(prototypes[0], prototypes[1], dim=0).item()),
++                "asd_prototype_norm": float(torch.linalg.vector_norm(prototypes[0]).item()),
++                "td_prototype_norm": float(torch.linalg.vector_norm(prototypes[1]).item()),
++                "prototype_distance": float(torch.linalg.vector_norm(prototypes[0] - prototypes[1]).item()),
++                "projected_subject_norm_mean": float(torch.linalg.vector_norm(projected, dim=-1).mean().item()),
++                "normalized_subject_norm_mean": float(torch.linalg.vector_norm(semantic, dim=-1).mean().item()),
++                "alignment_loss_train": float(align.item()),
++                "disease_only_acc": float((disease_prediction == target).float().mean().item()),
++                "disease_only_probability_auc": float(roc_auc_score((target == 0).cpu().numpy(), disease_probability[:, 0].cpu().numpy())),
++                "disease_logit_asd_mean": float(logits.index_select(0, test_idx)[:, 0].mean().item()),
++                "disease_logit_td_mean": float(logits.index_select(0, test_idx)[:, 1].mean().item()),
++                "disease_logit_asd_std": float(logits.index_select(0, test_idx)[:, 0].std(unbiased=False).item()),
++                "disease_logit_td_std": float(logits.index_select(0, test_idx)[:, 1].std(unbiased=False).item()),
++                "asd_margin_mean": float(test_margin[target == 0].mean().item()),
++                "td_margin_mean": float(test_margin[target == 1].mean().item()),
++                "correct_prototype_match_rate": float((disease_prediction == target).float().mean().item()),
++                "gamma": float(self.ModalFusion.last_sdpa_gamma),
++                "gamma_abs": abs(float(self.ModalFusion.last_sdpa_gamma)),
++                "gamma_sign": int(np.sign(self.ModalFusion.last_sdpa_gamma)),
++                "mean_abs_fusion_logit_contribution": float((fused - base).index_select(0, test_idx).abs().mean().item()),
++                "std_fusion_logit_contribution": float((fused - base).index_select(0, test_idx).std(unbiased=False).item()),
++                "p1_disease_probability_correlation": correlation,
++                "projector_grad_valid": bool(self.ModalFusion._sdpa_grad_valid["projector"]),
++                "alpha_grad_valid": bool(self.ModalFusion._sdpa_grad_valid["alpha"]),
++                "alpha_grad_exempt": os.environ["SDPA_CONFIG"] == "S4",
++                "prediction_nonfinite": bool((~torch.isfinite(prediction)).any().item()),
++                "nonfinite": bool((~torch.isfinite(logits)).any().item() or (~torch.isfinite(projected)).any().item()
++                                  or (~torch.isfinite(semantic)).any().item() or (~torch.isfinite(base)).any().item()),
++            }
++        with open(os.environ["SDPA_DIAGNOSTIC_PATH"], "a", encoding="utf-8") as stream:
++            json.dump(row, stream); stream.write("\n")
++
++    def run_sdpa_counterfactual(self, fold):
++        if os.environ.get("SDPA_CONFIG") != "S1" or not os.environ.get("SDPA_COUNTERFACTUAL_PATH"):
++            return
++        self.MessagePassing0.eval(); self.ModalFusion.eval()
++        feature = self._sdpa_eval_feat
++        index = torch.as_tensor(self.tst_idx, dtype=torch.long, device=self.targ.device)
++        target = self.targ.index_select(0, index)
++        real_probability = self._sdpa_test_probability.copy()
++        real_prediction = real_probability.argmax(axis=1)
++        labels = target.detach().cpu().numpy()
++        real_acc = float((real_prediction == labels).mean())
++        rows = []
++        for condition in ("REAL", "ADHD", "NEUTRAL", "SWAPPED", "OFF"):
++            self.ModalFusion.sdpa_counterfactual = None if condition == "REAL" else condition
++            with torch.no_grad():
++                output, _, _ = self.ModalFusion(feature)
++            probability = output.index_select(0, index).detach().exp().cpu().numpy()
++            prediction = probability.argmax(axis=1)
++            conf = confusion_matrix(labels, prediction, labels=[0, 1])
++            sensitivity = float(conf[0, 0] / max(1, conf[0].sum()))
++            specificity = float(conf[1, 1] / max(1, conf[1].sum()))
++            hard_auc = roc_auc_score(one_hot(target, self.n_class).cpu().numpy(),
++                                     one_hot(torch.as_tensor(prediction, device=target.device), self.n_class).cpu().numpy())
++            disease_logits = self.ModalFusion.last_disease_logits.index_select(0, index)
++            prelogits = self.ModalFusion.last_sdpa_prelogits.index_select(0, index).detach().cpu().numpy()
++            real_disease_logits = torch.as_tensor(self._sdpa_test_disease_logits, device=target.device)
++            margin = disease_logits[:, 0] - disease_logits[:, 1]
++            real_margin = real_disease_logits[:, 0] - real_disease_logits[:, 1]
++            rows.append({
++                "config": "S1", "seed": int(self.hyperpm.seed), "fold": int(fold), "condition": condition,
++                "acc": float((prediction == labels).mean()), "hard_auc": float(hard_auc),
++                "probability_auc": float(roc_auc_score((labels == 0).astype(int), probability[:, 0])),
++                "balanced_accuracy": (sensitivity + specificity) / 2.0,
++                "sensitivity_asd": sensitivity, "specificity_asd": specificity,
++                "prediction_flip_rate": float((prediction != real_prediction).mean()),
++                "mean_probability_abs_change": float(np.abs(probability - real_probability).mean()),
++                "mean_asd_probability_abs_change": float(np.abs(probability[:, 0] - real_probability[:, 0]).mean()),
++                "acc_change_vs_real": float((prediction == labels).mean() - real_acc),
++                "mean_abs_logit_change": float(np.abs(prelogits - self._sdpa_test_prelogits).mean()),
++                "mean_disease_margin_change": float((margin - real_margin).mean().item()),
++                "mean_abs_disease_margin_change": float((margin - real_margin).abs().mean().item()),
++                "real_output_max_abs_diff": float(np.abs(probability - real_probability).max()) if condition == "REAL" else "",
++            })
++        self.ModalFusion.sdpa_counterfactual = None
++        with open(os.environ["SDPA_COUNTERFACTUAL_PATH"], "a", encoding="utf-8") as stream:
++            for row in rows:
++                json.dump(row, stream); stream.write("\n")
++
+     def cal_acc(self, eval_idx):
+         breakpoint()
+         self.ModalFusion.eval()
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,13 +32,36 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode the frozen Experiment 1 P1 prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        with open(os.environ['SDPA_PROMPT_FILE'], encoding='utf-8') as stream:
++            prompt_data = json.load(stream)
++        sentences = [item['text'] for modality in prompt_data['modality_order'] for theme in prompt_data['p1'][modality]['themes'] for item in theme['prompts']]
++        if len(sentences) != 32: raise ValueError('SDPA requires 32 ordered P1 prompts')
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++            _prompt_text_features = clip_model.encode_text(clip.tokenize(sentences).to(device)).float().detach()
+     return _prompt_text_features
++
++_sdpa_text_prototypes = None
++def get_sdpa_text_prototypes():
++    """Encode fixed disease/control text groups once per process."""
++    global _sdpa_text_prototypes
++    if _sdpa_text_prototypes is None:
++        with open(os.environ['SDPA_PROMPT_FILE'], encoding='utf-8') as stream:
++            prompt_data = json.load(stream)
++        groups = prompt_data['disease_prompts']
++        keys = ['ASD', 'TD', 'ADHD', 'NEUTRAL_CLASS0', 'NEUTRAL_CLASS1']
++        sentences = [sentence for key in keys for sentence in groups[key]['prompts']]
++        tokens = clip.tokenize(sentences)
++        if tuple(tokens.shape) != (20, 77): raise ValueError('Disease/control text token shape mismatch')
++        clip_model, _ = clip.load('RN50', device)
++        with torch.no_grad():
++            encoded = F.normalize(clip_model.encode_text(tokens.to(device)).float(), p=2, dim=-1)
++            means = F.normalize(encoded.view(5, 4, 1024).mean(dim=1), p=2, dim=-1)
++        _sdpa_text_prototypes = {key: means[index] for index, key in enumerate(keys)}
++    return _sdpa_text_prototypes
+ 
+ class MLP(nn.Module):
+     def __init__(self, input_dim, hidden_dim, output_dim):
+@@ -89,6 +113,9 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
++        self.sdpa_config = os.environ.get('SDPA_CONFIG', 'S0')
++        self.sdpa_enabled = False
++        self.sdpa_counterfactual = None
+         
+     def forward(self, x):
+         bs = x.size(0)
+@@ -103,20 +130,23 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
++        if text_features.size(0) == 8:
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        else:
++            text_features = self.MLP(text_features.view(4, 2, 4096))
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+ 
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features_norm.dim() == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, text_features_norm).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
+ 
+         # 进行数值截断以避免数值问题
+@@ -148,6 +178,33 @@
+         x = x.view(bs, -1)
+         attn_embedding = attn.view(bs, -1) 
+         output, hidden = self.Outputlayer(x, attn_embedding)
++        self.last_base_logprob = output
++        self.last_disease_logits = None
++        self.last_subject_semantic = None
++        self.last_subject_projection = None
++        self.last_sdpa_prelogits = output
++        self.last_sdpa_output = output
++        self.last_sdpa_gamma = 0.0
++        if self.sdpa_enabled:
++            subject_projection = self.disease_projector(hidden)
++            subject_semantic = F.normalize(subject_projection, p=2, dim=-1)
++            prototypes = self.disease_prototypes
++            condition = self.sdpa_counterfactual
++            if condition == 'ADHD': prototypes = self.sdpa_adhd_prototypes
++            elif condition == 'NEUTRAL': prototypes = self.sdpa_neutral_prototypes
++            elif condition == 'SWAPPED': prototypes = prototypes.flip(0)
++            disease_logits = torch.matmul(subject_semantic, prototypes.t()) / 0.2
++            gamma = 0.2 * torch.tanh(self.disease_alpha)
++            prelogits = output + gamma * disease_logits
++            if condition == 'OFF' or self.sdpa_config == 'S4': prelogits = output
++            final_output = output if self.sdpa_config == 'S4' else F.log_softmax(prelogits, dim=-1)
++            self.last_disease_logits = disease_logits
++            self.last_subject_semantic = subject_semantic
++            self.last_subject_projection = subject_projection
++            self.last_sdpa_prelogits = prelogits
++            self.last_sdpa_gamma = float(gamma.detach().item())
++            output = final_output
++        self.last_sdpa_output = output
+         return output, hidden, attn_map
+   
+ class GraphLearn(nn.Module):
