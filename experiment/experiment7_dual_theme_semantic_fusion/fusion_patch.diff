@@ -1,0 +1,218 @@
+--- a/main.py
++++ b/main.py
+@@ -143,6 +143,7 @@
+     for train_index, test_index in skf.split(input_data, label):
+         clk += 1
+         agent = EvalHelper(input_data_dims, input_data, label, hyperpm, train_index, test_index) #input_data.shape=(598,365) label.ahape=(598,)
++        if os.environ.get('DTSF_DIAGNOSTIC_PATH') or os.environ.get('DTSF_COUNTERFACTUAL_PATH'): agent._dtsf_fold_number=clk
+         tm = time.time()
+         best_val_acc, wait_cnt  = 0.0, 0
+         model_sav = tempfile.TemporaryFile()
+@@ -170,6 +171,7 @@
+         
+         val_acc.append(best_val_acc)
+         cur_tst_acc, cur_tst_auc, conf_mat = agent.print_tst_acc(hyperpm.mode)
++        if os.environ.get('DTSF_COUNTERFACTUAL_PATH'): agent.run_dtsf_counterfactual(clk)
+         sens.append(sen(conf_mat, hyperpm.nclass))
+         spes.append(spe(conf_mat, hyperpm.nclass))
+         print('sens:',sens)
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -75,8 +76,15 @@
+             
+         self.optimizer_MP0 = optim.Adam(self.MessagePassing0.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         
+-        self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
++        dtsf_config=os.environ.get('DTSF_CONFIG','F0')
++        if dtsf_config in ('F1','F2','F3','F4'):
++            new_parameters=list(self.ModalFusion.theme_proj.parameters())+list(self.ModalFusion.semantic_fuse.parameters()); new_ids={id(p) for p in new_parameters}; base_parameters=[p for p in self.ModalFusion.parameters() if id(p) not in new_ids]
++            if sum(p.numel() for p in new_parameters)!=9378: raise RuntimeError('DTSF new parameter count is not 9378')
++            self.optimizer_MF=optim.Adam([{'params':base_parameters,'weight_decay':hyperpm.reg},{'params':new_parameters,'weight_decay':0.0}],lr=hyperpm.lr)
++        else: self.optimizer_MF=optim.Adam(self.ModalFusion.parameters(),lr=hyperpm.lr,weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        if dtsf_config in ('F1','F2','F3','F4'):
++            with torch.no_grad(): self.ModalFusion.semantic_fuse.weight.zero_()
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -143,7 +151,9 @@
+             loss = cls_loss + all_graph_loss
+             
+             loss.backward()
+-            
++            if getattr(self.ModalFusion,'semantic_fuse',None) is not None:
++                for name,module in [('semantic_fuse',self.ModalFusion.semantic_fuse),('theme_proj',self.ModalFusion.theme_proj)]:
++                    grads=[p.grad for p in module.parameters()]; self.ModalFusion._dtsf_grad_finite[name]=bool(grads and all(g is not None and torch.isfinite(g).all().item() for g in grads))
+             self.optimizer_MP0.step()            
+             self.optimizer_MF.step()
+             
+@@ -277,6 +287,8 @@
+         
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
++        if tst and os.environ.get('DTSF_DIAGNOSTIC_PATH') and getattr(self.ModalFusion,'_dtsf_counterfactual',None) is None: self.ModalFusion._dtsf_eval_idx=eval_idx
++        else: self.ModalFusion._dtsf_eval_idx=None
+         
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
+@@ -284,6 +296,13 @@
+         else:
+             prob, fusion_feat, attn = self.ModalFusion(feat)
+             
++        self.ModalFusion._dtsf_prediction_finite=bool(torch.isfinite(prob).all().item())
++        if tst and os.environ.get('DTSF_COUNTERFACTUAL_PATH') and getattr(self.ModalFusion,'_dtsf_counterfactual',None) is None:
++            self._dtsf_real_probability=prob[eval_idx].detach().exp(); self._dtsf_real_target=self.targ[eval_idx].detach(); self._dtsf_real_pred=prob[eval_idx].max(1)[1].type_as(self.targ[eval_idx]).detach(); self._dtsf_real_acc=float(self._dtsf_real_pred.eq(self._dtsf_real_target).double().mean().item())
++        if tst and os.environ.get('DTSF_DIAGNOSTIC_PATH') and getattr(self.ModalFusion,'_dtsf_last_diag',None) is not None:
++            for row in self.ModalFusion._dtsf_last_diag: row['prediction_nonfinite'] = not self.ModalFusion._dtsf_prediction_finite
++            with open(os.environ['DTSF_DIAGNOSTIC_PATH'],'a',encoding='utf-8') as stream: json.dump({'fold':int(getattr(self,'_dtsf_fold_number',0)),'phase':'BEST','config':os.environ.get('DTSF_CONFIG','F0'),'rows':self.ModalFusion._dtsf_last_diag},stream,ensure_ascii=False); stream.write('\n')
++        self.ModalFusion._dtsf_eval_idx=None
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+         pred = prob.max(1)[1].type_as(targ)
+@@ -302,6 +321,20 @@
+             
+         return acc, auc, targ, pred
+     
++    def run_dtsf_counterfactual(self, fold):
++        if os.environ.get('DTSF_CONFIG') != 'F1' or not os.environ.get('DTSF_COUNTERFACTUAL_PATH'): return
++        self.MessagePassing0.eval(); self.ModalFusion.eval(); model_num,feat1=self.dataLayer(self.feat); feat,_,_=self.MessagePassing0(feat1,model_num,self.targ,self.trn_idx); idx=torch.as_tensor(self.tst_idx,device=self.feat.device,dtype=torch.long); target=self.targ[idx]; base_probability=getattr(self,'_dtsf_real_probability',None); base_pred=getattr(self,'_dtsf_real_pred',None); base_acc=getattr(self,'_dtsf_real_acc',None); rows=[]
++        for condition in ('REAL','SWAPPED','POOLED','UNIFORM','OFF'):
++            self.ModalFusion._dtsf_counterfactual=None if condition=='REAL' else condition
++            with torch.no_grad(): output,_,_=self.ModalFusion(feat)
++            probability=output[idx].exp(); prediction=output[idx].max(1)[1].type_as(target); acc=float(prediction.eq(target).double().mean().item()); auc=roc_auc_score(one_hot(target,self.n_class).cpu().numpy(),one_hot(prediction,self.n_class).cpu().numpy())
++            if condition=='REAL': base_probability=probability.detach(); base_pred=prediction.detach(); base_acc=acc
++            flips=float((prediction-base_pred!=0).double().mean().item()); change=float((probability-base_probability).abs().mean().item()); p_auc=roc_auc_score(target.cpu().numpy(),probability[:,1].cpu().numpy())
++            rows.append({'config':'F1','seed':int(self.hyperpm.seed),'fold':int(fold),'condition':condition,'acc':acc,'hard_auc':float(auc),'prediction_flip_rate':flips,'mean_probability_abs_change':change,'acc_change_vs_real':acc-base_acc,'probability_auc':float(p_auc),'real_output_max_abs_diff':float((probability-base_probability).abs().max().item()) if condition=='REAL' else ''})
++        self.ModalFusion._dtsf_counterfactual=None
++        with open(os.environ['DTSF_COUNTERFACTUAL_PATH'],'a',encoding='utf-8') as stream:
++            for row in rows: json.dump(row,stream,ensure_ascii=False); stream.write('\n')
++
+     def cal_acc(self, eval_idx):
+         breakpoint()
+         self.ModalFusion.eval()
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -31,12 +32,16 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
++    """Encode frozen Experiment 1 P1 prompts once per process."""
+     global _prompt_text_features
+     if _prompt_text_features is None:
++        prompt_path = os.environ.get("DTSF_PROMPTS_FILE")
++        if not prompt_path: raise RuntimeError("DTSF_PROMPTS_FILE is required")
++        with open(prompt_path, encoding="utf-8") as stream: prompt_data = json.load(stream)
++        sentences = [item["text"] for modality in prompt_data["modality_order"] for theme in prompt_data["p1"][modality]["themes"] for item in theme["prompts"]]
++        if len(sentences) != 32: raise ValueError("DTSF requires 32 prompts")
+         clip_model, _ = clip.load('RN50', device)
+-        with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
++        with torch.no_grad(): _prompt_text_features = clip_model.encode_text(clip.tokenize(sentences).to(device)).float().detach()
+     return _prompt_text_features
+ 
+ class MLP(nn.Module):
+@@ -89,6 +94,17 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
++        with torch.no_grad():
++            grouped = F.normalize(self.prompt_text_features.view(4, 2, 4, 1024), p=2, dim=-1)
++            self.register_buffer('topic_vectors', F.normalize(grouped.mean(dim=2), p=2, dim=-1))
++        self.dtsf_config = os.environ.get('DTSF_CONFIG', 'F0')
++        if self.dtsf_config in ('F1', 'F2', 'F3', 'F4'):
++            self.theme_proj = nn.Linear(1024, 9, bias=False)
++            self.semantic_fuse = nn.Linear(18, 9, bias=False)
++        else:
++            self.theme_proj = None; self.semantic_fuse = None
++        self._dtsf_eval_idx = None; self._dtsf_last_diag = None; self._dtsf_counterfactual = None
++        self._dtsf_prediction_finite = True; self._dtsf_grad_finite = {'theme_proj': False, 'semantic_fuse': False}
+         
+     def forward(self, x):
+         bs = x.size(0)
+@@ -102,34 +118,39 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+-        text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
+-        
+-        
++        grouped_text = self.prompt_text_features.view(4, 2, 4, 1024).view(4, 2, 4096)
++        p1_features = self.MLP(grouped_text)
+         part_x = x.view(871, 4, 4, 9)
+         part_x_norm = F.normalize(part_x, p=2, dim=-1)
+-        text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
+-        similarity_matrix = similarity_matrix[:,:,:,-1,:]
+-
+-        # 进行数值截断以避免数值问题
+-        similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+-
+-        # 计算 softmax
+-        similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+-
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        p1_norm = F.normalize(p1_features, p=2, dim=-1)
++        similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, p1_norm).clamp(min=-5, max=5)
++        similarity_prob = torch.softmax(similarity_matrix, dim=-1).to(device)
++        similarity_max, _ = torch.max(similarity_prob, dim=-1)
++        local_base = similarity_max.unsqueeze(-1) * part_x
++        local_new = local_base; self._dtsf_last_diag = None
++        if self.semantic_fuse is not None:
++            condition = self._dtsf_counterfactual or self.dtsf_config
++            topic_vectors = self.topic_vectors
++            if condition in ('F2', 'SWAPPED'): topic_vectors = topic_vectors[[2, 3, 0, 1]]
++            elif condition in ('F3', 'POOLED'):
++                shared = F.normalize(topic_vectors.mean(dim=(0, 1), keepdim=True), p=2, dim=-1)
++                topic_vectors = shared.expand(4, 2, 1024)
++            theme_features = F.normalize(self.theme_proj(topic_vectors), p=2, dim=-1)
++            q = F.normalize(part_x, p=2, dim=-1)
++            scores = torch.einsum("nmtf,mcf->nmtc", q, theme_features)
++            attention_theme = torch.full_like(scores, 0.5) if self.dtsf_config == 'F4' or condition == 'UNIFORM' else torch.softmax(scores, dim=-1)
++            u1 = attention_theme[...,0:1] * (part_x * theme_features[:,0,:][None,:,None,:])
++            u2 = attention_theme[...,1:2] * (part_x * theme_features[:,1,:][None,:,None,:])
++            delta = 0.1 * self.semantic_fuse(torch.cat([u1,u2], dim=-1))
++            if condition == 'OFF': delta = torch.zeros_like(delta)
++            local_new = local_base + delta
++            if not self.training and self._dtsf_eval_idx is not None and self._dtsf_counterfactual is None:
++                idx=torch.as_tensor(self._dtsf_eval_idx,device=part_x.device,dtype=torch.long); att=attention_theme.index_select(0,idx); base=local_base.index_select(0,idx); residual=delta.index_select(0,idx); rows=[]
++                for mi,modality in enumerate(['PHENO','ANAT','FUNC','Correlation']):
++                    a=att[:,mi].reshape(-1,2); bnorm=torch.linalg.vector_norm(base[:,mi],dim=-1); dnorm=torch.linalg.vector_norm(residual[:,mi],dim=-1)
++                    rows.append({'modality':modality,'clip_theme_cosine':float(F.cosine_similarity(topic_vectors[mi,0],topic_vectors[mi,1],dim=0).detach().item()),'projected_theme_cosine':float(F.cosine_similarity(theme_features[mi,0],theme_features[mi,1],dim=0).detach().item()),'theme_zero':bool((torch.linalg.vector_norm(theme_features[mi],dim=-1)<=1e-12).any().item()),'theme_nonfinite':bool((~torch.isfinite(theme_features[mi])).any().item()),'attention_theme1_mean':float(a[:,0].mean().detach().item()),'attention_theme2_mean':float(a[:,1].mean().detach().item()),'attention_std':float(a.std(unbiased=False).detach().item()),'attention_abs_diff_mean':float((a[:,0]-a[:,1]).abs().mean().detach().item()),'attention_near_uniform_ratio':float(((a[:,0]-.5).abs()<.01).float().mean().detach().item()),'local_base_norm_mean':float(bnorm.mean().detach().item()),'delta_norm_mean':float(dnorm.mean().detach().item()),'relative_residual_mean':float((dnorm/(bnorm+1e-12)).mean().detach().item()),'nonzero_response_ratio':float((dnorm>1e-12).float().mean().detach().item()),'semantic_nonfinite':bool((~torch.isfinite(delta)).any().item()),'prediction_nonfinite':True,'theme_proj_grad_valid':bool(self._dtsf_grad_finite['theme_proj']),'semantic_fuse_grad_valid':bool(self._dtsf_grad_finite['semantic_fuse']),'config':self.dtsf_config})
++                self._dtsf_last_diag=rows
++        part_x = local_new
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
+@@ -145,6 +166,7 @@
+             part_embedding = Vsim*part
+             combine_part.append(part_embedding)
+         x = x + torch.cat(combine_part,dim=2)
++        self._dtsf_last_local_base = local_base.detach() if self.semantic_fuse is not None else None
+         x = x.view(bs, -1)
+         attn_embedding = attn.view(bs, -1) 
+         output, hidden = self.Outputlayer(x, attn_embedding)

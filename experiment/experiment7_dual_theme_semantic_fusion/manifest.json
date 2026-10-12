@@ -1,0 +1,103 @@
+{
+  "experiment": "DTSF",
+  "schema_version": 1,
+  "created_utc": "2026-10-11T19:26:16Z",
+  "source_root": "/data/adodas/SPromptGL-main",
+  "github_main_commit_at_prepare": "36ad0ff74b5ccb94421274e036fc74b8fa7d8498",
+  "source_files": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "inputs": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "clip_rn50": {
+    "path": "/root/.cache/clip/RN50.pt",
+    "actual_sha256_at_snapshot": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "prompts_sha256": "d88e0332022b77ed5bf331911b2a4eacff510e7efe718215966381937873e088",
+  "patch_sha256": "19cbe6a7b103434cb6b46caffb8b6b737ed44a49a81b6e98cc59a87a2bbc505e",
+  "reference_sha256": "968cd2563f75afb871d8fc1b30965f9b4e3daf934d3c765ca384de70b5d4a46c",
+  "reference_source_sha256": "ec37b0ae5389d2555910bff77ee6d72dac6765fe1472768fa10e4d09809d71db",
+  "p1_source_sha256": "161713d671bd4a86dbd3fe52edd6b48a254035261ba4cf8c7a064ad95a1cf137",
+  "audit": {
+    "p1_path": "[4,2,4,1024] -> [4,2,4096] -> [4,2,9] -> Softmax-Max",
+    "new_parameters": {
+      "theme_proj": 9216,
+      "semantic_fuse": 162,
+      "total": 9378
+    },
+    "zero_initialization": "semantic_fuse.weight zeroed after ModalFusion.apply",
+    "optimizer": "base lr=.0038 decay=.11; new lr=.0038 decay=0",
+    "original_path_unchanged": true
+  },
+  "protocol": {
+    "folds": 10,
+    "stratified_random_state": 10,
+    "checkpoint_metric": "ACC",
+    "epoch_cap": 450,
+    "early_patience": 200,
+    "auc": "hard_label",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "configs": {
+      "F0": "frozen E0/P1",
+      "F1": "DTSF_REAL",
+      "F2": "DTSF_SWAPPED",
+      "F3": "DTSF_POOLED",
+      "F4": "DTSF_UNIFORM"
+    },
+    "gpu_assignments": {
+      "F1_seed0": 0,
+      "F1_seed1": 1,
+      "F1_seed2": 0,
+      "F2_seed0": 1,
+      "F2_seed1": 0,
+      "F2_seed2": 1,
+      "F3_seed0": 0,
+      "F3_seed1": 1,
+      "F3_seed2": 0,
+      "F4_seed0": 1,
+      "F4_seed1": 0,
+      "F4_seed2": 1
+    }
+  },
+  "validation": {
+    "prompt_count": 32,
+    "new_fold_rows_expected": 120,
+    "diagnostic_rows_expected": 480,
+    "counterfactual_rows_expected": 150
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-5.10.134-17.2.al8.x86_64-x86_64-with-glibc2.39"
+  },
+  "run_status": "COMPLETE",
+  "task_status": {
+    "F1_seed0": "COMPLETE",
+    "F1_seed1": "COMPLETE",
+    "F1_seed2": "COMPLETE",
+    "F2_seed0": "COMPLETE",
+    "F2_seed1": "COMPLETE",
+    "F2_seed2": "COMPLETE",
+    "F3_seed0": "COMPLETE",
+    "F3_seed1": "COMPLETE",
+    "F3_seed2": "COMPLETE",
+    "F4_seed0": "COMPLETE",
+    "F4_seed1": "COMPLETE",
+    "F4_seed2": "COMPLETE"
+  },
+  "completed": {
+    "folds": 120,
+    "diagnostics": 480,
+    "counterfactual": 150
+  }
+}
