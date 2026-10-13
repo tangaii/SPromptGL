@@ -1,0 +1,19 @@
+fatal: unable to access 'https://github.com/tangaii/SPromptGL.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment13_patient_specific_fc_prompt/run.py", line 1329, in <module>
+    if __name__ == '__main__': main()
+                               ^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment13_patient_specific_fc_prompt/run.py", line 1320, in main
+    if args.action == 'prepare': prepare()
+                                 ^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment13_patient_specific_fc_prompt/run.py", line 300, in prepare
+    remote = subprocess.check_output(['git', 'ls-remote', 'https://github.com/tangaii/SPromptGL.git',
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'ls-remote', 'https://github.com/tangaii/SPromptGL.git', 'refs/heads/main']' returned non-zero exit status 128.
+REUSE verified patient text bank; no text encoding
+PREPARED: 8 configs / 24 tasks / 240 folds; static cache reused; patient banks 2 x [252,3,1024]

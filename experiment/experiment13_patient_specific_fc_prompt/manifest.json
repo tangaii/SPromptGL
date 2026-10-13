@@ -1,0 +1,572 @@
+{
+  "experiment": "Experiment 13 Patient-Specific FC Prompt",
+  "git_head": "1167dd392837a02eb4f83481ae49f02607a9dae5",
+  "remote_main": "b1c63941bd134495b713f0a0e05784f493563e5e",
+  "remote_core_verified": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "root_sources_equal_remote": true,
+  "created_utc": "2026-10-13T10:30:46.182617+00:00",
+  "run_status": "COMPLETE",
+  "clip_weight_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+  "protected_hashes": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_111_labels.csv": "4f9cd719d27c1e8b9a6cf8933534c0b796101cacf248e509fcfd3c5868fa3ebf",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_256_mapping.csv": "53c927ebf8a594108942146992b14bc0945f0271b713a669ff00ce37e5f8788d",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/prompts.json": "188ea9878283452e792fcc672d50f1c16aa17949a1951639896a21aeb17159d1",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/cache/roi_text_embeddings.pt": "9ec742afbe4874d5bc925979bf08592ca85bf39a63ae87cdafa78beeaf310650",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/roi_semantic_adapter.py": "86c363431dbd116c71f18f6e187371332210c1228b9ea1845c068720cedb9364",
+    "CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad"
+  },
+  "protected_history": {
+    "experiment1_modality_aware_semantic_prompt": {
+      "sha256": "dd8f850300cc1a708fd089b8bc9a0db0bea14b6c75f96073e497131470307e4b",
+      "files": 103
+    },
+    "experiment2_contrastive_state_prompts": {
+      "sha256": "60f0c2cf427b0b201fc1c00a8b0a016faa6a709fff948d1b62754bf41ba48d7c",
+      "files": 16
+    },
+    "experiment3_prompt_effectiveness_diagnostics": {
+      "sha256": "efcf60157419d99ccd70ed4527bd12c10f636b3bf859bb13102b92aeb1891252",
+      "files": 55
+    },
+    "experiment4_disease_aware_fc_prompt": {
+      "sha256": "696bd3ecc0d00854695528b00bec0ff24069c4f15edb1488952027b7ca692746",
+      "files": 16
+    },
+    "experiment5_semantic_projection_collapse": {
+      "sha256": "a7448df5c547d39986d3668ff02a76ddae14c0b23b45e018e42472d30c26f26b",
+      "files": 22
+    },
+    "experiment6_semantic_direction_preserving_gate": {
+      "sha256": "f05f17efc30caa838ae7b7160331ddde37b220fd45362178a142eb9bc4dab774",
+      "files": 15
+    },
+    "experiment7_dual_theme_semantic_fusion": {
+      "sha256": "6cba079cd45541cadc669521779987a0c156740a7c44cd13bca9aa0a8ee93bd9",
+      "files": 23
+    },
+    "experiment8_scheme1_shared_disease_alignment": {
+      "sha256": "1c07465e2b279d7b770acc34c71a4f25015582cab390b0c2a3eff2167387e1ac",
+      "files": 26
+    },
+    "experiment9_prompt_disease_adversarial_interaction": {
+      "sha256": "89923d667af0b1c15f74be68091af219d6680f0397d3edeb4478ac07db585f48",
+      "files": 34
+    },
+    "experiment10_disease_semantic_specificity": {
+      "sha256": "ec9794961001c49100e9164e1dd2c5a21fe96ce8abe73244c6f50cb42214a311",
+      "files": 17
+    },
+    "experiment11_roi_mapping_recovery": {
+      "sha256": "102d0c8e23c24783bdd1fa784fdc2e06fc13d7f48f4a418508b9c6a9b985a4c6",
+      "files": 28
+    },
+    "experiment12_roi_semantic_alignment_feasibility": {
+      "sha256": "1cd06fa8698f185beb7edbfcb8067a2d6d8c1cc6d80b27a15ba57a78dd3e2069",
+      "files": 35
+    }
+  },
+  "tasks": {
+    "F0_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118053,
+      "attempt": 1,
+      "seconds": 2863.6368250846863,
+      "completed_utc": "2026-10-13T11:30:16.291397+00:00"
+    },
+    "F0_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118103,
+      "attempt": 1,
+      "seconds": 3219.2645980343223,
+      "completed_utc": "2026-10-13T11:36:34.697705+00:00"
+    },
+    "F0_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118057,
+      "attempt": 1,
+      "seconds": 2735.2755835428834,
+      "completed_utc": "2026-10-13T11:28:04.401443+00:00"
+    },
+    "F1_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118127,
+      "attempt": 1,
+      "seconds": 3274.759000878781,
+      "completed_utc": "2026-10-13T11:37:24.201668+00:00"
+    },
+    "F1_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118080,
+      "attempt": 1,
+      "seconds": 3184.983852431178,
+      "completed_utc": "2026-10-13T11:37:11.134640+00:00"
+    },
+    "F1_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118140,
+      "attempt": 1,
+      "seconds": 2906.391384344548,
+      "completed_utc": "2026-10-13T11:36:16.492872+00:00"
+    },
+    "F2_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118091,
+      "attempt": 1,
+      "seconds": 3525.100921973586,
+      "completed_utc": "2026-10-13T11:46:29.197797+00:00"
+    },
+    "F2_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118149,
+      "attempt": 1,
+      "seconds": 4303.850471653044,
+      "completed_utc": "2026-10-13T11:59:41.087350+00:00"
+    },
+    "F2_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118101,
+      "attempt": 1,
+      "seconds": 5051.261823788285,
+      "completed_utc": "2026-10-13T12:12:03.739463+00:00"
+    },
+    "F3_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 150734,
+      "attempt": 1,
+      "seconds": 3562.434989735484,
+      "completed_utc": "2026-10-13T12:24:12.526638+00:00"
+    },
+    "F3_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 140244,
+      "attempt": 1,
+      "seconds": 3827.1287937276065,
+      "completed_utc": "2026-10-13T12:22:55.702049+00:00"
+    },
+    "F3_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 152398,
+      "attempt": 1,
+      "seconds": 3529.7157453000546,
+      "completed_utc": "2026-10-13T12:24:17.814781+00:00"
+    },
+    "P4_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118076,
+      "attempt": 1,
+      "seconds": 3278.132459592074,
+      "completed_utc": "2026-10-13T11:37:15.486456+00:00"
+    },
+    "P4_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118114,
+      "attempt": 1,
+      "seconds": 3809.8469571471214,
+      "completed_utc": "2026-10-13T11:53:03.241823+00:00"
+    },
+    "P4_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118084,
+      "attempt": 1,
+      "seconds": 3276.3094290196896,
+      "completed_utc": "2026-10-13T11:42:16.755542+00:00"
+    },
+    "P5_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118139,
+      "attempt": 1,
+      "seconds": 3187.959778122604,
+      "completed_utc": "2026-10-13T11:35:55.199421+00:00"
+    },
+    "P5_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 118100,
+      "attempt": 1,
+      "seconds": 4931.587967451662,
+      "completed_utc": "2026-10-13T12:09:58.681796+00:00"
+    },
+    "P5_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118144,
+      "attempt": 1,
+      "seconds": 3655.750432409346,
+      "completed_utc": "2026-10-13T11:48:50.472696+00:00"
+    },
+    "P6_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 136039,
+      "attempt": 1,
+      "seconds": 2991.476812887937,
+      "completed_utc": "2026-10-13T12:06:44.370591+00:00"
+    },
+    "P6_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 118151,
+      "attempt": 1,
+      "seconds": 3867.8925884366035,
+      "completed_utc": "2026-10-13T11:52:32.456939+00:00"
+    },
+    "P6_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 154083,
+      "attempt": 1,
+      "seconds": 2890.3826877996325,
+      "completed_utc": "2026-10-13T12:14:15.723367+00:00"
+    },
+    "P7_seed0": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 151497,
+      "attempt": 1,
+      "seconds": 3013.2777994014323,
+      "completed_utc": "2026-10-13T12:15:23.720077+00:00"
+    },
+    "P7_seed1": {
+      "status": "COMPLETE",
+      "physical_gpu": 0,
+      "completed_folds": 10,
+      "pid": 154195,
+      "attempt": 1,
+      "seconds": 3423.4478580988944,
+      "completed_utc": "2026-10-13T12:23:09.900758+00:00"
+    },
+    "P7_seed2": {
+      "status": "COMPLETE",
+      "physical_gpu": 1,
+      "completed_folds": 10,
+      "pid": 154514,
+      "attempt": 1,
+      "seconds": 3015.6807167716324,
+      "completed_utc": "2026-10-13T12:16:34.303998+00:00"
+    }
+  },
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "split_protocol": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "inner_validation": false,
+    "ddof": 0,
+    "thresholds": [
+      -1.0,
+      1.0
+    ],
+    "std_floor": 1e-06
+  },
+  "rng_policy": "F0 original sequential stream; other groups use actual F0 fold-entry RNG, never repeat per-fold seeding",
+  "adapter_rng_seed": "120000 + training seed; fork_rng; identical to Experiment 12",
+  "status_shuffle_seed": "130500 + one-based fold; separate train/test permutations; local numpy Generator",
+  "configurations": [
+    "F0",
+    "F1",
+    "F2",
+    "F3",
+    "P4",
+    "P5",
+    "P6",
+    "P7"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "gpu_assignment": {
+    "F0_seed0": 0,
+    "F0_seed1": 1,
+    "F0_seed2": 0,
+    "F1_seed0": 1,
+    "F1_seed1": 0,
+    "F1_seed2": 1,
+    "F2_seed0": 0,
+    "F2_seed1": 1,
+    "F2_seed2": 0,
+    "F3_seed0": 1,
+    "F3_seed1": 0,
+    "F3_seed2": 1,
+    "P4_seed0": 0,
+    "P4_seed1": 1,
+    "P4_seed2": 0,
+    "P5_seed0": 1,
+    "P5_seed1": 0,
+    "P5_seed2": 1,
+    "P6_seed0": 0,
+    "P6_seed1": 1,
+    "P6_seed2": 0,
+    "P7_seed0": 1,
+    "P7_seed1": 0,
+    "P7_seed2": 1
+  },
+  "static_cache_reused": true,
+  "static_clip_encoded_again": false,
+  "patient_cache_sha256": "f09de50c5de3202b1781482c63197c1ffd5c327e2d71369eec13d92a7136d647",
+  "patient_template_signature": "026f7a04a1e276953503a555ca848b5e96b711fa729c64b8f109c8eaa3915a30",
+  "patient_text_token_length_max": 58,
+  "valid_edges": 252,
+  "roi_mapping_verified": 256,
+  "excluded_semantic_edges": [
+    195,
+    225,
+    232,
+    236
+  ],
+  "backbone_parameters": 1462957,
+  "additional_parameters": {
+    "F0": 0,
+    "F1": 32865,
+    "F2": 32865,
+    "F3": 32865,
+    "P4": 32865,
+    "P5": 32865,
+    "P6": 32865,
+    "P7": 32865
+  },
+  "state_prompt_phrases": [
+    "below the training-cohort mean by at least one standard deviation",
+    "within one standard deviation of the training-cohort mean",
+    "above the training-cohort mean by at least one standard deviation"
+  ],
+  "original_checkpoint_initial_acc": 0.0,
+  "checkpoint_rule": "strict val ACC improvement; equal ACC retained; wait_cnt > 200",
+  "probability_auc": "ASD=label0; output.exp()[:,0]",
+  "folds": [
+    {
+      "fold": 1,
+      "train_n": 783,
+      "test_n": 88,
+      "val_equals_test": true,
+      "train_sha256": "dd20bc2d7dca045da039e882a003a37322f6c61cdda26bbe980c928c85f1c7c0",
+      "test_sha256": "ad7ad1fc0bc092aad8bdafa313e8932eb8b303c6cef88a1e800e9f28148ffeec"
+    },
+    {
+      "fold": 2,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "c349f5cf539feb851c54ec5da3d368b6951c5ca0c9163d23b8c8c2e3ac55a3bf",
+      "test_sha256": "3be5089ba0d30da0cd899c1a2f5c2616d02f932afc092d8269334052903bde83"
+    },
+    {
+      "fold": 3,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "4cd0fb3a768e754eb34320e4ed81ba8022e289d9fb30f7e92cc2341451bc0d64",
+      "test_sha256": "7a10aa7d24ea403fc5586fbca56605f82dce56a452df3ab02c1631fb62486c1f"
+    },
+    {
+      "fold": 4,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "fc37e8817372b8e820093bbb0bcdfdddd32363570056972e4a93638b8245ec9e",
+      "test_sha256": "541f7fd8c1d3e098de7a197b2bf680048b3e11cdbc6f607b788e92f04336b02b"
+    },
+    {
+      "fold": 5,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "d617d872a06892def18737f4001ecbe4266cdfb079f2e57556562a2532643166",
+      "test_sha256": "3ddfbb605dec780726b8e3c097368d11e9cfc59d313df347d3b3bdb606b965f6"
+    },
+    {
+      "fold": 6,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "97d0fb81aefa98a09273dc374e376134497bbaad88fd2e92585b555717c7b942",
+      "test_sha256": "fd0268a989a836b30938af01ec2c6e8fb52a83346c2e47830a11557a9ad1a42b"
+    },
+    {
+      "fold": 7,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "4b187d430f4b12e6c171c1eb18a054ed3c19abca4b5f4925945d54cafd51ace3",
+      "test_sha256": "3376e725f94d7729410f292fce272a5a8ba353857e6b455940ccc0d5f9241a74"
+    },
+    {
+      "fold": 8,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "8a9d0da671d284e18a3fef21a2d05b4e7b9659fe8174499bb870e96f0adc65eb",
+      "test_sha256": "1f9b8661f483254a6ad2178d8eccdcde863cdcd54bf8c66ffff0619b6a12f2ad"
+    },
+    {
+      "fold": 9,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "a367dea4e172192f4f5786f8b5e549919dd63dee3d8b534b049e71fd71291b73",
+      "test_sha256": "1682580656492e9fc684918d9259660ec7179558d9130d962e447ebe351936a2"
+    },
+    {
+      "fold": 10,
+      "train_n": 784,
+      "test_n": 87,
+      "val_equals_test": true,
+      "train_sha256": "03fbc7ef9c22b30c0903e3738db50f6f45d9e64c15361026dc0668e7a283f1a8",
+      "test_sha256": "15c03adae6983380281788327df76d71cdc1dbec803a86a6dcbfa20025adf13f"
+    }
+  ],
+  "implementation_hashes": {
+    "run.py": "665c4f9da76e8c60e3f275b0361310de5335b65a9f32388331856d388535ba9f",
+    "roi_patient_adapter.py": "60aa8eafbe7ea0f9dfc871b76239aafdfca55041eaa68b614b1ac963f416e6de",
+    "integration_patch.diff": "7a8a0748d4ac5c7729e034a94ea64ddc649007585ee47c1a019aafb239bad2a9"
+  },
+  "prepared_utc": "2026-10-13T10:30:54.005998+00:00",
+  "preflight_status": "PASS",
+  "preflight_sha256": "15905d67bc7bb13bee440e3da309809278a3584204d20dae6ff38fdbd6000676",
+  "training_started_utc": "2026-10-13T10:35:01.457117+00:00",
+  "scheduler_pid": 186663,
+  "workers_per_gpu": 8,
+  "completed_training_folds": 240,
+  "completed_configs": 8,
+  "diagnostic_rows": 240,
+  "counterfactual_rows": 150,
+  "gpu_completed_folds": {
+    "0": 120,
+    "1": 120
+  },
+  "ENGINEERING_STATUS": "PASS",
+  "PATIENT_SEMANTIC_EFFECT": "NOT_SUPPORTED",
+  "ROI_IDENTITY_EFFECT": "NOT_SUPPORTED",
+  "INDEPENDENT_SEMANTIC_VALUE": "NOT_SUPPORTED",
+  "PROJECTION_COLLAPSE": "COMMON_DIRECTION_CONCENTRATION 44/210",
+  "RECOMMEND_GLOBAL_DISEASE_ALIGNMENT": "NO_CURRENT_EVIDENCE",
+  "seed_sd_ddof": 0,
+  "resume_implementation_hashes": {
+    "run.py": "7ac402e1b4811cc85213e70d08f63b74fdcfc3eebd4fd681ac26e1f91ded8fb1",
+    "roi_patient_adapter.py": "60aa8eafbe7ea0f9dfc871b76239aafdfca55041eaa68b614b1ac963f416e6de",
+    "integration_patch.diff": "7a8a0748d4ac5c7729e034a94ea64ddc649007585ee47c1a019aafb239bad2a9"
+  },
+  "io_maintenance": {
+    "reason": "Transient FileNotFoundError reading atomically replaced task JSON",
+    "original_run_sha256": "7ac402e1b4811cc85213e70d08f63b74fdcfc3eebd4fd681ac26e1f91ded8fb1",
+    "current_run_sha256": "936b91326f18783607f1a5492a8cac79543dfca76357a49f196f1ed6bc9a2b56",
+    "changed_functions": [
+      "read_json",
+      "signature"
+    ],
+    "all_other_ast_unchanged_sha256": "93c586c42b19fa219a85a65ea6c98372b1e0d09a3c7c04e93aa427793e1a3c92",
+    "training_protocol_and_rng_unchanged": true,
+    "checkpoint_signature_preserved": true,
+    "utc": "2026-10-13T11:19:45.829224+00:00"
+  },
+  "resource_limits": {
+    "cpu_quota_cores": 32,
+    "cpu_affinity_cores": 256,
+    "memory_limit_gib": 128,
+    "workers_per_gpu_after_contention": 8,
+    "cpu_threads_per_worker": 2
+  },
+  "scheduler_maintenance": {
+    "reason": "Treat COMPLETE as terminal before re-polling cleaned task records; tolerate exiting worker during adoption",
+    "before_run_sha256": "936b91326f18783607f1a5492a8cac79543dfca76357a49f196f1ed6bc9a2b56",
+    "current_run_sha256": "665c4f9da76e8c60e3f275b0361310de5335b65a9f32388331856d388535ba9f",
+    "all_numerical_ast_unchanged_sha256": "e4cf5bdb9ba0dc878839588c3fa8cb163efe695697adeea402648cd2c6eeb11e",
+    "worker_training_uninterrupted": true,
+    "complete_cleanup_race_test": "PASS",
+    "partial_run_continues_test": "PASS",
+    "utc": "2026-10-13T11:52:53.347716+00:00"
+  },
+  "completed_utc": "2026-10-13T12:24:38.256848+00:00",
+  "final_sources_and_history_verified": true,
+  "initialization_all_30_pairs_verified": true,
+  "no_training_processes": true,
+  "wall_seconds": 6576.799731,
+  "data_result_hashes": {
+    "fold_metrics.csv": "8118658fa728a7a239a7648426f0e8b6b097589bd9c3d4b2f8edfc4544f143ad",
+    "diagnostics.csv": "d8e4c56c8b866cd3c2b66cb1c6e8a07ef09713cbd6084181fcc396bcd7db21a3",
+    "counterfactual.csv": "79843fb3928e75d7dfd60b09983034830ecf8011ea3c8298f22c8c416b7c7571"
+  }
+}
