@@ -1,0 +1,163 @@
+{
+  "experiment": "experiment11_roi_mapping_recovery",
+  "MIGRATION_STATUS": "COMPLETE",
+  "ROI_LABEL_STATUS": "COMPLETE",
+  "migration": {
+    "status": "COMPLETE",
+    "source_files": 8,
+    "files_sha256_verified": 8,
+    "source_directory_exists_after_verified_move": false,
+    "log": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/logs/migration.log",
+    "destination": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery"
+  },
+  "atlas": {
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/reference/ho_mask_pad.nii.gz",
+    "sha256": "e2ef01f7394a5d0dde7c8cd57f8cc72079b2115b4180d6466aafb0831e08f8c1",
+    "shape": [
+      65,
+      77,
+      63
+    ],
+    "affine": [
+      [
+        -3.0,
+        -0.0,
+        -0.0,
+        96.0
+      ],
+      [
+        -0.0,
+        3.0,
+        -0.0,
+        -132.0
+      ],
+      [
+        0.0,
+        0.0,
+        3.0,
+        -71.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "zooms_mm": [
+      3.0,
+      3.0,
+      3.0
+    ],
+    "nonzero_roi_count": 111,
+    "unique_label_count_including_background": 112,
+    "label_set_matches_all_headers": true,
+    "header_sequences_identical": true,
+    "mapped_header_files": 871
+  },
+  "roi_labels": {
+    "total": 111,
+    "verified_names": 110,
+    "probable_names": 0,
+    "unknown_other_than_explicit_extra": 0,
+    "extra_roi_count": 1,
+    "extra_roi": {
+      "atlas_integer_value": 3455,
+      "roi_index_zero_based": 82,
+      "roi_index_one_based": 83,
+      "voxel_count": 2,
+      "voxel_ijk": [
+        [
+          25,
+          44,
+          16
+        ],
+        [
+          25,
+          44,
+          17
+        ]
+      ],
+      "voxel_world_mm": [
+        [
+          21.0,
+          0.0,
+          -23.0
+        ],
+        [
+          21.0,
+          0.0,
+          -20.0
+        ]
+      ],
+      "center_world_mm": [
+        21.0,
+        0.0,
+        -21.5
+      ],
+      "fsl4_cortical_overlay": [
+        {
+          "fsl_value": 0,
+          "voxel_count": 2
+        }
+      ],
+      "fsl4_subcortical_overlay": [
+        {
+          "fsl_value": 54,
+          "fsl_name": "Right Amygdala",
+          "voxel_count": 2
+        }
+      ],
+      "roi_name": "UNKNOWN",
+      "status": "EXTRA_ROI"
+    },
+    "column_order_verified": true,
+    "cortical_count": 96,
+    "subcortical_count": 14,
+    "fsl4_fsl5_xml_text_differences": {
+      "cortical": [
+        {
+          "index": 21,
+          "fsl4_name": "Lateral Occipital Cortex, superoir division",
+          "fsl5_name": "Lateral Occipital Cortex, superior division"
+        }
+      ],
+      "subcortical": [
+        {
+          "index": 2,
+          "fsl4_name": "Left Lateral Ventrical",
+          "fsl5_name": "Left Lateral Ventricle"
+        }
+      ]
+    }
+  },
+  "named_feature_map": {
+    "rows": 256,
+    "both_endpoint_names_verified": 252,
+    "exactly_one_endpoint_name_verified": 4,
+    "neither_endpoint_name_verified": 0,
+    "involves_extra_roi": 4,
+    "usable_for_roi_semantic_prompt": 252,
+    "extra_roi_feature_indices": [
+      195,
+      225,
+      232,
+      236
+    ]
+  },
+  "original_numeric_mapping": {
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_256_mapping.csv",
+    "sha256_before": "53c927ebf8a594108942146992b14bc0945f0271b713a669ff00ce37e5f8788d",
+    "sha256_after": "53c927ebf8a594108942146992b14bc0945f0271b713a669ff00ce37e5f8788d",
+    "unchanged": true,
+    "features_verified": 256,
+    "verification_status": "VERIFIED_NUMERIC_UNIQUE",
+    "max_absolute_error": 3.9968028886505635e-15,
+    "global_rmse": 7.189473348733295e-17
+  },
+  "limitations": [
+    "No subject-level functional NIfTI volumes were found in the project, so no independent re-extraction of time series was possible.",
+    "The original pipeline config specifies FSLDIR 5.0 but not a patch release; atlas codebook and label centers were cross-checked against official FSL 4.0.2 and FSL 5.0.11 resources.",
+    "Anatomical names do not establish ASD-specific effects or causal interpretation."
+  ]
+}

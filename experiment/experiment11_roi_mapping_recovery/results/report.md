@@ -42,15 +42,9 @@ Notebook使用`RidgeClassifier`、RFE目标256维、`step=100`；5折StratifiedK
 
 本地未找到这批CPAC输出配套的HO标签文件和列序说明，因此名称统一标为UNKNOWN，不按另一版atlas猜填。ABIDE PCP公开记录曾指出HO输出第83个变量存在额外ROI问题；列编号本身仍由数值连接严格验证，名称需取得原处理版本的标签/顺序文件确认。
 
-## 三名受试者数值示例
+## 个体数据发布边界
 
-以下对比的是前三个特征的Fisher-z原始重建值与CSV值。
-
-|CSV行|SUB_ID|特征0 重建 / CSV|特征1 重建 / CSV|特征2 重建 / CSV|
-|---:|---:|---:|---:|---:|
-|0|50003|0.366033121331165 / 0.366033121331165|0.397059342555883 / 0.397059342555883|0.51667523238699 / 0.51667523238699|
-|435|50728|0.0651369799971996 / 0.0651369799971995|0.341988912463431 / 0.341988912463431|-0.0113098857456253 / -0.0113098857456252|
-|870|51607|0.256702449550838 / 0.256702449550838|0.70108604117067 / 0.70108604117067|0.599090881403635 / 0.599090881403635|
+逐受试者映射和数值示例保留在本地审计环境，不纳入公开实验包。公开报告仅保留队列级核验结果和不含个体标识的特征映射。
 
 ## 验证结论
 
@@ -62,4 +56,4 @@ Notebook使用`RidgeClassifier`、RFE目标256维、`step=100`；5折StratifiedK
 
 ## 输出文件
 
-`recover_roi_mapping.py`、`README.md`、`logs/recovery.log`、`results/roi_256_mapping.csv`、`results/subject_row_mapping.csv`、`results/feature_validation.csv`、`results/data_audit.json`。
+`recover_roi_mapping.py`、`README.md`、`logs/recovery.log`、`results/roi_256_mapping.csv`、`results/feature_validation.csv`。逐受试者映射表和详细数据审计仅保留本地。
