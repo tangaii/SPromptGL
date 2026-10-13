@@ -1,0 +1,35 @@
+--- a/model.py
++++ b/model.py
+@@ -19,6 +19,7 @@
+ 
+ from network import *
+ from utils import *
++from roi_semantic_adapter import AGESA
+ 
+ 
+ class EvalHelper:
+@@ -77,6 +78,15 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        self.roi_adapter = None
++        if hyperpm.roi_condition != "OFF":
++            # Register after all original initialization; preserve CPU/CUDA RNG.
++            with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
++                torch.manual_seed(120000 + hyperpm.seed)
++                self.roi_adapter = AGESA(hyperpm.roi_embeddings, hyperpm.roi_indices).to(dev)
++            assert sum(p.numel() for p in self.roi_adapter.parameters()) == 32865
++            self.optimizer_MF.add_param_group({"params": self.roi_adapter.parameters(),
++                                               "lr": hyperpm.lr, "weight_decay": 0.0})
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -136,6 +146,8 @@
+                 all_graph_loss = all_graph_loss + graph_loss
+             all_graph_loss = all_graph_loss/4
+             
++            if self.roi_adapter is not None:
++                feat, _ = self.roi_adapter(self.feat[:,64:320], feat)
+             prob,_,_ = self.ModalFusion(feat)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)

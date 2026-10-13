@@ -1,0 +1,152 @@
+{
+  "input_shape": [
+    871,
+    320
+  ],
+  "raw_correlation_shape": [
+    871,
+    256
+  ],
+  "gfr_shape": [
+    871,
+    320
+  ],
+  "pln_output_shape": [
+    871,
+    2
+  ],
+  "hidden_shape": [
+    871,
+    36
+  ],
+  "backbone_parameters": 1462957,
+  "mapping_256": true,
+  "valid_semantics_252": true,
+  "excluded_edges": [
+    195,
+    225,
+    232,
+    236
+  ],
+  "heldout_labels_masked": true,
+  "original_trunk_sha256": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+  "configs": {
+    "F0": {
+      "initial_trunk_sha256": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+      "eval_parity_max_error": 0.0,
+      "zero_residual": true,
+      "unmodified_first_64": true,
+      "no_duplicate_parameters": true,
+      "no_missing_parameters": true,
+      "parameter_count": 1462957,
+      "train_mode_parity_max_error": 0.0
+    },
+    "F1": {
+      "initial_trunk_sha256": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+      "eval_parity_max_error": 0.0,
+      "zero_residual": true,
+      "unmodified_first_64": true,
+      "no_duplicate_parameters": true,
+      "no_missing_parameters": true,
+      "parameter_count": 1495822,
+      "train_mode_parity_max_error": 0.0,
+      "new_parameter_init_sha256": "0312f97d9f6600e445289496ae2bd9d04aa7ffa67b30bfe54938189fc6881a57",
+      "additional_parameters": 32865,
+      "variable_batch_adapter": true,
+      "two_step_gradients": [
+        {
+          "classifier": 1.1799336671829224,
+          "alpha": 0.00038566128932870924,
+          "project_text": 0.0,
+          "project_value": 0.0
+        },
+        {
+          "classifier": 0.6222377419471741,
+          "alpha": 0.0006602815701626241,
+          "project_text": 7.385700882878155e-05,
+          "project_value": 4.066776455147192e-06
+        }
+      ],
+      "gradient_check": "PASS"
+    },
+    "F2": {
+      "initial_trunk_sha256": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+      "eval_parity_max_error": 0.0,
+      "zero_residual": true,
+      "unmodified_first_64": true,
+      "no_duplicate_parameters": true,
+      "no_missing_parameters": true,
+      "parameter_count": 1495822,
+      "train_mode_parity_max_error": 0.0,
+      "new_parameter_init_sha256": "0312f97d9f6600e445289496ae2bd9d04aa7ffa67b30bfe54938189fc6881a57",
+      "additional_parameters": 32865,
+      "variable_batch_adapter": true,
+      "two_step_gradients": [
+        {
+          "classifier": 1.1799336671829224,
+          "alpha": 0.0004129507578909397,
+          "project_text": 0.0,
+          "project_value": 0.0
+        },
+        {
+          "classifier": 0.6222405433654785,
+          "alpha": 0.0008928755996748805,
+          "project_text": 6.623611261602491e-05,
+          "project_value": 4.0083405110635795e-06
+        }
+      ],
+      "gradient_check": "PASS"
+    },
+    "F3": {
+      "initial_trunk_sha256": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+      "eval_parity_max_error": 0.0,
+      "zero_residual": true,
+      "unmodified_first_64": true,
+      "no_duplicate_parameters": true,
+      "no_missing_parameters": true,
+      "parameter_count": 1495822,
+      "train_mode_parity_max_error": 0.0,
+      "new_parameter_init_sha256": "0312f97d9f6600e445289496ae2bd9d04aa7ffa67b30bfe54938189fc6881a57",
+      "additional_parameters": 32865,
+      "variable_batch_adapter": true,
+      "two_step_gradients": [
+        {
+          "classifier": 1.1799336671829224,
+          "alpha": 0.0007560077938251197,
+          "project_text": 0.0,
+          "project_value": 0.0
+        },
+        {
+          "classifier": 0.6222398281097412,
+          "alpha": 0.0008401667582802474,
+          "project_text": 6.981540354900062e-05,
+          "project_value": 3.924471002392238e-06
+        }
+      ],
+      "gradient_check": "PASS"
+    }
+  },
+  "heldout_label_invariance": true,
+  "edge_alignment": {
+    "target_feature_index": 0,
+    "diagnostic_alpha": 0.3,
+    "text_target_delta_max_change": 0.00018377695232629776,
+    "text_other_delta_max_change": 0.0,
+    "value_target_delta_max_change": 0.0008604316972196102,
+    "value_other_delta_max_change": 0.0,
+    "real_shuffled_delta_max_change": 0.003414647653698921,
+    "real_off_probability_max_change": 0.001496642827987671,
+    "real_matches_normal_max_error": 0.0,
+    "extra_delta_max": 0.0
+  },
+  "constant_offline_diagnostic": {
+    "delta_mean_abs": 0.00540138641372323,
+    "real_probability_mean_change": 2.268161188112572e-05
+  },
+  "checkpoint_restore_max_error": 0.0,
+  "protected_sources_unchanged": true,
+  "history_experiments_unchanged": true,
+  "status": "PASS",
+  "signature": "b93ed57df0cb995bb84b728c2cf64d8888a652b1b07e3c630570fc0a60b46b6e",
+  "completed_utc": "2026-10-13T08:49:08.071041+00:00"
+}
