@@ -1,0 +1,820 @@
+{
+  "experiment": "Hierarchical Semantic Prompt Design and Cross-Level Interaction",
+  "run_status": "COMPLETE",
+  "prepared_utc": "2026-10-13T16:51:58Z",
+  "git_head": "1167dd392837a02eb4f83481ae49f02607a9dae5",
+  "remote_main": "a1da09b40f95356ad2c995e11cc324c2a004489d",
+  "remote_core_equal": true,
+  "source_data_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad"
+  },
+  "protected_history": {
+    "experiment10_disease_semantic_specificity": "debb6eb604a05c1a069c53b4794c26a05521775553581f50c0cf997cffdb9a8b",
+    "experiment11_roi_mapping_recovery": "c0d48d9f5a352baa12b15953dc9fe5b070c70eb6ef3b932d3f02efada5d108e5",
+    "experiment12_roi_semantic_alignment_feasibility": "bc65d3c647769a1d4964431762487b488a811d3f2815a74d839a5d6c21fb6fbe",
+    "experiment13_patient_specific_fc_prompt": "f028d9d36719c9c86e40950cc962ce9b263153812721a650f9debf08c5731648",
+    "experiment1_modality_aware_semantic_prompt": "f4bc79e3b3f37a06a586faadff36169e63092d97d698f333c0fc16108a43a210",
+    "experiment2_contrastive_state_prompts": "88c33fea797b373228038b07560cc0e1553ea40cf79a4c622dadc8c0e28a1575",
+    "experiment3_prompt_effectiveness_diagnostics": "3eccd3602b7efba651c5bc7e0c0b7de3816fb377d9bce8e8d82388582455cbbb",
+    "experiment4_disease_aware_fc_prompt": "987ac05400b2fb0921a39cc770b4e5d52118044c1d3bf3385bd3f7b20c71a429",
+    "experiment5_semantic_projection_collapse": "d1207f6df94563c3314b82f94021cd6afeff6b9cc98f89e241de54fdd652ae42",
+    "experiment6_semantic_direction_preserving_gate": "530339afda2555836b9c9484048e0a7094713cd68091f3f8d7374ab3d23d5946",
+    "experiment7_dual_theme_semantic_fusion": "6c86daf84f207d85dc744c7857e3bfda67f1aa1335e102f8ea90cb9d4fc7de71",
+    "experiment8_scheme1_shared_disease_alignment": "847369404d98cea283822f7b62b00cef5003cb7d3081477f25050978dc68728f",
+    "experiment9_prompt_disease_adversarial_interaction": "8a752905abaac6c8d03a0b018d23a2f6bd9140af49e07996c2177101a8902b04"
+  },
+  "protected_handoff_sha256": "64eca95980f056ffc63e11c6df4bb749a920f2c2b6fd17bc823f924a94ff4815",
+  "protected_handoff_bytes": 25676,
+  "prompt_sha256": "7cda11ceff8ae1a72c075318e9e189cd415953353653aaa23a4dabcda2550d87",
+  "patch_sha256": "a0a54b91637e6bff23225ed2857fba40df2ce4e055f6067ca98a04790bf4d4d9",
+  "runner_sha256": "7fa14e60f4da1d499862cc6dad542870afa6dff5eb52291263a64f1c871bf782",
+  "clip_weight_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+  "paper_sha256": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+  "paper_audit": "Read Fig.1 (rendered), Section2.2 and ablations via PyMuPDF; BrainPrompt/SABER PDFs not found.",
+  "text_audit": {
+    "max_tokens": 27,
+    "encoding_calls": 11,
+    "p0_vectors_exact_history": true,
+    "disease_prototype_hashes": {
+      "HISTORICAL": "6f3beb156f014c1fa19052ed232ed5a613502bbbf64e39b32686f767cbb9d50d",
+      "FC_CENTRIC": "dd5519ec2e637feed815a1ecbfb94a025464296eb645d2ba3e5a3bed26c64af4",
+      "BALANCED": "a52deef6c7a8ea11ca12e89cd5505cbbb1e74bd9604a4ed91972c48d6f30085c",
+      "SELECTIVE": "a3fb50ef84c37e5ae5ef218c97bfa666c493567df7d6f8d41ae9ca888a321ac5",
+      "CLINICAL_CORE": "543f0fdb20dc3e64f0901e398d4dae6e42a771c7fdbdfe58e4e84cd7915ab8e5",
+      "NEUTRAL": "800de3352f5b8067c3b5af923d2d0c2e4c3f9eefc0786c46ba469e71ab325314"
+    },
+    "text_cache_sha256": "cb57d9c279b30c650e75a60e90523e409b09c5c0a05fa3eb3c3cd8db911da73e"
+  },
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "split_sha256": "7c1438afbd79051e087fc16519c59b90557c39fdfa5af5e290bf3f8a5e8c7197",
+  "class_order": {
+    "0": "ASD",
+    "1": "TD"
+  },
+  "dimensions": [
+    48,
+    6,
+    10,
+    256
+  ],
+  "base_parameters": 1462957,
+  "local_mlp_parameters": 525577,
+  "disease_additional_parameters": 36865,
+  "rng_policy": "E00 original sequential stream; all other groups use actual E00 fold-entry Python/NumPy/CPU/CUDA RNG; disease init fork_rng(140000+seed). First lazy RN50 construction is retained.",
+  "gpu_hardware": [
+    "0, GPU-019e4201-0591-0030-0000-000080387166, PPU-ZW810E, 98304 MiB",
+    "1, GPU-019e4201-8920-0208-0000-0000c0f15256, PPU-ZW810E, 98304 MiB"
+  ],
+  "worker_threads": 2,
+  "workers_per_gpu": 4,
+  "tasks": {
+    "E00_seed0": {
+      "config": "E00",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "OFF",
+      "seconds": 1108.9605254679918,
+      "started_utc": "2026-10-13T16:55:14Z",
+      "completed_utc": "2026-10-13T17:19:34Z"
+    },
+    "E00_seed1": {
+      "config": "E00",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "OFF",
+      "seconds": 1042.0368099659681,
+      "started_utc": "2026-10-13T16:55:14Z",
+      "completed_utc": "2026-10-13T17:18:59Z"
+    },
+    "E00_seed2": {
+      "config": "E00",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "OFF",
+      "seconds": 1072.392060417682,
+      "started_utc": "2026-10-13T16:55:12Z",
+      "completed_utc": "2026-10-13T17:18:55Z"
+    },
+    "E01_seed0": {
+      "config": "E01",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "OLD_P1",
+      "disease": "OFF",
+      "seconds": 514.7432957440615,
+      "started_utc": "2026-10-13T17:19:53Z",
+      "completed_utc": "2026-10-13T17:28:27Z"
+    },
+    "E01_seed1": {
+      "config": "E01",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "OLD_P1",
+      "disease": "OFF",
+      "seconds": 560.3984315991402,
+      "started_utc": "2026-10-13T17:19:53Z",
+      "completed_utc": "2026-10-13T17:29:13Z"
+    },
+    "E01_seed2": {
+      "config": "E01",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "OLD_P1",
+      "disease": "OFF",
+      "seconds": 543.7414323501289,
+      "started_utc": "2026-10-13T17:19:52Z",
+      "completed_utc": "2026-10-13T17:28:56Z"
+    },
+    "E02_seed0": {
+      "config": "E02",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "OFF",
+      "seconds": 498.24145474657416,
+      "started_utc": "2026-10-13T17:19:50Z",
+      "completed_utc": "2026-10-13T17:28:08Z"
+    },
+    "E02_seed1": {
+      "config": "E02",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "OFF",
+      "seconds": 509.121323607862,
+      "started_utc": "2026-10-13T17:19:53Z",
+      "completed_utc": "2026-10-13T17:28:22Z"
+    },
+    "E02_seed2": {
+      "config": "E02",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "OFF",
+      "seconds": 512.142918933183,
+      "started_utc": "2026-10-13T17:19:50Z",
+      "completed_utc": "2026-10-13T17:28:22Z"
+    },
+    "E03_seed0": {
+      "config": "E03",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SHARED",
+      "disease": "OFF",
+      "seconds": 516.6955308206379,
+      "started_utc": "2026-10-13T17:19:52Z",
+      "completed_utc": "2026-10-13T17:28:29Z"
+    },
+    "E03_seed1": {
+      "config": "E03",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SHARED",
+      "disease": "OFF",
+      "seconds": 567.4241263791919,
+      "started_utc": "2026-10-13T17:19:52Z",
+      "completed_utc": "2026-10-13T17:29:19Z"
+    },
+    "E03_seed2": {
+      "config": "E03",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SHARED",
+      "disease": "OFF",
+      "seconds": 564.8356582038105,
+      "started_utc": "2026-10-13T17:28:34Z",
+      "completed_utc": "2026-10-13T17:37:59Z"
+    },
+    "E04_seed0": {
+      "config": "E04",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "OFF",
+      "seconds": 574.4095041453838,
+      "started_utc": "2026-10-13T17:28:23Z",
+      "completed_utc": "2026-10-13T17:37:57Z"
+    },
+    "E04_seed1": {
+      "config": "E04",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "OFF",
+      "seconds": 551.8103294670582,
+      "started_utc": "2026-10-13T17:28:39Z",
+      "completed_utc": "2026-10-13T17:37:51Z"
+    },
+    "E04_seed2": {
+      "config": "E04",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "OFF",
+      "seconds": 599.8678639233112,
+      "started_utc": "2026-10-13T17:28:34Z",
+      "completed_utc": "2026-10-13T17:38:34Z"
+    },
+    "E05_seed0": {
+      "config": "E05",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "HISTORICAL",
+      "seconds": 543.20535351336,
+      "started_utc": "2026-10-13T17:28:44Z",
+      "completed_utc": "2026-10-13T17:37:48Z"
+    },
+    "E05_seed1": {
+      "config": "E05",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "HISTORICAL",
+      "seconds": 610.8008353970945,
+      "started_utc": "2026-10-13T17:29:27Z",
+      "completed_utc": "2026-10-13T17:39:38Z"
+    },
+    "E05_seed2": {
+      "config": "E05",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "HISTORICAL",
+      "seconds": 571.793698694557,
+      "started_utc": "2026-10-13T17:29:11Z",
+      "completed_utc": "2026-10-13T17:38:42Z"
+    },
+    "E06_seed0": {
+      "config": "E06",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "FC_CENTRIC",
+      "seconds": 582.7815431468189,
+      "started_utc": "2026-10-13T17:29:31Z",
+      "completed_utc": "2026-10-13T17:39:14Z"
+    },
+    "E06_seed1": {
+      "config": "E06",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "FC_CENTRIC",
+      "seconds": 530.2116094790399,
+      "started_utc": "2026-10-13T17:38:00Z",
+      "completed_utc": "2026-10-13T17:46:50Z"
+    },
+    "E06_seed2": {
+      "config": "E06",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "FC_CENTRIC",
+      "seconds": 567.1332911476493,
+      "started_utc": "2026-10-13T17:38:12Z",
+      "completed_utc": "2026-10-13T17:47:39Z"
+    },
+    "E07_seed0": {
+      "config": "E07",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "BALANCED",
+      "seconds": 551.3338833488524,
+      "started_utc": "2026-10-13T17:38:06Z",
+      "completed_utc": "2026-10-13T17:47:17Z"
+    },
+    "E07_seed1": {
+      "config": "E07",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "BALANCED",
+      "seconds": 580.2175866886973,
+      "started_utc": "2026-10-13T17:38:47Z",
+      "completed_utc": "2026-10-13T17:48:27Z"
+    },
+    "E07_seed2": {
+      "config": "E07",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "BALANCED",
+      "seconds": 522.8183415532112,
+      "started_utc": "2026-10-13T17:38:12Z",
+      "completed_utc": "2026-10-13T17:46:55Z"
+    },
+    "E08_seed0": {
+      "config": "E08",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "SELECTIVE",
+      "seconds": 606.0019538141787,
+      "started_utc": "2026-10-13T17:39:30Z",
+      "completed_utc": "2026-10-13T17:49:36Z"
+    },
+    "E08_seed1": {
+      "config": "E08",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "SELECTIVE",
+      "seconds": 593.3063934855163,
+      "started_utc": "2026-10-13T17:38:59Z",
+      "completed_utc": "2026-10-13T17:48:52Z"
+    },
+    "E08_seed2": {
+      "config": "E08",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "SELECTIVE",
+      "seconds": 576.0990893505514,
+      "started_utc": "2026-10-13T17:39:50Z",
+      "completed_utc": "2026-10-13T17:49:26Z"
+    },
+    "E09_seed0": {
+      "config": "E09",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "CLINICAL_CORE",
+      "seconds": 558.9226179122925,
+      "started_utc": "2026-10-13T17:47:03Z",
+      "completed_utc": "2026-10-13T17:56:22Z"
+    },
+    "E09_seed1": {
+      "config": "E09",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "CLINICAL_CORE",
+      "seconds": 566.3278508149087,
+      "started_utc": "2026-10-13T17:47:52Z",
+      "completed_utc": "2026-10-13T17:57:18Z"
+    },
+    "E09_seed2": {
+      "config": "E09",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "CLINICAL_CORE",
+      "seconds": 514.232811383903,
+      "started_utc": "2026-10-13T17:47:09Z",
+      "completed_utc": "2026-10-13T17:55:43Z"
+    },
+    "E10_seed0": {
+      "config": "E10",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "NEUTRAL",
+      "seconds": 541.8485019095242,
+      "started_utc": "2026-10-13T17:48:44Z",
+      "completed_utc": "2026-10-13T17:57:46Z"
+    },
+    "E10_seed1": {
+      "config": "E10",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "NEUTRAL",
+      "seconds": 558.8166065476835,
+      "started_utc": "2026-10-13T17:47:30Z",
+      "completed_utc": "2026-10-13T17:56:49Z"
+    },
+    "E10_seed2": {
+      "config": "E10",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "NEUTRAL",
+      "seconds": 569.757944766432,
+      "started_utc": "2026-10-13T17:49:42Z",
+      "completed_utc": "2026-10-13T17:59:12Z"
+    },
+    "E11_seed0": {
+      "config": "E11",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "SELECTIVE",
+      "seconds": 532.1110605970025,
+      "started_utc": "2026-10-13T17:49:05Z",
+      "completed_utc": "2026-10-13T17:57:57Z"
+    },
+    "E11_seed1": {
+      "config": "E11",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "SELECTIVE",
+      "seconds": 588.4608311541378,
+      "started_utc": "2026-10-13T17:49:47Z",
+      "completed_utc": "2026-10-13T17:59:36Z"
+    },
+    "E11_seed2": {
+      "config": "E11",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "P0",
+      "disease": "SELECTIVE",
+      "seconds": 542.5990690588951,
+      "started_utc": "2026-10-13T17:55:56Z",
+      "completed_utc": "2026-10-13T18:04:58Z"
+    },
+    "E12_seed0": {
+      "config": "E12",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "SELECTIVE",
+      "seconds": 552.7022032178938,
+      "started_utc": "2026-10-13T17:57:32Z",
+      "completed_utc": "2026-10-13T18:06:45Z"
+    },
+    "E12_seed1": {
+      "config": "E12",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "SELECTIVE",
+      "seconds": 545.396218303591,
+      "started_utc": "2026-10-13T17:56:38Z",
+      "completed_utc": "2026-10-13T18:05:43Z"
+    },
+    "E12_seed2": {
+      "config": "E12",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P1_SHARED",
+      "disease": "SELECTIVE",
+      "seconds": 549.2432687580585,
+      "started_utc": "2026-10-13T17:57:58Z",
+      "completed_utc": "2026-10-13T18:07:08Z"
+    },
+    "E13_seed0": {
+      "config": "E13",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_MISMATCHED",
+      "disease": "SELECTIVE",
+      "seconds": 571.322278238833,
+      "started_utc": "2026-10-13T17:57:05Z",
+      "completed_utc": "2026-10-13T18:06:36Z"
+    },
+    "E13_seed1": {
+      "config": "E13",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_MISMATCHED",
+      "disease": "SELECTIVE",
+      "seconds": 590.0108076259494,
+      "started_utc": "2026-10-13T17:59:27Z",
+      "completed_utc": "2026-10-13T18:09:17Z"
+    },
+    "E13_seed2": {
+      "config": "E13",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "local": "NEW_P3_MISMATCHED",
+      "disease": "SELECTIVE",
+      "seconds": 558.0740813501179,
+      "started_utc": "2026-10-13T17:58:14Z",
+      "completed_utc": "2026-10-13T18:07:32Z"
+    }
+  },
+  "configurations": {
+    "E00": {
+      "local": "P0",
+      "disease": "OFF",
+      "additional_parameters": 0
+    },
+    "E01": {
+      "local": "OLD_P1",
+      "disease": "OFF",
+      "additional_parameters": 0
+    },
+    "E02": {
+      "local": "NEW_P1_SHARED",
+      "disease": "OFF",
+      "additional_parameters": 0
+    },
+    "E03": {
+      "local": "NEW_P3_SHARED",
+      "disease": "OFF",
+      "additional_parameters": 0
+    },
+    "E04": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "OFF",
+      "additional_parameters": 0
+    },
+    "E05": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "HISTORICAL",
+      "additional_parameters": 36865
+    },
+    "E06": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "FC_CENTRIC",
+      "additional_parameters": 36865
+    },
+    "E07": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "BALANCED",
+      "additional_parameters": 36865
+    },
+    "E08": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "SELECTIVE",
+      "additional_parameters": 36865
+    },
+    "E09": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "CLINICAL_CORE",
+      "additional_parameters": 36865
+    },
+    "E10": {
+      "local": "NEW_P3_SPECIFIC",
+      "disease": "NEUTRAL",
+      "additional_parameters": 36865
+    },
+    "E11": {
+      "local": "P0",
+      "disease": "SELECTIVE",
+      "additional_parameters": 36865
+    },
+    "E12": {
+      "local": "NEW_P1_SHARED",
+      "disease": "SELECTIVE",
+      "additional_parameters": 36865
+    },
+    "E13": {
+      "local": "NEW_P3_MISMATCHED",
+      "disease": "SELECTIVE",
+      "additional_parameters": 36865
+    }
+  },
+  "complete_folds": 420,
+  "preflight": {
+    "status": "PASS",
+    "completed_utc": "2026-10-13T16:53:43Z",
+    "signature": "b32f8e5f894e8c828eea1a89d2a428c7468f5c341ee693399cb9a8757ba56ec5",
+    "checks": {
+      "all_14_common_initial_weights_equal": true,
+      "extra_init_rng_isolated": true,
+      "first_RN50_rng_matches_original": true,
+      "original_P0_forward_max_error": 0.0,
+      "old_P1_grouping_projection_exact": true,
+      "E05_E9_formula_exact": true,
+      "E13_texts_and_mapping_exact": true,
+      "parameter_counts": {
+        "E00": 1462957,
+        "E01": 1462957,
+        "E02": 1462957,
+        "E03": 1462957,
+        "E04": 1462957,
+        "E05": 1499822,
+        "E06": 1499822,
+        "E07": 1499822,
+        "E08": 1499822,
+        "E09": 1499822,
+        "E10": 1499822,
+        "E11": 1499822,
+        "E12": 1499822,
+        "E13": 1499822
+      },
+      "tokenize_truncate_false_max_tokens": 27,
+      "frozen_encode_calls_per_epoch": 0,
+      "three_seeds_extra_initialization_equal": true,
+      "gradients_two_steps": {
+        "local_mlp": 0.062010320899726266,
+        "projector": 0.0022626992874664707,
+        "alpha": 0.0006637309041054196
+      },
+      "all_gradients_finite": true,
+      "model_Adam_RNG_resume_exact": true,
+      "disease_CE_train_indices_only": true,
+      "counterfactual_only_prescribed_inputs": true,
+      "counterfactual_REAL_exact": true,
+      "OFF_no_auxiliary_CE": true,
+      "original_fifth_fold_guard_preserved": true,
+      "all_80_new_sentences_verbatim": true,
+      "corrected_E03_initialization_shape_finite_pass": true
+    }
+  },
+  "started_unix": 1791910501.254061,
+  "started_utc": "2026-10-13T16:55:01Z",
+  "E00_parity": {
+    "status": "PASS",
+    "folds": 30,
+    "max_absolute_error": {
+      "acc": 0.0,
+      "balanced_accuracy": 0.0,
+      "hard_auc": 0.0,
+      "probability_auc": 0.0,
+      "sensitivity_asd": 0.0,
+      "specificity_td": 0.0
+    },
+    "reference": "experiment13 exact original P0, all six metrics"
+  },
+  "completed_tasks": 42,
+  "counterfactual_rows": 150,
+  "diagnostics_rows": 420,
+  "updated_utc": "2026-10-13T18:09:21Z",
+  "task_spec_sha256": "2721aa1fd9dbf08d2eb9c4365eb068b36c01c7882ef9130bd2b22c33eff165cc",
+  "repairs": [
+    {
+      "utc": "2026-10-13T16:59:34Z",
+      "scope": "before non-P0 formal training",
+      "reason": "One NEW_P3_SHARED TD sentence transcribed incorrectly; restored verbatim task text. Bounded JSON reads fix mount rename gap; cache immutable signature; defer COMPLETE until report, handoff and cleanup.",
+      "old_prompt_sha256": "bdece1ca725746a4814ee3defdff8e9c5cf7a417b40116de27b6e301ed936385",
+      "new_prompt_sha256": "7cda11ceff8ae1a72c075318e9e189cd415953353653aaa23a4dabcda2550d87",
+      "old_runner_sha256": "2ed95b632e2dec947f9638d48e97e0cbe9b997466da8f5c73c1e3ab31966bb13",
+      "new_runner_sha256": "413efaf667930779c110afd1f085cd7f7864e2efc9290985cf0e5abd5e824fc2",
+      "P0_training_formula_and_RNG_unchanged": true,
+      "all_80_new_sentences_verbatim": true
+    },
+    {
+      "scope": "I/O only; after 12 E00 folds",
+      "reason": "Move state/checkpoints and isolated sources from OSS FUSE to local overlay; existing state files copied and SHA256 verified byte-for-byte.",
+      "old_runner_sha256": "413efaf667930779c110afd1f085cd7f7864e2efc9290985cf0e5abd5e824fc2",
+      "new_runner_sha256": "5f3b09ef0247835e33bc331bad084fd935d032f347e678c8e444f4e7612fed90",
+      "copied_files": 26,
+      "training_patch_and_model_Adam_RNG_unchanged": true,
+      "signature_preserved": true
+    },
+    {
+      "scope": "post-training reporting and completion I/O only",
+      "old_runner_sha256": "5f3b09ef0247835e33bc331bad084fd935d032f347e678c8e444f4e7612fed90",
+      "new_runner_sha256": "7fa14e60f4da1d499862cc6dad542870afa6dff5eb52291263a64f1c871bf782",
+      "training_math_patch_unchanged": true,
+      "training_metrics_unchanged": true,
+      "additional_training_folds": 0
+    }
+  ],
+  "training_runner_sha256": "413efaf667930779c110afd1f085cd7f7864e2efc9290985cf0e5abd5e824fc2",
+  "temporary_state_directory": "/tmp/spromptgl14-state-c2d6627b0a47",
+  "completed_utc": "2026-10-13T18:09:38Z",
+  "wall_seconds": 4477.255243778229,
+  "gpu_completion": {
+    "0": {
+      "tasks": 21,
+      "folds": 210,
+      "device": "0, GPU-019e4201-0591-0030-0000-000080387166, PPU-ZW810E, 98304 MiB"
+    },
+    "1": {
+      "tasks": 21,
+      "folds": 210,
+      "device": "1, GPU-019e4201-8920-0208-0000-0000c0f15256, PPU-ZW810E, 98304 MiB"
+    }
+  },
+  "acceptance": {
+    "groups": 14,
+    "tasks": 42,
+    "folds": 420,
+    "diagnostics": 420,
+    "counterfactual": 150,
+    "paired_initialization_all_30": true,
+    "protected_sources_history_unchanged": true,
+    "failed_attempt_metrics_mixed": false,
+    "no_training_processes": true,
+    "all_finite": true
+  },
+  "result_sha256": {
+    "results/reference.csv": "7ed9ecbc305ec950982a0edf9a8efabc1a78e41bfadefb1126ff809c66f9513d",
+    "results/fold_metrics.csv": "bbd94b7089d7937f52d3590c9511f9aa60cac715690f09b18477ab05b5a89af7",
+    "results/diagnostics.csv": "b271aa7ad16d3f4103f57fdb595da08e9b64eee00252387d7c17417fa38d2959",
+    "results/counterfactual.csv": "6ddc5e211efe964af82f19163c674ea11ce8c8d965b9d8c5b5c29e8b414fcf98",
+    "results/report.md": "00da17b6ad80bae91a14770cdd735dd4908202e0e0932c36f0bfb364d0d9d195"
+  },
+  "handoff_updated": true,
+  "temporary_cleanup": "DONE",
+  "handoff_sha256": "b26431b0bea824a4f08a855d708c9c71eb12aabadd196c08db8b12dbcf74561c",
+  "handoff_history_prefix_preserved": true
+}

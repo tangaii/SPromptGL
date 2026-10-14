@@ -1,0 +1,119 @@
+--- network.py
++++ network.py
+@@ -27,17 +27,11 @@
+                 ]
+ 
+ text = clip.tokenize(attr_words).to(device)
++from hsp_runtime import get_frozen_local, get_frozen_disease
+ _prompt_text_features = None
+ 
+-
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
+-    global _prompt_text_features
+-    if _prompt_text_features is None:
+-        clip_model, _ = clip.load('RN50', device)
+-        with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
+-    return _prompt_text_features
++    return get_frozen_local(os.environ.get('HSP_LOCAL_MODE', 'P0'))
+ 
+ class MLP(nn.Module):
+     def __init__(self, input_dim, hidden_dim, output_dim):
+@@ -103,8 +97,15 @@
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++        local_mode = os.environ.get('HSP_LOCAL_MODE', 'P0')
++        if local_mode in ('P0', 'NEW_P1_SHARED', 'NEW_P3_SHARED'):
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++        else:
++            text_features = text_features.reshape(4, 2, 4096)
+         text_features = self.MLP(text_features)
++        if local_mode == 'NEW_P3_MISMATCHED' or getattr(self, 'hsp_local_mismatch', False):
++            text_features = text_features[[2, 3, 0, 1]]
++        self.hsp_local_prototypes = text_features if text_features.ndim == 3 else text_features.unsqueeze(0).expand(4, -1, -1)
+         
+         
+         part_x = x.view(871, 4, 4, 9)
+@@ -112,11 +113,17 @@
+         text_features_norm = F.normalize(text_features, p=2, dim=-1)
+ 
+         # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
++        if text_features_norm.ndim == 2:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++        else:
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(2)
+         part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+ 
+         # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++        if text_features.ndim == 2:
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++        else:
++            similarity_matrix = torch.einsum("nmtf,mcf->nmtc", part_x_norm, F.normalize(text_features, p=2, dim=-1)).unsqueeze(-2)
+         similarity_matrix = similarity_matrix[:,:,:,-1,:]
+ 
+         # 进行数值截断以避免数值问题
+@@ -129,6 +136,7 @@
+         similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+ 
+         # 进行最终的计算
++        self.hsp_local_gate = similarity_max
+         part_x = similarity_max.unsqueeze(-1) * part_x
+         # 对最后一个维度进行平均池化
+         
+@@ -148,6 +156,18 @@
+         x = x.view(bs, -1)
+         attn_embedding = attn.view(bs, -1) 
+         output, hidden = self.Outputlayer(x, attn_embedding)
++        self.hsp_base_output = output
++        self.hsp_hidden = hidden
++        if getattr(self, 'hsp_disease_enabled', False):
++            prototypes = getattr(self, 'hsp_prototype_override', None)
++            if prototypes is None: prototypes = self.disease_prototypes
++            subject = F.normalize(self.disease_projector(hidden), dim=-1)
++            prototypes = F.normalize(prototypes, dim=-1)
++            self.hsp_disease_logits = subject @ prototypes.t() / 0.2
++            self.hsp_gamma = 0.2 * torch.tanh(self.disease_alpha)
++            self.hsp_contribution = self.hsp_gamma * self.hsp_disease_logits
++            if not getattr(self, 'hsp_disease_off', False):
++                output = F.log_softmax(output + self.hsp_contribution, dim=-1)
+         return output, hidden, attn_map
+   
+ class GraphLearn(nn.Module):
+--- model.py
++++ model.py
+@@ -77,6 +77,19 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        self.hsp_disease_enabled = os.environ.get('HSP_DISEASE_MODE', 'OFF') != 'OFF'
++        self.ModalFusion.hsp_disease_enabled = self.hsp_disease_enabled
++        if self.hsp_disease_enabled:
++            self.ModalFusion.register_buffer('disease_prototypes', get_frozen_disease(os.environ['HSP_DISEASE_MODE']))
++            # Appended after original initialization; isolated extra random stream.
++            with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
++                torch.manual_seed(140000 + int(hyperpm.seed))
++                self.ModalFusion.disease_projector = nn.Linear(36, 1024, bias=False).to(dev)
++                my_weight_init(self.ModalFusion.disease_projector)
++            self.ModalFusion.disease_alpha = nn.Parameter(torch.zeros((), device=dev))
++            extra = list(self.ModalFusion.disease_projector.parameters()) + [self.ModalFusion.disease_alpha]
++            assert sum(p.numel() for p in extra) == 36865
++            self.optimizer_MF.add_param_group({'params': extra, 'weight_decay': 0.0})
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -141,6 +154,10 @@
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+             
+             loss = cls_loss + all_graph_loss
++            if self.hsp_disease_enabled:
++                disease_loss = F.cross_entropy(self.ModalFusion.hsp_disease_logits[self.trn_idx], self.targ[self.trn_idx], weight=self.weight)
++                loss = loss + 0.1 * disease_loss
++                self.hsp_last_disease_loss = disease_loss.detach()
+             
+             loss.backward()
+             
