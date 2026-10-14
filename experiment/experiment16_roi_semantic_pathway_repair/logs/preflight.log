@@ -1,0 +1,17 @@
+ATTEMPT 1: exact zero-reference audit
+/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/run.py:678: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  if config!='B0':assert float(a.ModalFusion.roi_encoder.alpha)==0 and torch.count_nonzero(a.ModalFusion.roi_encoder.last['delta'])==0
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/run.py", line 1412, in <module>
+    main()
+  File "/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/run.py", line 1401, in main
+    preflight()
+  File "/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/run.py", line 750, in preflight
+    zeros=torch.zeros_like(base['semantic_node']);updated,_=mod.update_nodes(zeros);assert torch.count_nonzero(updated)==0 and torch.count_nonzero(mod.decode_edges(updated))==0
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/run.py:678: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  if config!='B0':assert float(a.ModalFusion.roi_encoder.alpha)==0 and torch.count_nonzero(a.ModalFusion.roi_encoder.last['delta'])==0
+PREFLIGHT_PASS {"parameters": {"B0": 1462957, "B1": 1501199, "B2": 1501199, "B3": 1501199, "B4": 1501199, "B5": 1502158, "B6": 1502158, "B7": 1502158, "B8": 1502158, "B9": 1502158}, "initial_errors": {"B0": 0.0, "B1": 0.0, "B2": 0.0, "B3": 0.0, "B4": 0.0, "B5": 0.0, "B6": 0.0, "B7": 0.0, "B8": 0.0, "B9": 0.0}, "legacy_exact": true, "B6_probe": {"stage_max_changes": {"score": 0.050278641283512115, "semantic_node": 0.09528066217899323, "updated": 0.04310014843940735, "edge_signal": 0.004706826992332935, "delta": 0.0002787005214486271}, "synthetic_output_change_max": 0.00014257431030273438, "gradient_norms": {"numerical": 5.413664229081186e-05, "query": 1.0476277379565032e-05, "self_transform": 2.6314739773777757e-05, "positive_map": 2.4503171061528206e-05, "negative_map": 1.12201625116242e-05, "decoder": 3.725858164045015e-05, "alpha": 1.033535590977408e-05}, "gram_value_max_error": 7.450580596923828e-08, "gram_gradient_max_error": 1.4901161193847656e-08, "zero_reference_value_max_error": 1.4901161193847656e-08, "zero_reference_gradient_max_error": 3.725290298461914e-09, "nonzero_constant_path": true, "zero_node_zero_output": true, "no_direct_fc": true, "endpoint_symmetric": true}}

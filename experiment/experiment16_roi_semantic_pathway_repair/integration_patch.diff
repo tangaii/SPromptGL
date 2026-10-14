@@ -1,0 +1,119 @@
+--- a/network.py
++++ b/network.py
+@@ -27,17 +27,10 @@
+                 ]
+ 
+ text = clip.tokenize(attr_words).to(device)
+-_prompt_text_features = None
+-
++from roi_repair_runtime import get_frozen_p0,make_roi_encoder,inject_roi,roi_weight_decay
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
+-    global _prompt_text_features
+-    if _prompt_text_features is None:
+-        clip_model, _ = clip.load('RN50', device)
+-        with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
+-    return _prompt_text_features
++    return get_frozen_p0()
+ 
+ class MLP(nn.Module):
+     def __init__(self, input_dim, hidden_dim, output_dim):
+@@ -102,34 +95,37 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+-        text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
+-        
+-        
+-        part_x = x.view(871, 4, 4, 9)
+-        part_x_norm = F.normalize(part_x, p=2, dim=-1)
+-        text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
+-        similarity_matrix = similarity_matrix[:,:,:,-1,:]
+-
+-        # 进行数值截断以避免数值问题
+-        similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+-
+-        # 计算 softmax
+-        similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+-
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        if os.environ.get('RSPR_CONFIG','B0') == 'B0':
++            text_features = self.prompt_text_features
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        
++        
++            part_x = x.view(871, 4, 4, 9)
++            part_x_norm = F.normalize(part_x, p=2, dim=-1)
++            text_features_norm = F.normalize(text_features, p=2, dim=-1)
++
++            # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
++
++            # 计算余弦相似度矩阵
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++            similarity_matrix = similarity_matrix[:,:,:,-1,:]
++
++            # 进行数值截断以避免数值问题
++            similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
++
++            # 计算 softmax
++            similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
++
++            # 获取 similarity_matrix 的最大值
++            similarity_max, _ = torch.max(similarity_matrix, dim=-1)
++
++            # 进行最终的计算
++            part_x = similarity_max.unsqueeze(-1) * part_x
++        else:
++            part_x = x.view(871,4,4,9)
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
+--- a/model.py
++++ b/model.py
+@@ -77,6 +77,12 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        if os.environ.get('RSPR_CONFIG','B0') in ('B1','B2','B3','B4','B5','B6','B7','B8','B9'):
++            with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
++                torch.manual_seed(150000 + int(hyperpm.seed))
++                self.ModalFusion.roi_encoder = make_roi_encoder().to(dev)
++            self.optimizer_MF.add_param_group({'params': self.ModalFusion.roi_encoder.parameters(),
++                                             'lr': hyperpm.lr,'weight_decay': roi_weight_decay()})
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -129,6 +135,7 @@
+ 
+             model_num, feat1 = self.dataLayer(self.feat)
+             feat, adj, ALoss = self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
++            feat = inject_roi(self, feat)
+ 
+             all_graph_loss = 0
+             for i in range(model_num):  
+@@ -277,6 +284,7 @@
+         
+         model_num, feat1 = self.dataLayer(self.feat)
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
++        feat = inject_roi(self, feat)
+         
+         if mode == 'pre-train':
+             prob, _, attn = self.ModalFusion(feat)
