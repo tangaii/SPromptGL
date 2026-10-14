@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 1384, in <module>
+    main()
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 1373, in main
+    preflight()
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 714, in preflight
+    assert torch.equal(original.ModalFusion.prompt_text_features,c['static']['p0'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but got other is on cpu, different from other tensors on cuda:0 (when checking argument in method wrapper_CUDA__equal)
+/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py:734: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  assert torch.equal(out,no_spgs) and float(a.ModalFusion.roi_encoder.alpha)==0.
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 1384, in <module>
+    main()
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 1373, in main
+    preflight()
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 786, in preflight
+    grad_audit = diagnostics(a,config,0,1,out,tracked)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py", line 663, in diagnostics
+    assert torch.equal(module.text_features,expected_text) or torch.allclose(module.text_features,expected_text,atol=1e-7,rtol=0)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/run.py:734: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  assert torch.equal(out,no_spgs) and float(a.ModalFusion.roi_encoder.alpha)==0.
+PREFLIGHT_PASS {"initial_errors": {"A0_original": 0.0, "A2_A1": 0.0, "A3_A1": 0.0, "A4_A1": 0.0, "A5_A1": 0.0, "A6_A1": 0.0, "A7_A1": 0.0}, "parameters": {"A0": 1462957, "A1": 1462957, "A2": 1501199, "A3": 1501199, "A4": 1501199, "A5": 1501199, "A6": 1501199, "A7": 1501199}, "neighbor_propagation": 7.755943443044089e-09}
