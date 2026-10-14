@@ -1,0 +1,2754 @@
+{
+  "experiment": "DS3A-v3",
+  "schema_version": 1,
+  "run_status": "COMPLETE",
+  "prepared_utc": "2026-10-14T17:16:33.101517+00:00",
+  "root": "/data/adodas/SPromptGL-main",
+  "experiment_directory": "/data/adodas/SPromptGL-main/experiment/experiment18_discriminability_preserving_selective_alignment",
+  "temporary_state": "/tmp/spromptgl18-state-d72284c851ba",
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "configurations": {
+    "V0": {
+      "name": "原始P0",
+      "disc": false,
+      "weighting": "none",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V1": {
+      "name": "容量控制",
+      "disc": false,
+      "weighting": "none",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V2": {
+      "name": "FC Shared判别性保护",
+      "disc": true,
+      "weighting": "none",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V3": {
+      "name": "判别保护+统一患者对齐",
+      "disc": true,
+      "weighting": "ones",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V4": {
+      "name": "同强度常量对齐",
+      "disc": true,
+      "weighting": "mean",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V5": {
+      "name": "完整选择性对齐",
+      "disc": true,
+      "weighting": "real",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V6": {
+      "name": "可靠度错配控制",
+      "disc": true,
+      "weighting": "permuted",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V7": {
+      "name": "选择性对齐+FC教师Private蒸馏",
+      "disc": true,
+      "weighting": "real",
+      "private": true,
+      "mismatched_pair": false
+    },
+    "V8": {
+      "name": "无判别保护的统一对齐",
+      "disc": false,
+      "weighting": "ones",
+      "private": false,
+      "mismatched_pair": false
+    },
+    "V9": {
+      "name": "同类别跨患者配对错配",
+      "disc": true,
+      "weighting": "real",
+      "private": false,
+      "mismatched_pair": true
+    }
+  },
+  "audit": {
+    "source": "GFR四图传播拼接320维；i=0先赋值，i=1覆盖前次combined_feat，i=2/3累加。保留这一实际顺序。输出已混合。PLN InputLayer→Encoder→FeedForward生成871×4×36潜在特征；注入在最后FeedForward后、原SPGS前。P0原8句CLIP RN50→2×4096→4096/128/9 ReLU MLP→cosine/softmax/max标量；随后原global平均池化、局部channel-softmax和RES加法、log-softmax分类器完整保留。",
+    "training": "simple-2为加权NLL+四原输入图正则均值；ALoss计算但不反传。两个原Adam，PLN原my_weight_init执行后fork_rng创建辅助模块。450epoch，wait>200停止，严格ACC提升保存首次最佳；val=test，871人transductive，全队列既有标准化/RFE保留。不同组执行epoch不同后连续折随机流自然分叉，不能假称后续折初始化相同。",
+    "paper": "已实际阅读本地SPromptGL PDF Fig.1、Section2.1–2.2、Eq1–7和消融。Fig.2 ABIDE从CAM86.48到GFR91.73、RES92.08、SPGS92.30；主要增量来自GFR。论文Eq1的类别图项与源码未反传ALoss、论文图加权求和与源码覆盖行为、论文实现超参与本地shell有差异；本实验复现历史源码协议，不修补这些差异。",
+    "data": "PHENO48=26年龄分箱+20站点+2性别；辅助分支仅28年龄/性别，主干仍含20站点。ANAT6/FUNC10是QC；func_gsr指Ghost-to-Signal Ratio。CORR256为既有FC/RFE；不重算。当前无ADOS/ADI-R/SRS真实症状；CAM位置和局部Token不能解释为ROI。",
+    "history": "实验13患者FC文本未稳定超过自身状态/身份错配；14层级投影趋同且无稳定净收益；15文本内部响应未传递至最终预测、强衰减伴随消息接近零；16修复了文本敏感性但B5较P0 ACC下降0.841pp、残差约32.33%；17D5较P0 ACC/BA下降0.4210/0.3987pp，FC/PHENO类别原型cos0.9997/0.9986，Shared probes约60.14/49.36%BA，文本反事实零翻转。不能把距离降低、低Shared/Private cosine或非零梯度当作临床信息有效。E9真实30折六指标作为历史描述性对照。",
+    "novelty": "Shared/Private、辅助类别监督、蒸馏、加权对齐和残差融合均为已有组件。候选研究点为outer-train跨模态联合正确性代理驱动的可拒绝对齐，且同权重预算、错配权重和同类错配患者分别验证选择与对应。r仅控制训练损失，不进入推理融合；不是推理期患者Gate，也不是真实医学可靠度或实际对齐收益标签。"
+  },
+  "literature_audit": {
+    "MGDR": {
+      "url": "https://papers.miccai.org/miccai-2024/paper/2494_paper.pdf",
+      "read": "官方可解析全文方法及消融；shell下载返回空文本二页包装，未把包装当全文",
+      "conclusion": "模态关系图、SVD共性表示、私有表示对比约束及融合已有先例；本轮不使用SVD或私有对比损失。"
+    },
+    "SPromptGL": {
+      "url": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+      "read": "根目录11页原论文全文及Fig.1图像",
+      "conclusion": "原GFR/CAM/SPGS/RES作为固定主路径，保留实际源码与论文差异。"
+    },
+    "Class-Aware Semantic Decoupling": {
+      "url": "https://papers.miccai.org/miccai-2026/1073-Paper1452.html",
+      "read": "官方摘要；PDF入口不可可靠解析，不声称已读全文",
+      "conclusion": "CSSM/SDL/CSSF在类别语义层实现共享/特异、对齐和融合；本轮无类别文本查询或缺失模态任务。"
+    },
+    "To Align or Not to Align": {
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/download/39248/43209",
+      "preprint": "https://arxiv.org/abs/2511.12121",
+      "read": "官方AAAI26论文入口与14页arXiv全文",
+      "conclusion": "显式对齐的价值随模态冗余和特异信息变化；本轮冻结系数，用同强度常量控制区分选择与整体强度。"
+    }
+  },
+  "data_audit": {
+    "shape": [
+      871,
+      320
+    ],
+    "labels": {
+      "ASD_0": 403,
+      "TD_1": 468
+    },
+    "modality_columns": {
+      "PHENO": [
+        "AGE_AT_SCAN_[6.47, 8.47)",
+        "AGE_AT_SCAN_[8.47, 10.47)",
+        "AGE_AT_SCAN_[10.47, 12.47)",
+        "AGE_AT_SCAN_[12.47, 14.47)",
+        "AGE_AT_SCAN_[14.47, 16.47)",
+        "AGE_AT_SCAN_[16.47, 18.47)",
+        "AGE_AT_SCAN_[18.47, 20.47)",
+        "AGE_AT_SCAN_[20.47, 22.47)",
+        "AGE_AT_SCAN_[22.47, 24.47)",
+        "AGE_AT_SCAN_[24.47, 26.47)",
+        "AGE_AT_SCAN_[26.47, 28.47)",
+        "AGE_AT_SCAN_[28.47, 30.47)",
+        "AGE_AT_SCAN_[30.47, 32.47)",
+        "AGE_AT_SCAN_[32.47, 34.47)",
+        "AGE_AT_SCAN_[34.47, 36.47)",
+        "AGE_AT_SCAN_[36.47, 38.47)",
+        "AGE_AT_SCAN_[38.47, 40.47)",
+        "AGE_AT_SCAN_[40.47, 42.47)",
+        "AGE_AT_SCAN_[42.47, 44.47)",
+        "AGE_AT_SCAN_[44.47, 46.47)",
+        "AGE_AT_SCAN_[46.47, 48.47)",
+        "AGE_AT_SCAN_[48.47, 50.47)",
+        "AGE_AT_SCAN_[50.47, 52.47)",
+        "AGE_AT_SCAN_[52.47, 54.47)",
+        "AGE_AT_SCAN_[54.47, 56.47)",
+        "AGE_AT_SCAN_[56.47, 58.47)",
+        "SITE_ID_CALTECH",
+        "SITE_ID_CMU",
+        "SITE_ID_KKI",
+        "SITE_ID_LEUVEN_1",
+        "SITE_ID_LEUVEN_2",
+        "SITE_ID_MAX_MUN",
+        "SITE_ID_NYU",
+        "SITE_ID_OHSU",
+        "SITE_ID_OLIN",
+        "SITE_ID_PITT",
+        "SITE_ID_SBL",
+        "SITE_ID_SDSU",
+        "SITE_ID_STANFORD",
+        "SITE_ID_TRINITY",
+        "SITE_ID_UCLA_1",
+        "SITE_ID_UCLA_2",
+        "SITE_ID_UM_1",
+        "SITE_ID_UM_2",
+        "SITE_ID_USM",
+        "SITE_ID_YALE",
+        "SEX_1",
+        "SEX_2"
+      ],
+      "ANAT": [
+        "anat_cnr",
+        "anat_efc",
+        "anat_fber",
+        "anat_fwhm",
+        "anat_qi1",
+        "anat_snr"
+      ],
+      "FUNC": [
+        "func_efc",
+        "func_fber",
+        "func_fwhm",
+        "func_dvars",
+        "func_outlier",
+        "func_quality",
+        "func_mean_fd",
+        "func_num_fd",
+        "func_perc_fd",
+        "func_gsr"
+      ],
+      "Correlation": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46",
+        "47",
+        "48",
+        "49",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67",
+        "68",
+        "69",
+        "70",
+        "71",
+        "72",
+        "73",
+        "74",
+        "75",
+        "76",
+        "77",
+        "78",
+        "79",
+        "80",
+        "81",
+        "82",
+        "83",
+        "84",
+        "85",
+        "86",
+        "87",
+        "88",
+        "89",
+        "90",
+        "91",
+        "92",
+        "93",
+        "94",
+        "95",
+        "96",
+        "97",
+        "98",
+        "99",
+        "100",
+        "101",
+        "102",
+        "103",
+        "104",
+        "105",
+        "106",
+        "107",
+        "108",
+        "109",
+        "110",
+        "111",
+        "112",
+        "113",
+        "114",
+        "115",
+        "116",
+        "117",
+        "118",
+        "119",
+        "120",
+        "121",
+        "122",
+        "123",
+        "124",
+        "125",
+        "126",
+        "127",
+        "128",
+        "129",
+        "130",
+        "131",
+        "132",
+        "133",
+        "134",
+        "135",
+        "136",
+        "137",
+        "138",
+        "139",
+        "140",
+        "141",
+        "142",
+        "143",
+        "144",
+        "145",
+        "146",
+        "147",
+        "148",
+        "149",
+        "150",
+        "151",
+        "152",
+        "153",
+        "154",
+        "155",
+        "156",
+        "157",
+        "158",
+        "159",
+        "160",
+        "161",
+        "162",
+        "163",
+        "164",
+        "165",
+        "166",
+        "167",
+        "168",
+        "169",
+        "170",
+        "171",
+        "172",
+        "173",
+        "174",
+        "175",
+        "176",
+        "177",
+        "178",
+        "179",
+        "180",
+        "181",
+        "182",
+        "183",
+        "184",
+        "185",
+        "186",
+        "187",
+        "188",
+        "189",
+        "190",
+        "191",
+        "192",
+        "193",
+        "194",
+        "195",
+        "196",
+        "197",
+        "198",
+        "199",
+        "200",
+        "201",
+        "202",
+        "203",
+        "204",
+        "205",
+        "206",
+        "207",
+        "208",
+        "209",
+        "210",
+        "211",
+        "212",
+        "213",
+        "214",
+        "215",
+        "216",
+        "217",
+        "218",
+        "219",
+        "220",
+        "221",
+        "222",
+        "223",
+        "224",
+        "225",
+        "226",
+        "227",
+        "228",
+        "229",
+        "230",
+        "231",
+        "232",
+        "233",
+        "234",
+        "235",
+        "236",
+        "237",
+        "238",
+        "239",
+        "240",
+        "241",
+        "242",
+        "243",
+        "244",
+        "245",
+        "246",
+        "247",
+        "248",
+        "249",
+        "250",
+        "251",
+        "252",
+        "253",
+        "254",
+        "255"
+      ]
+    },
+    "pheno_age_sex_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      46,
+      47
+    ],
+    "site_indices": [
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ]
+  },
+  "source_data_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/data_processing.ipynb": "348147e93555f765b4e78151b11221556a151b091f931d05b814dbcb70100c0f",
+    "/data/adodas/SPromptGL-main/CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "/data/adodas/SPromptGL-main/CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "/data/adodas/SPromptGL-main/CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad"
+  },
+  "protected_history_sha256": {
+    "experiment/experiment10_disease_semantic_specificity/README.md": "f39cc96e2b6a8404781e5892d80ee64f896a613e88c6595d7c7a0fac01c92ed6",
+    "experiment/experiment10_disease_semantic_specificity/control_patch.diff": "5810d6ff1d2c57d3bb6af14c8a4c8e1e10e6c6b64d049d5829529bcfba110704",
+    "experiment/experiment10_disease_semantic_specificity/logs/C1_seed0.log": "45e896530df9417f3338de4822e636d69c4e7f880e32990998c7af5a9d1a58c7",
+    "experiment/experiment10_disease_semantic_specificity/logs/C1_seed1.log": "eadf5da9f94e5fc4bf7ce35aa466fc956bd12ea2c2a13225c0ae9e225e329cf0",
+    "experiment/experiment10_disease_semantic_specificity/logs/C1_seed2.log": "fe39c06cb63211443b4d90001e8352a7647e60816efb2d7cbf7a5711049f0bc3",
+    "experiment/experiment10_disease_semantic_specificity/logs/C2_seed0.log": "cf059bf24ff5a4f2587075e188d41e15c3351f8957b32a61b3a561eaf97ff9da",
+    "experiment/experiment10_disease_semantic_specificity/logs/C2_seed1.log": "1e30cf42739c61c9610a13e8e176f52671e69437cd29cce474ab271741f6eb57",
+    "experiment/experiment10_disease_semantic_specificity/logs/C2_seed2.log": "1f77d6545cf7b1fcfd5412edca908dbe9a7046384b2b3cd572ab68d9ef8f493a",
+    "experiment/experiment10_disease_semantic_specificity/logs/scheduler.log": "945af700780e3784ca4e62d4a3d7abc3c7b358d44bb5e57cf13449e00c89372a",
+    "experiment/experiment10_disease_semantic_specificity/manifest.json": "384273b95ef763380baac393d1d49e3665a6a968a18785970eef6af8abfd63b6",
+    "experiment/experiment10_disease_semantic_specificity/prompts.json": "5f538c586ff7312432956f66439a73ea034fe68a6144c025271b83b74bc912d4",
+    "experiment/experiment10_disease_semantic_specificity/results/counterfactual.csv": "a72551f27c6a03ff21e6b34a23f0748641275bcd22b7d95f829ce371a3b03f4e",
+    "experiment/experiment10_disease_semantic_specificity/results/disease_diagnostics.csv": "28950a003fbf401ef3d68f34eea4b858994112f63e033ab014c98e6114f0e0e1",
+    "experiment/experiment10_disease_semantic_specificity/results/fold_metrics.csv": "8a241ed11bbcd1e81fe4f6f50c648602e3ef805bf00e977cbbdda173b4505fe9",
+    "experiment/experiment10_disease_semantic_specificity/results/reference.csv": "62a61f9a21a2015225ba03b98f1e31da8e0f3ba2580ab02d33302b14abcfce0c",
+    "experiment/experiment10_disease_semantic_specificity/results/report.md": "64152ef7ed5cadc26e8f4f999faca222a65a2a096b0c8c48792fd315f96cc3ae",
+    "experiment/experiment10_disease_semantic_specificity/run.py": "c29740459204553cfc07768ec16dd2124a3776af8dbd72b1957851fb4b3bd21b",
+    "experiment/experiment11_roi_mapping_recovery/README.md": "757e2f827a350083fdd80a731eda4010c788f4bfebcdb917204cb7e5e6c518b0",
+    "experiment/experiment11_roi_mapping_recovery/logs/migration.log": "793ddd653a08a54a29c8aaac77d72be4d8568a247498a3b72809a51b6b57181b",
+    "experiment/experiment11_roi_mapping_recovery/logs/recovery.log": "bc88002545ed640e805475907d7d2b9fe4dbb3e89e66eecbf311b8b932c91b5c",
+    "experiment/experiment11_roi_mapping_recovery/logs/roi_label_recovery.log": "99a6d9518d571e192c25fa247df7b8cc1b97e1cead2c1bf6539fa0c2baf345f2",
+    "experiment/experiment11_roi_mapping_recovery/recover_roi_labels.py": "4d181fcb74cd0d2f285cdffa90d7213f8bc5aaec63b7774d61733a8f0ff1da89",
+    "experiment/experiment11_roi_mapping_recovery/recover_roi_mapping.py": "d69c5ed2c02e61da65b8d670d35a7a0f1f9a9d2d147eac7a32bde8b05a97ec5f",
+    "experiment/experiment11_roi_mapping_recovery/reference/HarvardOxford-Cortical.xml": "ef3710a974a6aad06b98c1233e3eaad7566a4b87a15f0a45e0ff09b1949a1edb",
+    "experiment/experiment11_roi_mapping_recovery/reference/HarvardOxford-Subcortical.xml": "902088b2ce0f005861084190fbf494c4a65a0201a08f7e44f15dfb351e172cd3",
+    "experiment/experiment11_roi_mapping_recovery/reference/README_migrated_original.md": "4a585d3c6253c4d80d758017f7a4cef6a7d05101dbb69620511c0a96b30908d6",
+    "experiment/experiment11_roi_mapping_recovery/reference/abide_rois.txt": "99878b225656ef8f519ae9b93ee4d38d8e1983089fabe37e1f831ea8f99f7e36",
+    "experiment/experiment11_roi_mapping_recovery/reference/atlas_source_manifest.json": "a17400907ac4584abfb14e15cdd5085f29d250411213330f837fd105bd3ad6d6",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-4_0_2/HarvardOxford-cort-maxprob-thr25-2mm.nii.gz": "586d76a7defd278fcea4d83d301994d7e096aa8272d26e3c7539b4f8ebd588c1",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-4_0_2/HarvardOxford-sub-maxprob-thr25-2mm.nii.gz": "02a69ed80d75876de8237c59320587efdf832c9334d16ba45618e45a0e05b774",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-5_0_11/HarvardOxford/HarvardOxford-cort-maxprob-thr25-2mm.nii.gz": "7397ffdbae7559e0f0aa6237f998dc0f6aca3f9db9009f6ffa637c0c62b686ca",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-5_0_11/HarvardOxford/HarvardOxford-sub-maxprob-thr25-2mm.nii.gz": "72140df8117250d915b753ca2937e078c917525d206e6185e2c1b4ab703fbfcc",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-5_0_11/HarvardOxford-Cortical.xml": "b8eb5ba5e787a4d3b442f75041f533f31b278a83e467bd2ab22438c1cff36581",
+    "experiment/experiment11_roi_mapping_recovery/reference/fsl-5_0_11/HarvardOxford-Subcortical.xml": "4aa369944d514843a07b5e6febac0c844e76fc1980ab203a0021b083de699650",
+    "experiment/experiment11_roi_mapping_recovery/reference/ho_mask_pad.nii.gz": "e2ef01f7394a5d0dde7c8cd57f8cc72079b2115b4180d6466aafb0831e08f8c1",
+    "experiment/experiment11_roi_mapping_recovery/reference/pipeline_config_abide_rerun.yml": "86392916beccef674d62a2a7c5132cd9f466d7759827c1fb84a13e253a20e63a",
+    "experiment/experiment11_roi_mapping_recovery/results/data_audit.json": "c4afa0453be4b316794a8bc825b2a37ef5624b9a7ac128ab741955b16b316470",
+    "experiment/experiment11_roi_mapping_recovery/results/feature_validation.csv": "a34e29903909900fbc8e9234b26178ae3691229201b2ca15007c603f7cb79c1f",
+    "experiment/experiment11_roi_mapping_recovery/results/report.md": "a6358416262962415aceb99c02948e97ec6a15832229f41ccc9d3dd505534f88",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_111_labels.csv": "4f9cd719d27c1e8b9a6cf8933534c0b796101cacf248e509fcfd3c5868fa3ebf",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_256_mapping.csv": "53c927ebf8a594108942146992b14bc0945f0271b713a669ff00ce37e5f8788d",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_label_audit.json": "ee6b6efb29648cdaa94b6c2154986fcff9a7092fb46419837fd90709b17a463b",
+    "experiment/experiment11_roi_mapping_recovery/results/roi_label_report.md": "a69657bb50ea0156b3b3eca3d8793a3817d4ffadde293e21194b28f1478d2adf",
+    "experiment/experiment11_roi_mapping_recovery/results/subject_row_mapping.csv": "213d31cca4d6843c8a4514471f17291a23b5cfb05a3f5e9bb40e2b78fed1e859",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/README.md": "2e155d6f93f106b70d7b03009f1bf5fca63e06b0008f02ce47bed03b95fe33ed",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/build_roi_semantics.py": "aa9d2f95188a6b5f289c8f376a963cec6d9568e93d3547dc0594c478230c28aa",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/cache/roi_text_embeddings.pt": "9ec742afbe4874d5bc925979bf08592ca85bf39a63ae87cdafa78beeaf310650",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F0_best.pt": "b32335c4d8d81e6c7bc49631c5f457b06beafa3ebb1f377b8e5b83b105b9224e",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F0_result.json": "733dbb50acf255ac33a1b69632ef22cabeb397128f8a80ec9f1f49079034be3e",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F1_best.pt": "c17be9e6c8fc10850392d23ebd388eb66ee3c1170eab7024236409d6a7b03136",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F1_result.json": "b25a5903b533e53adcf01dbaeba2102346cc35fd81db09388ef63c57075fbae4",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F2_best.pt": "e64d64a22df8df4258fdbb59e758f15dbe405c021bd3a3b2d9b3d4c13c1b86e8",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F2_result.json": "797b62b9adb1ec23726eabf58650954f9d73660b74dfd418c3115060ebae9d79",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F3_best.pt": "8d0724fdd8080c97e02b0a23d0d811d2c23cd2126054fe51df501320a295b9cf",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/checkpoints/F3_result.json": "411d7762a2d6f30ad7446d17fd9c3e7ec8d20a3e998ca8276c692b5a66c94bf5",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/integration_patch.diff": "75813dd9cea9e879d81b33defc9bd51a25cd7e8b0a943112eaa110fd31d1e2ca",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/F0_seed0_fold1.log": "a4c25cad5416f146d6cc6dcc82f07e9a883c364e588ea593636b0da9887109aa",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/F1_seed0_fold1.log": "3f84c1bde42835ca058c8d976497f6af17ac44716c795bfba6fa2ac4f5b54369",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/F2_seed0_fold1.log": "188e38c2260262f5783dbc108283230d3e47c90d46809b8b8072a88790cba2bb",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/F3_seed0_fold1.log": "4c8d173d3423a5f7f3408ad2bed90dfeb339ae59af2ce6c1a1cf6fb93ce5c6c7",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/final_refresh.log": "c1ace285d08bc0ac86b2bb8dbef1ab27e2ee5da028b98c0d8d4bb51592f98cab",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/gpu_allocation_during.log": "702df6575712c31cf122033844709dc4b9d86133466e77293be6ec08d3f3630e",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/preflight.log": "1997ec3469f75df92c33f4cf3d6d98a9a9bcbeeca5d5219c7326730177ed9889",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/prepare.log": "3f9b15c52805bb4af508fae2b3c3904a464289063e56f46ded83a9861fc6f4a1",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/resources_after.log": "00c3b21663270e1e2dbc006b9a5e1091f6b0dbd42020c66ad18dff9ff03d7965",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/resources_before.log": "4a0d8ab25188024d3a1f04a042ec8f05fe078c2a23d29db2b0df5e935b88417a",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/logs/scheduler.log": "08c9eded2c31e377bdd56bced011cfb98936426312d63f1fe7990dab4cc89ab6",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/manifest.json": "a670d96193305d941a9637bdc9f00c44b988c577eb1929242c4bc8051bbc6ae6",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/prompts.json": "188ea9878283452e792fcc672d50f1c16aa17949a1951639896a21aeb17159d1",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/alignment_diagnostics.csv": "2f9f5a88a9fae1daa724bf132dc457524d6bf70b504df8e3f793e1991296103b",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/code_audit.md": "bbb58de9395c58d1e8485815bdb5c57112aed9ef8b4eec2936fc38a0d1c5919a",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/counterfactual.csv": "44cf9fb7c0a674dbfd6a45b2119040247c3a52c5514ab99345b22cf5994e03ab",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/edge_semantic_manifest.csv": "df883a52ef45019e37eabcb2b08de9ca07153bbef62c2a7aa80cc220943c7bdd",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/pilot_metrics.csv": "18dd106d3e65a6105f896c29ed0bf66581b5c2dcab4fc67060a0599fddb11c91",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/preflight.json": "945b1dd389d241516852cc6e5079d965fd80db0c5d52ad41188d88312cc07aa3",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/report.md": "b847853f68485b0b57039e062b56d8ed724a8e875a8f04bf26b55b333e7ea869",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/results/text_embedding_diagnostics.json": "a4d2acbb622e1f41ddd7fcca494a193dbf496c832ba1a28aae9850203327bf08",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/roi_semantic_adapter.py": "86c363431dbd116c71f18f6e187371332210c1228b9ea1845c068720cedb9364",
+    "experiment/experiment12_roi_semantic_alignment_feasibility/run.py": "56f29c2ca3a5a0d5d63a3b6f5cd54cb5b58c66d553308dde386b5f01eb815a2f",
+    "experiment/experiment13_patient_specific_fc_prompt/README.md": "c13992c92d0ea2dbd32cd4ae2575b7f985939f718a4154b13fd3b9e7281ff249",
+    "experiment/experiment13_patient_specific_fc_prompt/cache/patient_text_bank.pt": "f09de50c5de3202b1781482c63197c1ffd5c327e2d71369eec13d92a7136d647",
+    "experiment/experiment13_patient_specific_fc_prompt/integration_patch.diff": "7a8a0748d4ac5c7729e034a94ea64ddc649007585ee47c1a019aafb239bad2a9",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F0_seed0.log": "41680a702a7bafc1d5e77ab103cde0e2872a0fbbb28dee67d2e95014da8d66bf",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F0_seed1.log": "f5a1d7df68ab098e421cbe883464eca067bbeb3453283b5f9d42c74440b65595",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F0_seed2.log": "2aa6cf87ee2ba9543a5f689a2ea7572801cff63e1621700d9762a8eac9def3d6",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F1_seed0.log": "09569541b10c77bd991336975465a07c0660caad934f05b94821d00bdc25a405",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F1_seed1.log": "a4f6f62c87c8924dd212080607390d860317c5c078b193306b026f56bac37159",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F1_seed2.log": "63439fcc171c1f8046ea72281284dceb110ecf3e1ceec0b697afec813330d17d",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F2_seed0.log": "636c25a638d9d7349abbfad184055fa6f5be81c89450878127dd51e612317890",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F2_seed1.log": "ad72dd08502e2738dd6dbb9c158c37048aecb32f8853e96876ef83e5b806e5c0",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F2_seed2.log": "de266cdc879402bb13248f9a511abf218f10c99220e9da983fbf3d1e187d4ab2",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F3_seed0.log": "15479aa401ebdb53336603da3ed9dc5c0918250b25f97d01429265cb0fd587fd",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F3_seed1.log": "14a3e3d5496105d9a60d7291abe6ed1ad77bbdc7d30e64c041c4a5f4bf61d012",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/F3_seed2.log": "dd726b20c52ac7eb95355362659ba76a5dad06ded07928166390fb415486089f",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P4_seed0.log": "dd3285bf80ca6f5bc3275b6641d214be131786ef040ca47a9c867910d52a83cc",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P4_seed1.log": "02350bd8784043c8f3045babd981c974b3637e1a8bf93fbb3ea58f3ae8e2d084",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P4_seed2.log": "9b1e1a851a4a206e9df27661a9197395031ac52d9891f31dc6c4800523c3a2ca",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P5_seed0.log": "6c56f5b9ce5bfad84cd828497c078646807983a8b0c4bf2ae994850466ddf854",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P5_seed1.log": "e9c3eb52a833d53f8ae51d294906ed4495b4b85393bb301ae2ac21ee35bb9544",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P5_seed2.log": "69d4a564fd229caa05e5047babe7731cf5d080b92d6e3d4d3a105a39a705852b",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P6_seed0.log": "21150f629ba7ceffbf0b6670ffc29c0d3c92fe931a3b61c74b19be89fb64d1e7",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P6_seed1.log": "e49af4483711cf2d3825fe8a189d175b7e7db1dd140d1a2d3669081504267fa7",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P6_seed2.log": "c3e470830a944d625c78d6b0622a586436ff8fd955a80e32fd5e5fed52f939ef",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P7_seed0.log": "1f5436c68b4a7f4fd0847a2f20d02c9fb56814fba52a62ffd286a598a7c3d05f",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P7_seed1.log": "8d4fc4e22acedd88ee2d3ef98ec4f99b0af53295e2480fe1e791e9b2205fcb25",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/P7_seed2.log": "e15ec39c442942795b42320424324d32ee35c54a854775ed17562c2f038761c9",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/controller.log": "08261c32bf7a318a88e1791c507ceb0c3ff3b5424867c5a3a11b7f56721557d5",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/preflight.log": "aaaa85fa290fb17cb34ff4e316950925c23481814c8e17ff6ac9d35e53532001",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/prepare.log": "c6e65c46b478a70b21edcaa01fd8ca6df36553225889480de80996d825b89fab",
+    "experiment/experiment13_patient_specific_fc_prompt/logs/scheduler.log": "7aecd81526dd93785b19b642a5fbbc06f4da281f52a6c2aeb732ebbfed5c3cfa",
+    "experiment/experiment13_patient_specific_fc_prompt/manifest.json": "bc2805b6e3e40d07e46fd2cc7f0bdd52002433218cf46cf78af213923e716ebc",
+    "experiment/experiment13_patient_specific_fc_prompt/results/counterfactual.csv": "79843fb3928e75d7dfd60b09983034830ecf8011ea3c8298f22c8c416b7c7571",
+    "experiment/experiment13_patient_specific_fc_prompt/results/diagnostics.csv": "d8e4c56c8b866cd3c2b66cb1c6e8a07ef09713cbd6084181fcc396bcd7db21a3",
+    "experiment/experiment13_patient_specific_fc_prompt/results/fold_metrics.csv": "8118658fa728a7a239a7648426f0e8b6b097589bd9c3d4b2f8edfc4544f143ad",
+    "experiment/experiment13_patient_specific_fc_prompt/results/preflight.json": "24b52fe6ce5b67107b102520258cb54d7e238a600da4a5242c6ce975eadfe5b1",
+    "experiment/experiment13_patient_specific_fc_prompt/results/report.md": "579dc6fbbbb9275a27e3146936bea608c827b040b1f549efc656053c5851ae68",
+    "experiment/experiment13_patient_specific_fc_prompt/results/summary.csv": "9514e0b781be3502dc3716c245826fec0f9c40bcebe7189e1478db7e044c5d72",
+    "experiment/experiment13_patient_specific_fc_prompt/roi_patient_adapter.py": "60aa8eafbe7ea0f9dfc871b76239aafdfca55041eaa68b614b1ac963f416e6de",
+    "experiment/experiment13_patient_specific_fc_prompt/run.py": "665c4f9da76e8c60e3f275b0361310de5335b65a9f32388331856d388535ba9f",
+    "experiment/experiment13_patient_specific_fc_prompt/state/scheduler.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiment/experiment14_hierarchical_semantic_prompt/README.md": "b439016730e75f3b1f24b4a5eb562c231681fbc520c3b90821c45a32f88735a9",
+    "experiment/experiment14_hierarchical_semantic_prompt/integration_patch.diff": "a0a54b91637e6bff23225ed2857fba40df2ce4e055f6067ca98a04790bf4d4d9",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E00_seed0.log": "b4c6de8cc75f941a2650de8b9a161d866a0d7a23469e12d6a0d6e217cff87fcb",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E00_seed1.log": "bb21759f825b6eb3a0a65d5da38bde614b2a980b9547609b51d76aa601724719",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E00_seed2.log": "669fd17d0ce3d8ec570f12aaae5a3ee67121e82998b030e8413ead1ac2be28de",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E01_seed0.log": "b9ac85c7a26356c8f0ee1bcae57dc8341fee0689e786fe4b9b808189130ef9e5",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E01_seed1.log": "61eda98826cd80afbb9862877880e4d644a2174495bf9b96c28e00f45e81a7f3",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E01_seed2.log": "41d5176969709db62b4a96737f55db0be3b0774cc409d661cfba1195aaa8fc31",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E02_seed0.log": "fec143d5e2ecd007ff4a1d4b2b752bfe1bdda6697654ab1524f52a878843c438",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E02_seed1.log": "3bbd2f5e745672ce9dcce0af02e34e472fc4ff200061570a1f7becf3c1f5ed38",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E02_seed2.log": "bcf75ed65a6cbc92cc68ae508dfbf0618d5577f96169b8fe813f331b6f716da7",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E03_seed0.log": "e37a6cdfe48e55aaefafdd72999e676ce20ffca903ae36ce94f2caec57d4912b",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E03_seed1.log": "4c8c9c5ec07cb05cf8d3fa18fdadb23280b5aa01dd480c15c1d011651ac97717",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E03_seed2.log": "abf1be895caf465059d43ad887244a3ccf9ee7b65bf97cec3cd68f04583c04cb",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E04_seed0.log": "d9d0c65e42ffcd6b4e02ae65f90a0bcbbbf6d0bf95cf566c839218b5bcbb97e7",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E04_seed1.log": "488b49454cfe982fb59f2f5e890bff007be9113fd6037298ce8619b44260cdcc",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E04_seed2.log": "4bdcfb26d97dd369347d8e8a24f0559801f23e6232adf4022f9706d5bc888041",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E05_seed0.log": "57ee8297974078eae6d72dc64d6a8d3f54b267f4385ae3971b63e43b2703c442",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E05_seed1.log": "9faf06733571b0c38f6080eada6f5bbb7ad3a36371cb69b6cba8cc12f6055e3f",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E05_seed2.log": "b094d7e15d3c6828b6e367febd6d3476dd543940b30fe8bf8f82b0de05e81a64",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E06_seed0.log": "39d154503ff8f7247ce6b6fd18af47fa51ef86280771d43da70fe7f2f33e26f2",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E06_seed1.log": "0bc127a250f18fd2aad2018890b9925d4a44d2e5e5893b380aaf03489953c1be",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E06_seed2.log": "16501f8528c0117bc6cec1013adc6200a10c93be42b92bbb6d02934b049ecb37",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E07_seed0.log": "c3e4ab6d2412723841de9ad4be1aa2a51aa2d72c172bd8502da509bf3c62d29a",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E07_seed1.log": "48fd8de004d30b12655c5423a16999ac2a15bbdd97665c44abece2ecb6a9ad85",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E07_seed2.log": "d47ec2229218d5fb0915ec1ac99d6c010d5e80e45e90fe1fe7b7083dd671ed52",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E08_seed0.log": "d1016a329497c250b8134f473fc5e350136459a388da553b439f26fb76161929",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E08_seed1.log": "924aa633ec19c6ef8a4bc777ee4e8ae28a2d390baa57ac24db45d23e646c8e13",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E08_seed2.log": "81a1d3bc63a3975295e3d1670f01d73108aaed7ed552d9c837f762b5e3b13815",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E09_seed0.log": "6e114908aa843479a1921708714efa225285660d5ee9c61159ebd47123ca94d5",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E09_seed1.log": "11897d7377ab42ebddfc5f625f73444d7539d7396955073119e0d0b322f1f45e",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E09_seed2.log": "415f9d4eb97ac7dad050cba07855979900f9eed73838177c6cc6ab8d1e7e15c2",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E10_seed0.log": "4b90de49bc491a5e90e30df6091a91f4c064046e19d0db2c61947a473ba7a8ea",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E10_seed1.log": "24bf1f6e26a0cbe6ce8c8c7726fc87077405313ceecf0ca931cb36d0e167eb61",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E10_seed2.log": "7e7b4ef2a146751950933b521a9b2c65696e739ba22010c07a6e7909abe4f521",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E11_seed0.log": "fbfed3d0cee339ded11779d0be30e82819232cb8ae93a5b9a7dd0c4dedd263ee",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E11_seed1.log": "8d0133a3cb25288b12b036b8534ae184421cc4bf4c94e2bd215df58d2ecb4129",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E11_seed2.log": "6c3de2ca8599e0443fb84f4de6843b0188847eba0449f68be717c9afb2d4755e",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E12_seed0.log": "fff8a4612ac539d1b863ecafcf636ac6e4edd5610c8b5ccd95705fc15d940281",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E12_seed1.log": "887eeef36442a21af8fedb2dcbc541b7f5528f455e6aa8157f40ce2837de9e64",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E12_seed2.log": "aee6c1fd5bd207fa515a76bf4160bf70d06c9e145663a4534b2eab099ccd9e64",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E13_seed0.log": "8df0c5b81ad77d6e01b25a163963bac449aa883c1662c9eb9659a10a725a303e",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E13_seed1.log": "728d0bc5c9fbafc6d2865a86d66f408e62c1ad6f4ec014a92d38feccf8934700",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/E13_seed2.log": "2ddaeed6819b006a1a1c9b490cd71b41ce937211801d35c697a63db753c531d3",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/preflight.log": "b024465ffc7ef8d48e0bba47f3670ef0eb6c2fb159f7f4229a59f3af523623e2",
+    "experiment/experiment14_hierarchical_semantic_prompt/logs/scheduler.log": "11879d8837dfa14feddd312bbd1a8e134b0a625496d42abf5c77209b1dd8a4f4",
+    "experiment/experiment14_hierarchical_semantic_prompt/manifest.json": "cc04493cf8230b335290215ae5ef9cc51f809ebe15b7d948efb23d90191e8018",
+    "experiment/experiment14_hierarchical_semantic_prompt/prompts.json": "7cda11ceff8ae1a72c075318e9e189cd415953353653aaa23a4dabcda2550d87",
+    "experiment/experiment14_hierarchical_semantic_prompt/results/counterfactual.csv": "6ddc5e211efe964af82f19163c674ea11ce8c8d965b9d8c5b5c29e8b414fcf98",
+    "experiment/experiment14_hierarchical_semantic_prompt/results/diagnostics.csv": "b271aa7ad16d3f4103f57fdb595da08e9b64eee00252387d7c17417fa38d2959",
+    "experiment/experiment14_hierarchical_semantic_prompt/results/fold_metrics.csv": "bbd94b7089d7937f52d3590c9511f9aa60cac715690f09b18477ab05b5a89af7",
+    "experiment/experiment14_hierarchical_semantic_prompt/results/reference.csv": "7ed9ecbc305ec950982a0edf9a8efabc1a78e41bfadefb1126ff809c66f9513d",
+    "experiment/experiment14_hierarchical_semantic_prompt/results/report.md": "00da17b6ad80bae91a14770cdd735dd4908202e0e0932c36f0bfb364d0d9d195",
+    "experiment/experiment14_hierarchical_semantic_prompt/run.py": "7fa14e60f4da1d499862cc6dad542870afa6dff5eb52291263a64f1c871bf782",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/README.md": "a88add0f98574387d53ac0b9feafd3184f4c622705cf0d187ca9d65895f4778d",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/integration_patch.diff": "aeaedfaf648e18268fc3a4cd9980e4c76e2108c5fb2541ccc57fcfd19437e2ea",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A0_seed0.log": "1d85f0990ed633efca9de64eac069da2ec34354afe036c72baf906e5c704febd",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A0_seed1.log": "ca7a82d3ab9c5ea17e4e91e8b2393a12fa28079dafe60db9158307ae6d4af4aa",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A0_seed2.log": "dd3d4cb84b75e17c31804c5379864d93100203385791b9037c21068ffd1e4e1f",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A1_seed0.log": "f9b983ebb3b1a571dd642423daae99c6613c668dfa140191901903665fca2acf",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A1_seed1.log": "66bcc0e36049664eb0fdbaffa5745c27f715783e30ac690c42b6bd156cf80eda",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A1_seed2.log": "d386af65e486fb0282ac6da5ce4a444f5304166fbf4372f9102bb9af3fb77736",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A2_seed0.log": "8fb560c38b5163a3d1c8777e4432c260776005c5fa3a9386b019333179da8e46",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A2_seed1.log": "9bfa8cab61427127c25186ea7efa80710c7a679f81725703143fffc2515f82cf",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A2_seed2.log": "9b09f2282b9c93669d5f29d178e31d2227edcdd6975877feb3336a5ed826c2df",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A3_seed0.log": "06a99e27fa6c5dfe12510bbc87248cf196d340cd8c31ccef25bf9a446b271084",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A3_seed1.log": "3c185d0ccadef25294ef69c8c87d016e2cadc7c2f7c128c2e65872e29e0a0f48",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A3_seed2.log": "07d1b4a6466710bd510578b123b593703b3eb6b7e7406dd926c1af735fa17b96",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A4_seed0.log": "232dd8abe34a1e13693b33be8c8cf3e200deafe040d26c0f8cbc4d359b6b50d7",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A4_seed1.log": "664d7e45a9a71b8bd65a6bcf6afaea81b19b8a5538ef9bc1bd1860d39ed28e76",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A4_seed2.log": "8e23bcfce3325ec42349227ed4518f9fd87a77367d20ec183472862e1a8652ab",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A5_seed0.log": "03171886bdba4b6bf1163e71ea1bd1c2400465c8e3e20ab23bbda5879cdf9103",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A5_seed1.log": "0d43bb76b266e73677c7529f0e4fd714b0e4c1769eec6f85027d3ec77ef85539",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A5_seed2.log": "ab00ac65aec86613adda73a81b9a60c089d0630714e61281979a3e42d842790a",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A6_seed0.log": "39c1eb124d4caaa4560ab263824aaf132cc0a793a480457511d7b07f93f52248",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A6_seed1.log": "88c7aadacda610b593efc0cfbeca038ecd9479cf6520faa1343c3e1168ba1709",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A6_seed2.log": "a92bca929a3219331ff1d036fd2c891d4b0f35a0ba8760674bf5dc2d3dea9a79",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A7_seed0.log": "6127ee99f3eac5d64efa078a1e5e76c252163c401d46484249af90df80b18d74",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A7_seed1.log": "7d6a63c93147af8dfe6ec92c5913f2f73491784c38bde06e0efc43501aaf00d0",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/A7_seed2.log": "9f64ca7757df286bbdabef0e884fa1697044d31d0e45eb92bf8cc793c6eede1a",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/preflight.log": "982e99b83c0578c7c12582f74bf7b80518bca97a416108723d590e99e616eaf9",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/logs/scheduler.log": "ba1448b730fbd0a6cb88150d1692889f185bee1f3afa5e7f757c2837d12b2d93",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/manifest.json": "61893e9494cdd71b270fb17ea0ab797b4e6f1846577a3059a6e2a7c2e1a848eb",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/prompts.json": "370f7f93bdc8904352dd9419cee5a12a49c2423265bf9512001836afbe69a971",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/results/counterfactual.csv": "562d26a6ca34dbeccc1068a0c0f358e7d7c2f2bd6f259a17793ddc6a1247d16f",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/results/diagnostics.csv": "ffad67409485821f9c8697a395e9140517ff875104d1c845d799c7dd94bbaaf1",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/results/fold_metrics.csv": "f00f44effa8cbfb9dc9222ef5d8cce62aa61784a528590084e81384aef342d96",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/results/report.md": "2b68c0fe32894f8d9eea243caf03ffac9f18a6872ccfd8d1cc1c5afff8f56886",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/roi_semantic.py": "a7a45e2109abce050820e403c55d132256a3d808255dd5a538bb789deb8a43f3",
+    "experiment/experiment15_anatomically_anchored_roi_prompt/run.py": "3ed8a0061f52ce390f08a5e58b07807213dbeeed503da9bdbf225fd552ba65f4",
+    "experiment/experiment16_roi_semantic_pathway_repair/README.md": "c1caec16dee7589e03999b12424813ca288345d76c3107270c4d5930f25218bf",
+    "experiment/experiment16_roi_semantic_pathway_repair/integration_patch.diff": "256faa3747c157a1815aaf2ba1e8928ee510745460f4213cec72a72d881b46a2",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B0_seed0.log": "9792e3fb8cde70345236398f41980770d6dffcc70e0bb11b52315c886b8cacee",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B0_seed1.log": "8088ffc7b05ca81edf575a98048de1595a70da2d3a022b4e44f313f295a820de",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B0_seed2.log": "cd693f6a319ed85fd6fcc923de83f3cffbee9ce8c16b3d542bde98aea660a8de",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B1_seed0.log": "e62af7661c9ade3e9b72dedbc611f1754c46e390be90dd4c03ce1e8e396e5a47",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B1_seed1.log": "badb4f954a2b0a9e7abb40466052e6cffdd006396f65b0aa6b4362d2218ee5e7",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B1_seed2.log": "48d21ccc1ed945b923828d2bed4420f8931d753a4efeae4c35a4ce49b0527376",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B2_seed0.log": "ee5b53cdb43344c58ffe0a7ad4e463cfb28accc9842e18c68b395e8e8bb5bbad",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B2_seed1.log": "0131eecfcbb8e05ccb8a4f0d7ad4a6a6138520afc0584303db64154e56b05d0a",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B2_seed2.log": "5e2ef62c246a8d83277974f7f12afed6015ea6d00661232b226dbb427993134b",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B3_seed0.log": "ab2ad573f9f55b7d5df6ee92c118066ed0affd93017930999dd5abf48846bd62",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B3_seed1.log": "0fdef5e64a6754243efa09211d5949daf679f751ffec3ded07de6e93e399a6f2",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B3_seed2.log": "32ba5e8627b25f743fabcf30a0909c2cbbda8e2a8b4e392d798dbf0e65bf4bb0",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B4_seed0.log": "15f818e85f083ddd7ec6f3e18cab0aed7a64eab03c8fd5866d2827f2b90966e5",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B4_seed1.log": "4476559ca10971124ff226fb082f2b53b77b64ea046c3d9fd63726a5cc8ad0bf",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B4_seed2.log": "26500e00d66a9c23ce0b95f9700a96214253b8fb70970a04f6a5eb1dcc024be3",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B5_seed0.log": "5f979554c44366eb12a0d7ff8702ba05e9a4135fb846a1bf94b6dbf0580f224f",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B5_seed1.log": "08fd25ee1e77c50636cce930fe7e4ff578f683618aa3e8b30753e5b18686ee70",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B5_seed2.log": "2290676059ff547d68abb6b064f60b505560acdf44f0bb6696e8fd213f91f74f",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B6_seed0.log": "1590a2093bd9652f4b1651b09165f5d02d3ab2d768cc00950c3787da54b2dbab",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B6_seed1.log": "1ac3fab6528f0946ff26c25a123e6f4e2423558fa99103f0953e8f7074f25843",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B6_seed2.log": "9e5a019489500a38d87cc800dc617bbe688c68a0e31e7a8a3b845d956c584c24",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B7_seed0.log": "6d2293cb641b34eda43a246d92a93c357b5d54d1cd47846fdc5db0d7ad8dd1e2",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B7_seed1.log": "b98c06e7cc6a6dc03ea59fea948b75da3127dd4c756dd9739cf6f790c0e24771",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B7_seed2.log": "e9101cc74e0afc0f9b7c20eae79093a27b3238919dfa473869c97697cdf8f32e",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B8_seed0.log": "d5a389dc2642ee69272704bd6e0c1a4b63c29bea3f5c8a49908eeb769e4df2ef",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B8_seed1.log": "cf3ff0d2888ae476bbef1af2ba4aa6e2e88afe87a8867222ef16915649fd2a8d",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B8_seed2.log": "f01195c6b03cad0ddf5a7904bd267177dff0274a72e143359355645942598876",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B9_seed0.log": "19721f23a631098063fda50d7b41fbecdf11441ceecb58c163733f8867cc8741",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B9_seed1.log": "244f0fdfcee86b9408078f498eee559790bfe4ab5be699d7167343f4b120b012",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/B9_seed2.log": "78428a1478ee3a3dbda18496b19cff5f48a6cd6672d523ae65bdbf9cd89c3759",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/preflight.log": "93a7a24f09cb6748b6dda48d4e0f0ebe00f02fdd4f2079b7365f9e3103627c88",
+    "experiment/experiment16_roi_semantic_pathway_repair/logs/scheduler.log": "7daf21515d315071189e9d38388e270a310ed2a250126b333e15dba6e5cbe20b",
+    "experiment/experiment16_roi_semantic_pathway_repair/manifest.json": "0ba164729c0f18f897fb926ec665f612646e9f337c5c68cdcabd82adc9dccbef",
+    "experiment/experiment16_roi_semantic_pathway_repair/results/counterfactual.csv": "aebe7c17d818ae861ef8d77bca2bb78d45586b6d7bd6a74b819b2bd506e133dd",
+    "experiment/experiment16_roi_semantic_pathway_repair/results/diagnostics.csv": "592a53e0cb8c7f196ed367610f8c07fd18e5bbde9f7627b4779bbfa29b825f88",
+    "experiment/experiment16_roi_semantic_pathway_repair/results/fold_metrics.csv": "3fc430915aad8d00a3ed0004e21a7fde1d6fa117c4f602f3ac0ffad21b040d56",
+    "experiment/experiment16_roi_semantic_pathway_repair/results/report.md": "df2b9478c042af87be2ac44806c156e873f3e09d35dce4c9768c77cc7b3bb1a0",
+    "experiment/experiment16_roi_semantic_pathway_repair/roi_pathway.py": "5c96f623a4cca7e517b30ae18023545b0743538f7a302c34b16be45a2a289be0",
+    "experiment/experiment16_roi_semantic_pathway_repair/run.py": "8e24b5bdcf4841954e117df21a120302165f382a3cf52218f44f9c716488da01",
+    "experiment/experiment17_disease_semantic_selective_alignment/README.md": "fe2ff7b409a5377103b401939f0307dc99b81fe8e8166a9fe15cfc215e72a25b",
+    "experiment/experiment17_disease_semantic_selective_alignment/ds3a.py": "78efa4a44c8cddf2560b9f5a318b0c974109ee9ef3e5477039e4af5d3951df16",
+    "experiment/experiment17_disease_semantic_selective_alignment/integration_patch.diff": "a28e4cc43a295e2de0b5c9efbdfdc62105cffcdfadb63c360f2cf034aaf4b34a",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D0_seed0.log": "16b6e72749107abf942f08ab9e6e017625cde5267c311dc2746b527f80789f0e",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D0_seed1.log": "ed5525d6e4f9858783c14eed7281e680597b8696adfa65d86d64b0a8207e98a8",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D0_seed2.log": "9566ad602ffb029171a61f3c9b12b14edad79ab39adc1b8fd9eb31f978ec1e41",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D10_seed0.log": "e19a15642bbdf2fe4af39e7656eb08ca217dc8f0660abaae6ea8946035d95fe1",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D10_seed1.log": "3e75a944347f557ab28fda835c723ff05ae3dd68920aab163fb4c301e3cd6d3b",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D10_seed2.log": "45f39a279a37a248152eb76d4d9f309264dad996007aceca24f5921267e13393",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D11_seed0.log": "6fa75b51ee90633e7152a120884c22e4f83d652a0a2700ef0ab8d2fa25499dbb",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D11_seed1.log": "651fa8abd9b9053587b85e0796ac15fe71f624c235daf4b463a5b4e43092a0bd",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D11_seed2.log": "68e88ef716af067e4a9386263812a69f4d99d75efe267a136c98c5e88d73289e",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D1_seed0.log": "14c738c6734b2d950c30c0a011b907b767a78e93a31aa84ec1ab898b7ca15450",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D1_seed1.log": "c76bf8adc11761acf76a920b2dcaf4a9ceb19e60420731235bfd2a50d6e73902",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D1_seed2.log": "e6f6f27d02e1b81549d3c7e0560c977357d0f04c4ce12135070b94184b977da1",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D2_seed0.log": "ad03897d2dccee313f07688aab4b2577848c07ffca4ea1fc8fef2f36f7f8fb0d",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D2_seed1.log": "2089da6c9302cd470b4e0db24b4733e5a6870ceb96d878ab88c67642e17c1388",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D2_seed2.log": "9993df76388d805e6e5fbe62457a545c0c6f26eca99db67ad38777269019cd18",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D3_seed0.log": "fc2fe9b54fda89aad4a25d5f50272a98ae41498e5d6e22dfab070ac1141e9cb3",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D3_seed1.log": "e3d709766c9641b200e3ca727313458a9053fa183079a5b093db8b92998e0aa2",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D3_seed2.log": "498a2f9c982f007899b2342d06315c377f82931c2f91c954cd78c12c188a834f",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D4_seed0.log": "98f957a8819a51ce5c7d75250750371452c05e53d3e99c8a2a4da5c7675a9829",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D4_seed1.log": "6f334bb1c770acc75e01fe2af379de487cff399ddf10f2d1ee09b3b153a95127",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D4_seed2.log": "0dd0cf671e1028b9ca9b1a4e9c2a102d66bb88ddb3f156a455b24972ada35d75",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D5_seed0.log": "83abbfc67b39e8c7e5acb2d23727a4d509cdccdce5e41bd65a77baf7bda4f26c",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D5_seed1.log": "feb5798b8370393481c3f2a0c20b8055f169512ef23d5a322474242c45c62bc1",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D5_seed2.log": "5b96883feef2986a357dd92350a34adc1f704a8735fc9cc2ab6c21b1853a5b61",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D6_seed0.log": "35d566105d17dd46b1b3018b66d1d774977623b34ffd3186bd04e778cb42b504",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D6_seed1.log": "cdb5cd3c44e492c4c27533f84747c23a8f4787ffab929c188f5560bebfa7652f",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D6_seed2.log": "5bf2332e4d8dd967cec1d251d1c6aa74d9844a170094e51dd5b8fcc47c2dd849",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D7_seed0.log": "5f741c658ba0acbd169fdf592caf0f759d98f28a83730e59085b273dcb380826",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D7_seed1.log": "a26880f0a9120e3014129dc25408f80c3c43ad045c34efa5af7fa957efdce9ad",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D7_seed2.log": "8476f2845d36e1c0698c29a5da4e8f938e43af99c13196acf9d131b7a4aacd9a",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D8_seed0.log": "a27de6128c67d5d865e39854563b7d34ee55a31459758bcfb81e261a2276efa1",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D8_seed1.log": "627dc07ff3707f4d47d68c870789b028d3a46b3025aed59a2b2ff7830181c07b",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D8_seed2.log": "35400d92694893d1eac3dbba35192f9f2baa819e2dda6dbe2319bc8085f17d0b",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D9_seed0.log": "49863a8b5abf287965f8cc9379ed7096d23512c35d4d1fe9c2454dbdd34a9173",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D9_seed1.log": "f83ba1b300db27eea2cd134c146650d11e61f6bb45c474ea4ed4a5575c8cc629",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/D9_seed2.log": "c9488bf4c70a29f6c35cc3db66397ba730e456f045aaf44e66411dc8d3079a4a",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/preflight.log": "9e070a940af61f574ab35b58dbb71fa6342cd5138e6a4830ed5f383c5dbb20c6",
+    "experiment/experiment17_disease_semantic_selective_alignment/logs/scheduler.log": "92ed94478fd2e1289eda9ffef6a2c6fe37f50f2370d87664e0a8a36c38662829",
+    "experiment/experiment17_disease_semantic_selective_alignment/manifest.json": "986ae276ba3cd0d723e1aa7376484dbaef8e7eed13b1e32902ed60d76447dfee",
+    "experiment/experiment17_disease_semantic_selective_alignment/prompts.json": "ecdbb41f2cf6673b723b49bee4d382c63d81e58d0ec39605ebaa1c213083ed8e",
+    "experiment/experiment17_disease_semantic_selective_alignment/results/counterfactual.csv": "ac24274c6ec92d03b4bbe956e125736d5dfed82a862d29f6f2e0880c940717e2",
+    "experiment/experiment17_disease_semantic_selective_alignment/results/diagnostics.csv": "f69b986efe9af9e26ad55a265614f2a0d13d9511e3120f08a7a4e9c4a9ac8772",
+    "experiment/experiment17_disease_semantic_selective_alignment/results/fold_metrics.csv": "99ba41beb3843c254ca7c2382d599855c4eefabea42758907f2d002a550503b1",
+    "experiment/experiment17_disease_semantic_selective_alignment/results/report.md": "e6b44eb0ab1c37ff2e964f95ba73f3a231bc850b8b06bf547150fc867609c320",
+    "experiment/experiment17_disease_semantic_selective_alignment/run.py": "021c1c191c58be658e2e6f7dcabf6bc91bb7bce4053514d3db1299cb99d6628b",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/COMMIT_EDITMSG": "d170768e744a0ec6958ce81de3801c2fd65c1dbe75dfe12b5848160386283e68",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/FETCH_HEAD": "0bf32d5800ff709490d846de7582ec886997eb0bbde1d92b32a64a5d435811dd",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/HEAD": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/config": "269bb03d23a2d49fa7b27ae6287ba3ce79856e8f77d91f306743f7876ae896b9",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/description": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/applypatch-msg.sample": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/commit-msg.sample": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/fsmonitor-watchman.sample": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/post-update.sample": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-applypatch.sample": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-commit.sample": "f9af7d95eb1231ecf2eba9770fedfa8d4797a12b02d7240e98d568201251244a",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-merge-commit.sample": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-push.sample": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-rebase.sample": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/pre-receive.sample": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/prepare-commit-msg.sample": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/push-to-checkout.sample": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/sendemail-validate.sample": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/hooks/update.sample": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/index": "82b3acdde0c09d4287a0d95a2b4b6a853c18e4171b859b6ef70efbd1fb63a947",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/info/exclude": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/logs/HEAD": "940a8270e5d82033295e6338560e7dcdd085db471a571b7094fc84eba267bf2d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/logs/refs/heads/main": "940a8270e5d82033295e6338560e7dcdd085db471a571b7094fc84eba267bf2d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/logs/refs/remotes/origin/main": "c3465216c17dc5dfe86dafe5101122bd2fc2ff33a28b65fddca2a50407beb787",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/01/73b7a2bc2705753b69e2a3975025f9f7677a37": "bd6872e0cd39efa8c804ac575392aa09cd0a128e90848117a2ae75ed02fef3b9",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/02/a4d64276778ac2effdc19f83a8a03bb2468af4": "c11d1ec25d22edebab75c461bd048ecf0b1268e1c2605bdbbfda8c62c255d01d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/05/2bc065816148e4fa91858c6f7c23fbb185521f": "e5149983c0adc3038902ceae1d178a1fd09f5d9348c7dcfa647e74e605f2bc34",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/05/fa114ff74873a1a9b0de9c303eb04e2d9e0430": "4a71db68446a43644a9193b6c33cf898f279d8796f499401e954c1074e1701f1",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/07/3634bdec4ade7250607027bdd7d4974cd45234": "e703be1575a91682a3a7f4668bdd092488c600995453ed2b547e77f5356992df",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/09/7776da3f90d1ed172f28f5622f7baff91df625": "3d0567785aa78554825dab34e90f44f11aedba9d2314dff7beca8637acb19c61",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/14/89b36fa099b3a09e65ce9ffd1c7d11e4a90fdf": "48a3d23caba4067f515a8791b569f30cfe9cd0ca01479083bca0ee115bd6becc",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/15/7e33d69e3b49f38bf3dd414996808156185dc9": "234f99c44e35426332d043398a11daf834e73758e2339e55fda790b54569c55d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/16/c3a723b344681abe0017af82b74f44010e5b19": "a20d226315f6ae37b858a64226737c344e81f69cb47229da6491caa6b6af399c",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/1c/7259357f22c4e017a406a50f84515dab02f7e9": "a0e0551aa4445b30c32be98a1916bec6251f7d28cebdbb7b2036c7fa1e2c2513",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/1f/a566fe3b2ab37646318bdced95bf6cda26d1be": "778dfeed4e6f38b6cda58c7751b9c17487ca0dd9e52f071b25d9f0ef6db59856",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/27/50127e0bb4c8bb9a1dbcf3963b4055699188f2": "3d44d8a02973fbb3cd8533746ce1da273713cd6b23d239ec134f51389a8f4c41",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/31/a84e1b28aa9f767071a5850ac9b54814ed40d4": "e7f61ebc848e06f33c29318659ca46ddc3deec085e5314c40421f4061227d4d3",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/36/322c2bab21f57c666519b14c9a423df513dd0a": "d8ed667ab61a6245f0b2dd6126b3139dc2525abcccc6a17e2307d832e46e24ce",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/38/132c07e3d4d82bd39456da4a20137fc813c5ad": "b15b451133e8bf3c0a6f8e940fafaede114f796fc397b4b4f118c9d2b1a7eb93",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/39/a07897abd15b8fea25198d123c618130e89cff": "e7cda56e834a24ad866f77586686197a418714842fe8f5c01fb767458d192e34",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/3a/e8cf612f7a9eea78304699174934137ee0cb5f": "7d815d89a2a7fe96ddbffe706838d50c1832d3908d860d1af2bd3247c1421be4",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/46/e049abafc39ddebca960b69c226587dda822db": "959a8425bafcf558efb5d1d0727ca628b6c3eac05b21f720c9e957383c46902b",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/47/8f9b6fc8f67ed867bf516b4fefb7f1d5cae431": "487e8e6ddfd7cdf446294c79f338125db5a9ea80ad6b2c5061d107499a66a8c5",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/49/8e7bbdd520e40824b4ac4427c4f2cb863b3cbd": "6f933e721095ff40bdad72f73ba82789c604327b5ce04b88b8afa6d7d1b0bcde",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/4c/4289aa4d8239fa6f41c3028a9f2c68362b262e": "73d2ed3aacc3cd2453386b0e5766b7627fdd40162eeabefe732a0e692f75806a",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/4c/510b9a92773596bcf96b7e234ff61f26b95a1f": "db08a2a4026c337e4d70bb9179e28dd203b5508e127019cf31793066ed335f6d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/4d/68fc03e22cd2e810219b2b6191159b80e98548": "340bb24973465c949debb565451595817dc82b3a7afed5cf7ed0e42a16dd7609",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/50/4fd8363d4ba1a5ddfdd635b0448c3fdb91f819": "d039ee49a10cd180cb210a8ca8c3a4cff8b99c873d58cdf9dc84ffd56e7216a1",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/55/7ebfabb435756335d367210bd8b43ef0b52192": "94c6f53e1206e3b2892d2314fa73beef9322cfa71fa60847a8c9d1c2d3920901",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/56/4e7da2932f972a5e42b70424d29a3d219f5a8a": "d5f1fbbdfeddef90ea653f66f3a5054e8646e7e9226e2ce7420c392e449f201b",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/5e/ebeff4187ff6ada4b39c2e32a07dce22c0c6c7": "52ae935fce67195a4dddca514f0393c1579d0c69a4724931f5912ee04cde13ac",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/5f/415018817612c3ba8784a1ffeec4f9fbd0f40d": "9a1153d6ec561ba59229fa5dbd6185e2c48ae57125a5d52637f253adb0faf84e",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/64/98fcdcab0a22276e71f0b0720f63849637df50": "7a7a0be0f1cb091e1aac36ee128158ccd50107d0b226f172b222cc6578b4935a",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/6c/480bdc6e5d8fc1f25c8c60f3588f072035b0f8": "acc2122d83ecf24c41383e5230ed224a32386b18078ccedd21c76a0360237852",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/6e/96a7f93f350231e6dec6efe20e21c067d692b1": "6185e64373197664346af0a7b73bb3a897dcf3ddf2ea79df51b13c074b973996",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/74/c67afed372cd749029ef9fd8e336ac063c11f4": "d7c7847e2240b00e5eaea956ef66df083aca08a7153f6df80a30cbc8fe349882",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/77/566632cdb80018ae3f5ddbcd1d26572890f3eb": "51ac2599a4ca674e01ec9842da4cd2d83ffc026ef5ff2793a1e0b50dacb6a0a1",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/78/2e325cae5e42e192d649ca254652bce2820c55": "45f624ca98f27e2e6572db2c8b7fd440b68024a5f3857d07af31e4017a01ec18",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/79/b3a620fefcd434d049e0ff118379673a0b1341": "09e9606a354e2b3857e3a6ef6b75c65a6b84ec570fc19579a6bfd9ae105a19f4",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/82/6fd9828a612c2139212fcf33d9891a9f6bd3b8": "4b5f3464d562e748d77171d33ed853c334c32a29ddae02920c7441cc4d8b2766",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/82/b6496eddee5b1c1778408fa2c3d8d78b3ba092": "81b48b2239db2188ab1089df8a978152c9dfe60aac6116346ba45a750c6bb89d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/9d/25f54fe781554c30c33301a4e89d95981335ed": "9ddae5dd43859c0b59f720b449edcfce469954df9f199de5a841c3865d71a078",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/b6/0f037485e2309c76553c35d19d15958cd3352d": "a672d724df07d247fff9841ff447b27065c8f061dabd9b4feb79bdb81af05ae6",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/b6/3a48d26b7eb20c882071ca9b120b36b1722edd": "56a08e6d3da6be739e2c425f830cc6782ae13dfaa1add4b516c42b9b7f509104",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/be/722bd54dcda11ea8f52e8d3cc16a7cddc13165": "dbc70afad28217598fa12d6c85a7c86a409e96a2189c00c7e08342303c6506f3",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/c6/b9664d3b92b08ecc6fb49fe6eb966bbb8edf9e": "54c095db2cfc1fa322a03b7aae8aeaff8a4818a182e825ffa9a915706f6c6b2d",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/d0/a3b48bd3120aa971d0486d01d54460a29ba24a": "5c7a01c9707d1bcf843df31e1409b2ab7ab782a7e8465ce3eaf76455cda012a2",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/d4/2474098e4a97e6fcc61bfc4ec1cda6b6091d43": "288248a633826fc26412e05e134d86beb39886ad93c7edd9e3e094aac2d31e5e",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/d7/329997cbd3c114e14301cf4fa34d3c06807639": "4d3bcb56f794cf976a713d00e1b550282e3a2c0e876883a58d90e3bf647be2a5",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/e7/776eac4abafd299720dbb18abd0b8e4bdcbbd6": "3a2754ed6f6761ec2d3c5f4c829d4fd2601fe46e5b133fa13066a6b1accb3e07",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/ed/63024dc2a9abae081b9b4a34845fff50b8e516": "c6bf77e7f9545f5c2a8220b5de3e14ac695361b2e300e9435a452bc46c1bd50b",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/ef/142550eb5da5908668e0a67f312ef0e1fae2bb": "e19e1488966b19f0d3903af61496dfd12452117f3c5fdb8cc099a66e14e7e0ee",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/f2/556f0cb63ef72167465a85039170bec53ccc82": "6886abba078cc7d74b98c0c9a764c2edbe1ae699f99b91263ff44c5dfdba43cf",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/f2/da4c395ba962133167da779ebaba6d7007675d": "e56beb7f24bac16b8a92a0ecbad81e0d0388a0634e3c95aec799168dc72e3b3b",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/f5/a97c0bbd6fedea3134faa4b3e03255e37de8a9": "f058c0d1c0a986e7d305b012e31158f26881ae8ca0b9857035bb11ade1581ab6",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/fc/0fa69776c35fb68ad162cdddf38e5e275a98be": "de1c672d2d89a1a69780d05c620adac2815a3dc4d7268ed85081f46cc1cce33f",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/fd/fe9c3e282b881f8524f0eec1ff33f4b6d82be4": "fbe9c50abb167dd557a892c03a6d6e6fe1de74430f928c41c64275e42a7953f3",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/pack/pack-26e3d54986f9cd52f5e1dbbe58abee61f041e035.idx": "b481e0ac1ab4351d470c85c487bd16d3fcba7030c79e36d810aa0a8b280532d9",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/pack/pack-26e3d54986f9cd52f5e1dbbe58abee61f041e035.pack": "164768b75f204721744d65e32e96b6c03eb81cd0e290a76a6bf606dd94e77ec1",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/objects/pack/pack-26e3d54986f9cd52f5e1dbbe58abee61f041e035.rev": "70523fb52b3184a88148f8c31b3c3a1de15919dafb5b705f0006c2b4674fe342",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/refs/heads/main": "dc49db30596fbc739b196de5690907cb29f75580551762aa76ce4350ce6afe13",
+    "experiment/experiment1_modality_aware_semantic_prompt/.git/refs/remotes/origin/main": "7d411beaabe0db62b1ae39d16f041b32e5661d83852441b553425c4ed5236b29",
+    "experiment/experiment1_modality_aware_semantic_prompt/README.md": "21bf9e92912d08f1d7b6e8f6561f424f292ceb2faa6b778a1648ce552c0b0940",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed0.log": "5d81a7497149b5b4f651139954331c607bc467eb88b55ca6c841f4ca10a63720",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed1.log": "28eda47eb836c2a9bee4b974e248f5d16124413612b08921d49711ca37b6ca53",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed2.log": "a52193e757b75b7e6d4cc8ea3e72703bf95a5dd8674551550930e3ff85ca94ae",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed0.log": "7c23cb4667d47498b2f61939f2566499d8be440431510f64cececbc95661b3a9",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed1.log": "17d75d7a1028a6b0b57e9b6a348269d0a30ec7705f089cc47125f40341b347e6",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed2.log": "1a8293bc5267934a252d13816e0b295ab56bc58033f94d820938687d527d105d",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed0.log": "a70903e624214889193de0f1c08a37556f96af99589299381fc0c10f26e2970b",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed1.log": "09e0d811c40850ea81dbfc2f2e65e39a90b238fee4124f066edb07f0afaf72f5",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed2.log": "9feb9615ee439383ed54e5f87a775f159551f962a2f15a8af8022ef2171322d4",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed0.log": "ce568b965ec18b2278739d82fd1cfb8a5e727016b437a1b290c81ebb29d1f3b5",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed1.log": "bf308b75b69acb394648ec6498d9143fdf1f11ad4782476dbbbd678b1d376066",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed2.log": "5d133c908074d843579f57abc9ce57a43869bf3f06b447d02b4c4244e25c0d39",
+    "experiment/experiment1_modality_aware_semantic_prompt/logs/scheduler.log": "dd086a52ce5a4f23822a24bc667f2a88a5a58e704f3ae71be4e92d44f68c7dcb",
+    "experiment/experiment1_modality_aware_semantic_prompt/prompt_patch.diff": "a98dc90061d8276236440179d94b2345ebbd17363f2d1e3487579445da826643",
+    "experiment/experiment1_modality_aware_semantic_prompt/prompts.json": "01e29dd1b8362564ff12d2659efafe6b6fa38ba453e7760e06b0736ed064f000",
+    "experiment/experiment1_modality_aware_semantic_prompt/results/fold_results.csv": "161713d671bd4a86dbd3fe52edd6b48a254035261ba4cf8c7a064ad95a1cf137",
+    "experiment/experiment1_modality_aware_semantic_prompt/results/report.md": "fe9151b357dabdb2e118b0781d237f512a9cdb1031ebd45dcc8bf5020899269c",
+    "experiment/experiment1_modality_aware_semantic_prompt/results/summary.csv": "4cc40ab872c1859bbda174464937bfa1bdf4c8befbfe2370786562af858f4e81",
+    "experiment/experiment1_modality_aware_semantic_prompt/run.py": "a03a15d3b8864d8f3297197399057e25a57b698cc955d205abe600946e5fa264",
+    "experiment/experiment1_modality_aware_semantic_prompt/source_hashes.json": "6b2b1ea899e659169d3a39c73669b53f4bcebbaec95bb83f043baf7ac01a2e5f",
+    "experiment/experiment2_contrastive_state_prompts/README.md": "10d7f81babeb381f3bda1a18b4b70e3d39244c99b0843f035c9d773559642993",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2S_seed0.log": "890352fc8a156f7c8df32231e1eb3628d0e53be8fc643d8b7e1b5a122f525cf5",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2S_seed1.log": "540bd3615a016a9d2528c521b5bc4bdec0b0652c17a30abc931961947db716f9",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2S_seed2.log": "8ab804b7abc572fd453c7eed8c46504302f81c3e5c970d881474eed5d003eac3",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2_seed0.log": "ee09db357a476b84656ab5fd1f63118afcde43225511eda66f9a121cee27fc7b",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2_seed1.log": "6db12cbb92097a97322d0725b07ac7409b0aece6c29b12e558e7f2010de4e67a",
+    "experiment/experiment2_contrastive_state_prompts/logs/V2_seed2.log": "4bb5378a8f64734fa590fa6f0f7c90a1d0cff8fad79de13c9973efd62caca777",
+    "experiment/experiment2_contrastive_state_prompts/logs/scheduler.log": "e9f29819483a1f9792fb987f4d8751c4620f8f382512bd7108f8cc05324a117f",
+    "experiment/experiment2_contrastive_state_prompts/prompt_patch.diff": "8e289a64b08334eac8cf60b876f6733133a355fdb3bc337d382e040ca81fe8d2",
+    "experiment/experiment2_contrastive_state_prompts/prompts.json": "88b5ba6689634844a9e3d18ff05e7a2cafba2f41d7631586866bbb5f3f13f32c",
+    "experiment/experiment2_contrastive_state_prompts/results/fold_results.csv": "f79de97ade05f93e2af80f20db75db243bdc19249b750f37728fcff1ac2749e9",
+    "experiment/experiment2_contrastive_state_prompts/results/reference_fold_results.csv": "3318012d1cec54c9331ae44727681fba3c61bdf0f10d66d0eba53c8ee610e024",
+    "experiment/experiment2_contrastive_state_prompts/results/report.md": "ff0957432f80434ee6d1f79f3f71f4948401bf66f429f1f3a6d432477b8cd993",
+    "experiment/experiment2_contrastive_state_prompts/results/summary.csv": "18f2dff8a2d9187d70eaa1806473f5aa005a560d275aa94fc99301e2478144ac",
+    "experiment/experiment2_contrastive_state_prompts/run.py": "596be854a9dab356ca7b30d56043bc845eb76f8b7c16bfb5af47e5ba249c3775",
+    "experiment/experiment2_contrastive_state_prompts/source_hashes.json": "b62938a9559d08c64c07977d39959e77a66519aa4bc8a4ade60f4945b36bf902",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/README.md": "4153b7930b49ea428b646a0dedadcff180a390e0cf29c9504b89afc1bf02d6b7",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/controls.json": "a16ecf028feb1c3e964b30d5ab0c0bfa67766a419bb1ee24fe441268843bc669",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed0.gradient.json": "a426c677153bbc18d7d5b5d7a97891f6fa33475f8413ae56a5677b945fcce165",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed0.jsonl": "35878eb676a515b0912955e7e104cf07217280d1f7f89638d670135a08013fa5",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed1.gradient.json": "0025f0ad6d6d145c638cdd629e49e61ad3434b79cb460181a9c599435f9f5a19",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed1.jsonl": "37939231d9b4cacfb807909008785d88067eff1da12404c656a2d0c3c17a6ee0",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed2.gradient.json": "966a074a41e03690e765d635a4f90510d8201926d988be62fc15e1ce2fefe38e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D0_seed2.jsonl": "99caabc3c311f283dd7709b96e782ce6f838eaa5abb5d9b841485d22b262f5bf",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed0.gradient.json": "5e3459c082531fa31d774df35c1ffbb4c79cc0cfcd68e5730390c8a68287cb37",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed0.jsonl": "4655896e1c39475e378e883cd6ea4bd5cad612393c9820e47e481a66957c61ab",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed1.gradient.json": "0d904d28101c812b9f12972a3921d1ecf1cd14ba05aa6bfff5a1a9b62adf1b6a",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed1.jsonl": "cd99f3b0fa9d538650ea6db255883fa52ef6fbeca354b25f07988244e411cc0c",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed2.gradient.json": "196b7f3a750fbd939d685ba1cd0772c0b5b6fbba3848a393f55445e1cd92be1e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D1_seed2.jsonl": "50952a40196efcc2ca182a10448632acae3caa2313af2821ff779ecd86695111",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed0.gradient.json": "9c41c8149a91c900a12fca17cccd3fb49a9b2419dbe36d0635309d33e3732720",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed0.jsonl": "c608f708d5ef9a3dae3b5390b89cbc4d8971542428d87cdc6cd450d73c4c9c7e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed1.gradient.json": "9c41c8149a91c900a12fca17cccd3fb49a9b2419dbe36d0635309d33e3732720",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed1.jsonl": "c608f708d5ef9a3dae3b5390b89cbc4d8971542428d87cdc6cd450d73c4c9c7e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed2.gradient.json": "9c41c8149a91c900a12fca17cccd3fb49a9b2419dbe36d0635309d33e3732720",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D2_seed2.jsonl": "c608f708d5ef9a3dae3b5390b89cbc4d8971542428d87cdc6cd450d73c4c9c7e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed0.gradient.json": "dc62b080cba8e3062793744cfc337e69601bad9a26c36b8df75bf39a1fe3d885",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed0.jsonl": "dd08831aae197711f34f3ec477eb5a061714edb5fc61e8f7754008c09d9edf08",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed1.gradient.json": "dc62b080cba8e3062793744cfc337e69601bad9a26c36b8df75bf39a1fe3d885",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed1.jsonl": "dd08831aae197711f34f3ec477eb5a061714edb5fc61e8f7754008c09d9edf08",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed2.gradient.json": "dc62b080cba8e3062793744cfc337e69601bad9a26c36b8df75bf39a1fe3d885",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D3_seed2.jsonl": "dd08831aae197711f34f3ec477eb5a061714edb5fc61e8f7754008c09d9edf08",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed0.gradient.json": "81644e9e5d12ef0370515f9f23fccbdaa7b920f6bb30c3ca05c81dd4b6320882",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed0.jsonl": "4ee280cd28412f17e9be3a57470875a84885f6b44e19bc7b6673c279d5336b7f",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed1.gradient.json": "2cc6dd4dd5f896a3636d42a07fd1c52f00d924e7bb29108619ae96ac46261ed3",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed1.jsonl": "c973201ee4fd978fbfecb09f2c21e9fc9f788bba9df2a12e71071dc635f46718",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed2.gradient.json": "9c46eb649bccbdaac9ddcd0762cf775bfe31ddb1d87189e91c07b67cd121ecaf",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/.working/D4_seed2.jsonl": "76c2859fec3544daa3e6a289185a5cf7e342ff3738c2bc53c904a77249db6191",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D0_seed0.log": "c59e7124eb67b97d8b11eba04195ea5f18d5caaa3cc3bc690dd7affa51cc4fb4",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D0_seed1.log": "36da1104840bea2fcc91916292dc42edb27707a1466234ede5f2ab730048f5b9",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D0_seed2.log": "d1e6e7e8e19f7312c007999c273bbc9aef09962ea8701439fe7d33051efb4ee5",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D1_seed0.log": "81776b6c5ab73d7d2ec9a266a376c2f7220baf547b2b176980537c28f1c6cc73",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D1_seed1.log": "7498e9cba4da8b36e6ea4eb497bdbc991c28a674266db907ca137599f2dd986a",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D1_seed2.log": "610a849c32863a7b4f773d99e747bcf87a67c4c20e70a310fceb972e738bac09",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D2_seed0.log": "516c33b3d43a4880df5b681fb897890e1a8f1833fe905cdcf150c0e3f5ec3178",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D2_seed1.log": "5afd1d36f0cb4aba79d69fa7371ddff32d3d68f13390a66baf9e60c6a01ff693",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D2_seed2.log": "bf823140dd1ddd33fe05e175354e29a9c9ce0fb752d8fe1fba43b87428929418",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D3_seed0.log": "c6482b139c93a08dc941dcfb5d7eaee48172a4ade31c3199af4bab3f505c882a",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D3_seed1.log": "f6641ef1b3f3d66b4f08248ce637a2bfe8b2a83c3770968e232faeaebd3c3f19",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D3_seed2.log": "9b4747ce2434029365f9036d317fc88ee7ddd59eb3185c9b850bd740376d5ec0",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D4_seed0.log": "4388b55a4678557d811d7c5a4ecd8546738a8232a218f32145cd4361deca63e7",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D4_seed1.log": "298b9c1738812f566dae5a633d4e1e70c76072eacc6a7ef16c17e69c63d3fc4e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/D4_seed2.log": "bb9dd4c1846e1968beac9067d966d76c6c5c2ab61555169223842f9d5b200232",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/logs/scheduler.log": "f8480ead9a82a9accbf18c58063ec120e55f31a4b76b1296905fd9ab5dcf7b75",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/prompt_patch.diff": "19a269dd61ac9ba8048870e252d1efc10b332f557b84c2329a7e484c6da57de0",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/provenance.json": "ef01d590aba8472c049cb9547cefebe7ff1e6d6ffa805d4a7cdf400042f373fb",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/results/fold_metrics.csv": "d627f8b9317027b05c2f9e73eb20061f5fa836dc6318cb3f403207f45c647d64",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/results/prompt_diagnostics.csv": "19584bd7bf249874fc097c5a72e7f660926bcb86e0e753d46c8caf176e08fd52",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/results/reference.csv": "135433462893565e2d4bf4256115cf55fc461140a1c7855538b777ba2e8cc24c",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/results/report.md": "c0f48f499f0b3f852b6d80af58a5d761f326aecdd201ace05bf0e151282cf14e",
+    "experiment/experiment3_prompt_effectiveness_diagnostics/run.py": "1912ca9ec9bf611543de8ba1bb2c0270e49ab63e1730ae6aa6b6cfcbf31e2986",
+    "experiment/experiment4_disease_aware_fc_prompt/README.md": "e4ffc306ad8edd6236d17ceb8f36b5b723646048bb8e50981c2b15abfb27c0d5",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C1_seed0.log": "b29ecee270e138fa4e6761c4d7070009fa74aa9dcdbe7e6ba19838f0b89e80a8",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C1_seed1.log": "679908971d779fc8551e5ae31a12a7a17dbee01bc29f1540c90e688f84e21965",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C1_seed2.log": "ca1053f0b9a97ed637d46963965da53ea8f647a11af6eaee569f1921eb723f88",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C2_seed0.log": "559a65100e396aed30dac7a5a8e2f833f5bc3aa09025367b2a404b7cd5f23141",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C2_seed1.log": "7fac77a603cea248ba6b9e834306c99023b0f47d21cbe2add3d75ded3408cd88",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/C2_seed2.log": "06ef26aaaf2496aab4d2e1a11685f9f6b2b044731bce4ebd583430aebd8da587",
+    "experiment/experiment4_disease_aware_fc_prompt/logs/scheduler.log": "ae5c75f61939358bf1c4fe854a3013d8090bf1aacb9ddaa020e92d1c16d4fe05",
+    "experiment/experiment4_disease_aware_fc_prompt/manifest.json": "8ef8848270404f1bdfb3da4a2e83ff36eef308670315ab1a07c514f786558583",
+    "experiment/experiment4_disease_aware_fc_prompt/prompt_patch.diff": "7b494013c5319cb35d3775a70851d33ce8ad5f7b65e253c070c5effc653b94fe",
+    "experiment/experiment4_disease_aware_fc_prompt/prompts.json": "e219f89c615b626f38e50184f2248a0fccc5043f9fee67444bc60cd3a48d8517",
+    "experiment/experiment4_disease_aware_fc_prompt/results/diagnostics.csv": "f4e92acf068ce43a0efa81c8db6ef029ef2c41c033885e02b54289102d6cc428",
+    "experiment/experiment4_disease_aware_fc_prompt/results/fold_results.csv": "35e17a6bca3cba30197d358eb610f5c4976aa1e592b7ee19ed1aa934aabe8468",
+    "experiment/experiment4_disease_aware_fc_prompt/results/reference.csv": "a658b954ee55cc82707eed3dcf33f53f70b3922de4f849f16127c725967928d2",
+    "experiment/experiment4_disease_aware_fc_prompt/results/report.md": "eb14f344d29330c6e672881c4d0930d2f1fe6255977911e876c8e1ae74895da0",
+    "experiment/experiment4_disease_aware_fc_prompt/run.py": "33ad054844be5d59c7515368fff565c1e6e022d637b3b7b09961065e9b5a6af7",
+    "experiment/experiment5_semantic_projection_collapse/README.md": "63aeabf21d251d6fc045bf7921b04a7a101bea3b5d5ef440ab1bfb1b1e23bac8",
+    "experiment/experiment5_semantic_projection_collapse/logs/E0_seed0.log": "12348c101b58036d7bd8b6dc6e0c57d0424addfb28a12544a9426fa8d6385dab",
+    "experiment/experiment5_semantic_projection_collapse/logs/E0_seed1.log": "50182f6d628569bc78cb62c0c4b37d3372e95ac4e42dac5bc7a620e65d1069ec",
+    "experiment/experiment5_semantic_projection_collapse/logs/E0_seed2.log": "d7862871b991330439f4d3ce63a8a0774df97c4e22f4ba5d1acbd0e5a106a770",
+    "experiment/experiment5_semantic_projection_collapse/logs/E1_seed0.log": "637ca4d78269b4c4e4e872a3e856c5ae746828ffe16c432ab38dfe6888741cbc",
+    "experiment/experiment5_semantic_projection_collapse/logs/E1_seed1.log": "21cdc25f44bf7c3bea1e87eb0508eb2553c4df074561401a8e044cb8734bd5ae",
+    "experiment/experiment5_semantic_projection_collapse/logs/E1_seed2.log": "f48f370c561686067166b41950792fe018c2d956d3ad79adf254bb5cb6c3681f",
+    "experiment/experiment5_semantic_projection_collapse/logs/E2_seed0.log": "301b623579c9cda5197940753d8e977b6a4da9cad30281b10b222b30c769d2d1",
+    "experiment/experiment5_semantic_projection_collapse/logs/E2_seed1.log": "6020c89e8b29c2450ba633c8d28aa6b3d1b7bae323b4bee044a2e227aecedc1f",
+    "experiment/experiment5_semantic_projection_collapse/logs/E2_seed2.log": "e544c8996f6305e673daeffbd3cc3a147301b531386429076a1bd9a84349c36e",
+    "experiment/experiment5_semantic_projection_collapse/logs/E3_seed0.log": "4d84f6c357326f8b21e57be92739556f73affe43d6db14dea6bf2406e0f28d3c",
+    "experiment/experiment5_semantic_projection_collapse/logs/E3_seed1.log": "6f1bc7e78e35786b32b54fdbce2cf5c9f5444e47cb180d63e4652f14de4371b4",
+    "experiment/experiment5_semantic_projection_collapse/logs/E3_seed2.log": "e5c290760a34def59e93f31455e027cc8e40bb85c84525319882c685b9d67068",
+    "experiment/experiment5_semantic_projection_collapse/logs/scheduler.log": "22699a5a626abc0b2d4843db35ce2a77c1fb48e5a758847a91f7c3bb1d269f55",
+    "experiment/experiment5_semantic_projection_collapse/manifest.json": "c83a48efb69afab4086592fa9b941749c379aa59cc6cee10728727358e014562",
+    "experiment/experiment5_semantic_projection_collapse/projection_patch.diff": "ef0cd4e82dab1272f27980d4da6545ddc981431d9074d25c6181dfacf8f9076a",
+    "experiment/experiment5_semantic_projection_collapse/prompts.json": "7b399d6c2d25bdac9465fd3f42dcb8ddafddb8483ab88a2e59e47eb1fa3375fb",
+    "experiment/experiment5_semantic_projection_collapse/results/fold_metrics.csv": "735c614dfd621ac49a1cee1b53e13f7ff833ef81670bf2a83c939a9154f1c44a",
+    "experiment/experiment5_semantic_projection_collapse/results/projection_diagnostics.csv": "321bff03c60e622be5cbefa5436b4f352829b5b2c9fc76cd8f0e57a8bdfe27a4",
+    "experiment/experiment5_semantic_projection_collapse/results/reference.csv": "ec37b0ae5389d2555910bff77ee6d72dac6765fe1472768fa10e4d09809d71db",
+    "experiment/experiment5_semantic_projection_collapse/results/report.md": "092a12a8d6efc3d22070efc7f8f39971358bfd7586968552e187a090d4eeb839",
+    "experiment/experiment5_semantic_projection_collapse/run.py": "55a36e79a8829fcdfb7cc210c862839bf4502bed07432815a7ed2162dad05206",
+    "experiment/experiment6_semantic_direction_preserving_gate/README.md": "900e26dca90febc0f2043c8f202f6c2012ce991a913d73f50d8a4e218ae3af0e",
+    "experiment/experiment6_semantic_direction_preserving_gate/gate_patch.diff": "0421ae91ca099d9727866db41c9b8694dbdfe38b9ab57dcc87926396d8f4b3b5",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B1_seed0.log": "a1593dd93976743c6371bc27bad2b07318f1db28f28c8acf1d3e4b8e66c5f7bc",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B1_seed1.log": "ff053b19783a9e53964f4fe7bacf5c18d20264498ab53109021b3d1c4608875e",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B1_seed2.log": "701b4760dc41a9e470c0514d317b04cb68a60f12f18b839805b0a073d36f26a3",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B2_seed0.log": "86a8f74b79d023e5d1a4579846b96896420c71dd0c68abf022dd155e9f9c0482",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B2_seed1.log": "cfd4832c49e4095c273c4916085fe4b21604070e416511876c4ee8acf5fcfc48",
+    "experiment/experiment6_semantic_direction_preserving_gate/logs/B2_seed2.log": "a829bbd87271e9f9966cffeb95cde3bfbe9cdd1541bd843a2cff17357ee1db3c",
+    "experiment/experiment6_semantic_direction_preserving_gate/manifest.json": "0f88bf81c677c6358047c292c95f1e644090b0b538e5852fe63454fbd1f5a4e2",
+    "experiment/experiment6_semantic_direction_preserving_gate/prompts.json": "213cac941691f4a6470fce312f1976a803ff63aed8228eebdc3ccd7300b3db7e",
+    "experiment/experiment6_semantic_direction_preserving_gate/results/fold_metrics.csv": "62436ebe9651097cd64f677ae152a1fc926fe1fe94cb6815763e26a21d450ed3",
+    "experiment/experiment6_semantic_direction_preserving_gate/results/gate_diagnostics.csv": "f8804f5cc5d05e2e04e0c23e263964b128988ca9eea80e209e291c350993424f",
+    "experiment/experiment6_semantic_direction_preserving_gate/results/reference.csv": "9df0828370cba704d805f48e15c871aaa8d462933ae0a48213d6cf7f13b194d6",
+    "experiment/experiment6_semantic_direction_preserving_gate/results/report.md": "2b4315568ef32385c622cc05672276b8426693f8f35135fd17666cff92211795",
+    "experiment/experiment6_semantic_direction_preserving_gate/run.py": "72946deceadb2498525c2275bba00ef32d203b60c6098722ffed8fe72536d170",
+    "experiment/experiment7_dual_theme_semantic_fusion/README.md": "a50e6f4be98a9ab41c538fa890ca2ae788645b6f41839e4877a35935f7243309",
+    "experiment/experiment7_dual_theme_semantic_fusion/fusion_patch.diff": "19cbe6a7b103434cb6b46caffb8b6b737ed44a49a81b6e98cc59a87a2bbc505e",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F1_seed0.log": "abd62ef76e4d07c14b11a8c786dffd1fab56363405117055937889619ccbd09d",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F1_seed1.log": "06970db83e30ccb59ace1cbae95133e9a53824a250c801b6a23da76c791d0497",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F1_seed2.log": "2e32d02837e148732776cd2919f215408bc8f1c9865419100740a57b73b52f5b",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F2_seed0.log": "eaf7e81c03b00dc6f3c20d7c5675b676973340a79224c332492f403dc06a7624",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F2_seed1.log": "48336f22e2851d84ec6bc9b5d753200ac83122f241d644ddcb1dff80df0d41a0",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F2_seed2.log": "b7241219c1baa0f5ad230159e1ba22d4b989c3541699e4efb8076e8d4df4cf1d",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F3_seed0.log": "0f4fac53085c4369aa02ad030fcd16e64550cacbd161c4a1a992c55e820f978d",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F3_seed1.log": "ed3e67fcb6d5aacbaa4733995e9b103e406de1b98a8d3f2e0d4e34afc2fa602e",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F3_seed2.log": "43355ee7208397f37e8e8a9a35b04be84862e50c80884e6df28ecaf38bc8a502",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F4_seed0.log": "e8e66cb40984b31660e162760b49cc0cf6200ee2cc5b2994d79fb9ee375b1e3b",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F4_seed1.log": "fcf08ddc4bb6b08fc10c8f4c7b070edc5a8bc3abaa4dc3efaf5a561c5f7ef87e",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/F4_seed2.log": "0f867e450f0534b1fccb145ca61bbe04dc8bc73002f1142dc3b14ce8e3a7412d",
+    "experiment/experiment7_dual_theme_semantic_fusion/logs/scheduler.log": "d73fe7b5c56ded4df41b460b80a120f671e5030e7442f9aa71e91a9e530826db",
+    "experiment/experiment7_dual_theme_semantic_fusion/manifest.json": "31bdf9266c56566c4fd285103d69943f8c953d6bc56a6500740ff5a8cf559a74",
+    "experiment/experiment7_dual_theme_semantic_fusion/prompts.json": "d88e0332022b77ed5bf331911b2a4eacff510e7efe718215966381937873e088",
+    "experiment/experiment7_dual_theme_semantic_fusion/results/counterfactual.csv": "91a19a24ba7157c6866f221290c59cbe57c82b1be839136757b93608840895f1",
+    "experiment/experiment7_dual_theme_semantic_fusion/results/fold_metrics.csv": "56f225f4cc5a6b01f5832bd7925cf74f9617e0838f73e5c2728d65d2074c7a71",
+    "experiment/experiment7_dual_theme_semantic_fusion/results/fusion_diagnostics.csv": "12bc80b5e5316cc4b8c56b997b337e11881e4d8f13f8dbbd76ada38e55b5a360",
+    "experiment/experiment7_dual_theme_semantic_fusion/results/reference.csv": "968cd2563f75afb871d8fc1b30965f9b4e3daf934d3c765ca384de70b5d4a46c",
+    "experiment/experiment7_dual_theme_semantic_fusion/results/report.md": "d51536f6e758240d3bf857444405152302e28f564736f4a9386c9b6d097d4029",
+    "experiment/experiment7_dual_theme_semantic_fusion/run.py": "5640272626a1ce18db5731542cff248a3c1cdbb107e016e4a687b88cd40c5e1c",
+    "experiment/experiment8_scheme1_shared_disease_alignment/README.md": "17efcea9263d70b2f773a0322a69f106158fa8a7754889dab4d968cfdbc8e827",
+    "experiment/experiment8_scheme1_shared_disease_alignment/disease_patch.diff": "ac27a826951ffe3b0e29a7c28aef598a3ffd79ff58d2b8301b6f035b6ba45f56",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S1_seed0.log": "2b664fb32b10f74f6d58c4f5a9ac19c9893d9a63a2735000346f98e3bae87dc3",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S1_seed1.log": "cd5adfd9bc0f6299d228d2a5f986ee8094feff97f56c1c2bd8da6a9aaf5f7830",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S1_seed2.log": "30660e563e11f1e4d68d5544adbfe5c6ae86ffe141fae0b8053a7b42335e7a1a",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S2_seed0.log": "d60aa187cd8646f59f3ab33e8fef241eaba64734a51867aa37bec714283300c5",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S2_seed1.log": "09559f1384abb5305963e9c0b7740fb8481c088dc5cf7d431355e5acb96a8366",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S2_seed2.log": "83959f009de1f372f896fa7cf3f315938815240cf41b1495806f0ae13aa1a8f6",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S3_seed0.log": "22ef5ea05bc5d5bd7c93df309ad14831144949c24414d49437ccb7e24405382e",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S3_seed1.log": "bca661e256a98d31c11edd3b557a2cbebf0ac3dc112d3cea533327cdfff2d859",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S3_seed2.log": "cc07bffdb9084ed77412c11cb246d4c721df326852a758a09f537a4bcfa58f26",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S4_seed0.log": "62c73dccf788e10e0fb3a583bcea7267ebf2d487ad6381f8fef37400c2921e9e",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S4_seed1.log": "c91e72d2c808b3b1d7141cde92bc2f3c9374002f469af9230cf967f9b3f183f4",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S4_seed2.log": "1d0eeb47553d774bd85a00218a58cdbf5b65077fbd70e92dca1f0a9a7273ce47",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S5_seed0.log": "d66e86c044b4d6ea27ad950fd4307917dd145b7d35be5b96860579072bddbb6d",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S5_seed1.log": "c6391c52e74f0fa7a930570e77512b43d1198f9415eeb0aee8dc1d35bdf253a5",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/S5_seed2.log": "30d911f2dc79c1726374447c2523ed89fc8924ea02b18c4eaad9b4a291e8d87a",
+    "experiment/experiment8_scheme1_shared_disease_alignment/logs/scheduler.log": "b6208e1584d40587bd702b873c5ee29a09313ea12a9635174003254c0824b0d7",
+    "experiment/experiment8_scheme1_shared_disease_alignment/manifest.json": "f4c8a3865c4a004eb97a5e5726cba95ff2b19560f772e770eddbcf58610153ef",
+    "experiment/experiment8_scheme1_shared_disease_alignment/prompts.json": "3ba9acc6df3647d9b2aeaf517519af48bb0a2ca789186fe3fe8aa661e63266c7",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/counterfactual.csv": "e303868d85fb2ced7dbd84d4560a5e5bfc43d215292dc914d329778bb6813ce1",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/disease_diagnostics.csv": "44c8097bfebb2decf05a665854d2a471559b4606811f19869e4cb9a1865a26df",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/fold_metrics.csv": "36fdc054c096a88e9bfcd2ed7f02b2270ce96949814a949655f8c0f7668fe532",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/reference.csv": "a4b870c5bcd048590784768ad0c24459a7eace1b1d0432c63bdc17f47129019b",
+    "experiment/experiment8_scheme1_shared_disease_alignment/results/report.md": "932952b8a78752710a5614a25e2b5d9dba13922df18efb6de43d4ffef5fbecd2",
+    "experiment/experiment8_scheme1_shared_disease_alignment/run.py": "d5f3c80eb2c7d3ec5e5fdbbf4cee673a15895116e8799e710386653c0a9c4588",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/README.md": "f3860559fe3e12be9d2e0a33321fd3d3eea9414d227ef2ebeb341b3c1e732e7a",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/alignment_patch.diff": "77ba4c07a82c76458355522b5969ab3661d3204658b83c7c31b2427d512d65a7",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E10_seed0.log": "871e3517b0e447f6ff72393c5c535fd7ae2e232c86ddb4211bd042446b127de9",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E10_seed1.log": "44b2e19febd531d78a358129176b5917546d1bd72d1d89e191ff180c074d9851",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E10_seed2.log": "13b0e48bf513892e956965322f4fc10c48e1025287a1548c098eb379f724ded7",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E11_seed0.log": "f3fc9e067640f64b56b4f5985728797d2448b1f8f321e3ac9c625e77cc8c345e",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E11_seed1.log": "4b70386a6a1e7a5deea1705858dc2a961475bf4f49a86ccd719907e2d2743654",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E11_seed2.log": "9a9f34fcba1c36a318ca2a7845e7a8eda21cb0ff132d28c5dc70575efcba577c",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E1_seed0.log": "672dfc06c03ce81ab743afb62f6f659e7288c80b4e5290c3d8c37a41b0ddf4d0",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E1_seed1.log": "058f4c2b94368a1b69a2f324be60b0b8e00c87c98bbdd8e617ec535dd7aa2921",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E1_seed2.log": "f1cbf244f065315fd03e8f0b3f53dd93835b3254899a7280447f56dc5510588c",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E2_seed0.log": "422217379bf5d27d9b57d8d89d36117dd85679a97df17bd34175b4a1c382cc0c",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E2_seed1.log": "45a8a68339c228c83f5f7f98777d523b7d8362638dd630b77970a3f824a35393",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E2_seed2.log": "0a88e41ac935fbcbe062eb7f4af5d18140d630d5ea4722337e77fe92ad180bef",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E3_seed0.log": "8dac6efa75f354d3babfc0ab1ea638727aaafd16307d04fb17dc3ee70fc33c31",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E3_seed1.log": "aa791ff1872d51caf003665b927ec4de51c720670ecfb0afd268cc7d73347649",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E3_seed2.log": "a6475aeb0c3db0e597b110dc2126fb5182749a4adcdbde7afbb759e54847710b",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E6_seed0.log": "ea88b299aed29fb6b7aff945370f122ad6ab58e4ad8bd5002fbf626064721d4c",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E6_seed1.log": "284df7c4cab4466b0190287645fc17a63dda61b5147c66dd1fb8e9532606141d",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E6_seed2.log": "3a6a4eeede307ace0515f39f747413749cb83e173970f80a1aac4d4ecc103cef",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E7_seed0.log": "3694dc95da6d6f26df7023647542bb3131f94b7fcf4f3e40093b2a2ecc2eb378",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E7_seed1.log": "a649e80bb02d77d5904195fa986a6d5dc6d675853ea7941bbf0eb34467596dd4",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E7_seed2.log": "2cbc502d30dc6591511b8b096fddd0d717721ae61822cbd8bec5414eb498fb81",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E9_seed0.log": "ab05325fa7318d079a8511d3be4b62921714282fe9a66ca384ab45372ef45e74",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E9_seed1.log": "d06ae676cfe6916672a90bc6b3c0025f53667ff6b2519a2f63bb2cf54283a1dd",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/E9_seed2.log": "989b7eacba030cf51a6b9b0563a35267abf777458c50777e9c37d60955b761b1",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/logs/scheduler.log": "79f389c9273bac00ad9979a5d9b9fd471b0a615025013f2a9f7c6fa08ea78a3a",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/manifest.json": "634927c57326ebf239e45b4317f4660576f83e71e3c0b130c35f8848f606ec2a",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/prompts.json": "6df8b7389a2519718a72e76ac5e9ab6aaf6f98f9f7dbbd914f9f78dab780fabb",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/results/alignment_diagnostics.csv": "314d60474b2978ff7bd5c8b04089909ae86345f946dd02c16e4fd3e5eba77c76",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/results/fold_metrics.csv": "669b59f2313dd559d5ce5fb5820ee6e9b5fc6da76fca76cdd2b2097a58b2e638",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/results/reference.csv": "f2f568bbc4d87e23676ab1f9cf4b9b61e8af8afb130ce723121d7c8701ba43ea",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/results/report.md": "ae0649a81484b7f642b6c5bf05680bb13fe45ef6661c0d4513f1136b4d15a905",
+    "experiment/experiment9_prompt_disease_adversarial_interaction/run.py": "8d4539044b755ca4d9ffcc40e1a8966d5c25252ecd224169702235304e6de4af"
+  },
+  "additional_parameters": {
+    "V0": 0,
+    "V1": 31597,
+    "V2": 31597,
+    "V3": 31597,
+    "V4": 31597,
+    "V5": 31597,
+    "V6": 31597,
+    "V7": 31597,
+    "V8": 31597,
+    "V9": 31597
+  },
+  "fixed_design": {
+    "shared_dim": 32,
+    "private_dim": 32,
+    "fusion": [
+      128,
+      64,
+      72
+    ],
+    "lambda_disc": 0.1,
+    "lambda_pair": 0.1,
+    "lambda_private": 0.05,
+    "new_weight_decay": 0.0,
+    "residual_relative_l2_limit": 0.1,
+    "auxiliary_init_seed": "180000+task seed; fork_rng after my_weight_init",
+    "weighting_mean_denominator": "number of outer-train subjects; NOT sum(weights)",
+    "reliability_fusion_input": false
+  },
+  "evidence_protocol": {
+    "teacher": {
+      "C": 1.0,
+      "solver": "lbfgs",
+      "max_iter": 1000
+    },
+    "inner_splits": 5,
+    "inner_random_state": "18000+outer_fold",
+    "reliability_derangement_seed": "18600+outer_fold",
+    "class_pair_seed": "18900+outer_fold",
+    "counterfactual_seed": "18800+outer_fold",
+    "reliability_target": "joint OOF correctness, train only",
+    "test_q": "NaN/masked",
+    "reliability_fit": "outer train evidence only",
+    "warnings": {},
+    "constant_prior_folds": []
+  },
+  "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c",
+  "feasibility_sha256": "b2c71f6e6e0d47a801620d310f32b5116df549f3d5870575fb5c2efdf95c7100",
+  "patch_sha256": "f9889aeb4f7624bf1185f27d361258c7655a39e65f971feb32f3373a0eea294e",
+  "code_sha256": {
+    "run.py": "da93ac440f413b3899c54f278c2168f951505d931149c3d8c13743c76b6cfc74",
+    "align.py": "43d2f42d326a6bc02bca24069ce9a01d5cf8610214b087a59fb077b13659c714",
+    "evidence.py": "4e394c70cb0f02576635b4468e0f92e9262bf36a75daa3f776b6d4714a464196"
+  },
+  "clip_weight_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+  "paper_sha256": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+  "split_sha256": "cf4c9a273f8df8e6514f2616579ca84c10ffc8ec762dfe02af3cd37d0ab8b11b",
+  "instruction_prompt_sha256": "4a0138916e459b33bda95f83d7f3597e1f7f0dd6d0d6e260fc390a6b969cd404",
+  "git_head_at_prepare": "1167dd392837a02eb4f83481ae49f02607a9dae5",
+  "handoff_prefix_sha256": "9594989e7ad1d2e37d80c4cb632d2b16eab608fe5c237080d8859a00b5a76576",
+  "handoff_prefix_bytes": 75539,
+  "preflight": {
+    "status": "PASS",
+    "started_utc": "2026-10-14T17:17:31.834905+00:00",
+    "initializations": {
+      "V0_seed0": {
+        "total_parameters": 1462957,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V1_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V2_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V3_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V4_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V5_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V6_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V7_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V8_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V9_seed0": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "f865530b84aa3173e9db42c842e90f8797c62c5a6b1f18848c0b7b2b56b1ed57",
+        "initial_branch_sha256": "2f307fec9d7658f38f4d5cd547a6baf8808c38d7f31df6c8941cde08258a3b5b",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V0_seed1": {
+        "total_parameters": 1462957,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V1_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V2_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V3_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V4_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V5_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V6_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V7_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V8_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V9_seed1": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "467858f45f9a81a9ea540899f4a479cfad41c042f45e2e9f86b379ba6498e0dd",
+        "initial_branch_sha256": "f6d142d7a76d736a4c5c20c6ac3fa2bf8600a8b801b9815d4345ef702464e32d",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V0_seed2": {
+        "total_parameters": 1462957,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V1_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V2_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V3_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V4_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V5_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V6_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V7_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V8_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      },
+      "V9_seed2": {
+        "total_parameters": 1494554,
+        "initial_trunk_sha256": "e37dc11ce52bec04ca8ea2bdaf83886c4ed84d244b21f894543749b76e37ef87",
+        "initial_branch_sha256": "81cd9789eba54cdc13391abe05b2b2832d5df7f6988db2398304b7103f770dbc",
+        "output_exact": true,
+        "trunk_parameters_exact": true,
+        "cpu_cuda_rng_exact": true
+      }
+    },
+    "p0_forward_two_adam_updates_rng_exact": true,
+    "frozen_control_evidence": {
+      "1": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "2": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "3": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "4": {
+        "v4_v5_sum_abs_error": 0.0,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "5": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "6": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "7": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "8": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "9": {
+        "v4_v5_sum_abs_error": 1.1368683772161603e-13,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      },
+      "10": {
+        "v4_v5_sum_abs_error": 5.684341886080802e-14,
+        "v5_v6_sorted_weights_exact": true,
+        "v5_v9_weights_exact": true,
+        "v9_same_class_train_derangement": true,
+        "test_q_missing": true,
+        "evidence_sha256": "117361e911818624f9aa8910acee3d6d48392a545153cf1b4d03922ac5f08a0c"
+      }
+    },
+    "outer_test_labels_cannot_change_evidence": true,
+    "weight_003_loss_ratio": 0.03,
+    "two_step_component_gradients": {
+      "V1": [
+        {
+          "shared_corr": 0.0,
+          "private_corr": 0.0,
+          "shared_pheno": 0.0,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.0,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.0004113900358788669,
+          "private_corr": 0.0004600187239702791,
+          "shared_pheno": 9.506813512416556e-05,
+          "private_pheno": 0.00011442210234235972,
+          "fusion": 0.0006177287432365119,
+          "disc_head": 0.0,
+          "private_head": 0.0,
+          "alpha": 0.003229103982448578,
+          "original_gfr": 0.6019342541694641,
+          "original_pln": 1.2820255756378174
+        }
+      ],
+      "V2": [
+        {
+          "shared_corr": 0.19883158802986145,
+          "private_corr": 0.0,
+          "shared_pheno": 0.0,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.36320850253105164,
+          "private_corr": 0.00045247311936691403,
+          "shared_pheno": 9.939145093085244e-05,
+          "private_pheno": 0.00011254841228947043,
+          "fusion": 0.0006342052947729826,
+          "disc_head": 0.2906450033187866,
+          "private_head": 0.0,
+          "alpha": 0.002383880317211151,
+          "original_gfr": 0.6019947528839111,
+          "original_pln": 1.2821433544158936
+        }
+      ],
+      "V3": [
+        {
+          "shared_corr": 0.6384967565536499,
+          "private_corr": 0.0,
+          "shared_pheno": 0.20847302675247192,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.26349228620529175,
+          "private_corr": 0.0004858577740378678,
+          "shared_pheno": 0.18426521122455597,
+          "private_pheno": 0.00011251078103668988,
+          "fusion": 0.0006224458920769393,
+          "disc_head": 0.08179030567407608,
+          "private_head": 0.0,
+          "alpha": 0.004205291625112295,
+          "original_gfr": 0.6019113063812256,
+          "original_pln": 1.2819435596466064
+        }
+      ],
+      "V4": [
+        {
+          "shared_corr": 0.29605722427368164,
+          "private_corr": 0.0,
+          "shared_pheno": 0.09212218970060349,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.2255243957042694,
+          "private_corr": 0.0004739307623822242,
+          "shared_pheno": 0.08452466875314713,
+          "private_pheno": 0.00011221852764720097,
+          "fusion": 0.000618290388956666,
+          "disc_head": 0.04262402653694153,
+          "private_head": 0.0,
+          "alpha": 0.005096976645290852,
+          "original_gfr": 0.6019037365913391,
+          "original_pln": 1.2819215059280396
+        }
+      ],
+      "V5": [
+        {
+          "shared_corr": 0.2914571464061737,
+          "private_corr": 0.0,
+          "shared_pheno": 0.0917060598731041,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.2162519097328186,
+          "private_corr": 0.00047439878107979894,
+          "shared_pheno": 0.0848386138677597,
+          "private_pheno": 0.00011198679567314684,
+          "fusion": 0.0006174375303089619,
+          "disc_head": 0.03765317425131798,
+          "private_head": 0.0,
+          "alpha": 0.005058102309703827,
+          "original_gfr": 0.601905107498169,
+          "original_pln": 1.281925082206726
+        }
+      ],
+      "V6": [
+        {
+          "shared_corr": 0.2952248156070709,
+          "private_corr": 0.0,
+          "shared_pheno": 0.09131787717342377,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.227286696434021,
+          "private_corr": 0.00047217481187544763,
+          "shared_pheno": 0.08431539684534073,
+          "private_pheno": 0.00011216561688343063,
+          "fusion": 0.0006178957410156727,
+          "disc_head": 0.04363865777850151,
+          "private_head": 0.0,
+          "alpha": 0.005194781813770533,
+          "original_gfr": 0.6019015908241272,
+          "original_pln": 1.2819167375564575
+        }
+      ],
+      "V7": [
+        {
+          "shared_corr": 0.2914571464061737,
+          "private_corr": 0.1595516949892044,
+          "shared_pheno": 0.0917060598731041,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.04593362659215927,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.216236874461174,
+          "private_corr": 0.11123479157686234,
+          "shared_pheno": 0.08483706414699554,
+          "private_pheno": 0.0001028219994623214,
+          "fusion": 0.0006318606319837272,
+          "disc_head": 0.03765317425131798,
+          "private_head": 0.09000808745622635,
+          "alpha": 0.0031367912888526917,
+          "original_gfr": 0.6020095944404602,
+          "original_pln": 1.2821003198623657
+        }
+      ],
+      "V8": [
+        {
+          "shared_corr": 0.6815627813339233,
+          "private_corr": 0.0,
+          "shared_pheno": 0.20847302675247192,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.0,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.3112415373325348,
+          "private_corr": 0.000473041960503906,
+          "shared_pheno": 0.1781456619501114,
+          "private_pheno": 0.00011158816050738096,
+          "fusion": 0.0006030647782608867,
+          "disc_head": 0.0,
+          "private_head": 0.0,
+          "alpha": 0.005960620939731598,
+          "original_gfr": 0.6018789410591125,
+          "original_pln": 1.2818567752838135
+        }
+      ],
+      "V9": [
+        {
+          "shared_corr": 0.2930348515510559,
+          "private_corr": 0.0,
+          "shared_pheno": 0.09123324602842331,
+          "private_pheno": 0.0,
+          "fusion": 0.0,
+          "disc_head": 0.07874484360218048,
+          "private_head": 0.0,
+          "alpha": 0.0062657808884978294,
+          "original_gfr": 2.3573970794677734,
+          "original_pln": 3.017740488052368
+        },
+        {
+          "shared_corr": 0.23505103588104248,
+          "private_corr": 0.0004714319366030395,
+          "shared_pheno": 0.08503293991088867,
+          "private_pheno": 0.00011242087202845141,
+          "fusion": 0.0006181104108691216,
+          "disc_head": 0.0490601547062397,
+          "private_head": 0.0,
+          "alpha": 0.005361499730497599,
+          "original_gfr": 0.601898193359375,
+          "original_pln": 1.2819087505340576
+        }
+      ]
+    },
+    "finite_loss_gradients_and_disabled_head_audit": true,
+    "full_checkpoint_third_step_exact": true,
+    "residual_bound_verified": true,
+    "auxiliary_site_excluded": true,
+    "auxiliary_loss_outer_train_only": true,
+    "predictions_test_label_invariant": true,
+    "reliability_not_used_in_inference": true,
+    "counterfactual_same_checkpoint_base_exact": true,
+    "counterfactual_probe": {
+      "REAL": 0.0,
+      "SHARED_OFF": 0.025567781180143356,
+      "PRIVATE_OFF": 0.013883398845791817,
+      "RESIDUAL_OFF": 0.01574169658124447,
+      "PHENO_SHUFFLED": 0.01138592604547739
+    },
+    "diagnostic_writer_finite": true,
+    "completed_utc": "2026-10-14T17:19:01.016938+00:00",
+    "root_and_history_unchanged": true,
+    "patch_applies": true
+  },
+  "completed_folds": 300,
+  "completed_tasks": 30,
+  "workers_per_gpu": 4,
+  "tasks": {
+    "V0_seed0": {
+      "config": "V0",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 400.5745366215706,
+      "updated_utc": "2026-10-14T17:28:41.447077+00:00"
+    },
+    "V0_seed1": {
+      "config": "V0",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 365.8586902357638,
+      "updated_utc": "2026-10-14T17:28:06.911407+00:00"
+    },
+    "V0_seed2": {
+      "config": "V0",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 373.32447672635317,
+      "updated_utc": "2026-10-14T17:28:13.596080+00:00"
+    },
+    "V1_seed0": {
+      "config": "V1",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 384.9063720777631,
+      "updated_utc": "2026-10-14T17:28:26.561396+00:00"
+    },
+    "V1_seed1": {
+      "config": "V1",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 380.95690708234906,
+      "updated_utc": "2026-10-14T17:28:22.543178+00:00"
+    },
+    "V1_seed2": {
+      "config": "V1",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 383.3627718389034,
+      "updated_utc": "2026-10-14T17:28:24.902171+00:00"
+    },
+    "V2_seed0": {
+      "config": "V2",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 399.81868712604046,
+      "updated_utc": "2026-10-14T17:28:41.007095+00:00"
+    },
+    "V2_seed1": {
+      "config": "V2",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 380.9436600804329,
+      "updated_utc": "2026-10-14T17:28:22.664806+00:00"
+    },
+    "V2_seed2": {
+      "config": "V2",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 397.60880494862795,
+      "updated_utc": "2026-10-14T17:35:09.390606+00:00"
+    },
+    "V3_seed0": {
+      "config": "V3",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 405.76401783525944,
+      "updated_utc": "2026-10-14T17:35:08.601954+00:00"
+    },
+    "V3_seed1": {
+      "config": "V3",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 413.5090897716582,
+      "updated_utc": "2026-10-14T17:35:33.790952+00:00"
+    },
+    "V3_seed2": {
+      "config": "V3",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 397.5055051445961,
+      "updated_utc": "2026-10-14T17:35:17.721083+00:00"
+    },
+    "V4_seed0": {
+      "config": "V4",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 418.9926412291825,
+      "updated_utc": "2026-10-14T17:35:55.470754+00:00"
+    },
+    "V4_seed1": {
+      "config": "V4",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 380.8976726643741,
+      "updated_utc": "2026-10-14T17:35:03.253505+00:00"
+    },
+    "V4_seed2": {
+      "config": "V4",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 401.5199255682528,
+      "updated_utc": "2026-10-14T17:35:40.382485+00:00"
+    },
+    "V5_seed0": {
+      "config": "V5",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 395.3293000943959,
+      "updated_utc": "2026-10-14T17:35:17.800398+00:00"
+    },
+    "V5_seed1": {
+      "config": "V5",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 414.2980001308024,
+      "updated_utc": "2026-10-14T17:42:23.742184+00:00"
+    },
+    "V5_seed2": {
+      "config": "V5",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 407.55421033501625,
+      "updated_utc": "2026-10-14T17:42:07.373449+00:00"
+    },
+    "V6_seed0": {
+      "config": "V6",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 407.99284702911973,
+      "updated_utc": "2026-10-14T17:42:37.971183+00:00"
+    },
+    "V6_seed1": {
+      "config": "V6",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 423.19526731595397,
+      "updated_utc": "2026-10-14T17:42:30.617022+00:00"
+    },
+    "V6_seed2": {
+      "config": "V6",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 428.97190349921584,
+      "updated_utc": "2026-10-14T17:43:05.480070+00:00"
+    },
+    "V7_seed0": {
+      "config": "V7",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 388.038965690881,
+      "updated_utc": "2026-10-14T17:42:04.408091+00:00"
+    },
+    "V7_seed1": {
+      "config": "V7",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 421.17365862056613,
+      "updated_utc": "2026-10-14T17:43:14.251518+00:00"
+    },
+    "V7_seed2": {
+      "config": "V7",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 406.9775775447488,
+      "updated_utc": "2026-10-14T17:42:23.468677+00:00"
+    },
+    "V8_seed0": {
+      "config": "V8",
+      "seed": 0,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 429.34337321668863,
+      "updated_utc": "2026-10-14T17:49:52.294591+00:00"
+    },
+    "V8_seed1": {
+      "config": "V8",
+      "seed": 1,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 416.0954589024186,
+      "updated_utc": "2026-10-14T17:49:18.815865+00:00"
+    },
+    "V8_seed2": {
+      "config": "V8",
+      "seed": 2,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 384.42242981866,
+      "updated_utc": "2026-10-14T17:49:27.216465+00:00"
+    },
+    "V9_seed0": {
+      "config": "V9",
+      "seed": 0,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 384.5861115306616,
+      "updated_utc": "2026-10-14T17:48:49.627980+00:00"
+    },
+    "V9_seed1": {
+      "config": "V9",
+      "seed": 1,
+      "physical_gpu": 0,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 409.79185754060745,
+      "updated_utc": "2026-10-14T17:50:12.367329+00:00"
+    },
+    "V9_seed2": {
+      "config": "V9",
+      "seed": 2,
+      "physical_gpu": 1,
+      "status": "COMPLETE",
+      "folds": 10,
+      "seconds": 404.44182812795043,
+      "updated_utc": "2026-10-14T17:49:27.220885+00:00"
+    }
+  },
+  "started_unix": 1791998504.809521,
+  "started_utc": "2026-10-14T17:21:44.809541+00:00",
+  "launch_resources": {
+    "utc": "2026-10-14T17:21:44.932058+00:00",
+    "gpu": [
+      {
+        "index": 0,
+        "name": "PPU-ZW810E",
+        "total_mib": 98304,
+        "used_mib": 2,
+        "utilization": 0
+      },
+      {
+        "index": 1,
+        "name": "PPU-ZW810E",
+        "total_mib": 98304,
+        "used_mib": 2,
+        "utilization": 0
+      }
+    ],
+    "worker_rss_sum_gib": 0.0,
+    "worker_cpu_seconds": 0.0,
+    "host_available_gib": 1411.1061363220215,
+    "system_cpu_percent": 3.5,
+    "active_workers": 0,
+    "gpu_memory_scope": "whole device including unrelated jobs"
+  },
+  "diagnostic_rows": 300,
+  "counterfactual_rows": 150,
+  "updated_utc": "2026-10-14T17:50:16.493180+00:00",
+  "runtime_resource_peaks": {
+    "worker_rss_sum_gib": 25.102310180664062,
+    "gpu0_mib": 3059,
+    "gpu1_mib": 3059
+  },
+  "training_completed_utc": "2026-10-14T17:50:16.794813+00:00",
+  "training_wall_seconds": 1711.9853398799896,
+  "failures_and_restarts": {},
+  "final_validation": {
+    "status": "PASS",
+    "groups": 10,
+    "tasks": 30,
+    "folds": 300,
+    "diagnostics": 300,
+    "counterfactual": 150,
+    "gpu_folds": [
+      150,
+      150
+    ],
+    "unique_results": true,
+    "historical_p0_parity": {
+      "13": 30,
+      "14": 30,
+      "15": 30,
+      "16": 30,
+      "17": 30
+    },
+    "checkpoint_rng_recovery": true,
+    "frozen_evidence_control_audit": true,
+    "root_history_hashes_unchanged": true,
+    "original_init_matches_v0": {
+      "V0": 30,
+      "V1": 5,
+      "V2": 3,
+      "V3": 3,
+      "V4": 3,
+      "V5": 4,
+      "V6": 3,
+      "V7": 5,
+      "V8": 3,
+      "V9": 4
+    }
+  },
+  "scientific_judgment": {
+    "discriminative": false,
+    "uniform_alignment": false,
+    "discriminative_under_alignment": false,
+    "selection_over_same_strength": false,
+    "correct_reliability": false,
+    "patient_correspondence": false,
+    "private_distillation": false,
+    "v5_over_p0": false,
+    "v7_over_p0": false,
+    "v5_over_e9": false,
+    "v7_over_e9": false,
+    "first_module_supported_in_historical_protocol": false,
+    "miccai2027_full_scientific_evidence": false,
+    "success_rule": "three seed BA/Prob-AUC all positive AND three seed ACC non-decreasing; conservative descriptive, not significance"
+  },
+  "aggregated_metrics": {
+    "V0": {
+      "acc": {
+        "mean": 0.9169104841518635,
+        "sd": 0.0005418442767713106,
+        "seeds": [
+          0.9172936259143156,
+          0.9161442006269592,
+          0.9172936259143155
+        ]
+      },
+      "ba": {
+        "mean": 0.9153935023277153,
+        "sd": 0.0008407520453935809,
+        "seeds": [
+          0.9156249858983327,
+          0.9142677568195664,
+          0.9162877642652466
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9153935023277152,
+        "sd": 0.0008407520453935706,
+        "seeds": [
+          0.9156249858983326,
+          0.9142677568195664,
+          0.9162877642652466
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.933351985138723,
+        "sd": 0.004154107688732577,
+        "seeds": [
+          0.9389057106112227,
+          0.9289162022517543,
+          0.9322340425531916
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8966056910569106,
+        "sd": 0.0064561881164028785,
+        "seeds": [
+          0.8934146341463414,
+          0.8907926829268293,
+          0.905609756097561
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9341813135985199,
+        "sd": 0.005102297856039094,
+        "seeds": [
+          0.9378353376503238,
+          0.9377428307123037,
+          0.9269657724329324
+        ]
+      }
+    },
+    "V1": {
+      "acc": {
+        "mean": 0.916139846743295,
+        "sd": 0.0009278574541951538,
+        "seeds": [
+          0.9172805642633228,
+          0.9150078369905957,
+          0.9161311389759665
+        ]
+      },
+      "ba": {
+        "mean": 0.9146404450862269,
+        "sd": 0.0012255681168249146,
+        "seeds": [
+          0.9157450192910808,
+          0.9129314546151936,
+          0.9152448613524063
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9146404450862269,
+        "sd": 0.0012255681168249662,
+        "seeds": [
+          0.9157450192910808,
+          0.9129314546151935,
+          0.9152448613524063
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.937156784218166,
+        "sd": 0.0013720200003815718,
+        "seeds": [
+          0.9372013266848672,
+          0.9354545813496987,
+          0.938814444619932
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8957317073170731,
+        "sd": 0.0073055464764691025,
+        "seeds": [
+          0.8980487804878049,
+          0.8858536585365853,
+          0.9032926829268293
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9335491828553808,
+        "sd": 0.005231119889876211,
+        "seeds": [
+          0.9334412580943571,
+          0.9400092506938019,
+          0.9271970397779832
+        ]
+      }
+    },
+    "V2": {
+      "acc": {
+        "mean": 0.9127002786485545,
+        "sd": 6.157321326894078e-06,
+        "seeds": [
+          0.9127089864158829,
+          0.9126959247648904,
+          0.9126959247648904
+        ]
+      },
+      "ba": {
+        "mean": 0.9109570613629355,
+        "sd": 0.00041505672427785716,
+        "seeds": [
+          0.9115044222828909,
+          0.9104997912953227,
+          0.9108669705105932
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9109570613629355,
+        "sd": 0.00041505672427785716,
+        "seeds": [
+          0.9115044222828909,
+          0.9104997912953227,
+          0.9108669705105932
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9334296195182118,
+        "sd": 0.0029528954142605326,
+        "seeds": [
+          0.9292568421290133,
+          0.9353734121522528,
+          0.9356586042733692
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8891666666666667,
+        "sd": 0.007022232712169533,
+        "seeds": [
+          0.8981707317073171,
+          0.8810365853658537,
+          0.8882926829268293
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9327474560592045,
+        "sd": 0.006194166757075043,
+        "seeds": [
+          0.9248381128584644,
+          0.9399629972247918,
+          0.9334412580943571
+        ]
+      }
+    },
+    "V3": {
+      "acc": {
+        "mean": 0.9169104841518635,
+        "sd": 0.0030168612544106163,
+        "seeds": [
+          0.9184430512016719,
+          0.9126959247648904,
+          0.9195924764890282
+        ]
+      },
+      "ba": {
+        "mean": 0.9154106405541391,
+        "sd": 0.0026099958088787617,
+        "seeds": [
+          0.9168749858983325,
+          0.91174420703504,
+          0.9176127287290449
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.915410640554139,
+        "sd": 0.0026099958088788657,
+        "seeds": [
+          0.9168749858983325,
+          0.9117442070350398,
+          0.9176127287290449
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9356901732060798,
+        "sd": 0.0010762463578965458,
+        "seeds": [
+          0.9372122131720854,
+          0.9349314094898581,
+          0.934926896956296
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8958536585365854,
+        "sd": 0.0040080352567156636,
+        "seeds": [
+          0.8959146341463414,
+          0.9007317073170732,
+          0.8909146341463415
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9349676225716929,
+        "sd": 0.009030054539743605,
+        "seeds": [
+          0.9378353376503238,
+          0.9227567067530064,
+          0.9443108233117485
+        ]
+      }
+    },
+    "V4": {
+      "acc": {
+        "mean": 0.9165316962730756,
+        "sd": 0.0023611460751954767,
+        "seeds": [
+          0.9138453500522467,
+          0.9195924764890282,
+          0.916157262277952
+        ]
+      },
+      "ba": {
+        "mean": 0.9152853989455713,
+        "sd": 0.0020455762528895625,
+        "seeds": [
+          0.9130962749035445,
+          0.9180177568195663,
+          0.9147421651136032
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9152853989455713,
+        "sd": 0.002045576252889582,
+        "seeds": [
+          0.9130962749035445,
+          0.9180177568195663,
+          0.914742165113603
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9332757985304182,
+        "sd": 0.001125666188725773,
+        "seeds": [
+          0.9319183908305316,
+          0.9332342456172018,
+          0.934674759143521
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.9006910569105692,
+        "sd": 0.003478401864273428,
+        "seeds": [
+          0.905609756097561,
+          0.8982926829268292,
+          0.8981707317073171
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9298797409805736,
+        "sd": 0.0070785440153769245,
+        "seeds": [
+          0.9205827937095282,
+          0.9377428307123035,
+          0.931313598519889
+        ]
+      }
+    },
+    "V5": {
+      "acc": {
+        "mean": 0.9161485545106235,
+        "sd": 6.157321326972582e-06,
+        "seeds": [
+          0.916157262277952,
+          0.9161442006269593,
+          0.9161442006269592
+        ]
+      },
+      "ba": {
+        "mean": 0.9147634774335717,
+        "sd": 0.00017034198184195636,
+        "seeds": [
+          0.9148262674578642,
+          0.9145306683062205,
+          0.9149334965366304
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9147634774335717,
+        "sd": 0.00017034198184195636,
+        "seeds": [
+          0.9148262674578642,
+          0.9145306683062205,
+          0.9149334965366304
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9342710942141799,
+        "sd": 0.0014457889319142152,
+        "seeds": [
+          0.9332442860043771,
+          0.9332532546648317,
+          0.9363157419733309
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8966869918699186,
+        "sd": 0.0023575483534551286,
+        "seeds": [
+          0.8982926829268292,
+          0.8933536585365853,
+          0.8984146341463415
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9328399629972249,
+        "sd": 0.0020281324270620196,
+        "seeds": [
+          0.9313598519888991,
+          0.9357076780758558,
+          0.9314523589269197
+        ]
+      }
+    },
+    "V6": {
+      "acc": {
+        "mean": 0.9157654127481712,
+        "sd": 0.002862518752006831,
+        "seeds": [
+          0.9127089864158829,
+          0.9195924764890282,
+          0.9149947753396029
+        ]
+      },
+      "ba": {
+        "mean": 0.9138426479546942,
+        "sd": 0.002718884040750953,
+        "seeds": [
+          0.9114486078833961,
+          0.9176454163940345,
+          0.912433919586652
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9138426479546942,
+        "sd": 0.002718884040750953,
+        "seeds": [
+          0.9114486078833961,
+          0.9176454163940345,
+          0.912433919586652
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9352718613448854,
+        "sd": 0.003072259790830797,
+        "seeds": [
+          0.932529444281492,
+          0.9337245887953791,
+          0.9395615509577852
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8891869918699187,
+        "sd": 0.0076425466999430446,
+        "seeds": [
+          0.8957926829268293,
+          0.8932926829268293,
+          0.8784756097560976
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9384983040394698,
+        "sd": 0.008253908181222333,
+        "seeds": [
+          0.927104532839963,
+          0.9419981498612398,
+          0.9463922294172065
+        ]
+      }
+    },
+    "V7": {
+      "acc": {
+        "mean": 0.9149947753396029,
+        "sd": 0.003251065660627759,
+        "seeds": [
+          0.9126959247648904,
+          0.9195924764890282,
+          0.9126959247648904
+        ]
+      },
+      "ba": {
+        "mean": 0.9135106759023186,
+        "sd": 0.0032298749506775664,
+        "seeds": [
+          0.9116957537059183,
+          0.9180482446244443,
+          0.9107880293765935
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9135106759023186,
+        "sd": 0.0032298749506775976,
+        "seeds": [
+          0.9116957537059183,
+          0.9180482446244443,
+          0.9107880293765934
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.935394395433316,
+        "sd": 0.003411639379442606,
+        "seeds": [
+          0.9348755104803592,
+          0.9398079916969383,
+          0.9314996841226506
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8942276422764227,
+        "sd": 0.005878237129976101,
+        "seeds": [
+          0.8984146341463415,
+          0.8983536585365854,
+          0.8859146341463415
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9327937095282147,
+        "sd": 0.0055922720315680335,
+        "seeds": [
+          0.9249768732654949,
+          0.9377428307123035,
+          0.9356614246068456
+        ]
+      }
+    },
+    "V8": {
+      "acc": {
+        "mean": 0.9146116335771509,
+        "sd": 0.0014335852056605101,
+        "seeds": [
+          0.9161442006269593,
+          0.9149947753396029,
+          0.9126959247648904
+        ]
+      },
+      "ba": {
+        "mean": 0.9130294988079392,
+        "sd": 0.0009649233539849502,
+        "seeds": [
+          0.913683919586652,
+          0.913739310936125,
+          0.9116652659010402
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9130294988079389,
+        "sd": 0.0009649233539850549,
+        "seeds": [
+          0.913683919586652,
+          0.913739310936125,
+          0.91166526590104
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9321448260042265,
+        "sd": 0.0007544420892994367,
+        "seeds": [
+          0.9317932244308565,
+          0.9331930123417793,
+          0.9314482412400442
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8925406504065041,
+        "sd": 0.008177756556269516,
+        "seeds": [
+          0.8809756097560975,
+          0.8982926829268292,
+          0.8983536585365854
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9335183472093741,
+        "sd": 0.009263969300479508,
+        "seeds": [
+          0.9463922294172065,
+          0.929185938945421,
+          0.9249768732654948
+        ]
+      }
+    },
+    "V9": {
+      "acc": {
+        "mean": 0.914232845698363,
+        "sd": 0.0005480015980982831,
+        "seeds": [
+          0.9150078369905957,
+          0.9138453500522467,
+          0.9138453500522467
+        ]
+      },
+      "ba": {
+        "mean": 0.9121325293502703,
+        "sd": 0.0007336663386221828,
+        "seeds": [
+          0.9131503124929491,
+          0.9117982446244444,
+          0.9114490309334176
+        ]
+      },
+      "hard_auc": {
+        "mean": 0.9121325293502703,
+        "sd": 0.0007336663386221828,
+        "seeds": [
+          0.9131503124929491,
+          0.9117982446244444,
+          0.9114490309334176
+        ]
+      },
+      "probability_auc": {
+        "mean": 0.9342684995073819,
+        "sd": 0.0012828267230710734,
+        "seeds": [
+          0.9357368967306694,
+          0.9326116287989892,
+          0.9344569729924868
+        ]
+      },
+      "sensitivity_asd": {
+        "mean": 0.8858130081300813,
+        "sd": 0.004032798967556442,
+        "seeds": [
+          0.8907317073170733,
+          0.8858536585365855,
+          0.8808536585365854
+        ]
+      },
+      "specificity_td": {
+        "mean": 0.9384520505704596,
+        "sd": 0.002690752465170459,
+        "seeds": [
+          0.9355689176688251,
+          0.9377428307123037,
+          0.9420444033302499
+        ]
+      }
+    }
+  },
+  "completed_utc": "2026-10-14T17:51:02.374802+00:00",
+  "temporary_state_cleaned": true,
+  "no_training_processes": true,
+  "handoff_sha256": "c243acff268903039ebacabc10820f5e6779db64f120029573c3594f240c2039",
+  "report_sha256": "3f556214fc610dafb184389e5fb6fcb81700678a772b46d2426dda18f42334c1",
+  "results_sha256": {
+    "feasibility": "b2c71f6e6e0d47a801620d310f32b5116df549f3d5870575fb5c2efdf95c7100",
+    "fold_metrics": "ee0b9babd7da2a517b7ee0d32caf5f470b8795e1234642a3ebf49da2fe225fa0",
+    "diagnostics": "22e75441589f25f09bf5d57e484b7e3112e4a496301eef1989c6af40a788bd39",
+    "counterfactual": "d84a74db1ba7b44d8fd3895b7029cccbc4a0450fcf71677cb104456cdab26be2"
+  },
+  "post_training_interpretation": {
+    "completed_utc": "2026-10-14T17:54:40.846180+00:00",
+    "appendix_sha256": "6be90431f5cae6768b4c859207dead1b95166aef031a05b8a4d4aa621638eb92",
+    "execution_code_unchanged": true,
+    "additional_training": false
+  },
+  "environment_versions": {
+    "python": "3.12.3",
+    "torch": "2.9.0",
+    "torch_cuda": "12.9",
+    "numpy": "1.26.0",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.3.2"
+  }
+}
