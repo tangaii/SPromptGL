@@ -1,0 +1,63 @@
+--- a/network.py
++++ b/network.py
+@@ -31,13 +31,8 @@
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
+-    global _prompt_text_features
+-    if _prompt_text_features is None:
+-        clip_model, _ = clip.load('RN50', device)
+-        with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
+-    return _prompt_text_features
++    from ds3a_runtime import get_frozen_p0
++    return get_frozen_p0()
+ 
+ class MLP(nn.Module):
+     def __init__(self, input_dim, hidden_dim, output_dim):
+@@ -90,7 +85,7 @@
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+         
+-    def forward(self, x):
++    def forward(self, x, raw_modalities=None):
+         bs = x.size(0)
+         attn_map = []
+         combine_part = []
+@@ -102,6 +97,8 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
++        if hasattr(self, "ds3a"):
++            x = self.ds3a(x, raw_modalities)
+         text_features = self.prompt_text_features
+         text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+         text_features = self.MLP(text_features)
+--- a/model.py
++++ b/model.py
+@@ -77,6 +77,8 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        from ds3a_runtime import install_branch
++        install_branch(self)
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -136,11 +138,14 @@
+                 all_graph_loss = all_graph_loss + graph_loss
+             all_graph_loss = all_graph_loss/4
+             
+-            prob,_,_ = self.ModalFusion(feat)
++            prob,_,_ = self.ModalFusion(feat, self._ds3a_raw_modalities)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+             
+             loss = cls_loss + all_graph_loss
++            self._ds3a_original_losses = (cls_loss.detach(), all_graph_loss.detach())
++            if hasattr(self.ModalFusion, "ds3a"):
++                loss = loss + self.ModalFusion.ds3a.loss(self.targ, self.trn_idx)
+             
+             loss.backward()
+             

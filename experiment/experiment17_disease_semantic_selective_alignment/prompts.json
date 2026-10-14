@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "experiment": "DS3A-v2",
+  "class_order": [
+    "ASD",
+    "TD"
+  ],
+  "p0": [
+    "Nromal brain volume",
+    "Uniform cortical thickness",
+    "Symmetrical brain structure",
+    "Normal ventricular morphology",
+    "Altered brain volume",
+    "Abnormal functional connectivity",
+    "White matter integrity issues",
+    "Different activation patterns"
+  ],
+  "banks": {
+    "REAL": [
+      [
+        "Autism spectrum disorder is a heterogeneous neurodevelopmental condition involving differences in social communication and restricted or repetitive behaviors.",
+        "Autism spectrum disorder has been associated with heterogeneous resting-state functional connectivity patterns rather than one universal abnormal connection.",
+        "Studies of autism report variable interactions involving default mode, salience, and executive-control networks across individuals and cohorts.",
+        "Autism research reports diverse functional connectivity patterns in sensory, attention, and social-processing networks, with changes varying across people."
+      ],
+      [
+        "Typically developing individuals show diverse age-related social communication and behavioral development without an autism spectrum diagnosis.",
+        "Typical development involves heterogeneous resting-state functional connectivity patterns rather than one universal reference connection.",
+        "Typical development includes age-dependent interactions among default mode, salience, and executive-control networks across individuals.",
+        "Typical development includes variable functional connectivity patterns in sensory, attention, and social-processing networks across people."
+      ]
+    ],
+    "NEUTRAL": [
+      [
+        "A technical MRI record describes structural image contrast and noise estimates.",
+        "The imaging record summarizes structural signal quality and image artifacts.",
+        "This technical description concerns scanner settings and anatomical image properties.",
+        "The record contains structural imaging measurements obtained during preprocessing."
+      ],
+      [
+        "A technical MRI record describes functional image motion and temporal signal variation.",
+        "The imaging record summarizes functional signal quality and movement artifacts.",
+        "This technical description concerns fMRI preprocessing and temporal image properties.",
+        "The record contains functional imaging measurements obtained during preprocessing."
+      ]
+    ],
+    "UNRELATED": [
+      [
+        "Osteoarthritis is a heterogeneous joint condition associated with changes in cartilage and surrounding tissues.",
+        "Osteoarthritis can involve joint pain and stiffness, with symptoms varying across individuals.",
+        "Studies of osteoarthritis examine cartilage, bone, and other tissues within affected joints.",
+        "Osteoarthritis research describes variable patterns of joint changes rather than one universal clinical presentation."
+      ],
+      [
+        "Type 2 diabetes is a heterogeneous metabolic condition involving elevated blood glucose and reduced effectiveness of insulin.",
+        "Type 2 diabetes involves differences in insulin action and glucose regulation across individuals.",
+        "Studies of type 2 diabetes examine metabolic processes involved in maintaining blood glucose levels.",
+        "Type 2 diabetes research describes variable patterns of metabolic changes rather than one universal clinical presentation."
+      ]
+    ]
+  },
+  "sources": {
+    "REAL": "experiment9 disease_prompts ASD/TD, byte-exact sentences",
+    "NEUTRAL": "experiment10 NEUTRAL_CLASS0/NEUTRAL_CLASS1, byte-exact sentences",
+    "UNRELATED": [
+      "https://www.niams.nih.gov/health-topics/osteoarthritis",
+      "https://www.niddk.nih.gov/-/media/Files/Strategic-Plans/2025/NIDDK-RecentAdvances_2025-DEM.pdf"
+    ]
+  },
+  "freeze_rule": "Frozen before formal training; no validation-guided rewriting. Unrelated banks are background controls, not patient findings."
+}
