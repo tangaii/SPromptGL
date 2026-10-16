@@ -1,0 +1,172 @@
+
+ATTEMPT_START 2026-10-16T10:29:09.399507+00:00
+WORKER U16_seed1 physical_gpu=1 logical=cuda:0 signature=e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae
+/tmp/spromptgl21-state-251f5d08d3bd/tasks/U16_seed1/sources/model.py:235: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  print('trn-loss-MF: %.4f ' % cls_loss, end=' ')
+EPOCH fold=1 epoch=24 best_acc=0.590909090909 wait=5
+EPOCH fold=1 epoch=49 best_acc=0.738636363636 wait=9
+EPOCH fold=1 epoch=74 best_acc=0.829545454545 wait=2
+EPOCH fold=1 epoch=99 best_acc=0.909090909091 wait=18
+EPOCH fold=1 epoch=124 best_acc=0.931818181818 wait=18
+EPOCH fold=1 epoch=149 best_acc=0.954545454545 wait=12
+EPOCH fold=1 epoch=174 best_acc=0.954545454545 wait=37
+EPOCH fold=1 epoch=199 best_acc=0.954545454545 wait=62
+EPOCH fold=1 epoch=224 best_acc=0.954545454545 wait=87
+EPOCH fold=1 epoch=249 best_acc=0.954545454545 wait=112
+EPOCH fold=1 epoch=274 best_acc=0.954545454545 wait=137
+EPOCH fold=1 epoch=299 best_acc=0.954545454545 wait=162
+EPOCH fold=1 epoch=324 best_acc=0.954545454545 wait=187
+EPOCH fold=1 epoch=338 best_acc=0.954545454545 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 1, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9545454545454546, "ba": 0.9512195121951219, "hard_auc": 0.9512195121951219, "probability_auc": 0.9626362221069019, "sensitivity_asd": 0.9024390243902439, "specificity_td": 1.0, "best_epoch": 137, "epochs_executed": 339, "selected_val_acc": 0.9545454545454546, "train_n": 783, "test_n": 88, "val_equals_test": true, "initial_trunk_sha256": "6a9399df82a0888f27e018d0eecd1f3aca26093e4f1c8ffe371367f8beaf07e8", "initial_trunk_legacy13_sha256": "26f32b020b1f08d6604b5678026c712bba3fad1833b17d163c2208c1679b3f2c", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "9270191948c51ad1f8d30cb759aac3d6bcd72a76c7e6da9e590c1654b86c1ca3", "additional_parameters": 57383, "seconds": 51.85637468472123}
+EPOCH fold=2 epoch=24 best_acc=0.609195402299 wait=12
+EPOCH fold=2 epoch=49 best_acc=0.712643678161 wait=1
+EPOCH fold=2 epoch=74 best_acc=0.793103448276 wait=3
+EPOCH fold=2 epoch=99 best_acc=0.839080459770 wait=11
+EPOCH fold=2 epoch=124 best_acc=0.862068965517 wait=17
+EPOCH fold=2 epoch=149 best_acc=0.873563218391 wait=13
+EPOCH fold=2 epoch=174 best_acc=0.885057471264 wait=19
+EPOCH fold=2 epoch=199 best_acc=0.885057471264 wait=44
+EPOCH fold=2 epoch=224 best_acc=0.896551724138 wait=15
+EPOCH fold=2 epoch=249 best_acc=0.896551724138 wait=40
+EPOCH fold=2 epoch=274 best_acc=0.896551724138 wait=65
+EPOCH fold=2 epoch=299 best_acc=0.896551724138 wait=90
+EPOCH fold=2 epoch=324 best_acc=0.896551724138 wait=115
+EPOCH fold=2 epoch=349 best_acc=0.896551724138 wait=140
+EPOCH fold=2 epoch=374 best_acc=0.896551724138 wait=165
+EPOCH fold=2 epoch=399 best_acc=0.896551724138 wait=190
+EPOCH fold=2 epoch=410 best_acc=0.896551724138 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 2, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.896551724137931, "ba": 0.8955461293743372, "hard_auc": 0.8955461293743372, "probability_auc": 0.9146341463414634, "sensitivity_asd": 0.8780487804878049, "specificity_td": 0.9130434782608695, "best_epoch": 209, "epochs_executed": 411, "selected_val_acc": 0.896551724137931, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "7122e3347052628ffac844f96fd0dbec91799f87d0fc1dbf750e0ee04338cb60", "initial_trunk_legacy13_sha256": "82fa028998d90c019fc2baa7ad4f8e92dba070570bf4dda02a41d815b0d34625", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "904c4b26b6e6194b54a0b20d99ea02d6a01c7f5583454c7467e3c426414913e6", "additional_parameters": 57383, "seconds": 57.77411390095949}
+EPOCH fold=3 epoch=24 best_acc=0.586206896552 wait=9
+EPOCH fold=3 epoch=49 best_acc=0.643678160920 wait=0
+EPOCH fold=3 epoch=74 best_acc=0.735632183908 wait=6
+EPOCH fold=3 epoch=99 best_acc=0.804597701149 wait=7
+EPOCH fold=3 epoch=124 best_acc=0.827586206897 wait=14
+EPOCH fold=3 epoch=149 best_acc=0.862068965517 wait=19
+EPOCH fold=3 epoch=174 best_acc=0.862068965517 wait=44
+EPOCH fold=3 epoch=199 best_acc=0.873563218391 wait=4
+EPOCH fold=3 epoch=224 best_acc=0.873563218391 wait=29
+EPOCH fold=3 epoch=249 best_acc=0.873563218391 wait=54
+EPOCH fold=3 epoch=274 best_acc=0.873563218391 wait=79
+EPOCH fold=3 epoch=299 best_acc=0.873563218391 wait=104
+EPOCH fold=3 epoch=324 best_acc=0.873563218391 wait=129
+EPOCH fold=3 epoch=349 best_acc=0.873563218391 wait=154
+EPOCH fold=3 epoch=374 best_acc=0.873563218391 wait=179
+EPOCH fold=3 epoch=396 best_acc=0.873563218391 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 3, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.8735632183908046, "ba": 0.8724814422057263, "hard_auc": 0.8724814422057263, "probability_auc": 0.8870625662778366, "sensitivity_asd": 0.8536585365853658, "specificity_td": 0.8913043478260869, "best_epoch": 195, "epochs_executed": 397, "selected_val_acc": 0.8735632183908046, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "c9bda7244fad04cde8653afb939f0ec46748ab1555f10ae3e61088a2c81b189c", "initial_trunk_legacy13_sha256": "a835cf5c5e1d571dc36b60f7de5ff2d19a7fa4bcd663e281bdbd7bec691005ca", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "910b4865498ec1f31440f51cce9a8365b23e049d068ccccaf3bc5b9186a828ee", "additional_parameters": 57383, "seconds": 56.04843354225159}
+EPOCH fold=4 epoch=24 best_acc=0.620689655172 wait=18
+EPOCH fold=4 epoch=49 best_acc=0.850574712644 wait=0
+EPOCH fold=4 epoch=74 best_acc=0.850574712644 wait=25
+EPOCH fold=4 epoch=99 best_acc=0.873563218391 wait=4
+EPOCH fold=4 epoch=124 best_acc=0.908045977011 wait=14
+EPOCH fold=4 epoch=149 best_acc=0.931034482759 wait=8
+EPOCH fold=4 epoch=174 best_acc=0.931034482759 wait=33
+EPOCH fold=4 epoch=199 best_acc=0.931034482759 wait=58
+EPOCH fold=4 epoch=224 best_acc=0.931034482759 wait=83
+EPOCH fold=4 epoch=249 best_acc=0.931034482759 wait=108
+EPOCH fold=4 epoch=274 best_acc=0.931034482759 wait=133
+EPOCH fold=4 epoch=299 best_acc=0.931034482759 wait=158
+EPOCH fold=4 epoch=324 best_acc=0.931034482759 wait=183
+EPOCH fold=4 epoch=342 best_acc=0.931034482759 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 4, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9310344827586207, "ba": 0.9268617021276595, "hard_auc": 0.9268617021276595, "probability_auc": 0.9585106382978723, "sensitivity_asd": 0.875, "specificity_td": 0.9787234042553191, "best_epoch": 141, "epochs_executed": 343, "selected_val_acc": 0.9310344827586207, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "dfac32401c98870c5cd2327df41ad448f14529f2d5c0dd5b760584683a76f36a", "initial_trunk_legacy13_sha256": "4af27385713068ac4153506e9831738a5bb65b7dae9de44f22a3b163cf5fa88c", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "57a4070efbe481f9a66dd4faa63b9b95a587353b4b88717387a1f04a63ee528b", "additional_parameters": 57383, "seconds": 49.37684350833297}
+EPOCH fold=5 epoch=24 best_acc=0.586206896552 wait=9
+EPOCH fold=5 epoch=49 best_acc=0.793103448276 wait=0
+EPOCH fold=5 epoch=74 best_acc=0.862068965517 wait=1
+EPOCH fold=5 epoch=99 best_acc=0.862068965517 wait=26
+EPOCH fold=5 epoch=124 best_acc=0.873563218391 wait=20
+EPOCH fold=5 epoch=149 best_acc=0.873563218391 wait=45
+EPOCH fold=5 epoch=174 best_acc=0.896551724138 wait=13
+EPOCH fold=5 epoch=199 best_acc=0.908045977011 wait=20
+EPOCH fold=5 epoch=224 best_acc=0.908045977011 wait=45
+EPOCH fold=5 epoch=249 best_acc=0.908045977011 wait=70
+EPOCH fold=5 epoch=274 best_acc=0.919540229885 wait=7
+EPOCH fold=5 epoch=299 best_acc=0.919540229885 wait=32
+EPOCH fold=5 epoch=324 best_acc=0.931034482759 wait=8
+EPOCH fold=5 epoch=349 best_acc=0.931034482759 wait=33
+EPOCH fold=5 epoch=374 best_acc=0.931034482759 wait=58
+EPOCH fold=5 epoch=399 best_acc=0.931034482759 wait=83
+EPOCH fold=5 epoch=424 best_acc=0.931034482759 wait=108
+EPOCH fold=5 epoch=449 best_acc=0.931034482759 wait=133
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 5, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9310344827586207, "ba": 0.9324468085106383, "hard_auc": 0.9324468085106382, "probability_auc": 0.9537234042553191, "sensitivity_asd": 0.95, "specificity_td": 0.9148936170212766, "best_epoch": 316, "epochs_executed": 450, "selected_val_acc": 0.9310344827586207, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "53a6416dd6aea23bb8846456b1bff9b7cae7c15571c6ec408c9a1fafd937b67b", "initial_trunk_legacy13_sha256": "0edc39e4569566803aa6ac840d3e458b0eebe8aab2f758d91bde0c79a10facd5", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "a06182a49abb4c8a5db2c03a05ce7689ab915c11d3d3639ecc5511091c4f6238", "additional_parameters": 57383, "seconds": 65.28136420249939}
+EPOCH fold=6 epoch=24 best_acc=0.712643678161 wait=21
+EPOCH fold=6 epoch=49 best_acc=0.873563218391 wait=6
+EPOCH fold=6 epoch=74 best_acc=0.942528735632 wait=11
+EPOCH fold=6 epoch=99 best_acc=0.942528735632 wait=36
+EPOCH fold=6 epoch=124 best_acc=0.965517241379 wait=7
+EPOCH fold=6 epoch=149 best_acc=0.965517241379 wait=32
+EPOCH fold=6 epoch=174 best_acc=0.965517241379 wait=57
+EPOCH fold=6 epoch=199 best_acc=0.965517241379 wait=82
+EPOCH fold=6 epoch=224 best_acc=0.965517241379 wait=107
+EPOCH fold=6 epoch=249 best_acc=0.965517241379 wait=132
+EPOCH fold=6 epoch=274 best_acc=0.965517241379 wait=157
+EPOCH fold=6 epoch=299 best_acc=0.965517241379 wait=182
+EPOCH fold=6 epoch=318 best_acc=0.965517241379 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 6, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9655172413793104, "ba": 0.9643617021276596, "hard_auc": 0.9643617021276595, "probability_auc": 0.9750000000000001, "sensitivity_asd": 0.95, "specificity_td": 0.9787234042553191, "best_epoch": 117, "epochs_executed": 319, "selected_val_acc": 0.9655172413793103, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "e3d4d8f4b5f46c6d7384ca120d975f1f37503524487054f56a2f1875af9c23a3", "initial_trunk_legacy13_sha256": "f9b54b9b9658620689ea16241b3998b749484f9372590fd45b4f6b0b51c9c6ff", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "62a96e0f79c2904ff2d153fe8d74147b8474f8029a92290362df08aa8a1569b5", "additional_parameters": 57383, "seconds": 46.547787223011255}
+EPOCH fold=7 epoch=24 best_acc=0.620689655172 wait=6
+EPOCH fold=7 epoch=49 best_acc=0.804597701149 wait=6
+EPOCH fold=7 epoch=74 best_acc=0.896551724138 wait=5
+EPOCH fold=7 epoch=99 best_acc=0.896551724138 wait=30
+EPOCH fold=7 epoch=124 best_acc=0.908045977011 wait=4
+EPOCH fold=7 epoch=149 best_acc=0.908045977011 wait=29
+EPOCH fold=7 epoch=174 best_acc=0.908045977011 wait=54
+EPOCH fold=7 epoch=199 best_acc=0.908045977011 wait=79
+EPOCH fold=7 epoch=224 best_acc=0.908045977011 wait=104
+EPOCH fold=7 epoch=249 best_acc=0.908045977011 wait=129
+EPOCH fold=7 epoch=274 best_acc=0.908045977011 wait=154
+EPOCH fold=7 epoch=299 best_acc=0.908045977011 wait=179
+EPOCH fold=7 epoch=321 best_acc=0.908045977011 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 7, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9080459770114943, "ba": 0.9037234042553192, "hard_auc": 0.9037234042553193, "probability_auc": 0.9558510638297872, "sensitivity_asd": 0.85, "specificity_td": 0.9574468085106383, "best_epoch": 120, "epochs_executed": 322, "selected_val_acc": 0.9080459770114943, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "10384c245c5eddf49716240c6a1dfd386fce53840bfda7bb0d4ba88acc43f677", "initial_trunk_legacy13_sha256": "382c133d0440b0645d6eadcaa0cd5873d7b21fb9223f28b836078d90cbaf208d", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "e2cf517f7aa48c0b036d33891bfde0a6baad519cefe6b237963985858046acc4", "additional_parameters": 57383, "seconds": 46.355377446860075}
+EPOCH fold=8 epoch=24 best_acc=0.551724137931 wait=12
+EPOCH fold=8 epoch=49 best_acc=0.712643678161 wait=3
+EPOCH fold=8 epoch=74 best_acc=0.781609195402 wait=2
+EPOCH fold=8 epoch=99 best_acc=0.827586206897 wait=5
+EPOCH fold=8 epoch=124 best_acc=0.862068965517 wait=6
+EPOCH fold=8 epoch=149 best_acc=0.862068965517 wait=31
+EPOCH fold=8 epoch=174 best_acc=0.885057471264 wait=0
+EPOCH fold=8 epoch=199 best_acc=0.885057471264 wait=25
+EPOCH fold=8 epoch=224 best_acc=0.885057471264 wait=50
+EPOCH fold=8 epoch=249 best_acc=0.885057471264 wait=75
+EPOCH fold=8 epoch=274 best_acc=0.885057471264 wait=100
+EPOCH fold=8 epoch=299 best_acc=0.896551724138 wait=24
+EPOCH fold=8 epoch=324 best_acc=0.896551724138 wait=49
+EPOCH fold=8 epoch=349 best_acc=0.896551724138 wait=74
+EPOCH fold=8 epoch=374 best_acc=0.896551724138 wait=99
+EPOCH fold=8 epoch=399 best_acc=0.896551724138 wait=124
+EPOCH fold=8 epoch=424 best_acc=0.896551724138 wait=149
+EPOCH fold=8 epoch=449 best_acc=0.896551724138 wait=174
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 8, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.896551724137931, "ba": 0.8949468085106382, "hard_auc": 0.8949468085106382, "probability_auc": 0.902127659574468, "sensitivity_asd": 0.875, "specificity_td": 0.9148936170212766, "best_epoch": 275, "epochs_executed": 450, "selected_val_acc": 0.896551724137931, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "69676c8cf2055faf4d0eca9a9922343783d6ebf17c3ebe3decc8dee0c8863dcb", "initial_trunk_legacy13_sha256": "40a012e3dfbd9bca4fec7ac5eed08fa0843babc36b52b2df877ac7cf50575dd9", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "2dd82cd41bd5a9e53ac56f5cd0082fde7832762db87e70ef2f0a566287ae9559", "additional_parameters": 57383, "seconds": 64.78192422911525}
+EPOCH fold=9 epoch=24 best_acc=0.551724137931 wait=15
+EPOCH fold=9 epoch=49 best_acc=0.735632183908 wait=1
+EPOCH fold=9 epoch=74 best_acc=0.804597701149 wait=4
+EPOCH fold=9 epoch=99 best_acc=0.873563218391 wait=3
+EPOCH fold=9 epoch=124 best_acc=0.896551724138 wait=20
+EPOCH fold=9 epoch=149 best_acc=0.908045977011 wait=8
+EPOCH fold=9 epoch=174 best_acc=0.908045977011 wait=33
+EPOCH fold=9 epoch=199 best_acc=0.908045977011 wait=58
+EPOCH fold=9 epoch=224 best_acc=0.908045977011 wait=83
+EPOCH fold=9 epoch=249 best_acc=0.908045977011 wait=108
+EPOCH fold=9 epoch=274 best_acc=0.908045977011 wait=133
+EPOCH fold=9 epoch=299 best_acc=0.908045977011 wait=158
+EPOCH fold=9 epoch=324 best_acc=0.908045977011 wait=183
+EPOCH fold=9 epoch=342 best_acc=0.908045977011 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 9, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9080459770114943, "ba": 0.9055851063829787, "hard_auc": 0.9055851063829787, "probability_auc": 0.9340425531914894, "sensitivity_asd": 0.875, "specificity_td": 0.9361702127659575, "best_epoch": 141, "epochs_executed": 343, "selected_val_acc": 0.9080459770114943, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "52894bb8a0a8fd4751f346a2e59afb3e70520d8ca72aa378578d2490cd6086cb", "initial_trunk_legacy13_sha256": "952b085bc5794288b731940bbfc77afb1fcd71d9821b53b7bf67a9c17c46cb8c", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "28292a1314187f844f186a9510535076bdcd1955429865fb2f8b1830d7d46d24", "additional_parameters": 57383, "seconds": 49.73947925493121}
+EPOCH fold=10 epoch=24 best_acc=0.632183908046 wait=1
+EPOCH fold=10 epoch=49 best_acc=0.804597701149 wait=4
+EPOCH fold=10 epoch=74 best_acc=0.850574712644 wait=12
+EPOCH fold=10 epoch=99 best_acc=0.896551724138 wait=2
+EPOCH fold=10 epoch=124 best_acc=0.908045977011 wait=0
+EPOCH fold=10 epoch=149 best_acc=0.919540229885 wait=17
+EPOCH fold=10 epoch=174 best_acc=0.919540229885 wait=42
+EPOCH fold=10 epoch=199 best_acc=0.919540229885 wait=67
+EPOCH fold=10 epoch=224 best_acc=0.919540229885 wait=92
+EPOCH fold=10 epoch=249 best_acc=0.931034482759 wait=9
+EPOCH fold=10 epoch=274 best_acc=0.931034482759 wait=34
+EPOCH fold=10 epoch=299 best_acc=0.931034482759 wait=59
+EPOCH fold=10 epoch=324 best_acc=0.931034482759 wait=84
+EPOCH fold=10 epoch=349 best_acc=0.931034482759 wait=109
+EPOCH fold=10 epoch=374 best_acc=0.931034482759 wait=134
+EPOCH fold=10 epoch=399 best_acc=0.931034482759 wait=159
+EPOCH fold=10 epoch=424 best_acc=0.931034482759 wait=184
+EPOCH fold=10 epoch=441 best_acc=0.931034482759 wait=201
+FOLD_COMPLETE {"config": "U16", "seed": 1, "fold": 10, "physical_gpu": 1, "task_signature": "e5ba154e79079ae072861e63a02f7b8475720b06ea814b53e64ed792924528ae", "acc": 0.9310344827586207, "ba": 0.9287234042553192, "hard_auc": 0.9287234042553192, "probability_auc": 0.9303191489361702, "sensitivity_asd": 0.9, "specificity_td": 0.9574468085106383, "best_epoch": 240, "epochs_executed": 442, "selected_val_acc": 0.9310344827586207, "train_n": 784, "test_n": 87, "val_equals_test": true, "initial_trunk_sha256": "30ce88f72e1b37556b075704e6d375ff59f6f4be0d737fc27cd071d965a56274", "initial_trunk_legacy13_sha256": "4e149286a735f28e27c3f27086c6ac87ae6c8cb11ebf88e2975f9f1ed12440b0", "initial_branch_sha256": "4590cf16861af2e0aae4c03c5360cec60aaf6917608e0d6218ec6a568818f3ea", "entry_rng_sha256": "b735c180d0ffef392d91e254b3b9fe12e3453437f35197c5b4196b921a5cd9af", "additional_parameters": 57383, "seconds": 62.422767873853445}
+TASK_COMPLETE U16_seed1

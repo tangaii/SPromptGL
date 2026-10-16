@@ -1,0 +1,232 @@
+--- a/main.py
++++ b/main.py
+@@ -143,8 +143,6 @@
+     for train_index, test_index in skf.split(input_data, label):
+         clk += 1
+         agent = EvalHelper(input_data_dims, input_data, label, hyperpm, train_index, test_index) #input_data.shape=(598,365) label.ahape=(598,)
+-        if os.environ.get('PDAI_CONFIG'):
+-            agent._pdai_fold_number = clk
+         tm = time.time()
+         best_val_acc, wait_cnt  = 0.0, 0
+         model_sav = tempfile.TemporaryFile()
+@@ -157,9 +155,8 @@
+                 best_val_acc = cur_val_acc
+                 model_sav.close()
+                 model_sav = tempfile.TemporaryFile()
+-                dict_list = [agent.MessagePassing0.state_dict(), agent.ModalFusion.state_dict()]
+-                if getattr(agent, 'ModalityDiscriminator', None) is not None:
+-                    dict_list.append(agent.ModalityDiscriminator.state_dict())
++                dict_list = [agent.MessagePassing0.state_dict(),
++                             agent.ModalFusion.state_dict()]
+                 torch.save(dict_list, model_sav)
+             else:
+                 wait_cnt += 1
+@@ -170,13 +167,9 @@
+         dict_list = torch.load(model_sav)
+         agent.MessagePassing0.load_state_dict(dict_list[0])
+         agent.ModalFusion.load_state_dict(dict_list[1])
+-        if getattr(agent, 'ModalityDiscriminator', None) is not None and len(dict_list) > 2:
+-            agent.ModalityDiscriminator.load_state_dict(dict_list[2])
+         
+         val_acc.append(best_val_acc)
+         cur_tst_acc, cur_tst_auc, conf_mat = agent.print_tst_acc(hyperpm.mode)
+-        if os.environ.get('PDAI_CONFIG'):
+-            agent.write_pdai_outputs(clk, cur_tst_acc, cur_tst_auc, conf_mat)
+         sens.append(sen(conf_mat, hyperpm.nclass))
+         spes.append(spe(conf_mat, hyperpm.nclass))
+         print('sens:',sens)
+--- a/model.py
++++ b/model.py
+@@ -125,6 +125,9 @@
+                 self.ModalityDiscriminator.apply(my_weight_init)
+             self.optimizer_D = optim.Adam(self.ModalityDiscriminator.parameters(), lr=hyperpm.lr, weight_decay=0.0)
+         
++        from e21_runtime import install_evidence21
++        install_evidence21(self)
++
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+         if mode == 'pre-train':
+@@ -185,10 +188,13 @@
+             
+             if self.optimizer_D is not None:
+                 self.optimizer_D.zero_grad()
+-            prob,_,_ = self.ModalFusion(feat)
++            prob,_,_ = self.ModalFusion(feat, self._e21_raw)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+             loss = cls_loss + all_graph_loss
++            branch = getattr(self.ModalFusion, 'evidence21', None)
++            if branch is not None and hasattr(branch, 'auxiliary_loss'):
++                loss = loss + branch.auxiliary_loss()
+             if self.pdai_disease:
+                 train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
+                 disease_loss = F.cross_entropy(self.ModalFusion.last_disease_logits[train_idx], self.targ[train_idx], weight=self.weight)
+@@ -358,10 +364,10 @@
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
+         if mode == 'pre-train':
+-            prob, _, attn = self.ModalFusion(feat)
++            prob, _, attn = self.ModalFusion(feat, self._e21_raw)
+             
+         else:
+-            prob, fusion_feat, attn = self.ModalFusion(feat)
++            prob, fusion_feat, attn = self.ModalFusion(feat, self._e21_raw)
+             
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+@@ -400,134 +406,6 @@
+         na, nb = a.size(0), b.size(0)
+         return float(k[:na, :na].mean().item() + k[na:, na:].mean().item() - 2 * k[:na, na:].mean().item())
+ 
+-    def write_pdai_outputs(self, fold, acc, hard_auc, conf_mat):
+-        metric_path = os.environ.get("PDAI_METRIC_PATH")
+-        diag_path = os.environ.get("PDAI_DIAGNOSTIC_PATH")
+-        if not metric_path or not diag_path:
+-            return
+-        labels = self.targ[torch.as_tensor(self.tst_idx, dtype=torch.long, device=self.targ.device)].detach().cpu().numpy()
+-        with torch.no_grad():
+-            model_num, feat1 = self.dataLayer(self.feat)
+-            feat, _, _ = self.MessagePassing0(feat1, model_num, self.targ, self.trn_idx)
+-            output, hidden, _ = self.ModalFusion(feat)
+-            test_idx = torch.as_tensor(self.tst_idx, dtype=torch.long, device=self.targ.device)
+-            train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
+-            probability = output.index_select(0, test_idx).exp().cpu().numpy()
+-            base_probability = self.ModalFusion.last_base_logprob.index_select(0, test_idx).exp().cpu().numpy()
+-            probability_auc = float(roc_auc_score((labels == 0).astype(int), probability[:, 0]))
+-            sensitivity = float(conf_mat[0, 0] / max(1, conf_mat[0].sum()))
+-            specificity = float(conf_mat[1, 1] / max(1, conf_mat[1].sum()))
+-            metric = {"config": os.environ["PDAI_CONFIG"], "seed": int(self.hyperpm.seed), "fold": int(fold),
+-                      "acc": float(acc), "hard_auc": float(hard_auc), "probability_auc": probability_auc,
+-                      "balanced_accuracy": (sensitivity + specificity) / 2, "sensitivity_asd": sensitivity, "specificity_asd": specificity}
+-            self._pdai_json_row(metric_path, metric)
+-            z = self.ModalFusion.last_modality_v.detach()
+-            train_z, test_z = z.index_select(0, train_idx), z.index_select(0, test_idx)
+-            flat_train = train_z.reshape(-1, 36)
+-            modal_target = torch.arange(self.modal_num, device=z.device).view(1, -1).expand(len(z), -1).reshape(-1)
+-            disc_train_acc = disc_test_acc = disc_train_ce = disc_test_ce = disc_entropy = "N/A"
+-            dist = []
+-            disc_finite = True
+-            if self.ModalityDiscriminator is not None:
+-                tr_logits = self.ModalityDiscriminator(flat_train)
+-                te_logits = self.ModalityDiscriminator(test_z.reshape(-1, 36))
+-                tr_target = modal_target.index_select(0, train_idx.repeat_interleave(self.modal_num))
+-                te_target = modal_target.index_select(0, test_idx.repeat_interleave(self.modal_num))
+-                tr_prob, te_prob = tr_logits.softmax(-1), te_logits.softmax(-1)
+-                disc_train_acc = float((tr_prob.argmax(-1) == tr_target).float().mean().item())
+-                disc_test_acc = float((te_prob.argmax(-1) == te_target).float().mean().item())
+-                disc_train_ce = float(F.cross_entropy(tr_logits, tr_target).item())
+-                disc_test_ce = float(F.cross_entropy(te_logits, te_target).item())
+-                disc_entropy = float((-(te_prob * (te_prob.clamp_min(1e-8).log())).sum(-1)).mean().item())
+-                dist = te_prob.mean(0).detach().cpu().tolist()
+-                disc_finite = bool(torch.isfinite(tr_logits).all().item() and torch.isfinite(te_logits).all().item())
+-            sample_offsets = torch.linspace(0, max(0, train_idx.numel() - 1), min(256, train_idx.numel()), device=train_idx.device).long()
+-            diagnostic_idx = train_idx.index_select(0, sample_offsets)
+-            diagnostic_z = z.index_select(0, diagnostic_idx)
+-            diagnostic_labels = self.targ.index_select(0, diagnostic_idx)
+-            modal = [diagnostic_z[:, i, :] for i in range(4)]
+-            def mean_distance(a, b): return float(torch.cdist(a[:256], b[:256]).mean().item())
+-            def effective_rank(a):
+-                s = torch.linalg.svdvals(a - a.mean(0, keepdim=True)).clamp_min(1e-12)
+-                p = s / s.sum()
+-                return float(torch.exp(-(p * p.log()).sum()).item())
+-            variance = [float(v.var(unbiased=False).item()) for v in modal]
+-            ranks = [effective_rank(v) for v in modal]
+-            zero = [float((torch.linalg.vector_norm(v, dim=-1) < 1e-8).float().mean().item()) for v in modal]
+-            pair_mmd = {(i, j): self._pdai_mmd(modal[i], modal[j]) for i in range(4) for j in range(i + 1, 4)}
+-            mmd = [pair_mmd[(i, 3)] if i < 3 else 0.0 for i in range(3)]
+-            paired = {}; different = {}; gaps = {}; r1 = []
+-            for i in range(4):
+-                for j in range(i + 1, 4):
+-                    sim = F.normalize(modal[i], dim=-1) @ F.normalize(modal[j], dim=-1).t()
+-                    paired_sim = sim.diag()
+-                    off = sim.masked_fill(torch.eye(sim.size(0), device=sim.device, dtype=torch.bool), float('-inf'))
+-                    pair_key = (i, j)
+-                    paired[pair_key] = float(paired_sim.mean().item())
+-                    different[pair_key] = float(off[torch.isfinite(off)].mean().item())
+-                    gaps[pair_key] = paired[pair_key] - different[pair_key]
+-                    r1.append(float((sim.argmax(-1) == torch.arange(sim.size(0), device=sim.device)).float().mean().item()))
+-            within_modal = []
+-            for v in modal:
+-                sim = F.normalize(v, dim=-1) @ F.normalize(v, dim=-1).t()
+-                mask = ~torch.eye(sim.size(0), device=sim.device, dtype=torch.bool)
+-                within_modal.append(float(sim[mask].mean().item()))
+-            intra = float(sum(within_modal) / len(within_modal))
+-            inter = float(sum(paired.values()) / len(paired))
+-            different_mean = float(sum(different.values()) / len(different))
+-            gap_mean = float(sum(gaps.values()) / len(gaps))
+-            pooled = torch.cat(modal, dim=0)
+-            pooled_labels = diagnostic_labels.repeat(4)
+-            class_centers = [pooled[pooled_labels == c].mean(0) for c in (0, 1)]
+-            class_dist = float(torch.linalg.vector_norm(class_centers[0] - class_centers[1]).item())
+-            within = [float(torch.linalg.vector_norm(pooled[pooled_labels == c] - class_centers[c], dim=-1).mean().item()) for c in (0, 1)]
+-            mean_vectors = [v.mean(0) for v in modal]
+-            mean_vector_pair = {(i,j): float(torch.linalg.vector_norm(mean_vectors[i] - mean_vectors[j]).item()) for i in range(4) for j in range(i+1,4)}
+-            mean_l2 = [float(torch.linalg.vector_norm(v, dim=-1).mean().item()) for v in modal]
+-            disease_only_acc = disease_auc = align = margin_asd = margin_td = gamma = contribution = corr = "N/A"
+-            disease_grad = alpha_grad = False
+-            if self.ModalFusion.pdai_disease_enabled:
+-                dl = self.ModalFusion.last_disease_logits.index_select(0, test_idx)
+-                dp = dl.softmax(-1)
+-                disease_only_acc = float((dp.argmax(-1) == self.targ.index_select(0, test_idx)).float().mean().item())
+-                disease_auc = float(roc_auc_score((labels == 0).astype(int), dp[:, 0].cpu().numpy()))
+-                train_dl = self.ModalFusion.last_disease_logits.index_select(0, train_idx)
+-                align = float(F.cross_entropy(train_dl, self.targ.index_select(0, train_idx), weight=self.weight).item())
+-                margins = dl[:, 0] - dl[:, 1]
+-                margin_asd = float(margins[self.targ.index_select(0, test_idx) == 0].mean().item())
+-                margin_td = float(margins[self.targ.index_select(0, test_idx) == 1].mean().item())
+-                gamma = float(self.ModalFusion.last_disease_gamma)
+-                contribution = float((self.ModalFusion.last_disease_prelogits.index_select(0, test_idx) - self.ModalFusion.last_base_logprob.index_select(0, test_idx)).abs().mean().item())
+-                if base_probability[:, 0].std() > 0 and dp[:, 0].cpu().numpy().std() > 0:
+-                    corr = float(__import__('numpy').corrcoef(base_probability[:, 0], dp[:, 0].cpu().numpy())[0, 1])
+-                disease_grad = bool(self.ModalFusion.pdai_disease_grad_valid)
+-                alpha_grad = bool(self.ModalFusion.pdai_alpha_grad_valid)
+-            row = {"config": os.environ["PDAI_CONFIG"], "seed": int(self.hyperpm.seed), "fold": int(fold), **metric,
+-                   "discriminator_train_acc": disc_train_acc, "discriminator_test_acc": disc_test_acc,
+-                   "discriminator_train_ce": disc_train_ce, "discriminator_test_ce": disc_test_ce, "discriminator_test_entropy": disc_entropy,
+-                   "discriminator_test_distribution": json.dumps(dist), "discriminator_grad_valid": bool(self._pdai_disc_grad_valid),
+-                   "wv_adversarial_grad_valid": bool(self._pdai_wv_adv_grad_valid), "prediction_nonfinite": bool((~torch.isfinite(output)).any().item()),
+-                   "mmd_corr_pheno": mmd[0], "mmd_corr_anat": mmd[1], "mmd_corr_func": mmd[2], "mmd_mean_pairwise": float(sum(pair_mmd.values()) / 6),
+-                   "mean_distance_corr_pheno": mean_distance(modal[3], modal[0]), "mean_distance_corr_anat": mean_distance(modal[3], modal[1]), "mean_distance_corr_func": mean_distance(modal[3], modal[2]),
+-                   "mean_vector_distance_corr_pheno": mean_vector_pair[(0,3)], "mean_vector_distance_corr_anat": mean_vector_pair[(1,3)], "mean_vector_distance_corr_func": mean_vector_pair[(2,3)],
+-                   "mean_vector_distance_pheno_anat": mean_vector_pair[(0,1)], "mean_vector_distance_pheno_func": mean_vector_pair[(0,2)], "mean_vector_distance_pheno_correlation": mean_vector_pair[(0,3)],
+-                   "mean_vector_distance_anat_func": mean_vector_pair[(1,2)], "mean_vector_distance_anat_correlation": mean_vector_pair[(1,3)], "mean_vector_distance_func_correlation": mean_vector_pair[(2,3)],
+-                   "mean_l2_pheno": mean_l2[0], "mean_l2_anat": mean_l2[1], "mean_l2_func": mean_l2[2], "mean_l2_correlation": mean_l2[3],
+-                   "variance_pheno": variance[0], "variance_anat": variance[1], "variance_func": variance[2], "variance_correlation": variance[3],
+-                   "effective_rank_pheno": ranks[0], "effective_rank_anat": ranks[1], "effective_rank_func": ranks[2], "effective_rank_correlation": ranks[3],
+-                   "zero_rate_pheno": zero[0], "zero_rate_anat": zero[1], "zero_rate_func": zero[2], "zero_rate_correlation": zero[3],
+-                   "intra_modal_similarity": intra, "intermodal_similarity": inter, "asd_td_center_distance": class_dist,
+-                   "class_separation_ratio": class_dist / (sum(within) / 2 + 1e-8), "paired_cosine_pheno_anat": paired[(0,1)], "paired_cosine_pheno_func": paired[(0,2)], "paired_cosine_pheno_correlation": paired[(0,3)],
+-                   "different_cosine_pheno_anat": different[(0,1)], "different_cosine_pheno_func": different[(0,2)], "different_cosine_pheno_correlation": different[(0,3)],
+-                   "different_subject_cosine_mean": different_mean, "cosine_gap_mean": gap_mean,
+-                   "cosine_gap_pheno_anat": gaps[(0,1)], "cosine_gap_pheno_func": gaps[(0,2)], "cosine_gap_pheno_correlation": gaps[(0,3)], "retrieval_r1_mean": sum(r1) / len(r1),
+-                   "disease_projector_grad_valid": disease_grad, "disease_alpha_grad_valid": alpha_grad, "disease_only_acc": disease_only_acc,
+-                   "disease_only_probability_auc": disease_auc, "disease_alignment_loss": align, "disease_margin_asd": margin_asd, "disease_margin_td": margin_td,
+-                   "mmd_pheno_anat": pair_mmd[(0,1)], "mmd_pheno_func": pair_mmd[(0,2)], "mmd_pheno_correlation": pair_mmd[(0,3)],
+-                   "mmd_anat_func": pair_mmd[(1,2)], "mmd_anat_correlation": pair_mmd[(1,3)], "mmd_func_correlation": pair_mmd[(2,3)],
+-                   "disease_gamma": gamma, "disease_gamma_sign": int(__import__('numpy').sign(gamma)) if isinstance(gamma, (int, float)) and math.isfinite(gamma) else "N/A", "disease_contribution_abs": contribution,
+-                   "disease_probability_correlation": corr, "all_finite": bool(torch.isfinite(output).all().item() and torch.isfinite(z).all().item() and disc_finite)}
+-            self._pdai_json_row(diag_path, row)
+ 
+     def cal_acc(self, eval_idx):
+         breakpoint()
+--- a/network.py
++++ b/network.py
+@@ -129,7 +129,7 @@
+         self.pdai_disease_enabled = False
+         self.pdai_counterfactual = None
+         
+-    def forward(self, x):
++    def forward(self, x, raw_modalities=None):
+         bs = x.size(0)
+         attn_map = []
+         combine_part = []
+@@ -142,6 +142,8 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
++        if hasattr(self, 'evidence21'):
++            x = self.evidence21(x, raw_modalities)
+         text_features = self.prompt_text_features
+         if text_features.size(0) == 8:
+             # Original P0 path, kept byte-for-byte in its mathematical operations.

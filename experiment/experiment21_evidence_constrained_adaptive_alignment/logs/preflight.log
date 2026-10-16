@@ -1,0 +1,25 @@
+/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py:987: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  assert float(b.auxiliary_loss())>=-1e-7 and 0<=float(b.last['eta'])<=.35
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 1295, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 1286, in main
+    elif args.command=='preflight':preflight()
+                                   ^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 1084, in preflight
+    step(a);assert_equal_tree(sm,model_state(a));assert_equal_tree(so,optim_state(a));assert rng_hash(sr)==rng_hash(rng());assert torch.equal(pr,forward(a))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 185, in assert_equal_tree
+    assert_equal_tree(a[key], b[key])
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 185, in assert_equal_tree
+    assert_equal_tree(a[key], b[key])
+  File "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py", line 179, in assert_equal_tree
+    assert torch.equal(a.cpu(), b.cpu())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/run.py:997: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  assert float(b.auxiliary_loss())>=-1e-7 and 0<=float(b.last['eta'])<=.35
+PREFLIGHT_PASS {"status": "PASS", "started_utc": "2026-10-16T09:19:09.920821+00:00", "checks": {"ten_adaptive_cases": "PASS: shapes/parameters/alpha+eta gradients/two steps/KL/mask/zero-alpha/residual bound", "dense_sparse_value_gradient_equivalence": {"status": "PASS", "max_output_error": 9.5367431640625e-07, "max_grad_error": 9.89530235528946e-10, "atol": 1e-05}, "twenty_integrated_paths": "PASS: existing parameters/init/RNG/prediction exact; adaptive same-family parameter init identical", "three_step_atomic_recovery": "PASS: all buffers, train statistics, Adam groups, model and CPU/CUDA/Python/NumPy RNG exact", "heldout_labels": "PASS: full train update/attention/FC statistics invariant under test-label permutation", "counterfactual_restoration": "PASS: graph/local/eta/FC/OFF changes restore complete state + REAL predictions exactly"}, "baseline_parity": {"U00": "PASS: original P9 source, init/RNG/predictions/three Adam steps exact", "U01": "PASS: original P9 source, init/RNG/predictions/three Adam steps exact", "U02": "PASS: Exp20 source, module/optimizer/RNG/three Adam steps exact; full 30-fold parity pending", "U03": "PASS: Exp20 source, module/optimizer/RNG/three Adam steps exact; full 30-fold parity pending", "U04": "PASS: Exp20 source, module/optimizer/RNG/three Adam steps exact; full 30-fold parity pending", "U05": "PASS: Exp20 source, module/optimizer/RNG/three Adam steps exact; full 30-fold parity pending"}, "completed_utc": "2026-10-16T09:20:36.767191+00:00", "formal_fold_training": false, "full_fold_parity": "Gate requires U00-U05 180/180 exact folds, including 120 static folds before adaptive groups launch"}

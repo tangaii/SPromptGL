@@ -1,0 +1,626 @@
+{
+  "status": "NOT_JOINABLE",
+  "clinical_alignment": "CLINICAL_ALIGNMENT_NOT_ESTABLISHED",
+  "clinical_training_allowed": false,
+  "phenotype_source": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv",
+  "phenotype_sha256": "009f01a89697113e5375ded4fbcff4c85e89a4daa6d13e63c21ae5d57dda0865",
+  "phenotype_origin": "Local existing file; official distribution https://s3.amazonaws.com/fcp-indi/data/Projects/ABIDE_Initiative/Phenotypic_V1_0b_preprocessed1.csv",
+  "bounded_search": [
+    "/data/adodas/SPromptGL-main/data",
+    "/data/adodas/SPromptGL-main/dataset",
+    "/DATA/wanxixi/GATE-main/ABIDE_pcp"
+  ],
+  "subject_id_files": [],
+  "row_identity_verified": false,
+  "verified_processed_rows": 0,
+  "prefix_comparison": "NOT_PERFORMED_NO_VERIFIABLE_IDS",
+  "dictionary_url": "https://fcon_1000.projects.nitrc.org/indi/abide/ABIDE_LEGEND_V1.02.pdf",
+  "missing_policy": "Blank/NaN are missing. Scores outside field-specific documented nonnegative range (including -9999) are counted INVALID separately, not generically all negative fields or invented -999 codes.",
+  "source_coverage_scope": "UNMATCHED_1112_SOURCE_NOT_871_COHORT",
+  "symptom_supervision": "UNUSABLE_FOR_CURRENT_COHORT",
+  "source_rows": 1112,
+  "source_unique_sub_ids": 1112,
+  "prefix_tests": [],
+  "reason": "No original subject_IDs.txt found in bounded source directories; cannot link 871 processed rows to source clinical records",
+  "absent_candidate_families": [
+    "BRIEF",
+    "CBCL",
+    "SENSORY"
+  ],
+  "candidate_fields": [
+    "ADI_R_SOCIAL_TOTAL_A",
+    "ADI_R_VERBAL_TOTAL_BV",
+    "ADI_RRB_TOTAL_C",
+    "ADI_R_ONSET_TOTAL_D",
+    "ADI_R_RSRCH_RELIABLE",
+    "ADOS_MODULE",
+    "ADOS_TOTAL",
+    "ADOS_COMM",
+    "ADOS_SOCIAL",
+    "ADOS_STEREO_BEHAV",
+    "ADOS_RSRCH_RELIABLE",
+    "ADOS_GOTHAM_SOCAFFECT",
+    "ADOS_GOTHAM_RRB",
+    "ADOS_GOTHAM_TOTAL",
+    "ADOS_GOTHAM_SEVERITY",
+    "SRS_VERSION",
+    "SRS_RAW_TOTAL",
+    "SRS_AWARENESS",
+    "SRS_COGNITION",
+    "SRS_COMMUNICATION",
+    "SRS_MOTIVATION",
+    "SRS_MANNERISMS",
+    "SCQ_TOTAL"
+  ],
+  "coverage_summary": [
+    {
+      "field": "ADI_R_SOCIAL_TOTAL_A",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 378,
+          "coverage": 0.7012987012987013,
+          "sites": 16
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADI_R_VERBAL_TOTAL_BV",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 379,
+          "coverage": 0.7031539888682746,
+          "sites": 16
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADI_RRB_TOTAL_C",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 378,
+          "coverage": 0.7012987012987013,
+          "sites": 16
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADI_R_ONSET_TOTAL_D",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 297,
+          "coverage": 0.5510204081632653,
+          "sites": 13
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADI_R_RSRCH_RELIABLE",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 391,
+          "coverage": 0.725417439703154,
+          "sites": 16
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_MODULE",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 474,
+          "coverage": 0.8794063079777366,
+          "sites": 18
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 33,
+          "coverage": 0.05759162303664921,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_TOTAL",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 383,
+          "coverage": 0.7105751391465677,
+          "sites": 16
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 32,
+          "coverage": 0.055846422338568937,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_COMM",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 358,
+          "coverage": 0.6641929499072357,
+          "sites": 14
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 32,
+          "coverage": 0.055846422338568937,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_SOCIAL",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 359,
+          "coverage": 0.6660482374768089,
+          "sites": 15
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 32,
+          "coverage": 0.055846422338568937,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_STEREO_BEHAV",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 299,
+          "coverage": 0.5547309833024119,
+          "sites": 11
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 32,
+          "coverage": 0.055846422338568937,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_RSRCH_RELIABLE",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 376,
+          "coverage": 0.6975881261595547,
+          "sites": 15
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 0,
+          "coverage": 0.0,
+          "sites": 0
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_GOTHAM_SOCAFFECT",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 249,
+          "coverage": 0.4619666048237477,
+          "sites": 11
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 16,
+          "coverage": 0.027923211169284468,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_GOTHAM_RRB",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 254,
+          "coverage": 0.4712430426716141,
+          "sites": 11
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 16,
+          "coverage": 0.027923211169284468,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_GOTHAM_TOTAL",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 257,
+          "coverage": 0.47680890538033394,
+          "sites": 11
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 16,
+          "coverage": 0.027923211169284468,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "ADOS_GOTHAM_SEVERITY",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 257,
+          "coverage": 0.47680890538033394,
+          "sites": 11
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 16,
+          "coverage": 0.027923211169284468,
+          "sites": 1
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_VERSION",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 118,
+          "coverage": 0.2189239332096475,
+          "sites": 3
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 113,
+          "coverage": 0.19720767888307156,
+          "sites": 3
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_RAW_TOTAL",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 190,
+          "coverage": 0.3525046382189239,
+          "sites": 5
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 175,
+          "coverage": 0.3054101221640489,
+          "sites": 5
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": true,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_AWARENESS",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 29,
+          "coverage": 0.05380333951762523,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 35,
+          "coverage": 0.06108202443280977,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_COGNITION",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 29,
+          "coverage": 0.05380333951762523,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 35,
+          "coverage": 0.06108202443280977,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_COMMUNICATION",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 29,
+          "coverage": 0.05380333951762523,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 35,
+          "coverage": 0.06108202443280977,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_MOTIVATION",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 29,
+          "coverage": 0.05380333951762523,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 35,
+          "coverage": 0.06108202443280977,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SRS_MANNERISMS",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 29,
+          "coverage": 0.05380333951762523,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 35,
+          "coverage": 0.06108202443280977,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    },
+    {
+      "field": "SCQ_TOTAL",
+      "source_counts": [
+        {
+          "dx": 1,
+          "subjects": 539,
+          "valid": 70,
+          "coverage": 0.12987012987012986,
+          "sites": 2
+        },
+        {
+          "dx": 2,
+          "subjects": 573,
+          "valid": 54,
+          "coverage": 0.09424083769633508,
+          "sites": 2
+        }
+      ],
+      "numeric_symmetric_coverage": false,
+      "asd_only_numeric_candidate": false,
+      "classification": "UNUSABLE",
+      "comparability": "NOT_ESTABLISHED across versions/sites; ADOS and ADI-R are ASD diagnostic instruments"
+    }
+  ],
+  "cohort_coverage_available": false,
+  "audit_input_sha256": {
+    "/data/adodas/SPromptGL-main/prompt": "e57d2ee7b8dbd9d90527bb620d2674bf2406aacb1ce0e12a04c3403a942ed298",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/tmp/experiment20_grounded_concept_graph_alignment/semantic_cache.npz": "4f0f746ca4b65a638e8dbc0d937ad0f38145c9492d8f80688efa35efa910e96d",
+    "/tmp/experiment20_grounded_concept_graph_alignment/results/counterfactual.csv": "0a40888489cdb6a339c0ca3871546fe2bc7237f197716e91cb7e5d0cd2740e36",
+    "/tmp/experiment20_grounded_concept_graph_alignment/results/diagnostics.csv": "3ed01f9195aa978995514cd27cda3b2d0d5a3ac51a897193bb87ea86a285fc26",
+    "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/offline_diagnostics.py": "0d1730c32c968830e48d15a24d66e7ed129a628a4f543a3e223dde103f15b23a",
+    "/data/adodas/SPromptGL-main/experiment/experiment21_evidence_constrained_adaptive_alignment/clinical_audit.py": "b47de8fab28b054263ac4917f06be0c4d10da1976dc75db01a2ca9aac5c1b7ac"
+  },
+  "audit_completed_utc": "2026-10-16T09:12:02.647414+00:00",
+  "training_executed_in_audit": false,
+  "experiment20_path": "/tmp/experiment20_grounded_concept_graph_alignment",
+  "checkpoint_status": "CHECKPOINT_UNAVAILABLE_NO_EXACT_DECOMPOSITION",
+  "checkpoint_files_found": 0,
+  "rank_rows": 160,
+  "counterfactual_proxy_rows": 60,
+  "numerical_only_exp20_intervention": "prior=0 AND condition=NUMERIC; graph rebuilt numeric. Not orthogonal local-only intervention.",
+  "official_sources": [
+    {
+      "url": "https://fcon_1000.projects.nitrc.org/indi/abide/ABIDE_LEGEND_V1.02.pdf",
+      "role": "ABIDE I field definitions, scores nonnegative, versions and reliability flags"
+    },
+    {
+      "url": "https://arxiv.org/html/2312.14574v2",
+      "role": "MMGPL Fig1, III-C Eq7-10 and III-D Eq11-14; concepts and semantic graphs already established"
+    },
+    {
+      "url": "https://papers.miccai.org/miccai-2024/paper/2494_paper.pdf",
+      "role": "MGDR multigraph common/private SVD and contrastive representation"
+    },
+    {
+      "url": "https://papers.miccai.org/miccai-2025/0861-Paper5129.html",
+      "role": "SPromptGL local PDF + official publication"
+    },
+    {
+      "url": "https://arxiv.org/abs/2504.16096",
+      "role": "BrainPrompt ROI/subject/disease prompting; local PDF"
+    }
+  ]
+}
