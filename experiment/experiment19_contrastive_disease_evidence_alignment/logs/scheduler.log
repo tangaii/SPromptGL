@@ -1,0 +1,293 @@
+PREPARE_VERIFIED
+SCHEDULER_START 2026-10-15T08:21:31.278795+00:00
+LAUNCH C0_seed0 GPU0 pid=693615
+LAUNCH C0_seed2 GPU0 pid=693616
+LAUNCH C1_seed1 GPU0 pid=693617
+LAUNCH C2_seed0 GPU0 pid=693618
+LAUNCH C0_seed1 GPU1 pid=693621
+LAUNCH C1_seed0 GPU1 pid=693623
+LAUNCH C1_seed2 GPU1 pid=693625
+LAUNCH C2_seed1 GPU1 pid=693628
+RESOURCE {"utc": "2026-10-15T08:21:31.804590+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 7704, "utilization": 100}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 10, "utilization": 0}], "worker_rss_sum_gib": 0.12323379516601562, "worker_cpu_seconds": 0.7999999999999999, "host_available_gib": 1417.5928802490234, "system_cpu_percent": 3.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=0/420 active=8
+PROGRESS tasks=0/42 folds=0/420 active=8
+PROGRESS tasks=0/42 folds=0/420 active=8
+RESOURCE {"utc": "2026-10-15T08:22:32.965793+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 8349, "utilization": 80}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3415, "utilization": 40}], "worker_rss_sum_gib": 24.53585433959961, "worker_cpu_seconds": 370.42, "host_available_gib": 1400.6560096740723, "system_cpu_percent": 6.9, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=0/420 active=8
+RESTART C1_seed0 exit=1 from atomic checkpoint
+LAUNCH C1_seed0 GPU1 pid=695083
+RESTART C1_seed2 exit=1 from atomic checkpoint
+LAUNCH C1_seed2 GPU1 pid=695165
+RESTART C1_seed1 exit=1 from atomic checkpoint
+RESTART C2_seed0 exit=1 from atomic checkpoint
+LAUNCH C1_seed1 GPU0 pid=695197
+LAUNCH C2_seed0 GPU0 pid=695198
+RESTART C2_seed1 exit=1 from atomic checkpoint
+LAUNCH C2_seed1 GPU1 pid=695298
+PROGRESS tasks=0/42 folds=3/420 active=8
+RESTART C1_seed0 exit=1 from atomic checkpoint
+RESTART C1_seed2 exit=1 from atomic checkpoint
+LAUNCH C1_seed0 GPU1 pid=695605
+LAUNCH C1_seed2 GPU1 pid=695607
+RESTART C1_seed1 exit=1 from atomic checkpoint
+RESTART C2_seed0 exit=1 from atomic checkpoint
+LAUNCH C1_seed1 GPU0 pid=695708
+LAUNCH C2_seed0 GPU0 pid=695710
+RESTART C2_seed1 exit=1 from atomic checkpoint
+LAUNCH C2_seed1 GPU1 pid=695769
+PROGRESS tasks=0/42 folds=4/420 active=8
+RESTART C1_seed0 exit=1 from atomic checkpoint
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/run.py", line 1389, in <module>
+    main()
+  File "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/run.py", line 1380, in main
+    schedule(args.workers_per_gpu)
+  File "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/run.py", line 575, in schedule
+    raise RuntimeError("Repeated task failure: " + task)
+RuntimeError: Repeated task failure: C1_seed0
+PREPARE_VERIFIED
+SCHEDULER_START 2026-10-15T08:28:42.539193+00:00
+LAUNCH C0_seed0 GPU0 pid=703505
+LAUNCH C0_seed2 GPU0 pid=703506
+LAUNCH C1_seed1 GPU0 pid=703507
+LAUNCH C2_seed0 GPU0 pid=703508
+LAUNCH C0_seed1 GPU1 pid=703509
+LAUNCH C1_seed0 GPU1 pid=703510
+LAUNCH C1_seed2 GPU1 pid=703514
+LAUNCH C2_seed1 GPU1 pid=703516
+RESOURCE {"utc": "2026-10-15T08:28:43.206299+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 10, "utilization": 0}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 7696, "utilization": 6}], "worker_rss_sum_gib": 0.19813156127929688, "worker_cpu_seconds": 1.54, "host_available_gib": 1417.024757385254, "system_cpu_percent": 4.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=0/420 active=8
+PROGRESS tasks=0/42 folds=0/420 active=8
+PROGRESS tasks=0/42 folds=0/420 active=8
+RESOURCE {"utc": "2026-10-15T08:29:44.925692+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3435, "utilization": 32}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 11285, "utilization": 84}], "worker_rss_sum_gib": 24.70505142211914, "worker_cpu_seconds": 464.25, "host_available_gib": 1400.1633949279785, "system_cpu_percent": 8.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=5/420 active=8
+PROGRESS tasks=0/42 folds=8/420 active=8
+PROGRESS tasks=0/42 folds=15/420 active=8
+RESOURCE {"utc": "2026-10-15T08:30:48.702782+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3463, "utilization": 30}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 11393, "utilization": 76}], "worker_rss_sum_gib": 24.936023712158203, "worker_cpu_seconds": 989.19, "host_available_gib": 1399.7906227111816, "system_cpu_percent": 9.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=16/420 active=8
+PROGRESS tasks=0/42 folds=21/420 active=8
+PROGRESS tasks=0/42 folds=25/420 active=8
+RESOURCE {"utc": "2026-10-15T08:31:53.678268+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3499, "utilization": 0}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3751, "utilization": 40}], "worker_rss_sum_gib": 24.94546890258789, "worker_cpu_seconds": 1469.5300000000002, "host_available_gib": 1401.9881019592285, "system_cpu_percent": 8.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=28/420 active=8
+PROGRESS tasks=0/42 folds=32/420 active=8
+PROGRESS tasks=0/42 folds=33/420 active=8
+RESOURCE {"utc": "2026-10-15T08:32:58.157409+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3507, "utilization": 52}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3751, "utilization": 50}], "worker_rss_sum_gib": 24.98139190673828, "worker_cpu_seconds": 1819.37, "host_available_gib": 1401.3732109069824, "system_cpu_percent": 7.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=36/420 active=8
+PROGRESS tasks=0/42 folds=41/420 active=8
+PROGRESS tasks=0/42 folds=43/420 active=8
+RESOURCE {"utc": "2026-10-15T08:34:03.060210+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 50031, "utilization": 57}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 50851, "utilization": 96}], "worker_rss_sum_gib": 24.85751724243164, "worker_cpu_seconds": 2279.04, "host_available_gib": 1376.0871963500977, "system_cpu_percent": 12.3, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=45/420 active=8
+PROGRESS tasks=0/42 folds=49/420 active=8
+PROGRESS tasks=0/42 folds=51/420 active=8
+RESOURCE {"utc": "2026-10-15T08:35:06.752677+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 50039, "utilization": 96}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 50845, "utilization": 100}], "worker_rss_sum_gib": 24.829788208007812, "worker_cpu_seconds": 2678.0299999999997, "host_available_gib": 1375.877456665039, "system_cpu_percent": 12.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=52/420 active=8
+PROGRESS tasks=0/42 folds=55/420 active=8
+PROGRESS tasks=0/42 folds=57/420 active=8
+RESOURCE {"utc": "2026-10-15T08:36:13.954806+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 26789, "utilization": 90}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 54245, "utilization": 100}], "worker_rss_sum_gib": 24.87139129638672, "worker_cpu_seconds": 3170.7000000000003, "host_available_gib": 1382.6959762573242, "system_cpu_percent": 13.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=60/420 active=8
+PROGRESS tasks=0/42 folds=63/420 active=8
+PROGRESS tasks=0/42 folds=66/420 active=8
+RESOURCE {"utc": "2026-10-15T08:37:21.265773+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 42311, "utilization": 96}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 34783, "utilization": 98}], "worker_rss_sum_gib": 24.872608184814453, "worker_cpu_seconds": 3635.5600000000004, "host_available_gib": 1380.6567306518555, "system_cpu_percent": 12.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=0/42 folds=68/420 active=8
+PROGRESS tasks=0/42 folds=71/420 active=8
+LAUNCH C2_seed2 GPU0 pid=717089
+LAUNCH C3_seed1 GPU0 pid=717291
+PROGRESS tasks=2/42 folds=73/420 active=8
+LAUNCH C3_seed0 GPU1 pid=717699
+LAUNCH C3_seed2 GPU1 pid=717940
+RESOURCE {"utc": "2026-10-15T08:38:26.257125+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 42337, "utilization": 100}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 40909, "utilization": 100}], "worker_rss_sum_gib": 21.51865005493164, "worker_cpu_seconds": 2110.62, "host_available_gib": 1383.1977195739746, "system_cpu_percent": 12.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=5/42 folds=77/420 active=8
+LAUNCH C4_seed0 GPU0 pid=718121
+LAUNCH C4_seed1 GPU1 pid=718294
+PROGRESS tasks=7/42 folds=79/420 active=8
+LAUNCH C5_seed0 GPU1 pid=718655
+PROGRESS tasks=7/42 folds=80/420 active=8
+RESOURCE {"utc": "2026-10-15T08:39:32.958212+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 35049, "utilization": 24}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 19923, "utilization": 44}], "worker_rss_sum_gib": 24.82363510131836, "worker_cpu_seconds": 988.41, "host_available_gib": 1384.3730010986328, "system_cpu_percent": 11.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=7/42 folds=82/420 active=8
+LAUNCH C4_seed2 GPU0 pid=720068
+PROGRESS tasks=8/42 folds=85/420 active=8
+PROGRESS tasks=8/42 folds=89/420 active=8
+RESOURCE {"utc": "2026-10-15T08:40:39.766306+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 34881, "utilization": 64}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4007, "utilization": 60}], "worker_rss_sum_gib": 25.070262908935547, "worker_cpu_seconds": 940.51, "host_available_gib": 1393.6204795837402, "system_cpu_percent": 10.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=93/420 active=8
+PROGRESS tasks=8/42 folds=96/420 active=8
+PROGRESS tasks=8/42 folds=101/420 active=8
+RESOURCE {"utc": "2026-10-15T08:41:45.715051+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3951, "utilization": 28}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4007, "utilization": 60}], "worker_rss_sum_gib": 25.12134552001953, "worker_cpu_seconds": 1438.1100000000001, "host_available_gib": 1402.1537322998047, "system_cpu_percent": 8.8, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=103/420 active=8
+PROGRESS tasks=8/42 folds=108/420 active=8
+PROGRESS tasks=8/42 folds=109/420 active=8
+RESOURCE {"utc": "2026-10-15T08:42:51.410890+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3951, "utilization": 54}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4007, "utilization": 16}], "worker_rss_sum_gib": 25.039180755615234, "worker_cpu_seconds": 1873.7600000000002, "host_available_gib": 1402.2134284973145, "system_cpu_percent": 7.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=113/420 active=8
+PROGRESS tasks=8/42 folds=116/420 active=8
+PROGRESS tasks=8/42 folds=119/420 active=8
+RESOURCE {"utc": "2026-10-15T08:44:00.813194+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4011, "utilization": 44}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4039, "utilization": 56}], "worker_rss_sum_gib": 25.013263702392578, "worker_cpu_seconds": 2268.37, "host_available_gib": 1394.4757919311523, "system_cpu_percent": 7.1, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=124/420 active=8
+PROGRESS tasks=8/42 folds=125/420 active=8
+PROGRESS tasks=8/42 folds=129/420 active=8
+RESOURCE {"utc": "2026-10-15T08:45:03.897193+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 34993, "utilization": 86}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 35079, "utilization": 100}], "worker_rss_sum_gib": 25.12242889404297, "worker_cpu_seconds": 2702.22, "host_available_gib": 1384.4767799377441, "system_cpu_percent": 10.9, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=132/420 active=8
+PROGRESS tasks=8/42 folds=132/420 active=8
+PROGRESS tasks=8/42 folds=135/420 active=8
+RESOURCE {"utc": "2026-10-15T08:46:10.408920+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 12509, "utilization": 60}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 20313, "utilization": 58}], "worker_rss_sum_gib": 25.051368713378906, "worker_cpu_seconds": 3133.9799999999996, "host_available_gib": 1390.973201751709, "system_cpu_percent": 10.3, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=139/420 active=8
+PROGRESS tasks=8/42 folds=141/420 active=8
+PROGRESS tasks=8/42 folds=144/420 active=8
+RESOURCE {"utc": "2026-10-15T08:47:27.014256+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4015, "utilization": 58}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4043, "utilization": 54}], "worker_rss_sum_gib": 25.023502349853516, "worker_cpu_seconds": 3481.4900000000007, "host_available_gib": 1402.3913192749023, "system_cpu_percent": 6.3, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=8/42 folds=146/420 active=8
+PROGRESS tasks=8/42 folds=148/420 active=8
+LAUNCH C5_seed2 GPU1 pid=731190
+LAUNCH C6_seed1 GPU1 pid=731233
+LAUNCH C5_seed1 GPU0 pid=731277
+PROGRESS tasks=11/42 folds=152/420 active=8
+LAUNCH C7_seed0 GPU1 pid=731596
+LAUNCH C6_seed0 GPU0 pid=731629
+RESOURCE {"utc": "2026-10-15T08:48:35.041071+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 6029, "utilization": 52}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2993, "utilization": 2}], "worker_rss_sum_gib": 21.621009826660156, "worker_cpu_seconds": 1482.8500000000001, "host_available_gib": 1393.617099761963, "system_cpu_percent": 7.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=13/42 folds=157/420 active=8
+PROGRESS tasks=13/42 folds=157/420 active=8
+PROGRESS tasks=13/42 folds=158/420 active=8
+LAUNCH C6_seed2 GPU0 pid=732772
+LAUNCH C7_seed1 GPU0 pid=732805
+LAUNCH C7_seed2 GPU1 pid=732823
+RESOURCE {"utc": "2026-10-15T08:49:41.521360+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2525, "utilization": 34}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3065, "utilization": 56}], "worker_rss_sum_gib": 21.99808120727539, "worker_cpu_seconds": 378.32000000000005, "host_available_gib": 1395.4879150390625, "system_cpu_percent": 7.8, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=165/420 active=8
+PROGRESS tasks=16/42 folds=167/420 active=8
+PROGRESS tasks=16/42 folds=169/420 active=8
+RESOURCE {"utc": "2026-10-15T08:50:49.497210+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3975, "utilization": 26}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4043, "utilization": 24}], "worker_rss_sum_gib": 25.067840576171875, "worker_cpu_seconds": 806.17, "host_available_gib": 1396.1871719360352, "system_cpu_percent": 8.6, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=174/420 active=8
+PROGRESS tasks=16/42 folds=176/420 active=8
+PROGRESS tasks=16/42 folds=182/420 active=8
+RESOURCE {"utc": "2026-10-15T08:52:06.938144+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4031, "utilization": 58}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4239, "utilization": 48}], "worker_rss_sum_gib": 25.080196380615234, "worker_cpu_seconds": 1277.26, "host_available_gib": 1396.3170776367188, "system_cpu_percent": 8.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=183/420 active=8
+PROGRESS tasks=16/42 folds=187/420 active=8
+PROGRESS tasks=16/42 folds=191/420 active=8
+RESOURCE {"utc": "2026-10-15T08:53:12.142006+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4655, "utilization": 50}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4643, "utilization": 32}], "worker_rss_sum_gib": 25.079837799072266, "worker_cpu_seconds": 1693.8, "host_available_gib": 1390.9176139831543, "system_cpu_percent": 8.3, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=192/420 active=8
+PROGRESS tasks=16/42 folds=197/420 active=8
+PROGRESS tasks=16/42 folds=200/420 active=8
+RESOURCE {"utc": "2026-10-15T08:54:18.963796+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4463, "utilization": 48}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4507, "utilization": 18}], "worker_rss_sum_gib": 25.16901397705078, "worker_cpu_seconds": 2101.55, "host_available_gib": 1392.2090339660645, "system_cpu_percent": 8.2, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=200/420 active=8
+PROGRESS tasks=16/42 folds=208/420 active=8
+PROGRESS tasks=16/42 folds=208/420 active=8
+RESOURCE {"utc": "2026-10-15T08:55:23.923466+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4055, "utilization": 28}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4091, "utilization": 4}], "worker_rss_sum_gib": 25.135692596435547, "worker_cpu_seconds": 2540.7400000000002, "host_available_gib": 1395.6465682983398, "system_cpu_percent": 8.3, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=212/420 active=8
+PROGRESS tasks=16/42 folds=216/420 active=8
+PROGRESS tasks=16/42 folds=219/420 active=8
+RESOURCE {"utc": "2026-10-15T08:56:32.840744+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4047, "utilization": 66}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4347, "utilization": 24}], "worker_rss_sum_gib": 25.15362548828125, "worker_cpu_seconds": 2979.1400000000003, "host_available_gib": 1394.8312339782715, "system_cpu_percent": 8.2, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=16/42 folds=224/420 active=8
+LAUNCH C8_seed1 GPU1 pid=740355
+PROGRESS tasks=17/42 folds=225/420 active=8
+PROGRESS tasks=17/42 folds=226/420 active=8
+LAUNCH C8_seed0 GPU0 pid=741042
+RESOURCE {"utc": "2026-10-15T08:57:37.758346+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 6475, "utilization": 30}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 7887, "utilization": 86}], "worker_rss_sum_gib": 23.986846923828125, "worker_cpu_seconds": 2463.51, "host_available_gib": 1390.8528518676758, "system_cpu_percent": 7.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=18/42 folds=230/420 active=8
+LAUNCH C9_seed0 GPU1 pid=741381
+PROGRESS tasks=19/42 folds=234/420 active=8
+LAUNCH C9_seed2 GPU1 pid=742056
+PROGRESS tasks=20/42 folds=237/420 active=8
+LAUNCH C8_seed2 GPU0 pid=742440
+LAUNCH C9_seed1 GPU0 pid=742482
+RESOURCE {"utc": "2026-10-15T08:58:44.308997+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2027, "utilization": 30}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3835, "utilization": 42}], "worker_rss_sum_gib": 19.11594009399414, "worker_cpu_seconds": 1112.62, "host_available_gib": 1400.7202758789062, "system_cpu_percent": 8.7, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=22/42 folds=241/420 active=8
+LAUNCH C10_seed1 GPU1 pid=742851
+PROGRESS tasks=23/42 folds=243/420 active=8
+LAUNCH C10_seed0 GPU0 pid=743118
+PROGRESS tasks=24/42 folds=246/420 active=8
+RESOURCE {"utc": "2026-10-15T08:59:51.998745+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4019, "utilization": 10}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4183, "utilization": 26}], "worker_rss_sum_gib": 24.86800765991211, "worker_cpu_seconds": 655.2, "host_available_gib": 1392.793571472168, "system_cpu_percent": 8.7, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=24/42 folds=249/420 active=8
+PROGRESS tasks=24/42 folds=254/420 active=8
+PROGRESS tasks=24/42 folds=258/420 active=8
+RESOURCE {"utc": "2026-10-15T09:00:59.945884+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3983, "utilization": 52}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4055, "utilization": 42}], "worker_rss_sum_gib": 25.142086029052734, "worker_cpu_seconds": 1167.19, "host_available_gib": 1395.3816528320312, "system_cpu_percent": 9.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=24/42 folds=261/420 active=8
+PROGRESS tasks=24/42 folds=266/420 active=8
+PROGRESS tasks=24/42 folds=269/420 active=8
+RESOURCE {"utc": "2026-10-15T09:02:06.909955+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4003, "utilization": 66}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4055, "utilization": 50}], "worker_rss_sum_gib": 25.10491943359375, "worker_cpu_seconds": 1612.47, "host_available_gib": 1396.761318206787, "system_cpu_percent": 9.0, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=24/42 folds=271/420 active=8
+PROGRESS tasks=24/42 folds=274/420 active=8
+PROGRESS tasks=24/42 folds=278/420 active=8
+RESOURCE {"utc": "2026-10-15T09:03:11.999514+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4311, "utilization": 68}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4099, "utilization": 44}], "worker_rss_sum_gib": 25.15536117553711, "worker_cpu_seconds": 2063.39, "host_available_gib": 1393.8337211608887, "system_cpu_percent": 8.9, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=24/42 folds=283/420 active=8
+PROGRESS tasks=24/42 folds=285/420 active=8
+PROGRESS tasks=24/42 folds=286/420 active=8
+RESTART C9_seed0 exit=1 from atomic checkpoint
+LAUNCH C9_seed0 GPU1 pid=748006
+RESOURCE {"utc": "2026-10-15T09:04:17.975381+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 7103, "utilization": 12}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3939, "utilization": 6}], "worker_rss_sum_gib": 25.00698471069336, "worker_cpu_seconds": 2127.7999999999997, "host_available_gib": 1395.3667793273926, "system_cpu_percent": 8.2, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=24/42 folds=292/420 active=8
+PROGRESS tasks=24/42 folds=294/420 active=8
+PROGRESS tasks=24/42 folds=295/420 active=8
+LAUNCH C11_seed0 GPU1 pid=749560
+RESOURCE {"utc": "2026-10-15T09:05:26.697457+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4007, "utilization": 50}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3017, "utilization": 0}], "worker_rss_sum_gib": 22.283462524414062, "worker_cpu_seconds": 2066.38, "host_available_gib": 1404.3153038024902, "system_cpu_percent": 6.9, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=25/42 folds=301/420 active=8
+RESTART C11_seed0 exit=1 from atomic checkpoint
+LAUNCH C11_seed0 GPU1 pid=749689
+PROGRESS tasks=25/42 folds=302/420 active=8
+LAUNCH C10_seed2 GPU0 pid=750505
+PROGRESS tasks=26/42 folds=307/420 active=8
+RESOURCE {"utc": "2026-10-15T09:06:35.865961+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3891, "utilization": 46}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4023, "utilization": 6}], "worker_rss_sum_gib": 25.04715347290039, "worker_cpu_seconds": 2075.74, "host_available_gib": 1402.347785949707, "system_cpu_percent": 6.7, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=26/42 folds=309/420 active=8
+PROGRESS tasks=26/42 folds=312/420 active=8
+PROGRESS tasks=27/42 folds=315/420 active=8
+LAUNCH C11_seed2 GPU1 pid=752130
+LAUNCH C12_seed1 GPU1 pid=752198
+RESOURCE {"utc": "2026-10-15T09:07:43.742144+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3995, "utilization": 68}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3467, "utilization": 24}], "worker_rss_sum_gib": 24.752483367919922, "worker_cpu_seconds": 1848.5800000000002, "host_available_gib": 1401.39693069458, "system_cpu_percent": 6.5, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=28/42 folds=318/420 active=8
+PROGRESS tasks=29/42 folds=319/420 active=8
+LAUNCH C11_seed1 GPU0 pid=753007
+LAUNCH C12_seed0 GPU0 pid=753225
+PROGRESS tasks=30/42 folds=323/420 active=8
+LAUNCH C13_seed0 GPU1 pid=753672
+RESOURCE {"utc": "2026-10-15T09:08:49.355933+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3783, "utilization": 30}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2953, "utilization": 44}], "worker_rss_sum_gib": 23.05443572998047, "worker_cpu_seconds": 924.46, "host_available_gib": 1403.4838562011719, "system_cpu_percent": 6.9, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=31/42 folds=326/420 active=8
+LAUNCH C12_seed2 GPU0 pid=754058
+PROGRESS tasks=32/42 folds=329/420 active=8
+PROGRESS tasks=32/42 folds=332/420 active=8
+RESOURCE {"utc": "2026-10-15T09:09:57.609634+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3891, "utilization": 40}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3915, "utilization": 36}], "worker_rss_sum_gib": 25.03042984008789, "worker_cpu_seconds": 905.3900000000001, "host_available_gib": 1403.3294868469238, "system_cpu_percent": 7.6, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=32/42 folds=335/420 active=8
+PROGRESS tasks=32/42 folds=341/420 active=8
+PROGRESS tasks=32/42 folds=345/420 active=8
+RESOURCE {"utc": "2026-10-15T09:11:07.145277+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4015, "utilization": 66}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3959, "utilization": 30}], "worker_rss_sum_gib": 25.04279327392578, "worker_cpu_seconds": 1485.0600000000002, "host_available_gib": 1402.9861869812012, "system_cpu_percent": 8.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=32/42 folds=350/420 active=8
+PROGRESS tasks=32/42 folds=354/420 active=8
+PROGRESS tasks=32/42 folds=358/420 active=8
+RESOURCE {"utc": "2026-10-15T09:12:13.620640+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4015, "utilization": 78}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3959, "utilization": 38}], "worker_rss_sum_gib": 25.023948669433594, "worker_cpu_seconds": 2043.13, "host_available_gib": 1403.2003288269043, "system_cpu_percent": 8.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=32/42 folds=363/420 active=8
+PROGRESS tasks=32/42 folds=366/420 active=8
+PROGRESS tasks=32/42 folds=372/420 active=8
+RESOURCE {"utc": "2026-10-15T09:13:23.550161+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4031, "utilization": 78}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3975, "utilization": 30}], "worker_rss_sum_gib": 25.092418670654297, "worker_cpu_seconds": 2620.2700000000004, "host_available_gib": 1402.4184303283691, "system_cpu_percent": 8.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=32/42 folds=376/420 active=8
+PROGRESS tasks=32/42 folds=381/420 active=8
+LAUNCH C13_seed2 GPU1 pid=760014
+PROGRESS tasks=33/42 folds=382/420 active=8
+RESOURCE {"utc": "2026-10-15T09:14:31.011481+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 4031, "utilization": 16}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3887, "utilization": 62}], "worker_rss_sum_gib": 24.987083435058594, "worker_cpu_seconds": 2580.54, "host_available_gib": 1402.4094505310059, "system_cpu_percent": 7.4, "active_workers": 8, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=33/42 folds=384/420 active=8
+LAUNCH C13_seed1 GPU0 pid=760935
+PROGRESS tasks=34/42 folds=389/420 active=8
+PROGRESS tasks=34/42 folds=392/420 active=8
+RESOURCE {"utc": "2026-10-15T09:15:39.980796+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 3935, "utilization": 18}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 1974, "utilization": 2}], "worker_rss_sum_gib": 18.752674102783203, "worker_cpu_seconds": 1692.6799999999998, "host_available_gib": 1406.5681266784668, "system_cpu_percent": 7.5, "active_workers": 6, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=36/42 folds=395/420 active=6
+PROGRESS tasks=36/42 folds=399/420 active=6
+PROGRESS tasks=38/42 folds=400/420 active=4
+RESOURCE {"utc": "2026-10-15T09:16:48.603765+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 1994, "utilization": 34}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 988, "utilization": 30}], "worker_rss_sum_gib": 9.424629211425781, "worker_cpu_seconds": 646.58, "host_available_gib": 1413.159080505371, "system_cpu_percent": 5.2, "active_workers": 3, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=39/42 folds=403/420 active=3
+PROGRESS tasks=39/42 folds=404/420 active=3
+PROGRESS tasks=39/42 folds=405/420 active=3
+RESOURCE {"utc": "2026-10-15T09:17:54.181747+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 30}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 0}], "worker_rss_sum_gib": 6.295551300048828, "worker_cpu_seconds": 347.58000000000004, "host_available_gib": 1416.3883628845215, "system_cpu_percent": 3.8, "active_workers": 2, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=40/42 folds=407/420 active=2
+PROGRESS tasks=40/42 folds=409/420 active=2
+PROGRESS tasks=40/42 folds=409/420 active=2
+RESOURCE {"utc": "2026-10-15T09:19:01.913245+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 34}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 0}], "worker_rss_sum_gib": 6.295650482177734, "worker_cpu_seconds": 490.47999999999996, "host_available_gib": 1416.0977363586426, "system_cpu_percent": 3.4, "active_workers": 2, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=40/42 folds=411/420 active=2
+PROGRESS tasks=40/42 folds=412/420 active=2
+PROGRESS tasks=40/42 folds=413/420 active=2
+RESOURCE {"utc": "2026-10-15T09:20:07.593127+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 0}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 980, "utilization": 30}], "worker_rss_sum_gib": 6.271442413330078, "worker_cpu_seconds": 628.63, "host_available_gib": 1416.0507850646973, "system_cpu_percent": 3.4, "active_workers": 2, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=40/42 folds=415/420 active=2
+PROGRESS tasks=40/42 folds=415/420 active=2
+PROGRESS tasks=40/42 folds=417/420 active=2
+RESOURCE {"utc": "2026-10-15T09:21:15.287046+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 1008, "utilization": 34}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 988, "utilization": 10}], "worker_rss_sum_gib": 6.274135589599609, "worker_cpu_seconds": 771.72, "host_available_gib": 1416.2809791564941, "system_cpu_percent": 3.5, "active_workers": 2, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=40/42 folds=417/420 active=2
+PROGRESS tasks=41/42 folds=419/420 active=1
+PROGRESS tasks=41/42 folds=419/420 active=1
+RESOURCE {"utc": "2026-10-15T09:22:18.945168+00:00", "gpu": [{"index": 0, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2, "utilization": 0}, {"index": 1, "name": "PPU-ZW810E", "total_mib": 98304, "used_mib": 2, "utilization": 0}], "worker_rss_sum_gib": 0.0, "worker_cpu_seconds": 0.0, "host_available_gib": 1420.6813201904297, "system_cpu_percent": 2.7, "active_workers": 0, "gpu_memory_scope": "whole device including unrelated jobs"}
+PROGRESS tasks=42/42 folds=420/420 active=0
+REPORT_WRITTEN
+HANDOFF_APPENDED
+COMPLETE 42/42 tasks 420/420 folds 420 diagnostics 330 counterfactual; temporary state cleaned
+FINAL_ANALYSIS_AUDIT_PASS {"utc": "2026-10-15T09:25:44.548906+00:00", "folds": 420, "diagnostics": 420, "counterfactual": 330, "handoff_prefix_preserved": true, "artifact_hashes_verified": true, "exact_capacity_audit": true, "temporary_state_removed": true, "training_processes": 0}
