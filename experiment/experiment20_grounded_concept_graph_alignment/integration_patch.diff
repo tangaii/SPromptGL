@@ -1,0 +1,368 @@
+--- a/model.py
++++ b/model.py
+@@ -1,4 +1,5 @@
+ import os
++import json
+ import random
+ import sys
+ 
+@@ -19,6 +20,26 @@
+ 
+ from network import *
+ from utils import *
++
++
++class GradientReverse(torch.autograd.Function):
++    @staticmethod
++    def forward(ctx, x, scale):
++        ctx.scale = float(scale)
++        return x.view_as(x)
++
++    @staticmethod
++    def backward(ctx, grad_output):
++        return -ctx.scale * grad_output, None
++
++
++class ModalityDiscriminator(nn.Module):
++    def __init__(self):
++        super().__init__()
++        self.net = nn.Sequential(nn.LayerNorm(36), nn.Linear(36, 32), nn.ReLU(), nn.Linear(32, 4))
++
++    def forward(self, x):
++        return self.net(x)
+ 
+ 
+ class EvalHelper:
+@@ -77,7 +98,36 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
+-        
++        self.pdai_disease = os.environ.get("PDAI_DISEASE", "0") == "1"
++        self.pdai_adv = os.environ.get("PDAI_ADV", "0") == "1"
++        self.ModalityDiscriminator = None
++        self.optimizer_D = None
++        self._pdai_disc_grad_valid = False
++        self._pdai_wv_adv_grad_valid = False
++        self.ModalFusion.pdai_disease_enabled = self.pdai_disease
++        self.ModalFusion.pdai_disease_grad_valid = False
++        self.ModalFusion.pdai_alpha_grad_valid = False
++        if self.pdai_disease:
++            self.ModalFusion.register_buffer("disease_prototypes", get_pdai_disease_prototypes())
++            self.ModalFusion.disease_projector = nn.Linear(36, 1024, bias=False).to(dev)
++            my_weight_init(self.ModalFusion.disease_projector)
++            self.ModalFusion.disease_alpha = nn.Parameter(torch.zeros((), device=dev))
++            disease_parameters = list(self.ModalFusion.disease_projector.parameters()) + [self.ModalFusion.disease_alpha]
++            if sum(parameter.numel() for parameter in disease_parameters) != 36865:
++                raise RuntimeError("PDAI disease branch must add exactly 36865 parameters")
++            self.optimizer_MF.add_param_group({"params": disease_parameters, "weight_decay": 0.0})
++        if self.pdai_adv:
++            # The discriminator has an isolated RNG stream so its initialization
++            # cannot change the original GFR/PLN/dropout trajectory.
++            with torch.random.fork_rng(devices=[torch.cuda.current_device()] if dev.type == "cuda" else []):
++                torch.manual_seed(910000 + int(hyperpm.seed))
++                self.ModalityDiscriminator = ModalityDiscriminator().to(dev)
++                self.ModalityDiscriminator.apply(my_weight_init)
++            self.optimizer_D = optim.Adam(self.ModalityDiscriminator.parameters(), lr=hyperpm.lr, weight_decay=0.0)
++        
++        from sp20_runtime import install_branch
++        install_branch(self)
++
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+         if mode == 'pre-train':
+@@ -136,16 +186,48 @@
+                 all_graph_loss = all_graph_loss + graph_loss
+             all_graph_loss = all_graph_loss/4
+             
+-            prob,_,_ = self.ModalFusion(feat)
++            if self.optimizer_D is not None:
++                self.optimizer_D.zero_grad()
++            prob,_,_ = self.ModalFusion(feat, self._e20_raw)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+-            
+             loss = cls_loss + all_graph_loss
+-            
++            if self.pdai_disease:
++                train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
++                disease_loss = F.cross_entropy(self.ModalFusion.last_disease_logits[train_idx], self.targ[train_idx], weight=self.weight)
++                loss = loss + 0.1 * disease_loss
++                self._pdai_last_disease_loss = float(disease_loss.detach().item())
++            else:
++                self._pdai_last_disease_loss = float('nan')
++            if self.pdai_adv:
++                train_idx = torch.as_tensor(self.trn_idx, dtype=torch.long, device=self.targ.device)
++                target_modal = torch.arange(self.modal_num, device=self.targ.device).view(1, -1).expand(len(train_idx), -1).reshape(-1)
++                z = self.ModalFusion.last_modality_v.index_select(0, train_idx).reshape(-1, 36)
++                adv_logits = self.ModalityDiscriminator(GradientReverse.apply(z, 0.03))
++                adv_loss = F.cross_entropy(adv_logits, target_modal)
++                loss = loss + adv_loss
++                self._pdai_last_adv_loss = float(adv_loss.detach().item())
++            else:
++                self._pdai_last_adv_loss = float('nan')
+             loss.backward()
+-            
+-            self.optimizer_MP0.step()            
++            if self.pdai_adv:
++                grads = [p.grad for p in self.ModalityDiscriminator.parameters()]
++                self._pdai_disc_grad_valid = bool(all(g is not None and torch.isfinite(g).all().item() and (g.abs().sum() > 0).item() for g in grads))
++                wv_grads = [layer.weight.grad for layer in self.ModalFusion.InputLayer.w_vs]
++                self._pdai_wv_adv_grad_valid = bool(all(grad is not None and torch.isfinite(grad).all().item() and (grad.abs().sum() > 0).item() for grad in wv_grads))
++            else:
++                self._pdai_disc_grad_valid = False
++                self._pdai_wv_adv_grad_valid = False
++            if self.pdai_disease:
++                for key, parameter in (("projector", self.ModalFusion.disease_projector.weight), ("alpha", self.ModalFusion.disease_alpha)):
++                    grad = parameter.grad
++                    valid = grad is not None and bool(torch.isfinite(grad).all().item()) and bool((grad.abs().sum() > 0).item())
++                    if key == "projector": self.ModalFusion.pdai_disease_grad_valid |= valid
++                    else: self.ModalFusion.pdai_alpha_grad_valid |= valid
++            self.optimizer_MP0.step()
+             self.optimizer_MF.step()
++            if self.optimizer_D is not None:
++                self.optimizer_D.step()
+             
+             print('trn-loss-MF: %.4f ' % cls_loss, end=' ')
+             print('trn-loss-MF: %.4f trn-loss-MF: %.4f' % (cls_loss, ALoss), end=' ')
+@@ -279,10 +361,10 @@
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
+         if mode == 'pre-train':
+-            prob, _, attn = self.ModalFusion(feat)
++            prob, _, attn = self.ModalFusion(feat, self._e20_raw)
+             
+         else:
+-            prob, fusion_feat, attn = self.ModalFusion(feat)
++            prob, fusion_feat, attn = self.ModalFusion(feat, self._e20_raw)
+             
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+@@ -302,6 +384,26 @@
+             
+         return acc, auc, targ, pred
+     
++    def _pdai_json_row(self, path, row):
++        if not path:
++            return
++        with open(path, "a", encoding="utf-8") as stream:
++            json.dump(row, stream, ensure_ascii=False); stream.write("\n")
++
++    def _pdai_cos(self, a, b):
++        return F.cosine_similarity(a, b, dim=-1)
++
++    def _pdai_mmd(self, a, b):
++        a = a[:256]; b = b[:256]
++        x = torch.cat([a, b], dim=0)
++        d = torch.cdist(x, x).pow(2)
++        positive = d[d > 0]
++        sigma = torch.sqrt(torch.median(positive).clamp_min(1e-6)) if positive.numel() else torch.tensor(1., device=x.device)
++        k = torch.exp(-d / (2 * sigma.pow(2) + 1e-8))
++        na, nb = a.size(0), b.size(0)
++        return float(k[:na, :na].mean().item() + k[na:, na:].mean().item() - 2 * k[:na, na:].mean().item())
++
++
+     def cal_acc(self, eval_idx):
+         breakpoint()
+         self.ModalFusion.eval()
+--- a/network.py
++++ b/network.py
+@@ -1,4 +1,5 @@
+ import argparse
++import json
+ import os
+ import pickle
+ import random
+@@ -27,17 +28,52 @@
+                 ]
+ 
+ text = clip.tokenize(attr_words).to(device)
+-_prompt_text_features = None
++_prompt_text_features = {}
++_pdai_disease_features = None
++
++
++def _pdai_prompt_sentences():
++    mode = os.environ.get("PDAI_PROMPT", "P0")
++    if mode == "P0":
++        return attr_words
++    path = os.environ.get("PDAI_PROMPTS_FILE")
++    if not path:
++        raise RuntimeError("PDAI_PROMPTS_FILE is required for P1/P3")
++    data = json.load(open(path, encoding="utf-8"))
++    output = []
++    for modality in ("PHENO", "ANAT", "FUNC", "Correlation"):
++        for theme in data[mode.lower()][modality]["themes"]:
++            output.extend(item["text"] for item in theme["prompts"])
++    return output
+ 
+ 
+ def get_prompt_text_features():
+-    """Encode the fixed semantic prompts once per process."""
+-    global _prompt_text_features
+-    if _prompt_text_features is None:
++    mode = os.environ.get("PDAI_PROMPT", "P0")
++    if mode not in _prompt_text_features:
++        sentences = _pdai_prompt_sentences()
++        tokens = clip.tokenize(sentences).to(device)
+         clip_model, _ = clip.load('RN50', device)
+         with torch.no_grad():
+-            _prompt_text_features = clip_model.encode_text(text).float().detach()
+-    return _prompt_text_features
++            _prompt_text_features[mode] = clip_model.encode_text(tokens).float().detach()
++    return _prompt_text_features[mode]
++
++
++def get_pdai_disease_prototypes():
++    global _pdai_disease_features
++    if _pdai_disease_features is None:
++        path = os.environ.get("PDAI_PROMPTS_FILE")
++        if not path:
++            raise RuntimeError("PDAI_PROMPTS_FILE is required for disease prototypes")
++        data = json.load(open(path, encoding="utf-8"))
++        sentences = []
++        for key in ("ASD", "TD"):
++            sentences.extend(data["disease_prompts"][key]["prompts"])
++        tokens = clip.tokenize(sentences).to(device)
++        clip_model, _ = clip.load('RN50', device)
++        with torch.no_grad():
++            enc = F.normalize(clip_model.encode_text(tokens).float(), dim=-1)
++            _pdai_disease_features = F.normalize(enc.view(2, 4, -1).mean(dim=1), dim=-1).detach()
++    return _pdai_disease_features
+ 
+ class MLP(nn.Module):
+     def __init__(self, input_dim, hidden_dim, output_dim):
+@@ -89,12 +125,16 @@
+         # throughout optimisation; compute them once to avoid repeating this
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+-        
+-    def forward(self, x):
++        self.pdai_prompt = os.environ.get('PDAI_PROMPT', 'P0')
++        self.pdai_disease_enabled = False
++        self.pdai_counterfactual = None
++        
++    def forward(self, x, raw_modalities=None):
+         bs = x.size(0)
+         attn_map = []
+         combine_part = []
+         x, _attn = self.InputLayer(x)
++        self.last_modality_v = self.InputLayer.last_v
+         attn = _attn.mean(dim=1)
+         attn_map.append(attn.detach().cpu().numpy())
+         for i in range(self.n_layer):
+@@ -102,34 +142,35 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
++        if hasattr(self, 'concept_evidence20'):
++            x = self.concept_evidence20(x, raw_modalities)
+         text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
+-        
+-        
+-        part_x = x.view(871, 4, 4, 9)
+-        part_x_norm = F.normalize(part_x, p=2, dim=-1)
+-        text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
+-        similarity_matrix = similarity_matrix[:,:,:,-1,:]
+-
+-        # 进行数值截断以避免数值问题
+-        similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+-
+-        # 计算 softmax
+-        similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+-
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        if text_features.size(0) == 8:
++            # Original P0 path, kept byte-for-byte in its mathematical operations.
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++            part_x = x.view(bs, 4, 4, 9)
++            part_x_norm = F.normalize(part_x, p=2, dim=-1)
++            text_features_norm = F.normalize(text_features, p=2, dim=-1)
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))
++            similarity_matrix = similarity_matrix[:,:,:,-1,:]
++            similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
++            similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
++            similarity_max, _ = torch.max(similarity_matrix, dim=-1)
++            part_x = similarity_max.unsqueeze(-1) * part_x
++        else:
++            grouped = text_features.view(4, 2, 4, 1024)
++            text_features = self.MLP(grouped.reshape(4, 2, 4096))
++            part_x = x.view(bs, 4, 4, 9)
++            part_x_norm = F.normalize(part_x, p=2, dim=-1)
++            text_features_norm = F.normalize(text_features, p=2, dim=-1)
++            similarity_matrix = torch.einsum('nmtf,mcf->nmtc', part_x_norm, text_features_norm)
++            similarity_matrix = torch.softmax(similarity_matrix.clamp(min=-5, max=5), dim=-1).to(device)
++            similarity_max = similarity_matrix.max(dim=-1).values
++            part_x = similarity_max.unsqueeze(-1) * part_x
++
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
+@@ -138,7 +179,7 @@
+         m = part_x.shape[2]
+ 
+         # 重新调整张量形状为 (871, 4, 9)
+-        global_x = global_x.view(871, 4, 9)
++        global_x = global_x.view(bs, 4, 9)
+         for i in range(m):
+             part = part_x[:,:,i,:]
+             Vsim = F.softmax(part*global_x, dim=-1) 
+@@ -148,6 +189,24 @@
+         x = x.view(bs, -1)
+         attn_embedding = attn.view(bs, -1) 
+         output, hidden = self.Outputlayer(x, attn_embedding)
++        self.last_base_logprob = output
++        self.last_disease_logits = torch.zeros(bs, 2, device=output.device, dtype=output.dtype)
++        self.last_subject_projection = torch.zeros(bs, 1024, device=output.device, dtype=output.dtype)
++        self.last_subject_semantic = torch.zeros(bs, 1024, device=output.device, dtype=output.dtype)
++        self.last_disease_gamma = 0.0
++        self.last_disease_prelogits = output
++        if getattr(self, 'pdai_disease_enabled', False):
++            projection = self.disease_projector(hidden)
++            semantic = F.normalize(projection, dim=-1)
++            prototypes = F.normalize(self.disease_prototypes, dim=-1)
++            disease_logits = semantic @ prototypes.t() / 0.2
++            gamma = 0.2 * torch.tanh(self.disease_alpha)
++            output = F.log_softmax(output + gamma * disease_logits, dim=1)
++            self.last_subject_projection = projection
++            self.last_subject_semantic = semantic
++            self.last_disease_logits = disease_logits
++            self.last_disease_gamma = float(gamma.detach().item())
++            self.last_disease_prelogits = self.last_base_logprob + gamma * disease_logits
+         return output, hidden, attn_map
+   
+ class GraphLearn(nn.Module):
+--- a/layers.py
++++ b/layers.py
+@@ -102,6 +102,7 @@
+         self.fc = nn.Linear(n_head * d_v, n_head * d_v)
+         self.dropout = nn.Dropout(dropout)
+         self.layer_norm = nn.LayerNorm(n_head * d_v, eps=1e-6)
++        self.last_v = None
+     
+     def forward(self, input_data, mask=None):
+         """
+@@ -131,6 +132,7 @@
+         k = k.view(bs, modal_num, self.n_head, self.d_k)
+         v = v.view(bs, modal_num, self.n_head, self.d_v)
+         q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2)
++        self.last_v = v.transpose(1, 2).contiguous().view(bs, modal_num, -1)
+         
+         q, attn, residual = self.attention(q, k, v)
+         q = q.transpose(1, 2).contiguous().view(bs, modal_num, -1)
