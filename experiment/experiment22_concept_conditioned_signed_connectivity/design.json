@@ -1,0 +1,603 @@
+{
+  "configurations": {
+    "M00": {
+      "base": "P0",
+      "condition": "REAL",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + disease-concept signed local"
+    },
+    "M01": {
+      "base": "P0",
+      "condition": "NUMERIC",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + numerical signed local"
+    },
+    "M02": {
+      "base": "P0",
+      "condition": "NEUTRAL",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + neutral signed local"
+    },
+    "M03": {
+      "base": "P0",
+      "condition": "WRONG_ANATOMY",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + wrong-ROI signed local"
+    },
+    "M04": {
+      "base": "P0",
+      "condition": "ISOMETRIC",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + isometric random signed local"
+    },
+    "M05": {
+      "base": "P0",
+      "condition": "REAL",
+      "graph": false,
+      "variant": "UNSIGNED",
+      "complement": false,
+      "explanation": "P0 + real text; omit FC direction"
+    },
+    "M06": {
+      "base": "P0",
+      "condition": "REAL",
+      "graph": false,
+      "variant": "SHARED",
+      "complement": false,
+      "explanation": "P0 + real text; one shared domain adaptation"
+    },
+    "M07": {
+      "base": "P0",
+      "condition": "REAL",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + true prior + signed evidence + magnitude-preserving graph"
+    },
+    "M08": {
+      "base": "P0",
+      "condition": "NUMERIC",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + numerical signed graph, no semantic factor"
+    },
+    "M09": {
+      "base": "P0",
+      "condition": "NEUTRAL",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "P0 + neutral signed magnitude graph"
+    },
+    "M10": {
+      "base": "E9",
+      "condition": "REAL",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + true signed local"
+    },
+    "M11": {
+      "base": "E9",
+      "condition": "NUMERIC",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + numerical signed local"
+    },
+    "M12": {
+      "base": "E9",
+      "condition": "NEUTRAL",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + neutral signed local"
+    },
+    "M13": {
+      "base": "E9",
+      "condition": "REAL",
+      "graph": false,
+      "variant": "SIGNED",
+      "complement": true,
+      "explanation": "E9 + true signed local with orthogonal CORR residual"
+    },
+    "M14": {
+      "base": "E9",
+      "condition": "REAL",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + true signed magnitude graph"
+    },
+    "M15": {
+      "base": "E9",
+      "condition": "NUMERIC",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + numerical signed graph"
+    },
+    "M16": {
+      "base": "E9",
+      "condition": "NEUTRAL",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": false,
+      "explanation": "E9 + neutral signed graph"
+    },
+    "M17": {
+      "base": "E9",
+      "condition": "REAL",
+      "graph": true,
+      "variant": "SIGNED",
+      "complement": true,
+      "explanation": "E9 + true signed graph with orthogonal CORR residual"
+    }
+  },
+  "tasks": [
+    {
+      "config": "M00",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M00",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M00",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M01",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M01",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M01",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M02",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M02",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M02",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M03",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M03",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M03",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M04",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M04",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M04",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M05",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M05",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M05",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M06",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M06",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M06",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M07",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M07",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M07",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M08",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M08",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M08",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M09",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M09",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M09",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M10",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M10",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M10",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M11",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M11",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M11",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M12",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M12",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M12",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M13",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M13",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M13",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M14",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M14",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M14",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M15",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M15",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M15",
+      "seed": 2,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M16",
+      "seed": 0,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M16",
+      "seed": 1,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M16",
+      "seed": 2,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M17",
+      "seed": 0,
+      "physical_gpu": 1
+    },
+    {
+      "config": "M17",
+      "seed": 1,
+      "physical_gpu": 0
+    },
+    {
+      "config": "M17",
+      "seed": 2,
+      "physical_gpu": 1
+    }
+  ],
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "pairs": [
+    [
+      "M00",
+      "M01"
+    ],
+    [
+      "M00",
+      "M02"
+    ],
+    [
+      "M00",
+      "M03"
+    ],
+    [
+      "M00",
+      "M04"
+    ],
+    [
+      "M00",
+      "M05"
+    ],
+    [
+      "M00",
+      "M06"
+    ],
+    [
+      "M00",
+      "P0"
+    ],
+    [
+      "M00",
+      "old_real_local"
+    ],
+    [
+      "M07",
+      "M08"
+    ],
+    [
+      "M07",
+      "M09"
+    ],
+    [
+      "M07",
+      "M00"
+    ],
+    [
+      "M07",
+      "old_real_graph"
+    ],
+    [
+      "M10",
+      "M11"
+    ],
+    [
+      "M10",
+      "M12"
+    ],
+    [
+      "M10",
+      "E9"
+    ],
+    [
+      "M10",
+      "old_e9_local"
+    ],
+    [
+      "M13",
+      "M10"
+    ],
+    [
+      "M13",
+      "E9"
+    ],
+    [
+      "M14",
+      "M15"
+    ],
+    [
+      "M14",
+      "M16"
+    ],
+    [
+      "M14",
+      "E9"
+    ],
+    [
+      "M14",
+      "old_e9_graph"
+    ],
+    [
+      "M17",
+      "M14"
+    ],
+    [
+      "M17",
+      "E9"
+    ]
+  ],
+  "CF_GROUPS": [
+    "M00",
+    "M07",
+    "M10",
+    "M14",
+    "M13",
+    "M17"
+  ],
+  "CF_ACTIONS": [
+    "REAL",
+    "NEUTRAL",
+    "ISOMETRIC",
+    "WRONG_ANATOMY",
+    "NUMERIC_ONLY",
+    "ADAPT_OFF",
+    "SIGN_OFF",
+    "SHARED_DOMAIN",
+    "GRAPH_SEMANTIC_OFF",
+    "GRAPH_STRENGTH_OFF",
+    "GRAPH_OFF",
+    "BRANCH_OFF",
+    "FC_BRANCH_SHUFFLED"
+  ],
+  "historical_references": {
+    "P0": "U00",
+    "E9": "U01",
+    "old_real_local": "U06",
+    "old_real_graph": "U11",
+    "old_e9_local": "U14",
+    "old_e9_graph": "U16"
+  },
+  "hyperparameters": {
+    "KL": 0.002,
+    "prior_tau": 0.8,
+    "contrast_tau": 0.4,
+    "eta_upper": 0.35,
+    "eta_initial": 0.1,
+    "graph_cos_coef": 0.4,
+    "graph_strength_coef": 0.45,
+    "residual_limit": 0.1
+  },
+  "expected_counts": {
+    "configs": 18,
+    "tasks": 54,
+    "folds": 540,
+    "diagnostics": 540,
+    "cf": 2340,
+    "cf_na": 270,
+    "historical": 180
+  },
+  "clinical_alignment": "CLINICAL_ALIGNMENT_NOT_ESTABLISHED; verified identities 0/871; training-supervised weak disease association",
+  "success_criterion": "all 3 seed deltas ACC/BA/prob-AUC positive vs strong baseline AND numeric+neutral controls; anatomy control for medical claim; same-checkpoint sensitivity required, no significance claim",
+  "stop_criterion": "integrity/parity/cache/determinism violation; no test-performance-driven editing or prescreen",
+  "input_prompt_paths": [
+    "/data/adodas/SPromptGL-main/experiment/experiment9_prompt_disease_adversarial_interaction/prompts.json",
+    "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/prompts.json"
+  ],
+  "graph_type": "verified FC connection-as-node line graph",
+  "frozen_before_training": true
+}

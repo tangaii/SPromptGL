@@ -1,0 +1,33 @@
+
+ATTEMPT_START 2026-10-16T15:29:23.035549+00:00
+WORKER M07_seed1 physical_gpu=0 logical=cuda:0 signature=a4363619698b6ede24c9a72747e53a29d0406bcd03a01305f9ead20c01383591
+/tmp/spromptgl22-state-0ef7761f8b29/tasks/M07_seed1/sources/model.py:235: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at ../torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  print('trn-loss-MF: %.4f ' % cls_loss, end=' ')
+EPOCH fold=1 epoch=24 best_acc=0.590909090909 wait=2
+EPOCH fold=1 epoch=49 best_acc=0.727272727273 wait=10
+EPOCH fold=1 epoch=74 best_acc=0.863636363636 wait=4
+EPOCH fold=1 epoch=99 best_acc=0.909090909091 wait=2
+EPOCH fold=1 epoch=124 best_acc=0.954545454545 wait=8
+EPOCH fold=1 epoch=149 best_acc=0.954545454545 wait=33
+EPOCH fold=1 epoch=174 best_acc=0.954545454545 wait=58
+EPOCH fold=1 epoch=199 best_acc=0.954545454545 wait=83
+EPOCH fold=1 epoch=224 best_acc=0.954545454545 wait=108
+EPOCH fold=1 epoch=249 best_acc=0.954545454545 wait=133
+EPOCH fold=1 epoch=274 best_acc=0.954545454545 wait=158
+EPOCH fold=1 epoch=299 best_acc=0.954545454545 wait=183
+EPOCH fold=1 epoch=317 best_acc=0.954545454545 wait=201
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1292, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1277, in main
+    i=sys.argv.index('--worker');worker(sys.argv[i+1],int(sys.argv[i+2]));return
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 405, in worker
+    diagnostic=diagnostics(a,config,seed,fold,out,tracker);diagnostic['task_signature']=sig
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 824, in diagnostics
+    strength_histogram=json.dumps(torch.histc(strength[te].float(),bins=10,min=0,max=.2).cpu().tolist()),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: _histc_cuda with floating point input does not have a deterministic implementation, but you set 'torch.use_deterministic_algorithms(True)'. You can turn off determinism just for this operation, or you can use the 'warn_only=True' option, if that's acceptable for your application. You can also file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation.
