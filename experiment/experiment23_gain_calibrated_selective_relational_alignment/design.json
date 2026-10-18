@@ -1,0 +1,272 @@
+{
+  "name": "GC-SRA",
+  "configs": {
+    "G0": {
+      "name": "Original P0",
+      "gate": "off",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G1": {
+      "name": "Uniform relation",
+      "gate": "uniform",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G2": {
+      "name": "Mean-matched relation",
+      "gate": "constant",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G3": {
+      "name": "Confidence-gated relation",
+      "gate": "confidence",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G4": {
+      "name": "Gain-gated relation",
+      "gate": "gain",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G5": {
+      "name": "Shuffled gain relation",
+      "gate": "shuffled",
+      "operator": "relation",
+      "pheno_shuffled": false
+    },
+    "G6": {
+      "name": "Gain-gated feature control",
+      "gate": "gain",
+      "operator": "feature",
+      "pheno_shuffled": false
+    },
+    "G7": {
+      "name": "Gain relation with shuffled PHENO adjacency",
+      "gate": "gain",
+      "operator": "relation",
+      "pheno_shuffled": true
+    }
+  },
+  "tasks": [
+    [
+      "G0",
+      0,
+      0
+    ],
+    [
+      "G0",
+      1,
+      1
+    ],
+    [
+      "G0",
+      2,
+      0
+    ],
+    [
+      "G1",
+      0,
+      1
+    ],
+    [
+      "G1",
+      1,
+      0
+    ],
+    [
+      "G1",
+      2,
+      1
+    ],
+    [
+      "G2",
+      0,
+      0
+    ],
+    [
+      "G2",
+      1,
+      1
+    ],
+    [
+      "G2",
+      2,
+      0
+    ],
+    [
+      "G3",
+      0,
+      1
+    ],
+    [
+      "G3",
+      1,
+      0
+    ],
+    [
+      "G3",
+      2,
+      1
+    ],
+    [
+      "G4",
+      0,
+      0
+    ],
+    [
+      "G4",
+      1,
+      1
+    ],
+    [
+      "G4",
+      2,
+      0
+    ],
+    [
+      "G5",
+      0,
+      1
+    ],
+    [
+      "G5",
+      1,
+      0
+    ],
+    [
+      "G5",
+      2,
+      1
+    ],
+    [
+      "G6",
+      0,
+      0
+    ],
+    [
+      "G6",
+      1,
+      1
+    ],
+    [
+      "G6",
+      2,
+      0
+    ],
+    [
+      "G7",
+      0,
+      1
+    ],
+    [
+      "G7",
+      1,
+      0
+    ],
+    [
+      "G7",
+      2,
+      1
+    ]
+  ],
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "contrasts": [
+    [
+      "G4",
+      "G0"
+    ],
+    [
+      "G4",
+      "G1"
+    ],
+    [
+      "G4",
+      "G2"
+    ],
+    [
+      "G4",
+      "G3"
+    ],
+    [
+      "G4",
+      "G5"
+    ],
+    [
+      "G4",
+      "G6"
+    ],
+    [
+      "G4",
+      "G7"
+    ]
+  ],
+  "metrics": [
+    "acc",
+    "ba",
+    "hard_auc",
+    "probability_auc",
+    "sensitivity_asd",
+    "specificity_td",
+    "f1_asd"
+  ],
+  "counterfactuals": [
+    "REAL",
+    "GATE_OFF",
+    "GATE_CONSTANT",
+    "RELATION_OFF"
+  ],
+  "top_k": 12,
+  "temperature": 0.3,
+  "residual_limit": 0.1,
+  "reference_effective_bound": 0.05,
+  "additional_parameters": {
+    "G0": 0,
+    "G1": 30081,
+    "G2": 30081,
+    "G3": 30081,
+    "G4": 30081,
+    "G5": 30081,
+    "G6": 30081,
+    "G7": 30081
+  },
+  "scientific_rule": "All seven BA and ProbAUC seed differences strictly positive; all ACC and ASD SEN seed differences nonnegative. Conservative operationalization frozen before training; full continuous effects reported.",
+  "historical_e9_descriptive_only": true,
+  "root": "/data/adodas/SPromptGL-main",
+  "experiment": "/tmp/experiment23_gain_calibrated_selective_relational_alignment",
+  "reference_patches": [],
+  "algorithm_modifications": [],
+  "prior_work": [
+    "SPromptGL 2025",
+    "MGDR 2024",
+    "To Align or Not to Align AAAI 2026",
+    "PhenoBrain ICML 2026"
+  ]
+}
