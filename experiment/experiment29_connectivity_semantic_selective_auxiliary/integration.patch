@@ -1,0 +1,126 @@
+--- a/model.py
++++ b/model.py
+@@ -18,6 +18,7 @@
+ from sklearn.metrics import confusion_matrix
+ 
+ from network import *
++import integration
+ from utils import *
+ 
+ 
+@@ -77,6 +78,7 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        integration.install(self)
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -136,11 +138,13 @@
+                 all_graph_loss = all_graph_loss + graph_loss
+             all_graph_loss = all_graph_loss/4
+             
+-            prob,_,_ = self.ModalFusion(feat)
++            prob,_,_ = self.ModalFusion(feat, raw_input=self.feat)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+             
+             loss = cls_loss + all_graph_loss
++            if hasattr(self.ModalFusion, 'semantic29'):
++                loss = loss + self.ModalFusion.semantic29.extra_loss(self.targ)
+             
+             loss.backward()
+             
+@@ -279,10 +283,10 @@
+         feat ,_,_= self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)
+         
+         if mode == 'pre-train':
+-            prob, _, attn = self.ModalFusion(feat)
++            prob, _, attn = self.ModalFusion(feat, raw_input=self.feat)
+             
+         else:
+-            prob, fusion_feat, attn = self.ModalFusion(feat)
++            prob, fusion_feat, attn = self.ModalFusion(feat, raw_input=self.feat)
+             
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+--- a/network.py
++++ b/network.py
+@@ -90,7 +90,7 @@
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+         
+-    def forward(self, x):
++    def forward(self, x, raw_input=None):
+         bs = x.size(0)
+         attn_map = []
+         combine_part = []
+@@ -102,34 +102,40 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
+-        text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
+-        
+-        
+-        part_x = x.view(871, 4, 4, 9)
+-        part_x_norm = F.normalize(part_x, p=2, dim=-1)
+-        text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
+-        similarity_matrix = similarity_matrix[:,:,:,-1,:]
+-
+-        # 进行数值截断以避免数值问题
+-        similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+-
+-        # 计算 softmax
+-        similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+-
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
++        if getattr(self, 'e29_config', 'P0') == 'P0':
++            text_features = self.prompt_text_features
++            text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
++            text_features = self.MLP(text_features)
++        
++        
++            part_x = x.view(871, 4, 4, 9)
++            part_x_norm = F.normalize(part_x, p=2, dim=-1)
++            text_features_norm = F.normalize(text_features, p=2, dim=-1)
++
++            # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
++            text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
++            part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
++
++            # 计算余弦相似度矩阵
++            similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
++            similarity_matrix = similarity_matrix[:,:,:,-1,:]
++
++            # 进行数值截断以避免数值问题
++            similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
++
++            # 计算 softmax
++            similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
++
++            # 获取 similarity_matrix 的最大值
++            similarity_max, _ = torch.max(similarity_matrix, dim=-1)
++
++            # 进行最终的计算
++            part_x = similarity_max.unsqueeze(-1) * part_x
++        else:
++            if hasattr(self, 'semantic29'):
++                assert raw_input is not None
++                x = self.semantic29(x, raw_input)
++            part_x = x.view(871, 4, 4, 9)
+         # 对最后一个维度进行平均池化
+         
+         # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
