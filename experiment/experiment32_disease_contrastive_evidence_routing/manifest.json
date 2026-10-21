@@ -1,0 +1,640 @@
+{
+  "experiment": "Experiment 32 DCER — Disease-Contrastive Evidence Routing",
+  "status": "COMPLETE",
+  "prepared_utc": "2026-10-21T09:52:18.762307+00:00",
+  "source_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "protected_files_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "input_sha256": {
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "code_sha256": {
+    "method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+    "integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+    "run.py": "0979a8435cd796116f083d86999bb6743185290e2d4037d40691e30cd14b2139",
+    "integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68"
+  },
+  "configs": [
+    "B0",
+    "B1",
+    "B2",
+    "D0",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6",
+    "D7",
+    "D8"
+  ],
+  "config_definitions": {
+    "B0": "GFR + CAM + unchanged OutputLayer; PEN removed",
+    "B1": "GFR + CAM + original RES; SPGS removed",
+    "B2": "Original GFR + full unmodified SPGS+RES PEN + original OutputLayer",
+    "D0": "Numeric two-slot+NULL, no text, four-token routing",
+    "D1": "Text max-like unsigned routing; no signed direction CE",
+    "D2": "All sixteen latent tokens densely fused",
+    "D3": "Signed text+NULL+top4 routing, no keep/drop constraints",
+    "D4": "Primary signed text+NULL+top4 with sufficiency and necessity losses",
+    "D5": "D4 architecture with frozen cross-class prompt identity permutation",
+    "D6": "D4 architecture with matched-marginal nonmedical numeric bank",
+    "D7": "D4 architecture without the NULL option",
+    "D8": "D4 architecture with deterministic random four-token routing"
+  },
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "n_subjects": 871,
+  "label_counts": {
+    "ASD_0": 403,
+    "TD_1": 468
+  },
+  "fold_protocol": "seed=0 once per config; StratifiedKFold(n_splits=10,shuffle=True,random_state=10); val_idx=test_idx; full 871-subject transductive GFR; 450 epoch cap; early=200",
+  "metrics": [
+    "ACC",
+    "one-hot hard-label ROC-AUC",
+    "SEN-ASD",
+    "SPE-TD"
+  ],
+  "metrics_summary": "mean +/- population SD over ten folds; percentages in report",
+  "target_configs": 12,
+  "target_folds": 120,
+  "gpu_fold_targets": {
+    "0": 60,
+    "1": 60
+  },
+  "gpu_assignment": {
+    "B0": 0,
+    "B2": 0,
+    "D1": 0,
+    "D3": 0,
+    "D5": 0,
+    "D7": 0,
+    "B1": 1,
+    "D0": 1,
+    "D2": 1,
+    "D4": 1,
+    "D6": 1,
+    "D8": 1
+  },
+  "workers_per_gpu": 4,
+  "tasks": [
+    {
+      "config": "B0",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 812.2780403755605,
+      "pln_trainable_parameters": 575121
+    },
+    {
+      "config": "B1",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 849.4747354276478,
+      "pln_trainable_parameters": 575121
+    },
+    {
+      "config": "B2",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 939.9353707619011,
+      "pln_trainable_parameters": 575121
+    },
+    {
+      "config": "D0",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 932.51983134076,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D1",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 857.9771624282002,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D2",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 924.9839608520269,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D3",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 945.3599830567837,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D4",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 973.1985229104757,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D5",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 683.6952441558242,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D6",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 627.4983810782433,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D7",
+      "seed": 0,
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 631.2345854789019,
+      "pln_trainable_parameters": 610314
+    },
+    {
+      "config": "D8",
+      "seed": 0,
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 604.2721133381128,
+      "pln_trainable_parameters": 610314
+    }
+  ],
+  "completed_folds": 120,
+  "completed_tasks": 12,
+  "gpu_completed_folds": {
+    "0": 60,
+    "1": 60
+  },
+  "formal_started_utc": "2026-10-21T09:53:13.894934+00:00",
+  "formal_seconds": 1439.782454378903,
+  "failures": [
+    {
+      "stage": "preflight",
+      "time": "2026-10-21T09:45:16.036544+00:00",
+      "tail": "Traceback (most recent call last):\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1278, in <module>\n    main()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1265, in main\n    preflight()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 630, in preflight\n    preflight_child()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 562, in preflight_child\n    checks[\"method\"] = synthetic_method_checks()\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 544, in synthetic_method_checks\n    nonmedical = DCER32(text, \"D6\", 3).cuda()\n                 ^^^^^^^^^^^^^^^^^^^^^\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/method.py\", line 42, in __init__\n    self.register_buffer(\"nonmedical_bank\", noise * std + mean)\n                                            ~~~~~~^~~~~\nRuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!\n"
+    },
+    {
+      "stage": "preflight",
+      "time": "2026-10-21T09:47:00.558704+00:00",
+      "tail": "Traceback (most recent call last):\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1278, in <module>\n    main()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1265, in main\n    preflight()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 630, in preflight\n    preflight_child()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 569, in preflight_child\n    controls = control_hashes(branch)\n               ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 414, in control_hashes\n    result[\"D5\"] = tensors_sha(branch.text_bank, branch.mixed_order)\n                                                 ^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1964, in __getattr__\n    raise AttributeError(\nAttributeError: 'DCER32' object has no attribute 'mixed_order'\n"
+    },
+    {
+      "time": "2026-10-21T09:55:01.593828+00:00",
+      "stage": "schedule",
+      "error": {
+        "config": "B0",
+        "returncode": 1,
+        "tail": "TASK_START B0_seed0 GPU 0 resumed False\nTraceback (most recent call last):\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1343, in <module>\n    main()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1337, in main\n    worker(args.config)\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 983, in worker\n    assert abs(metrics[\"acc\"] - best_acc) <= 1e-12\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+      }
+    },
+    {
+      "time": "2026-10-21T09:59:28.464478+00:00",
+      "stage": "schedule",
+      "error": {
+        "config": "B0",
+        "returncode": 1,
+        "tail": "TASK_START B0_seed0 GPU 0 resumed False\nTraceback (most recent call last):\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1343, in <module>\n    main()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1337, in main\n    worker(args.config)\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 983, in worker\n    assert abs(metrics[\"acc\"] - best_acc) <= 1e-12\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\nTASK_START B0_seed0 GPU 0 resumed True\nTraceback (most recent call last):\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1350, in <module>\n    main()\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 1344, in main\n    worker(args.config)\n  File \"/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/run.py\", line 990, in worker\n    assert abs(metrics[\"acc\"] - best_acc) <= 1e-12\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+      }
+    },
+    {
+      "time": "2026-10-21T10:02:16.556765+00:00",
+      "error": "AssertionError()"
+    },
+    {
+      "time": "2026-10-21T10:30:58.537780+00:00",
+      "error": "AssertionError()"
+    }
+  ],
+  "handoff_prefix": {
+    "size": 287809,
+    "sha256": "622801921cb0d0ea942e2381a50ca73dd245608fd6cb4b2d1b8e60143f2fe26b"
+  },
+  "handoff_appended": true,
+  "preflight": {
+    "passed": true,
+    "completed_utc": "2026-10-21T09:52:34.000857+00:00",
+    "checks": {
+      "folds": 10,
+      "subjects": 871,
+      "classes": {
+        "ASD": 403,
+        "TD": 468
+      },
+      "source_parity": {
+        "B2": "BITWISE_EXACT",
+        "B0": "DIRECT_CAM_FLATTEN_EXACT",
+        "B1": "ORIGINAL_RES_EXACT",
+        "initial_trunk_sha256": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6",
+        "cross_config_initialization_sha256": {
+          "B0": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6",
+          "B1": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6",
+          "B2": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6",
+          "D4": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6"
+        }
+      },
+      "method": {
+        "D2_selected_count": 16,
+        "D8_selected_count": 4,
+        "D4_hard_route_1_to_4_and_zero_residual": true,
+        "text_swap_single_key_change_and_key_removal_change_output": true,
+        "keep_drop_views_have_no_unselected_token_bypass": true,
+        "D5_cross_class_mixing_and_D6_independent_numeric_bank": true
+      },
+      "frozen_RN50_8x1024_prompt_sha256": "7b6571d5e55a36fa5f11fa88827fb52c2cca1e7b651af90afce4f0c913f0d939",
+      "D4_D5_D6_D7_D8_frozen_control_sha256": {
+        "D4": "7b6571d5e55a36fa5f11fa88827fb52c2cca1e7b651af90afce4f0c913f0d939",
+        "D5": "859fa673b6df5a81e926ef1f73d598f95902602068f72f8204fa81acaed5d86e",
+        "D6": "6656960ff7142c14c7eef44c8a3d77342ef3333ed264487510c5848fbfe5e294",
+        "D7": "2ad57969168b7668a5967939986d79c0c6a335faaf8c2ddcf4d6844eeebe0c18",
+        "D8": "46c98fcdd408d2f950eca20bd0d972af00f2e658c7d490d87718d97e53b3a22b"
+      },
+      "two_optimizer_update_and_exact_restore": {
+        "gradients": {
+          "query": 0.030481353402137756,
+          "key": 0.14361988008022308,
+          "value": 0.006510984152555466,
+          "fuse": 0.2625992000102997
+        },
+        "exact": true
+      },
+      "formal_diagnostic_path_and_counterfactual_restore": {
+        "selected_count_mean": 4.0,
+        "wrong_text_output_delta": 0.0037123365327715874,
+        "selected_vs_random_deletion_advantage": -0.05314833577722311
+      },
+      "fold_boundary_next_initialization_rng": "EXACT",
+      "D8_random_step_buffer_checkpointed_and_eval_stable": 1,
+      "D7_NULL_DISABLED_and_shared_original_classifier": true
+    }
+  },
+  "scope_reviews": {
+    "paper": "Review requested for SPromptGL MICCAI 2025 sections 2.1/2.2/3.3, Fig. 1 and ABIDE Fig. 2; reported 91.73/92.08/92.30 are paper-reported values and remain distinct from all local runs.",
+    "history": "Experiments 28-31 reviewed read-only; previous failure modes include fixed numeric prompt substitutes, unchanged scores under wrong class wording, near-uniform Experiment 31 routing, masked-state self-copy/leakage, and contaminated diagnostic records.",
+    "adjacent_work": "MMGPL (MedIA 2024), BrainPrompt (MICCAI 2025), and ERASER (ACL 2020) establish prompt weighting and explanation completeness as prior art; DCER claims require predictive and evidence-faithfulness gains, not sparse attention alone.",
+    "prompt_caveat": "The eight original GPT-4 descriptions are mostly general brain structure/function statements, not validated ASD-specific pathology priors."
+  },
+  "prompt_sha256": "7b6571d5e55a36fa5f11fa88827fb52c2cca1e7b651af90afce4f0c913f0d939",
+  "control_bank_sha256": {
+    "D4": "7b6571d5e55a36fa5f11fa88827fb52c2cca1e7b651af90afce4f0c913f0d939",
+    "D5": "859fa673b6df5a81e926ef1f73d598f95902602068f72f8204fa81acaed5d86e",
+    "D6": "6656960ff7142c14c7eef44c8a3d77342ef3333ed264487510c5848fbfe5e294",
+    "D7": "2ad57969168b7668a5967939986d79c0c6a335faaf8c2ddcf4d6844eeebe0c18",
+    "D8": "46c98fcdd408d2f950eca20bd0d972af00f2e658c7d490d87718d97e53b3a22b"
+  },
+  "gpu_load_at_formal_start": [
+    {
+      "index": "0",
+      "name": "PPU-ZW810E",
+      "memory_used": "2 MiB",
+      "memory_total": "98304 MiB",
+      "utilization": "0 %"
+    },
+    {
+      "index": "1",
+      "name": "PPU-ZW810E",
+      "memory_used": "2 MiB",
+      "memory_total": "98304 MiB",
+      "utilization": "0 %"
+    }
+  ],
+  "refreshed_utc": "2026-10-21T10:33:49.748257+00:00",
+  "post_training_changes": [
+    {
+      "stage": "POST_START_ENGINEERING_PRECISION_REPAIR",
+      "time": "2026-10-21T09:58:03.329119+00:00",
+      "reason": "Validation ACC used a float32 mean, while the original EvalHelper and formal metrics use double/Python precision. The assertion differed by 4.33e-8 for the same 84/88 predictions. Validation now counts correct predictions as an integer and divides once; distinct accuracy counts differ by at least 1/n, so checkpoint ordering is unchanged.",
+      "changed_file": "run.py",
+      "before_run_sha256": "693fa6ba1db728f3890966e833c82eee596d2273e330a2153ed80255742378a6",
+      "after_run_sha256": "383b647046d653d746dc009c1fb67378807c6309bc3f8a7dc1059b028894e247",
+      "after_code_sha256": {
+        "method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+        "integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+        "run.py": "383b647046d653d746dc009c1fb67378807c6309bc3f8a7dc1059b028894e247",
+        "integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68"
+      },
+      "method_and_integration_hashes_unchanged": true,
+      "completed_formal_folds_before_repair": 0,
+      "preserved_checkpoints": [
+        "B0",
+        "B1",
+        "B2",
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "model_optimizer_rng_state_mutated": false,
+      "selection_order_changed": false
+    },
+    {
+      "stage": "POST_START_ENGINEERING_PRECISION_REPAIR",
+      "time": "2026-10-21T10:00:29.561494+00:00",
+      "reason": "Resume revealed the checkpointed best_acc retained the old float32 representation even though the restored predictions were identical. Final validation now verifies round(best_acc*n) equals the restored correct count, then records the exact correct_count/n ratio. This preserves the selected checkpoint and integer-count ranking.",
+      "changed_file": "run.py",
+      "before_run_sha256": "383b647046d653d746dc009c1fb67378807c6309bc3f8a7dc1059b028894e247",
+      "after_run_sha256": "7897c6633ce04accfd159af7ca854b99a41a9638e2e692dbbe9cc53cdf4dc6be",
+      "after_code_sha256": {
+        "method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+        "integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+        "run.py": "7897c6633ce04accfd159af7ca854b99a41a9638e2e692dbbe9cc53cdf4dc6be",
+        "integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68"
+      },
+      "method_and_integration_hashes_unchanged": true,
+      "completed_formal_folds_before_repair": 0,
+      "preserved_checkpoints": [
+        "B0",
+        "B1",
+        "B2",
+        "D0",
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "model_optimizer_rng_state_mutated": false,
+      "checkpoint_selection_changed": false
+    },
+    {
+      "stage": "POST_TRAINING_REPORT_ASSERTION_REPAIR",
+      "time": "2026-10-21T10:32:22.857635+00:00",
+      "reason": "The report incorrectly required twelve fold diagnostics; diagnostics are recorded per fold (120 total). Corrected the check to require 12 config groups and 120 metric/diagnostic rows. No training or result data changed.",
+      "changed_file": "run.py",
+      "before_code_sha256": {
+        "method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+        "integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+        "run.py": "7897c6633ce04accfd159af7ca854b99a41a9638e2e692dbbe9cc53cdf4dc6be",
+        "integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68"
+      },
+      "after_code_sha256": {
+        "method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+        "integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+        "run.py": "0979a8435cd796116f083d86999bb6743185290e2d4037d40691e30cd14b2139",
+        "integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68"
+      },
+      "formal_folds_before_repair": 120,
+      "training_state_mutated": false,
+      "fold_metrics_or_diagnostics_mutated": false
+    }
+  ],
+  "completed_utc": "2026-10-21T10:33:49.793371+00:00",
+  "result_sha256": {
+    "diagnostics.csv": "7f64aff01a37f26eda9c21e59dde5ac9d888b5186b02a674710d3e7d23fe9dcf",
+    "fold_metrics.csv": "0133bb2fd5810beeb777c54b923c8d9b6e9ae2211ed225116ca7db2e3609ffec",
+    "report.md": "d90d97a7b0f01f33dd84e42c64b0fec622eff74f6e12d97bce34188ea6d5df19"
+  },
+  "signature_migrations": [
+    {
+      "stage": "POST_TRAINING_REPORT_SIGNATURE_MIGRATION",
+      "time": "2026-10-21T10:33:36.086391+00:00",
+      "old_signature": "61e74b7e351b98ced1b9491ab44300d56971246c2ff8757971c24771c5c90d9b",
+      "new_signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+      "task_results": [
+        {
+          "config": "B0",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "B1",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "B2",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D0",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D1",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D2",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D3",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D4",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D5",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D6",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D7",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        },
+        {
+          "config": "D8",
+          "signature": "edfdb5b5dea18132c7d7cc0c6a5f89ee28ee37f3b1906d56cfd739be17c56597",
+          "folds": 10,
+          "payload_other_than_signature_unchanged": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "config": "B0",
+          "before_sha256": null,
+          "observed_sha256": "41659df27385f51a9ebcaf17190b64bac1a4033052f1003ca5d917076d57d137",
+          "already_migrated_by_interrupted_attempt": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "B1",
+          "before_sha256": "319f29107b7f6abe8319835e657614bd72f09bcecf4dfcda1c509c9799ef19dc",
+          "after_sha256": "f2c33709cfad3dee03a80cc111cc562bda77bad6a3b42bc413dd529d9d20737f",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "B2",
+          "before_sha256": "d9ba752757f60ff6766fe7f2740eab0fa5f56b1a46ad84d9e4f79a3045fa1fbb",
+          "after_sha256": "9d0776a92eb66be136f337b24e595c2f658b57f2c38eb1a82ea4f94ec065ab18",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D0",
+          "before_sha256": "b2c63a829cf3c17a3a861cc8177fe42706cede65544258ebf18e52185e80b5f4",
+          "after_sha256": "9a1cedcd4fb0be18980bccf9493322bffaabcf8a26359dda7a1170deba84b388",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D1",
+          "before_sha256": "4ff624c9e058caf10e7acbdef073759800e36072cb54931a44cbc44d9015ddd6",
+          "after_sha256": "1c4693d84580e8c16e288040d815a53295b035d60ceca0753cca0329eecebb77",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D2",
+          "before_sha256": "a41b99f0528e30f2f8e9376f069e5d538f049e06bc09a3091e104a4de9278272",
+          "after_sha256": "88f60e74b6eb62ebed9ce4660b25b32b2be488c1142ab1980c62504e54741806",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D3",
+          "before_sha256": "0738f0dfb7a1ce59390e02ed039b63fa5871a5c3e6bde2cbf457d2b9d416ea1a",
+          "after_sha256": "668be192ab1565a86c05370b21d8d0e9b191f1eb82d8c498c56601af9ebc7088",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D4",
+          "before_sha256": "ac2bab0479f6f10be8e7ed2b59d27e5ea335fa77b31b9e3d00b6b04dd9beefcb",
+          "after_sha256": "5d5f6463a23e7c4004e68f296035ca2b50b9c1a69cecf7b12503ce387c43d762",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D5",
+          "before_sha256": "abc71f8459210d61eb8e310ae951e27193d8da25eec2260b9b5a42b9897e0a41",
+          "after_sha256": "e5165325c2d9f9495153059b0d588b64acd17753b57ef3dcc0442a9de55521b1",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D6",
+          "before_sha256": "ea5ba873b9fc1b8f1af8aca9a6a4f9a9c5ac02a671d362bc1c46abc780ccb093",
+          "after_sha256": "99e9ca7c418d078f7d7189ec7a3d7fb743cf755312ea23d30ae59b434681d36f",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D7",
+          "before_sha256": "72ac939eae481bdc6c10ca12e0ceb923a98e57109937d0e4ebb4051ea8c8acfc",
+          "after_sha256": "2bc1acc10af80ff56d66cc1e683237187d1489c837e38e3bb07b91abf87f7da1",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        },
+        {
+          "config": "D8",
+          "before_sha256": "ffe066f804f5fe297673b685959f6e8113c9967838fff99533f2508f100fd49e",
+          "after_sha256": "31fdb9b73ae8e78914c41113ac4ec71a9719903fb5482ff9d090e2557b663b38",
+          "payload_other_than_signature_unchanged": true,
+          "phase": "BOUNDARY",
+          "fold": 11
+        }
+      ],
+      "model_optimizer_rng_fold_metrics_diagnostics_mutated": false,
+      "tensor_and_array_payloads_verified_elementwise": true
+    }
+  ],
+  "handoff_status": "APPENDED_PREFIX_VERIFIED",
+  "handoff_sha256": "5015a5993351dc96763b41970799be8c9004a96b6294eba6f071a6c515f27a48",
+  "scientific_conclusion": "NO-GO",
+  "formal_wall_seconds": 1439.782454378903
+}

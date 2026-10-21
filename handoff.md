@@ -1990,3 +1990,35 @@ GPU分配：GPU0完成 90/90折（Z0,C0,C2,C4,C6,F0,F2,F4,F6）；GPU1完成 90/
 科研判定：**NO-GO**。GO requires A5 to exceed frozen baseline and every prespecified semantic, patient-matching, auxiliary and masked control by >0.1 pp in ACC and Hard-AUC with at least 7/10 paired-fold wins; otherwise NO-GO. 正确文本、患者对应关系、质量门控和masked机制只有在预设配对差及机制诊断共同支持时才可归因；单seed且val=test的内部结果不能宣称无偏泛化或临床可用。
 
 完整交付：/data/adodas/SPromptGL-main/experiment/experiment31_subject_specific_connectomic_evidence；GPU0/GPU1折数和墙钟见manifest.json；根目录源码保护哈希、缓存哈希、工程预检与断点恢复记录均在manifest及runtime审计日志中。未执行Git commit/push。
+
+<!-- EXPERIMENT32_DCER_FINAL -->
+## 实验三十二：DCER 疾病对比证据路由
+
+更新时间：2026-10-21T10:33:50.083810+00:00；状态：COMPLETE；正式折数：120/120；GPU0=60、GPU1=60。正式墙钟：1439.78秒。
+
+科研问题：原 SPGS 对 ASD/TD 两类 Prompt 的最大概率无法表达反向证据，也没有 NULL 拒绝；RES 缺少证据充分性/必要性约束。DCER 在原 PEN 位置将 8 条冻结 RN50 文本分成 TD/ASD 两组，以差异分数和 NULL 路由竞争，跨 16 个潜在 CAM 子空间硬选至多 4 个，再以共享原 OutputLayer 评估完整、保留和删除视图。16 个 Token 是潜在表征子空间，不是解剖 ROI 或病灶；原 GPT-4 句子多数是一般脑结构/功能描述，不能当成可靠 ASD 病理先验。
+
+对照含义：B0 删除 PEN，B1 保留原 RES，B2 从头重训完整原 SPromptGL，D0-D8 分别检验无文本、无符号方向、稠密路由、无充分/必要约束、类别身份混排、随机数值文本、关闭 NULL、随机同预算路由。论文报告的 91.73/92.08/92.30 是独立论文值，不与本地训练结果混记。
+
+正式四指标均值±十折 population SD（百分比）见下表：
+
+|组|ACC|Hard-AUC|SEN-ASD|SPE-TD|
+|---|---:|---:|---:|---:|
+|B0|92.0742±2.6000|91.8546±2.5815|89.0793±3.7283|94.6300±4.0457|
+|B1|91.2696±3.1421|91.0897±3.0778|88.8354±3.7320|93.3441±4.9921|
+|B2|91.7294±2.9505|91.5625±2.9444|89.3415±3.6677|93.7835±3.6749|
+|D0|91.6144±3.1771|91.4803±3.0794|89.8293±3.4050|93.1314±5.3846|
+|D1|91.8430±3.0666|91.6707±3.0592|89.5671±4.0211|93.7743±4.2842|
+|D2|91.8430±2.6507|91.6544±2.6009|89.3171±3.1945|93.9917±4.2078|
+|D3|91.6157±2.6800|91.5191±2.6585|90.3232±2.8246|92.7151±3.4059|
+|D4|91.1546±3.0506|91.0362±2.9748|89.5793±3.8330|92.4931±5.2301|
+|D5|91.9579±3.0901|91.7590±3.1302|89.0915±4.3086|94.4265±3.2394|
+|D6|91.6157±2.6800|91.4352±2.6307|89.0915±3.8411|93.7789±4.5987|
+|D7|91.6144±3.0498|91.4671±3.0174|89.5854±3.6383|93.3488±4.2787|
+|D8|91.7294±2.8130|91.5776±2.7545|89.8110±3.8125|93.3441±4.9006|
+
+D4 相对 B0/B1/B2 与 D0-D8 的逐折配对差见 `/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/results/report.md`。证据忠实性与负对照结论：NO-GO；D4 选中证据删除相对等预算随机删除的真类 log-prob 下降差为 +0.043672。稀疏注意力本身不构成创新证据。
+
+接入审计：B2 相对未修改 PLN bitwise exact；B0 为 CAM 直接 flatten，B1 为原 RES 文本；D 组完整替换 SPGS+RES。双 Adam、模型、最佳 checkpoint、连续组 RNG、D8 random_step 均写入 `.runtime/` 原子断点。原模型协议与根源码未改，未执行 Git commit/push。
+
+实验目录：`/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing`。代码/保护源码、RN50 Prompt 和控制矩阵 SHA，以及恢复与墙钟信息见 `manifest.json`。限制：val=test 选 checkpoint、外层前 RFE/标准化、871 人 transductive GFR 均沿用历史协议，需独立验证后才能讨论投稿或临床泛化。
