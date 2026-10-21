@@ -2022,3 +2022,15 @@ D4 相对 B0/B1/B2 与 D0-D8 的逐折配对差见 `/data/adodas/SPromptGL-main/
 接入审计：B2 相对未修改 PLN bitwise exact；B0 为 CAM 直接 flatten，B1 为原 RES 文本；D 组完整替换 SPGS+RES。双 Adam、模型、最佳 checkpoint、连续组 RNG、D8 random_step 均写入 `.runtime/` 原子断点。原模型协议与根源码未改，未执行 Git commit/push。
 
 实验目录：`/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing`。代码/保护源码、RN50 Prompt 和控制矩阵 SHA，以及恢复与墙钟信息见 `manifest.json`。限制：val=test 选 checkpoint、外层前 RFE/标准化、871 人 transductive GFR 均沿用历史协议，需独立验证后才能讨论投稿或临床泛化。
+
+## CLIP Encoder Equivalence Audit — 2026-10-21
+
+目的：固定上游源码版本，验证 RN50 预训练 CLIP 在作者 `ModalFusion.apply(my_weight_init)` 顺序下是否被覆盖，并核验当前缓存特征与原始 checkpoint 的等价性。上游版本为 `ba3b9446fa451fde6864d6555bdf324de0c4b64a`；来源文件 SHA、Checkpoint/Tokenizer SHA 和所有数值均见审计 `audit.json`。
+
+结果：作者代码将完整 CLIP 注册为 `PLN.ViT_model`，优化器建立后整棵 ModalFusion 调用 Xavier 初始化；实测总计 40 个 CLIP Linear 权重被重置，其中文本 Transformer 36 个（12层各自的 attention `out_proj.weight`、MLP `c_fc.weight`、`c_proj.weight`），另有视觉 attention pool 4 个投影权重。MHA `in_proj_weight`、bias、Linear bias、`text_projection` 等直接参数未变。A 与 B 初始化前逐位一致；B 初始化后对 A 的逐句余弦均值 0.1029401570558548，最小 0.017229026183485985，最大 0.15867231786251068，最大绝对误差 10.995849609375，文本相似矩阵 Frobenius 差 0.45915505290031433。A/C 逐位相同、最大误差 0；当前缓存复用、buffer 设备移动、dtype、模式、token 顺序均通过。
+
+主干初始化：相同 seed 下 B/C 的 GFR、CAM、OutputLayer 参数哈希全部一致；PEN MLP 的 4 个张量不同，初始化后的 CUDA RNG 状态也不同，原因是上游注册式 CLIP 参与整树 Linear 初始化并消耗随机数。B 的 PLN 有 363 个可训练参数张量、102,582,258 个参数元素，其中 Adam 收录 324 个 CLIP 张量；C 有 39 个参数张量、575,121 个元素，CLIP 特征为 buffer。
+
+影响：实验32 B0 前向绕过整个 PEN 的 SPGS+RES 文本分支，但 PLN 构造仍创建 MLP、加载/注册缓存 buffer，optimizer 仍包含 MLP 参数（B0 前向不给这些参数梯度）；所以它是功能上移除 PEN 路径，不是物理删除 PEN 模块。CLIP 表示差异不直接影响 B0 输出。B1、B2、D4 在本地运行/对照路径使用当前缓存实现，A=C 证明该路径正确，无需重训。B2 应标记为原架构加当前缓存协议，不能与固定上游注册式 CLIP 初始化结果混称。没有证据要求重跑实验1–32，保留现有结果及其协议记录。后续 Prompt 实验固定 RN50 checkpoint/Token SHA，eval + no_grad 编码、冻结缓存，并禁止自定义初始化触及 CLIP。
+
+根目录代码未修改。完整报告：`/data/adodas/SPromptGL-main/experiment/clip_encoder_equivalence_audit/report.md`；机器结果与完整 8×8 相似度矩阵：`/data/adodas/SPromptGL-main/experiment/clip_encoder_equivalence_audit/audit.json`；复现脚本：`/data/adodas/SPromptGL-main/experiment/clip_encoder_equivalence_audit/audit_clip.py`。未训练、未创建实验33，未执行 Git commit/push。
