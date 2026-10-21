@@ -1,0 +1,4108 @@
+{
+  "audit": {
+    "title": "B0 Physical PEN Removal Equivalence Audit",
+    "date": "2026-10-21",
+    "seed": 0,
+    "fold": 1,
+    "fold_protocol": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10), fold 1 only",
+    "training_run": false,
+    "formal_epochs": 0,
+    "optimizer_update_steps": 3,
+    "experiment33_created": false,
+    "physical_gpu": 0,
+    "forward_atol": 1e-06,
+    "forward_rtol": 1e-05,
+    "train_protocol": "simple-2: ClsLoss + mean(GraphConstructLoss over 4 modalities); two default Adam optimizers",
+    "hyperparameters": {
+      "datadir": "/data/adodas/SPromptGL-main/data/",
+      "datname": "ABIDE",
+      "cpu": false,
+      "gpu": "-1",
+      "nepoch": 450,
+      "early": 200,
+      "lr": 0.0038,
+      "reg": 0.11,
+      "dropout": 0.35,
+      "nlayer": 1,
+      "n_hidden": 18,
+      "n_head": 2,
+      "n_iter": 10,
+      "nmodal": 4,
+      "th": 0.9,
+      "GC_mode": "weighted-cosine",
+      "MP_mode": "GCN",
+      "MF_mode": "concat",
+      "alpha": 0.5,
+      "theta_smooth": 1.0,
+      "theta_degree": 0.5,
+      "theta_sparsity": 0.0,
+      "nclass": 2,
+      "mode": "simple-2",
+      "seed": 0
+    },
+    "clip_audit_report_sha256": "7d0102ca718cce9766995526f8216234537f93e897cd0f6b31b5e6c5fc09d6cd",
+    "clip_cache_verified_a_equals_c": true,
+    "clip_checkpoint": "/root/.cache/clip/RN50.pt",
+    "clip_checkpoint_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "torch": "2.9.0",
+    "numpy": "1.26.0",
+    "pandas": "2.2.3",
+    "sklearn": "1.3.2",
+    "cuda_available": true,
+    "visible_cuda_device_count": 1,
+    "device_name": "PPU-ZW810E",
+    "cuda_visible_devices": "0",
+    "deterministic_algorithms": true
+  },
+  "protected_sha256_before": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "experiment/experiment32_disease_contrastive_evidence_routing/README.md": "9e44cc75fb0a603887812b831610646ccd6d4673f0978696f762a882af4c5660",
+    "experiment/experiment32_disease_contrastive_evidence_routing/method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68",
+    "experiment/experiment32_disease_contrastive_evidence_routing/run.py": "0979a8435cd796116f083d86999bb6743185290e2d4037d40691e30cd14b2139",
+    "experiment/experiment32_disease_contrastive_evidence_routing/manifest.json": "7d0d3fedf95e11716a32c093c7bd2b47e54aa304390925d899a3c6c97f3ae361",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/report.md": "d90d97a7b0f01f33dd84e42c64b0fec622eff74f6e12d97bce34188ea6d5df19",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/fold_metrics.csv": "0133bb2fd5810beeb777c54b923c8d9b6e9ae2211ed225116ca7db2e3609ffec",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/diagnostics.csv": "7f64aff01a37f26eda9c21e59dde5ac9d888b5186b02a674710d3e7d23fe9dcf",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "experiment/clip_encoder_equivalence_audit/report.md": "7d0102ca718cce9766995526f8216234537f93e897cd0f6b31b5e6c5fc09d6cd",
+    "experiment/clip_encoder_equivalence_audit/audit.json": "17fee97cb774a42d45386bf4a41c98cb06c443641f162bf8aaaaa3f3710ae00f"
+  },
+  "protected_sha256_after": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "experiment/experiment32_disease_contrastive_evidence_routing/README.md": "9e44cc75fb0a603887812b831610646ccd6d4673f0978696f762a882af4c5660",
+    "experiment/experiment32_disease_contrastive_evidence_routing/method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68",
+    "experiment/experiment32_disease_contrastive_evidence_routing/run.py": "0979a8435cd796116f083d86999bb6743185290e2d4037d40691e30cd14b2139",
+    "experiment/experiment32_disease_contrastive_evidence_routing/manifest.json": "7d0d3fedf95e11716a32c093c7bd2b47e54aa304390925d899a3c6c97f3ae361",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/report.md": "d90d97a7b0f01f33dd84e42c64b0fec622eff74f6e12d97bce34188ea6d5df19",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/fold_metrics.csv": "0133bb2fd5810beeb777c54b923c8d9b6e9ae2211ed225116ca7db2e3609ffec",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/diagnostics.csv": "7f64aff01a37f26eda9c21e59dde5ac9d888b5186b02a674710d3e7d23fe9dcf",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "experiment/clip_encoder_equivalence_audit/report.md": "7d0102ca718cce9766995526f8216234537f93e897cd0f6b31b5e6c5fc09d6cd",
+    "experiment/clip_encoder_equivalence_audit/audit.json": "17fee97cb774a42d45386bf4a41c98cb06c443641f162bf8aaaaa3f3710ae00f"
+  },
+  "protected_files_unchanged": true,
+  "handoff_before_sha256": "0f0fed1e290e7f771c6f1c26931dcdc64f8415ac0c6c78a905b7287d3f8248c3",
+  "data": {
+    "shape": [
+      871,
+      320
+    ],
+    "label_counts": {
+      "0": 403,
+      "1": 468
+    },
+    "modality_dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "train_indices_count": 783,
+    "test_indices_count": 88,
+    "train_indices_sha256": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+    "test_indices_sha256": "dfa5dbfb7a20fa127c3d2ea4848f9bdeb23027c13b7d07108b6404c2da68650d"
+  },
+  "construction": {
+    "B0_A": {
+      "implementation": "Experiment 32 runtime EvalHelper + integration.install(config=B0)",
+      "calls_during_construction": {
+        "clip_load": 1,
+        "get_prompt_text_features": 1,
+        "mlp_init": 1,
+        "avg_pool_init": 1
+      },
+      "rng_before": {
+        "all_sha256": "132520313fcb0c2ba6d21c6bb122f6348250a2e24b807c7d9f690002e8882d8f",
+        "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+        "cuda_sha256": [
+          "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+        ]
+      },
+      "rng_after": {
+        "all_sha256": "0a6b8d8480f08d353904791c422ff636ae5d3aeaa7371192198773446216ff8c",
+        "cpu_sha256": "00cb5f3e9365c39928615b463e481e987e15b6e0b6593a4876e843336b901388",
+        "cuda_sha256": [
+          "7fc490ff7c7afafa1fe91a95b4454eb9c7a5c82dbee643bf0dac48d49d311a38"
+        ]
+      },
+      "attributes": {
+        "MLP": true,
+        "prompt_text_features": true,
+        "avg_pool": true
+      }
+    },
+    "B0_B": {
+      "implementation": "audit-only PLN with original InputLayer/Encoder/FeedForward/OutputLayer, B0 forward",
+      "calls_during_construction": {
+        "clip_load": 0,
+        "get_prompt_text_features": 0,
+        "mlp_init": 0,
+        "avg_pool_init": 0
+      },
+      "rng_before": {
+        "all_sha256": "132520313fcb0c2ba6d21c6bb122f6348250a2e24b807c7d9f690002e8882d8f",
+        "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+        "cuda_sha256": [
+          "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+        ]
+      },
+      "rng_after": {
+        "all_sha256": "59bd1eb9a6f24425cd55e843640dad29af471d812defef674bfff6e2a33a9763",
+        "cpu_sha256": "8de4da780a3fe15fc4bdd4e51dd5a1dca0ca79d5c2fbada6483eb8ab5326763f",
+        "cuda_sha256": [
+          "de355ca0eedcc1c436b171e5c950724cffb4300bcf8bfab54088acd3b6e4702b"
+        ]
+      },
+      "attributes": {
+        "MLP": false,
+        "prompt_text_features": false,
+        "avg_pool": false
+      }
+    },
+    "same_seed_initial_rng": true,
+    "post_construction_rng_equal": false,
+    "natural_common_parameter_comparison": {
+      "exact": true,
+      "allclose": true,
+      "max_abs_error": 0.0,
+      "tensor_count": 69,
+      "structural_differences": [],
+      "differing_tensors": [],
+      "tensors": [
+        {
+          "name": "value.gfr.GraphConstruct0.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            48,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            10,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            256,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing0.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing0.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing1.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing1.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing2.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing2.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing3.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing3.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.combined_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            4,
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.fusion_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            4,
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.fc.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.fc.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_k.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_q.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_v.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.classifier.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            2
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.classifier.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            2,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.0.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.1.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.fc.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_k.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_q.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_v.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_1.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_2.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.fusion_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6,
+            1
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "differing_parameter_names": []
+    },
+    "natural_common_parameter_state_sha256": {
+      "B0_A": "09456cf74b0966468252db4fdc7f2bc05253a2489f8fcae3f818371551d59293",
+      "B0_B": "09456cf74b0966468252db4fdc7f2bc05253a2489f8fcae3f818371551d59293"
+    },
+    "matching": {
+      "copied_parameter_names": [
+        "gfr.fusion_weight",
+        "gfr.combined_weight",
+        "gfr.GraphConstruct0.t",
+        "gfr.GraphConstruct0.threshold",
+        "gfr.GraphConstruct0.w.weight",
+        "gfr.GraphConstruct0.w.bias",
+        "gfr.GraphConstruct0.p.weight",
+        "gfr.GraphConstruct0.p.bias",
+        "gfr.MessagePassing0.gcn1.W",
+        "gfr.MessagePassing0.gcn2.W",
+        "gfr.GraphConstruct1.t",
+        "gfr.GraphConstruct1.threshold",
+        "gfr.GraphConstruct1.w.weight",
+        "gfr.GraphConstruct1.w.bias",
+        "gfr.GraphConstruct1.p.weight",
+        "gfr.GraphConstruct1.p.bias",
+        "gfr.MessagePassing1.gcn1.W",
+        "gfr.MessagePassing1.gcn2.W",
+        "gfr.GraphConstruct2.t",
+        "gfr.GraphConstruct2.threshold",
+        "gfr.GraphConstruct2.w.weight",
+        "gfr.GraphConstruct2.w.bias",
+        "gfr.GraphConstruct2.p.weight",
+        "gfr.GraphConstruct2.p.bias",
+        "gfr.MessagePassing2.gcn1.W",
+        "gfr.MessagePassing2.gcn2.W",
+        "gfr.GraphConstruct3.t",
+        "gfr.GraphConstruct3.threshold",
+        "gfr.GraphConstruct3.w.weight",
+        "gfr.GraphConstruct3.w.bias",
+        "gfr.GraphConstruct3.p.weight",
+        "gfr.GraphConstruct3.p.bias",
+        "gfr.MessagePassing3.gcn1.W",
+        "gfr.MessagePassing3.gcn2.W",
+        "pln.fusion_weight",
+        "pln.InputLayer.w_q.weight",
+        "pln.InputLayer.w_k.weight",
+        "pln.InputLayer.w_v.weight",
+        "pln.InputLayer.linear_q_48_0.weight",
+        "pln.InputLayer.linear_k_48_0.weight",
+        "pln.InputLayer.linear_v_48_0.weight",
+        "pln.InputLayer.linear_q_6_1.weight",
+        "pln.InputLayer.linear_k_6_1.weight",
+        "pln.InputLayer.linear_v_6_1.weight",
+        "pln.InputLayer.linear_q_10_2.weight",
+        "pln.InputLayer.linear_k_10_2.weight",
+        "pln.InputLayer.linear_v_10_2.weight",
+        "pln.InputLayer.fc.weight",
+        "pln.InputLayer.fc.bias",
+        "pln.InputLayer.layer_norm.weight",
+        "pln.InputLayer.layer_norm.bias",
+        "pln.encode_0.w_q.weight",
+        "pln.encode_0.w_k.weight",
+        "pln.encode_0.w_v.weight",
+        "pln.encode_0.fc.weight",
+        "pln.encode_0.layer_norm.weight",
+        "pln.encode_0.layer_norm.bias",
+        "pln.feed_0.w_1.weight",
+        "pln.feed_0.w_1.bias",
+        "pln.feed_0.w_2.weight",
+        "pln.feed_0.w_2.bias",
+        "pln.feed_0.layer_norm.weight",
+        "pln.feed_0.layer_norm.bias",
+        "pln.Outputlayer.mlp_head.0.weight",
+        "pln.Outputlayer.mlp_head.0.bias",
+        "pln.Outputlayer.mlp_head.1.weight",
+        "pln.Outputlayer.mlp_head.1.bias",
+        "pln.Outputlayer.classifier.weight",
+        "pln.Outputlayer.classifier.bias"
+      ],
+      "removed_parameter_names": [
+        "pln.MLP.t1.bias",
+        "pln.MLP.t1.weight",
+        "pln.MLP.t2.bias",
+        "pln.MLP.t2.weight"
+      ],
+      "common_buffer_names": [],
+      "removed_buffer_names": [
+        "pln.prompt_text_features"
+      ]
+    },
+    "matched_common_parameters_exact": true,
+    "matched_parameter_state_sha256": {
+      "B0_A": "09456cf74b0966468252db4fdc7f2bc05253a2489f8fcae3f818371551d59293",
+      "B0_B": "09456cf74b0966468252db4fdc7f2bc05253a2489f8fcae3f818371551d59293"
+    },
+    "named_parameter_match": {
+      "exact": true,
+      "allclose": true,
+      "max_abs_error": 0.0,
+      "tensor_count": 69,
+      "structural_differences": [],
+      "differing_tensors": [],
+      "tensors": [
+        {
+          "name": "value.gfr.GraphConstruct0.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            48,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct0.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct1.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            10,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct2.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.p.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.p.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            256,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.t",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.threshold",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.w.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.GraphConstruct3.w.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing0.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing0.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing1.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing1.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing2.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing2.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing3.gcn1.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.MessagePassing3.gcn2.W",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            320,
+            320
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.combined_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            4,
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.gfr.fusion_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            4,
+            1
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.fc.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.fc.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_k_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_q_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_10_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            10
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_48_0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            48
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.linear_v_6_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            6
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_k.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_q.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.InputLayer.w_v.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            256
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.classifier.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            2
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.classifier.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            2,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.0.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.0.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.1.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.Outputlayer.mlp_head.1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            144
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.fc.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_k.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_q.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.encode_0.w_v.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.layer_norm.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.layer_norm.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_1.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_1.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_2.bias",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.feed_0.w_2.weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            36,
+            36
+          ],
+          "dtype": "torch.float32"
+        },
+        {
+          "name": "value.pln.fusion_weight",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            6,
+            1
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "differing_parameter_names": []
+    }
+  },
+  "parameters": {
+    "B0_A_PLN_registered": {
+      "tensor_count": 39,
+      "element_count": 575121,
+      "names": [
+        "fusion_weight",
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias",
+        "MLP.t1.weight",
+        "MLP.t1.bias",
+        "MLP.t2.weight",
+        "MLP.t2.bias"
+      ]
+    },
+    "B0_B_PLN_registered": {
+      "tensor_count": 35,
+      "element_count": 49544,
+      "names": [
+        "fusion_weight",
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias"
+      ]
+    },
+    "B0_A_MLP": {
+      "tensor_count": 4,
+      "element_count": 525577,
+      "names": [
+        "t1.weight",
+        "t1.bias",
+        "t2.weight",
+        "t2.bias"
+      ]
+    },
+    "B0_A_MLP_parameter_names_in_optimizer": [
+      "MLP.t1.weight",
+      "MLP.t1.bias",
+      "MLP.t2.weight",
+      "MLP.t2.bias"
+    ],
+    "B0_A_MLP_grad_none_names": [
+      "t1.weight",
+      "t1.bias",
+      "t2.weight",
+      "t2.bias"
+    ],
+    "B0_A_MLP_hash_before_updates": {
+      "t1.weight": "d6786778026c062534894f2eff56a4268f1bd1c84bc8f52f3cf52c0bc4a3a255",
+      "t1.bias": "5422e0e3438b6b278b23abd078fea173aaf3fa9bd8a0428b4f30cc175f7cf7f7",
+      "t2.weight": "aa44a8f027652fffee3ee101a692f0bafdca6a25f2c34eaa60e6245aa71624a8",
+      "t2.bias": "f74c9781e8ace7bb762193de578cd3bc171b0ccd4265cc3459a9c8d6e15d5269"
+    },
+    "B0_A_MLP_hash_after_updates": {
+      "t1.weight": "d6786778026c062534894f2eff56a4268f1bd1c84bc8f52f3cf52c0bc4a3a255",
+      "t1.bias": "5422e0e3438b6b278b23abd078fea173aaf3fa9bd8a0428b4f30cc175f7cf7f7",
+      "t2.weight": "aa44a8f027652fffee3ee101a692f0bafdca6a25f2c34eaa60e6245aa71624a8",
+      "t2.bias": "f74c9781e8ace7bb762193de578cd3bc171b0ccd4265cc3459a9c8d6e15d5269"
+    },
+    "B0_A_MLP_optimizer_state_exists_after_updates": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "B0_A_optimizer_MF": {
+      "parameter_tensor_count": 39,
+      "parameter_element_count": 575121,
+      "parameter_names": [
+        "fusion_weight",
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias",
+        "MLP.t1.weight",
+        "MLP.t1.bias",
+        "MLP.t2.weight",
+        "MLP.t2.bias"
+      ],
+      "groups": [
+        {
+          "lr": 0.0038,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.11,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": false
+        }
+      ]
+    },
+    "B0_B_optimizer_MF": {
+      "parameter_tensor_count": 35,
+      "parameter_element_count": 49544,
+      "parameter_names": [
+        "fusion_weight",
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias"
+      ],
+      "groups": [
+        {
+          "lr": 0.0038,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.11,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": false
+        }
+      ]
+    },
+    "B0_A_optimizer_MP0": {
+      "parameter_tensor_count": 34,
+      "parameter_element_count": 887836,
+      "parameter_names": [
+        "fusion_weight",
+        "combined_weight",
+        "GraphConstruct0.t",
+        "GraphConstruct0.threshold",
+        "GraphConstruct0.w.weight",
+        "GraphConstruct0.w.bias",
+        "GraphConstruct0.p.weight",
+        "GraphConstruct0.p.bias",
+        "MessagePassing0.gcn1.W",
+        "MessagePassing0.gcn2.W",
+        "GraphConstruct1.t",
+        "GraphConstruct1.threshold",
+        "GraphConstruct1.w.weight",
+        "GraphConstruct1.w.bias",
+        "GraphConstruct1.p.weight",
+        "GraphConstruct1.p.bias",
+        "MessagePassing1.gcn1.W",
+        "MessagePassing1.gcn2.W",
+        "GraphConstruct2.t",
+        "GraphConstruct2.threshold",
+        "GraphConstruct2.w.weight",
+        "GraphConstruct2.w.bias",
+        "GraphConstruct2.p.weight",
+        "GraphConstruct2.p.bias",
+        "MessagePassing2.gcn1.W",
+        "MessagePassing2.gcn2.W",
+        "GraphConstruct3.t",
+        "GraphConstruct3.threshold",
+        "GraphConstruct3.w.weight",
+        "GraphConstruct3.w.bias",
+        "GraphConstruct3.p.weight",
+        "GraphConstruct3.p.bias",
+        "MessagePassing3.gcn1.W",
+        "MessagePassing3.gcn2.W"
+      ],
+      "groups": [
+        {
+          "lr": 0.0038,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.11,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": false
+        }
+      ]
+    },
+    "B0_B_optimizer_MP0": {
+      "parameter_tensor_count": 34,
+      "parameter_element_count": 887836,
+      "parameter_names": [
+        "fusion_weight",
+        "combined_weight",
+        "GraphConstruct0.t",
+        "GraphConstruct0.threshold",
+        "GraphConstruct0.w.weight",
+        "GraphConstruct0.w.bias",
+        "GraphConstruct0.p.weight",
+        "GraphConstruct0.p.bias",
+        "MessagePassing0.gcn1.W",
+        "MessagePassing0.gcn2.W",
+        "GraphConstruct1.t",
+        "GraphConstruct1.threshold",
+        "GraphConstruct1.w.weight",
+        "GraphConstruct1.w.bias",
+        "GraphConstruct1.p.weight",
+        "GraphConstruct1.p.bias",
+        "MessagePassing1.gcn1.W",
+        "MessagePassing1.gcn2.W",
+        "GraphConstruct2.t",
+        "GraphConstruct2.threshold",
+        "GraphConstruct2.w.weight",
+        "GraphConstruct2.w.bias",
+        "GraphConstruct2.p.weight",
+        "GraphConstruct2.p.bias",
+        "MessagePassing2.gcn1.W",
+        "MessagePassing2.gcn2.W",
+        "GraphConstruct3.t",
+        "GraphConstruct3.threshold",
+        "GraphConstruct3.w.weight",
+        "GraphConstruct3.w.bias",
+        "GraphConstruct3.p.weight",
+        "GraphConstruct3.p.bias",
+        "MessagePassing3.gcn1.W",
+        "MessagePassing3.gcn2.W"
+      ],
+      "groups": [
+        {
+          "lr": 0.0038,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.11,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": false
+        }
+      ]
+    },
+    "B0_A_PLN_effectiveness_after_backward": {
+      "registered_tensor_count": 39,
+      "registered_element_count": 575121,
+      "gradient_tensor_count": 34,
+      "gradient_element_count": 49538,
+      "gradient_parameter_names": [
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias"
+      ],
+      "grad_none_parameter_names": [
+        "fusion_weight",
+        "MLP.t1.weight",
+        "MLP.t1.bias",
+        "MLP.t2.weight",
+        "MLP.t2.bias"
+      ]
+    },
+    "B0_B_PLN_effectiveness_after_backward": {
+      "registered_tensor_count": 35,
+      "registered_element_count": 49544,
+      "gradient_tensor_count": 34,
+      "gradient_element_count": 49538,
+      "gradient_parameter_names": [
+        "InputLayer.w_q.weight",
+        "InputLayer.w_k.weight",
+        "InputLayer.w_v.weight",
+        "InputLayer.linear_q_48_0.weight",
+        "InputLayer.linear_k_48_0.weight",
+        "InputLayer.linear_v_48_0.weight",
+        "InputLayer.linear_q_6_1.weight",
+        "InputLayer.linear_k_6_1.weight",
+        "InputLayer.linear_v_6_1.weight",
+        "InputLayer.linear_q_10_2.weight",
+        "InputLayer.linear_k_10_2.weight",
+        "InputLayer.linear_v_10_2.weight",
+        "InputLayer.fc.weight",
+        "InputLayer.fc.bias",
+        "InputLayer.layer_norm.weight",
+        "InputLayer.layer_norm.bias",
+        "encode_0.w_q.weight",
+        "encode_0.w_k.weight",
+        "encode_0.w_v.weight",
+        "encode_0.fc.weight",
+        "encode_0.layer_norm.weight",
+        "encode_0.layer_norm.bias",
+        "feed_0.w_1.weight",
+        "feed_0.w_1.bias",
+        "feed_0.w_2.weight",
+        "feed_0.w_2.bias",
+        "feed_0.layer_norm.weight",
+        "feed_0.layer_norm.bias",
+        "Outputlayer.mlp_head.0.weight",
+        "Outputlayer.mlp_head.0.bias",
+        "Outputlayer.mlp_head.1.weight",
+        "Outputlayer.mlp_head.1.bias",
+        "Outputlayer.classifier.weight",
+        "Outputlayer.classifier.bias"
+      ],
+      "grad_none_parameter_names": [
+        "fusion_weight"
+      ]
+    },
+    "B0_A_GFR_effectiveness_after_backward": {
+      "registered_tensor_count": 34,
+      "registered_element_count": 887836,
+      "gradient_tensor_count": 15,
+      "gradient_element_count": 682700,
+      "gradient_parameter_names": [
+        "fusion_weight",
+        "GraphConstruct0.p.weight",
+        "GraphConstruct0.p.bias",
+        "GraphConstruct1.p.weight",
+        "GraphConstruct1.p.bias",
+        "MessagePassing1.gcn1.W",
+        "MessagePassing1.gcn2.W",
+        "GraphConstruct2.p.weight",
+        "GraphConstruct2.p.bias",
+        "MessagePassing2.gcn1.W",
+        "MessagePassing2.gcn2.W",
+        "GraphConstruct3.p.weight",
+        "GraphConstruct3.p.bias",
+        "MessagePassing3.gcn1.W",
+        "MessagePassing3.gcn2.W"
+      ],
+      "grad_none_parameter_names": [
+        "combined_weight",
+        "GraphConstruct0.t",
+        "GraphConstruct0.threshold",
+        "GraphConstruct0.w.weight",
+        "GraphConstruct0.w.bias",
+        "MessagePassing0.gcn1.W",
+        "MessagePassing0.gcn2.W",
+        "GraphConstruct1.t",
+        "GraphConstruct1.threshold",
+        "GraphConstruct1.w.weight",
+        "GraphConstruct1.w.bias",
+        "GraphConstruct2.t",
+        "GraphConstruct2.threshold",
+        "GraphConstruct2.w.weight",
+        "GraphConstruct2.w.bias",
+        "GraphConstruct3.t",
+        "GraphConstruct3.threshold",
+        "GraphConstruct3.w.weight",
+        "GraphConstruct3.w.bias"
+      ]
+    },
+    "B0_B_GFR_effectiveness_after_backward": {
+      "registered_tensor_count": 34,
+      "registered_element_count": 887836,
+      "gradient_tensor_count": 15,
+      "gradient_element_count": 682700,
+      "gradient_parameter_names": [
+        "fusion_weight",
+        "GraphConstruct0.p.weight",
+        "GraphConstruct0.p.bias",
+        "GraphConstruct1.p.weight",
+        "GraphConstruct1.p.bias",
+        "MessagePassing1.gcn1.W",
+        "MessagePassing1.gcn2.W",
+        "GraphConstruct2.p.weight",
+        "GraphConstruct2.p.bias",
+        "MessagePassing2.gcn1.W",
+        "MessagePassing2.gcn2.W",
+        "GraphConstruct3.p.weight",
+        "GraphConstruct3.p.bias",
+        "MessagePassing3.gcn1.W",
+        "MessagePassing3.gcn2.W"
+      ],
+      "grad_none_parameter_names": [
+        "combined_weight",
+        "GraphConstruct0.t",
+        "GraphConstruct0.threshold",
+        "GraphConstruct0.w.weight",
+        "GraphConstruct0.w.bias",
+        "MessagePassing0.gcn1.W",
+        "MessagePassing0.gcn2.W",
+        "GraphConstruct1.t",
+        "GraphConstruct1.threshold",
+        "GraphConstruct1.w.weight",
+        "GraphConstruct1.w.bias",
+        "GraphConstruct2.t",
+        "GraphConstruct2.threshold",
+        "GraphConstruct2.w.weight",
+        "GraphConstruct2.w.bias",
+        "GraphConstruct3.t",
+        "GraphConstruct3.threshold",
+        "GraphConstruct3.w.weight",
+        "GraphConstruct3.w.bias"
+      ]
+    },
+    "B0_A_all_grad_none_names": [
+      "gfr.combined_weight",
+      "gfr.GraphConstruct0.t",
+      "gfr.GraphConstruct0.threshold",
+      "gfr.GraphConstruct0.w.weight",
+      "gfr.GraphConstruct0.w.bias",
+      "gfr.MessagePassing0.gcn1.W",
+      "gfr.MessagePassing0.gcn2.W",
+      "gfr.GraphConstruct1.t",
+      "gfr.GraphConstruct1.threshold",
+      "gfr.GraphConstruct1.w.weight",
+      "gfr.GraphConstruct1.w.bias",
+      "gfr.GraphConstruct2.t",
+      "gfr.GraphConstruct2.threshold",
+      "gfr.GraphConstruct2.w.weight",
+      "gfr.GraphConstruct2.w.bias",
+      "gfr.GraphConstruct3.t",
+      "gfr.GraphConstruct3.threshold",
+      "gfr.GraphConstruct3.w.weight",
+      "gfr.GraphConstruct3.w.bias",
+      "pln.fusion_weight",
+      "pln.MLP.t1.weight",
+      "pln.MLP.t1.bias",
+      "pln.MLP.t2.weight",
+      "pln.MLP.t2.bias"
+    ],
+    "B0_B_all_grad_none_names": [
+      "gfr.combined_weight",
+      "gfr.GraphConstruct0.t",
+      "gfr.GraphConstruct0.threshold",
+      "gfr.GraphConstruct0.w.weight",
+      "gfr.GraphConstruct0.w.bias",
+      "gfr.MessagePassing0.gcn1.W",
+      "gfr.MessagePassing0.gcn2.W",
+      "gfr.GraphConstruct1.t",
+      "gfr.GraphConstruct1.threshold",
+      "gfr.GraphConstruct1.w.weight",
+      "gfr.GraphConstruct1.w.bias",
+      "gfr.GraphConstruct2.t",
+      "gfr.GraphConstruct2.threshold",
+      "gfr.GraphConstruct2.w.weight",
+      "gfr.GraphConstruct2.w.bias",
+      "gfr.GraphConstruct3.t",
+      "gfr.GraphConstruct3.threshold",
+      "gfr.GraphConstruct3.w.weight",
+      "gfr.GraphConstruct3.w.bias",
+      "pln.fusion_weight"
+    ]
+  },
+  "forward": {
+    "status": "EXACT",
+    "tests": {
+      "eval": {
+        "exact": true,
+        "allclose": true,
+        "max_abs_error": 0.0,
+        "tensor_count": 17,
+        "structural_differences": [],
+        "differing_tensors": [],
+        "tensors": [
+          {
+            "name": "value.attention_maps[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.attention_maps[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.encoder0[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.encoder0[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.feedforward0",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.input[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.input[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[2]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[3]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_alignment_loss",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_features",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              320
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.hidden",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.logp",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.prediction",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871
+            ],
+            "dtype": "torch.int64"
+          },
+          {
+            "name": "value.probability",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2
+            ],
+            "dtype": "torch.float32"
+          }
+        ],
+        "rng_after_a": {
+          "all_sha256": "132520313fcb0c2ba6d21c6bb122f6348250a2e24b807c7d9f690002e8882d8f",
+          "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+          "cuda_sha256": [
+            "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          ]
+        },
+        "rng_after_b": {
+          "all_sha256": "132520313fcb0c2ba6d21c6bb122f6348250a2e24b807c7d9f690002e8882d8f",
+          "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+          "cuda_sha256": [
+            "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          ]
+        },
+        "matched_rng_consumption": true,
+        "gfr_max_abs_error": 0.0,
+        "cam_max_abs_error": 0.0,
+        "classifier_max_abs_error": 0.0,
+        "predictions_equal": true
+      },
+      "train": {
+        "exact": true,
+        "allclose": true,
+        "max_abs_error": 0.0,
+        "tensor_count": 17,
+        "structural_differences": [],
+        "differing_tensors": [],
+        "tensors": [
+          {
+            "name": "value.attention_maps[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.attention_maps[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.encoder0[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.encoder0[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.feedforward0",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.input[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              4,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.cam_stages.input[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2,
+              4,
+              4
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[0]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[1]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[2]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_adjacencies[3]",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              871
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_alignment_loss",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.gfr_features",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              320
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.hidden",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              36
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.logp",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2
+            ],
+            "dtype": "torch.float32"
+          },
+          {
+            "name": "value.prediction",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871
+            ],
+            "dtype": "torch.int64"
+          },
+          {
+            "name": "value.probability",
+            "exact": true,
+            "allclose": true,
+            "max_abs_error": 0.0,
+            "shape": [
+              871,
+              2
+            ],
+            "dtype": "torch.float32"
+          }
+        ],
+        "rng_after_a": {
+          "all_sha256": "17b71332c357403c409732386f9666928040cb050dc96fedeb2352d24af4b263",
+          "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+          "cuda_sha256": [
+            "86df2682f62f0c75719388466342dd1270f887424480454c398f19100fd33de5"
+          ]
+        },
+        "rng_after_b": {
+          "all_sha256": "17b71332c357403c409732386f9666928040cb050dc96fedeb2352d24af4b263",
+          "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+          "cuda_sha256": [
+            "86df2682f62f0c75719388466342dd1270f887424480454c398f19100fd33de5"
+          ]
+        },
+        "matched_rng_consumption": true,
+        "gfr_max_abs_error": 0.0,
+        "cam_max_abs_error": 0.0,
+        "classifier_max_abs_error": 0.0,
+        "predictions_equal": true
+      }
+    }
+  },
+  "backward": {
+    "status": "EXACT",
+    "loss_comparison": {
+      "exact": true,
+      "allclose": true,
+      "max_abs_error": 0.0,
+      "tensor_count": 0,
+      "structural_differences": [],
+      "differing_tensors": [],
+      "tensors": []
+    },
+    "loss_values": {
+      "B0_A": {
+        "cls_loss": 1.032340168952942,
+        "all_graph_loss": -1.1294156312942505,
+        "total_loss": -0.0970754623413086
+      },
+      "B0_B": {
+        "cls_loss": 1.032340168952942,
+        "all_graph_loss": -1.1294156312942505,
+        "total_loss": -0.0970754623413086
+      }
+    },
+    "gradient_comparison": {
+      "exact": true,
+      "allclose": true,
+      "max_abs_error": 0.0,
+      "parameter_count": 69,
+      "gradient_tensor_count": 49,
+      "both_grad_none_names": [
+        "gfr.GraphConstruct0.t",
+        "gfr.GraphConstruct0.threshold",
+        "gfr.GraphConstruct0.w.bias",
+        "gfr.GraphConstruct0.w.weight",
+        "gfr.GraphConstruct1.t",
+        "gfr.GraphConstruct1.threshold",
+        "gfr.GraphConstruct1.w.bias",
+        "gfr.GraphConstruct1.w.weight",
+        "gfr.GraphConstruct2.t",
+        "gfr.GraphConstruct2.threshold",
+        "gfr.GraphConstruct2.w.bias",
+        "gfr.GraphConstruct2.w.weight",
+        "gfr.GraphConstruct3.t",
+        "gfr.GraphConstruct3.threshold",
+        "gfr.GraphConstruct3.w.bias",
+        "gfr.GraphConstruct3.w.weight",
+        "gfr.MessagePassing0.gcn1.W",
+        "gfr.MessagePassing0.gcn2.W",
+        "gfr.combined_weight",
+        "pln.fusion_weight"
+      ],
+      "mismatched_names": [],
+      "per_parameter": {
+        "gfr.GraphConstruct0.p.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                48
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct0.p.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                48,
+                48
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct1.p.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                6
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct1.p.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                6,
+                6
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct2.p.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                10
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct2.p.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                10,
+                10
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct3.p.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                256
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.GraphConstruct3.p.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                256,
+                256
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing1.gcn1.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing1.gcn2.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing2.gcn1.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing2.gcn2.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing3.gcn1.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.MessagePassing3.gcn2.W": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                320,
+                320
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "gfr.fusion_weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                4,
+                1
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.fc.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.fc.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.layer_norm.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.layer_norm.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_k_10_2.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                10
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_k_48_0.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                48
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_k_6_1.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                6
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_q_10_2.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                10
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_q_48_0.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                48
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_q_6_1.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                6
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_v_10_2.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                10
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_v_48_0.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                48
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.linear_v_6_1.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                6
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.w_k.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                256
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.w_q.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                256
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.InputLayer.w_v.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                256
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.classifier.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                2
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.classifier.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                2,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.mlp_head.0.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                144
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.mlp_head.0.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                144
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.mlp_head.1.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.Outputlayer.mlp_head.1.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                144
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.fc.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.layer_norm.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.layer_norm.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.w_k.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.w_q.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.encode_0.w_v.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.layer_norm.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.layer_norm.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.w_1.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.w_1.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.w_2.bias": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        },
+        "pln.feed_0.w_2.weight": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 1,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": [
+            {
+              "name": "value",
+              "exact": true,
+              "allclose": true,
+              "max_abs_error": 0.0,
+              "shape": [
+                36,
+                36
+              ],
+              "dtype": "torch.float32"
+            }
+          ]
+        }
+      }
+    },
+    "rng_after_a": {
+      "all_sha256": "17b71332c357403c409732386f9666928040cb050dc96fedeb2352d24af4b263",
+      "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+      "cuda_sha256": [
+        "86df2682f62f0c75719388466342dd1270f887424480454c398f19100fd33de5"
+      ]
+    },
+    "rng_after_b": {
+      "all_sha256": "17b71332c357403c409732386f9666928040cb050dc96fedeb2352d24af4b263",
+      "cpu_sha256": "1ccf17250133dec5e96478acd63e13d728d0dbbabb30389415a302c6f872f81f",
+      "cuda_sha256": [
+        "86df2682f62f0c75719388466342dd1270f887424480454c398f19100fd33de5"
+      ]
+    },
+    "rng_matched": true
+  },
+  "adam": {
+    "status": "EXACT",
+    "steps": [
+      {
+        "step": 1,
+        "loss_values": {
+          "B0_A": {
+            "cls_loss": 1.0935869216918945,
+            "all_graph_loss": -1.1294156312942505,
+            "total_loss": -0.03582870960235596
+          },
+          "B0_B": {
+            "cls_loss": 1.0935869216918945,
+            "all_graph_loss": -1.1294156312942505,
+            "total_loss": -0.03582870960235596
+          }
+        },
+        "losses": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 0,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": []
+        },
+        "max_parameter_abs_error": 0.0,
+        "parameters_exact": true,
+        "max_gradient_abs_error": 0.0,
+        "gradients_exact": true,
+        "max_adam_state_abs_error": 0.0,
+        "adam_state_exact": true,
+        "mlp_has_grad": false,
+        "mlp_adam_state_exists": false,
+        "rng_after_a": {
+          "all_sha256": "b94ab2d6c2d9593afd99fe41742aa151064d97d52c90977f2b50a8002f66cd97",
+          "cpu_sha256": "f5defda135ec2e0d1513e6979390f58397d31a904d5f6540f8b88ae64d1decc1",
+          "cuda_sha256": [
+            "50558776a54c7fe346263305395363cef5352fc3da689acdfd0d8e208e1296ec"
+          ]
+        },
+        "rng_after_b": {
+          "all_sha256": "b94ab2d6c2d9593afd99fe41742aa151064d97d52c90977f2b50a8002f66cd97",
+          "cpu_sha256": "f5defda135ec2e0d1513e6979390f58397d31a904d5f6540f8b88ae64d1decc1",
+          "cuda_sha256": [
+            "50558776a54c7fe346263305395363cef5352fc3da689acdfd0d8e208e1296ec"
+          ]
+        },
+        "rng_matched": true,
+        "parameter_differences": [],
+        "gradient_differences": [],
+        "adam_state_differences": []
+      },
+      {
+        "step": 2,
+        "loss_values": {
+          "B0_A": {
+            "cls_loss": 0.871131181716919,
+            "all_graph_loss": -1.1270058155059814,
+            "total_loss": -0.2558746337890625
+          },
+          "B0_B": {
+            "cls_loss": 0.871131181716919,
+            "all_graph_loss": -1.1270058155059814,
+            "total_loss": -0.2558746337890625
+          }
+        },
+        "losses": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 0,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": []
+        },
+        "max_parameter_abs_error": 0.0,
+        "parameters_exact": true,
+        "max_gradient_abs_error": 0.0,
+        "gradients_exact": true,
+        "max_adam_state_abs_error": 0.0,
+        "adam_state_exact": true,
+        "mlp_has_grad": false,
+        "mlp_adam_state_exists": false,
+        "rng_after_a": {
+          "all_sha256": "bf72ad4a9705e87a3b370e747a5b1501c4f8e351261f002fce8165306ecfc813",
+          "cpu_sha256": "0f9cd7b642a3f8f641c5e992f17138b2d094db4d56cc2329b3be2c794ddc79ad",
+          "cuda_sha256": [
+            "1003ca6323eecefa58a5e4baf7f439a1a1cb983dcf28e1fc0c35783a13f5ae10"
+          ]
+        },
+        "rng_after_b": {
+          "all_sha256": "bf72ad4a9705e87a3b370e747a5b1501c4f8e351261f002fce8165306ecfc813",
+          "cpu_sha256": "0f9cd7b642a3f8f641c5e992f17138b2d094db4d56cc2329b3be2c794ddc79ad",
+          "cuda_sha256": [
+            "1003ca6323eecefa58a5e4baf7f439a1a1cb983dcf28e1fc0c35783a13f5ae10"
+          ]
+        },
+        "rng_matched": true,
+        "parameter_differences": [],
+        "gradient_differences": [],
+        "adam_state_differences": []
+      },
+      {
+        "step": 3,
+        "loss_values": {
+          "B0_A": {
+            "cls_loss": 0.7528433799743652,
+            "all_graph_loss": -1.1264925003051758,
+            "total_loss": -0.37364912033081055
+          },
+          "B0_B": {
+            "cls_loss": 0.7528433799743652,
+            "all_graph_loss": -1.1264925003051758,
+            "total_loss": -0.37364912033081055
+          }
+        },
+        "losses": {
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "tensor_count": 0,
+          "structural_differences": [],
+          "differing_tensors": [],
+          "tensors": []
+        },
+        "max_parameter_abs_error": 0.0,
+        "parameters_exact": true,
+        "max_gradient_abs_error": 0.0,
+        "gradients_exact": true,
+        "max_adam_state_abs_error": 0.0,
+        "adam_state_exact": true,
+        "mlp_has_grad": false,
+        "mlp_adam_state_exists": false,
+        "rng_after_a": {
+          "all_sha256": "c3ca52f985bbcb0d47b8e81077058a791c1d96f56394494453cae4eca28fcf1d",
+          "cpu_sha256": "76fe321e2dc1dfdec62a274bcedbeea2727be2e2972f97e728e07e0345c21ede",
+          "cuda_sha256": [
+            "72d7a5402ce253eccc8d9a644144f1a4722ecbb3f1eb9fcc23d291dde91b7817"
+          ]
+        },
+        "rng_after_b": {
+          "all_sha256": "c3ca52f985bbcb0d47b8e81077058a791c1d96f56394494453cae4eca28fcf1d",
+          "cpu_sha256": "76fe321e2dc1dfdec62a274bcedbeea2727be2e2972f97e728e07e0345c21ede",
+          "cuda_sha256": [
+            "72d7a5402ce253eccc8d9a644144f1a4722ecbb3f1eb9fcc23d291dde91b7817"
+          ]
+        },
+        "rng_matched": true,
+        "parameter_differences": [],
+        "gradient_differences": [],
+        "adam_state_differences": []
+      }
+    ],
+    "mlp_grad_none_all_steps": true,
+    "mlp_parameter_unchanged": true,
+    "mlp_state_absent_all_steps": true
+  },
+  "negative_controls": {
+    "N1_effective_output_weight_perturbation_detected": {
+      "exact": false,
+      "allclose": false,
+      "max_abs_error": 2.856081485748291,
+      "tensor_count": 1,
+      "structural_differences": [],
+      "differing_tensors": [
+        "value"
+      ],
+      "tensors": [
+        {
+          "name": "value",
+          "exact": false,
+          "allclose": false,
+          "max_abs_error": 2.856081485748291,
+          "shape": [
+            871,
+            2
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "detected_output_difference": true,
+      "perturbation": "B0-B Outputlayer.classifier.weight[0,0] += 5"
+    },
+    "N2_unused_MLP_perturbation_does_not_change_output": {
+      "exact": true,
+      "allclose": true,
+      "max_abs_error": 0.0,
+      "tensor_count": 1,
+      "structural_differences": [],
+      "differing_tensors": [],
+      "tensors": [
+        {
+          "name": "value",
+          "exact": true,
+          "allclose": true,
+          "max_abs_error": 0.0,
+          "shape": [
+            871,
+            2
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "unchanged_output": true,
+      "perturbation": "B0-A ModalFusion.MLP.t1.weight[0,0] += 5"
+    }
+  },
+  "checks": {
+    "PEN_physically_removed": true,
+    "B0_A_has_original_PEN_modules": true,
+    "forward": "EXACT",
+    "backward": "EXACT",
+    "adam": "EXACT",
+    "protected_files_unchanged": true,
+    "negative_controls": true
+  },
+  "scientific_decision": {
+    "B0_history_valid": "YES",
+    "retain_experiment32_B0_ACC_92_0742": true,
+    "physical_B0_B_suitable_as_future_structure_base": true,
+    "recommend_B0_vs_B2_same_fold_20_fold_retest": false,
+    "qualification": "Equivalence under matched shared initialization does not establish a new full-run score or B0/B2 performance superiority."
+  }
+}
