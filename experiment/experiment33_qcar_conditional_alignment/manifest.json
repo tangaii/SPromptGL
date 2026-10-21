@@ -1,0 +1,745 @@
+{
+  "experiment": "Experiment 33 QCAR — Quality-Conditioned Artifact-Residual Alignment",
+  "status": "COMPLETE",
+  "created_utc": "2026-10-21T14:51:54.160507+00:00",
+  "seed": 0,
+  "configs": [
+    "G0_B0A",
+    "G1_SITE_ONLY",
+    "G2_UNCONDITIONAL",
+    "G3_NO_RELIABILITY",
+    "G4_QCAR_FULL",
+    "G5_WRONG_PAIR",
+    "G6_FC_ONLY",
+    "G7_REVERSE_SIGN"
+  ],
+  "target_folds": 80,
+  "completed_folds": 80,
+  "source_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "code_sha256": {
+    "README.md": "b5b031da3d619f39ba2a6d4ccac23fb70f6b4c140e53c07ea0e77982a17777b1",
+    "qcar.py": "b6f7bc89f9b083382536098de2b97040534de938757888db03cb0b8be041332c",
+    "integration.py": "fb869c2a6e0ada2694fab41f6db3d66e5bf18c9ed231fbc10698a8bb1a73ceed",
+    "integration.patch": "4dc7ef8acddb82057880c3f23926ec4f0c324e0eee59dc2fc7837066b5500559",
+    "run.py": "cf4382be1da5ff94c418a45b19f7af62193c4f6995015128326d86bc98216916"
+  },
+  "prompt_sha256": "56409051c167ccf01b190eed8828ffeccfa0d89aaa60d3de1eae87a7895a9a34",
+  "experiment32_and_audit_sha256": {
+    "experiment/experiment32_disease_contrastive_evidence_routing/README.md": "9e44cc75fb0a603887812b831610646ccd6d4673f0978696f762a882af4c5660",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.py": "51b13af79c967749386ac0ded079ba02d0549d445c177a8cb9b08941e3612d31",
+    "experiment/experiment32_disease_contrastive_evidence_routing/integration.patch": "f780479adc25b9b07bfbd0e89f29b133c070f9476f29b990e12a5c7074f85c68",
+    "experiment/experiment32_disease_contrastive_evidence_routing/method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+    "experiment/experiment32_disease_contrastive_evidence_routing/run.py": "0979a8435cd796116f083d86999bb6743185290e2d4037d40691e30cd14b2139",
+    "experiment/experiment32_disease_contrastive_evidence_routing/manifest.json": "7d0d3fedf95e11716a32c093c7bd2b47e54aa304390925d899a3c6c97f3ae361",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/fold_metrics.csv": "0133bb2fd5810beeb777c54b923c8d9b6e9ae2211ed225116ca7db2e3609ffec",
+    "experiment/experiment32_disease_contrastive_evidence_routing/results/report.md": "d90d97a7b0f01f33dd84e42c64b0fec622eff74f6e12d97bce34188ea6d5df19",
+    "experiment/b0_pen_physical_removal_equivalence_audit/audit.py": "609e2d0f098b612cd65b399361c474f972375d93bf1ab7beca9dbe28d9b18838",
+    "experiment/b0_pen_physical_removal_equivalence_audit/results.json": "e035c46a696360494e6a8431e0da5f5a2312a8e0da448357a70ce28cb74d9902",
+    "experiment/b0_pen_physical_removal_equivalence_audit/report.md": "d433746826e42fb6ecd4d1fa3468bd8833bc775c4d333dce21b24d4ef4d2ffb9",
+    "experiment/b0_b_seed0_full10fold/manifest.json": "19dc9486bd12a9cefc96e9b43ace3e56e9c40171a523f45123eead7479db3b6a",
+    "experiment/b0_b_seed0_full10fold/results/fold_metrics.csv": "a42dd4000b22c29d9ec5d1a4e1e032430b1d138f8c05bc4afc140812ac890b15",
+    "experiment/b0_b_seed0_full10fold/results/report.md": "7e73a0a2da2e85ecabb4fdf356bbcae14f2004cf8fd150dc7e6745b59a7e9443",
+    "experiment/clip_encoder_equivalence_audit/audit_clip.py": "bb842623f9dc15d9ce2f4188b8b8d72fb46d8ed6859fe78a6fc3905f6a264bff",
+    "experiment/clip_encoder_equivalence_audit/audit.json": "17fee97cb774a42d45386bf4a41c98cb06c443641f162bf8aaaaa3f3710ae00f",
+    "experiment/clip_encoder_equivalence_audit/report.md": "7d0102ca718cce9766995526f8216234537f93e897cd0f6b31b5e6c5fc09d6cd",
+    "experiment/experiment18_discriminability_preserving_selective_alignment/results/report.md": "3f556214fc610dafb184389e5fb6fcb81700678a772b46d2426dda18f42334c1",
+    "experiment/experiment24_conflict_aware_relational_alignment/results/report.md": "202cf507e55121e4e17e86701de8a70e67e9d4bed3965ceba3eb3d28c3dbc407",
+    "experiment/experiment25_evidence_preserving_asymmetric_graph_calibration/results/report.md": "a62e05213189f1ddc39f06690b586685a97c45d2347e39697e22a2f9f297db2f",
+    "experiment/experiment27_evidence_grounded_relational_prompt_cam/results/report.md": "7d0c9e8df67e9be10e5836140ee106ff6abe9d9d577b67feccf2ffe9f28ed696",
+    "experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/results/report.md": "ff3abb967da6499ef4f9d624816f35b11481ac1bd3feb178c645318d3da9e6b7",
+    "experiment/experiment29_connectivity_semantic_selective_auxiliary/results/report.md": "81e46202f7a80f7a2f3b5c8d9eaa1c0e14cd3eae80a988ac9b8ecd8938e9ca28",
+    "experiment/experiment30_class_conditional_semantic_shared_repair/results/report.md": "be3a4931b9f4d1bc1fd0dbcc4e928b4242ac73e7638cb1e459c8b0bfcaf8ec1e",
+    "experiment/experiment31_subject_specific_connectomic_evidence/results/report.md": "6ba9d9d826c42a1e647e390bf6c0e061f6e4da2f9f6c49ad88db5f9a6e52d4cc"
+  },
+  "input_sha256": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "historical_b0_csv_sha256": "0133bb2fd5810beeb777c54b923c8d9b6e9ae2211ed225116ca7db2e3609ffec",
+  "handoff_prefix": {
+    "size": 298216,
+    "sha256": "bc6c83769510b54a8eab5e22c781a093ee64226766738f625db4ac73b418c64d"
+  },
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "data": {
+    "shape": [
+      871,
+      320
+    ],
+    "label_counts": {
+      "ASD_0": 403,
+      "TD_1": 468
+    },
+    "modality_order": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "Correlation"
+    ],
+    "modality_dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "pheno_columns": {
+      "age": [
+        0,
+        26
+      ],
+      "site": [
+        26,
+        46
+      ],
+      "sex": [
+        46,
+        48
+      ]
+    },
+    "pheno_names": [
+      "AGE_AT_SCAN_[6.47, 8.47)",
+      "AGE_AT_SCAN_[8.47, 10.47)",
+      "AGE_AT_SCAN_[10.47, 12.47)",
+      "AGE_AT_SCAN_[12.47, 14.47)",
+      "AGE_AT_SCAN_[14.47, 16.47)",
+      "AGE_AT_SCAN_[16.47, 18.47)",
+      "AGE_AT_SCAN_[18.47, 20.47)",
+      "AGE_AT_SCAN_[20.47, 22.47)",
+      "AGE_AT_SCAN_[22.47, 24.47)",
+      "AGE_AT_SCAN_[24.47, 26.47)",
+      "AGE_AT_SCAN_[26.47, 28.47)",
+      "AGE_AT_SCAN_[28.47, 30.47)",
+      "AGE_AT_SCAN_[30.47, 32.47)",
+      "AGE_AT_SCAN_[32.47, 34.47)",
+      "AGE_AT_SCAN_[34.47, 36.47)",
+      "AGE_AT_SCAN_[36.47, 38.47)",
+      "AGE_AT_SCAN_[38.47, 40.47)",
+      "AGE_AT_SCAN_[40.47, 42.47)",
+      "AGE_AT_SCAN_[42.47, 44.47)",
+      "AGE_AT_SCAN_[44.47, 46.47)",
+      "AGE_AT_SCAN_[46.47, 48.47)",
+      "AGE_AT_SCAN_[48.47, 50.47)",
+      "AGE_AT_SCAN_[50.47, 52.47)",
+      "AGE_AT_SCAN_[52.47, 54.47)",
+      "AGE_AT_SCAN_[54.47, 56.47)",
+      "AGE_AT_SCAN_[56.47, 58.47)",
+      "SITE_ID_CALTECH",
+      "SITE_ID_CMU",
+      "SITE_ID_KKI",
+      "SITE_ID_LEUVEN_1",
+      "SITE_ID_LEUVEN_2",
+      "SITE_ID_MAX_MUN",
+      "SITE_ID_NYU",
+      "SITE_ID_OHSU",
+      "SITE_ID_OLIN",
+      "SITE_ID_PITT",
+      "SITE_ID_SBL",
+      "SITE_ID_SDSU",
+      "SITE_ID_STANFORD",
+      "SITE_ID_TRINITY",
+      "SITE_ID_UCLA_1",
+      "SITE_ID_UCLA_2",
+      "SITE_ID_UM_1",
+      "SITE_ID_UM_2",
+      "SITE_ID_USM",
+      "SITE_ID_YALE",
+      "SEX_1",
+      "SEX_2"
+    ],
+    "fold_train_sizes": [
+      783,
+      784,
+      784,
+      784,
+      784,
+      784,
+      784,
+      784,
+      784,
+      784
+    ],
+    "fold_test_sizes": [
+      88,
+      87,
+      87,
+      87,
+      87,
+      87,
+      87,
+      87,
+      87,
+      87
+    ]
+  },
+  "paper_audit": {
+    "source_url": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "author_repository": "https://github.com/wanxixi11/SPromptGL",
+    "current_repository": "https://github.com/tangaii/SPromptGL",
+    "findings": "Paper Figure 2/Section 3.3 attributes the largest reported ABIDE ablation change to GFR. Paper Eq. 1 includes a label-graph term not present in the current simple-2 optimized loss. Current B0-A source and Experiment 32 runtime protocol take precedence; historical implementation quirks are preserved.",
+    "provenance": "Current checked-out source hashes and historical runtime hashes are recorded above; author code creates a registered CLIP RN50 model, while current local source uses audited cached prompt features. B0-A comparisons use the current Experiment 32 implementation only."
+  },
+  "qcar": {
+    "ridge_lambda": 1.0,
+    "ridge_standardization": "float64, per fit subset; intercept via centering; standard deviation floor 1",
+    "conditional_model": "C->Q, C->F, then residual Q->residual F; all fitted on outer-train only",
+    "reliability": "3-fold shuffled KFold on outer-train only; OOF MSE C->F vs C+Q->F; gain=(mse_C-mse_CQ)/(mse_C+1e-12); w=clip(max(gain,0),0,1)",
+    "gamma": "single raw scalar initialized 0, straight-through clamp in forward to [0,.25], projected after each optimizer step",
+    "correction": "F_new=F+sign*min_norm(gamma*(w*Fhat_Q),0.15*||F||); sign=-1 for QCAR, PHENO/ANAT/FUNC are copied unchanged",
+    "fitted_without_labels": true,
+    "outer_test_fc_not_used_for_fit": true
+  },
+  "groups": {
+    "G0_B0A": {
+      "direction": null,
+      "reliability": "none",
+      "sign": -1
+    },
+    "G1_SITE_ONLY": {
+      "direction": "site_only",
+      "reliability": "ones",
+      "sign": -1
+    },
+    "G2_UNCONDITIONAL": {
+      "direction": "unconditional",
+      "reliability": "ones",
+      "sign": -1
+    },
+    "G3_NO_RELIABILITY": {
+      "direction": "qcar",
+      "reliability": "ones",
+      "sign": -1
+    },
+    "G4_QCAR_FULL": {
+      "direction": "qcar",
+      "reliability": "reliability",
+      "sign": -1
+    },
+    "G5_WRONG_PAIR": {
+      "direction": "qcar_wrong_pair",
+      "reliability": "reliability",
+      "sign": -1
+    },
+    "G6_FC_ONLY": {
+      "direction": "fc_only",
+      "reliability": "reliability",
+      "sign": -1
+    },
+    "G7_REVERSE_SIGN": {
+      "direction": "qcar_reverse",
+      "reliability": "reliability",
+      "sign": 1
+    }
+  },
+  "gpu_assignment": {
+    "0": [
+      "G0_B0A",
+      "G2_UNCONDITIONAL",
+      "G4_QCAR_FULL",
+      "G6_FC_ONLY"
+    ],
+    "1": [
+      "G1_SITE_ONLY",
+      "G3_NO_RELIABILITY",
+      "G5_WRONG_PAIR",
+      "G7_REVERSE_SIGN"
+    ]
+  },
+  "worker_protocol": "One independent seed-0 process per configuration; folds 1-10 in order with one continuous RNG stream per configuration. Four workers per physical GPU.",
+  "b0a_checkpoint_reused": false,
+  "other_experiment_checkpoint_reused": false,
+  "checkpoint_policy": {
+    "epoch_interval": 25,
+    "atomic": true,
+    "best_state_includes_qcar_gamma": true,
+    "completed_fold_boundary_restores_python_numpy_torch_cpu_cuda_rng": true
+  },
+  "preflight": {
+    "passed": true,
+    "completed_utc": "2026-10-21T15:06:47.914369+00:00",
+    "devices": [
+      {
+        "gpu": 0,
+        "status": "PASS",
+        "seed": 0,
+        "fold": 1,
+        "historical_b0_initial_trunk_exact": true,
+        "historical_b0_initial_rng_exact": true,
+        "registered_pen_constructed": true,
+        "b0_forward_pen_bypassed": true,
+        "clip_model_loads": 1,
+        "prompt_feature_calls": 1,
+        "gamma_zero": {
+          "input_exact": true,
+          "gfr_exact": true,
+          "adjacency_exact": true,
+          "cam_exact": true,
+          "classifier_logp_exact": true,
+          "loss_exact": true,
+          "common_gradients_exact": {
+            "exact": true,
+            "different": [],
+            "max_abs_error": 0.0
+          },
+          "common_first_adam_update_exact": true,
+          "gamma_gradient_at_zero": 0.0002982700243592262,
+          "gamma_gradient_required": true
+        },
+        "mlp_all_grad_none": true,
+        "qcar_optimizer_registration": {
+          "unique": true,
+          "lr": 0.0038,
+          "weight_decay": 0.0
+        },
+        "control_differences": {
+          "G3_only_replaces_w_with_ones": true,
+          "G4_G5_same_weights_and_direction_source": true,
+          "G5_nonzero_sitewise_permutation": true,
+          "G7_only_sign_reversed": true
+        },
+        "max_patient_correction_ratio": 0.0059633017517626286,
+        "checkpoint_roundtrip_exact": true,
+        "statistics_sha256": "6d88813d57bc55f5703b8545d6c56a4a26ec3c54cb71d3be2eaff335c506895d",
+        "test_label_invariance": true,
+        "outer_test_fc_invariance_for_qcar": true,
+        "oof_diagnostics": {
+          "fold": 1,
+          "outer_train_count": 783,
+          "outer_train_indices_sha256": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+          "n_oof_connections_nonzero": 84,
+          "n_oof_connections_positive": 84,
+          "gain_mean": -0.03054257437400134,
+          "gain_median": -0.019881292165192493,
+          "gain_min": -0.35356361951048276,
+          "gain_max": 0.11622362615722805,
+          "reliability_mean": 0.012502118100379853,
+          "reliability_median": 0.0,
+          "reliability_min": 0.0,
+          "reliability_max": 0.11622362615722805,
+          "oof_mse_c_mean": 1.0073486844155037,
+          "oof_mse_cq_mean": 1.0382659484340828,
+          "q_residual_norm_train_mean": 2.1461638100667715,
+          "q_residual_norm_train_p80": 2.618605594294651,
+          "wrong_pair_subject_fraction": 0.9563719862227325,
+          "wrong_pair_site_singletons": 2,
+          "wrong_pair_permutation_sha256": "e24e3324273aeb08c23e273086fc1fca0cf7dd2c63798032b66aaade1623ff0f",
+          "fit_sample_count": 783,
+          "fit_uses_labels": false,
+          "fit_uses_outer_test_fc": false,
+          "statistics_sha256": "6d88813d57bc55f5703b8545d6c56a4a26ec3c54cb71d3be2eaff335c506895d"
+        },
+        "nonzero_gamma_intervention": {
+          "input_changed": true,
+          "non_fc_input_unchanged": true,
+          "gfr_changed": true,
+          "graph_changed": true,
+          "cam_changed": true,
+          "classifier_changed": true,
+          "nonzero_reliability_connections": 84,
+          "gamma_test": 0.25
+        },
+        "qcar_data_fitter_accepts_labels": false
+      },
+      {
+        "gpu": 1,
+        "status": "PASS",
+        "seed": 0,
+        "fold": 1,
+        "historical_b0_initial_trunk_exact": true,
+        "historical_b0_initial_rng_exact": true,
+        "registered_pen_constructed": true,
+        "b0_forward_pen_bypassed": true,
+        "clip_model_loads": 1,
+        "prompt_feature_calls": 1,
+        "gamma_zero": {
+          "input_exact": true,
+          "gfr_exact": true,
+          "adjacency_exact": true,
+          "cam_exact": true,
+          "classifier_logp_exact": true,
+          "loss_exact": true,
+          "common_gradients_exact": {
+            "exact": true,
+            "different": [],
+            "max_abs_error": 0.0
+          },
+          "common_first_adam_update_exact": true,
+          "gamma_gradient_at_zero": 0.0002982700243592262,
+          "gamma_gradient_required": true
+        },
+        "mlp_all_grad_none": true,
+        "qcar_optimizer_registration": {
+          "unique": true,
+          "lr": 0.0038,
+          "weight_decay": 0.0
+        },
+        "control_differences": {
+          "G3_only_replaces_w_with_ones": true,
+          "G4_G5_same_weights_and_direction_source": true,
+          "G5_nonzero_sitewise_permutation": true,
+          "G7_only_sign_reversed": true
+        },
+        "max_patient_correction_ratio": 0.0059633017517626286,
+        "checkpoint_roundtrip_exact": true,
+        "statistics_sha256": "6d88813d57bc55f5703b8545d6c56a4a26ec3c54cb71d3be2eaff335c506895d",
+        "test_label_invariance": true,
+        "outer_test_fc_invariance_for_qcar": true,
+        "oof_diagnostics": {
+          "fold": 1,
+          "outer_train_count": 783,
+          "outer_train_indices_sha256": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+          "n_oof_connections_nonzero": 84,
+          "n_oof_connections_positive": 84,
+          "gain_mean": -0.03054257437400134,
+          "gain_median": -0.019881292165192493,
+          "gain_min": -0.35356361951048276,
+          "gain_max": 0.11622362615722805,
+          "reliability_mean": 0.012502118100379853,
+          "reliability_median": 0.0,
+          "reliability_min": 0.0,
+          "reliability_max": 0.11622362615722805,
+          "oof_mse_c_mean": 1.0073486844155037,
+          "oof_mse_cq_mean": 1.0382659484340828,
+          "q_residual_norm_train_mean": 2.1461638100667715,
+          "q_residual_norm_train_p80": 2.618605594294651,
+          "wrong_pair_subject_fraction": 0.9563719862227325,
+          "wrong_pair_site_singletons": 2,
+          "wrong_pair_permutation_sha256": "e24e3324273aeb08c23e273086fc1fca0cf7dd2c63798032b66aaade1623ff0f",
+          "fit_sample_count": 783,
+          "fit_uses_labels": false,
+          "fit_uses_outer_test_fc": false,
+          "statistics_sha256": "6d88813d57bc55f5703b8545d6c56a4a26ec3c54cb71d3be2eaff335c506895d"
+        },
+        "nonzero_gamma_intervention": {
+          "input_changed": true,
+          "non_fc_input_unchanged": true,
+          "gfr_changed": true,
+          "graph_changed": true,
+          "cam_changed": true,
+          "classifier_changed": true,
+          "nonzero_reliability_connections": 84,
+          "gamma_test": 0.25
+        },
+        "qcar_data_fitter_accepts_labels": false
+      }
+    ]
+  },
+  "decision_thresholds": {
+    "min_g4_acc_gain_vs_g0_pp": 0.23,
+    "g4_sen_noninferiority_pp": -0.5,
+    "g4_must_exceed_g5_acc_and_hard_auc": true,
+    "g4_not_weaker_than_g6_acc_and_hard_auc": true,
+    "qcar_oof_gain_mean_positive": true,
+    "correction_nonzero": true
+  },
+  "workers": {
+    "G0_B0A": {
+      "config": "G0_B0A",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 511.89164043962955,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 6
+      },
+      "started_utc": "2026-10-21T15:00:12.988113+00:00",
+      "completed_utc": "2026-10-21T15:10:50.549366+00:00"
+    },
+    "G1_SITE_ONLY": {
+      "config": "G1_SITE_ONLY",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 484.6510856449604,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:13.270959+00:00",
+      "completed_utc": "2026-10-21T15:14:29.614807+00:00"
+    },
+    "G2_UNCONDITIONAL": {
+      "config": "G2_UNCONDITIONAL",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 540.4931557513773,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:13.973763+00:00",
+      "completed_utc": "2026-10-21T15:15:32.374489+00:00"
+    },
+    "G3_NO_RELIABILITY": {
+      "config": "G3_NO_RELIABILITY",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 497.474942561239,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:13.713905+00:00",
+      "completed_utc": "2026-10-21T15:14:44.981248+00:00"
+    },
+    "G4_QCAR_FULL": {
+      "config": "G4_QCAR_FULL",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 508.8529730066657,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:13.898962+00:00",
+      "completed_utc": "2026-10-21T15:14:59.011835+00:00"
+    },
+    "G5_WRONG_PAIR": {
+      "config": "G5_WRONG_PAIR",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 473.577397685498,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:12.985998+00:00",
+      "completed_utc": "2026-10-21T15:14:25.362683+00:00"
+    },
+    "G6_FC_ONLY": {
+      "config": "G6_FC_ONLY",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 540.8379667215049,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:13.975076+00:00",
+      "completed_utc": "2026-10-21T15:15:33.892709+00:00"
+    },
+    "G7_REVERSE_SIGN": {
+      "config": "G7_REVERSE_SIGN",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 509.00702676922083,
+      "clip_calls": {
+        "clip_load": 1,
+        "prompt_features": 11
+      },
+      "started_utc": "2026-10-21T15:00:12.631133+00:00",
+      "completed_utc": "2026-10-21T15:14:45.951089+00:00"
+    }
+  },
+  "prepared_utc": "2026-10-21T15:05:45.613800+00:00",
+  "zero_fold_startup_repairs": [
+    {
+      "failed_launch_utc": "2026-10-21T14:58:40.882363+00:00",
+      "previous_code_sha256": {
+        "README.md": "b5b031da3d619f39ba2a6d4ccac23fb70f6b4c140e53c07ea0e77982a17777b1",
+        "qcar.py": "b6f7bc89f9b083382536098de2b97040534de938757888db03cb0b8be041332c",
+        "integration.py": "fb869c2a6e0ada2694fab41f6db3d66e5bf18c9ed231fbc10698a8bb1a73ceed",
+        "integration.patch": "4dc7ef8acddb82057880c3f23926ec4f0c324e0eee59dc2fc7837066b5500559",
+        "run.py": "b4eb9c55e9250af42d7b141fabd6750329e1915fe403da2168ef95ddeaa610af"
+      },
+      "reason": "Workers exited before model construction because PyTorch interop thread count was set twice; zero folds/checkpoints existed."
+    }
+  ],
+  "formal_started_utc": "2026-10-21T15:07:03.568383+00:00",
+  "in_progress_repairs": [
+    {
+      "repaired_utc": "2026-10-21T15:05:45.528521+00:00",
+      "previous_code_sha256": {
+        "README.md": "b5b031da3d619f39ba2a6d4ccac23fb70f6b4c140e53c07ea0e77982a17777b1",
+        "qcar.py": "b6f7bc89f9b083382536098de2b97040534de938757888db03cb0b8be041332c",
+        "integration.py": "fb869c2a6e0ada2694fab41f6db3d66e5bf18c9ed231fbc10698a8bb1a73ceed",
+        "integration.patch": "4dc7ef8acddb82057880c3f23926ec4f0c324e0eee59dc2fc7837066b5500559",
+        "run.py": "91d90733503efb833f64641cb9e59d14b48952a91b7737764fe5b25fd5608045"
+      },
+      "checkpoints": {
+        "G0_B0A": {
+          "phase": "EPOCH",
+          "fold": 6,
+          "completed_rows": 5
+        },
+        "G1_SITE_ONLY": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G2_UNCONDITIONAL": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G3_NO_RELIABILITY": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G4_QCAR_FULL": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G5_WRONG_PAIR": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G6_FC_ONLY": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        },
+        "G7_REVERSE_SIGN": {
+          "phase": "EPOCH",
+          "fold": 1,
+          "completed_rows": 0
+        }
+      },
+      "reason": "Fix duplicate diagnostic keys and resume early-stopped epoch checkpoints without running another epoch; training objective and parameter updates are unchanged."
+    }
+  ],
+  "checkpoint_signature_migration": {
+    "migrated_configs": [
+      "G0_B0A",
+      "G1_SITE_ONLY",
+      "G2_UNCONDITIONAL",
+      "G3_NO_RELIABILITY",
+      "G4_QCAR_FULL",
+      "G5_WRONG_PAIR",
+      "G6_FC_ONLY",
+      "G7_REVERSE_SIGN"
+    ],
+    "new_signature_prefixes": {
+      "G0_B0A": "dd7628a273a16a38",
+      "G1_SITE_ONLY": "549a2c3c29fe7aa5",
+      "G2_UNCONDITIONAL": "bdcea2172d3eb44e",
+      "G3_NO_RELIABILITY": "52298ba3eb5bc224",
+      "G4_QCAR_FULL": "9ba9be6a8279e3b3",
+      "G5_WRONG_PAIR": "6f3733a71cecd438",
+      "G6_FC_ONLY": "cf43b88b25418ca9",
+      "G7_REVERSE_SIGN": "c50d4a3f56f84d97"
+    },
+    "migrated_utc": "2026-10-21T15:05:50.874578+00:00",
+    "model_optimizer_rng_and_fold_rows_preserved": true
+  },
+  "source_signature_sha256": "4c10081b4a119b03df9829eed342558cd40ccf9172eddfbbae99710e47c96850",
+  "completed_utc": "2026-10-21T15:15:36.915629+00:00",
+  "gpu_completed_folds": {
+    "0": 40,
+    "1": 40
+  },
+  "decision": {
+    "go": false,
+    "status": "NO-GO",
+    "conditions": {
+      "ACC_and_hard_AUC_above_G0": false,
+      "ACC_gain_at_least_0.23pp": false,
+      "G4_above_G5_on_ACC_and_hard_AUC": false,
+      "G4_not_weaker_than_G6_on_ACC_and_hard_AUC": false,
+      "SEN_ASD_drop_within_0.5pp": true,
+      "nonzero_calibration": true,
+      "positive_mean_OOF_gain": false
+    },
+    "failed_conditions": [
+      "ACC_and_hard_AUC_above_G0",
+      "ACC_gain_at_least_0.23pp",
+      "G4_above_G5_on_ACC_and_hard_AUC",
+      "G4_not_weaker_than_G6_on_ACC_and_hard_AUC",
+      "positive_mean_OOF_gain"
+    ],
+    "g4_mean_oof_gain": -0.06071146646419412,
+    "g4_nonzero_correction_count": 8710
+  },
+  "g0_historical_reproduction": {
+    "initial_parameter_hash_exact_folds": 10,
+    "initial_rng_hash_exact_folds": 10,
+    "best_epoch_exact_folds": 10,
+    "four_metric_exact_folds": 10,
+    "historical_checkpoint_reused": false,
+    "historical_checkpoint_used_for_comparison": false
+  },
+  "formal_wall_seconds": 4066.7861885800958,
+  "wall_clock_seconds": 921.2615759372711,
+  "result_sha256": {
+    "fold_metrics.csv": "d5dfd3ba8f3b2317ba490833ee6a3d53f8e6d6818c7957a1e65836db099e972c",
+    "diagnostics.csv": "b61860eada1db014ddf8314724f469fc3a4f6b4caed6a22729fe58b44da37d90",
+    "summary.json": "17439466487e963cfc2c35651d227f1a7f352358535beed19a239292e529029a",
+    "report.md": "17e35073dd6495eaeb51de0ffcfb6825235300cc6a4dc83863700b6b1f30589e"
+  },
+  "validation": {
+    "fold_rows": 80,
+    "unique_config_fold_pairs": 80,
+    "diagnostics_rows": 80,
+    "folds_per_config": 10,
+    "g0_historical_reproduction": {
+      "initial_parameter_hash_exact_folds": 10,
+      "initial_rng_hash_exact_folds": 10,
+      "best_epoch_exact_folds": 10,
+      "four_metric_exact_folds": 10,
+      "historical_checkpoint_reused": false,
+      "historical_checkpoint_used_for_comparison": false
+    },
+    "current_root_source_hashes_match": true,
+    "input_hashes_match": true,
+    "experiment32_and_audit_hashes_match": true,
+    "original_handoff_prefix_verified": true,
+    "decision": "NO-GO"
+  },
+  "runtime_cleanup": {
+    "completed_epoch_checkpoints_removed": [
+      "G0_B0A.pt",
+      "G1_SITE_ONLY.pt",
+      "G2_UNCONDITIONAL.pt",
+      "G3_NO_RELIABILITY.pt",
+      "G4_QCAR_FULL.pt",
+      "G5_WRONG_PAIR.pt",
+      "G6_FC_ONLY.pt",
+      "G7_REVERSE_SIGN.pt"
+    ],
+    "lock_files_removed": true,
+    "pycache_removed": true,
+    "cleanup_utc": "2026-10-21T15:21:04.498494+00:00"
+  }
+}

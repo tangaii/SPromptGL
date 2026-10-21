@@ -1,0 +1,14 @@
+--- a/network.py
++++ b/network.py
+@@ -102,6 +102,11 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
++        if getattr(self, 'qcar33_b0_bypass', False):
++            x = x.view(bs, -1)
++            attn_embedding = attn.view(bs, -1)
++            output, hidden = self.Outputlayer(x, attn_embedding)
++            return output, hidden, attn_map
+         text_features = self.prompt_text_features
+         text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+         text_features = self.MLP(text_features)
