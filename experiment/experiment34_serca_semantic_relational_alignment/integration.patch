@@ -1,0 +1,118 @@
+--- a/model.py
++++ b/model.py
+@@ -18,6 +18,7 @@
+ from sklearn.metrics import confusion_matrix
+ 
+ from network import *
++import integration
+ from utils import *
+ 
+ 
+@@ -77,6 +78,7 @@
+         
+         self.optimizer_MF = optim.Adam(self.ModalFusion.parameters(), lr=hyperpm.lr, weight_decay=hyperpm.reg)
+         self.ModalFusion.apply(my_weight_init)
++        integration.install(self)
+         
+     def run_epoch(self, mode, iteration_MF=10, iteration_GC=10, end = ''):
+         dev = self.dev
+@@ -136,7 +138,7 @@
+                 all_graph_loss = all_graph_loss + graph_loss
+             all_graph_loss = all_graph_loss/4
+             
+-            prob,_,_ = self.ModalFusion(feat)
++            prob,_,_ = integration.forward_modal(self, feat)
+ 
+             cls_loss = ClsLoss(prob, self.targ, self.trn_idx, self.weight)
+             
+@@ -282,7 +284,7 @@
+             prob, _, attn = self.ModalFusion(feat)
+             
+         else:
+-            prob, fusion_feat, attn = self.ModalFusion(feat)
++            prob, fusion_feat, attn = integration.forward_modal(self, feat)
+             
+         prob = prob[eval_idx]
+         targ = self.targ[eval_idx]
+--- a/network.py
++++ b/network.py
+@@ -90,11 +90,14 @@
+         # expensive inference at every training epoch.
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+         
+-    def forward(self, x):
++    def forward(self, x, serca_payload=None):
+         bs = x.size(0)
+         attn_map = []
+         combine_part = []
+         x, _attn = self.InputLayer(x)
++        if serca_payload is not None:
++            x = self.serca34(x, serca_payload['raw_adjs'],
++                             serca_payload['base_adjs'], serca_payload['normalize_adj'])
+         attn = _attn.mean(dim=1)
+         attn_map.append(attn.detach().cpu().numpy())
+         for i in range(self.n_layer):
+@@ -102,6 +105,11 @@
+             attn = _attn.mean(dim=1)
+             x = self.FeedForward[i](x)
+             attn_map.append(attn.detach().cpu().numpy())
++        if getattr(self, 'serca34_bypass_pen', False):
++            x = x.view(bs, -1)
++            attn_embedding = attn.view(bs, -1)
++            output, hidden = self.Outputlayer(x, attn_embedding)
++            return output, hidden, attn_map
+         text_features = self.prompt_text_features
+         text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+         text_features = self.MLP(text_features)
+@@ -225,6 +233,7 @@
+     def forward(self, x, model_num, label, index):
+         combined_feat = []
+         all_adj = []
++        all_normalized_adjs = []
+         N = len(x[0])
+         new_label = label.clone()
+         new_label[new_label == 0] = -1
+@@ -244,6 +253,7 @@
+             if i==0:
+                 adj = self.GraphConstruct0(x[i])
+                 normalized_adj0 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))
++                normalized_adj_current = normalized_adj0
+                 ALoss = torch.linalg.norm(normalized_adj0 - A).to(f_w.device)
+                 feat0 = self.MessagePassing0(torch.cat(x,dim=1), normalized_adj0)
+                 combined_feat = f_w*feat0+torch.cat(x,dim=1)
+@@ -251,6 +261,7 @@
+             elif i==1:
+                 adj = self.GraphConstruct1(x[i])
+                 normalized_adj1 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))
++                normalized_adj_current = normalized_adj1
+                 ALoss = torch.linalg.norm(normalized_adj1 - A).to(f_w.device) + ALoss
+                 feat1 = self.MessagePassing1(torch.cat(x,dim=1), normalized_adj1)
+                 combined_feat = f_w*feat1+torch.cat(x,dim=1)
+@@ -258,6 +269,7 @@
+             elif i==2:
+                 adj = self.GraphConstruct2(x[i])
+                 normalized_adj2 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))
++                normalized_adj_current = normalized_adj2
+                 ALoss = torch.linalg.norm(normalized_adj2 - A).to(f_w.device) + ALoss
+                 feat3 = self.MessagePassing2(torch.cat(x,dim=1), normalized_adj2)
+                 combined_feat = f_w*feat3+combined_feat
+@@ -266,11 +278,19 @@
+             elif i==3:
+                 adj = self.GraphConstruct3(x[i])
+                 normalized_adj3 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))
++                normalized_adj_current = normalized_adj3
+                 ALoss = torch.linalg.norm(normalized_adj3 - A).to(f_w.device) + ALoss
+                 feat3 = self.MessagePassing3(torch.cat(x,dim=1), normalized_adj3)
+                 combined_feat = f_w*feat3+combined_feat
+             all_adj.append(adj)
++            all_normalized_adjs.append(normalized_adj_current)
+                    
++        if self.training:
++            self.last_raw_adjs = all_adj
++            self.last_normalized_adjs = all_normalized_adjs
++        else:
++            self.last_raw_adjs = [value.detach() for value in all_adj]
++            self.last_normalized_adjs = [value.detach() for value in all_normalized_adjs]
+         return combined_feat , all_adj, ALoss/model_num
+     
+     
