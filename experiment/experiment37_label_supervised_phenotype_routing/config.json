@@ -1,0 +1,32 @@
+{
+  "experiment": "Experiment 37 — LSPCR: Label-Supervised Phenotype-Conditioned Patient Routing",
+  "seed": 0,
+  "folds": {"n_splits": 10, "shuffle": true, "random_state": 10,
+    "checkpoint_selection": "val_idx=test_idx; replace only on strict ACC increase; ties keep earliest epoch"},
+  "data": {"n": 871, "ASD_label": 0, "TD_label": 1,
+    "features": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+    "identity": "Experiment11 verified SUB_ID mapping; never source row order"},
+  "encoder": {"id": "FremyCompany/BioLORD-2023", "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "pooling": "attention-mask mean pooling + L2 normalization", "dimension": 768,
+    "fine_tuned": false, "source": "validated Experiment36 fold caches"},
+  "condition": {"router": "symmetric four-graph PCPR", "key_dim": 64,
+    "beta_max": 0.25, "beta_initial": 0.10,
+    "weight_decay": 0.0, "hybrid": "HYBRID[:,0]=modal_full[:,0]; HYBRID[:,1:]=modal_only[:,1:]"},
+  "optimization": {"epochs": 450, "early_stopping": 200, "lr": 0.0038,
+    "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2,
+    "nlayer": 1, "GC_mode": "weighted-cosine", "MP_mode": "GCN",
+    "MF_mode": "concat", "mode": "simple-2", "threshold": 0.9,
+    "loss": "ClsLoss + mean(4 GraphConstructLoss) + lambda_relation*relation_loss; ALoss excluded"},
+  "supervision": {"same_soft_target": 0.9, "different_soft_target": 0.1,
+    "bce_class_balance": "mean same BCE and different BCE equally",
+    "ranking_margin": 0.5, "ranking_hard_k": 4,
+    "lambda_default": 0.10, "lambda_low": 0.03, "lambda_high": 0.30,
+    "pair_scope": "train-train only; exclude self; no held-out label enters sampling/loss",
+    "G12": "raw GraphLearn BCE only on existing thresholded train-train edges"},
+  "groups": {
+    "GPU0": ["G00_T0_REPLAY", "G02_FULL_SUPPORT_BCE", "G04_FULL_ALL_BCE", "G06_HYBRID_RANK", "G08_HYBRID_ALL_BCE_HIGH", "G10_HYBRID_AUX_LABEL_SHUFFLE", "G12_RAW_GRAPH_LABEL_SUP"],
+    "GPU1": ["G01_HYBRID_BASE", "G03_HYBRID_SUPPORT_BCE", "G05_HYBRID_ALL_BCE", "G07_HYBRID_ALL_BCE_LOW", "G09_HYBRID_TEXT_SHUFFLE", "G11_HYBRID_NUMERIC_BCE", "G13_HYBRID_SITE_BALANCED"]
+  },
+  "metrics": ["ACC", "Hard-AUC", "SPE-TD", "SEN-ASD"],
+  "historical_protocol_limits": ["val=test checkpoint selection", "pre-CV RFE and preprocessing", "871-node transductive GFR"]
+}

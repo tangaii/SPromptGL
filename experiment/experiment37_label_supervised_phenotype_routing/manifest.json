@@ -1,0 +1,608 @@
+{
+  "experiment": "Experiment 37 — LSPCR",
+  "status": "COMPLETE",
+  "registered_groups": [
+    "G00_T0_REPLAY",
+    "G01_HYBRID_BASE",
+    "G02_FULL_SUPPORT_BCE",
+    "G03_HYBRID_SUPPORT_BCE",
+    "G04_FULL_ALL_BCE",
+    "G05_HYBRID_ALL_BCE",
+    "G06_HYBRID_RANK",
+    "G07_HYBRID_ALL_BCE_LOW",
+    "G08_HYBRID_ALL_BCE_HIGH",
+    "G09_HYBRID_TEXT_SHUFFLE",
+    "G10_HYBRID_AUX_LABEL_SHUFFLE",
+    "G11_HYBRID_NUMERIC_BCE",
+    "G12_RAW_GRAPH_LABEL_SUP",
+    "G13_HYBRID_SITE_BALANCED"
+  ],
+  "completed_groups": [
+    "G00_T0_REPLAY",
+    "G01_HYBRID_BASE",
+    "G02_FULL_SUPPORT_BCE",
+    "G03_HYBRID_SUPPORT_BCE",
+    "G04_FULL_ALL_BCE",
+    "G05_HYBRID_ALL_BCE",
+    "G06_HYBRID_RANK",
+    "G07_HYBRID_ALL_BCE_LOW",
+    "G08_HYBRID_ALL_BCE_HIGH",
+    "G09_HYBRID_TEXT_SHUFFLE",
+    "G10_HYBRID_AUX_LABEL_SHUFFLE",
+    "G11_HYBRID_NUMERIC_BCE",
+    "G12_RAW_GRAPH_LABEL_SUP",
+    "G13_HYBRID_SITE_BALANCED"
+  ],
+  "registered_folds": 140,
+  "completed_folds": 140,
+  "gpu_folds": {
+    "0": 70,
+    "1": 70
+  },
+  "gpu_assignment": {
+    "0": [
+      "G00_T0_REPLAY",
+      "G02_FULL_SUPPORT_BCE",
+      "G04_FULL_ALL_BCE",
+      "G06_HYBRID_RANK",
+      "G08_HYBRID_ALL_BCE_HIGH",
+      "G10_HYBRID_AUX_LABEL_SHUFFLE",
+      "G12_RAW_GRAPH_LABEL_SUP"
+    ],
+    "1": [
+      "G01_HYBRID_BASE",
+      "G03_HYBRID_SUPPORT_BCE",
+      "G05_HYBRID_ALL_BCE",
+      "G07_HYBRID_ALL_BCE_LOW",
+      "G09_HYBRID_TEXT_SHUFFLE",
+      "G11_HYBRID_NUMERIC_BCE",
+      "G13_HYBRID_SITE_BALANCED"
+    ]
+  },
+  "source_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "data_audit": {
+    "subjects": 871,
+    "unique_ids": 871,
+    "ordered_subject_id_sha256": "864cc867e448393f2cb91ade025a768d859a8dc5d3a01468df61896127c1a8f0",
+    "mapping_status_counts": {
+      "VERIFIED": 871
+    },
+    "mapping_join_source": "Experiment11 verified subject_row_mapping.csv; no row-order assumption",
+    "label_audit_only": {
+      "ASD_label0": 403,
+      "TD_label1": 468,
+      "dx_group_matches_processed_label": true
+    },
+    "processed_shape": [
+      871,
+      321
+    ],
+    "feature_shape": [
+      871,
+      320
+    ],
+    "modal_dims": {
+      "PHENO": 48,
+      "ANAT": 6,
+      "FUNC": 10,
+      "CORR": 256
+    },
+    "pheno_qc_max_abs_reconstruction_error": 7.105427357601002e-15,
+    "clinical_field_coverage": {
+      "AGE_AT_SCAN": {
+        "valid": 871,
+        "missing": 0
+      },
+      "SEX": {
+        "valid": 871,
+        "missing": 0
+      },
+      "FIQ": {
+        "valid": 811,
+        "missing": 60
+      },
+      "VIQ": {
+        "valid": 721,
+        "missing": 150
+      },
+      "PIQ": {
+        "valid": 735,
+        "missing": 136
+      },
+      "HANDEDNESS_CATEGORY": {
+        "valid": 598,
+        "missing": 273
+      },
+      "anat_cnr": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_efc": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_fber": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_fwhm": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_qi1": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_snr": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_efc": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_fber": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_fwhm": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_dvars": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_outlier": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_quality": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_mean_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_num_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_perc_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_gsr": {
+        "valid": 871,
+        "missing": 0
+      }
+    },
+    "forbidden_fields_used_in_text": [],
+    "inputs_sha256": {
+      "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+      "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+      "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv": "009f01a89697113e5375ded4fbcff4c85e89a4daa6d13e63c21ae5d57dda0865",
+      "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/subject_row_mapping.csv": "213d31cca4d6843c8a4514471f17291a23b5cfb05a3f5e9bb40e2b78fed1e859",
+      "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/feature_validation.csv": "a34e29903909900fbc8e9234b26178ae3691229201b2ca15007c603f7cb79c1f"
+    }
+  },
+  "cache_validation": {
+    "status": "PASS",
+    "encoder_id": "FremyCompany/BioLORD-2023",
+    "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "folds": [
+      {
+        "fold": 1,
+        "train_count": 783,
+        "test_count": 88,
+        "cache_sha256": "5db9ff38f3a03a82887125b8acb55ce1a03673cd50267bcb040379b1155809f9",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 2,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "b101a4957f1aa9a748b7d449815c0f33312fe7f6ca1b9fdd3f3eec0b158a3ffb",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 3,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "2e69d8a953cd4462a82e31d8d7bedfb2e739fcb01200e0eb4af40f52d810d85f",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 4,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "69ef14911dc0a9901fab41352a490beef99cd077f37944a8aabfc5dfe326fe9c",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 5,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "d7b7fc4706bd06a1ff85cf4b558e86930158b529658d60d21d365d5ff2a647f4",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 6,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "99fc6e18bbd0ccb2cf4cd217211fbc54cd6e3ced03e8b1b2a758bd0f5e189ecb",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 7,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "5b25d6ee455359a7b30a5306685f78c84eede5f653d101f25cfb542d220c81e2",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 8,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "a4bd199372f5d3090abe4f88c2975fe54d5af148cafe206668ece3918a9dadb4",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 9,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "36db9f4b49f61bb939560ebc51d0519aec8724ed75d02e677adb7ac8bbdaaa57",
+        "hybrid_identity": "EXACT"
+      },
+      {
+        "fold": 10,
+        "train_count": 784,
+        "test_count": 87,
+        "cache_sha256": "c26c0ad772c41dbfd2523e92535ecfc703ee344c0509890f72db88f89fae1e11",
+        "hybrid_identity": "EXACT"
+      }
+    ]
+  },
+  "config_sha256": "265ea74c7bac68232ac0051ca0658545a540819bd09f781d29b91c713239434b",
+  "code_sha256": {
+    "phenotype.py": "da591fafedc701969bd89ebe371739fcd7c64460e1f2ed64ad73cc0b7035dc39",
+    "audit_initial_gradients.py": "05c66a160395a5ba471f77f3b2fe0a34bf8d15360df59910bbe6099757b9ceb4",
+    "router.py": "31cd39eb308d605c5ccc813ffca376c1df7e653f42712935ce54b51e67a02f6b",
+    "run.py": "dcc7c40feb8feedb01ed657c3b7b896f1db0c2e164511a214b4fe81dedb6d2fa",
+    "integration.py": "48e1209e2a630f5d4e42b4e196b364b2edf8ac7fc3b6ce9e1c1119330c82a352"
+  },
+  "cache_sha256": {
+    "fold_01_conditions.npz": "5db9ff38f3a03a82887125b8acb55ce1a03673cd50267bcb040379b1155809f9",
+    "fold_02_conditions.npz": "b101a4957f1aa9a748b7d449815c0f33312fe7f6ca1b9fdd3f3eec0b158a3ffb",
+    "fold_03_conditions.npz": "2e69d8a953cd4462a82e31d8d7bedfb2e739fcb01200e0eb4af40f52d810d85f",
+    "fold_04_conditions.npz": "69ef14911dc0a9901fab41352a490beef99cd077f37944a8aabfc5dfe326fe9c",
+    "fold_05_conditions.npz": "d7b7fc4706bd06a1ff85cf4b558e86930158b529658d60d21d365d5ff2a647f4",
+    "fold_06_conditions.npz": "99fc6e18bbd0ccb2cf4cd217211fbc54cd6e3ced03e8b1b2a758bd0f5e189ecb",
+    "fold_07_conditions.npz": "5b25d6ee455359a7b30a5306685f78c84eede5f653d101f25cfb542d220c81e2",
+    "fold_08_conditions.npz": "a4bd199372f5d3090abe4f88c2975fe54d5af148cafe206668ece3918a9dadb4",
+    "fold_09_conditions.npz": "36db9f4b49f61bb939560ebc51d0519aec8724ed75d02e677adb7ac8bbdaaa57",
+    "fold_10_conditions.npz": "c26c0ad772c41dbfd2523e92535ecfc703ee344c0509890f72db88f89fae1e11"
+  },
+  "result_sha256": {
+    "fold_metrics.csv": "fb8416e2a6091bc8e4cdc96cc415567bbdc74845ff5bdd74659887d03bfdb717",
+    "diagnostics.csv": "a6632965805ade0ff933aba00cce768fef90d6388e9ea3f0df10e33e22305949",
+    "summary.json": "ebab6353e477a37b234eff2d409bb904e1184e88e375a38f6701e9d3e3167334",
+    "report.md": "c7d179551f47d20b5f487e9cb549a654732a007754913b7b0be6c63dc45e5d5d",
+    "initial_aux_gradient_audit.csv": "ca2cd2b8644119abc32ca2db4f78fcbfaebbf8641999bcf40b6f5868d4ec5605",
+    "initial_aux_gradient_audit_gpu0.csv": "be8e3894c2da2636a85cde251bfa718afc9b9b02dcf418bf2e11ff422710b626",
+    "initial_aux_gradient_audit_gpu1.csv": "6bc94af8539c68c60ec2e3e740109a020e02bd4d38c2f3173b1ae956c08b6471",
+    "text_cosine_audit.csv": "2125abae9e2edfff634dda9769c4a0f98127066ec631c94f49a391f04551bdf1"
+  },
+  "task_state_sha256": {
+    "G00_T0_REPLAY.json": "13d2079da41a9bc9bbba3a1632d2a0dca61bb8cdc107f530fead10284136d9c9",
+    "G01_HYBRID_BASE.json": "b69bbc813a0cf4e04c30be4bec0d9b941a4cf6051330b5af5f2ba26f0ae67e4c",
+    "G02_FULL_SUPPORT_BCE.json": "3f3123ff30529a51718dcb0da2df4a0797910ea2f39d396bdaf91f76d2b28d4a",
+    "G03_HYBRID_SUPPORT_BCE.json": "1e8545b2a29f1369047e18eff0feb6a8337d03c9edc2a5af26657b4b09390356",
+    "G04_FULL_ALL_BCE.json": "e4e22ff8f2f3c881faa1f5a909d2ea6a4bb886d52c74f7a25b44bd475d6fff73",
+    "G05_HYBRID_ALL_BCE.json": "9138092cf7ab6b791e3a79f97118ab5df8a454e3dd241ce9b6b0de1bb8602ee6",
+    "G06_HYBRID_RANK.json": "0176c02201be30f4fc535bb7206248874f2da2b66709a04641a6699ac8c07579",
+    "G07_HYBRID_ALL_BCE_LOW.json": "02fe21d09f31408625f4f5bc6441fa84e69cf0be52cee3aab7f5cf2f20cef2ec",
+    "G08_HYBRID_ALL_BCE_HIGH.json": "df7018728086233109b4a638f18e5b279f3809e1cc0a0a035d4dba7fa63d4b78",
+    "G09_HYBRID_TEXT_SHUFFLE.json": "44095b7216a28248bdb395a4c6ebd2d213dd54d7e50bbc56c6ab03cab2182d85",
+    "G10_HYBRID_AUX_LABEL_SHUFFLE.json": "a55072b9540808aa99e7db786f636cca7f10385c053168b286a7fd29c0adbbc1",
+    "G11_HYBRID_NUMERIC_BCE.json": "734589da9166a0edcab9546a20f6043b4c2b0bc694504098c2e949d4777c7b57",
+    "G12_RAW_GRAPH_LABEL_SUP.json": "2c9b99a38fbef879e0c185911753c639127bf42f2e214a0e7348c8b4d77dd270",
+    "G13_HYBRID_SITE_BALANCED.json": "ff2c5c082b416f1309ec58d405940effafa27523f44168ee460740f9cf357b50"
+  },
+  "checkpoint_sha256": {
+    "G00_T0_REPLAY.pt": "07c04d601b30441f377a9b4823873302edbc3acfd3e59dcafe3080ca07fc0373",
+    "G01_HYBRID_BASE.pt": "032a09f7dacb5b0aa3862dfd02e3cbdd51366e9561d0ce20d82407c028c493ac",
+    "G02_FULL_SUPPORT_BCE.pt": "b6b7726bc20a5de7283af8d7000fdf62cb9dea36ea9afc98ea509fd99fd1824d",
+    "G03_HYBRID_SUPPORT_BCE.pt": "be8281471ece7fe4619192ae7c77b309a568c014713df2495cc42ad540c4c8f3",
+    "G04_FULL_ALL_BCE.pt": "51fc610c3ea995c2fdec4b4c3d0a837ebbc2510d43c1c34165c2f9255394672b",
+    "G05_HYBRID_ALL_BCE.pt": "0dcc448bd1acf183adb25d04c801b16efc2324064b5b28fafd3f708da46ae0c1",
+    "G06_HYBRID_RANK.pt": "085b056742d3b5605f153e2fb7779ccbf88b4537040c913a6155141c20e15c16",
+    "G07_HYBRID_ALL_BCE_LOW.pt": "e0706418bbdc25e97dc51e01a15d1bce78fdbcd4dc39aa7a59e1662b66230acf",
+    "G08_HYBRID_ALL_BCE_HIGH.pt": "964e66c58cd4dedbaf820a01cca76b678640cdcf08067e1f2f011d96720c3b53",
+    "G09_HYBRID_TEXT_SHUFFLE.pt": "ea0f9875d948c4eb8c4cfc04e73ba5f4ce0847de44ac511ccd0af612b096853a",
+    "G10_HYBRID_AUX_LABEL_SHUFFLE.pt": "608705dc8f5f497f374c74a512cd945a9622ae8c2d61c0fc98c4a5af9cf7ecbb",
+    "G11_HYBRID_NUMERIC_BCE.pt": "b908ff11250feb73e8ed31adcc1b0d2ff49825f9ba996627566a8bf75c70468a",
+    "G12_RAW_GRAPH_LABEL_SUP.pt": "2d15d09abbc243e3b8f85c2eecfdee076a64944f0b23a237cd53edb86c3533d3",
+    "G13_HYBRID_SITE_BALANCED.pt": "ac3c063fbfda382516e371b92d837f68c08cc2f1a409452349a105deb2bee871"
+  },
+  "rng_entry_sha256": "ae73261cff92f8b7776a2201202b0842aa5aa1dfb98ad96c0ac1fc09992a6395",
+  "encoder": {
+    "model_id": "FremyCompany/BioLORD-2023",
+    "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "pooling": "attention-mask mean pooling + L2 normalization",
+    "frozen": true
+  },
+  "license_attestation": {
+    "umls_valid": true,
+    "snomed_ct_valid": true,
+    "confirmed_by_user": true,
+    "confirmation_basis": "User confirmed active project/institution licenses; no license token stored",
+    "encoder": "FremyCompany/BioLORD-2023",
+    "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f"
+  },
+  "g00_e36_t0_replay": {
+    "status": "MATCH",
+    "fold_checks": {
+      "acc": true,
+      "hard_auc": true,
+      "sen_asd": true,
+      "spe_td": true,
+      "best_epoch": true,
+      "initial_parameter_sha256": true,
+      "initial_rng_sha256": true,
+      "asd_tp": true,
+      "asd_fn": true,
+      "td_fp": true,
+      "td_tn": true
+    },
+    "reference": "Experiment36 T0_FOUR_SYM_TEXT",
+    "current": "G00_T0_REPLAY"
+  },
+  "initial_auxiliary_gradient_audit": {
+    "rows": 120,
+    "supervised_groups": {
+      "G02_FULL_SUPPORT_BCE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 51483.9,
+        "aux_query_grad_mean": 4.6725102583877744e-05,
+        "aux_query_grad_min": 3.865659527946264e-05,
+        "aux_key_grad_mean": 4.4996655196882786e-05,
+        "aux_key_grad_min": 3.735272912308574e-05,
+        "total_query_grad_mean": 5.336198273653281e-06,
+        "total_key_grad_mean": 5.202411648497218e-06,
+        "test_pair_count_max": 0
+      },
+      "G03_HYBRID_SUPPORT_BCE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 51483.9,
+        "aux_query_grad_mean": 2.8616614872589708e-05,
+        "aux_query_grad_min": 2.5135897885775197e-05,
+        "aux_key_grad_mean": 2.6951101608574392e-05,
+        "aux_key_grad_min": 2.448935993015766e-05,
+        "total_query_grad_mean": 3.1378945323012885e-06,
+        "total_key_grad_mean": 2.9598264291053057e-06,
+        "test_pair_count_max": 0
+      },
+      "G04_FULL_ALL_BCE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 3.071406717936043e-05,
+        "aux_query_grad_min": 2.6525000066612847e-05,
+        "aux_key_grad_mean": 3.060939325223444e-05,
+        "aux_key_grad_min": 2.730702362896409e-05,
+        "total_query_grad_mean": 4.0605075810162815e-06,
+        "total_key_grad_mean": 4.113528166271862e-06,
+        "test_pair_count_max": 0
+      },
+      "G05_HYBRID_ALL_BCE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 1.2947449249622878e-05,
+        "aux_query_grad_min": 1.0380741514381953e-05,
+        "aux_key_grad_mean": 1.2834565495722927e-05,
+        "aux_key_grad_min": 1.0535067303862888e-05,
+        "total_query_grad_mean": 1.7826360249273422e-06,
+        "total_key_grad_mean": 1.7549809172123787e-06,
+        "test_pair_count_max": 0
+      },
+      "G06_HYBRID_RANK": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 25084.8,
+        "aux_query_grad_mean": 0.005937277339398779,
+        "aux_query_grad_min": 0.0041264710016548,
+        "aux_key_grad_mean": 0.00602624602615828,
+        "aux_key_grad_min": 0.0043350961059331,
+        "total_query_grad_mean": 0.0005937429290497301,
+        "total_key_grad_mean": 0.0006026337447110101,
+        "test_pair_count_max": 0
+      },
+      "G07_HYBRID_ALL_BCE_LOW": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 1.2947449249622878e-05,
+        "aux_query_grad_min": 1.0380741514381953e-05,
+        "aux_key_grad_mean": 1.2834565495722927e-05,
+        "aux_key_grad_min": 1.0535067303862888e-05,
+        "total_query_grad_mean": 1.2335977089605875e-06,
+        "total_key_grad_mean": 1.2097547028133704e-06,
+        "test_pair_count_max": 0
+      },
+      "G08_HYBRID_ALL_BCE_HIGH": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 1.2947449249622878e-05,
+        "aux_query_grad_min": 1.0380741514381953e-05,
+        "aux_key_grad_mean": 1.2834565495722927e-05,
+        "aux_key_grad_min": 1.0535067303862888e-05,
+        "total_query_grad_mean": 4.1043146211450224e-06,
+        "total_key_grad_mean": 4.059353022967116e-06,
+        "test_pair_count_max": 0
+      },
+      "G09_HYBRID_TEXT_SHUFFLE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 1.0490302793186857e-05,
+        "aux_query_grad_min": 7.95407595433062e-06,
+        "aux_key_grad_mean": 1.0420641865493963e-05,
+        "aux_key_grad_min": 7.942520824144594e-06,
+        "total_query_grad_mean": 1.8143438069273544e-06,
+        "total_key_grad_mean": 1.7359265712002525e-06,
+        "test_pair_count_max": 0
+      },
+      "G10_HYBRID_AUX_LABEL_SHUFFLE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 1.0968954165946343e-05,
+        "aux_query_grad_min": 6.665560249530245e-06,
+        "aux_key_grad_mean": 1.101549073609931e-05,
+        "aux_key_grad_min": 6.571438007085817e-06,
+        "total_query_grad_mean": 1.6434596034287098e-06,
+        "total_key_grad_mean": 1.612343436363517e-06,
+        "test_pair_count_max": 0
+      },
+      "G11_HYBRID_NUMERIC_BCE": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 1227430.8,
+        "aux_query_grad_mean": 3.948709127143957e-05,
+        "aux_query_grad_min": 3.593457950046286e-05,
+        "aux_key_grad_mean": 3.990753102698363e-05,
+        "aux_key_grad_min": 3.6199238820699975e-05,
+        "total_query_grad_mean": 5.054898792877793e-06,
+        "total_key_grad_mean": 5.078620506537845e-06,
+        "test_pair_count_max": 0
+      },
+      "G12_RAW_GRAPH_LABEL_SUP": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 51483.9,
+        "aux_query_grad_mean": 0.0,
+        "aux_query_grad_min": 0.0,
+        "aux_key_grad_mean": 0.0,
+        "aux_key_grad_min": 0.0,
+        "total_query_grad_mean": 0.0,
+        "total_key_grad_mean": 0.0,
+        "test_pair_count_max": 0,
+        "graph_p_grad_mean_by_modality": [
+          0.004808812006376684,
+          0.20991893410682677,
+          0.18615943491458892,
+          0.3541252315044403
+        ],
+        "graph_p_grad_min_by_modality": [
+          0.0028197087813168764,
+          0.14863888919353485,
+          0.16614562273025513,
+          0.33769261837005615
+        ]
+      },
+      "G13_HYBRID_SITE_BALANCED": {
+        "folds": 10,
+        "aux_pairs_mean_per_four_modalities": 98734.0,
+        "aux_query_grad_mean": 4.595195496222004e-05,
+        "aux_query_grad_min": 3.759369428735226e-05,
+        "aux_key_grad_mean": 4.714772912848275e-05,
+        "aux_key_grad_min": 3.7014495319454e-05,
+        "total_query_grad_mean": 4.738645611723769e-06,
+        "total_key_grad_mean": 4.8370170134148795e-06,
+        "test_pair_count_max": 0
+      }
+    },
+    "all_train_only_pair_counts_zero_test_pairs": true,
+    "note": "One disposable first-step replay per group/fold with the saved E36 fold-entry RNG; formal checkpoints and metrics were not changed."
+  },
+  "mechanism_diagnostics": {
+    "G05_initial_aux_qk_gradients_positive_10_of_10": true,
+    "G05_qk_parameters_received_training_gradients": true,
+    "G05_final_relation_loss_mean": 0.6865590631961822,
+    "G05_real_vs_mismatched_text_test_label_flip_fraction": 0.0,
+    "G05_real_vs_mismatched_text_mean_absolute_logit_change": 5.579754387863289e-07,
+    "G05_condition_off_test_label_flip_fraction": 0.0,
+    "G05_edge_effect_by_modality": [
+      {
+        "modality": "PHENO",
+        "beta_mean": 0.10299749597907067,
+        "same_true_score_mean": 0.07165593691170216,
+        "different_true_score_mean": -0.07265491336584091,
+        "same_true_edge_multiplier": 1.0064982414245605,
+        "different_true_edge_multiplier": 0.9941093683242798,
+        "same_minus_different_multiplier": 0.012388873100280761,
+        "text_cosine_qk_score_spearman": 0.06568692986418406,
+        "mean_absolute_edge_weight_change": 0.017870471626520158
+      },
+      {
+        "modality": "ANAT",
+        "beta_mean": 0.10299749597907067,
+        "same_true_score_mean": 0.0010792904067784548,
+        "different_true_score_mean": -0.0016141026339028032,
+        "same_true_edge_multiplier": 1.000123929977417,
+        "different_true_edge_multiplier": 0.9998435556888581,
+        "same_minus_different_multiplier": 0.00028037428855895994,
+        "text_cosine_qk_score_spearman": 0.07010420769074589,
+        "mean_absolute_edge_weight_change": 0.004077500686980784
+      },
+      {
+        "modality": "FUNC",
+        "beta_mean": 0.10299749597907067,
+        "same_true_score_mean": 0.000699671415350167,
+        "different_true_score_mean": -0.0007511314724979457,
+        "same_true_edge_multiplier": 1.0000745892524718,
+        "different_true_edge_multiplier": 0.9999241590499878,
+        "same_minus_different_multiplier": 0.00015043020248413087,
+        "text_cosine_qk_score_spearman": 0.1390693894793727,
+        "mean_absolute_edge_weight_change": 0.0018087913747876882
+      },
+      {
+        "modality": "CORR",
+        "beta_mean": 0.10299749597907067,
+        "same_true_score_mean": 8.196624012271058e-05,
+        "different_true_score_mean": -1.3681934797205031e-05,
+        "same_true_edge_multiplier": 1.0000095605850219,
+        "different_true_edge_multiplier": 0.9999996900558472,
+        "same_minus_different_multiplier": 9.870529174804687e-06,
+        "text_cosine_qk_score_spearman": 0.02965070878591502,
+        "mean_absolute_edge_weight_change": 0.0009388213919010013
+      }
+    ],
+    "G05_four_graph_source_fusion_weights_mean": [
+      0.24995601773262024,
+      0.2500689193606377,
+      0.24998040944337846,
+      0.24999464452266693
+    ],
+    "G05_condition_parameter_update_norms_mean": {
+      "gfr.conditioner.query.weight": 50.42789306640625,
+      "gfr.conditioner.key.weight": 50.709543228149414,
+      "gfr.conditioner.beta_raw": 0.0837151437997818
+    },
+    "G09_patient_text_rows_changed_mean": 828.6,
+    "G09_patient_text_fixed_points_mean": 42.4,
+    "G10_auxiliary_train_labels_changed_fraction_mean": 0.4791415800036489,
+    "G12_raw_graph_p_gradient_mean_by_modality": [
+      0.004808812006376684,
+      0.20991893410682677,
+      0.18615943491458892,
+      0.3541252315044403
+    ]
+  },
+  "dispatch_state": {
+    "status": "COMPLETE",
+    "elapsed_seconds": 2045.3055624961853,
+    "recovered_failed_group": "G09_HYBRID_TEXT_SHUFFLE"
+  },
+  "decision": "NO-GO",
+  "elapsed_seconds": 2045.3055624961853,
+  "handoff_status": "ROOT_HANDOFF_NOT_UPDATED_OSSFS_WRITE_FAILURE",
+  "handoff_append_path": "/tmp/SPromptGL-E37-LSPCR-stage/experiment/experiment37_label_supervised_phenotype_routing/handoff_append.md",
+  "handoff_append_sha256": "6a6c7f32fe5e36dec7c085212da0520d600874e6585d7824e15a9f9aad86541c",
+  "handoff_original_bytes": 305210,
+  "handoff_original_sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+  "artifact_directory": "/tmp/SPromptGL-E37-LSPCR-stage/experiment/experiment37_label_supervised_phenotype_routing",
+  "runtime_directory": "/tmp/SPromptGL-E37-LSPCR-stage/experiment/experiment37_label_supervised_phenotype_routing/.runtime"
+}
