@@ -1,0 +1,56 @@
+{
+  "experiment": "Experiment 36 — PCPR: Phenotype-Conditioned Patient Relational Routing",
+  "seed": 0,
+  "folds": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "selection": "val_idx=test_idx",
+    "best_checkpoint": "strict ACC increase; ties retain earliest epoch"
+  },
+  "data": {
+    "subjects": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "features": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+    "phenotype_fields": ["AGE_AT_SCAN", "SEX", "FIQ", "VIQ", "PIQ", "HANDEDNESS_CATEGORY"],
+    "forbidden_text_fields": ["DX_GROUP", "DSM_IV_TR", "SUB_IN_SMP", "ADOS*", "ADI-R*", "SRS*", "SCQ*"]
+  },
+  "model": {
+    "threshold": 0.9,
+    "shared_gcn_layers": 2,
+    "gcn_width": 320,
+    "condition_dim": 768,
+    "query_key_dim": 64,
+    "beta_max": 0.25,
+    "beta_initial": 0.10,
+    "condition_weight_decay": 0.0,
+    "propagation_normalization": "row stochastic after self-loop; B0 retains original symmetric normalize_adj"
+  },
+  "training": {
+    "epochs": 450,
+    "early_stopping_patience": 200,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nlayer": 1,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "mode": "simple-2",
+    "loss": "ClsLoss + mean(GraphConstructLoss for four raw graphs); ALoss excluded"
+  },
+  "text_encoder": {
+    "model_id": "FremyCompany/BioLORD-2023",
+    "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "pooling": "attention-mask mean pooling followed by L2 normalization",
+    "max_length": 512,
+    "license_gate": "require confirmed UMLS and SNOMED CT licensing before download/use"
+  },
+  "groups": {
+    "GPU0": ["B0_ORIGINAL_B0A", "B2_ONE_GRAPH_BASE", "N0_FOUR_SYM_NUMERIC", "N2_ONE_SYM_NUMERIC", "T0_FOUR_SYM_TEXT", "T2_ONE_SYM_TEXT", "S0_FOUR_SYM_SHUFFLED", "S2_ONE_SYM_SHUFFLED", "C0_FOUR_SYM_CONSTANT", "H0_FOUR_SYM_SHARED_CLINICAL", "M0_FOUR_SYM_MODAL_ONLY"],
+    "GPU1": ["B1_FOUR_GRAPH_BASE", "B3_CORR_ONLY_BASE", "N1_FOUR_DIR_NUMERIC", "N3_ONE_DIR_NUMERIC", "T1_FOUR_DIR_TEXT", "T3_ONE_DIR_TEXT", "S1_FOUR_DIR_SHUFFLED", "S3_ONE_DIR_SHUFFLED", "C1_ONE_SYM_CONSTANT", "H1_ONE_SYM_CLINICAL_ONLY", "M1_ONE_SYM_MODAL_ONLY"]
+  },
+  "metrics": ["ACC", "Hard-AUC", "SEN-ASD", "SPE-TD"]
+}

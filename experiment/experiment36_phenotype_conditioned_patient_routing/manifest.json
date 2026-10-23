@@ -1,0 +1,340 @@
+{
+  "experiment": "Experiment 36 — PCPR",
+  "status": "COMPLETE",
+  "groups": [
+    "B0_ORIGINAL_B0A",
+    "B1_FOUR_GRAPH_BASE",
+    "B2_ONE_GRAPH_BASE",
+    "B3_CORR_ONLY_BASE",
+    "N0_FOUR_SYM_NUMERIC",
+    "N1_FOUR_DIR_NUMERIC",
+    "N2_ONE_SYM_NUMERIC",
+    "N3_ONE_DIR_NUMERIC",
+    "T0_FOUR_SYM_TEXT",
+    "T1_FOUR_DIR_TEXT",
+    "T2_ONE_SYM_TEXT",
+    "T3_ONE_DIR_TEXT",
+    "S0_FOUR_SYM_SHUFFLED",
+    "S1_FOUR_DIR_SHUFFLED",
+    "S2_ONE_SYM_SHUFFLED",
+    "S3_ONE_DIR_SHUFFLED",
+    "C0_FOUR_SYM_CONSTANT",
+    "C1_ONE_SYM_CONSTANT",
+    "H0_FOUR_SYM_SHARED_CLINICAL",
+    "H1_ONE_SYM_CLINICAL_ONLY",
+    "M0_FOUR_SYM_MODAL_ONLY",
+    "M1_ONE_SYM_MODAL_ONLY"
+  ],
+  "gpu_assignment": {
+    "0": [
+      "B0_ORIGINAL_B0A",
+      "B2_ONE_GRAPH_BASE",
+      "N0_FOUR_SYM_NUMERIC",
+      "N2_ONE_SYM_NUMERIC",
+      "T0_FOUR_SYM_TEXT",
+      "T2_ONE_SYM_TEXT",
+      "S0_FOUR_SYM_SHUFFLED",
+      "S2_ONE_SYM_SHUFFLED",
+      "C0_FOUR_SYM_CONSTANT",
+      "H0_FOUR_SYM_SHARED_CLINICAL",
+      "M0_FOUR_SYM_MODAL_ONLY"
+    ],
+    "1": [
+      "B1_FOUR_GRAPH_BASE",
+      "B3_CORR_ONLY_BASE",
+      "N1_FOUR_DIR_NUMERIC",
+      "N3_ONE_DIR_NUMERIC",
+      "T1_FOUR_DIR_TEXT",
+      "T3_ONE_DIR_TEXT",
+      "S1_FOUR_DIR_SHUFFLED",
+      "S3_ONE_DIR_SHUFFLED",
+      "C1_ONE_SYM_CONSTANT",
+      "H1_ONE_SYM_CLINICAL_ONLY",
+      "M1_ONE_SYM_MODAL_ONLY"
+    ]
+  },
+  "folds": 220,
+  "gpu_folds": {
+    "0": 110,
+    "1": 110
+  },
+  "source_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "config_sha256": "028d4dcea2d7356892a68018210182819d0a192e387eea9d681407aab8041ecd",
+  "code_sha256": {
+    "build_phenotype_text.py": "da591fafedc701969bd89ebe371739fcd7c64460e1f2ed64ad73cc0b7035dc39",
+    "pcpr.py": "601fcba12f1a8b0a9faef7c2289c2dc6e7e5200b18a6c049bbacc29b324af739",
+    "run.py": "872e05a23de69936ab13c60a398acc93b76957ef70c67387c5556e182668d6ed",
+    "integration.py": "697c44d075c33226d8ef817b8ddc82910b5c1b1c83420aaad955cf709df68b8b"
+  },
+  "data_audit": {
+    "subjects": 871,
+    "unique_ids": 871,
+    "ordered_subject_id_sha256": "864cc867e448393f2cb91ade025a768d859a8dc5d3a01468df61896127c1a8f0",
+    "mapping_status_counts": {
+      "VERIFIED": 871
+    },
+    "mapping_join_source": "Experiment11 verified subject_row_mapping.csv; no row-order assumption",
+    "label_audit_only": {
+      "ASD_label0": 403,
+      "TD_label1": 468,
+      "dx_group_matches_processed_label": true
+    },
+    "processed_shape": [
+      871,
+      321
+    ],
+    "feature_shape": [
+      871,
+      320
+    ],
+    "modal_dims": {
+      "PHENO": 48,
+      "ANAT": 6,
+      "FUNC": 10,
+      "CORR": 256
+    },
+    "pheno_qc_max_abs_reconstruction_error": 7.105427357601002e-15,
+    "clinical_field_coverage": {
+      "AGE_AT_SCAN": {
+        "valid": 871,
+        "missing": 0
+      },
+      "SEX": {
+        "valid": 871,
+        "missing": 0
+      },
+      "FIQ": {
+        "valid": 811,
+        "missing": 60
+      },
+      "VIQ": {
+        "valid": 721,
+        "missing": 150
+      },
+      "PIQ": {
+        "valid": 735,
+        "missing": 136
+      },
+      "HANDEDNESS_CATEGORY": {
+        "valid": 598,
+        "missing": 273
+      },
+      "anat_cnr": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_efc": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_fber": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_fwhm": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_qi1": {
+        "valid": 871,
+        "missing": 0
+      },
+      "anat_snr": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_efc": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_fber": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_fwhm": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_dvars": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_outlier": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_quality": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_mean_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_num_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_perc_fd": {
+        "valid": 871,
+        "missing": 0
+      },
+      "func_gsr": {
+        "valid": 871,
+        "missing": 0
+      }
+    },
+    "forbidden_fields_used_in_text": [],
+    "inputs_sha256": {
+      "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+      "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+      "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv": "009f01a89697113e5375ded4fbcff4c85e89a4daa6d13e63c21ae5d57dda0865",
+      "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/subject_row_mapping.csv": "213d31cca4d6843c8a4514471f17291a23b5cfb05a3f5e9bb40e2b78fed1e859",
+      "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/feature_validation.csv": "a34e29903909900fbc8e9234b26178ae3691229201b2ca15007c603f7cb79c1f"
+    }
+  },
+  "text_encoder": {
+    "model_id": "FremyCompany/BioLORD-2023",
+    "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "model_card_license": "model contributions MIT; use requires valid UMLS and SNOMED CT licensing",
+    "pooling": "attention-mask mean pooling + L2 normalize",
+    "max_length": 512,
+    "trainable": false,
+    "text_stats": [
+      {
+        "fold": 1,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "5db9ff38f3a03a82887125b8acb55ce1a03673cd50267bcb040379b1155809f9"
+      },
+      {
+        "fold": 2,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "b101a4957f1aa9a748b7d449815c0f33312fe7f6ca1b9fdd3f3eec0b158a3ffb"
+      },
+      {
+        "fold": 3,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "2e69d8a953cd4462a82e31d8d7bedfb2e739fcb01200e0eb4af40f52d810d85f"
+      },
+      {
+        "fold": 4,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "69ef14911dc0a9901fab41352a490beef99cd077f37944a8aabfc5dfe326fe9c"
+      },
+      {
+        "fold": 5,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "d7b7fc4706bd06a1ff85cf4b558e86930158b529658d60d21d365d5ff2a647f4"
+      },
+      {
+        "fold": 6,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "99fc6e18bbd0ccb2cf4cd217211fbc54cd6e3ced03e8b1b2a758bd0f5e189ecb"
+      },
+      {
+        "fold": 7,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "5b25d6ee455359a7b30a5306685f78c84eede5f653d101f25cfb542d220c81e2"
+      },
+      {
+        "fold": 8,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "a4bd199372f5d3090abe4f88c2975fe54d5af148cafe206668ece3918a9dadb4"
+      },
+      {
+        "fold": 9,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "36db9f4b49f61bb939560ebc51d0519aec8724ed75d02e677adb7ac8bbdaaa57"
+      },
+      {
+        "fold": 10,
+        "text_instances": 9586,
+        "unique_texts": 8141,
+        "mean_word_count": 87.28583350719799,
+        "max_word_count": 227,
+        "truncated_unique_texts": 0,
+        "cache_sha256": "c26c0ad772c41dbfd2523e92535ecfc703ee344c0509890f72db88f89fae1e11"
+      }
+    ],
+    "cache_directory": "/tmp/SPromptGL-E36-PCPR-stage/experiment/experiment36_phenotype_conditioned_patient_routing/.runtime/cache",
+    "model_home": "/tmp/SPromptGL-E36-PCPR-stage/experiment/experiment36_phenotype_conditioned_patient_routing/.runtime/model"
+  },
+  "license_attestation": {
+    "confirmed": true
+  },
+  "e0_history_check": {
+    "status": "MATCH",
+    "metrics_10_of_10": {
+      "acc": true,
+      "hard_auc": true,
+      "sen_asd": true,
+      "spe_td": true
+    },
+    "best_epoch_10_of_10": true,
+    "entry_rng_10_of_10": true,
+    "initial_parameters_10_of_10": true,
+    "confusion_counts_10_of_10": true,
+    "historical_hash_note": "initial parameter hash compared only if column semantics/availability match"
+  },
+  "condition_weight_decay": 0.0,
+  "superseded_first_pass": {
+    "status": "REJECTED_ENGINEERING_FAILURE",
+    "reason": "PCPR Q/K projections collapsed under weight_decay=0.11 and produced effectively zero edge modulation.",
+    "archived_at": ".runtime/superseded_l2_conditioner_pass/",
+    "used_for_final_metrics": false
+  },
+  "decision": "NO-GO",
+  "handoff_status": "FAILED_IO_APPEND_STAGED",
+  "handoff_pre_bytes": 305210,
+  "handoff_pre_sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+  "handoff_post_bytes": 305210,
+  "handoff_post_sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+  "handoff_append_file": "handoff_append.md",
+  "handoff_append_sha256": "d2fa9aa5ca872b94928918d04da3b634611cb279999bacc77faf4ba7d568c30b",
+  "handoff_error": "Failed to write file /data/adodas/SPromptGL-main/handoff.md; prior file hash and byte length verified unchanged.",
+  "artifact_directory": "/tmp/SPromptGL-E36-PCPR-stage/experiment/experiment36_phenotype_conditioned_patient_routing",
+  "runtime_directory": "/tmp/SPromptGL-E36-PCPR-stage/experiment/experiment36_phenotype_conditioned_patient_routing/.runtime"
+}
