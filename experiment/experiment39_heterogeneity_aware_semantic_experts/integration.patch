@@ -1,0 +1,68 @@
+--- a/network.py
++++ b/private-runtime/network.py
+@@ -91,64 +91,7 @@
+         self.register_buffer('prompt_text_features', get_prompt_text_features())
+         
+     def forward(self, x):
+-        bs = x.size(0)
+-        attn_map = []
+-        combine_part = []
+-        x, _attn = self.InputLayer(x)
+-        attn = _attn.mean(dim=1)
+-        attn_map.append(attn.detach().cpu().numpy())
+-        for i in range(self.n_layer):
+-            x, _attn = self.Encoder[i](q=x, k=x, v=x, modal_num=self.modal_num)
+-            attn = _attn.mean(dim=1)
+-            x = self.FeedForward[i](x)
+-            attn_map.append(attn.detach().cpu().numpy())
+-        text_features = self.prompt_text_features
+-        text_features = torch.cat([text_features[0:4].view(1, -1), text_features[4:8].view(1, -1)], dim=0)
+-        text_features = self.MLP(text_features)
+-        
+-        
+-        part_x = x.view(871, 4, 4, 9)
+-        part_x_norm = F.normalize(part_x, p=2, dim=-1)
+-        text_features_norm = F.normalize(text_features, p=2, dim=-1)
+-
+-        # 扩展 text_features_norm 的维度以便与 part_x_norm 进行广播
+-        text_features_norm = text_features_norm.unsqueeze(0).unsqueeze(0).unsqueeze(2)  # 变为 [1, 1, 1, 2, 9]
+-        part_x_norm_expanded = part_x_norm.unsqueeze(-2)  # 变为 [871, 4, 4, 1, 9]
+-
+-        # 计算余弦相似度矩阵
+-        similarity_matrix = torch.matmul(part_x_norm_expanded, text_features_norm.transpose(-1, -2))  # 结果为 [871, 4, 4, 1, 2]
+-        similarity_matrix = similarity_matrix[:,:,:,-1,:]
+-
+-        # 进行数值截断以避免数值问题
+-        similarity_matrix = similarity_matrix.clamp(min=-5, max=5)
+-
+-        # 计算 softmax
+-        similarity_matrix = torch.softmax(similarity_matrix, dim=-1).to(device)
+-
+-        # 获取 similarity_matrix 的最大值
+-        similarity_max, _ = torch.max(similarity_matrix, dim=-1)
+-
+-        # 进行最终的计算
+-        part_x = similarity_max.unsqueeze(-1) * part_x
+-        # 对最后一个维度进行平均池化
+-        
+-        # 需要先将输入张量的形状调整为 (871*4, 1, 36) 以适应 AvgPool1d 的输入格式
+-        reshaped_x = x.view(-1, 1, 36)
+-        global_x = self.avg_pool(reshaped_x)
+-        m = part_x.shape[2]
+-
+-        # 重新调整张量形状为 (871, 4, 9)
+-        global_x = global_x.view(871, 4, 9)
+-        for i in range(m):
+-            part = part_x[:,:,i,:]
+-            Vsim = F.softmax(part*global_x, dim=-1) 
+-            part_embedding = Vsim*part
+-            combine_part.append(part_embedding)
+-        x = x + torch.cat(combine_part,dim=2)
+-        x = x.view(bs, -1)
+-        attn_embedding = attn.view(bs, -1) 
+-        output, hidden = self.Outputlayer(x, attn_embedding)
+-        return output, hidden, attn_map
++        return self.hase39_forward(x)
+   
+ class GraphLearn(nn.Module):
+     def __init__(self, input_dim, th, mode = 'Sigmoid-like'):

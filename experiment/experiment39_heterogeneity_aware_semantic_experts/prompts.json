@@ -1,0 +1,98 @@
+{
+  "provenance": "The four mechanism-level drafts below were supplied by the experiment request. They are candidate synthesis text, not verbatim clinical facts and not output attributed to a GPT-4 API call.",
+  "freeze": "Frozen before formal training. Text itself is descriptive metadata; model conditioning occurs only through the separately audited, fixed ROI/connection masks in mechanism_masks.json. Changing this prose without changing those masks has no computational effect.",
+  "mechanisms": [
+    {
+      "id": "D1",
+      "name": "Social-Affective and Communication Circuit",
+      "reference": {
+        "authors": "Gotts et al.",
+        "journal": "Brain",
+        "year": 2012,
+        "doi": "10.1093/brain/aws160",
+        "url": "https://doi.org/10.1093/brain/aws160"
+      },
+      "prompt": "Autism spectrum presentations may involve heterogeneous alterations in functional coupling among limbic, temporal, frontal, and parietal regions associated with social-affective processing and communication. These alterations may differ across individuals and should not be assumed to have one universal direction. Examine candidate connectivity patterns only within anatomically verified region pairs available in the current dataset; the presence of a candidate pattern is neither a confirmed lesion nor a definitive ASD diagnosis.",
+      "functional_interpretation": "Candidate social-affective and communication-associated functional system; not a patient-level deficit label.",
+      "anatomical_candidate_source": "Experiment19 fixed D1 connection membership; endpoint labels are copied from Experiment11 verified numeric mapping.",
+      "candidate_connection_count": 72,
+      "dataset_coverage": "72 of 252 numerically verified CORR feature slots; overlaps other mechanism masks as recorded in mechanism_masks.json.",
+      "not_supported": [
+        "No universal ASD-related increase or decrease is asserted.",
+        "No individual lesion, symptom score, canonical network membership, or causal path is established.",
+        "The mask does not define a complete or canonical social brain network."
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Frontoparietal Executive-Control Circuit",
+      "reference": {
+        "authors": "Just et al.",
+        "journal": "Cerebral Cortex",
+        "year": 2007,
+        "doi": "10.1093/cercor/bhl006",
+        "url": "https://doi.org/10.1093/cercor/bhl006"
+      },
+      "prompt": "Differences in the functional coordination of frontal and parietal systems may contribute to variation in executive and integrative processing among autistic individuals. Prior task-fMRI observations of reduced frontoparietal coupling must not be transferred into a fixed directional label for resting-state functional connectivity. Represent this mechanism using verified frontal and parietal anatomical candidates, allowing patient-specific positive, negative, or near-typical connectivity deviations.",
+      "functional_interpretation": "Candidate frontal-parietal executive/integrative processing system; task findings are not assumed to determine resting-state direction.",
+      "anatomical_candidate_source": "Experiment19 fixed D2 connection membership; endpoint labels are copied from Experiment11 verified numeric mapping.",
+      "candidate_connection_count": 56,
+      "dataset_coverage": "56 of 252 numerically verified CORR feature slots; overlaps other mechanism masks as recorded in mechanism_masks.json.",
+      "not_supported": [
+        "Task-fMRI hypoconnectivity is not converted into a resting-state ASD direction label.",
+        "No individual executive-function measurement or clinical subtype is available in the model.",
+        "The mask is a candidate connection set, not a validated complete frontoparietal network."
+      ]
+    },
+    {
+      "id": "D3",
+      "name": "Thalamocortical and Sensory-Integration Circuit",
+      "reference": {
+        "authors": "Nair et al.",
+        "journal": "Brain",
+        "year": 2013,
+        "doi": "10.1093/brain/awt079",
+        "url": "https://doi.org/10.1093/brain/awt079"
+      },
+      "prompt": "Heterogeneous thalamocortical connectivity patterns may be associated with differences in sensory integration and large-scale information communication in autism. The relevant alterations may involve multiple cortical targets and should not be reduced to a single universally increased or decreased connection. Assess this candidate mechanism through anatomically verified thalamic-cortical connections and preserve the signed variation of each participant's observed resting-state connectivity.",
+      "functional_interpretation": "Candidate thalamic-cortical information integration system; individual signed FC is preserved.",
+      "anatomical_candidate_source": "Experiment19 fixed D3 connection membership; endpoint labels are copied from Experiment11 verified numeric mapping.",
+      "candidate_connection_count": 45,
+      "dataset_coverage": "45 of 252 numerically verified CORR feature slots; overlaps other mechanism masks as recorded in mechanism_masks.json.",
+      "not_supported": [
+        "No single thalamic-cortical connection is a validated ASD marker here.",
+        "No patient-level sensory phenotype or causal thalamocortical pathway is measured.",
+        "The mask is not a complete thalamocortical atlas/network."
+      ]
+    },
+    {
+      "id": "D4",
+      "name": "Insular-Cingulate and Salience-Related Circuit",
+      "reference": {
+        "authors": "Uddin et al.",
+        "journal": "JAMA Psychiatry",
+        "year": 2013,
+        "doi": "10.1001/jamapsychiatry.2013.104",
+        "url": "https://doi.org/10.1001/jamapsychiatry.2013.104"
+      },
+      "prompt": "Atypical coordination among insular, cingulate, and associated attentional systems may contribute to heterogeneous salience-related functional organization in autism. Existing findings are population-level and age-dependent; they do not establish an individual lesion or a universal connectivity direction. Use only verified anatomical connectivity candidates involving the relevant regions, and do not equate broad atlas label matching with confirmed canonical salience-network membership.",
+      "functional_interpretation": "Candidate insular-cingulate/attention-associated organization, with age and population heterogeneity retained.",
+      "anatomical_candidate_source": "Experiment19 fixed D4 connection membership; endpoint labels are copied from Experiment11 verified numeric mapping.",
+      "candidate_connection_count": 32,
+      "dataset_coverage": "32 of 252 numerically verified CORR feature slots; overlaps other mechanism masks as recorded in mechanism_masks.json.",
+      "not_supported": [
+        "Broad atlas label matching is not asserted to identify the canonical salience network.",
+        "No individual lesion, fixed direction, age-specific trajectory, or clinical subtype is inferred.",
+        "The mask does not define a complete salience/attention system."
+      ]
+    }
+  ],
+  "mapping_policy": {
+    "source": "Experiment19 domain_mapping.csv, cross-checked with Experiment11 roi_256_named_mapping.csv.",
+    "binary_mask_sizes": [72, 56, 45, 32],
+    "union_size": 165,
+    "unknown_endpoint_feature_indices_excluded": [195, 225, 232, 236],
+    "unknown_features_remain_in_original_gfr_input": true,
+    "mask_sha256_is_recorded_in": "mechanism_masks.json"
+  }
+}
