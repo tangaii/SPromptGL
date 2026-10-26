@@ -1,0 +1,311 @@
+{
+  "experiment": "Experiment 40 — HCER-v2 on exact E32 B0-A",
+  "version": "pre_registered_v1",
+  "seed": 0,
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "groups": [
+    {
+      "id": "B0",
+      "name": "B0A_ANCHOR",
+      "gpu": 0,
+      "variant": "none",
+      "keep": false,
+      "delete": false
+    },
+    {
+      "id": "E1",
+      "name": "Z_TOPK_FULL",
+      "gpu": 1,
+      "variant": "numeric",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E2",
+      "name": "ANONYMOUS_FULL",
+      "gpu": 1,
+      "variant": "anonymous",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E3",
+      "name": "REAL_NO_CF",
+      "gpu": 0,
+      "variant": "real",
+      "keep": false,
+      "delete": false
+    },
+    {
+      "id": "E4",
+      "name": "REAL_KEEP_ONLY",
+      "gpu": 1,
+      "variant": "real",
+      "keep": true,
+      "delete": false
+    },
+    {
+      "id": "E5",
+      "name": "REAL_FULL",
+      "gpu": 0,
+      "variant": "real",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E6",
+      "name": "ANATOMY_NEUTRAL_FULL",
+      "gpu": 1,
+      "variant": "neutral",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E7",
+      "name": "WRONG_PAIR_FULL",
+      "gpu": 0,
+      "variant": "wrong",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E8",
+      "name": "SWAPPED_CLASS_FULL",
+      "gpu": 1,
+      "variant": "swapped",
+      "keep": true,
+      "delete": true
+    },
+    {
+      "id": "E9",
+      "name": "NO_RIVAL_NORMMATCH_FULL",
+      "gpu": 0,
+      "variant": "no_rival",
+      "keep": true,
+      "delete": true
+    }
+  ],
+  "data": {
+    "shape": [
+      871,
+      320
+    ],
+    "modality_dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "counts": [
+      403,
+      468
+    ],
+    "corr_offset": 64,
+    "canonical_edges": [
+      0,
+      3,
+      5,
+      8,
+      33,
+      34,
+      35,
+      38,
+      41,
+      43,
+      59,
+      62,
+      64,
+      66,
+      67,
+      69,
+      70,
+      74,
+      79,
+      91,
+      92,
+      97,
+      98,
+      112,
+      116,
+      117,
+      118,
+      125,
+      129,
+      133,
+      162,
+      169,
+      171,
+      176,
+      178,
+      182,
+      185,
+      202,
+      255
+    ],
+    "unknown_excluded": [
+      195,
+      225,
+      232,
+      236
+    ]
+  },
+  "reference": {
+    "ridge_alpha": 10,
+    "inner_folds": 5,
+    "inner_stratified": true,
+    "inner_seed": "40000+outer_fold_1_based",
+    "same_procedure_all_train_labels": true,
+    "scale": "OOF train-TD MAD; 1.4826 multiplier",
+    "sigma_floor": 0.0001,
+    "clip": 3,
+    "covariates": "48 historical PHENO age-bin/site/sex columns",
+    "test_fit": "all outer-train TD only",
+    "label_branch_test": "freeze inner membership; flip held subject label; its reference-fit chunk and predicted mu must remain identical"
+  },
+  "method": {
+    "text_model": "OpenAI CLIP RN50",
+    "context_length": 77,
+    "weights_sha": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "dim": 64,
+    "pair_query": "normalize(shared_projection(text-pair_mean+0.25*pair_mean))",
+    "key": "normalize(anatomy_projection+0.5*numeric_projection+0.1*CAM_context+0.1*age_sex_context)",
+    "tau": "0.10+0.40*sigmoid(parameter), init=0.30",
+    "direction_logit_weight": 0.25,
+    "membership": "hard13x39; cross-edge softmax per hypothesis per ASD/TD query",
+    "max_edges": 8,
+    "eligibility": "score > initial outer-train score 75th percentile, fixed per fold; E1 abs(z)>1",
+    "selection_temperature": 0.25,
+    "anonymous": "fixed signed coordinate permutation, orthogonal; preserves full disease bank Gram/norms",
+    "wrong_pair": "cyclic derangement within groups of size 2/3/4; canonical tensors untouched",
+    "swap": "swap only the two frozen disease query channels; priors and all labels unchanged",
+    "no_rival": "class-independent average query logits, identical support values for both channels; shared norm normalization",
+    "residual": "selected-support-only; bias-free shared value/fuse; per-patient unit direction times detached CAM norm times positive bounded gate",
+    "gate_init": 0.0075,
+    "gate_max": 0.05,
+    "new_parameters_weight_decay": 0,
+    "branch_seed": "400000+fold",
+    "calibration": "same per-patient norm mechanism in every group, including E5/E9; maximum 5%; empty selection exactly zero"
+  },
+  "qc": {
+    "source": "https://preprocessed-connectomes-project.org/abide/quality_assessment.html",
+    "columns": [
+      "func_dvars",
+      "func_outlier",
+      "func_mean_fd"
+    ],
+    "raw_columns": [
+      57,
+      58,
+      60
+    ],
+    "reliability": "max(exp(-0.1*mean(clip(positive robust train-scale deviation,0,6))),0.5)",
+    "no_uncertain_qc_penalties": true,
+    "site_only_in_reference": true
+  },
+  "counterfactual": {
+    "every_epochs": 5,
+    "subjects_each": 2,
+    "order_seed": "400004+fold",
+    "keep_weight": 0.1,
+    "delete_weight": 0.05,
+    "margin": 0.05,
+    "delete_only_when": "unperturbed eval prediction correct and hard selected count>0",
+    "keep": "KL(stopgrad(p_full)||p_keep)",
+    "delete": "softplus(0.05 - [logp_keep(y)-logp_delete(y)])",
+    "gradient_policy": "trunk frozen; fixed detached full-input residual during CF training; gradients through unperturbed STE selector to single-target raw FC only",
+    "classification_branch": "ordinary cls+mean four graph loss; all original trainable trunk parameters unchanged",
+    "masked_value": "same subject fold-conditional train TD mu; canonical raw_X[:,64+edge]",
+    "eval": "live residual and fixed mask; selected keep/delete, random/delete, Top-|z|/delete, graph frozen decomposition and disabled residual",
+    "probe_unique": "round robin deterministic train permutation, no test sampling"
+  },
+  "preflight": {
+    "no_test_performance_used": true,
+    "health_updates": 3,
+    "text_response_min_abs_logp": 1e-08,
+    "finite_nonzero_selector_gradient": true,
+    "exact_common_parameter_parity_two_updates": true,
+    "all_null_must_zero_residual": true,
+    "anatomy_identity_swap_must_change_evidence": true,
+    "resume_third_step_bitwise": true,
+    "e5_e9_common_gate_ratio_tolerance": 1e-05,
+    "stop_if_fail": true
+  },
+  "go": {
+    "gain_acc_pp": 0.23,
+    "gain_auc_pp": 0.23,
+    "sen_min_delta_pp": -0.5,
+    "paired_nonnegative_min": 7,
+    "paired_strict_wins_min": 5,
+    "semantic_comparators": [
+      "E1",
+      "E2",
+      "E6",
+      "E7",
+      "E8"
+    ],
+    "fidelity": "selected greater than random and Top-|z|; positive mean and at least 7/10 folds positive"
+  },
+  "scheduling": {
+    "max_workers_per_gpu": 4,
+    "cpu_threads_per_worker": 2,
+    "anchor_first": true,
+    "gpu0": [
+      "B0",
+      "E3",
+      "E5",
+      "E7",
+      "E9"
+    ],
+    "gpu1": [
+      "E1",
+      "E2",
+      "E4",
+      "E6",
+      "E8"
+    ]
+  },
+  "resume": {
+    "save_every_epochs": 10,
+    "atomic": true,
+    "key": [
+      "group",
+      "seed",
+      "fold"
+    ],
+    "no_completed_fold_retrain": true
+  },
+  "limitations": [
+    "val=test selection",
+    "pre-CV supervised RFE/global preprocessing",
+    "full transductive patient graph",
+    "single seed",
+    "overlapping training folds",
+    "FC masking model-dependence not biology causality"
+  ]
+}
