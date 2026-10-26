@@ -1,0 +1,281 @@
+{
+  "experiment": "Experiment 42 — Four independent falsifiable evidence links",
+  "version": "preregistered_v1",
+  "seed": 0,
+  "root": "/data/adodas/SPromptGL-main",
+  "historical_anchor": "/tmp/SPromptGL-E40-HCER-v2-stage/experiment/experiment40_hcer_v2_b0a_evidence",
+  "split": {
+    "outer": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "inner": 5,
+    "reference_random_state_offset": 40000
+  },
+  "baseline": {
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0,
+    "cpu": false,
+    "gpu": "-1",
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE"
+  },
+  "metrics": [
+    "ACC",
+    "Hard-AUC",
+    "SPE-TD",
+    "SEN-ASD"
+  ],
+  "canonical_edges": [
+    0,
+    3,
+    5,
+    8,
+    33,
+    34,
+    35,
+    38,
+    41,
+    43,
+    59,
+    62,
+    64,
+    66,
+    67,
+    69,
+    70,
+    74,
+    79,
+    91,
+    92,
+    97,
+    98,
+    112,
+    116,
+    117,
+    118,
+    125,
+    129,
+    133,
+    162,
+    169,
+    171,
+    176,
+    178,
+    182,
+    185,
+    202,
+    255
+  ],
+  "reference": {
+    "ridge_alpha": 10,
+    "sigma": "1.4826 MAD of cross-fitted training TD residuals",
+    "sigma_floor": 0.0001,
+    "clip": 3,
+    "same_crossfit_for_all_labels": true
+  },
+  "text": {
+    "encoder": "CLIP RN50",
+    "weights_sha": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "token_limit": 77,
+    "truncate": false,
+    "batch_size": 32,
+    "temperature": 0.1,
+    "P2_pooling": "mean of separately encoded full-endpoint edge clauses; no truncation",
+    "prompt_families": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "controls": [
+      "NUMERIC_ONLY",
+      "NEUTRAL",
+      "SWAP_ASD_TD",
+      "DERANGED_HYPOTHESIS",
+      "GRAM_MATCHED_ANONYMOUS",
+      "STRUCTURED_DIAGNOSTIC"
+    ]
+  },
+  "q1": {
+    "probe": "identical 30-input linear logistic readout, 31 parameters",
+    "optimizer": "Adam",
+    "lr": 0.01,
+    "weight_decay": 0.01,
+    "steps": 150,
+    "inner_preprocessing": "nested training-only cross-fit reference, no validation labels in fits",
+    "effect_min_abs_smd": 0.1,
+    "direction_stability_min": 0.8,
+    "site_min_per_class": 5,
+    "site_sign_min": 0.6,
+    "oof_min_gain_pp": 0.25,
+    "fold_wins_min": 7,
+    "encoder_pair_distance_floor": 0.01,
+    "style_selection": "train OOF ACC, then Hard-AUC, then fixed P0/P1/P2/P3 order",
+    "no_test_style_selection": true
+  },
+  "q2": {
+    "budgets": [
+      4,
+      8
+    ],
+    "random_mask_seeds": [
+      42001,
+      42002,
+      42003
+    ],
+    "teacher_n_per_class": 8,
+    "teacher_rule": "round-robin sites; within site fixed hash of subject identity, no model-result selection",
+    "teacher_single_edge_budget": 39,
+    "teacher_target": "drop in original B0 predicted-class logp on canonical single-edge TD-mu replacement",
+    "teacher_evaluation_disjoint": true,
+    "teacher_ridge_alpha": 10,
+    "test_population": "all 871 outer-test participants once over ten folds",
+    "replacement_strength": [
+      1.0,
+      0.5
+    ],
+    "donor": "outer-train TD, same site if available; minimum age-bin/sex distance, deterministic tie",
+    "primary_evaluation": "K8, full-strength, true-class drop; original-correct and original-wrong strata separately",
+    "graph_modes": [
+      "live",
+      "fixed"
+    ],
+    "go_fold_wins_min": 7,
+    "go_mean_advantage": 0,
+    "first_compute_audit_folds": [
+      1,
+      6
+    ]
+  },
+  "q3": {
+    "groups": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C3_FIXED_DIAGNOSTIC"
+    ],
+    "selector": "shared 46-input linear edge scorer; 47 parameters",
+    "inner_oof": 5,
+    "steps": 30,
+    "optimizer": "Adam",
+    "lr": 0.01,
+    "weight_decay": 0,
+    "topk": 8,
+    "teacher_loss": "MSE to training-only normalized single-edge B0 dependence",
+    "cf_every_steps": 5,
+    "cf_subjects_per_probe": 2,
+    "keep_weight": 0.1,
+    "delete_weight": 0.05,
+    "margin": 0.05,
+    "correct_confidence_min": 0.6,
+    "gradient_ratio_cap": 0.25,
+    "gradient_control": "C1-C3 cap pure CF gradient norm at .25 teacher norm per step; C3_FIXED_DIAGNOSTIC same budget unscaled raw weights",
+    "ste_temperature": 0.5,
+    "no_backbone_update": true,
+    "sensitivity_strengths": [
+      0.5,
+      1.0
+    ],
+    "go_fidelity_mean_advantage": 0,
+    "go_direction_mean_advantage": 0,
+    "go_folds_min": 7
+  },
+  "q4": {
+    "roles": [
+      "R0",
+      "R1",
+      "R2",
+      "R3"
+    ],
+    "conditional_combination": "R4 only if training-only verified roles pass",
+    "func_include": [
+      "func_dvars",
+      "func_outlier",
+      "func_mean_fd"
+    ],
+    "anat_include": {
+      "anat_cnr": -1,
+      "anat_fber": -1,
+      "anat_qi1": 1,
+      "anat_snr": -1
+    },
+    "exclude": [
+      "anat_efc",
+      "anat_fwhm",
+      "func_efc",
+      "func_fber",
+      "func_fwhm",
+      "func_quality",
+      "func_num_fd",
+      "func_perc_fd",
+      "func_gsr"
+    ],
+    "risk_calibration": "training empirical percentile; mean adverse standardized values",
+    "gate_range": [
+      0.5,
+      1.0
+    ],
+    "dynamic_budget": "floor(8*reliability); abstain below train 10th percentile reliability",
+    "controls": [
+      "constant_one",
+      "reversed",
+      "random_rank",
+      "site_permuted"
+    ],
+    "proxy_partial_rho_min": 0.05,
+    "go_folds_min": 7,
+    "noise_levels": [
+      0,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "noise_description": "computational FC-only stress, not physical motion simulation"
+  },
+  "resources": {
+    "workers_per_gpu": 2,
+    "threads_per_worker": 2,
+    "gpu0_folds": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "gpu1_folds": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "final_gate": "Only if all four links GO may a separate integrated classifier be registered; otherwise no integrated training",
+  "historical_limitations": [
+    "val=test strict first-best selection",
+    "supervised RFE and standardization before outer CV",
+    "transductive all-node graphs",
+    "overlapping training folds",
+    "TD reference is statistical, not a clinical normality boundary"
+  ]
+}
