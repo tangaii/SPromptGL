@@ -1,0 +1,681 @@
+{
+  "experiment": "Experiment 38 rerun — LCHER on the exact Experiment 32 B0-A anchor",
+  "status": "PARTIAL",
+  "prepared_utc": 1792770977.284763,
+  "workspace": "/tmp/SPromptGL-E38-B0A-stage/experiment/experiment38_lcher_b0a_anchor_rerun",
+  "delivery": "COMPLETE_WITH_DELIVERY_BLOCKED",
+  "root_write_probe": "FAILED: atomic temp file fsync returned No such file or directory under OSSFS; subsequent writes used /tmp stage",
+  "root_git_head": "7747a1521629f95413faca133ba8c82ed7f1faf2",
+  "github_main": "66d6a3b6e8ddc0332fe1f50cbf31caa1ae929afa",
+  "source_sha256": {
+    "README.md": "76f52e933b351b7b8e25dcffada4f696cc3e0056900e81922c4274e01ea5abd1",
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "input_sha256": {
+    "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "roi_256_named_mapping.csv": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+    "subject_row_mapping.csv": "213d31cca4d6843c8a4514471f17291a23b5cfb05a3f5e9bb40e2b78fed1e859"
+  },
+  "code_sha256": {
+    "method.py": "c6253b5b35abb71a7d142c6be16b41ffeee2a139341915f87ed472e411439042",
+    "lcher_runtime.py": "6426682749c1ce865a59b5320a8896644ad2a84fba4b64e8f81a7d0975af8234",
+    "anchor_method.py": "e148adb283d15f47ae58b9337f6564543332fe36dd22fa1d9967461966498036",
+    "run.py": "3191ab7193d5a5c481e8e1f8bbb2ca76ef07c1ab28e9c29d84fd53d858ef2ff4",
+    "integration.py": "a612603e49986463cc9e00c2338da4292a0d350904f47b30d0887443d3c0923c",
+    "lcher_run.py": "13412d102cc4eb962594624dee4174c06f33e495f1d4b496ee24d059cf24d1f6"
+  },
+  "config_sha256": "970427261e0c0ecaded03f69fd247436ad414d4b894a9b156006e75100b3f146",
+  "prompts_sha256": "2dfd207cbe9c4d80980b389ed3e4316c5164a0afc08d075b75ee51086f6db49a",
+  "fold_split_sha256": "94464f99c04914440bc5580daf35a0c07219f71a80b25d5eb0c84f589ee1b8d3",
+  "subject_count": 871,
+  "input_shape": [
+    871,
+    320
+  ],
+  "class_counts": {
+    "ASD_label0": 403,
+    "TD_label1": 468
+  },
+  "verified_roi_mapping_rows": 39,
+  "candidate_hypotheses": 13,
+  "candidate_unique_edges": 39,
+  "excluded_unknown_edges_absent": true,
+  "wrong_edge_map": [
+    [
+      64,
+      79,
+      185
+    ],
+    [
+      0,
+      33,
+      34
+    ],
+    [
+      70,
+      182
+    ],
+    [
+      3,
+      35,
+      38
+    ],
+    [
+      74,
+      171
+    ],
+    [
+      62,
+      125
+    ],
+    [
+      5,
+      41,
+      43
+    ],
+    [
+      59,
+      202
+    ],
+    [
+      8,
+      162,
+      169,
+      176
+    ],
+    [
+      112,
+      129,
+      133,
+      178
+    ],
+    [
+      66,
+      67,
+      69
+    ],
+    [
+      91,
+      92,
+      97,
+      98
+    ],
+    [
+      116,
+      117,
+      118,
+      255
+    ]
+  ],
+  "wrong_edge_map_seed": 38002,
+  "text_encoder": {
+    "model": "OpenAI CLIP RN50",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "clip_script_sha256": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "tokenizer_sha256": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "tokenizer_context": 77,
+    "token_tensor_sha256": "45319d38a50249c5723642418a3f7a657a6360dd46f1daea79d7da5cfd020fda",
+    "text_sha256": "bae9b1dfdcfd88198f12b1a4eff9355bb1486c890b07ffa274c4c272dc362412",
+    "prompt_text_count": 26,
+    "neutral_text_count": 26,
+    "legacy_prompt_count": 8,
+    "license": "OpenAI CLIP repository LICENSE is MIT; pretrained weight use is subject to the linked model terms. No separate project-specific license attestation is claimed.",
+    "cache_sha256": "a505b96d8e17db562bfcbe91b444f4d6364f16c1447c71de3fba34f3666402e6"
+  },
+  "neutral_control_note": "Unique neutral pair wording deterministically includes verified connection names; neutral embeddings are not geometrically identical to ASD/TD hypotheses.",
+  "protocol": {
+    "datname": "ABIDE",
+    "nclass": 2,
+    "nmodal": 4,
+    "seed": 0,
+    "mode": "simple-2",
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nlayer": 1,
+    "th": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "alpha": 0.5
+  },
+  "groups": [
+    {
+      "id": "B0A_ANCHOR",
+      "gpu": 0,
+      "text": "none",
+      "evidence": false,
+      "keep": false,
+      "delete": false,
+      "aux": true,
+      "rival": true,
+      "anchor_replay": true
+    },
+    {
+      "id": "E1_ANON_FULL",
+      "gpu": 1,
+      "text": "anonymous",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": true
+    },
+    {
+      "id": "E2_REAL_NO_CF",
+      "gpu": 0,
+      "text": "real",
+      "evidence": true,
+      "keep": false,
+      "delete": false,
+      "aux": true,
+      "rival": true
+    },
+    {
+      "id": "E3_REAL_KEEP_ONLY",
+      "gpu": 1,
+      "text": "real",
+      "evidence": true,
+      "keep": true,
+      "delete": false,
+      "aux": true,
+      "rival": true
+    },
+    {
+      "id": "E4_LCHER_FULL",
+      "gpu": 0,
+      "text": "real",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": true
+    },
+    {
+      "id": "E5_WRONG_EDGE_FULL",
+      "gpu": 1,
+      "text": "real",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": true,
+      "wrong_edge_map": true
+    },
+    {
+      "id": "E6_NEUTRAL_FULL",
+      "gpu": 0,
+      "text": "neutral",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": true
+    },
+    {
+      "id": "E7_NO_AUX_FULL",
+      "gpu": 1,
+      "text": "real",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": false,
+      "rival": true
+    },
+    {
+      "id": "E8_NO_RIVAL_FULL",
+      "gpu": 0,
+      "text": "real",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": false
+    },
+    {
+      "id": "E9_SWAP_CLASS_FULL",
+      "gpu": 1,
+      "text": "real_swapped",
+      "evidence": true,
+      "keep": true,
+      "delete": true,
+      "aux": true,
+      "rival": true,
+      "swap_class": true
+    }
+  ],
+  "gpu_assignments": {
+    "GPU0": [
+      "B0A_ANCHOR",
+      "E2_REAL_NO_CF",
+      "E4_LCHER_FULL",
+      "E6_NEUTRAL_FULL",
+      "E8_NO_RIVAL_FULL"
+    ],
+    "GPU1": [
+      "E1_ANON_FULL",
+      "E3_REAL_KEEP_ONLY",
+      "E5_WRONG_EDGE_FULL",
+      "E7_NO_AUX_FULL",
+      "E9_SWAP_CLASS_FULL"
+    ],
+    "max_workers_per_gpu": 4
+  },
+  "target_folds": 100,
+  "completed_folds": 100,
+  "gpu_completed_folds": {
+    "0": 50,
+    "1": 50
+  },
+  "preflight": {
+    "passed": true,
+    "completed_epoch": 1792772045.4882438,
+    "checks": {
+      "anchor_replay": "EXACT_10_OF_10",
+      "verified_candidates": {
+        "hypotheses": 13,
+        "edges": 39,
+        "unknown_excluded": true
+      },
+      "frozen_text_cache_sha256": "a505b96d8e17db562bfcbe91b444f4d6364f16c1447c71de3fba34f3666402e6",
+      "td_reference_per_fold": [
+        {
+          "fold": 1,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.23337275271709768,
+          "sigma_min": 0.17719180154642236,
+          "sigma_median": 0.23023992251982786
+        },
+        {
+          "fold": 2,
+          "td_train_n": 422,
+          "oof_residual_rms": 0.23282823672302264,
+          "sigma_min": 0.17996447408995195,
+          "sigma_median": 0.22992527525282155
+        },
+        {
+          "fold": 3,
+          "td_train_n": 422,
+          "oof_residual_rms": 0.2335236005411774,
+          "sigma_min": 0.17418943189550498,
+          "sigma_median": 0.22955901226655787
+        },
+        {
+          "fold": 4,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.23282336545980878,
+          "sigma_min": 0.17750392930651238,
+          "sigma_median": 0.22608465388345578
+        },
+        {
+          "fold": 5,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.22814117437694548,
+          "sigma_min": 0.17776394748167576,
+          "sigma_median": 0.22443752634359185
+        },
+        {
+          "fold": 6,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.2325812854450514,
+          "sigma_min": 0.18292458746233076,
+          "sigma_median": 0.22668006600167293
+        },
+        {
+          "fold": 7,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.23195623626631545,
+          "sigma_min": 0.17829654867904118,
+          "sigma_median": 0.2283894270872323
+        },
+        {
+          "fold": 8,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.2326140084173232,
+          "sigma_min": 0.17202516165926274,
+          "sigma_median": 0.23074137941021267
+        },
+        {
+          "fold": 9,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.23179794830240186,
+          "sigma_min": 0.17713321249137656,
+          "sigma_median": 0.23154602725417864
+        },
+        {
+          "fold": 10,
+          "td_train_n": 421,
+          "oof_residual_rms": 0.23270728129771318,
+          "sigma_min": 0.1827464527513075,
+          "sigma_median": 0.22958407739135084
+        }
+      ],
+      "zero_alpha_forward_and_two_adam_update": "BITWISE_EXACT",
+      "counterfactual_gradients": {
+        "alpha": 1.5147961676120758e-05,
+        "query_weight": 0.00023401649377774447,
+        "context_weight": 7.695410749875009e-05,
+        "key_weight": 0.00039504910819232464,
+        "key_bias": 0.0002469487371854484,
+        "summary_0_weight": 3.8368705190805485e-07,
+        "summary_0_bias": 5.686079163069735e-08,
+        "summary_1_weight": 2.3796766981831752e-05,
+        "selected": 0.00048328578122891486,
+        "signed_evidence": 3.867258669743023e-06,
+        "signed_residual": 0.027295367792248726
+      },
+      "heldout_label_invariance": true,
+      "raw_input_full_gfr_response_max_abs": 0.0013974905014038086,
+      "source_preserves_full_pln_and_b0_forward_bypass": true
+    }
+  },
+  "tasks": [
+    {
+      "group": "B0A_ANCHOR",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "elapsed_seconds": 0.0,
+      "source": "strict Experiment 32 B0-A replay"
+    },
+    {
+      "group": "E1_ANON_FULL",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started": 1792772375.2945395,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1552.8420007899404
+    },
+    {
+      "group": "E2_REAL_NO_CF",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "started": 1792778219.6822085,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 1,
+      "elapsed_seconds": 99.15186167508364
+    },
+    {
+      "group": "E3_REAL_KEEP_ONLY",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started": 1792772375.380206,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1474.9436785578728
+    },
+    {
+      "group": "E4_LCHER_FULL",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "started": 1792772375.3795393,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1639.0711681619287
+    },
+    {
+      "group": "E5_WRONG_EDGE_FULL",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started": 1792773862.4727476,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1685.869821663946
+    },
+    {
+      "group": "E6_NEUTRAL_FULL",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "started": 1792773274.5444505,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1666.700800433755
+    },
+    {
+      "group": "E7_NO_AUX_FULL",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started": 1792773940.6255193,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1660.0901191271842
+    },
+    {
+      "group": "E8_NO_RIVAL_FULL",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "started": 1792774024.575655,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1765.7699957825243
+    },
+    {
+      "group": "E9_SWAP_CLASS_FULL",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started": 1792775557.6543822,
+      "completed_folds": 10,
+      "resume_count": 0,
+      "last_fold": 10,
+      "elapsed_seconds": 1782.319613005966
+    }
+  ],
+  "recovery_events": [
+    {
+      "type": "INCOMPLETE_FOLD_ARTIFACT_RECOVERY",
+      "group": "E2_REAL_NO_CF",
+      "fold": 1,
+      "seed": 0,
+      "reason": "The result row had been committed before a prior diagnostics-schema error; the best checkpoint was absent, so the fold was not considered artifact-complete.",
+      "action": "Replayed only this fold from its immutable B0-A fold-1 anchor; replaced the unique result row and wrote the missing best checkpoint and diagnostic row.",
+      "paired_anchor_sha256": "9af29ddeafe91a3c8f1ac31a6bdd7d50da929ded8657b09223013149bd0f2520",
+      "result_best_epoch": 167,
+      "epochs_executed": 369,
+      "initial_trunk_sha256": "e385468ea7f55107af54d22e6b4b2830607ad744cde58593d0dbf140b5253dc6",
+      "initial_rng_sha256": "144e5222d448899766fad17be60dd1e19999c58dc21abf965fc83cf4f9c1084f",
+      "recovery_fold_seconds": 95.8872938901186
+    }
+  ],
+  "license": {
+    "source": "https://github.com/openai/CLIP/blob/main/LICENSE",
+    "project_specific_attestation": false
+  },
+  "handoff_status": "FAILED_PENDING_APPEND",
+  "anchor_replay": {
+    "status": "ANCHOR_REPLAY_PASS",
+    "folds": [
+      {
+        "fold": 1,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 2,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 3,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 4,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 5,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 6,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 7,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 8,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 9,
+        "status": "MATCH",
+        "differences": []
+      },
+      {
+        "fold": 10,
+        "status": "MATCH",
+        "differences": []
+      }
+    ],
+    "anchor_sha256": {
+      "fold-01.pt": "9af29ddeafe91a3c8f1ac31a6bdd7d50da929ded8657b09223013149bd0f2520",
+      "fold-02.pt": "bba0a03faf300aa0e281616f1a72ee873c283886b14242426b47212cacdf68e2",
+      "fold-03.pt": "87cebb03d6a09ac3a1ecae135e98ae5996ba99f643c6addf2d8527ac3528fded",
+      "fold-04.pt": "5aea76653483c8ebcb29ba95dd7f977214e976a21d90dd8d8547e3d4173441a6",
+      "fold-05.pt": "123e88f4cd3746d423a190e576e0d29c43f5776449cb61891ff2a5f74dde9c41",
+      "fold-06.pt": "00254d8e5a262f5baa4473792943b4598bc8b848995235010a40196710091770",
+      "fold-07.pt": "e3db43049cc88e679c4ab3fa38813288a0fe57b5527b178b401aeaf35f8a0322",
+      "fold-08.pt": "bd76c7a43bf516bcc14a0435a09db8039a3a263497eb6901b470800a8f2f8e7e",
+      "fold-09.pt": "0f2cd32fe2fa1ba23d5e2060712f531657720680b1d4939728b5a5d34fad7c68",
+      "fold-10.pt": "0a7f0d7514b9c2a14594de319d0bb41c49d4c5e99b49ca1acf7b315582a2ae8c"
+    },
+    "continuous_rng_protocol": "single seed=0 process; no per-fold reseed"
+  },
+  "completed_groups": 10,
+  "formal_finished_epoch": 1792778318.8340702,
+  "formal_elapsed_seconds": 7341.549307107925,
+  "decision": "NO-GO",
+  "go_checks": {
+    "E4_beats_B0A_acc_auc_0_23pp": false,
+    "E4_beats_E1_acc_auc_0_23pp": false,
+    "E4_beats_E5_E6_E9": false,
+    "E4_sen_drop_vs_B0A_no_more_than_0_5pp": true,
+    "E4_selected_deletion_beats_random": true,
+    "E4_prompt_swap_changes_output": true
+  },
+  "result_sha256": {
+    "diagnostics.csv": "e024571eebb182b559c24d35b0d5a67e6121f16db296352d1a03c0f8978fdd24",
+    "report.md": "5b866f18f65a6e7f82aee04e9d6e50e0058611c9d56772b563f93e18d9291e23",
+    "summary.json": "04bce703c41dce3d480d4c5ef54dbc4a7baf3df817bb1e9dc3018b9fdb5c6245",
+    "reference_anchor.csv": "1b63f1fe0a0b3a855c40b048d53d1e0e9df95436204601ea608c098a9c325c20",
+    "fold_metrics.csv": "20b4f31412b95d9c5010df2ead4b6336fd7660eaef4952cb06b4ad3957be8abf"
+  },
+  "handoff_append_sha256": "ffbaf0f1f1829c42e1f6444774d3ff241e87a7e5986f43a8aa8de36aef75c673",
+  "handoff_before": {
+    "bytes": 305210,
+    "sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+    "captured_immediately_before_append": true
+  },
+  "handoff_error": "OSError: [Errno 5] Input/output error",
+  "scientific_status": "COMPLETE",
+  "delivery_sync": {
+    "status": "FAILED_OSSFS_EIO",
+    "source": "/tmp/SPromptGL-E38-B0A-stage/experiment/experiment38_lcher_b0a_anchor_rerun",
+    "target": "/data/adodas/SPromptGL-main/experiment/experiment38_lcher_b0a_anchor_rerun",
+    "attempts": 1,
+    "verified": false,
+    "error": "cp -a could not create target directory: Input/output error; no target directory was created"
+  },
+  "handoff_attempt": {
+    "status": "FAILED_PENDING_APPEND",
+    "attempts": 1,
+    "error": "OSError: [Errno 5] Input/output error",
+    "pre_append_sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+    "post_failure_sha256": "8039c875fbb00794fef975489a4f80a1682c2b9c4b641a65434214368ffce8a6",
+    "prefix_unchanged": true,
+    "pending_file": "handoff_append_pending.md"
+  },
+  "residual_bound_audit_by_gpu": {
+    "0": {
+      "groups": [
+        "E2_REAL_NO_CF",
+        "E4_LCHER_FULL",
+        "E6_NEUTRAL_FULL",
+        "E8_NO_RIVAL_FULL"
+      ],
+      "maximum_observed_ratio": 0.036431580781936646,
+      "checkpoint_count": 40,
+      "passed": true
+    },
+    "1": {
+      "groups": [
+        "E1_ANON_FULL",
+        "E3_REAL_KEEP_ONLY",
+        "E5_WRONG_EDGE_FULL",
+        "E7_NO_AUX_FULL",
+        "E9_SWAP_CLASS_FULL"
+      ],
+      "maximum_observed_ratio": 0.037226248532533646,
+      "checkpoint_count": 50,
+      "passed": true
+    }
+  },
+  "residual_bound_audit": {
+    "basis": "post-CAM residual norm / pre-residual CAM norm",
+    "all_90_innovation_checkpoints_recomputed": true,
+    "maximum_observed_ratio": 0.037226248532533646,
+    "bound": 0.05,
+    "passed": true,
+    "by_gpu": {
+      "0": {
+        "groups": [
+          "E2_REAL_NO_CF",
+          "E4_LCHER_FULL",
+          "E6_NEUTRAL_FULL",
+          "E8_NO_RIVAL_FULL"
+        ],
+        "maximum_observed_ratio": 0.036431580781936646,
+        "checkpoint_count": 40,
+        "passed": true
+      },
+      "1": {
+        "groups": [
+          "E1_ANON_FULL",
+          "E3_REAL_KEEP_ONLY",
+          "E5_WRONG_EDGE_FULL",
+          "E7_NO_AUX_FULL",
+          "E9_SWAP_CLASS_FULL"
+        ],
+        "maximum_observed_ratio": 0.037226248532533646,
+        "checkpoint_count": 50,
+        "passed": true
+      }
+    }
+  },
+  "accepted_unique_fold_keys": 100,
+  "best_checkpoint_count": {
+    "B0A_anchor_folds": 10,
+    "innovation_folds": 90
+  },
+  "diagnostic_unique_fold_keys": 100
+}

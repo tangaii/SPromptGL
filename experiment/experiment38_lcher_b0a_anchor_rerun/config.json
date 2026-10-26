@@ -1,0 +1,21 @@
+{
+  "experiment": "Experiment 38 rerun — LCHER on the exact Experiment 32 B0-A anchor",
+  "seed": 0,
+  "groups": [
+    {"id":"B0A_ANCHOR","gpu":0,"text":"none","evidence":false,"keep":false,"delete":false,"aux":true,"rival":true,"anchor_replay":true},
+    {"id":"E1_ANON_FULL","gpu":1,"text":"anonymous","evidence":true,"keep":true,"delete":true,"aux":true,"rival":true},
+    {"id":"E2_REAL_NO_CF","gpu":0,"text":"real","evidence":true,"keep":false,"delete":false,"aux":true,"rival":true},
+    {"id":"E3_REAL_KEEP_ONLY","gpu":1,"text":"real","evidence":true,"keep":true,"delete":false,"aux":true,"rival":true},
+    {"id":"E4_LCHER_FULL","gpu":0,"text":"real","evidence":true,"keep":true,"delete":true,"aux":true,"rival":true},
+    {"id":"E5_WRONG_EDGE_FULL","gpu":1,"text":"real","evidence":true,"keep":true,"delete":true,"aux":true,"rival":true,"wrong_edge_map":true},
+    {"id":"E6_NEUTRAL_FULL","gpu":0,"text":"neutral","evidence":true,"keep":true,"delete":true,"aux":true,"rival":true},
+    {"id":"E7_NO_AUX_FULL","gpu":1,"text":"real","evidence":true,"keep":true,"delete":true,"aux":false,"rival":true},
+    {"id":"E8_NO_RIVAL_FULL","gpu":0,"text":"real","evidence":true,"keep":true,"delete":true,"aux":true,"rival":false},
+    {"id":"E9_SWAP_CLASS_FULL","gpu":1,"text":"real_swapped","evidence":true,"keep":true,"delete":true,"aux":true,"rival":true,"swap_class":true}
+  ],
+  "data":{"n_subjects":871,"n_features":320,"label_asd":0,"label_td":1,"modality_dims":[48,6,10,256],"corr_input_offset":64,"candidate_hypotheses":13,"candidate_edges_unique":39,"top_k":8,"excluded_unknown_corr_indices":[195,225,232,236]},
+  "protocol":{"datname":"ABIDE","nclass":2,"nmodal":4,"seed":0,"mode":"simple-2","GC_mode":"weighted-cosine","MP_mode":"GCN","MF_mode":"concat","nepoch":450,"early":200,"lr":0.0038,"reg":0.11,"dropout":0.35,"n_hidden":18,"n_head":2,"nlayer":1,"th":0.9,"theta_smooth":1.0,"theta_degree":0.5,"theta_sparsity":0.0,"alpha":0.5,"val_idx_equals_test_idx":true,"checkpoint_metric":"test_acc_strictly_increasing_first_tie"},
+  "method":{"clip_model":"RN50","clip_context_length":77,"clip_pretrained_sha256":"afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762","freeze_clip":true,"text_cache":"validated frozen embeddings from prior isolated literature prompt encoding; no training checkpoint reused","td_reference":{"method":"Ridge","alpha":10.0,"covariates":"PHENO age-bin, sex and site one-hot","train_TD_oof_folds":5,"z_clip":3.0,"sigma_floor":0.0001},"selector":{"hard_budget":8,"candidate_edges":39,"train":"straight-through top-k","eval":"hard top-k"},"counterfactual":{"train_every_epochs":5,"subjects_per_probe_epoch":2,"keep_kl_weight":0.10,"delete_margin_weight":0.05,"delete_margin":0.05,"frozen_backbone":true,"single_target_recompute_full_gfr":true,"masked_value":"fold TD conditional reference"},"residual":{"alpha_init":0.0,"max_patient_relative_norm":0.05,"location":"after CAM before original OutputLayer"},"optimizer":{"existing_mf_adam_param_group":true,"new_group_weight_decay":0.0,"no_third_adam":true}},
+  "text_control":{"neutral_asd":"Neutral hypothesis: The measured functional coupling among the named cortical and subcortical regions may vary across participants and should be compared with an age-comparable reference.","neutral_td":"Neutral reference: The measured functional coupling among the named cortical and subcortical regions may vary across participants and should be compared with age-comparable reference data.","anonymous_seed":38001,"wrong_edge_seed":38002,"random_mask_seed":38003,"counterfactual_rotation_seed":38004},
+  "scheduling":{"GPU0":["B0A_ANCHOR","E2_REAL_NO_CF","E4_LCHER_FULL","E6_NEUTRAL_FULL","E8_NO_RIVAL_FULL"],"GPU1":["E1_ANON_FULL","E3_REAL_KEEP_ONLY","E5_WRONG_EDGE_FULL","E7_NO_AUX_FULL","E9_SWAP_CLASS_FULL"],"max_workers_per_gpu":4}
+}
