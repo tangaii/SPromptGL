@@ -1,0 +1,133 @@
+{
+  "experiment": 43,
+  "name": "CORR-anchored GFR audit",
+  "version": "1.0",
+  "seed": 0,
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "groups": [
+    "E00_B0A_REPLAY",
+    "E01_AGGREGATION_FIX",
+    "E02_SAFE_SUPLOSS",
+    "E03_DENSITY_CAL_ONLY",
+    "E04_MODALITY_SPECIFIC_PROP",
+    "E05_FIX_PLUS_CAL",
+    "E06_CORR_RELIABLE_REFINE",
+    "E07_CORR_UNIFORM_AUX",
+    "E08_CORR_SHUFFLED_AUX",
+    "E09_CORR_ANCHOR_ONLY"
+  ],
+  "dimensions": [
+    48,
+    6,
+    10,
+    256
+  ],
+  "density": {
+    "k": 96,
+    "median_iqr": "outer_train_unordered_offdiagonal_current_scores_detached",
+    "iqr_floor": 0.001,
+    "raw_diagonal": 0,
+    "message_self_loop": 1,
+    "topk_ties": "torch.topk deterministic verified on both devices"
+  },
+  "supervision": {
+    "lambda": 1.0,
+    "target": "train_train_unordered_nonself_same_diagnosis",
+    "score": "(cosine+1)/2",
+    "loss": "MSE"
+  },
+  "reliability": {
+    "inner_folds": 5,
+    "shuffle": true,
+    "split_random_state": "43000+outer_fold",
+    "subject_disjoint_pairs": true,
+    "all_pairs": true,
+    "logistic_C": 1.0,
+    "solver": "lbfgs",
+    "max_iter": 500,
+    "tol": 1e-06,
+    "class_weight": "balanced",
+    "scaler": "fit_inner_train_pairs_only",
+    "base_features": [
+      "raw_CORR_cosine",
+      "absolute_age_bin_index_difference",
+      "same_sex",
+      "same_site"
+    ],
+    "aux_features": [
+      "raw_PHENO_cosine",
+      "raw_ANAT_cosine",
+      "raw_FUNC_cosine"
+    ],
+    "gamma": 0.25,
+    "q": "positive_mean_inner_delta_auc_normalized_else_all_zero"
+  },
+  "shuffle": {
+    "seed": "430000+100*fold+modality",
+    "pool_boundary": "outer_train_and_outer_test_separate",
+    "transform": "C[perm][:,perm]"
+  },
+  "anchor": {
+    "origin": "E40 immutable E32-exact training-before-first-update snapshots",
+    "source": "/tmp/SPromptGL-E40-HCER-v2-stage/experiment/experiment40_hcer_v2_b0a_evidence/.runtime/anchors",
+    "reference_predictions": "/data/adodas/SPromptGL-main/experiment/experiment42_fourlink_evidence_validation/runtime/anchors/best_foldNN.pt",
+    "reconstruction": "full original parameter registry+historical model and Adam state+entry/post RNG restored; no CLIP inference",
+    "require_exact_metrics_epochs_hashes_predictions": true
+  },
+  "scheduling": {
+    "gpus": 2,
+    "workers_per_gpu": 4,
+    "cpu_threads": 2,
+    "anchor_folds_per_gpu": 5,
+    "innovation_folds_per_gpu": 45,
+    "unit": "group,seed0,fold from verified immutable anchor"
+  },
+  "checkpoint_every_epochs": 10,
+  "go": {
+    "main": "E06_CORR_RELIABLE_REFINE",
+    "controls": [
+      "E00_B0A_REPLAY",
+      "E05_FIX_PLUS_CAL",
+      "E07_CORR_UNIFORM_AUX",
+      "E08_CORR_SHUFFLED_AUX",
+      "E09_CORR_ANCHOR_ONLY"
+    ],
+    "min_delta_acc_pp": 0.1,
+    "min_delta_hard_auc_pp": 0.1,
+    "min_paired_wins": 7,
+    "requires_actual_bounded_auxiliary_edge_response": true
+  },
+  "limitations": [
+    "val=test selection",
+    "pre-CV supervised RFE and global preprocessing",
+    "transductive graph",
+    "overlapping training folds",
+    "no clinical causality or independent generalization"
+  ]
+}
