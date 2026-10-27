@@ -1,0 +1,35 @@
+{
+  "experiment": "Experiment 44 — CU-GL",
+  "seed": 0,
+  "candidate_k": 16,
+  "dims": [48, 6, 10, 256],
+  "epochs": 450,
+  "early": 200,
+  "base_lr": 0.0038,
+  "new_lr": 0.00038,
+  "weight_decay": 0.11,
+  "new_weight_decay": 0.0,
+  "teacher_epochs": 12,
+  "inner_folds": 3,
+  "groups": {
+    "0": {"name": "E0_B0B", "cf": false, "symmetric": false, "null": false},
+    "1": {"name": "E1_CAM_ONLY", "cf": false, "symmetric": false, "null": false},
+    "2": {"name": "E2_SYMMETRIC_KNN", "cf": false, "symmetric": true, "null": false},
+    "3": {"name": "E3_DIRECTED_ONLY", "cf": false, "symmetric": false, "null": false},
+    "4": {"name": "E4_DIRECTED_BLOCK", "cf": false, "symmetric": false, "null": true},
+    "5": {"name": "E5_CF_SYMMETRIC", "cf": true, "symmetric": true, "null": true},
+    "6": {"name": "E6_CF_NO_BLOCK", "cf": true, "symmetric": false, "null": false},
+    "7": {"name": "E7_SHUFFLED_CF", "cf": true, "symmetric": false, "null": true, "shuffle": true},
+    "8": {"name": "E8_HOMOPHILY", "cf": true, "symmetric": false, "null": true, "homophily": true},
+    "9": {"name": "E9_CUGL_FULL", "cf": true, "symmetric": false, "null": true}
+  },
+  "gpu_plan": {
+    "0": {"groups": [0, 1, 2, 4, 6, 8], "folds": [1, 2, 3, 4, 5]},
+    "1": {"groups": [0, 1, 3, 5, 7, 9], "folds": [6, 7, 8, 9, 10]}
+  },
+  "protocol_notes": [
+    "Historical val=test, pre-CV RFE/standardisation and transductive cohort are retained for internal comparability.",
+    "E0 and E1 are verified historical anchors; E2–E9 start from the same untrained B0-B fold anchor.",
+    "Hard-AUC is one-hot hard prediction ROC-AUC, ASD=0 and TD=1."
+  ]
+}
