@@ -1,0 +1,161 @@
+{
+  "status": "DELIVERED",
+  "experiment": "Experiment 44 — CU-GL",
+  "started_unix": 1793092291.3118048,
+  "seed": 0,
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "fold_count": 10,
+  "split_rule": "StratifiedKFold(n_splits=10,shuffle=True,random_state=10)",
+  "candidate_k": 16,
+  "source_hashes": {
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "candidate_hashes": {
+    "1": "7488f2404327e8a540554d9ad06f3c410029dadd97702d6d6d31fa378eceddd5",
+    "2": "df2da0618b679aa5478f5973c3e24fc3aaa5d56266cab2b22a4186f72058ebc7",
+    "3": "840a382efa62c02ae54b635ac2d2833d13e8f20e422f5df58e3f2f1ef1d5d600",
+    "4": "df5b4a9600866ee32274e04928ffeee61e89d9537d93ee25a38528c574f6d9d2",
+    "5": "567b791bec84e0cd39773c881b99579b46365e496b619684a8237a133747da67",
+    "6": "4548a3393b0e937e0c3d2b4459193fa0c903ae7150ec2df9770be6bdbef46680",
+    "7": "4b487472b31700a5de7f27094d0320eeb20e544002bab870a3a64e892593de07",
+    "8": "a4023ae3d49dac09a79dc0b03e1019e20dff6aaef96bdf27da01a312f37a23e6",
+    "9": "2091aa20df6930cf60aad0a7b15c718fef4bbe8b7aac017e34e91f0883914a68",
+    "10": "f2617502527ab63b58cc1d18fa9a690172f91ee1dae9f6d0642d3c9bd70db517"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "source_signature": "d54dbaf9a134ec00479adaba4eb92e19add33d99efc2422d9e65f0f867c2bd78",
+  "handoff_prefix": {
+    "bytes": 440252,
+    "sha256": "39fe55ae8a4cd9ada63a951c05afd836110810c1e120338ec43d53cf92fd0ae5"
+  },
+  "historical": {
+    "b0b_dir": "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/checkpoints",
+    "cam_dir": "/data/adodas/SPromptGL-main/experiment/experiment43_4_physical_cam_only_validation/.runtime/checkpoints"
+  },
+  "teacher_tasks_expected": 30,
+  "formal_innovation_folds_expected": 80,
+  "stageA": {
+    "status": "PASS",
+    "valid_edges": 334590,
+    "mean_abs": 5.757745890128691e-06,
+    "std": 8.416349874984018e-06,
+    "positive_fraction": 0.4933022505155564,
+    "negative_fraction": 0.5000567859170926,
+    "real_vs_fixed_shuffle_corr": 0.0036317269387563978,
+    "utility_vs_homophily_corr": 0.003687176564543474,
+    "fold_stats": [
+      {
+        "fold": 1,
+        "valid": 33168,
+        "mean_abs": 6.118547389633022e-06,
+        "std": 9.050942026078701e-06,
+        "positive": 0.49306560540279787,
+        "negative": 0.5002411963338157
+      },
+      {
+        "fold": 2,
+        "valid": 33555,
+        "mean_abs": 6.384113930835156e-06,
+        "std": 9.483794201514684e-06,
+        "positive": 0.49760095365817314,
+        "negative": 0.49560423185814334
+      },
+      {
+        "fold": 3,
+        "valid": 33461,
+        "mean_abs": 4.7579037527611945e-06,
+        "std": 6.505891633423744e-06,
+        "positive": 0.488509010489824,
+        "negative": 0.5052150264487014
+      },
+      {
+        "fold": 4,
+        "valid": 33476,
+        "mean_abs": 5.673325631505577e-06,
+        "std": 8.640394298708998e-06,
+        "positive": 0.49692316883737603,
+        "negative": 0.49614649300991753
+      },
+      {
+        "fold": 5,
+        "valid": 33565,
+        "mean_abs": 6.865916930109961e-06,
+        "std": 9.24533924262505e-06,
+        "positive": 0.49238790406673616,
+        "negative": 0.5029941903768806
+      },
+      {
+        "fold": 6,
+        "valid": 33318,
+        "mean_abs": 4.645286480808863e-06,
+        "std": 7.442871719831601e-06,
+        "positive": 0.4868239390119455,
+        "negative": 0.502671228765232
+      },
+      {
+        "fold": 7,
+        "valid": 33737,
+        "mean_abs": 5.013740519643761e-06,
+        "std": 7.017881671345094e-06,
+        "positive": 0.49550938139135076,
+        "negative": 0.4981474345673889
+      },
+      {
+        "fold": 8,
+        "valid": 33551,
+        "mean_abs": 5.61545175514766e-06,
+        "std": 8.571318176109344e-06,
+        "positive": 0.5053500640815475,
+        "negative": 0.48752645226669844
+      },
+      {
+        "fold": 9,
+        "valid": 33391,
+        "mean_abs": 7.238561011035927e-06,
+        "std": 1.0230800398858264e-05,
+        "positive": 0.4828546614357162,
+        "negative": 0.5118744571890629
+      },
+      {
+        "fold": 10,
+        "valid": 33368,
+        "mean_abs": 5.266101197776152e-06,
+        "std": 7.120459940779256e-06,
+        "positive": 0.493886358187485,
+        "negative": 0.5002397506593144
+      }
+    ],
+    "criterion": ">=1000 finite OOF edges, signed variance >1e-8, positive and negative >1%"
+  },
+  "formal_started_unix": 1793093700.1530955,
+  "formal_finished_unix": 1793095806.4454677,
+  "formal_folds_complete": 80,
+  "formal_wall_seconds": 2106.292372226715,
+  "audit_status": "PASS",
+  "formal_rows": 100,
+  "report_status": "WRITTEN",
+  "final_decision": "SEE_REPORT",
+  "handoff": {
+    "status": "APPENDED",
+    "after_sha256": "dc9043d9adf1abe90e40e143a67eee3da82030cd15c8163353bdb291785aef79",
+    "marker": "<!-- EXPERIMENT44_CUGL -->"
+  }
+}
