@@ -1,0 +1,9 @@
+{
+  "version":"43.4-physical-cam-only-v1",
+  "protocol":{"nepoch":450,"early":200,"lr":0.0038,"reg":0.11,"dropout":0.35,"nlayer":1,"n_hidden":18,"n_head":2,"nmodal":4,"nclass":2,"seed":0,"folds":10,"shuffle":true,"random_state":10,"val_equals_test":true,"checkpoint":"strict first highest ACC","loss":"weighted ClsLoss only","input_dims":[48,6,10,256]},
+  "groups":[{"id":0,"name":"E0_ANCHORED_PHYSICAL_CAM","purpose":"PhysicalCAMOnly from E43.2 untrained CAM anchor"},{"id":1,"name":"E1_NATURAL_PHYSICAL_CAM","purpose":"PhysicalCAMOnly natural initialization; no historical anchor initialization"}],
+  "gpu_folds":{"0":[1,2,3,4,5],"1":[6,7,8,9,10]},
+  "history":"/data/adodas/SPromptGL-main/experiment/experiment43_2_gfr_incremental_value_audit",
+  "formal_metrics":["acc","hard_auc","spe","sen"],
+  "protected":"root model/data and experiment43_1/43_2/43_3 are read-only"
+}
