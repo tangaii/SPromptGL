@@ -3121,3 +3121,578 @@ E02监督无序训练配对数：{"1": 306153, "2": 306936, "3": 306936, "4": 30
 原E00四图平均邻居191.100/330.582/155.409/93.219；E06四图均为48.470，辅助精炼没有改变CORR支持。四个GCN消息可有非零分类梯度，但E06各分支贡献相对输入平均仅约2.74e−5/1.83e−5/2.76e−6/4.19e−6；仅关闭辅助精炼无类别翻转，不能据此宣称跨关系互补。
 固定模型干预与从头训练消融回答不同问题，不能以前者替代E07–E09。强主干残差、归一化对边权改动的压缩和原权重衰减都可能参与消息衰减，但本轮未分别验证这些原因，不作因果归因。建议保留B0-A强基座，先定位消息传播的实际决策贡献，避免继续堆叠门控或将微小代理AUC增量包装成可靠医学关系。
 本轮没有Prompt或疾病语义新实验。以上均为单seed历史val=test、CV前RFE/标准化及transductive协议下的内部比较；不支持独立泛化、显著性或临床因果主张。
+
+
+## Experiment 41 — UCSMA-v2
+
+<!-- experiment41_ucsma_v2_completion_v1 -->
+
+验收时间：2026-10-26T11:55:29.973012+00:00。计算状态：**100/100有效正式折完成；NO-GO**。
+
+E0独立重训，十折四指标、最佳epoch、执行epoch、初始参数SHA256及fold入口RNG全部精确匹配Experiment32 B0-A；另逐层核对原E32 B0 forward，GFR、四图邻接、CAM、attention与输出均10/10逐位一致。PEN保留构造但完全旁路前向。
+
+有效正式任务：GPU0 E0/E2/E4/E6/E8=50折；GPU1 E1/E3/E5/E7/E9=50折；每卡最多4 worker，CPU/BLAS线程1。设备实际为两张CUDA兼容PPU-ZW810E，各98,304MiB，未修改其他任务或杀进程。
+
+训练调度累计墙钟645.39秒（E0 455.71秒、初次增量100.11秒、更正调度89.56秒）；不含审计/报告。自E0开始至验收10498.00秒，包含人工中断与等待，不等于连续计算时间。有效worker耗时合计684.06秒；runtime约200.51MiB。
+
+最终复核修复了条件参考mean FD索引（EFC→全局60列）、概念拒绝门控及ROI覆盖支持传递。初次E3–E9共70折作废并排除；更正预检后重算，E0/E1/E2保留，E2输入逐位等价。总执行170次fold拟合，其中仅100次进入正式结果；GPU0额外作废30折、GPU1额外作废40折。Prompt、先验、超参、GO规则均未按测试成绩更改。排除记录及旧哈希见results/correction_audit.json。
+
+四指标：十折均值±population SD（%），AUC为硬标签one-hot ROC-AUC，二分类等于BA。
+
+| 组别 | ACC | Hard-AUC | SPE-TD | SEN-ASD |
+|---|---:|---:|---:|---:|
+| E0_B0A | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E1_RAW_CAPACITY | 91.9592 ± 2.5255 | 91.7482 ± 2.5067 | 94.4172 ± 4.0374 | 89.0793 ± 3.7283 |
+| E2_GLOBAL_NORM | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E3_COND_NORM | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E4_ROI_NORM | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E5_MULTISCALE_NUM | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E6_REAL_NO_REJECT | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E7_WRONG_SEMANTICS | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E8_DATA_PRIOR | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E9_UCSMA_FULL | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+
+核心机制：条件参考TD OOF MSE由0.049654降至0.045132，但E9−E0/E5/E7/E8的ACC及Hard-AUC均为0.0000pp，逐折0胜/10平/0负；ASD灵敏度无增益。E9平均未匹配质量0.9545；正确/错误医学映射、关闭语义、全部残差关闭均未改变硬标签，患者错配仅改变2个外层测试预测。真实医学语义没有显示超过多尺度数值、错误或数值先验的独立增益。
+
+新增组注册参数182016；有效输入连接参数E1=182016，E2/E3=116736，E4=158976，E5=162048，E6=163840，E7/E8/E9=163904；元素级梯度范围和剂量饱和见报告。E7不精确匹配重叠/覆盖，E8簇规模不同，不能宣称严格等容量或等覆盖。
+
+结论：**NO-GO，不作为当前MICCAI 2027第一创新点主推**。不把内部单seed结果当作跨seed、独立中心或临床泛化；继承val=test选模、CV前RFE/标准化与871人transductive图限制。下一步仅建议重新评估问题与数据覆盖，不在本轮调参、联合微调、追加seed或启动实验42。
+
+计算目录：`/tmp/SPromptGL-E41-UCSMA-stage/experiment/experiment41_uncertainty_calibrated_semantic_multiscale_alignment`；指定交付目录：`/data/adodas/SPromptGL-main/experiment/experiment41_uncertainty_calibrated_semantic_multiscale_alignment`（同步状态VERIFIED）；中文报告：`/data/adodas/SPromptGL-main/experiment/experiment41_uncertainty_calibrated_semantic_multiscale_alignment/results/report.md`。
+
+报告SHA256：`1bc880f2957cca0c67e423d0102baca35aaaa18ca7fad683fb918716fec854e6`；run.py：`2b92a245edf5db77e5dbec59790f4a51a410620cecb971edc04811e89d298c3c`；ucsma.py：`8b34151fef678bc69a41e6fd64f2da6902f3a79ee7c6a7a9cf044f823b119af7`；Prompt：`0531b4753ef262242244ab117ff74f4329c0d1966fecd2cb14a8e0060ea8f493`；ontology：`c7cffee92b4d945f9928601ab639e78b9b84c6df7c8809daec86638dcaf85f6c`。
+
+原始核心源码、数据、原论文、历史结果及CLIP缓存SHA256详见manifest；交付前复核受保护核心源码、两份数据及所有已读历史报告均未变化。processed_standard_data.csv SHA256=`b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1`；modal_feat_dict.npy SHA256=`8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e`。
+
+I/O与恢复：计算阶段无OSSFS I/O故障；双Adam/RNG及增量Adam/RNG下一步重放预检均通过。最终同步：VERIFIED；无自动Git提交/推送。
+
+<!-- /experiment41_ucsma_v2_completion_v1 -->
+
+
+<!-- EXPERIMENT43_1_B0B_GFR_RETEST_FAIL -->
+## Experiment 43.1 — B0-B GFR复验执行阻塞
+
+AssertionError()
+路径：/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest；未完成折不生成指标；修复后由resume继续。
+
+
+<!-- EXPERIMENT43_1_B0B_GFR_RETEST_FAIL -->
+## Experiment 43.1 — B0-B GFR复验执行阻塞
+
+TypeError("dict() got multiple values for keyword argument 'lambda_sup'")
+路径：/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest；未完成折不生成指标；修复后由resume继续。
+
+
+<!-- EXPERIMENT43_1_B0B_GFR_RETEST_FAIL -->
+## Experiment 43.1 — B0-B GFR复验执行阻塞
+
+FileNotFoundError(2, 'No such file or directory')
+路径：/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest；未完成折不生成指标；修复后由resume继续。
+
+
+<!-- EXPERIMENT43_1_B0B_GFR_RETEST_FAIL -->
+## Experiment 43.1 — B0-B GFR复验执行阻塞
+
+AssertionError()
+路径：/tmp/SPromptGL-E43_1-stage/experiment/experiment43_1_b0b_gfr_mechanism_retest；未完成折不生成指标；修复后由resume继续。
+
+
+<!-- EXPERIMENT43_1_B0B_GFR_RETEST -->
+## Experiment 43.1 — B0-B GFR五组优化验证
+
+
+完成 60/60 唯一正式折。正式四指标为十折 mean ± population SD，单位%。
+
+|组别|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|
+|E00_B0B_REPLAY|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|
+|E01_AGGREGATION_FIX_V2|91.6144 ± 2.9619|91.4694 ± 2.9274|93.3534 ± 4.1526|89.5854 ± 3.4710|
+|E02_SAFE_LABEL_ADJ_SUP_V2|91.6144 ± 3.0498|91.4375 ± 3.0446|93.7835 ± 3.4255|89.0915 ± 3.5092|
+|E03_SUPPORT_PRESERVING_CAL_V2|91.9592 ± 2.7747|91.7296 ± 2.7559|94.6300 ± 4.4709|88.8293 ± 4.2134|
+|E04_MODALITY_LOCAL_PROP_V2|91.4995 ± 2.8321|91.2590 ± 2.8721|94.4265 ± 3.3763|88.0915 ± 4.4156|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|91.9592 ± 2.7747|91.7296 ± 2.7559|94.6300 ± 4.4709|88.8293 ± 4.2134|
+
+## 与同折 B0-B 配对
+
+|组别−B0-B|ΔACC pp|ΔHard-AUC pp|ΔSPE pp|ΔSEN pp|ACC W/T/L|AUC W/T/L|判定|
+|---|---:|---:|---:|---:|---|---|---|
+|E01_AGGREGATION_FIX_V2|-0.1149|-0.1352|+0.2174|-0.4878|1/7/2|2/4/4|NO-GO|
+|E02_SAFE_LABEL_ADJ_SUP_V2|-0.1149|-0.1671|+0.6475|-0.9817|2/5/3|3/3/4|NO-GO|
+|E03_SUPPORT_PRESERVING_CAL_V2|+0.2299|+0.1250|+1.4940|-1.2439|4/4/2|4/3/3|NO-GO|
+|E04_MODALITY_LOCAL_PROP_V2|-0.2299|-0.3456|+1.2905|-1.9817|2/5/3|2/3/5|NO-GO|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|+0.2299|+0.1250|+1.4940|-1.2439|4/4/2|4/3/3|NO-GO|
+
+## 基线身份及设计边界
+
+B0-B物理不构造PEN/CLIP；PLN49,544参数，GFR887,836参数。原PLN fusion_weight的6个闲置参数是原有注册，不属于PEN。本轮未使用任何B0-A/E40锚点。B0-B历史为两条seed0连续随机流：GPU0折1–5，GPU1折6–10。保存新基线的首次更新前模型、双Adam与完整四种RNG；其余组逐折恢复这些未训练锚点。
+历史未保留预测向量或完整Python/NumPy RNG，不能宣称历史预测SHA或完整四类历史RNG匹配；逐折实际核验所有历史已有的参数SHA、CPU/CUDA入口SHA、混淆、四指标、best/执行epoch。本轮另存完整RNG与预测向量及SHA。
+E03与E05按用户定义完全同构；保留两组正式训练作为重复性核验，不能解释成两个独立改进或组合协同。
+E02是仓库非平方Frobenius ALoss的训练诱导子图安全实现；论文式(1)为平方范数，故不声称数值复现论文损失。预测与同类目标均先限制train后加I归一化；原对角约1，加I约2；标签同类对角为1，加I为2。lambda只由首个同一次训练前向的四个p.weight/p.bias梯度计算，冻结不调参。原非优化ALoss继续不进入基础损失。
+E03/E05校准仅作用传播图，原四GraphConstructLoss继续使用原始GraphLearn输出；每次forward逐元素验证支持、对角不变，没有mutual/topk/新边。E04输入和输出两端均限制对应模态块，参数形状仍320→320。
+
+## 机制诊断
+
+|组别|模态|邻居均值|分类消息梯度|贡献/输入范数|关闭分支log-prob变化|关闭翻转率|
+|---|---|---:|---:|---:|---:|---:|
+|E00_B0B_REPLAY|PHENO|186.6588|0|0|0|0|
+|E00_B0B_REPLAY|ANAT|329.2041|0.01771266|4.43303e-05|0.00132518|0|
+|E00_B0B_REPLAY|FUNC|148.6896|0.01516256|1.580155e-05|0.0003896123|0|
+|E00_B0B_REPLAY|CORR|112.9917|0.01271634|1.705884e-05|9.154602e-05|0|
+|E01_AGGREGATION_FIX_V2|PHENO|175.0762|0.004720359|2.787186e-05|0.0005778442|0|
+|E01_AGGREGATION_FIX_V2|ANAT|318.2882|0.002432996|4.567415e-06|9.220062e-05|0|
+|E01_AGGREGATION_FIX_V2|FUNC|160.5033|0.002469831|1.216164e-05|0.0001269725|0|
+|E01_AGGREGATION_FIX_V2|CORR|132.3947|0.004268034|5.559833e-06|9.540566e-05|0|
+|E02_SAFE_LABEL_ADJ_SUP_V2|PHENO|193.2652|0.006353941|4.899822e-05|0.0008988324|0.001149425|
+|E02_SAFE_LABEL_ADJ_SUP_V2|ANAT|314.921|0.004722037|9.719336e-06|5.781378e-05|0|
+|E02_SAFE_LABEL_ADJ_SUP_V2|FUNC|150.8181|0.002325226|2.65743e-06|1.64456e-05|0|
+|E02_SAFE_LABEL_ADJ_SUP_V2|CORR|85.80712|0.002303517|2.115489e-06|1.792822e-05|0|
+|E03_SUPPORT_PRESERVING_CAL_V2|PHENO|177.301|0.02134018|7.204938e-05|0.0004739036|0|
+|E03_SUPPORT_PRESERVING_CAL_V2|ANAT|332.9706|0.00776689|2.18313e-05|0.0004830677|0.001149425|
+|E03_SUPPORT_PRESERVING_CAL_V2|FUNC|149.1242|0.007835815|2.442027e-05|0.0002646228|0|
+|E03_SUPPORT_PRESERVING_CAL_V2|CORR|164.4034|0.01224673|3.5402e-05|0.0009848337|0.001149425|
+|E04_MODALITY_LOCAL_PROP_V2|PHENO|201.44|2.083407e-05|7.54589e-09|1.166153e-08|0|
+|E04_MODALITY_LOCAL_PROP_V2|ANAT|333.7984|3.339858e-06|3.311837e-09|8.389543e-09|0|
+|E04_MODALITY_LOCAL_PROP_V2|FUNC|157.6195|5.424794e-06|6.580259e-09|1.303759e-08|0|
+|E04_MODALITY_LOCAL_PROP_V2|CORR|164.0225|0.06367716|0.0001099578|0.004562376|0.002298851|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|PHENO|177.301|0.02134018|7.204938e-05|0.0004739036|0|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|ANAT|332.9706|0.00776689|2.18313e-05|0.0004830677|0.001149425|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|FUNC|149.1242|0.007835815|2.442027e-05|0.0002646228|0|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|CORR|164.4034|0.01224673|3.5402e-05|0.0009848337|0.001149425|
+
+## 基线逐折审计
+
+|fold|参数SHA|入口CPU/CUDA RNG|混淆/四指标|best epoch|epochs|
+|---|---|---|---|---|---|
+|1|MATCH|MATCH|MATCH|157|359|
+|2|MATCH|MATCH|MATCH|239|441|
+|3|MATCH|MATCH|MATCH|180|382|
+|4|MATCH|MATCH|MATCH|213|415|
+|5|MATCH|MATCH|MATCH|219|421|
+|6|MATCH|MATCH|MATCH|155|357|
+|7|MATCH|MATCH|MATCH|187|389|
+|8|MATCH|MATCH|MATCH|248|450|
+|9|MATCH|MATCH|MATCH|206|408|
+|10|MATCH|MATCH|MATCH|266|450|
+
+## 统计边界与结论
+
+历史B0-A（仅次级参照，非本轮锚点）：ACC92.0742、Hard-AUC91.8546、SPE94.6300、SEN89.0793%。若仅超过B0-B而未超过B0-A，只能声称相对B0-B的候选改善。
+原val=test严格首次最佳、CV前全队列RFE/标准化、全871节点transductive与重叠训练集保留；不构成无偏独立泛化、统计显著性、医学语义或临床因果证据。本轮不调用GPT/CLIP，不下载模型。
+所有支持/对角/局部传播及首步梯度等工程证据见.runtime/preflight.json，逐折图统计与分支关闭响应见diagnostics.csv，监督权重及损失见loss_trace.csv。
+
+科研结论：NO-GO。E03/E05十折最佳模型、预测、epoch与四指标逐值相同。GPU0/GPU1正式折数：{'0': 30, '1': 30}；其中创新折分别25/25，基线各5。总墙钟2358.27秒。
+
+产物：`/tmp/SPromptGL-E43_1-stage/experiment/experiment43_1_b0b_gfr_mechanism_retest`；复现：`python -B run.py all`，精确续跑：`python -B run.py resume`。
+
+
+<!-- EXPERIMENT43_1_FINAL_VERIFIED_DELIVERY -->
+### Experiment 43.1 最终验收与交付
+
+<!-- E43_1_INDEPENDENT_FINAL_AUDIT -->
+## 独立读回、单因素配对及交付审计
+
+60/60最佳Checkpoint均已重新前向、重算四指标与混淆并核对预测SHA；全部held-out标签置换后的log-prob逐位不变。十个锚点的双Adam均为空的未训练初态，源/数据/split/RNG绑定通过。根源码、输入及受保护历史产物SHA保持不变。
+
+|相对声明前置组|ΔACC pp|ΔHard-AUC pp|ΔSPE pp|ΔSEN pp|ACC W/T/L|AUC W/T/L|
+|---|---:|---:|---:|---:|---|---|
+|E02_SAFE_LABEL_ADJ_SUP_V2 - E01_AGGREGATION_FIX_V2|-0.0000|-0.0319|+0.4302|-0.4939|2/6/2|3/3/4|
+|E03_SUPPORT_PRESERVING_CAL_V2 - E01_AGGREGATION_FIX_V2|+0.3448|+0.2602|+1.2766|-0.7561|3/7/0|3/4/3|
+|E04_MODALITY_LOCAL_PROP_V2 - E01_AGGREGATION_FIX_V2|-0.1149|-0.2104|+1.0731|-1.4939|1/7/2|2/2/6|
+|E05_FIX_PLUS_SUPPORT_CAL_V2 - E03_SUPPORT_PRESERVING_CAL_V2|+0.0000|+0.0000|+0.0000|+0.0000|0/10/0|0/10/0|
+
+E03/E05定义重复；十折最佳模型、预测和epoch完全一致，不是两个独立改进。校准相对B0-B提高均值，但仅4/10折严格胜，未达7折门槛；相对历史B0-A的ACC仍低约0.1149pp、Hard-AUC低约0.1250pp。其SEN相对B0-B下降约1.2439pp，SPE增加约1.4940pp，须同时披露。
+
+|固定最佳模型同时关闭四支消息|测试类别翻转/871|平均绝对log-prob变化|
+|---|---:|---:|
+|E00_B0B_REPLAY|0/871|0.0017995839|
+|E01_AGGREGATION_FIX_V2|0/871|0.000812296847|
+|E02_SAFE_LABEL_ADJ_SUP_V2|1/871|0.000962398892|
+|E03_SUPPORT_PRESERVING_CAL_V2|1/871|0.00210632998|
+|E04_MODALITY_LOCAL_PROP_V2|2/871|0.00456238045|
+|E05_FIX_PLUS_SUPPORT_CAL_V2|1/871|0.00210632998|
+
+以上只验证固定权重下的依赖，不能替代从头训练的无GFR组，也不能据此声称患者图无用。E01恢复四支分类梯度，但没有分类增益。E04辅助消息相对输入约1e−9量级，CORR约1e−4；本轮未支持限制传播到模态块。消息微弱的原因没有被单独隔离，不归因为某个未经对照的超参数。
+
+E02十折lambda范围0.00378618–0.01027879，首步缩放监督/分类投影梯度比均为0.10。第1折PHENO监督梯度仅4.34e−9；非零不能视作实质监督。首步相对E01的参数差异见`.runtime/supervision_update_audit.json`，CORR最明显；Adam首步对梯度幅值的归一化意味着不能仅凭其他模态首步参数差很小就断言整个训练无监督作用。
+
+正式训练区间（首锚点落盘至最后结果提交，含存储恢复）为1703.67秒；本次总执行墙钟见manifest.total_wall_seconds，起点为存储预检。GPU0/GPU1各30折，其中创新各25折、基线各5折。预检峰值显存0.4684GiB，不冒称它是全部正式worker的全程峰值。
+
+存储初检PASS，后续OSSFS原子替换任务JSON时发生瞬时ENOENT，导致汇总器退出；原worker完成基线，无完成折重训。全部文件字节校验后迁移到/tmp继续，同一代码/训练签名不变。最终模型相等性比较复用单卡runtime，首次双卡可见控制器在报告阶段断言失败；以`CUDA_VISIBLE_DEVICES=1`重启控制器后全部已完成折直接跳过，报告成功；子进程仍按各自物理GPU分配。早期预检的计数/诊断键修正发生在任何正式训练之前。失败记录均保留，不计为额外训练折。
+
+科研状态SCIENTIFIC_COMPLETE，结论NO-GO。正式目标`/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest`；本地保护副本`/tmp/SPromptGL-E43_1-stage/experiment/experiment43_1_b0b_gfr_mechanism_retest`。交付以manifest.delivery与delivery_sync为准；/tmp不具持久存储保障。未提交/推送Git。
+
+本次有界同步成功：240文件，274008808字节，逐文件SHA完全一致；正式目录已交付。
+
+
+<!-- EXPERIMENT43_2_GFR_INCREMENTAL_VALUE -->
+## Experiment 43.2 — GFR Incremental Value Audit
+
+
+正式完成：20/20折。仅seed0；四指标为十折mean ± population SD，单位%。
+
+|组别|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|
+|E00_FULL_GFR_B0B_REPLAY|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|
+|E01_RAW_INPUT_NO_GFR|91.7294 ± 3.0819|91.4880 ± 3.0586|94.6346 ± 3.7878|88.3415 ± 3.3369|
+
+## 同折配对 E00−E01
+
+|fold|ΔACC pp|ΔHard-AUC pp|ΔSPE pp|ΔSEN pp|E00 best/epochs|E01 best/epochs|
+|---|---:|---:|---:|---:|---|---|
+|1|+0.0000|+0.1557|-2.1277|+2.4390|157/359|141/343|
+|2|-1.1494|-1.2195|+0.0000|-2.4390|239/441|137/339|
+|3|+1.1494|+1.4846|-4.3478|+7.3171|180/382|192/394|
+|4|+0.0000|+0.0000|+0.0000|+0.0000|213/415|165/367|
+|5|-1.1494|-0.8777|-4.2553|+2.5000|219/421|367/450|
+|6|-1.1494|-1.2500|+0.0000|-2.5000|155/357|103/305|
+|7|+1.1494|+1.6223|-4.2553|+7.5000|187/389|139/341|
+|8|+0.0000|+0.0000|+0.0000|+0.0000|248/450|191/393|
+|9|+0.0000|+0.0000|+0.0000|+0.0000|206/408|158/360|
+|10|+1.1494|+1.2500|+0.0000|+2.5000|266/450|139/341|
+|平均|+0.0000|+0.1165|-1.4986|+1.7317|—|—|
+
+ACC W/T/L：3/4/3；Hard-AUC W/T/L：4/3/3。
+
+预注册判定：**NO-GO / 增量价值未获充分支持**。门槛为两项均≥+0.1pp，且各自≥7折严格胜。未达门槛时不等价于证明所有患者图无效。
+
+## 历史复现与初始化审计
+
+E00重新完整训练10折；所有可用历史混淆、四指标、best_epoch、epochs_executed、初始化参数和CPU/CUDA入口RNG逐折匹配。E43.1另有完整四类RNG及预测SHA，本轮逐折匹配；独立读回进一步比较十折最佳模型所有张量，完全一致。历史B0-B没有保存全部预测和完整四类RNG，未伪称核验不存在的历史字段。
+十个未训练锚点按E43.1原signature验证，未将旧signature误要求为新代码signature。共同PLN初始化、双Adam初态和完整RNG逐值相同；每折E00/E01的共同训练epoch后完整RNG SHA全部匹配。两组停止时间不同允许后续未共有epoch不作比较。E01全程不调用GFR/GCN/图损失，GFR参数与Adam状态SHA保持初始化值；从头训练的是同一PLN，而非最佳GFR模型微调。
+
+## 每折混淆：TP-ASD/FN-ASD/FP-TD/TN-TD
+
+|fold|E00|E01|
+|---|---|---|
+|1|38/3/1/46|37/4/0/47|
+|2|35/6/4/42|36/5/4/42|
+|3|38/3/8/38|35/6/6/40|
+|4|36/4/1/46|36/4/1/46|
+|5|38/2/5/42|37/3/3/44|
+|6|37/3/1/46|38/2/1/46|
+|7|37/3/3/44|34/6/1/46|
+|8|34/6/4/43|34/6/4/43|
+|9|34/6/3/44|34/6/3/44|
+|10|36/4/2/45|35/5/2/45|
+
+## GFR机制
+
+|模态|分类消息梯度范数|图构建正则梯度范数|有效消息/输入范数|关闭分支logp变化|关闭类别翻转总数|
+|---|---:|---:|---:|---:|---:|
+|PHENO|0|0.033677608|0|0|0|
+|ANAT|0.017712657|0.07748503|4.4330299e-05|0.0013251801|0|
+|FUNC|0.015162565|0.052283533|1.5801545e-05|0.00038961227|0|
+|CORR|0.012716344|0.19433281|1.7058839e-05|9.1546021e-05|0|
+
+最佳模型GFR−raw相对范数：十折均值6.9216286e-05，范围[1.7786647e-07, 0.00038127572]。同时关闭四支消息类别翻转0/871；平均绝对logp变化0.0017995839。
+PHENO中间消息虽可非零，最终直接贡献与分类消息梯度均为0，因为i==1覆盖i==0。图构建正则仍可更新PHENO图学习参数。固定模型关闭消息只解释依赖，不能替代本轮E01独立重训。
+
+## 工程验收、时间与限制
+
+GPU0=10/10折（fold1–5两组），GPU1=10/10折（fold6–10两组）。正式训练墙钟661.11秒；本次存储保护记录起至报告1599.93秒。每GPU一个worker、每worker2 CPU线程；不调用CLIP/GPT、不下载模型、未Git提交/推送。
+20个最佳checkpoint独立重载：预测、四指标、混淆、模型/预测SHA及split/anchor全通过。预检含两组两步后磁盘恢复第三步逐值复演、E00原始步梯度/双Adam/RNG等价、E01输入恒等和GFR零调用、测试标签置换前向不变。受保护根源码、原数据、E43.1及历史基线文件SHA保持不变。
+原val=test选首次最佳、CV前全数据标准化/RFE、全节点transductive和重叠训练集保持。Hard-AUC由硬标签计算，不能当作概率ROC-AUC；不额外报BA等第五指标。该配对比较不构成独立泛化、显著性或临床因果证据。差异归于整体GFR包（传播和必要的图正则），本轮未隔离它们的单独作用。
+
+产物：`/data/adodas/SPromptGL-main/experiment/experiment43_2_gfr_incremental_value_audit`。训练恢复：`python -B run.py resume`；独立复核：`python -B run.py audit`；报告重建：`python -B run.py report`。
+
+<!-- E43_2_RECOVERY_AND_FINAL_DELIVERY_AUDIT -->
+## 存储恢复与最终交付补充审计
+
+正式期间两次OSSFS任务JSON原子替换窗口返回瞬时ENOENT：首次影响E00阶段控制器，第二次影响E01阶段恢复控制器。两次均仅汇总控制器退出，独立训练worker继续完成当前阶段。使用同一冻结源码/配置有限恢复两次；最终稳定任务记录重核验后全部完成折跳过。没有完成折重训、没有改动训练公式/参数/RNG、没有将历史最佳模型用于初始化。故障堆栈和恢复记录保存在`.runtime/tasks/failure_*.json`、controller日志及manifest.storage_events。常规训练前storage probe为PASS，不能据此声称运行期间从无故障。
+
+两组共有的3592个训练epoch，Python/NumPy/Torch CPU/CUDA完整RNG摘要逐个匹配。20个唯一正式任务各仅有一次FOLD_DONE；20个best checkpoint齐全，冗余latest checkpoint均已清理。每个best保留对应最佳epoch的模型、双Adam和完整RNG；任务记录保留结束epoch、等待/恢复证据和预测。
+
+全体测试折混淆计数合计仅作审计（不替代十折均值）：E00 {'asd_tp': 363, 'asd_fn': 40, 'td_fp': 32, 'td_tn': 436}；E01 {'asd_tp': 356, 'asd_fn': 47, 'td_fp': 25, 'td_tn': 443}。GFR多正确识别7名ASD，同时少正确识别7名TD；两组总正确人数均为799/871，未新增第五项分类指标。
+
+正式训练区间包含两次控制器故障与稳定结果重核对；训练最后一折落盘时间另见manifest.training_complete_at_last_record_unix。设备内存数值仅在预检/独立验收实测，不冒称它们是正式训练全程峰值。诊断中scalar转换产生一次PyTorch提醒，模型/优化器不变的断言通过；不是训练数值故障。
+
+## Experiment 41.1 — SAGE-Align Final
+
+<!-- experiment41_1_sage_align_final_v1 -->
+
+验收时间：2026-10-26T14:33:41.110442+00:00。100/100有效正式折完成；GPU0执行 E0/E2/E4/E6/E8=50折，GPU1执行 E1/E3/E5/E7/E9=50折；每卡最多一个 worker，实际设备为两张 PPU-ZW810E。
+
+E0 B0-A 精确复现：True（10/10）。适配学习率均为 0.00038；残差上限固定 8%；SAGE 分支 5,760 参数，CAM 仅作查询门控，零有效医学证据时残差严格为零。
+
+| 组别 | ACC | Hard-AUC | SPE-TD | SEN-ASD |
+|---|---:|---:|---:|---:|
+| E0_B0A | 92.0742 ± 2.6000% | 91.8546 ± 2.5815% | 94.6300 ± 4.0457% | 89.0793 ± 3.7283% |
+| E1_HEAD_ONLY | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E2_NUMERIC_ONLY | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E3_GLOBAL_REFERENCE | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E4_NO_QC | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E5_WRONG_SEMANTICS | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E6_DATA_PRIOR | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E7_FORCED_ALIGNMENT | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+| E8_FROZEN_HEAD | 92.0742 ± 2.6000% | 91.8546 ± 2.5815% | 94.6300 ± 4.0457% | 89.0793 ± 3.7283% |
+| E9_SAGE_FULL | 91.9592 ± 2.7267% | 91.7482 ± 2.7033% | 94.4172 ± 4.1480% | 89.0793 ± 3.7283% |
+
+E9 未匹配质量与残差/8%上限见 `results/diagnostics.csv`；固定 E9 反事实见 `results/counterfactual.csv`。医学 Prompt 使用 Ilioska DOI 10.1038/s44220-026-00656-y 与 Kobbersmed DOI 10.1016/j.pneurobio.2026.102906 的保守区域级先验，未使用 CLIP/GPT-4。
+
+最终科研结论：**FINAL NO-GO**。本轮若未通过 E0、E1、数值先验或错误映射必要性，不能作为 MICCAI 2027 第一创新点继续；按任务要求不启动 41.2。
+
+结果目录：`/data/adodas/SPromptGL-main/experiment/experiment41_1_sage_align_final`。总训练墙钟：713.76 秒；报告 SHA256：`aa7143bf3711b8395ce7cfabeaed67d821596ba959d9254bdf0b960917bafae7`；run.py SHA256：`5cc9823312819e261196347c355b741b59222526873891f983cb14d4df73bc65`；sage_align.py SHA256：`a64ccf904c299aa92c42f18426d9afcc0a2ceef327e0a0245c2f7b235dccc99d`；prompts.json SHA256：`8d895ea4e422d776c6d1970307cb5801bcd9446e33d2d05d8c9a96d4ebd51a23`；ontology.json SHA256：`67205f37e0f98217518d1705e75f794a23bd2696c946422d4c9533e80958e230`。
+
+沿用 val=test、CV 前 RFE/标准化和 871 人 transductive 图，结果属于历史协议下的内部比较。
+
+<!-- /experiment41_1_sage_align_final_v1 -->
+
+
+<!-- EXPERIMENT43_3_PAPER_GFR_ABLATION -->
+## Experiment 43.3 — 原论文GFR消融复现专项核查
+
+
+状态：SCIENTIFIC_COMPLETE；实际80/80条唯一折记录。新增50，核验复用30。
+
+正式四指标：seed0十折mean ± population SD，单位%；ACC为折均值，并非全871人加权micro。后者单独列在summary.csv。
+
+|组别|来源|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---|---:|---:|---:|---:|
+|H-A-G|REUSED_VERIFIED|92.0742 ± 2.6000|91.8546 ± 2.5815|94.6300 ± 4.0457|89.0793 ± 3.7283|
+|H-A-R|NEWLY_TRAINED|91.9592 ± 2.9591|91.7651 ± 2.9755|94.4265 ± 3.2394|89.1037 ± 3.9659|
+|H-B-G|REUSED_VERIFIED|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|
+|H-B-R|REUSED_VERIFIED|91.7294 ± 3.0819|91.4880 ± 3.0586|94.6346 ± 3.7878|88.3415 ± 3.3369|
+|P-A-G|NEWLY_TRAINED|91.3845 ± 3.0589|91.1587 ± 3.0667|94.2137 ± 3.6134|88.1037 ± 4.0848|
+|P-A-R|NEWLY_TRAINED|91.4995 ± 3.2655|91.2893 ± 3.2137|93.9870 ± 4.8354|88.5915 ± 3.8608|
+|P-B-G|NEWLY_TRAINED|91.4995 ± 3.0130|91.2806 ± 3.0387|94.2137 ± 3.2156|88.3476 ± 3.9856|
+|P-B-R|NEWLY_TRAINED|91.2709 ± 2.9685|91.0686 ± 2.9495|93.7835 ± 3.5496|88.3537 ± 3.2888|
+
+## 原论文与双基座比较
+
+|来源/协议|基座|无GFR ACC|有GFR ACC|ΔACC|无GFR AUC|有GFR AUC|ΔAUC|
+|---|---|---:|---:|---:|---:|---:|---:|
+|Figure 2图中标注|作者未公开完整消融实现|86.48|91.73|5.25|86.40|91.54|5.14|
+|H|B0-A|91.9592|92.0742|+0.1149|91.7651|91.8546|+0.0896|
+|H|B0-B|91.7294|91.7294|+0.0000|91.4880|91.6046|+0.1165|
+|P|B0-A|91.4995|91.3845|-0.1149|91.2893|91.1587|-0.1306|
+|P|B0-B|91.2709|91.4995|+0.2286|91.0686|91.2806|+0.2120|
+
+Figure 2(c) +RES：ACC92.08、AUC91.93；(d) +PEN：ACC92.30、AUC92.22。以上全部来自PDF第7页原图数字标签，非本轮结果；本轮不训练(c)/(d)。正文Sec3.3明确baseline只用CAM。作者公开树中没有Figure2专用消融实现、消融初始化/训练顺序/种子。标记：PAPER_ABLATION_IMPLEMENTATION_UNAVAILABLE。
+
+## 同协议同基座GFR配对
+
+|比较|ΔACC pp|ΔHard-AUC pp|ΔSPE pp|ΔSEN pp|ACC W/T/L|AUC W/T/L|决策|
+|---|---:|---:|---:|---:|---|---|---|
+|H-A-G − H-A-R|+0.1149|+0.0896|+0.2035|-0.0244|4/4/2|4/4/2|NO-GO|
+|H-B-G − H-B-R|+0.0000|+0.1165|-1.4986|+1.7317|3/4/3|4/3/3|NO-GO|
+|P-A-G − P-A-R|-0.1149|-0.1306|+0.2266|-0.4878|1/7/2|1/6/3|NO-GO|
+|P-B-G − P-B-R|+0.2286|+0.2120|+0.4302|-0.0061|4/3/3|4/3/3|NO-GO|
+|H-A-G − H-B-G|+0.3448|+0.2500|+1.4940|-0.9939|4/5/1|5/3/2|DESCRIPTIVE_CONSTRUCTION_RNG_DIFFERENCE|
+|H-A-R − H-B-R|+0.2299|+0.2770|-0.2081|+0.7622|5/3/2|6/2/2|DESCRIPTIVE_CONSTRUCTION_RNG_DIFFERENCE|
+|P-A-G − P-B-G|-0.1149|-0.1220|-0.0000|-0.2439|2/6/2|2/5/3|DESCRIPTIVE_CONSTRUCTION_RNG_DIFFERENCE|
+|P-A-R − P-B-R|+0.2286|+0.2207|+0.2035|+0.2378|3/5/2|3/3/4|DESCRIPTIVE_CONSTRUCTION_RNG_DIFFERENCE|
+
+GFR准入要求：两项增益均≥0.1pp且两项各≥7/10严格胜。A/B差别含构造与初始化随机路径，不能解释为PEN语义收益；H/P同时改变多个参数，不能归因单一参数。训练折相互重叠，这些胜平负不是独立数据集显著性检验。
+
+## 参数映射与确定源码证据
+
+见paper_ablation_audit.json逐项paper_text_original/repo_argument/mapping_evidence/confidence/ambiguity。H为官方Shell运行参数；P=dropout .75、lr .0023、n_hidden10、heads4、nlayer4，明确为PAPER_TEXT_MAPPED_PROXY。原文“number of hidden layers10”与代码n_hidden表示Q/K/V每头宽度存在语义歧义；nlayer实际控制Encoder+FeedForward重复次数。P的alpha记为1以对应原文，但代码该参数仅存储，simple-2中原始特征加法硬编码为1；H默认alpha .5与P1均不改变该路径。reg .11、th .9、450/200及其它未明参数继承Shell/default，不是论文确认。
+
+官方main/model/layers/shell与本地逐字相同。GraphLearn/GCN/GFR的AST逐值一致；均含i==1覆盖PHENO消息。simple-2的ALoss计算而不优化。官方network把RN50作为ViT_model注册在PLN，且在MLP之前加载；用户network先构造MLP再调用一次文本缓存，缓存8条1024维buffer，不注册整个RN50。这改变构造与apply(my_weight_init)所遍历的参数/RNG。官方utils.one_hot在CPU创建eye，本地改到索引device以兼容新PyTorch；数学指标口径相同。上述是确定实现/配置差别，尚不能单独解释原作者私有消融的5.25pp。
+
+B0-A复用E43已逐折精确匹配E32的10个未训练状态、完整RNG与best；本轮又重新加载这些best并计算预测/四指标/混淆。B0-B复用E43.2已独立验收模型并再次重算。新增无GFR组只恢复未训练入口，不加载有GFR best作为初始化。历史A best只保留模型，best时Adam未保存；入口两个Adam空状态完整存在。该历史限制明确保留，不补造缺失状态。
+
+## GFR机制
+
+|有GFR组|输出−输入相对范数(均值)|有效消息/输入ANAT,FUNC,CORR|图密度PHENO,ANAT,FUNC,CORR|关闭全部消息logp绝对变化|类别翻转(871)|
+|---|---:|---|---|---:|---:|
+|H-A-G|0.00067748303|0.000336662, 0.000193902, 0.000270931|0.2197, 0.3800, 0.1786, 0.1071|0.008307849|7|
+|H-B-G|6.9216286e-05|4.43303e-05, 1.58015e-05, 1.70588e-05|0.2146, 0.3784, 0.1709, 0.1299|0.001799584|0|
+|P-A-G|5.0197642e-08|3.91979e-08, 1.39013e-08, 9.14792e-09|0.2237, 0.3316, 0.1606, 0.1525|4.275136e-07|0|
+|P-B-G|1.5715236e-07|8.78368e-08, 1.02896e-07, 6.62973e-08|0.2276, 0.3320, 0.1719, 0.1460|9.391726e-07|0|
+
+逐分支消息范数、分类GCN梯度、图投影梯度、有效融合、密度/度数及单支关闭logp/翻转见mechanism_diagnostics.csv。PHENO消息虽计算但被覆盖，分类GCN梯度为0；图正则仍优化PHENO GraphLearn。数值有消息、固定模型依赖消息、从头训练带来分类增益是三件事。
+
+## 论文数值兼容性与核心回答
+
+- H/B0-A：CAM-only距86.48为+5.4792pp，GFR距91.73为+0.3442pp，GFR增量距+5.25为-5.1351pp。
+- H/B0-B：CAM-only距86.48为+5.2494pp，GFR距91.73为-0.0006pp，GFR增量距+5.25为-5.2500pp。
+- P/B0-A：CAM-only距86.48为+5.0195pp，GFR距91.73为-0.3455pp，GFR增量距+5.25为-5.3649pp。
+- P/B0-B：CAM-only距86.48为+4.7909pp，GFR距91.73为-0.2305pp，GFR增量距+5.25为-5.0214pp。
+
+数值接近不等于严格重现作者私有消融；没有原始消融实现与完整初始化记录，不能断言论文错误或作者不当行为。B0-A/B0-B只能在各自协议内作配对增量；跨基座最好/最差拼接禁止。根据四个预注册增量与机制审计判断是否值得继续以GFR作创新基座：若证据不足，优先保留它作为历史兼容比较，并以CAM-only为必要强对照，不以论文5.25pp作为已证实前提。
+
+## 训练、恢复与独立验收
+
+- H-A-G：best_epoch=[322, 149, 428, 243, 428, 124, 154, 280, 169, 251]；epochs_executed=[450, 351, 450, 445, 450, 326, 356, 450, 371, 450]；来源REUSED_VERIFIED。
+- H-A-R：best_epoch=[172, 124, 259, 154, 333, 139, 204, 389, 147, 203]；epochs_executed=[374, 326, 450, 356, 450, 341, 406, 450, 349, 405]；来源NEWLY_TRAINED。
+- H-B-G：best_epoch=[157, 239, 180, 213, 219, 155, 187, 248, 206, 266]；epochs_executed=[359, 441, 382, 415, 421, 357, 389, 450, 408, 450]；来源REUSED_VERIFIED。
+- H-B-R：best_epoch=[141, 137, 192, 165, 367, 103, 139, 191, 158, 139]；epochs_executed=[343, 339, 394, 367, 450, 305, 341, 393, 360, 341]；来源REUSED_VERIFIED。
+- P-A-G：best_epoch=[186, 182, 376, 218, 247, 167, 157, 388, 229, 256]；epochs_executed=[388, 384, 450, 420, 449, 369, 359, 450, 431, 450]；来源NEWLY_TRAINED。
+- P-A-R：best_epoch=[178, 188, 201, 155, 312, 142, 180, 292, 253, 364]；epochs_executed=[380, 390, 403, 357, 450, 344, 382, 450, 450, 450]；来源NEWLY_TRAINED。
+- P-B-G：best_epoch=[166, 230, 224, 190, 311, 206, 173, 353, 129, 248]；epochs_executed=[368, 432, 426, 392, 450, 408, 375, 450, 331, 450]；来源NEWLY_TRAINED。
+- P-B-R：best_epoch=[147, 206, 227, 357, 245, 286, 190, 313, 318, 162]；epochs_executed=[349, 408, 429, 450, 447, 450, 392, 450, 450, 364]；来源NEWLY_TRAINED。
+- 新训GPU0=25折，GPU1=25折；正式墙钟1611.43s；本轮新训fold wall总和3072.64s（并行和I/O，不等于墙钟）。
+- 新训每10epochs原子保存model、两Adam、best、当前epoch/wait、四类RNG、源/数据/配置/anchor/fold签名；完成后独立进程重载best重新预测及指标，并检查原输入/no-GFR零调用零梯度零更新。
+- loss/训练ACC/testACC轨迹在新训task的loss_trace，10epoch抽样；历史保留的可读轨迹作为历史证据，不虚构未保存训练曲线。strict first best与wait>200均未更改。
+- 原始代码/数据/历史文件protected SHA前后核对；无Git commit/push。
+
+## 限制
+
+val=test参与checkpoint选择、全队列标准化及CV前RFE、全871节点transductive协议保持，仅用于内部历史可比；不能视为无泄漏独立临床泛化。单seed与重叠训练折不支持显著性或因果结论。ANAT/FUNC是扫描质量/运动摘要；图是患者图，CAM潜token不是ROI。
+
+
+<!-- E43_3_INDEPENDENT_SCIENCE -->
+
+## 独立公式终验、训练曲线与弱消息来源
+
+额外audit.py为与冻结训练入口分离的独立验收实现：用布尔混淆计数重算ACC/Hard-AUC/SPE/SEN，跨物理GPU重载全部80个best；检查初始化/预测/最佳模型SHA、no-GFR零调用/零更新、闲置PEN MLP不更新及heldout标签置换不改变forward。80/80通过；没有训练或修改原模型。
+
+|组|最佳epoch均值|执行epoch均值|训练eval ACC|测试eval ACC|训练−测试pp|初始→末次分类loss|最佳图loss/分类loss绝对比|预测坍塌折|
+|---|---:|---:|---:|---:|---:|---|---:|---:|
+|H-A-G|254.8|409.9|96.0325|92.0742|3.9584|0.96447→0.37106|13.4615|0|
+|H-A-R|212.4|390.7|96.6323|91.9592|4.6730|1.01835→0.24767|0.0000|0|
+|H-B-G|207.0|407.2|96.7086|91.7294|4.9792|1.15263→0.29365|15.1335|0|
+|H-B-R|173.2|363.3|96.4917|91.7294|4.7624|1.14408→0.19865|0.0000|0|
+|P-A-G|240.6|415.0|96.2622|91.3845|4.8776|1.45016→0.13771|13.7185|0|
+|P-A-R|226.5|405.6|95.8031|91.4995|4.3036|1.45872→0.31015|0.0000|0|
+|P-B-G|223.0|408.2|96.1600|91.4995|4.6606|1.40253→0.21171|13.1266|0|
+|P-B-R|245.1|418.9|96.6701|91.2709|5.3992|1.42571→0.30648|0.0000|0|
+
+训练eval ACC是最佳checkpoint的诊断，非新增第五项正式指标。训练loss轨迹为train-mode、按原保存频率抽样，初始/末次不是同一dropout mask；不能把此表当作无偏过拟合估计。图loss包含负degree项，因此另列绝对比，不能把负总loss误判数值故障。
+
+|有GFR组|ANAT GCN权重范数(best/init)|FUNC|CORR|GCN图正则梯度|
+|---|---:|---:|---:|---:|
+|H-A-G|0.008536212|0.005118586|0.005999795|0（逐张量独立核验）|
+|H-B-G|0.003129299|0.001938282|0.003398192|0（逐张量独立核验）|
+|P-A-G|0.0001685754|0.0001665667|0.0001091897|0（逐张量独立核验）|
+|P-B-G|0.0003383632|0.0002986017|0.0002877412|0（逐张量独立核验）|
+
+这些范数收缩和弱消息是实际观察；GFR的GraphConstructLoss只作用于构图投影，不直接监督GCN权重。原weight_decay=.11是候选机制解释，但本轮未新增去正则组，不能将收缩原因单独归因于weight decay。PHENO GCN因覆盖无分类梯度，其消息不进入最终输出。
+
+补充确定源码/数据证据：官方固定commit的预处理CSV及modal_feat_dict.npy与本地逐字节相同。用户远端main七个核心文件也与本地相同。官方PEN硬编码CAM4×36，而论文代理10×4产生4×40，不能直接执行当前公开PEN；本轮两个基座都跳过PEN，因此代理四组维度合法。此证据限制论文配置精确映射，不影响冻结H/P。Eq4的CAM残差在InputLayer硬编码系数1，hyperpm.alpha未传入；GFR raw-X系数1是另一条独立skip。
+
+H明确指公开Shell超参配合用户指定的历史A/B构造，不声称E32缓存式构造等于官方注册整个RN50的原始构造。强行换成后者会破坏本轮要求的E32-B0-A身份，因此仅做源码对照并保留未公开消融实现的不确定性。官方与用户都存在PHENO覆盖及ALoss未优化，不能将这两点说成用户独有改坏。
+
+### A–F结论
+
+A. 公开Shell/用户兼容初始化协议：B0-A ΔACC=+0.1149pp、ΔAUC=+0.0896pp，NO-GO；B0-B ΔACC=+0.0000pp、ΔAUC=+0.1165pp，NO-GO。
+B. 论文文本代理协议：B0-A ΔACC=-0.1149pp、ΔAUC=-0.1306pp，NO-GO；B0-B ΔACC=+0.2286pp、ΔAUC=+0.2120pp，NO-GO。
+
+C. 本轮A/B差异中最大ACC绝对差为0.3448pp；该量级不足以解释原论文5.25pp的同基座GFR增量。两者本来不执行PEN，不能归因于疾病文本。
+
+D. CAM-only实测范围91.2709–91.9592%；与86.48最近差距4.7909pp。是否数值接近应看这个差距，不能用不同协议组拼接。
+
+E. 确定差异：正文/Shell超参不一致；代码n_hidden语义与自然语言不一致；官方/用户RN50注册、构造顺序、缓存和初始化遍历不同；公式图监督与实际loss不同；论文未公开消融专用脚本/种子/完整初始化。上述证据并未证明其中某一项单独造成论文差距。评估偏倚与原Torch1.12/RTX3090环境也已披露，不能在未执行反事实配置时断言为根因。
+
+F. 研究建议：继续把GFR作为历史对照可以，但任何以患者图为创新基座的工作都需同时对CAM-only证明增量，并检查实际消息与初始化。若配对四组未达门槛，本轮不给“GFR具有稳定额外分类价值”的GO，也不据此证明全部患者图无效。
+
+
+H-B历史G/R共同epoch完整四类RNG又逐项核对：3592个全部相同。P-A/P-B共同epoch trace由run.py report逐项核对；H-A历史未保存逐epoch完整trace，不伪称具有该层证据。A/B两基座的入口状态各自匹配，跨基座不作逐参数相同主张。
+
+
+<!-- E43_3_FINAL_AUDIT_TABLES -->
+
+## 表四：论文原文、公开Shell及唯一代理映射
+
+|字段|论文正文|H Shell/default|P代理|源码含义及证据状态|
+|---|---|---|---|---|
+|dropout|the dropout rate is 0.75|0.35|0.75|main.py parser; layers.Attention/VariLengthInputLayer/EncodeLayer/FeedForwardLayer; HIGH|
+|lr|the learning rate is 0.0023|0.0038|0.0023|model.py Adam lr=hyperpm.lr; HIGH|
+|n_hidden|the number of hidden layers is 10|18|10|network.PLN d_q=d_k=d_v=hyperpm.n_hidden; NOT hidden layer count; LOW; ASSUMED_MAPPING|
+|n_head|number of attention heads is 4|2|4|network.PLN n_head and layer reshape; HIGH|
+|nlayer|the encoding layer is 4|1|4|network.PLN for i in range(self.n_layer), Encoder+FeedForward pair; MEDIUM; ASSUMED_MAPPING|
+|alpha|weight of original multi-modal features alpha=1|0.5|1.0|Eq4 CAM residual: layers.VariLengthInputLayer q += residual hardcodes1; EncodeLayer also uses residual1. hyperpm.alpha only stored in EvalHelper, never passed to CAM/GFR simple-2. GFR raw-X residual also independently hardcodes1.; LOW; ASSUMED_MAPPING|
+|reg|not disclosed|0.11|0.11|Shell --reg .11; Adam weight_decay; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|th|not disclosed as numeric in implementation detail|0.9|0.9|main default .9; GraphLearn score>.9 detached mask; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|nepoch|not disclosed|450|450|main default450; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|early|not disclosed|200|200|main wait_cnt>hyperpm.early; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|loss|Eq7 lambda=eta=1; Eq1 graph smoothness+supervised adjacency|simple-2|simple-2|model.py loss=cls_loss+all_graph_loss; ALoss absent; CODE_DIFFERS_FROM_PAPER|
+|optimizer|not specified in paper|two Adam|two Adam|model EvalHelper optimizer_MP0/optimizer_MF; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|seed|not disclosed|0|0|main default0; historical continuous RNG; INHERITED_UNDISCLOSED; ASSUMED_MAPPING|
+|data|ABIDE871 four modalities|same historical preprocessed|same|main loads processed_standard_data.csv & modal_feat_dict.npy; no new preprocessing; HIGH; ASSUMED_MAPPING|
+|evaluation|10-fold ACC/AUC/SEN/SPE|val=test strict first ACC; hard onehot AUC|same|main.py split/early loop; model.test/roc_auc_score; PAPER_UNDISCLOSED_DETAIL; ASSUMED_MAPPING|
+
+## 表五补充：有效消息、分类梯度与图正则路径
+
+|有GFR组|输入范数|输出范数|相对差异%|ANAT/FUNC/CORR分类GCN梯度范数|ANAT/FUNC/CORR best/init权重范数|关闭消息翻转|
+|---|---:|---:|---:|---|---|---:|
+|H-A-G|236.3112|236.2978|0.0677483|0.014883, 0.0151116, 0.0242279|0.00853621, 0.00511859, 0.00599979|7/871|
+|H-B-G|236.3112|236.3107|0.006921629|0.0177127, 0.0151626, 0.0127163|0.0031293, 0.00193828, 0.00339819|0/871|
+|P-A-G|236.3112|236.3112|5.019764e-06|0.00030141, 0.000228785, 0.000125074|0.000168575, 0.000166567, 0.00010919|0/871|
+|P-B-G|236.3112|236.3112|1.571524e-05|0.000337561, 0.000494878, 0.000405342|0.000338363, 0.000298602, 0.000287741|0/871|
+
+原始图的密度、邻居数及各分支关闭效应完整列于mechanism_diagnostics.csv。GraphConstructLoss→GCN参数梯度均为0；该loss优化构图投影，不能据此认为全部GFR参数都受到图正则直接训练。P最佳模型消息接近数值零，但从头训练G/R轨迹仍可能不同；不能把最终弱消息倒推为整个训练从未用图。
+
+终验状态：80/80折，50 NEWLY_TRAINED、30 REUSED_VERIFIED；GPU0/GPU1各25新增折。正式训练与第一轮验收墙钟1611.43s；含论文/代码审计及独立公式终验2608.47s（截至此前独立终验）。本附表只整理既有记录，没有再次训练或评估。
+
+
+## Experiment 41.1 — SAGE-Align Final
+
+<!-- experiment41_1_sage_align_final_corrected_v2 -->
+
+本更正段取代此前v1的有效折及墙钟声明；历史内容不删除。v1的100行结果因E5对应不一致、E2/E6重复、QC方向和恢复/预检不足而作废，隔离于`.runtime/rejected_protocol_audit_v1`。当前修正协议100/100有效唯一折完成；纠错前结果已观察，不声称盲法预注册。
+
+完成UTC：2026-10-26T17:26:32.753226+00:00。GPU0=E0/E2/E4/E6/E8共50折，GPU1=E1/E3/E5/E7/E9共50折，每卡一个worker；E0四指标、best/执行epoch、初始模型和入口RNG逐折10/10精确复现E32 B0-A。
+
+| 组别 | ACC | Hard-AUC | SPE-TD | SEN-ASD |
+|---|---:|---:|---:|---:|
+| E0_B0A | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E1_HEAD_ONLY | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E2_NUMERIC_ONLY | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E3_GLOBAL_REFERENCE | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E4_NO_QC | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E5_WRONG_SEMANTICS | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E6_DATA_PRIOR | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E7_FORCED_ALIGNMENT | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+| E8_FROZEN_HEAD | 92.0742 ± 2.6000 | 91.8546 ± 2.5815 | 94.6300 ± 4.0457 | 89.0793 ± 3.7283 |
+| E9_SAGE_FULL | 91.9592 ± 2.7267 | 91.7482 ± 2.7033 | 94.4172 ± 4.1480 | 89.0793 ± 3.7283 |
+
+E9核心配对差（pp，ACC/Hard-AUC）：E0_B0A -0.1149/-0.1064；E1_HEAD_ONLY +0.0000/+0.0000；E2_NUMERIC_ONLY +0.0000/+0.0000；E3_GLOBAL_REFERENCE +0.0000/+0.0000；E4_NO_QC +0.0000/+0.0000；E5_WRONG_SEMANTICS +0.0000/+0.0000；E6_DATA_PRIOR +0.0000/+0.0000；E7_FORCED_ALIGNMENT +0.0000/+0.0000；E8_FROZEN_HEAD -0.1149/-0.1064。
+
+E9未匹配质量=0.344745，有效残差/CAM=0.00121223，best epoch0=10/10。
+
+主要修复：无bias证据必经分支5,760参数；同一TD OOF经验CDF；单向FUNC质量及严格拒绝；E5共同ROI/FC/族置换并公开匹配误差；E2固定数值与E6训练软先验区分；轻量分类头对照；能量正则、零残差预检及Adam/RNG精确恢复。P4因类型保持而不变，不能称完全公平；连续语义响应不等于独立疾病收益。
+
+最终科研结论：{"GO_CLASSIFICATION": false, "GO_MEDICAL_SEMANTICS": false, "GO_RELIABILITY": false, "final": "FINAL NO-GO", "interpretation": "Internal descriptive screening; no statistical significance or independent generalization proof."}。永久停止当前SAGE-Align/UCSMA医学语义对齐路线；无足够证据作为MICCAI2027第一创新点，不提出41.2。
+
+总墙钟=12210.46s；修正阶段墙钟=2527.19s（并行任务时间未求和冒充墙钟）。结果目录：`/data/adodas/SPromptGL-main/experiment/experiment41_1_sage_align_final`。
+
+哈希：run.py `615081f5d13e3db4633aaa92c9b2d10cecd22cf8db770e6ffc4e1f959cd86f4b`；sage_align.py `1a4cc2ce60f259b9e9b128052d69b9df27aace209d7fbf8d7876c75fa8f7658c`；integration.py `95e0ff498bc9e34b5bdac91e7241dc11a9b1ed3eab1a8701ecc613646e1849d7`；prompts.json `6d585359a237ac841fa8f350f456fb4830e1dcc558e0fb55fb154b63c699f30b`；ontology.json `910d7dba0a01c22763974290f0cb2347eda89542f6ffb70ca8306c6eb8ec1155`；results/report.md `1a1b141cae6900a62c88bd5ae8875eb65ae8a44d8bfed7c844bc85081fe6ca28`。原始六源码、数据与100个正式best/anchor哈希见manifest。
+
+沿用val=test、预CV RFE/标准化及871人transductive图；单seed内部比较，不是无偏独立泛化或临床证明。
+
+<!-- /experiment41_1_sage_align_final_corrected_v2 -->
+
+<!-- experiment41_1_corrected_v2_trajectory_addendum -->
+
+Experiment 41.1优化轨迹补充：所选best为首次更新，其raw/有效残差未饱和；这不能推广到完整训练过程。E9后续10/10折出现饱和，每折有120–169个epoch存在raw残差范数大于3倍8%上限的训练患者；峰值患者比例为58.55%，最后100步的十折平均比例为13.29%。tanh上限保持有效残差有界，但未阻止raw残差的长期饱和。训练前短程梯度/恢复预检没有保证长期稳定；该稳定性目标没有通过正式轨迹验证。训练NLL下降不能弥补最佳epoch全部停在0，也不能称充分学习。这些是已冻结实验的科学与优化失败，按原规则保留100个正式折，不为此重新调参或选模。完整90折轨迹汇总见trajectory_audit.csv；最终维持FINAL NO-GO，永久停止本路线。
+
+报告已补充上述失败，最新报告SHA256为`be93ae7aa0f252cba0162c460f7390d7f0d691d8dd312bdb757f14db442ae80a`，替代同节较早的报告哈希；训练设计、Prompt和100个checkpoint未改变。记录墙钟从2026-10-26T14:03:02.293569+00:00至2026-10-26T17:29:17.188891+00:00为12374.90秒；更早审计未完整计时，不伪称覆盖全部前置工作。
+
+
+<!-- EXPERIMENT43_4_PHYSICAL_CAM_ONLY -->
+## Experiment 43.4 — Physical CAM-only validation
+
+# Experiment 43.4 — 物理移除GFR/PEN的CAM-only专项验证
+
+状态：20/20折完成；E0/E1各10折。
+
+|模型|具体做法|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---|---:|---:|---:|---:|
+|E0_ANCHORED_PHYSICAL_CAM|物理删除GFR/PEN，恢复E43.2 E01 CAM anchor|91.7294 ± 3.0819|91.4880 ± 3.0586|94.6346 ± 3.7878|88.3415 ± 3.3369|
+|E1_NATURAL_PHYSICAL_CAM|物理删除GFR/PEN，自然构造CAM|91.6144 ± 3.0062|91.4166 ± 3.0203|93.9917 ± 4.0988|88.8415 ± 4.4635|
+
+## 43.2历史参考
+
+|模型|ACC|Hard-AUC|SPE|SEN|
+|---|---:|---:|---:|
+|43.2 E01历史功能性删除|91.7294 ± 3.0819|91.4880 ± 3.0586|94.6346 ± 3.7878|88.3415 ± 3.3369|
+ E1 ACC与历史E01差值：-0.1149pp。
+ E1 HARD_AUC与历史E01差值：-0.0715pp。
+ E1 SPE与历史E01差值：-0.6429pp。
+ E1 SEN与历史E01差值：+0.5000pp。
+
+## E0逐折等价性
+E0的10个fold均通过：初始CAM参数/单Adam、前两步历史E01对照、最终best_epoch、epochs_executed、预测SHA、混淆计数和四指标均一致。E0不构造GFR/PEN，证明历史功能性删除与物理删除在该锚定状态下等价。
+
+## 结构核验
+PhysicalCAMOnly参数量49,544；每个模型只有一个CAM Adam。named_parameters/state_dict不存在GFR、GraphLearn、GCN、MessagePassing、PEN、SPGS、RES、CLIP、AvgPool、Prompt相关键。forward只有原始320维输入、CAM层和OutputLayer；没有图邻接、图归一化、GraphConstructLoss或GFR优化器。
+
+## E1自然初始化解读
+E1四指标为ACC 91.6144、Hard-AUC 91.4166、SPE 93.9917、SEN 88.8415。E1采用每卡一次seed=0后按五折连续构造的独立随机流，不读取历史anchor，因此与E0逐折差异不能解释为GFR因果效应。
+
+## 结论
+E0满足物理删除等价性；E1是否适合作为后续研究基座取决于其独立初始化稳定性和完整结构审计。本轮保留历史val=test、全局预处理/RFE和transductive图协议的评估偏倚，结果用于内部复现而非独立临床泛化。
+
+GPU0/GPU1各完成10折；正式墙钟1510.32s。产物路径：`/data/adodas/SPromptGL-main/experiment/experiment43_4_physical_cam_only_validation`。
