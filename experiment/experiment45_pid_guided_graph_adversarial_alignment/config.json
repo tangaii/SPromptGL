@@ -1,0 +1,62 @@
+{
+  "experiment": "Experiment 45 - PID-Guided Disease-Conditional Graph Adversarial Alignment",
+  "version": "45.0-frozen-v1",
+  "seed": 0,
+  "dims": [48, 6, 10, 256],
+  "protocol": {
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nmodal": 4,
+    "nclass": 2,
+    "threshold": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "lambda_aux": 0.1,
+    "lambda_max": 0.03,
+    "adv_warmup": [0, 45, 90],
+    "new_lr": 0.00038,
+    "new_weight_decay": 0.0
+  },
+  "folds": {"n_splits": 10, "shuffle": true, "random_state": 10},
+  "pid": {
+    "estimator": "I_min_two_source_discrete_pid_v1",
+    "upstream_reference": "pliang279/PID synthetic/rus.py",
+    "upstream_solver": "unavailable: cvxpy is not installed",
+    "cluster_k_primary": 4,
+    "cluster_k_sensitivity": [3, 5],
+    "bootstrap_replicates": 12,
+    "permutation_replicates": 19,
+    "bootstrap_seed": 45000,
+    "permutation_seed": 45100,
+    "q_formula": "clip((Q10(R_boot)-Q95(R_perm))/(median(R_boot)+1e-12),0,1)",
+    "epsilon": 1e-12,
+    "units": "bit",
+    "reliability": {
+      "max_identity_residual_bit": 1e-8,
+      "min_solver_success_fraction": 1.0,
+      "min_positive_lambda_relations": 1,
+      "min_lambda_range": 1e-6
+    }
+  },
+  "groups": {
+    "0": {"name": "E0_B0B", "mode": "historical_reuse"},
+    "1": {"name": "E1_AUX", "mode": "aux_only"},
+    "2": {"name": "E2_UNCOND", "mode": "unconditional_adversary"},
+    "3": {"name": "E3_COND_FIXED", "mode": "conditional_fixed_lambda"},
+    "4": {"name": "E4_PID_DGAA", "mode": "pid_conditional_adversary"},
+    "5": {"name": "E5_PID_PERMUTED", "mode": "pid_permuted_relations"},
+    "6": {"name": "E6_PID_NO_GRAPH_CLASS", "mode": "pid_aux_graph_no_graph_cam"}
+  },
+  "gpu_folds": {"0": [1, 2, 3, 4, 5], "1": [6, 7, 8, 9, 10]},
+  "history": "/data/adodas/SPromptGL-main/experiment/experiment43_2_gfr_incremental_value_audit",
+  "formal_metrics": ["acc", "hard_auc", "spe", "sen"],
+  "go": {"acc_pp": 0.1, "hard_auc_pp": 0.1, "strict_wins": 7},
+  "limitations": ["val_equals_test", "pre_cv_global_rfe_and_standardization", "transductive_patient_graph", "single_seed", "PID_estimation_error"]
+}
