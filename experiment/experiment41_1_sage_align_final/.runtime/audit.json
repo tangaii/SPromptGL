@@ -1,0 +1,563 @@
+{
+  "status": "AUDITED_WITH_DISCLOSED_ACCESS_LIMITS",
+  "history": [
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/report.md",
+      "sha256": "a6358416262962415aceb99c02948e97ec6a15832229f41ccc9d3dd505534f88",
+      "selected_conclusion": [
+        "结论：**COMPLETE**。可以开始以已恢复ROI编号为依据的个体化功能连接Prompt实验；如果提示词需要脑区名称，需要先取得与这些111列完全配套的HO标签和列顺序清单。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment17_disease_semantic_selective_alignment/results/report.md",
+      "sha256": "e6b44eb0ab1c37ff2e964f95ba73f3a231bc850b8b06bf547150fc867609c320",
+      "selected_conclusion": [
+        "D5查询向量中心化方向方差（CORR/PHENO）0.00000223/0.00016953；平均两受试者查询cosine0.9977/0.8262。冻结真实文本原型cosine为0.946976；中性/无关原型为0.968670/0.742523。文本几何与医学内容同时变化，阴性文本对照不能完全隔离语言几何因素。",
+        "对齐确实降低了训练类别原型跨模态距离，但CORR与PHENO的ASD/TD原型各自非常接近，共享方向趋同是重要解释。FC Shared probe BA约60.14%，Private约78.87%，PHENO两条路径均约49.4%。这些结果没有证实年龄/性别提供独立的疾病共享证据。Shared/Private绝对cos较低说明方向有差别，不能等同于诊断信息已经得到完整分解。",
+        "中性、不相关和ASD/TD顺序交换三个文本反事实的预测翻转率、ACC/BA/Prob-AUC变化全部为0，平均概率变化仅约1.65e-5。语言通路没有严格数值归零，但缺少实质的分类贡献，FC查询方向cos约0.9977也提示仍有方向趋同。新增残差整体非零且满足10%上限，解决了无界增强问题，未解决疾病语言的独立价值问题。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment18_discriminability_preserving_selective_alignment/results/report.md",
+      "sha256": "3f556214fc610dafb184389e5fb6fcb81700678a772b46d2426dda18f42334c1",
+      "selected_conclusion": [
+        "实验13患者FC文本未稳定超过自身状态/身份错配；14层级投影趋同且无稳定净收益；15文本内部响应未传递至最终预测、强衰减伴随消息接近零；16修复了文本敏感性但B5较P0 ACC下降0.841pp、残差约32.33%；17D5较P0 ACC/BA下降0.4210/0.3987pp，FC/PHENO类别原型cos0.9997/0.9986，Shared probes约60.14/49.36%BA，文本反事实零翻转。不能把距离降低、低Shared/Private cosine或非零梯度当作临床信息有效。E9真实30折六指标作为历史描述性对照。",
+        "四个32维编码器读取FC256/年龄性别28；四表示拼接128→64→72，两36维方向以0.1*tanh(alpha)*detach(CAM范数)归一化残差注入PHENO/CORR位置，随后完整执行原SPGS/RES/分类器。r不送入融合，无推理期可靠度Gate。",
+        "|V6 可靠度错配控制|31597|True|permuted|False|本人|",
+        "|V9 同类别跨患者配对错配|31597|True|real|False|train同类无自身置乱|",
+        "|V6 可靠度错配控制|91.5765±0.2863|91.3843±0.2719|91.3843±0.2719|93.5272±0.3072|88.9187±0.7643|93.8498±0.8254|",
+        "|V9 同类别跨患者配对错配|91.4233±0.0548|91.2133±0.0734|91.2133±0.0734|93.4268±0.1283|88.5813±0.4033|93.8452±0.2691|",
+        "Shared/Private低cos只说明方向不同；高Private probe只说明该表示可线性读出诊断关联，不证明融合净收益。V7必须同时结合V7−V5正式性能和Private probe增量解释，不能以蒸馏BCE下降代替保护成功。",
+        "这些只检验训练后分支依赖；OFF下降可能因为主干/分类器共同适应，不能代替V0重训净增益。Shared/Private输入清零带来分布变化，PHENO错配敏感也不自动说明真实对应提高算法性能。患者对应是否有净价值主要看V5−V9重训对照。",
+        "Shared/Private、辅助类别监督、蒸馏、加权对齐和残差融合均为已有组件。候选研究点为outer-train跨模态联合正确性代理驱动的可拒绝对齐，且同权重预算、错配权重和同类错配患者分别验证选择与对应。r仅控制训练损失，不进入推理融合；不是推理期患者Gate，也不是真实医学可靠度或实际对齐收益标签。",
+        "**真正的患者选择没有超过同强度控制。** V5−V4的ACC/BA/Prob-AUC为 -0.03831/-0.05219/+0.09953pp。连续AUC三个seed虽均正向，但ACC与BA未稳定提高，SEN-ASD下降 0.40041pp。V5−V6的ACC/BA均值略正，Prob-AUC却为 -0.10008pp且seed方向混合；没有支持正确可靠度分配具有稳定、独立的净价值。",
+        "**辅助分支被使用，失败不是因为残差接近零。** V5在PHENO/CORR位置的平均相对残差为 5.33744%/5.53629%，近零目标Token比例为 0.00000%，原ANAT/FUNC位置新增残差严格为0。关闭全部残差，预测翻转 1.33882%、ACC变化 -1.26219pp；患者PHENO错配置换时翻转 0.34439%、平均ASD概率变化 0.00281849、ACC变化 -0.26776pp。翻转计数分别为 35 和 9，分母为三seed合计2613次测试记录（同871人重复评估，不能称2613名独立患者）。Shared/Private关闭分别翻转 25/10 条记录。这说明训练后存在分支依赖和少量患者配对敏感性，但OFF干预有共同适应及分布变化，且REAL模型以test ACC选Checkpoint，因此不能把OFF下降当成相对V0的净收益。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/results/report.md",
+      "sha256": "9de20fe5c10e0f559c0cc33e8b4a81c312e9e9df7dc30ec8a3de72261b564ecf",
+      "selected_conclusion": [
+        "已阅读9/10/14补丁及报告、11映射表/审计、12/13真实模型。9 E9 ACC91.8826/BA91.6915/ProbAUC93.8227，疾病/P3概率高度相关。10真ASD相对ADHD/中性只微小且seed混合；不证明疾病必要性。12真实ROI文本在不同内层选模协议不如错配/身份，投影趋同。13患者FC状态文字未稳定超过数值/错配。14层级文本仍投影趋同。",
+        "- D3 [Nair et al. 2013 thalamocortical connectivity](https://pmc.ncbi.nlm.nih.gov/articles/PMC3673456/)：丘脑皮层研究支持候选范围，异质方向不设hyper/hypo真值。",
+        "q=normalize(normalize(CLIP(T_ASD))−normalize(CLIP(T_TD)))。z的[值,绝对值,tanh值]→共享3/32编码、GELU、LN，加入252×32边ID后LN。score=h·(q@Wkey)/sqrt32，key32/1024、value32/32。真实mask无效边−∞；边logit score/0.2、NULL logit log(n)，softmax读取v与u=sum(a*score)。拼接v128/u4/NULL4→136/64/36，alpha零初始化的0.1*tanh(alpha)归一化方向残差只注入CAM后CORR位置3、SPGS前。所有原模块及优化数学保留。",
+        "|C8|ASD/TD方向交换|SWAPPED/REAL/True/True|53221|50437|",
+        "|C9|功能域文本错配|DOMAIN_PERMUTED/REAL/True/True|53221|50437|",
+        "|C10|解剖候选错配|REAL/PERMUTED/True/True|53221|50437|",
+        "|C8 ASD/TD方向交换|91.4612±0.2709|91.2435±0.2669|91.2435±0.2669|93.5155±0.0924|88.4228±0.3026|94.0641±0.2639|",
+        "|C9 功能域文本错配|91.4228±0.0542|91.2623±0.0509|91.2623±0.0509|93.4965±0.0701|89.1728±0.8178|93.3518±0.7659|",
+        "|C10 解剖候选错配|91.6910±0.1434|91.5556±0.1416|91.5556±0.1416|93.4308±0.1421|89.8333±0.2041|93.2778±0.2679|",
+        "## 11. 正确医学文字与类别方向",
+        "C4优于C5/6/7/8的预定跨seed三指标标准分别为[False, False, False, False]。即使单一均值较高，也不升级为稳定语义证据。方向翻转可由自由Key吸收，功能域文字rank/几何与类别词rank1不同，更须结合C11/C12。",
+        "C4−C9功能域对应稳定支持=False；C4−C10解剖对应稳定支持=False；C4−C3范围约束稳定支持=False。三者是不同问题，不能用全连接较差代替正确解剖优于等密度错配的证据。",
+        "C11 Gram最大绝对误差2.08e-07，与真实对应方向cos=[-4.596266336281962e-10, 3.767225836837085e-10, -4.5980733803796525e-10, -3.314613514215914e-10]；C12独立随机初始化且不将REAL作为实际查询。C4−C11稳定支持=False，C4−C12=False。原空间旋转可重参数化，故随机方向表现近似尤其不能被解释成医学知识成立。",
+        "同患者域间注意力平均绝对差=0.00107773。preflight逐列追踪仅改一条可信z，未知4列变化对新分支逐值无影响；C1也响应数值。实际FC依赖结合下面FC_SHUFFLED，不能把正负z解释为病理方向。",
+        "全部330行同参数、无重训、无测试标签置乱、CAM前Token逐值相同；结束REAL输出逐值恢复。反事实对已有文本方向敏感与重训时正确文字有优势是两个命题。FC_SHUFFLED/OFF有分布变化，只说明依赖、不证明医学必要性。",
+        "站点分布仅按既有20个site one-hot作聚合，不拟合或使用test标签；每折JSON列记录样本数/残差/NULL。此归一化方向使同checkpoint残差相对范数几乎由共享alpha固定，不能把站点间相同强度包装成患者可靠度；患者差别主要在方向/NULL/注意力。",
+        "若真实文字不优于同几何随机/可学习查询，最直接解释是四个静态差异方向在自由Key下只是可重参数化查询代码，并无患者级临床证据约束；若解剖错配不差，粗HO候选/稀疏既有RFE未携带额外定位优势；若NULL恒近1/证据主概率高度相关，辅助BCE可能学习冗余判别而非有用增量。上述解释按对照逐一判读，不从负结果推出所有医学知识都无用。",
+        "真实及错配mask候选并集165，域外87个边ID始终无训练输出贡献，需扣除87×32=2784；C3全部252无此缺项。C1还扣除Key32768及u恒零对应256个融合权重；C13扣除NULL恒零对应256个融合权重。C1=17413，C2/C4–C11=50437，C3=53221，C12=54533，C13=50181；全部实测非零梯度参数数不超过这些计数。C7的Key函数自由度仍为32，C4/C11为128，不能把结构参与的稠密标量全部当作独立函数容量。",
+        "Attention和NULL的患者差异、真实FC置乱响应可证明路径在运行；同模型错配域mask还可能读到该模型没有训练过的边ID，存在分布变化。只有从头训练C10和C9的对照才能分别支持解剖/功能对应的必要性。域Top5是注意力稳定性描述；未增加逐域删除实验，因此不声称某域导致全部性能变化。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/results/report.md",
+      "sha256": "ff3abb967da6499ef4f9d624816f35b11481ac1bd3feb178c645318d3da9e6b7",
+      "selected_conclusion": [
+        "状态：**COMPLETE**；实际完成 **300/300折**；科学结论：**NO-GO**。",
+        "本轮验证细粒度FC文本、正确解剖身份/方向及正确辅助患者配对能否提供额外诊断信息。未按测试成绩修改Prompt、损失、网络或配置。",
+        "E2两种ASD关联方向均使用原异常四句平均向量；原正常四句参与共同文本基底。它是刻意粗粒度/近恒定教师，FC降低不能等同正常。",
+        "数值对照E5：seed28005随机正交行坐标染色，最终归一化之前均值/协方差严格匹配文本，之后逐向量单位范数；个体配对Gram不相同，记录实际几何差异。E6 seed28006无固定点连接错配；E7仅交换方向。",
+        "SEMANTIC_TEACHER_OFF只关闭训练损失，不改变推理，预期概率变化严格0；其净作用应看E4−E8完整重训。PHENO_OFF将demo条件修正置0；ANAT/FUNC_QC_OFF把指定门控置1而移除该调制。AUX_PAIR_SHUFFLED只错配新增28+6+10，同站点且train/test内独立，不更改原主干或FC。单Checkpoint关闭分支不是重新训练消融，可能分布外。",
+        "本轮结论 **NO-GO**。预设主要配对须在BA和Prob-AUC同时改善且三个seed方向一致才列候选；单一最高ACC、有效梯度、低对齐损失、可解释连接词或单Checkpoint响应都不构成医学语义独立价值证据。",
+        "细粒度Prompt是否优于粗粒度、文本是否优于数值码、正确ROI/方向是否优于错配、语义损失及正确辅助配对是否必要，分别以E3−E2、E4−E5/E6/E7/E8/E9及E4−E3/E1/E0判断；不省略阴性控制。",
+        "正确FC连接身份相对错配ROI：ΔACC=+0.19157pp、ΔBA=+0.19694pp、ΔProb-AUC=-0.05940pp；BA三seed=+0.2842/+0.2056/+0.1010pp，Prob-AUC三seed=-0.0522/-0.5414/+0.4154pp。未满足BA/Prob-AUC均为正且三seed同向的内部候选门槛。",
+        "正确增强/减弱方向相对反向绑定：ΔACC=+0.15282pp、ΔBA=+0.13385pp、ΔProb-AUC=-0.22883pp；BA三seed=+0.0684/+0.2561/+0.0770pp，Prob-AUC三seed=-0.2220/-0.9369/+0.4724pp。未满足BA/Prob-AUC均为正且三seed同向的内部候选门槛。",
+        "正确患者辅助配对相对同站点错配：ΔACC=+0.03788pp、ΔBA=+0.04293pp、ΔProb-AUC=-0.29127pp；BA三seed=+0.4855/-0.4079/+0.0512pp，Prob-AUC三seed=-0.1443/-1.1401/+0.4106pp。未满足BA/Prob-AUC均为正且三seed同向的内部候选门槛。",
+        "类分离比=两类训练中心距离/平均类内半径；此处全部以outer-train标签作事后诊断。anchor与joint是同一已训练模型的两个位置，不能据此推断相对训练前的因果提升。E2是同一粗粒度向量的加权平均，理论上没有患者语义差异；其极小非零方差及有效秩可由浮点归一化噪声产生，不能把噪声秩解读为丰富信息。高student-teacher余弦而低教师类差异，可能只是拟合共同文本方向。",
+        "|组|辅助/anchor|实际错配比例|QA/QF患者均值STD|QA/QF与年龄类别r|QA/QF站点η²|QA/QF最大QC绝对r|",
+        "十套fold训练统计中合格站点数范围=20–20，平均站点方向一致率=0.6288086，平均站点效应异质性=0.1477440。同fold在三个seed共享统计，此处只计一次；QA与年龄/站点/QC关联不能解释为校准后的医学可靠度。",
+        "最终科学决策：NO-GO。预设方法未通过全部正确文本、ROI身份、方向、语义监督和辅助患者配对的稳健对照；当前证据不支持将IA-FDSA作为MICCAI 2027第一创新点。保留完整阴性结果，停止本数据与历史协议下静态FC文本追分；优先增加真实互补影像/临床测量，并采用训练内选模、LOSO或独立队列检验。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment29_connectivity_semantic_selective_auxiliary/results/report.md",
+      "sha256": "81e46202f7a80f7a2f3b5c8d9eaa1c0e14cd3eae80a988ac9b8ecd8938e9ca28",
+      "selected_conclusion": [
+        "工程状态：**COMPLETE**；正式新增 **200/200折**，seed仅0；当前科研判定：**NO-GO**。",
+        "CAM经过InputLayer、Encoder和FeedForward得到[871,4,36]，再分解为[871,4,4,9]潜在Token；这些位置不等于ROI。原SPGS将两类相似度Softmax后取max，失去类别方向；RES池化global_x并按softmax(part*global_x)逐维融合，输出分类器保持原样。",
+        "实验28把高度同向文本先加权平均，再以SmoothL1监督FC+CAM anchor；两类教师中心cos约0.999988，教师共同方向和无配对CLIP域差导致类别区分弱。辅助是qa*qf*人口统计修正，关闭辅助的平均概率变化约0.00131。本轮改变为raw-CORR类别CE、显式连接Query–固定Key和推理语义响应，不将历史阴性解释为工程未接入。",
+        "TD均值/std与ASD−TD方向复用实验28精确站点收缩公式；稳定性=站点方向一致率/(1+异质性)。异常证据ReLU(sign(d)*r−0.5)*clip(|d|,0,2)*稳定性；仅从252可信边稳定降序取最多16条，患者选择不读其标签。无候选时local response/loss为0，保留全局响应。",
+        "Query输入h64、r/d/稳定性3维及连接ID16维，共83→64/LN/GELU/64；Key/Value固定且来自该真实连接的增强/减弱文本。C系列重复异常原型；F8只错配Key身份、F9只交换方向。局部候选内InfoNCE温度0.2/系数0.02；C重复原型的损失为log(有效候选数)，没有有效身份辨识梯度。",
+        "|组|粗/细|语义|辅助|软稀疏|患者错配|文本控制|",
+        "|组|全局损失|局部损失|全局梯度|局部梯度|分类梯度|数值文本语义梯度|正确/错配ROI cosine|",
+        "冻结描述性筛选要求ACC/AUC/SEN均优于比较组。主组各项门槛：`{\"C2\": {\"baseline\": false, \"semantic_off\": false, \"numeric\": false, \"correct_patient\": false, \"dense\": true}, \"F2\": {\"baseline\": false, \"semantic_off\": false, \"numeric\": false, \"correct_patient\": false, \"dense\": false, \"roi\": false, \"direction\": false}}`；总体：**NO-GO**。此规则只用于保守判读，不用于追加组别或超参。",
+        "医学文本必须优于数值码、错误ROI和方向；正确辅助必须优于同站点错配；选择性必须胜过Dense。仅最高ACC、有效梯度或同Checkpoint文本敏感不足以验证医学知识。若某维度有效而必要性控制失败，只保留对应工程或监督学习线索。",
+        "保留test=val选模、外层之前监督RFE/标准化、871人transductive和此前28轮探索，属于偏乐观内部历史可比指标，不称无泄漏泛化、医学因果协同或临床获益。方向和稳定性是训练标签衍生的弱监督数值证据，不是个体病灶真值。",
+        "|F1|1|95.454545|95.277634|92.682927|97.872340|3|1|394|450|",
+        "|C3|1|95.454545|95.121951|90.243902|100.000000|4|0|251|450|",
+        "|F3|1|95.454545|95.121951|90.243902|100.000000|4|0|251|450|",
+        "|C7|1|95.454545|95.121951|90.243902|100.000000|4|0|192|394|",
+        "|F9|1|95.454545|95.121951|90.243902|100.000000|4|0|200|402|",
+        "C2/F2相对P0及关闭语义对照均下降。C2不及数值语义码C8；F2对错误ROI/方向及数值码没有四指标一致优势，尤其ASD灵敏度不占优，因此医学文本必要性不成立。",
+        "软稀疏相对Dense改善了ACC/AUC，但F2的SEN下降、漏诊增加；C2不优于同站点错配辅助，F2也在SEN上落后错配。不能把门控变小解释为已经识别医学互补信息。",
+        "结论：NO-GO。保留原P0，不将C3/F3相对P0约0.115pp的单seed小幅领先包装为医学语义创新。后续优先真实互补测量、训练内选模或独立队列验证。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment30_class_conditional_semantic_shared_repair/results/report.md",
+      "sha256": "be3a4931b9f4d1bc1fd0dbcc4e928b4242ac73e7638cb1e459c8b0bfcaf8ec1e",
+      "selected_conclusion": [
+        "预设决策：**NO-GO**。规则已冻结为F1、C1分别相对P0/Z0、无辅助主干、文本/ROI/方向/错配/共享/私有/密集/关闭配对对照，在ACC与硬标签AUC上平均提升均须大于0.1个百分点且至少7/10个配对折获胜；任一条件不满足即NO-GO。该规则是保守工程判读，不把十个共享fold视为独立样本。",
+        "容量收益看F1−F0和C1−C0；文本/连接/方向必要性看F1−F2/F3/F4及C1−C2；正确患者辅助配对看F1−F5及C1−C3；共享机制看F1−F6/F7/F8和C1−C4/C5/C6。完整配对值、胜平负和折差见上表。若真实文本与错误文本接近、正确辅助与错配辅助接近、或shared不优于private/dense，则相应机制不成立；路由兼容度只称模型内兼容，不称临床标定扫描可靠度。",
+        "完整决策对象：`{\"criteria\": [[\"F1\", \"P0\"], [\"F1\", \"Z0\"], [\"F1\", \"F0\"], [\"F1\", \"F2\"], [\"F1\", \"F3\"], [\"F1\", \"F4\"], [\"F1\", \"F5\"], [\"F1\", \"F6\"], [\"F1\", \"F7\"], [\"F1\", \"F8\"], [\"C1\", \"P0\"], [\"C1\", \"Z0\"], [\"C1\", \"C0\"], [\"C1\", \"C2\"], [\"C1\", \"C3\"], [\"C1\", \"C4\"], [\"C1\", \"C5\"], [\"C1\", \"C6\"]], \"failures\": [{\"comparison\": \"F1-P0\", \"delta_pp\": -0.2298850574712652, \"metric\": \"acc\", \"wins\": 1}, {\"comparison\": \"F1-P0\", \"delta_pp\": -0.23600832562442167, \"metric\": \"auc\", \"wins\": 1}, {\"comparison\": \"F1-Z0\", \"delta_pp\": 0.45977011494252923, \"metric\": \"acc\", \"wins\": 5}, {\"comparison\": \"F1-F0\", \"delta_pp\": -1.1102230246251565e-15, \"metric\": \"acc\", \"wins\": 3}, {\"comparison\": \"F1-F0\", \"delta_pp\": -0.023462354188756862, \"metric\": \"auc\", \"wins\": 4}, {\"comparison\": \"F1-F2\", \"delta_pp\": -1.1102230246251565e-15, \"metric\": \"acc\", \"wins\": 2}, {\"comparison\": \"F1-F2\", \"delta_pp\": -0.026291148665416045, \"metric\": \"auc\", \"wins\": 3}, {\"comparison\": \"F1-F3\", \"delta_pp\": -0.11494252873563315, \"metric\": \"acc\", \"wins\": 2}, {\"comparison\": \"F1-F3\", \"delta_pp\": -0.1561364815775823, \"metric\": \"auc\", \"wins\": 4}, {\"comparison\": \"F1-F4\", \"delta_pp\": -0.11494252873563315, \"metric\": \"acc\", \"wins\": 1}, {\"comparison\": \"F1-F4\", \"delta_pp\": -0.1375194603009855, \"metric\": \"auc\", \"wins\": 2}, {\"comparison\": \"F1-F5\", \"delta_pp\": -0.11494252873563092, \"metric\": \"acc\", \"wins\": 2}, {\"comparison\": \"F1-F5\", \"delta_pp\": 0.0006938020351521246, \"metric\": \"auc\", \"wins\": 5}, {\"comparison\": \"F1-F6\", \"delta_pp\": 0.0, \"metric\": \"acc\", \"wins\": 3}, {\"comparison\": \"F1-F6\", \"delta_pp\": 0.04281548250265388, \"metric\": \"auc\", \"wins\": 3}, {\"comparison\": \"F1-F7\", \"delta_pp\": -0.11494252873563206, \"metric\": \"acc\", \"wins\": 2}, {\"comparison\": \"F1-F7\", \"delta_pp",
+        "|Z0|1|95.454545|95.121951|90.243902|100.000000|4|0|249|450|",
+        "|C0|1|95.454545|95.121951|90.243902|100.000000|4|0|109|311|",
+        "|C4|1|95.454545|95.121951|90.243902|100.000000|4|0|232|434|",
+        "|C6|1|95.454545|95.121951|90.243902|100.000000|4|0|170|372|",
+        "|F0|1|95.454545|95.121951|90.243902|100.000000|4|0|125|327|",
+        "|F2|1|95.454545|95.121951|90.243902|100.000000|4|0|209|411|",
+        "|F4|1|95.454545|95.121951|90.243902|100.000000|4|0|171|373|",
+        "|F6|1|95.454545|95.121951|90.243902|100.000000|4|0|188|390|",
+        "|Z1|1|95.454545|95.121951|90.243902|100.000000|4|0|184|386|",
+        "|C1|1|95.454545|95.121951|90.243902|100.000000|4|0|115|317|",
+        "|C3|1|95.454545|95.121951|90.243902|100.000000|4|0|238|440|",
+        "|C5|1|95.454545|95.121951|90.243902|100.000000|4|0|169|371|",
+        "|F1|1|95.454545|95.121951|90.243902|100.000000|4|0|340|450|",
+        "|F3|1|95.454545|95.121951|90.243902|100.000000|4|0|141|343|",
+        "|F5|1|95.454545|95.121951|90.243902|100.000000|4|0|179|381|",
+        "|F7|1|95.454545|95.277634|92.682927|97.872340|3|1|189|391|",
+        "|F8|1|95.454545|95.121951|90.243902|100.000000|4|0|269|450|"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment31_subject_specific_connectomic_evidence/results/report.md",
+      "sha256": "6ba9d9d826c42a1e647e390bf6c0e061f6e4da2f9f6c49ad88db5f9a6e52d4cc",
+      "selected_conclusion": [
+        "预设结论：**NO-GO**。",
+        "GO requires A5 to exceed frozen baseline and every prespecified semantic, patient-matching, auxiliary and masked control by >0.1 pp in ACC and Hard-AUC with at least 7/10 paired-fold wins; otherwise NO-GO.",
+        "|A0|1|95.454545|95.121951|90.243902|100.000000|4|0|249|450|",
+        "|A1|1|95.454545|95.277634|92.682927|97.872340|3|1|235|437|",
+        "|A2|1|95.454545|95.121951|90.243902|100.000000|4|0|206|408|",
+        "|A3|1|95.454545|95.121951|90.243902|100.000000|4|0|154|356|",
+        "|A4|1|95.454545|95.121951|90.243902|100.000000|4|0|121|323|",
+        "|A5|1|95.454545|95.121951|90.243902|100.000000|4|0|259|450|",
+        "|A6|1|95.454545|95.121951|90.243902|100.000000|4|0|114|316|",
+        "|A8|1|95.454545|95.121951|90.243902|100.000000|4|0|120|322|",
+        "|A10|1|95.454545|95.121951|90.243902|100.000000|4|0|164|366|",
+        "|A11|1|95.454545|95.121951|90.243902|100.000000|4|0|277|450|",
+        "|B0|1|95.454545|95.121951|90.243902|100.000000|4|0|136|338|",
+        "|B1|1|95.454545|95.121951|90.243902|100.000000|4|0|126|328|",
+        "|B2|1|95.454545|95.121951|90.243902|100.000000|4|0|112|314|",
+        "|B3|1|95.454545|95.277634|92.682927|97.872340|3|1|189|391|",
+        "|B4|1|95.454545|95.433316|95.121951|95.744681|2|2|194|396|",
+        "|B5|1|95.454545|95.121951|90.243902|100.000000|4|0|157|359|"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment32_disease_contrastive_evidence_routing/results/report.md",
+      "sha256": "d90d97a7b0f01f33dd84e42c64b0fec622eff74f6e12d97bce34188ea6d5df19",
+      "selected_conclusion": [
+        "**NO-GO**. GO requires D4 to gain >0.1 pp over B2, D1, D3, D5, D6, D7 and D8 in both ACC and hard-AUC with at least 7/10 paired-fold wins, plus greater selected-token deletion impact than an equal-budget random deletion. This is a frozen internal protocol, not independent clinical validation."
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment41_uncertainty_calibrated_semantic_multiscale_alignment/results/report.md",
+      "sha256": "1bc880f2957cca0c67e423d0102baca35aaaa18ca7fad683fb918716fec854e6",
+      "selected_conclusion": [
+        "来源：Ilioska et al., Nature Mental Health (2026)；DOI：10.1038/s44220-026-00656-y。证据尺度：region/network; not a fixed individual edge；方向：negative at population regional-convergence scale only; individual signs remain free；可计算：True；HO ROI数 16，当前252条连接中适用 61 条。",
+        "来源：Ilioska et al., Nature Mental Health (2026)；DOI：10.1038/s44220-026-00656-y。证据尺度：region; direction is participant-specific；方向：bidirectional/unspecified；可计算：True；HO ROI数 22，当前252条连接中适用 96 条。",
+        "来源：Ilioska et al., Nature Mental Health (2026)；DOI：10.1038/s44220-026-00656-y。证据尺度：regional; not a fixed individual edge；方向：positive at population regional-convergence scale only; individual signs remain free；可计算：True；HO ROI数 16，当前252条连接中适用 64 条。",
+        "来源：Ilioska et al., Nature Mental Health (2026)；DOI：10.1038/s44220-026-00656-y。证据尺度：canonical-system association；方向：positive at population scale only；可计算：False；HO ROI数 0，当前252条连接中适用 0 条。",
+        "来源：Ilioska et al., Nature Mental Health (2026)；DOI：10.1038/s44220-026-00656-y。证据尺度：canonical-system relationship；方向：negative at population scale only；可计算：False；HO ROI数 0，当前252条连接中适用 0 条。",
+        "来源：Ilioska et al., Nature Mental Health (2026); Kobbersmed et al., Progress in Neurobiology (2026)；DOI：10.1038/s44220-026-00656-y; 10.1016/j.pneurobio.2026.102906。证据尺度：subcortical-cortical edge candidate；方向：bidirectional/unspecified；可计算：True；HO ROI数 14，当前252条连接中适用 55 条。",
+        "来源：Experiment 41 pre-registered reject channel；DOI：方法拒绝通道。证据尺度：participant-specific evidence support；方向：not applicable；可计算：True；HO ROI数 0，当前252条连接中适用 0 条。",
+        "C01–C03和C06为有限、候选的区域或连接集合。C04（DMN/认知控制）与C05（躯体运动—联络系统）因缺少本数据ROI到canonical system的独立对应，只保留文献元数据，不参与建模。C07为未匹配通道。C01负向、C03正向群体描述仅在固定分数15%项中作为弱方向权重（其余方向未知概念对称处理）；个体正、负偏离通道都保留，不把单连接符号转成临床真值。Ilioska et al.报告的是大样本、多尺度规范偏离收敛，不能把其75,855条全连接或高密度分区结果直接外推到本RFE后稀疏子集；Kobbersmed et al.强调系统尺度规范建模，但本数据不具备其全脑覆盖与样本量。",
+        "`diagnostics.csv`保存每折参考拟合、OOF尾部、z截断、规范支持、质量代理、ROI度数、概念质量/拒绝质量、E8簇规模、实际梯度参数和残差比例。诊断不能替代四项正式指标。E9固定checkpoint干预在`counterfactual.csv`比较真实映射、错误映射、分区内患者机制错配、均匀语义权重、关闭语义输入及ALL_OFF；它只说明已训练checkpoint依赖，不能替代E0/E5/E7/E8从头训练比较。",
+        "以下干预不重训、不重新选epoch；均在同一折的E9最佳checkpoint上执行。REAL是训练时冻结映射，NO_REJECT关闭拒绝质量，PATIENT_SHUFFLE只在训练/测试分区内部错配FC证据，WRONG_MASK替换预注册错误HO掩码，UNIFORM_ALIGNMENT固定可用概念权重，SEMANTIC_OFF清除概念段，ALL_OFF清除整个残差。",
+        "语义支持在稀疏RFE连接上不足：多数证据质量流入NULL。校准阈值采用训练TD的幅度+最大方向覆盖，而匹配分数使用平均方向覆盖加弱方向项；这两个固定统计并不相同，可能增加保守拒绝。ROI最多12条连接、19个ROI仅1–2条，也限制了区域级收敛证据。不能把高拒绝率自动解释为临床可靠，也不能把非零匹配解释为真实疾病机制。",
+        "预注册内部筛选结果：**NO-GO**。判定还需结合真实医学先验相对错误映射和数值先验、拒绝质量及响应诊断；单seed GO不等于论文级成功。逐项条件：`[{\"comparison\": \"E0_B0A\", \"acc_mean_gain_gt_0_2pp\": false, \"auc_mean_gain_gt_0_2pp\": false, \"acc_wins_at_least_7\": false, \"auc_wins_at_least_7\": false}, {\"comparison\": \"E5_MULTISCALE_NUM\", \"acc_mean_gain_gt_0_2pp\": false, \"auc_mean_gain_gt_0_2pp\": false, \"acc_wins_at_least_7\": false, \"auc_wins_at_least_7\": false}, {\"comparison\": \"E7_WRONG_SEMANTICS\", \"acc_mean_gain_gt_0_2pp\": false, \"auc_mean_gain_gt_0_2pp\": false, \"acc_wins_at_least_7\": false, \"auc_wins_at_least_7\": false}, {\"comparison\": \"E8_DATA_PRIOR\", \"acc_mean_gain_gt_0_2pp\": false, \"auc_mean_gain_gt_0_2pp\": false, \"acc_wins_at_least_7\": false, \"auc_wins_at_least_7\": false}]`。E9对E0 SEN-ASD变化为+0.0000pp；灵敏度非劣阈值为−0.5pp。"
+      ]
+    },
+    {
+      "path": "/data/adodas/SPromptGL-main/experiment/experiment42_fourlink_evidence_validation/results/report.md",
+      "sha256": "4511ee48e30bab97400de0864fdd7013aeaa3ef4b704733ea12a6a6d05b7aff2",
+      "selected_conclusion": [
+        "科研状态：**DIAGNOSTIC_COMPLETE_NO_GO**。交付状态：**COPIED_AND_HASH_VERIFIED**。",
+        "本轮没有训练HCER-v3或新的集成分类器。按授权验证并复用E40不可变B0-A十折初始状态及最佳Checkpoint，逐折重算指标；新B0训练0折，验证复用10/10。Q1–Q4各10/10独立fold任务完成，共40个诊断任务。训练内探针及选择器不冒充外层分类实验。",
+        "|Q1 文献Prompt|NO-GO|P0–P3/数值/中性/交换/错配/Gram匿名|该链尚不足以支持集成创新|",
+        "|Q2 FC评分|NO-GO|随机/Top-abs(z)/训练判别/冻结B0导师|该链尚不足以支持集成创新|",
+        "|Q3 反事实约束|NO-GO|C0/C1/C2/C3与固定CF权重诊断|该链尚不足以支持集成创新|",
+        "|Q4 适用性和QC|GO|正向/反向/随机/站点置乱/恒一|可独立继续验证|",
+        "13个假说中，训练条件效应在至少7折通过预注册方向/站点/幅值规则的数量：3/13。网络级来源不等于指定HO边的直接证据；全部39条的edge_specific_verified仍为false。",
+        "|假说|PASS折数|平均条件效应SMD|inner方向稳定率|",
+        "下面是outer-train内嵌套5折OOF探针，**不是外层正式分类结果**。所有探针相同30维输入/31参数/150 Adam步；共同数值来源和软方向metadata相同。",
+        "|组|heldout真实类删除影响|与C0差|方向导师rho|与C0差|删除/方向胜折|",
+        "## Q4：背景适用性与质量角色",
+        "|角色|控制后风险/FC偏离rho|风险/计算不稳定rho|满足代理方向折数|平均选择数|弃权率|支持|",
+        "R1只以训练TD背景支持度调节参考可比性/弃权，不产生疾病支持；R2只用已验证方向的DVARS/outlier/mean FD；R3只用CNR/FBER/QI1/SNR，未将EFC/FWHM/GSR统一当坏质量。原始16列QC与871人CSV匹配后的正仿射关系在preflight逐列验收。FUNC GSR是ghost-to-signal ratio，不是是否做global signal regression。",
+        "逐环节结果优先于创新叙述；任何一环NO-GO时不训练集成分类模型。局部模型依赖、语言几何或质量相关均不足以证明正确医学语义带来独立诊断收益。",
+        "Q1失败模式分别记录：如果可信假说不足7/13，标记PRIOR_UNSUPPORTED（指当前39条和当前队列下未建立支持，不是推翻网络级文献）；如果全部对间距离低于预注册.01才判ENCODER_BOTTLENECK。向量可分辨而探针不胜语义负对照时，是语义独立优势未建立，不能仅凭高余弦断言编码器失效。可学习线性读出吸收固定类别槽交换也是当前功能探针的可识别性限制，不能单凭未胜交换控制判所有医学先验无效。Q1整体NO-GO另有仅3/13假说稳定受支持的独立依据。",
+        "原始GraphLearn非对角支持（十折平均；对称矩阵按两个方向计数）：",
+        "### Q4正向与负对照的实际作用",
+        "Q4当前仅R2 FUNC通过，R4因而退化为单一FUNC门控，不构成PHENO+QC联合增益证据。FUNC支持限于训练内质量代理和证据keep/弃权路径，不等于B0正常分类提升。Q3每fold只有16名预先固定训练导师参与者、30步轻量探针；负结果只否定本次受控配置，不证明所有CF训练必然无效。"
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E41-github-publish/experiment/experiment34_serca_semantic_relational_alignment/results/report.md",
+      "sha256": "b3db01fd3d1c685e850a670e1e7af670fc9092c20a8f40e59490e18526681e1d",
+      "selected_conclusion": [
+        "| 1 | 95.4545 | 95.4545 | +0.0000 | 95.1220 | 95.1220 | +0.0000 | 90.2439 | 90.2439 | 100.0000 | 100.0000 |",
+        "## Decision: NO-GO"
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E41-github-publish/experiment/experiment35_serca_v2_relational_pattern_alignment/results/report.md",
+      "sha256": "f8204d871999c11251234cdcf7a7b320303ee5c3b265046e7c549211c727f116",
+      "selected_conclusion": [
+        "## Decision: NO-GO"
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E41-github-publish/experiment/experiment36_phenotype_conditioned_patient_routing/results/report.md",
+      "sha256": "e7cdc459eff1195b72a92f9919d71b1725984300e8f10a0f53750e6eccf9443f",
+      "selected_conclusion": [
+        "Decision: **NO-GO**. The pre-registered internal screen requires a text main arm to improve ACC and Hard-AUC over B0, matched structure, numeric conditioning, and shuffled patient text, while the condition path is used. A single seed and inherited `val=test`, pre-CV RFE/preprocessing, and all-node transduction limit the result to internal historical-protocol evidence."
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E41-github-publish/experiment/experiment37_label_supervised_phenotype_routing/results/report.md",
+      "sha256": "c7d179551f47d20b5f487e9cb549a654732a007754913b7b0be6c63dc45e5d5d",
+      "selected_conclusion": [
+        "Decision: **NO-GO**. Pre-registered internal checks: `{\"G05_beats_HYBRID_base_and_both_mismatch_controls\": false, \"G05_vs_G00_at_least_0.35pp_acc_and_hard_auc\": false, \"QK_auxiliary_gradient_reaches_router_10_of_10\": true, \"QK_parameters_updated_during_training\": true, \"formal_significance_claim\": false, \"real_text_changes_heldout_predictions_or_logits_materially\": false}`. This is a single-seed exploratory decision, not evidence of statistical significance, clinical validity, or SOTA."
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E41-github-publish/experiment/experiment38_lcher_b0a_anchor_rerun/results/report.md",
+      "sha256": "5b866f18f65a6e7f82aee04e9d6e50e0058611c9d56772b563f93e18d9291e23",
+      "selected_conclusion": [
+        "**Scientific decision:** NO-GO  ",
+        "判定：**NO-GO**。E4 ACC/AUC均低于B0-A约0.6897/0.6748个百分点，且低于匿名同预算E1约0.0000/0.0342个百分点；E5错误边映射和E6中性文本的ACC/AUC都高于E4。selected-delete优于random-delete虽为正向8/10折，但文本交换对logit的作用极小，平均类别翻转约0.1%；这不足以证明正确医学文本或连接映射具有独立任务贡献，更不能作生物医学因果解释。",
+        "The frozen screening outcome is **NO-GO**. LCHER-FULL did not clear the required margin over B0-A or the matched anonymous control, and it did not outperform wrong-edge and neutral-text controls on the primary metrics. Selected deletion exceeded equal-budget random deletion in 8/10 folds, but exact prompt swapping produced only a small log-probability response. This does not establish independent contribution from the correct medical wording or edge mapping."
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E39-HASE-stage/experiment/experiment39_heterogeneity_aware_semantic_experts/results/report.md",
+      "sha256": "3054424ac69ce3e6a6c969931ffac3e1e384330c93bf410c82f8daf798e7deec",
+      "selected_conclusion": [
+        "状态：**训练与分析完成，100/100折**；GPU0/GPU1各50折；单seed=0；worker累计训练耗时（两卡所有配置耗时求和）61.5分钟，双卡训练调度墙钟18.7分钟。判定：**NO-GO**。",
+        "历史结果边界：原始完整PEN的Experiment32 B2 ACC=91.7294%仅作描述性参照，不能替代本轮B0-A E0。Experiment11恢复的256条连接端点和Experiment19四域映射为本轮冻结映射来源。Experiment3/8/13–22、26、28–31反复显示自由文本投影、静态语义关系或图调节的结果混合，错误/随机先验不总是更差；Experiment20的概念关系严格门槛未通过。Experiment34–35的语义关系/消息增量未稳定优于B0-A或强数值/错配对照；Experiment36的四域文本路由对B0-A平均ACC无增益，Experiment37标签监督混合组未胜过其基础及错配对照。故本轮要求容量、普通MoE、正确/错误解剖、训练折数值集合和患者错配的并行重训对照。实验38在本轮设计冻结时只读本地临时态、未作为结果或模型状态来源。",
+        "文献：Just et al.，Cerebral Cortex 2007，DOI [10.1093/cercor/bhl006](https://doi.org/10.1093/cercor/bhl006)。功能解释：候选额-顶叶执行与整合系统；任务态结果不外推为静息态方向。 候选解剖端点共54个；该域56条连接均来自已核验的252个CORR特征槽，具体边及索引见 `mechanism_masks.json`。",
+        "解释限制：不把任务态低连接解释成静息态固定方向；没有个体执行功能测量或临床亚型；掩码不是已验证的完整额顶网络。",
+        "解释限制：宽泛图谱名称不等于经典显著性网络成员；不推断个体病灶、固定方向、年龄轨迹或临床亚型；掩码不是完整显著性网络。",
+        "|E7_PATIENT_MISMATCH|训练/测试池内独立无固定点患者错配|患者对应|",
+        "E9新增可训练参数154,816；E1宽183的单Adapter为154,452，容量差0.236%。E2–E9使用相同四专家参数结构，改变预注册的掩码、错配、路由或专门化开关；原模型参数保持weight_decay=0.11，新增模块使用独立Adam参数组weight_decay=0。逐折注册参数与实际非零梯度参数量、梯度诊断见 `fold_metrics.csv` / `diagnostics.csv`。",
+        "E9折均值诊断：`{\"mean_weight\": [0.3739, 0.2371, 0.2006, 0.1884], \"between_subject_sd\": [0.2353, 0.1774, 0.1726, 0.1708], \"top_route_fraction\": [0.4717, 0.2078, 0.1689, 0.1516], \"entropy\": 1.0073795735836029, \"expert_cosines\": [-0.0783, 0.0029, -0.053, 0.0399, 0.0234, -0.0147], \"residual_norms\": [12.60954, 11.42682, 10.44676, 9.99863], \"mismatch_response_change\": 1.2670416474342345, \"max_residual_ratio\": 0.10000002384185791}`。平均路由使用率只描述模型分配，不等于临床亚型；ASD/TD内部路由均值是训练后按测试标签作描述性汇总，不参与推断。站点、年龄分箱、性别及QC关联为队列描述，不能当病理关联。专家响应错配诊断、掩码覆盖、中心化余弦、残差幅度及逐折梯度见 `diagnostics.csv`。",
+        "E9四专家测试集中心化余弦均值（D1-D2、D1-D3、D1-D4、D2-D3、D2-D4、D3-D4）为`[-0.0783, 0.0029, -0.053, 0.0399, 0.0234, -0.0147]`，各专家平均残差范数为`[12.60954, 11.42682, 10.44676, 9.99863]`，每折平均残差/CAM范数比例为0.0990，最坏值0.1000。新增模块15/15张量均实际获得非零梯度，患者机制FC错配使响应范数平均相对变化1.267；这些检查说明机制输入进入了计算图，但不证明专家代表临床机制。E9的训练L_spec均值为0.01173；E8中该项为0。E8的专家余弦和E9同样接近0，E9相对E8的ACC与Hard-AUC反而分别低-0.2207和-0.2056个百分点，未显示专门化约束必要性。",
+        "判定为 **NO-GO**。完整创新链需要同一数据上的异质机制响应、正确解剖映射优于容量匹配/普通MoE/错误映射/无监督集合/患者错配、且患者条件路由与专家差异带来相互支持的可复现增益。以上预注册筛选门槛任一失败即NO-GO；即使GO也只是单seed内部候选，不代表MICCAI 2027论文成功。路由权重、梯度非零或固定checkpoint干预均不能单独证明医学语义有效。",
+        "相关工作边界（文献检索截至2026-10-26）：SPromptGL已包含多模态患者关系图与文本提示局部筛选；BrainPrompt (MICCAI 2025) 已研究ROI/subject/disease多级文本提示，因此多级提示本身不足以构成新增点。PhenoBrain (ICML 2026) 已以表型条件调节长程通信。KD-Brain (MICCAI 2026) 已把语义先验注入子网络交互query并引入pathology-consistent约束。因此HASE可能的增量只能是：将可核验ROI连接集合固定为真实FC专家的唯一FC输入，再由患者自身的真实机制响应参与软路由，并以错误解剖/患者错配和同checkpoint干预检验机制必要性；单说“语义路由/条件MoE”不新颖。NeurIPS 2025专家专门化研究和后续MoE去冗余正则说明响应差异本身需验证，本轮L_spec只是辅助约束，E8用于判断它的必要性。",
+        "既有ASD影像亚型研究报告跨人群功能连接异质性，例如Nature Neuroscience的个体差异/网络机制分析及2023–2025 ABIDE聚类工作。但HASE的D1–D4是候选功能系统专家，不是已验证患者亚型；本实验数据没有症状量表来验证专家分配的临床意义。若核心对照失败，应保持NO-GO。",
+        "正确掩码的必要性不成立：E9比E5错误解剖掩码仅高+0.9169个百分点ACC，逐折5/2/3胜/平/负；E9比E6训练折无监督FC分组低0.2181个百分点，比训练时患者FC错配E7低4.0112个百分点。因此本轮没有证明正确医学域或患者对应在从头训练中优于反事实控制。E9比仅用GFR/CAM上下文路由的E4低1.2683个百分点，额外FC响应、PHENO年龄/性别及ANAT/FUNC质量条件没有形成可用增益；E9相对E8关闭L_spec也低0.2207个百分点ACC，专门化约束未显示必要性。"
+      ]
+    },
+    {
+      "path": "/tmp/SPromptGL-E40-HCER-v2-stage/experiment/experiment40_hcer_v2_b0a_evidence/results/report.md",
+      "sha256": "7b14edb7b73ee7699fde5080372b174c2502c5da67dd92d384146625ecf42fc0",
+      "selected_conclusion": [
+        "科研状态：**COMPLETE**；锚点：**ANCHOR_REPLAY_PASS**；科研判定：**NO-GO-CLASSIFICATION / NO-GO-SEMANTICS / NO-GO-EVIDENCE-SPECIFICITY**。",
+        "E1有相同90499个登记参数，但疾病Query不进入selector，部分Query/温度路径不生效；其数值value仍保留共同解剖信息与冻结软方向先验。因此它是同源数值选择控制，不是完全相同有效容量或完全没有任何医学结构的模型。E7的假说关联及其软方向规则一起错配，raw/z/mu/sigma/物理列从不重排，检验的是假说整体配对。E8仅交换两个Query通道，标签和软方向不交换；E9保留数值软先验但取消类别竞争。匿名控制保持疾病bank全Gram矩阵，但相对真实解剖bank的几何按设计改变。",
+        "最终：**NO-GO-CLASSIFICATION / NO-GO-SEMANTICS / NO-GO-EVIDENCE-SPECIFICITY**。不建议把本方案作为已成立的MICCAI疾病语义创新。后续若研究单位范数校准的梯度放大、弃权阈值漂移或选择器稳定性，需单独预注册，不能把事后修补并入本轮。当前结果也不能证明特定连接没有生物学意义；它只否定这套实现与冻结协议下的分类/证据主张。"
+      ]
+    }
+  ],
+  "source_function_inventory": {
+    "main.py": [
+      {
+        "name": "set_rng_seed",
+        "line": 44
+      },
+      {
+        "name": "sen",
+        "line": 79
+      },
+      {
+        "name": "spe",
+        "line": 89
+      },
+      {
+        "name": "set_gpu",
+        "line": 100
+      },
+      {
+        "name": "train_and_eval",
+        "line": 111
+      },
+      {
+        "name": "main",
+        "line": 188
+      },
+      {
+        "name": "__init__",
+        "line": 27
+      },
+      {
+        "name": "__enter__",
+        "line": 31
+      },
+      {
+        "name": "__exit__",
+        "line": 37
+      }
+    ],
+    "model.py": [
+      {
+        "name": "__init__",
+        "line": 25
+      },
+      {
+        "name": "run_epoch",
+        "line": 81
+      },
+      {
+        "name": "print_trn_acc",
+        "line": 260
+      },
+      {
+        "name": "print_tst_acc",
+        "line": 267
+      },
+      {
+        "name": "_print_acc",
+        "line": 273
+      },
+      {
+        "name": "cal_acc",
+        "line": 305
+      },
+      {
+        "name": "visualize",
+        "line": 321
+      }
+    ],
+    "network.py": [
+      {
+        "name": "get_prompt_text_features",
+        "line": 33
+      },
+      {
+        "name": "adj_normalization",
+        "line": 190
+      },
+      {
+        "name": "__init__",
+        "line": 43
+      },
+      {
+        "name": "forward",
+        "line": 48
+      },
+      {
+        "name": "__init__",
+        "line": 54
+      },
+      {
+        "name": "forward",
+        "line": 93
+      },
+      {
+        "name": "__init__",
+        "line": 154
+      },
+      {
+        "name": "forward",
+        "line": 162
+      },
+      {
+        "name": "__init__",
+        "line": 176
+      },
+      {
+        "name": "forward",
+        "line": 181
+      },
+      {
+        "name": "__init__",
+        "line": 198
+      },
+      {
+        "name": "forward",
+        "line": 225
+      }
+    ],
+    "layers.py": [
+      {
+        "name": "__init__",
+        "line": 22
+      },
+      {
+        "name": "forward",
+        "line": 27
+      },
+      {
+        "name": "__init__",
+        "line": 44
+      },
+      {
+        "name": "forward",
+        "line": 49
+      },
+      {
+        "name": "__init__",
+        "line": 62
+      },
+      {
+        "name": "forward",
+        "line": 69
+      },
+      {
+        "name": "__init__",
+        "line": 81
+      },
+      {
+        "name": "forward",
+        "line": 106
+      },
+      {
+        "name": "__init__",
+        "line": 145
+      },
+      {
+        "name": "forward",
+        "line": 160
+      },
+      {
+        "name": "__init__",
+        "line": 176
+      },
+      {
+        "name": "forward",
+        "line": 186
+      },
+      {
+        "name": "__init__",
+        "line": 193
+      },
+      {
+        "name": "forward",
+        "line": 200
+      },
+      {
+        "name": "__init__",
+        "line": 206
+      },
+      {
+        "name": "forward",
+        "line": 216
+      },
+      {
+        "name": "__init__",
+        "line": 223
+      },
+      {
+        "name": "forward",
+        "line": 238
+      },
+      {
+        "name": "_prepare_attentional_mechanism_input",
+        "line": 254
+      }
+    ],
+    "utils.py": [
+      {
+        "name": "real2col",
+        "line": 19
+      },
+      {
+        "name": "one_hot",
+        "line": 25
+      },
+      {
+        "name": "GraphConstructLoss",
+        "line": 31
+      },
+      {
+        "name": "smooth_CE",
+        "line": 46
+      },
+      {
+        "name": "ClsLoss",
+        "line": 92
+      },
+      {
+        "name": "ClsLoss_noweight",
+        "line": 96
+      },
+      {
+        "name": "normalize_adj",
+        "line": 101
+      },
+      {
+        "name": "RBF_kernel",
+        "line": 110
+      },
+      {
+        "name": "KNN_graph",
+        "line": 120
+      },
+      {
+        "name": "my_weight_init",
+        "line": 127
+      },
+      {
+        "name": "visualize_as_gdf",
+        "line": 132
+      }
+    ]
+  },
+  "E41_isolation": {
+    "valid_rows": 100,
+    "unique_rows": 100,
+    "correction_status": "CORRECTED_70_FOLDS_COMPLETE",
+    "valid_count": 100,
+    "excluded_count": 70,
+    "invalidated_records": 70,
+    "correction_sha256": "eafab32a53c86ad0940d8f71837bc54061f575a584bd9bbb106513499570a5e7"
+  },
+  "paper_access": [
+    {
+      "paper": "SPromptGL MICCAI2025",
+      "scope": "full local/downloaded PDF, Fig1 rendered, methods Eq1-7 and ABIDE/ablation read",
+      "url": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf"
+    },
+    {
+      "paper": "Ilioska2026",
+      "scope": "primary full PDF, results/methods/limitations and anatomical scale reviewed",
+      "url": "https://www.nature.com/articles/s44220-026-00656-y.pdf"
+    },
+    {
+      "paper": "Kobbersmed2026",
+      "scope": "primary publisher indexed abstract/highlights and author code README; full publisher text requests HTTP403; no anatomical ASD claim attributed",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0301008226000328"
+    },
+    {
+      "paper": "BrainPrompt+",
+      "scope": "primary PubMed abstract and official author implementation README",
+      "url": "https://github.com/AngusMonroe/BrainPromptPlus"
+    },
+    {
+      "paper": "PhenoBrain ICML2026",
+      "scope": "primary PMLR full PDF methods; distinct from unrelated rare-disease pipeline of same name",
+      "url": "https://proceedings.mlr.press/v306/meng26f.html"
+    },
+    {
+      "paper": "KD-Brain MICCAI2026",
+      "scope": "primary arXiv full methods/results and official MICCAI page",
+      "url": "https://arxiv.org/html/2603.19307v1"
+    }
+  ],
+  "literature_sha256": {
+    "ilioska2026.pdf": "b179789f99f61cb88ef3534fc7c5ab055ed6d38c8ee6346817385b119e8e633e",
+    "phenobrain2026.pdf": "eca2ecb3d980a47be52d42ccd70ce73c22ad18561a37cf98998e4a644680c9a3",
+    "spromptgl2025.pdf": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89"
+  },
+  "preflight_detail_note": "The preflight detail named baseline_initial_hash records a post-probe state, not fold-entry initialization. Exact E32 initialization evidence comes only from formal E0 rows, which record initial_trunk_sha256 and initial_rng_sha256."
+}

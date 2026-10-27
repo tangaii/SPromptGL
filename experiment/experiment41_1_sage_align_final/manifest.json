@@ -1,0 +1,1180 @@
+{
+  "experiment": "Experiment 41.1 — SAGE-Align Final",
+  "status": "COMPLETE_VALID_100_WITH_DISCLOSURES",
+  "prepared_utc": "2026-10-26T16:44:25.560590+00:00",
+  "target_folds": 100,
+  "previous_execution": {
+    "status": "INVALIDATED_PROTOCOL_IMPLEMENTATION",
+    "timestamp_utc": "2026-10-26T16:30:49.760882+00:00",
+    "folds_excluded": 100,
+    "reason": [
+      "E5 ROI and FC mapping not jointly constrained",
+      "E2 and E6 duplicated",
+      "FUNC reliability used symmetric deviation",
+      "missing residual energy regularizer",
+      "missing optimizer and RNG exact resume",
+      "insufficient preflight and literature audit"
+    ],
+    "rules": "Requirement corrections only; no metric-led hyperparameter tuning. Outcomes of excluded runs have already been observed; corrected run is not a blinded preregistration."
+  },
+  "wall_start_utc": "2026-10-26T14:03:02.293569+00:00",
+  "corrected_start_utc": "2026-10-26T16:44:25.560646+00:00",
+  "source_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "data_sha256": {
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "private_source_sha256": {
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "eb8423236ecf86b388d541adc1234724e7da9efe93c60d5a9c430fdb0d6d36a7",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "cache_sha256": {
+    ".runtime/evidence/fold01_conditional.npz": "cb0db718031ab62632810427500061aeec4c32dd3d244ec3cf434615ccede6f9",
+    ".runtime/evidence/fold01_global.npz": "389b74203c8d9a23124a2823fc87ba0260e29c435a25a8f785ffd48fd0064f5d",
+    ".runtime/evidence/fold02_conditional.npz": "9c5c6171b61ab09ee33a454c639808fee51cfc38b979fc005ee2d5df93c9ce87",
+    ".runtime/evidence/fold02_global.npz": "25fc253fc461fd533c7d72226b3cbec6e3b07c5a68b9fd76cd85b8d5a90faa56",
+    ".runtime/evidence/fold03_conditional.npz": "854b881f670364c366ff558e6c731914fb7c008cfd6835a91dbf9c307f444dd9",
+    ".runtime/evidence/fold03_global.npz": "bab2c38da797da61f184a1310292192f3c34f13fe6009a4548f1ab8efd5e8a34",
+    ".runtime/evidence/fold04_conditional.npz": "8108c5d435c65098878e834fec6f08b0327eaa26c6a601b4da7d2c7ec56ef6d5",
+    ".runtime/evidence/fold04_global.npz": "d49a59dac16c93f8ccf3bbb987089b9b25b7008060c7e46678dba63527e3dd4c",
+    ".runtime/evidence/fold05_conditional.npz": "d8bf1de480eff06d4df9ee1868063bc6d2751842253b489eaac6defa10d2772e",
+    ".runtime/evidence/fold05_global.npz": "e6226fb7cf52b546206dfc73c242cdd375a877b18aac734aa3279c641346139b",
+    ".runtime/evidence/fold06_conditional.npz": "148544877ebdeea86a6de9d0773d9410dbc38d935f4bf05e0c3b3401d9a6f206",
+    ".runtime/evidence/fold06_global.npz": "c52ac06b29b140804572f81ea384b3dcc885f1efcc634fbbd4f8158d31eeda05",
+    ".runtime/evidence/fold07_conditional.npz": "fd8e0e82b666f277ec9040f1fd8436d825610e0a4851d0fb8918b14c14c282b1",
+    ".runtime/evidence/fold07_global.npz": "ce85e70a065b936dd9c0d094c91a8a8f320310b8600d2b507da5d3fe262a9fed",
+    ".runtime/evidence/fold08_conditional.npz": "25e2cf50ece64f87dff51651b2ad1626d0fcb45b57d1558d804711d299a3deb3",
+    ".runtime/evidence/fold08_global.npz": "eb1ec64c48ca444a3c7b74bb61582f4ceb49c47daef963b1dc68e8d77d86d595",
+    ".runtime/evidence/fold09_conditional.npz": "a9cc50bb0f5a05cc494088fe078c893978af7d0eda8d067d77b920badaa3d08a",
+    ".runtime/evidence/fold09_global.npz": "33bbcec5b1159085c8c98c0073621b492b9917a33cb60171feffebec636ed65b",
+    ".runtime/evidence/fold10_conditional.npz": "eb3f919277438c205dd4e3d79dc6d18fd656d615a16e2d934e74ef74843c0159",
+    ".runtime/evidence/fold10_global.npz": "218ba33c0632bcaa57a8b662b112b87d0d7e8486c5f1201360128d5d98ebadac"
+  },
+  "historical_protocol": "val=test, pre-CV RFE and preprocessing, transductive 871 patients, seed0 only",
+  "gpu_assignment": {
+    "0": [
+      "E0_B0A",
+      "E2_NUMERIC_ONLY",
+      "E4_NO_QC",
+      "E6_DATA_PRIOR",
+      "E8_FROZEN_HEAD"
+    ],
+    "1": [
+      "E1_HEAD_ONLY",
+      "E3_GLOBAL_REFERENCE",
+      "E5_WRONG_SEMANTICS",
+      "E7_FORCED_ALIGNMENT",
+      "E9_SAGE_FULL"
+    ]
+  },
+  "completed_folds": 100,
+  "frozen_sha256": {
+    "run.py": "615081f5d13e3db4633aaa92c9b2d10cecd22cf8db770e6ffc4e1f959cd86f4b",
+    "sage_align.py": "1a4cc2ce60f259b9e9b128052d69b9df27aace209d7fbf8d7876c75fa8f7658c",
+    "integration.py": "95e0ff498bc9e34b5bdac91e7241dc11a9b1ed3eab1a8701ecc613646e1849d7",
+    "audit.py": "ee329aeb678688f9c03d5b3779a6b4e19b6b6ff72d218141555a1fc48ee5b1f6",
+    "config.json": "3f015b21880a35b7613e99c483fbec31a379ea33f985b6e1c86024af78397d0b",
+    "prompts.json": "6d585359a237ac841fa8f350f456fb4830e1dcc558e0fb55fb154b63c699f30b",
+    "ontology.json": "910d7dba0a01c22763974290f0cb2347eda89542f6ffb70ca8306c6eb8ec1155",
+    "design_audit.md": "2489261d23a9118e28ebf6bf3e02e68f00f47f2094d62d7be899907125bd8c0d",
+    ".runtime/source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    ".runtime/source/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    ".runtime/source/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    ".runtime/source/network.py": "eb8423236ecf86b388d541adc1234724e7da9efe93c60d5a9c430fdb0d6d36a7",
+    ".runtime/source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    ".runtime/preflight.json": "4ec952c07867723a045828201ee5fa6b91a69047c05525e3e654fec580774834",
+    ".runtime/audit.json": "aa9bbc29eaf0caecc1c50aec966d6fb7dc78350cc0569f70ef6a6d6adac3fa46"
+  },
+  "freeze_utc": "2026-10-26T17:02:46.245864+00:00",
+  "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+  "formal_folds_since_correction": 0,
+  "summary": {
+    "E0_B0A": {
+      "acc": {
+        "mean": 0.9207419017763845,
+        "population_sd": 0.025999760120586284
+      },
+      "hard_auc": {
+        "mean": 0.9185462027030076,
+        "population_sd": 0.025814772247962834
+      },
+      "spe_td": {
+        "mean": 0.9462997224791859,
+        "population_sd": 0.040456558520528846
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E1_HEAD_ONLY": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E2_NUMERIC_ONLY": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E3_GLOBAL_REFERENCE": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E4_NO_QC": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E5_WRONG_SEMANTICS": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E6_DATA_PRIOR": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E7_FORCED_ALIGNMENT": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E8_FROZEN_HEAD": {
+      "acc": {
+        "mean": 0.9207419017763845,
+        "population_sd": 0.025999760120586284
+      },
+      "hard_auc": {
+        "mean": 0.9185462027030076,
+        "population_sd": 0.025814772247962834
+      },
+      "spe_td": {
+        "mean": 0.9462997224791859,
+        "population_sd": 0.040456558520528846
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    },
+    "E9_SAGE_FULL": {
+      "acc": {
+        "mean": 0.9195924764890282,
+        "population_sd": 0.02726697153179128
+      },
+      "hard_auc": {
+        "mean": 0.9174823729157735,
+        "population_sd": 0.02703258433671879
+      },
+      "spe_td": {
+        "mean": 0.9441720629047179,
+        "population_sd": 0.041479872725943154
+      },
+      "sen_asd": {
+        "mean": 0.8907926829268293,
+        "population_sd": 0.0372834317514467
+      }
+    }
+  },
+  "paired": {
+    "E0_B0A": {
+      "acc": {
+        "delta_pp": -0.11494252873563206,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.1494252873563204,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": -0.10638297872340498,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.0638297872340496,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": -0.21276595744680882,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -2.127659574468088,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E1_HEAD_ONLY": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E2_NUMERIC_ONLY": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E3_GLOBAL_REFERENCE": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E4_NO_QC": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E5_WRONG_SEMANTICS": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E6_DATA_PRIOR": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E7_FORCED_ALIGNMENT": {
+      "acc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "E8_FROZEN_HEAD": {
+      "acc": {
+        "delta_pp": -0.11494252873563206,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.1494252873563204,
+          0.0,
+          0.0
+        ]
+      },
+      "hard_auc": {
+        "delta_pp": -0.10638297872340498,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -1.0638297872340496,
+          0.0,
+          0.0
+        ]
+      },
+      "spe_td": {
+        "delta_pp": -0.21276595744680882,
+        "wins": 0,
+        "ties": 9,
+        "losses": 1,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -2.127659574468088,
+          0.0,
+          0.0
+        ]
+      },
+      "sen_asd": {
+        "delta_pp": 0.0,
+        "wins": 0,
+        "ties": 10,
+        "losses": 0,
+        "fold_delta_pp": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "decision": {
+    "GO_CLASSIFICATION": false,
+    "GO_MEDICAL_SEMANTICS": false,
+    "GO_RELIABILITY": false,
+    "final": "FINAL NO-GO",
+    "interpretation": "Internal descriptive screening; no statistical significance or independent generalization proof."
+  },
+  "e0_parity": {
+    "pass": true,
+    "matched_folds": 10
+  },
+  "completed_utc": "2026-10-26T17:26:32.753226+00:00",
+  "result_sha256": {
+    "associations.csv": "0383a308f3a8e65f179abe4cd2abe9924404b65ed0f19250f1c32c596b702e33",
+    "counterfactual.csv": "cf027178182b7e0ea72ab2b2aba3500b9bc94fbfad57543bd4128f0c827d4307",
+    "diagnostics.csv": "8703345b2f6f8a5abe1511b86670b8d8b943a3765b7cd45837e35ce1857f648d",
+    "fold_metrics.csv": "712e6f8a2115e1d7ea5e1a55696e708f9c3f13da3dde191fbae37917fcdae4b4",
+    "gradient_audit.csv": "688cf402b3d3516136d1c2ccbe859694db5c325c8ca0d21805425be911380b9f",
+    "patient_diagnostics.csv": "ec20a3f76fb53c46c75b0587dd3ddd9ab90a5b72ba3c731baf73c13e17100201",
+    "report.md": "be93ae7aa0f252cba0162c460f7390d7f0d691d8dd312bdb757f14db442ae80a",
+    "summary.json": "73027ce87bb250abefbb7a7f16ec013f19727d28cb850b3286f021bddcc937c2",
+    "train_calibration.csv": "cb6a9c21f3ae58d1e5fa6beef415ee90ba5f7879c72dc165b00e7ab8065c6a55",
+    "trajectory_audit.csv": "6e6d8f4b28b8aa71c8d6e51180c779e8a78f767d53bffdbb21abb66212f0cb1a"
+  },
+  "checkpoint_sha256": {
+    ".runtime/anchors/anchor_fold01.pt": "68bf8debe1ccc3614b217068dd2b2e5932be77671f2af6373d698f0acf4dbca5",
+    ".runtime/anchors/anchor_fold02.pt": "f7243efff13f307d47199e8b3a7412be683ff9568f0424bb33f5d670792ea388",
+    ".runtime/anchors/anchor_fold03.pt": "92e52132317bfc9950894686861ee9ff9ee7fcd542e9c33ac10c2b7d71b92939",
+    ".runtime/anchors/anchor_fold04.pt": "230aec4040fc515d1cdc3da51978c22f4d1ab952e4e803d5d88009756b5cc5f2",
+    ".runtime/anchors/anchor_fold05.pt": "0b713ff3ed11a7e185a0b3723b47df7e9a1f59b2fa5ff0eb298a506215a447e7",
+    ".runtime/anchors/anchor_fold06.pt": "9de978126a5731e860b4b88e6d087787be02e72a13886015fbdd7da7f2bc0f32",
+    ".runtime/anchors/anchor_fold07.pt": "4df353175cd9857d2d3ff3626f0da58fef49b35ab584845e85e66ab268161c42",
+    ".runtime/anchors/anchor_fold08.pt": "9f556ff42045e60f7f756f18471aaa01650c6317bc046199d1d21940484216c6",
+    ".runtime/anchors/anchor_fold09.pt": "5185e35241367edab93f964f91b89528ad066ec6e434c826f90fed1307a154c3",
+    ".runtime/anchors/anchor_fold10.pt": "85f427b2c0ad1347e0d38afc13cb0d007191fdb4a0035b0761647c1e9e475918",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold01_best.pt": "c84d48bef3f222b11b7aa09d1b12439b933bf440d1d5023fc8d8a006449e02f6",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold02_best.pt": "99519491986c28a6dd37edafb4cf9e59de3cea161c2928a303caa77c44a8987e",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold03_best.pt": "d048c91bda4fe70508f826ca86a7fe3ddfd486f79fdd5a088931c8e561e7c469",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold04_best.pt": "7124c326693523a8fe4ce71594c8e3c01d639971b337b19d9f086a1d908f2f6a",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold05_best.pt": "69b0c9ec3b019de201880486f14889eb5ab2def48abac6041afa2de650c1c188",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold06_best.pt": "3f579baec99dcac57475c3b75f13fc11c05394db236a7acdeadd87b8c82a4478",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold07_best.pt": "1a967a10f3db55640486e674374605de7274ee3458d3489c0b1ea5797ec7a858",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold08_best.pt": "5502ba85098adf02a24c22af3403d9c977a21567473d591e4062f7124bcaef48",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold09_best.pt": "821cdcddf350b3145f0960c1ae8694f54f4be74d56533c218b2b1a98cee8dc5d",
+    ".runtime/checkpoints/E1_HEAD_ONLY_fold10_best.pt": "dec08dc54c10ccf40e09547521d5a109d5c00e2c9801d5de225563de4dbc81e1",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold01_best.pt": "c2dc070033ab864b623740eff64476eea82fd076ecd4dc64bf9f9a362b992e4b",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold02_best.pt": "93e42cf1f9963da2db932642e15ec23f21da25359800ba7e7ee2f039efa3bf0b",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold03_best.pt": "d852a803f7cc54646ba92bb933569e844bd23166e9a74a78428fb26d22e12d01",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold04_best.pt": "e17c33d067fd913158ea455c188cebe572736046c8f8f8965cd1bcfe7b85eb57",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold05_best.pt": "e7f46451b3fd94a6462d1004398b2135baf8224e1176bc59bf80358e829f1b53",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold06_best.pt": "81efc8aa108a01c7a62b96f62e710ff4bf0dce6815c29f2a70317b12ca68bab4",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold07_best.pt": "2511f5a4e0025040c9fcc192ffd08a575650150140bef03c8591260da5d52557",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold08_best.pt": "f4c17dcbc7051999dc3c4bd7eeb1b70f3df4bd333453661708efd342e80d15e4",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold09_best.pt": "7ef4daf91d9b95fb070872af39bacb1e6fa0346a9a04833d543dc43917de0339",
+    ".runtime/checkpoints/E2_NUMERIC_ONLY_fold10_best.pt": "218f1c1cf78f679a349722ac473b46222a74ce7ddedad330dce67712c6320328",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold01_best.pt": "a40b0b8c3f8b15c4c357f8d409bc8d77bd8cebccd36ed3cccc7e2c322ed761c5",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold02_best.pt": "141f19b2f2ae8bbece2ca8c8d6c6211710088dc8b15550379155ccd9224503bb",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold03_best.pt": "7dd6794c3145abb723cf0908badddb70084189a2ed213a614cf3364eb733fc76",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold04_best.pt": "b0d4eda03053a0eba13547c473256403acaa0a202f57a25838adfa116fbf5efe",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold05_best.pt": "5ae5200a0a1cdfadd612cba5cff4df363ae49e57a0aee0404d13dd0bcf3f2268",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold06_best.pt": "f93f06a6ca11d026f79f402197064138da72d12058563728ca9a70af9029bc07",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold07_best.pt": "91e89c9831b7c7084c6b8ffc09c6064910017addc7387b0dd7d8643d621f0a3a",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold08_best.pt": "0ef742f242dba2a3fba22657289c1adf3f850f305dde7d316ad0be62c44a28a8",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold09_best.pt": "c1d99f75e051e282f7cb108d6fa5c4e68e760d0845a57891bbd03e8c6203276c",
+    ".runtime/checkpoints/E3_GLOBAL_REFERENCE_fold10_best.pt": "5b8709527af2722edf245d8cbeac254491199804b0301327ac50f8092e5e2f0f",
+    ".runtime/checkpoints/E4_NO_QC_fold01_best.pt": "da3067e6fbec1873be46f7ca6258a53c9d81622acf29647d8c91767682c7ce85",
+    ".runtime/checkpoints/E4_NO_QC_fold02_best.pt": "8e14e0f3086539965f62c2a04b76cf0447797c84130a21317a3c4859608a1a93",
+    ".runtime/checkpoints/E4_NO_QC_fold03_best.pt": "bc5dd63a5b019700ac7e0e299682edd85a4d1f03fc72bbb322a96babaefa42a9",
+    ".runtime/checkpoints/E4_NO_QC_fold04_best.pt": "6aae7940efc966acc1aa4951fe1942103e534d1a5a84445597e2ef52cdc35dbf",
+    ".runtime/checkpoints/E4_NO_QC_fold05_best.pt": "de5c7f329a0c2ecbfe61c3f38f321b8eef02e0c20edebed6b2d6502c211ba484",
+    ".runtime/checkpoints/E4_NO_QC_fold06_best.pt": "d8941f9e805dfb67f7edebc871a41d86c88f47afa1879c6356a67722bdffa9a6",
+    ".runtime/checkpoints/E4_NO_QC_fold07_best.pt": "73a557fc036f1ece33ac49314f0960b02d43e1ed64143f6b784ca7978763178e",
+    ".runtime/checkpoints/E4_NO_QC_fold08_best.pt": "54710f0fc87a4753e9b436b509ca854979e1acd3c00d5f6448468d72c690ed49",
+    ".runtime/checkpoints/E4_NO_QC_fold09_best.pt": "4dcea39b4e60bc85f54d3fdf70aa1311dbe9547b7374ce708997bf323a94740a",
+    ".runtime/checkpoints/E4_NO_QC_fold10_best.pt": "94ad0c516b099d849969048c88892d5078858b3456b08b6f143721da0ceae725",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold01_best.pt": "307358c899e21b68b8fa97b3dddce4a432b7fd61a955a39d9ba46dffc636d99a",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold02_best.pt": "dfc46f09d3a1d6413009a22f330f9f844fe9714aa363485dd4742ab9626a6b30",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold03_best.pt": "cb4274c3b13b796a635509dec85183ef137a71ff9c571ad0f1d05aae1c7988be",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold04_best.pt": "ca693ae0691a420f109259c77b74e318654ba1dd8290e0c2f4a0b34d06b624f3",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold05_best.pt": "06db8b5ea9c00b1f0331edebe79d453fb5b8810fa5d17c1828948692c1d1b8fc",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold06_best.pt": "5b31ec01c44f46d66500a893d2c4e40369a67726902e1cb692667b1fbf038b19",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold07_best.pt": "cea24be3ce0d77521cd21cab06c3bec45331fffa5b97c3aee5d705bdc19e244c",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold08_best.pt": "c0557dec363881d6f4d3deb6218d2f362d3a1e774438d8025186bed3cb790122",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold09_best.pt": "492f13fad3b5e8999bff077592f67954e1894d40310c3547e833c9396e6ea24a",
+    ".runtime/checkpoints/E5_WRONG_SEMANTICS_fold10_best.pt": "3def08bc1701b71f3c5c65b46ea5024ce6f65185dd5f25b54cb7f8df3956cb52",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold01_best.pt": "314f76e00c8b0a134fbc8e349d553fd79368dba2c9ccd4268a12527d509d2acf",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold02_best.pt": "894b115ec5c296a3773a0b26d838b1e55288bf4f3c239c161665a7661b490050",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold03_best.pt": "be69f5a6109437380df06bf72cf7f124f97425724df6acc19c1c088cf9a78b44",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold04_best.pt": "206f9766fd9963dcdd389a1a5fc7824c2a44ba2ae0667f189d802bb0241fdd9b",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold05_best.pt": "d55695c09ef0eb7dc784c4627e3e08fd04dbd3d0e50730a011051da3ec979161",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold06_best.pt": "ba004d85da502a3a2176c2ec39c2d0e8df4c39cc4c00e2fd5caecd3c1526f044",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold07_best.pt": "68860e1d4606d6bb5f1dfa8bfdb8747d80da40506780c9cb7d565018152c2142",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold08_best.pt": "bd2ec131fedc73c6c26f4b921f918605cce2b3d4c6f88a18ad5b9fbab3fe45c3",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold09_best.pt": "c4326653b80aaee340de5b10a3f4d1b66b37ed0d63cc96d4fd63459924e9605c",
+    ".runtime/checkpoints/E6_DATA_PRIOR_fold10_best.pt": "258dfff77b7277cb576c4408899cec088c7b4b88489d3e8affae8df5dc070477",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold01_best.pt": "2282bb9f9cdfc29503d8e24b7572a9d426f28d52032d545883ceb66ed10001d2",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold02_best.pt": "b3e9d0a52e90ec156f77ee82d39f736a2721df4da326da1bb1384ba96e08c67d",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold03_best.pt": "69aa4d39d13af4a3c4105607600caee10518102abdf46ebf3f54ea83ca8a6aa7",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold04_best.pt": "8208793cc0489b3a4e2749e5d411cfc69d2fa0caebbf05bdb229c9b6c1a2bb22",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold05_best.pt": "371813fd04257cfbcd72ca49fd4d4118e14d1cf00ef96f8f2710cefd45f781e6",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold06_best.pt": "66539e3739aa72399886057447648d38df7eb5f191a277445b4f726b034bae27",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold07_best.pt": "abdc4be0d12f3c91b209552d31b54eab1732fcadb55e80a09a68df671b01e978",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold08_best.pt": "1a466e019adb8de9d9918e7e7e4207eb04554f060b86fbf71f0dd733b1ca2f11",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold09_best.pt": "817c5bbad7a72f160358fdddfe6fd6cf858755078e454231d0ce85041420cd37",
+    ".runtime/checkpoints/E7_FORCED_ALIGNMENT_fold10_best.pt": "6f1b4027e303522917b40b3d348329ee6fef14680bab4514eb9ef4929892f8bb",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold01_best.pt": "3acd55f2506f6f24a2bd5eb96721326eb6143652592cfea3771c144ba23e740d",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold02_best.pt": "506dbac9ee7c1afdce5b48ca0b400ac820c3892801a0496262b994aa4454227f",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold03_best.pt": "a8838facb97ed95fa36efa4fd04d53480a134857779dd3458260edbcac9afa99",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold04_best.pt": "363d91926d7d5049710a0621de0a20fc418f36616af3888c811bf976b44458a9",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold05_best.pt": "c1bd4f5135e32702ffac18186f92b3abcd6df8646c1f9bad3ce843e225fe00b9",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold06_best.pt": "c7adab5dbf7931cf3a6f502ef58afe6689b562c3d3a814d3b67b54c60e3e5da5",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold07_best.pt": "7688fe54259c6754f19eb0ac8e6c7e4045dcd463f3b669d5fa13f89a8ddeb56f",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold08_best.pt": "e1f89bbcbc93ec384701a6c4bea4fc01a8e42e1e337bf4979c51636ffd72d3d0",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold09_best.pt": "d1f0de173ea3af37a09bb46e80c53502b8d43c58100362deaf5fc816ac2dab8c",
+    ".runtime/checkpoints/E8_FROZEN_HEAD_fold10_best.pt": "9d9ef41027d1d1a854dc5523d7995057fabf564d033e6e9c71781cdbaa67e668",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold01_best.pt": "70ac7deb6f616014d804959aa0666d2e8487d4c87ed8ae8580d6e3f317552849",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold02_best.pt": "677c586791afce65d4c3eed631910743c0d150df0972e42985f8a41e4b744c90",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold03_best.pt": "fdb48e83b94e204491059276be06725bc88eadd9199927b4d036b0a5de5167c1",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold04_best.pt": "ac72cee14e3c6eb91ca934ecdb4dc1204d36f4a582c083bfd4e482651b7d4abe",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold05_best.pt": "2be8d0e977ccd11313eb86ddd30feacefbcc1198afb7f26eba191957ba57a9ec",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold06_best.pt": "2b92b273470eae0d8efcad23d527ac9eccd0783500de5fd93b217163b793be5b",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold07_best.pt": "9474627172413c216719c7df8e2db7f064e7d150e4715e99f244e46945c58fb9",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold08_best.pt": "db88f6ccce28cc45be58fe2891130c53500e178451a035707059a3bcec8c08f6",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold09_best.pt": "5135dbe28c1c9d69018cb337b5324f6b4ea232962213283827950ffb6fcd7184",
+    ".runtime/checkpoints/E9_SAGE_FULL_fold10_best.pt": "eaa96531969609dfe3608e07b90de491b63c674ccc273a39882a535cbe651a89"
+  },
+  "corrected_wall_seconds": 2527.19258,
+  "total_wall_seconds": 12210.459657,
+  "workers": {
+    "E0_B0A": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "parity": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wall_seconds": 699.1568877324462,
+      "completed_utc": "2026-10-26T17:17:29.219466+00:00"
+    },
+    "E1_HEAD_ONLY": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:19:18.605132+00:00",
+      "wall_seconds": 57.64420488104224
+    },
+    "E2_NUMERIC_ONLY": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:19:28.799675+00:00",
+      "wall_seconds": 67.22848610207438
+    },
+    "E3_GLOBAL_REFERENCE": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:20:21.918182+00:00",
+      "wall_seconds": 62.52894784882665
+    },
+    "E4_NO_QC": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:20:29.703820+00:00",
+      "wall_seconds": 58.77798341214657
+    },
+    "E5_WRONG_SEMANTICS": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:21:19.562940+00:00",
+      "wall_seconds": 56.93551904708147
+    },
+    "E6_DATA_PRIOR": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:21:28.359395+00:00",
+      "wall_seconds": 58.12641081959009
+    },
+    "E7_FORCED_ALIGNMENT": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:22:19.482406+00:00",
+      "wall_seconds": 59.20307157561183
+    },
+    "E8_FROZEN_HEAD": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:22:25.138290+00:00",
+      "wall_seconds": 56.419255550950766
+    },
+    "E9_SAGE_FULL": {
+      "status": "COMPLETE",
+      "signature": "ec23c5bd1d63b5ea77d52387feed580d873b442f73cb6838e3741cefec21ba22",
+      "completed_utc": "2026-10-26T17:23:10.450916+00:00",
+      "wall_seconds": 50.63370826840401
+    }
+  },
+  "additional_analysis_sha256": {
+    ".runtime/gradient_audit.py": "dd255da2abf0547a0212bddaa744e449283bfd53dca8a94ddc294d4e5261c945",
+    ".runtime/trajectory_audit.py": "63810bf068db0310b9b443034515e895a0616a46522104f83af6931a8de532d9"
+  },
+  "report_completed_utc": "2026-10-26T17:24:06.972348+00:00",
+  "wall_time_scope": "首个已记录manifest启动时刻至交付准备；更早审计时间没有独立完整记录，故不是可精确追溯的全任务起点；不累加并行worker时长。",
+  "handoff": {
+    "status": "APPENDED_VERIFIED",
+    "path": "/data/adodas/SPromptGL-main/handoff.md",
+    "utc": "2026-10-26T17:26:43.184544+00:00",
+    "old_prefix_sha256": "5e74dc8861fa95b6e4185fd04ba34b13364a8d19640ac9fc9a4a59c63c95a63b",
+    "preserved_old_prefix": true,
+    "trajectory_addendum": {
+      "status": "APPENDED_VERIFIED",
+      "preserved_prefix": true,
+      "old_prefix_sha256": "42c7e9ede7071a7a60b6abb8ff513234ddb11f3fe576fed29d7ae6a602eebde0"
+    }
+  },
+  "optimization_trajectory_failure": {
+    "folds_with_later_saturation": 10,
+    "minimum_saturation_epochs": 120,
+    "maximum_saturation_epochs": 169,
+    "peak_saturated_patient_fraction": 0.5854591727256775,
+    "tail100_mean_saturated_patient_fraction": 0.13290340060554445
+  },
+  "delivery_utc": "2026-10-26T17:29:17.188891+00:00",
+  "delivery_wall_seconds": 12374.895322
+}

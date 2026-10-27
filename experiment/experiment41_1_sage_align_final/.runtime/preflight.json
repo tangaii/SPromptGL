@@ -1,0 +1,1014 @@
+{
+  "checked_source_sha256": {
+    "run.py": "615081f5d13e3db4633aaa92c9b2d10cecd22cf8db770e6ffc4e1f959cd86f4b",
+    "sage_align.py": "1a4cc2ce60f259b9e9b128052d69b9df27aace209d7fbf8d7876c75fa8f7658c",
+    "integration.py": "95e0ff498bc9e34b5bdac91e7241dc11a9b1ed3eab1a8701ecc613646e1849d7",
+    "audit.py": "ee329aeb678688f9c03d5b3779a6b4e19b6b6ff72d218141555a1fc48ee5b1f6",
+    "config.json": "3f015b21880a35b7613e99c483fbec31a379ea33f985b6e1c86024af78397d0b",
+    "prompts.json": "6d585359a237ac841fa8f350f456fb4830e1dcc558e0fb55fb154b63c699f30b",
+    "ontology.json": "910d7dba0a01c22763974290f0cb2347eda89542f6ffb70ca8306c6eb8ec1155"
+  },
+  "status": "PASS",
+  "utc": "2026-10-26T17:00:20.202586+00:00",
+  "checks": {
+    "FUNC_field_names": true,
+    "modal_dimension_and_counts": true,
+    "phenotype_one_hot": true,
+    "CORR_column_names": true,
+    "endpoint_unknown_four": true,
+    "wrong_ROI_FC_joint_definition": true,
+    "wrong_preserves_exact_ROI_degree_and_type": true,
+    "wrong_mapping_nontrivial": true,
+    "E2_E6_distinct_evidence": true,
+    "numeric_all_18_channels_present": true,
+    "same_score_CDF_calibration": true,
+    "conserved_mass": true,
+    "continuous_not_all_rejected_or_forced": true,
+    "hard_rejection_exact": true,
+    "outer_test_labels_unused_reference": true,
+    "all_inner_references_TD_disjoint_queries": true,
+    "outer_test_uses_full_train_TD": true,
+    "actual_mean_FD_changes_normative_prediction": true,
+    "FUNC_EFC_not_mistaken_for_FD": true,
+    "QC_one_sided_actual_formula": true,
+    "severe_QC_suppresses_evidence": true,
+    "E7_forces_available_concepts_same_values": true,
+    "historical_simple2_two_Adam_two_steps_exact": true,
+    "terminal_resume_takes_no_extra_update": true,
+    "atomic_payload_recovers_missing_sidecar": true,
+    "baseline_disk_model_two_Adam_RNG_resume_exact": true,
+    "baseline_fold_boundary_RNG_exact": true,
+    "PEN_constructed_and_forward_bypassed": true,
+    "initial_residual_exact_zero": true,
+    "first_step_has_branch_gradient": true,
+    "later_all_trainable_paths_have_nonzero_gradients": true,
+    "head_adaptation_updates_original_weights": true,
+    "trunk_weights_frozen_actual": true,
+    "zero_match_strict_zero_after_learning": true,
+    "zero_evidence_changed_CAM_strict_zero": true,
+    "semantic_off_cuts_actual_tensor": true,
+    "no_disease_evidence_from_neutral_or_QC_alone": true,
+    "two_training_patients_mapping_changes_evidence_and_residual": true,
+    "adaptation_disk_Adam_RNG_next_step_exact": true,
+    "E8_head_weights_strictly_frozen": true,
+    "all_groups_same_head_branch_initialization_and_training_RNG": true,
+    "finite_bounded_smooth_residual": true,
+    "source_unchanged_during_preflight": true
+  },
+  "details": {
+    "patient_probes": [
+      {
+        "subject_index": 0,
+        "features_L1_difference": 0.05169573053717613,
+        "residual_L2_difference": 0.00048570457147434354,
+        "real_positive_by_concept": [
+          0.1648835688829422,
+          0.30516448616981506,
+          0.2589198350906372,
+          0.13261200487613678
+        ],
+        "wrong_positive_by_concept": [
+          0.3387368321418762,
+          0.2343120276927948,
+          0.30525341629981995,
+          0.13261200487613678
+        ],
+        "real_negative_by_concept": [
+          0.5623090863227844,
+          0.3751154839992523,
+          0.5089124441146851,
+          0.6355891823768616
+        ],
+        "wrong_negative_by_concept": [
+          0.46245574951171875,
+          0.48359787464141846,
+          0.4015050530433655,
+          0.6355891823768616
+        ]
+      },
+      {
+        "subject_index": 1,
+        "features_L1_difference": 0.05272724851965904,
+        "residual_L2_difference": 0.0012446329928934574,
+        "real_positive_by_concept": [
+          0.22676728665828705,
+          0.11042750626802444,
+          0.1570628434419632,
+          0.30432868003845215
+        ],
+        "wrong_positive_by_concept": [
+          0.21940310299396515,
+          0.14366291463375092,
+          0.21578480303287506,
+          0.30432868003845215
+        ],
+        "real_negative_by_concept": [
+          0.45596078038215637,
+          0.6851668357849121,
+          0.537433922290802,
+          0.4128444790840149
+        ],
+        "wrong_negative_by_concept": [
+          0.5772414207458496,
+          0.586329460144043,
+          0.6373891234397888,
+          0.4128444790840149
+        ]
+      }
+    ],
+    "gradients_by_step": [
+      {
+        "branch/evidence_proj.weight": 0.0,
+        "branch/cam_query.weight": 0.0,
+        "branch/output_proj.weight": 0.0,
+        "branch/residual_proj.weight": 0.010165167972445488,
+        "output/mlp_head.0.weight": 0.26307597756385803,
+        "output/mlp_head.0.bias": 0.020579298958182335,
+        "output/mlp_head.1.weight": 0.2515297830104828,
+        "output/mlp_head.1.bias": 0.0660039633512497,
+        "output/classifier.weight": 0.21848751604557037,
+        "output/classifier.bias": 0.009491177275776863
+      },
+      {
+        "branch/evidence_proj.weight": 0.0001980851957341656,
+        "branch/cam_query.weight": 9.483596841164399e-06,
+        "branch/output_proj.weight": 7.791476673446596e-05,
+        "branch/residual_proj.weight": 0.010394925251603127,
+        "output/mlp_head.0.weight": 0.2596878111362457,
+        "output/mlp_head.0.bias": 0.020859643816947937,
+        "output/mlp_head.1.weight": 0.24793244898319244,
+        "output/mlp_head.1.bias": 0.06459516286849976,
+        "output/classifier.weight": 0.21599960327148438,
+        "output/classifier.bias": 0.00977634359151125
+      },
+      {
+        "branch/evidence_proj.weight": 0.00038784550270065665,
+        "branch/cam_query.weight": 1.89068159670569e-05,
+        "branch/output_proj.weight": 0.00015296485798899084,
+        "branch/residual_proj.weight": 0.010359706357121468,
+        "output/mlp_head.0.weight": 0.2602007985115051,
+        "output/mlp_head.0.bias": 0.02123400568962097,
+        "output/mlp_head.1.weight": 0.24892474710941315,
+        "output/mlp_head.1.bias": 0.06616063416004181,
+        "output/classifier.weight": 0.21662038564682007,
+        "output/classifier.bias": 0.008757004514336586
+      }
+    ],
+    "wrong_mapping": {
+      "seed": 41101,
+      "search_steps": 24000,
+      "permutation": [
+        0,
+        2,
+        10,
+        3,
+        7,
+        5,
+        6,
+        4,
+        8,
+        9,
+        13,
+        11,
+        12,
+        1,
+        50,
+        29,
+        32,
+        62,
+        90,
+        63,
+        15,
+        110,
+        21,
+        40,
+        106,
+        56,
+        102,
+        59,
+        52,
+        86,
+        25,
+        96,
+        83,
+        60,
+        19,
+        55,
+        64,
+        44,
+        103,
+        39,
+        78,
+        92,
+        70,
+        47,
+        57,
+        53,
+        46,
+        43,
+        98,
+        105,
+        69,
+        109,
+        27,
+        45,
+        95,
+        84,
+        30,
+        33,
+        88,
+        94,
+        65,
+        61,
+        38,
+        34,
+        75,
+        41,
+        104,
+        72,
+        22,
+        36,
+        17,
+        79,
+        71,
+        16,
+        67,
+        14,
+        81,
+        93,
+        23,
+        100,
+        35,
+        76,
+        82,
+        107,
+        48,
+        85,
+        58,
+        87,
+        26,
+        91,
+        80,
+        101,
+        37,
+        77,
+        28,
+        54,
+        31,
+        97,
+        18,
+        99,
+        74,
+        42,
+        51,
+        89,
+        66,
+        49,
+        24,
+        73,
+        108,
+        20,
+        68
+      ],
+      "real": {
+        "roi_counts": [
+          18,
+          22,
+          16,
+          14
+        ],
+        "edge_counts": [
+          68,
+          96,
+          64,
+          55
+        ],
+        "roi_union": 62,
+        "edge_union": 202,
+        "roi_overlap": [
+          [
+            18,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            22,
+            2,
+            0
+          ],
+          [
+            6,
+            2,
+            16,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            14
+          ]
+        ],
+        "edge_overlap": [
+          [
+            68,
+            15,
+            26,
+            10
+          ],
+          [
+            15,
+            96,
+            25,
+            11
+          ],
+          [
+            26,
+            25,
+            64,
+            8
+          ],
+          [
+            10,
+            11,
+            8,
+            55
+          ]
+        ],
+        "edge_type_counts": [
+          [
+            58,
+            10,
+            0
+          ],
+          [
+            85,
+            11,
+            0
+          ],
+          [
+            56,
+            8,
+            0
+          ],
+          [
+            0,
+            55,
+            0
+          ]
+        ],
+        "candidate_roi_degree_hist": [
+          [
+            0,
+            2,
+            1,
+            4,
+            3,
+            1,
+            6,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            3,
+            3,
+            3,
+            2,
+            3,
+            6,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            2,
+            3,
+            2,
+            4,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            4,
+            2,
+            1,
+            1,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "edge_endpoint_degree_hist": [
+          [
+            0,
+            3,
+            5,
+            17,
+            19,
+            14,
+            48,
+            15,
+            11,
+            2,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            12,
+            22,
+            25,
+            22,
+            37,
+            44,
+            8,
+            11,
+            8,
+            0,
+            2
+          ],
+          [
+            0,
+            2,
+            5,
+            12,
+            19,
+            18,
+            33,
+            21,
+            10,
+            1,
+            2,
+            0,
+            5
+          ],
+          [
+            0,
+            2,
+            5,
+            18,
+            15,
+            14,
+            18,
+            14,
+            16,
+            3,
+            2,
+            0,
+            3
+          ]
+        ],
+        "covered_endpoint_counts": [
+          60,
+          78,
+          59,
+          56
+        ]
+      },
+      "wrong": {
+        "roi_counts": [
+          18,
+          22,
+          16,
+          14
+        ],
+        "edge_counts": [
+          68,
+          96,
+          64,
+          55
+        ],
+        "roi_union": 62,
+        "edge_union": 202,
+        "roi_overlap": [
+          [
+            18,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            22,
+            2,
+            0
+          ],
+          [
+            6,
+            2,
+            16,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            14
+          ]
+        ],
+        "edge_overlap": [
+          [
+            68,
+            15,
+            26,
+            10
+          ],
+          [
+            15,
+            96,
+            25,
+            11
+          ],
+          [
+            26,
+            25,
+            64,
+            8
+          ],
+          [
+            10,
+            11,
+            8,
+            55
+          ]
+        ],
+        "edge_type_counts": [
+          [
+            58,
+            10,
+            0
+          ],
+          [
+            85,
+            11,
+            0
+          ],
+          [
+            56,
+            8,
+            0
+          ],
+          [
+            0,
+            55,
+            0
+          ]
+        ],
+        "candidate_roi_degree_hist": [
+          [
+            0,
+            2,
+            1,
+            4,
+            3,
+            1,
+            6,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            3,
+            3,
+            3,
+            2,
+            3,
+            6,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            2,
+            3,
+            2,
+            4,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            4,
+            2,
+            1,
+            1,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "edge_endpoint_degree_hist": [
+          [
+            0,
+            2,
+            6,
+            19,
+            21,
+            12,
+            47,
+            9,
+            14,
+            3,
+            2,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            9,
+            16,
+            27,
+            26,
+            36,
+            50,
+            8,
+            10,
+            7,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            6,
+            11,
+            19,
+            15,
+            36,
+            15,
+            14,
+            2,
+            6,
+            0,
+            3
+          ],
+          [
+            0,
+            2,
+            5,
+            18,
+            15,
+            14,
+            18,
+            14,
+            16,
+            3,
+            2,
+            0,
+            3
+          ]
+        ],
+        "covered_endpoint_counts": [
+          66,
+          74,
+          54,
+          56
+        ]
+      },
+      "differences": {
+        "roi_counts": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "edge_counts": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "roi_union": 0,
+        "edge_union": 0,
+        "roi_overlap": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "edge_overlap": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "edge_type_counts": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "candidate_roi_degree_hist": [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "edge_endpoint_degree_hist": [
+          [
+            0,
+            -1,
+            1,
+            2,
+            2,
+            -2,
+            -1,
+            -6,
+            3,
+            1,
+            2,
+            0,
+            -1
+          ],
+          [
+            0,
+            0,
+            -3,
+            -6,
+            2,
+            4,
+            -1,
+            6,
+            0,
+            -1,
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            -1,
+            1,
+            -1,
+            0,
+            -3,
+            3,
+            -6,
+            4,
+            1,
+            4,
+            0,
+            -2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "covered_endpoint_counts": [
+          6,
+          -4,
+          -5,
+          0
+        ]
+      },
+      "anatomy_only_objective": 0.0,
+      "changed_edges_by_concept": [
+        90,
+        86,
+        90,
+        0
+      ],
+      "caveat": "Shared ROI permutation; edge counts/overlap/type/coverage errors are disclosed. P4 invariant; exact global graph automorphism is not claimed."
+    },
+    "fields": {
+      "0": "AGE_AT_SCAN_[6.47, 8.47)",
+      "1": "AGE_AT_SCAN_[8.47, 10.47)",
+      "2": "AGE_AT_SCAN_[10.47, 12.47)",
+      "3": "AGE_AT_SCAN_[12.47, 14.47)",
+      "4": "AGE_AT_SCAN_[14.47, 16.47)",
+      "5": "AGE_AT_SCAN_[16.47, 18.47)",
+      "6": "AGE_AT_SCAN_[18.47, 20.47)",
+      "7": "AGE_AT_SCAN_[20.47, 22.47)",
+      "8": "AGE_AT_SCAN_[22.47, 24.47)",
+      "9": "AGE_AT_SCAN_[24.47, 26.47)",
+      "10": "AGE_AT_SCAN_[26.47, 28.47)",
+      "11": "AGE_AT_SCAN_[28.47, 30.47)",
+      "12": "AGE_AT_SCAN_[30.47, 32.47)",
+      "13": "AGE_AT_SCAN_[32.47, 34.47)",
+      "14": "AGE_AT_SCAN_[34.47, 36.47)",
+      "15": "AGE_AT_SCAN_[36.47, 38.47)",
+      "16": "AGE_AT_SCAN_[38.47, 40.47)",
+      "17": "AGE_AT_SCAN_[40.47, 42.47)",
+      "18": "AGE_AT_SCAN_[42.47, 44.47)",
+      "19": "AGE_AT_SCAN_[44.47, 46.47)",
+      "20": "AGE_AT_SCAN_[46.47, 48.47)",
+      "21": "AGE_AT_SCAN_[48.47, 50.47)",
+      "22": "AGE_AT_SCAN_[50.47, 52.47)",
+      "23": "AGE_AT_SCAN_[52.47, 54.47)",
+      "24": "AGE_AT_SCAN_[54.47, 56.47)",
+      "25": "AGE_AT_SCAN_[56.47, 58.47)",
+      "26": "SITE_ID_CALTECH",
+      "27": "SITE_ID_CMU",
+      "28": "SITE_ID_KKI",
+      "29": "SITE_ID_LEUVEN_1",
+      "30": "SITE_ID_LEUVEN_2",
+      "31": "SITE_ID_MAX_MUN",
+      "32": "SITE_ID_NYU",
+      "33": "SITE_ID_OHSU",
+      "34": "SITE_ID_OLIN",
+      "35": "SITE_ID_PITT",
+      "36": "SITE_ID_SBL",
+      "37": "SITE_ID_SDSU",
+      "38": "SITE_ID_STANFORD",
+      "39": "SITE_ID_TRINITY",
+      "40": "SITE_ID_UCLA_1",
+      "41": "SITE_ID_UCLA_2",
+      "42": "SITE_ID_UM_1",
+      "43": "SITE_ID_UM_2",
+      "44": "SITE_ID_USM",
+      "45": "SITE_ID_YALE",
+      "46": "SEX_1",
+      "47": "SEX_2",
+      "48": "anat_cnr",
+      "49": "anat_efc",
+      "50": "anat_fber",
+      "51": "anat_fwhm",
+      "52": "anat_qi1",
+      "53": "anat_snr",
+      "54": "func_efc",
+      "55": "func_fber",
+      "56": "func_fwhm",
+      "57": "func_dvars",
+      "58": "func_outlier",
+      "59": "func_quality",
+      "60": "func_mean_fd",
+      "61": "func_num_fd",
+      "62": "func_perc_fd",
+      "63": "func_gsr"
+    },
+    "probe_anchor_sha256": "d93565b284aa2491e43a3039e0c7a3c7c589c52793f8033c36806bdcd1bbba44",
+    "baseline_initial_hash": "9a9b8a59fba9aeadbf1f35e73ff530c6cde03e251829c619bd8b9cfa4a1e7a9e",
+    "actual_device": "PPU-ZW810E",
+    "cpu_threads": 1,
+    "wall_seconds": 15.811439357697964
+  }
+}

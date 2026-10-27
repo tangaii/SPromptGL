@@ -1,0 +1,109 @@
+{
+  "protocol_version": "41.1-corrected-20261026",
+  "baseline": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "adaptation": {
+    "lr_output": 0.00038,
+    "lr_branch": 0.00038,
+    "optimizer": "Adam",
+    "weight_decay": 0.0,
+    "energy_weight": 0.001,
+    "residual_cap": 0.08,
+    "maximum_epochs": 450,
+    "early_wait": 200,
+    "checkpoint_every": 25,
+    "branch_init_seed": "411000+fold",
+    "training_rng_seed": "412000+fold",
+    "frozen_trunk_mode": "eval and cached CAM",
+    "head_dropout": "train for all adaptation groups, including E8; weights frozen only in E8"
+  },
+  "evidence": {
+    "input_shape": [
+      4,
+      18
+    ],
+    "rank": 8,
+    "branch_parameters": 5760,
+    "bias": false,
+    "reference": "5-fold OOF train/all train TD test",
+    "qc_columns": [
+      57,
+      58,
+      60,
+      62
+    ],
+    "qc_direction": "higher worse; positive standardized excess only",
+    "qc_severe_quantile": 0.995,
+    "minimum_reference_support": 0.1,
+    "score": "mean across scales of .5*mean_abs_z + .5*fraction_abs_z_gt_1",
+    "calibration": "same statistic empirical CDF on train TD OOF",
+    "mass": "q=a*CDF; reject=product(1-q); matched=(1-reject)*q/sum(q)"
+  },
+  "go": {
+    "min_acc_gain": 0.002,
+    "min_hard_auc_gain": 0.002,
+    "min_wins": 7,
+    "minimum_sen_delta": -0.005,
+    "semantics_controls": [
+      "E1_HEAD_ONLY",
+      "E2_NUMERIC_ONLY",
+      "E5_WRONG_SEMANTICS",
+      "E6_DATA_PRIOR"
+    ],
+    "threshold_scope": "Internal screening only. No p-value or independent generalization claim."
+  },
+  "gpu_assignment": {
+    "0": [
+      "E0_B0A",
+      "E2_NUMERIC_ONLY",
+      "E4_NO_QC",
+      "E6_DATA_PRIOR",
+      "E8_FROZEN_HEAD"
+    ],
+    "1": [
+      "E1_HEAD_ONLY",
+      "E3_GLOBAL_REFERENCE",
+      "E5_WRONG_SEMANTICS",
+      "E7_FORCED_ALIGNMENT",
+      "E9_SAGE_FULL"
+    ]
+  },
+  "groups": [
+    "E0_B0A",
+    "E1_HEAD_ONLY",
+    "E2_NUMERIC_ONLY",
+    "E3_GLOBAL_REFERENCE",
+    "E4_NO_QC",
+    "E5_WRONG_SEMANTICS",
+    "E6_DATA_PRIOR",
+    "E7_FORCED_ALIGNMENT",
+    "E8_FROZEN_HEAD",
+    "E9_SAGE_FULL"
+  ],
+  "correction": "Previous invalid outcomes already observed; changes follow user requirements, not test-metric tuning. No blinded preregistration claim."
+}

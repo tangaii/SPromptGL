@@ -1,0 +1,57 @@
+{
+  "experiment": "Experiment 41.1 - SAGE-Align Final",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "modal_dimensions": [48, 6, 10, 256],
+  "base_protocol": {
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "epochs": 450,
+    "early": 200,
+    "mode": "simple-2",
+    "graph_mode": "weighted-cosine",
+    "split": "StratifiedKFold(n_splits=10, shuffle=true, random_state=10)",
+    "checkpoint_selection": "val=test; strict ACC improvement; first tie"
+  },
+  "adaptation": {
+    "lr_outputlayer": 0.00038,
+    "lr_sage": 0.00038,
+    "residual_cam_l2_cap": 0.08,
+    "sage_evidence_dim": 18,
+    "sage_concepts": 4,
+    "sage_rank": 8,
+    "sage_parameters": 5760,
+    "bias": false,
+    "residual_output_initialization": "exact zero"
+  },
+  "normative_reference": {
+    "reference": "outer-train TD only",
+    "training_oof": "five-fold cross-fit",
+    "conditioning": ["age 26-bin one-hot", "site", "sex", "mean FD global column 60"],
+    "qc_fields": ["func_dvars", "func_outlier", "func_mean_fd", "func_perc_fd"],
+    "match_reject_score": "raw=3*strength*support; unmatched=1/(1+sum(raw))",
+    "threshold": "outer-train TD OOF 75th percentile of the same signal"
+  },
+  "groups": {
+    "E0_B0A": "exact B0-A reproduction",
+    "E1_HEAD_ONLY": "OutputLayer-only adaptation",
+    "E2_NUMERIC_ONLY": "numeric outer-train cluster prior",
+    "E3_GLOBAL_REFERENCE": "global TD reference",
+    "E4_NO_QC": "conditional reference without FUNC reliability",
+    "E5_WRONG_SEMANTICS": "wrong frozen ROI/FC mapping",
+    "E6_DATA_PRIOR": "numeric prior replacing medical correspondence",
+    "E7_FORCED_ALIGNMENT": "reject channel disabled",
+    "E8_FROZEN_HEAD": "SAGE branch with frozen OutputLayer",
+    "E9_SAGE_FULL": "conditional reference, verified anatomy, QC, reject, joint head adaptation"
+  },
+  "gpu_assignment": {
+    "0": ["E0_B0A", "E2_NUMERIC_ONLY", "E4_NO_QC", "E6_DATA_PRIOR", "E8_FROZEN_HEAD"],
+    "1": ["E1_HEAD_ONLY", "E3_GLOBAL_REFERENCE", "E5_WRONG_SEMANTICS", "E7_FORCED_ALIGNMENT", "E9_SAGE_FULL"]
+  },
+  "decision": "FINAL NO-GO"
+}
