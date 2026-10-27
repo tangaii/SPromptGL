@@ -1,0 +1,31 @@
+{
+  "experiment": "Experiment 44.1 — Reliability-Calibrated CU-GL Repair",
+  "seed": 0,
+  "candidate_k": 16,
+  "dims": [48, 6, 10, 256],
+  "slices": {"PHENO": [0,48], "ANAT": [48,54], "FUNC": [54,64], "CORR": [64,320]},
+  "epochs": 450,
+  "early": 200,
+  "base_lr": 0.0038,
+  "new_lr": 0.00038,
+  "weight_decay": 0.11,
+  "new_weight_decay": 0.0,
+  "teacher_epochs": 60,
+  "inner_folds": 3,
+  "preflight_folds": [1,6],
+  "preflight_student_epochs": 60,
+  "utility_clip": 3.0,
+  "utility_noise_multiplier": 5.0,
+  "utility_reliability_cutoff": 4.0,
+  "stage_a_min_receivers": 20,
+  "stage_a_min_pair_accuracy": 0.55,
+  "stage_a_min_delta_over_cosine": 0.02,
+  "formal_groups": {"3":"E3_SLICE_REPAIR","4":"E4_CF_SYMMETRIC","5":"E5_NO_CF","6":"E6_RAW_CF","7":"E7_SHUFFLED_CF","8":"E8_HOMOPHILY","9":"E9_NO_NULL_GATE","10":"E10_CUGL_R_FULL"},
+  "historical_groups": {"0":"E0_B0B","1":"E1_CAM_ONLY","2":"E2_E44_ORIGINAL"},
+  "protocol_notes": [
+    "Historical val=test, pre-CV RFE/standardisation and transductive cohort are retained for internal comparability.",
+    "E0-E2 are read-only historical references; E3-E10 are new replacement-GFR training groups.",
+    "Hard-AUC is one-hot hard prediction ROC-AUC, ASD=0 and TD=1.",
+    "No Prompt, CLIP, GPT, PEN, SPGS or RES module is used."
+  ]
+}

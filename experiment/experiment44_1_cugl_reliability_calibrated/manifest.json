@@ -1,0 +1,248 @@
+{
+  "status": "DELIVERED",
+  "experiment": "Experiment 44.1 — Reliability-Calibrated CU-GL Repair",
+  "started_unix": 1793099633.262264,
+  "seed": 0,
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "fold_count": 10,
+  "split_rule": "StratifiedKFold(n_splits=10,shuffle=True,random_state=10)",
+  "candidate_k": 16,
+  "source_hashes": {
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "candidate_hashes": {
+    "1": "e7ad37264f75cb9ae87146eefbb81f68e232658da4004d5c9b5b712f91ed95a2",
+    "2": "e1d1779aa4014a6aa8059013f3ae16d88090530c9d843302246506fb5e0427bb",
+    "3": "f253fd59cc8ae80bdc71634a6e8644b41133f7025f146b265e5852c1f0ab4e0d",
+    "4": "8db0fd08bbb17bbecb5c08cf7e6b9bdd7de3d7dbe13a83607cc75738e1eba6b9",
+    "5": "bec5f003465c399f0339570fe9f27f9cec76f6068ab0d0d32a9f05a8cdac09bd",
+    "6": "0b9dacd372ca572cf3cc6f6b489665f83b1afa0ce916abe82fb7f029227bd0ec",
+    "7": "5510bd38c617c7bb063fd0034255cb37a21c99a5b7897981c3b4ca1ba2476233",
+    "8": "cfdd9b11f357c69280ac1230e57a240bb3d69cb1e008cefe9b75fc5a6633451f",
+    "9": "1a8851be40493bc7b2c3dfac4728eddcc1ff03133f551319f8c481991dc30f72",
+    "10": "be5bd739e6cdd2915909fa172debac365054f2f2f836cce656f2f6233f0576dd"
+  },
+  "protected_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "source_signature": "9ecdcbba8dc43e4f373c9623bff0b2f6a5330cd4f26bbd55150342ced74d7d61",
+  "handoff_prefix": {
+    "bytes": 452927,
+    "sha256": "dc9043d9adf1abe90e40e143a67eee3da82030cd15c8163353bdb291785aef79"
+  },
+  "preflight_folds": [
+    1,
+    6
+  ],
+  "teacher_tasks_expected": 30,
+  "formal_innovation_folds_expected": 80,
+  "stageA": {
+    "status": "PREFLIGHT_SCIENTIFIC_NO_GO",
+    "unit_tests": {
+      "slice_checks": [
+        {
+          "modality": "PHENO",
+          "unrelated_max": 0.0,
+          "related_change": 0.30473625659942627,
+          "pass": true
+        },
+        {
+          "modality": "ANAT",
+          "unrelated_max": 0.0,
+          "related_change": 0.12618905305862427,
+          "pass": true
+        },
+        {
+          "modality": "FUNC",
+          "unrelated_max": 0.0,
+          "related_change": 0.31395286321640015,
+          "pass": true
+        },
+        {
+          "modality": "CORR",
+          "unrelated_max": 0.0,
+          "related_change": 0.21337485313415527,
+          "pass": true
+        }
+      ],
+      "slice_pass": true,
+      "null_exact_max": 0.0,
+      "null_pass": true,
+      "direction_asymmetry": 0.16189640760421753,
+      "direction_pass": true
+    },
+    "recovery": {
+      "max_parameter_diff_after_resume": 0.0,
+      "pass": true
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "valid_edges": 33477,
+        "valid_gates": 3132,
+        "mean_abs_edge": 7.656833531655138e-07,
+        "mean_abs_gate": 7.485219839509227e-07,
+        "positive_edge": 0.475520506616483,
+        "negative_edge": 0.4528482241538967,
+        "scale": {
+          "scale": 9.5367431640625e-07,
+          "noise_floor": 1.1920928955078125e-07,
+          "repeat_noop_max_abs": 0.0,
+          "reliable_fraction": 0.9283687307703796,
+          "valid_edges": 33477
+        },
+        "student": {
+          "receivers": 311,
+          "pairs": 8259,
+          "real_pair_accuracy": 0.46773217096500785,
+          "random_pair_accuracy": 0.5039351011018283,
+          "cosine_pair_accuracy": 0.4304395205230657,
+          "fit_receivers": 522,
+          "val_receivers": 261,
+          "trace": [
+            {
+              "epoch": 0,
+              "loss": 0.07903007417917252,
+              "grad": 0.014283616095781326
+            },
+            {
+              "epoch": 59,
+              "loss": 0.07069621235132217,
+              "grad": 0.004512545187026262
+            }
+          ],
+          "scale": 9.5367431640625e-07,
+          "noise_floor": 1.1920928955078125e-07
+        },
+        "negative_gate_patient_fraction": 0.4482758620689655,
+        "positive_gate_patient_fraction": 0.45721583652618136
+      },
+      {
+        "fold": 6,
+        "valid_edges": 32965,
+        "valid_gates": 3136,
+        "mean_abs_edge": 5.336445383363753e-07,
+        "mean_abs_gate": 5.2589314236684e-07,
+        "positive_edge": 0.5317154557864402,
+        "negative_edge": 0.37242529956013953,
+        "scale": {
+          "scale": 7.003545761108398e-07,
+          "noise_floor": 1.1920928955078125e-07,
+          "repeat_noop_max_abs": 0.0,
+          "reliable_fraction": 0.9041407553465797,
+          "valid_edges": 32965
+        },
+        "student": {
+          "receivers": 286,
+          "pairs": 6894,
+          "real_pair_accuracy": 0.46852335364084713,
+          "random_pair_accuracy": 0.5207426747896722,
+          "cosine_pair_accuracy": 0.42181607194662024,
+          "fit_receivers": 522,
+          "val_receivers": 262,
+          "trace": [
+            {
+              "epoch": 0,
+              "loss": 0.07616301625967026,
+              "grad": 0.015763375908136368
+            },
+            {
+              "epoch": 59,
+              "loss": 0.06683485954999924,
+              "grad": 0.004258312284946442
+            }
+          ],
+          "scale": 7.003545761108398e-07,
+          "noise_floor": 1.1920928955078125e-07
+        },
+        "negative_gate_patient_fraction": 0.36862244897959184,
+        "positive_gate_patient_fraction": 0.5395408163265306
+      }
+    ],
+    "teacher_tasks": 6,
+    "student_ok": false,
+    "signal_ok": true,
+    "criterion": "both preflight folds: receiver-level real utility ranking >=0.55, > cosine by >=0.02 and >= random; non-noop signed edge/gate effects; exact NULL and resume checks"
+  },
+  "stageA_finished_unix": 1793099957.9708142,
+  "report_status": "WRITTEN",
+  "final_decision": "PREFLIGHT_SCIENTIFIC_NO_GO",
+  "delivery_audit": {
+    "status": "PASS",
+    "protected": [
+      {
+        "file": "main.py",
+        "before": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "after": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "pass": true
+      },
+      {
+        "file": "model.py",
+        "before": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "after": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "pass": true
+      },
+      {
+        "file": "network.py",
+        "before": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "after": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "pass": true
+      },
+      {
+        "file": "layers.py",
+        "before": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "after": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "pass": true
+      },
+      {
+        "file": "utils.py",
+        "before": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "after": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "pass": true
+      },
+      {
+        "file": "ABIDE-simple-2-concat-weighted-cosine.sh",
+        "before": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+        "after": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+        "pass": true
+      },
+      {
+        "file": "data/ABIDE/processed_standard_data.csv",
+        "before": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+        "after": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+        "pass": true
+      },
+      {
+        "file": "data/ABIDE/modal_feat_dict.npy",
+        "before": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+        "after": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+        "pass": true
+      }
+    ],
+    "stageA_status": "PREFLIGHT_SCIENTIFIC_NO_GO",
+    "teacher_tasks": 6,
+    "formal_new_folds": 0,
+    "historical_rows": 30
+  },
+  "handoff": {
+    "status": "APPENDED",
+    "marker": "<!-- EXPERIMENT44_1_CUGL_R -->",
+    "after_sha256": "913850bf6e8a40215afb2caa1e49a0b0bcd43bd574f9b9db452b2568f7dcddf8"
+  }
+}
