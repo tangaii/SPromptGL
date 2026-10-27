@@ -1,0 +1,150 @@
+{
+  "status": "PASS",
+  "historical_experiment45_sha256": {
+    ".runtime/anchors/fold01.pt": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    ".runtime/anchors/fold02.pt": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    ".runtime/anchors/fold03.pt": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    ".runtime/anchors/fold04.pt": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    ".runtime/anchors/fold05.pt": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184",
+    ".runtime/anchors/fold06.pt": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    ".runtime/anchors/fold07.pt": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    ".runtime/anchors/fold08.pt": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    ".runtime/anchors/fold09.pt": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    ".runtime/anchors/fold10.pt": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa",
+    ".runtime/anchors/source_index.json": "4deb8fdd385bbdb7741b9c6409f2b1be0931b2fd9731e40436225d247b9018a2",
+    ".runtime/preflight_gpu0.json": "bb2823bc8c6c94d63e1008ff632a54d0b7652477e274a2b0584262d4d4ee539a",
+    ".runtime/preflight_gpu1.json": "d93dafb9b6aee9481729bf12dfbc254b415703e52de548b24697701321c705f9",
+    ".runtime/sources/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    ".runtime/sources/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    ".runtime/sources/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "README.md": "e01f817ef9db4df84ccb6df72770d4b6f6bebef370220ac13f872fe4aa9bb26d",
+    "config.json": "9d75b92d87d85a6aa60ce90509450cbb645246a93b7305d08b67678e1c39c75f",
+    "integration.py": "723bc33d9270f89a584faa3eb76ab24769a8662c7c565fda7b8c11082c49426f",
+    "manifest.json": "4ca35cb04c66a41865a440f7d0c0dd071a1154df91316760bdd4b397320eefd9",
+    "method.py": "c41d3f38b61bd077a77f61f3aa88a3fdc42cb373c1357976e57346824ec471c4",
+    "pid_estimator.py": "695bb0dab645f0b97dc06f33daeef1b56c0749dae7a1843a379f11aca44a2aa5",
+    "results/execution_ledger.json": "f957420fb36fbfa8be5f9d6d352db288b8b22f771f3cacf74d508c8919f4e383",
+    "results/fold_metrics.csv": "c91fce208b6382865bd1493582f4461eef8a6ea2d9a206b962d41534770205ff",
+    "results/mechanism_diagnostics.csv": "8560ebb4e72fa41c1a8dc7bd2bbd7a28559473e7eb32cbf2e95102d753e81fee",
+    "results/paired_comparisons.csv": "61c8695a4058f1f4da98fa8a13a57c3aa639ef3c648a47cee6dfcca89e0121be",
+    "results/pid_diagnostics.csv": "f198ff57bc4a2ba087c59377b72f03d65f3814ab0dfc32047d1f56f4477a3ed9",
+    "results/pid_pairs.csv": "ca1434c5e823c7c3109b73f409e2a4fc1c4fd18e702dc0a9d1c3d0a8a80e2fa8",
+    "results/pid_weights.csv": "7bc025985ee290874b35e085a1a700aeebeb1287125b43eef392d66a7387888b",
+    "results/report.md": "745db27e102ab9ec6dd45e36559f20dee4ce05c83a15388e5e39e53bcd48a9e1",
+    "results/summary.csv": "a55edbcde36527e06fa5915327f8509f3c99150e68e67c6127b12b868a87e74f",
+    "run.py": "c84520e6cbf9bb958e17a338ddb294382489945fe894d7a6095f8daa3907e92a"
+  },
+  "historical_pid_reproduction": {
+    "current_source_same_input_old_vs_45_1_max_component_abs_diff_bit": 1.214306433183765e-17,
+    "historical_k4_rows_differing_by_more_than_1e-12": 11,
+    "historical_k4_rows": 60,
+    "maximum_historical_k4_component_difference_bit": 0.0002923034826583168,
+    "historical_pid_source_sha_recorded": false,
+    "historical_numpy_scipy_sklearn_versions_recorded": false,
+    "current_versions": {
+      "python": "3.12.3",
+      "numpy": "1.26.0",
+      "scipy": "1.11.3",
+      "scikit_learn": "1.3.2",
+      "torch": "2.9.0",
+      "cuda": "12.9",
+      "cvxpy": null
+    },
+    "interpretation": "same-current-input optimizer comparison is numerically identical; historical-row discrepancies cannot be uniquely attributed because the historical PID source hash and numerical package versions were not saved"
+  },
+  "items": [
+    {
+      "location": "run.py:121-124,133-137",
+      "bug": "Bootstrap resampled global Y with tr[ix] while modality cluster labels remained train-local and unresampled.",
+      "mechanism": "patient pairing broken",
+      "fix": "same local ix indexes both modality labels and y_train",
+      "affects": [
+        "bootstrap R distribution",
+        "q",
+        "lambda"
+      ],
+      "unit_test": "0/48 old, 48/48 corrected"
+    },
+    {
+      "location": "run.py:134",
+      "bug": "argmax over x[tr,:46] combines age and site indicators",
+      "mechanism": "site IDs misassigned",
+      "fix": "resolve 20 SITE_ID_* columns by feature names and exact CSV headers",
+      "affects": [
+        "site-conditional diagnostic only"
+      ],
+      "status": "SITE_MAPPING_VERIFIED"
+    },
+    {
+      "location": "run.py:138-142",
+      "bug": "site permutation starts from globally shuffled labels",
+      "mechanism": "original per-site ASD/TD counts not preserved",
+      "fix": "permute original y_train positions only within each site",
+      "affects": [
+        "site sensitivity only; global q unchanged"
+      ]
+    },
+    {
+      "location": "config.json pid.estimator; pid_estimator.py:1",
+      "bug": "I_min name does not match source-marginal-preserving minimum joint MI",
+      "mechanism": "BROJA-style optimization mislabeled as Williams-Beer I_min",
+      "fix": "rename metadata to BROJA_two_source_discrete_pid_v1",
+      "affects": [
+        "interpretation/metadata; mathematical objective retained"
+      ]
+    },
+    {
+      "location": "method.py:51,132-139",
+      "bug": "two graph views concatenated along feature axis then patient halves labeled as sources",
+      "mechanism": "source labels do not identify graph view; 130-wide head",
+      "fix": "sample-axis concat [2N,64], duplicated train labels, 66-wide head",
+      "affects": [
+        "future adversarial loss and representation gradients"
+      ]
+    },
+    {
+      "location": "method.py:127-140",
+      "bug": "E6 omitted from historical adversarial group map",
+      "mechanism": "E6 lacked E4's PID adversary",
+      "fix": "E6 follows E4 and only bypasses GFR at main classifier",
+      "affects": [
+        "future E6 training"
+      ]
+    },
+    {
+      "location": "run.py:147-153",
+      "bug": "lambda_bar=0.03*mean(q)*mean(r)",
+      "mechanism": "not equal to mean(0.03*q*r) when q/r covary",
+      "fix": "mean the three computed per-relation lambdas within each fold",
+      "affects": [
+        "E2/E3 fixed strength"
+      ]
+    },
+    {
+      "location": "run.py:185,190-203",
+      "bug": "worker requires PID_PASS while controller changes status to TRAINING",
+      "mechanism": "state mismatch rejects dispatched worker",
+      "fix": "dry-run accepts TRAINING only with PID_GO and matching result signature",
+      "affects": [
+        "future worker orchestration"
+      ]
+    },
+    {
+      "location": "run.py:225-228",
+      "bug": "report expected row count follows mutable completion state",
+      "mechanism": "rerun under no-go can expect 70 instead of 10 reused rows",
+      "fix": "report explicitly keys off NOT_TRAINED_BY_DESIGN and E0 count",
+      "affects": [
+        "future reporting/recovery"
+      ]
+    }
+  ],
+  "historical_behavior_preserved": [
+    "four patient graphs",
+    "320-dimensional concatenated graph input",
+    "ANAT/FUNC/CORR propagation in fusion",
+    "PHENO branch overwrite",
+    "ALoss computed but excluded from simple-2 loss"
+  ],
+  "new_training_folds": 0
+}
