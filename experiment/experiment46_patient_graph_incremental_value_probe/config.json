@@ -1,0 +1,31 @@
+{
+  "experiment": "Experiment 46 — Patient Graph Incremental Value Probe",
+  "seed": 0,
+  "folds": 10,
+  "split": {"n_splits": 10, "shuffle": true, "random_state": 10},
+  "dims": [48, 6, 10, 256],
+  "slices": {"PHENO": [0, 48], "ANAT": [48, 54], "FUNC": [54, 64], "CORR": [64, 320]},
+  "candidate_k": 16,
+  "probe": {"hidden": 36, "dropout": 0.35, "lr": 0.001, "weight_decay": 0.0001, "epochs": 200, "early": 60},
+  "groups": [
+    {"id": "H0_SELF", "arm": "H", "mode": "self"},
+    {"id": "H1_TRUE", "arm": "H", "mode": "true"},
+    {"id": "H2_RANDOM", "arm": "H", "mode": "random"},
+    {"id": "H3_PERMUTED", "arm": "H", "mode": "permuted"},
+    {"id": "X0_SELF", "arm": "X", "mode": "self"},
+    {"id": "X1_TRUE", "arm": "X", "mode": "true"},
+    {"id": "X2_RANDOM", "arm": "X", "mode": "random"},
+    {"id": "X3_PERMUTED", "arm": "X", "mode": "permuted"}
+  ],
+  "gpu_folds": {"0": [1, 2, 3, 4, 5], "1": [6, 7, 8, 9, 10]},
+  "history": {
+    "cam_only": "/data/adodas/SPromptGL-main/experiment/experiment43_4_physical_cam_only_validation",
+    "b0b": "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest"
+  },
+  "protocol_notes": [
+    "Historical val=test selection is retained for internal comparability and is a test reuse bias.",
+    "RFE and standardization before the historical outer CV are retained.",
+    "No GFR, GCN, GAT, Transformer, Prompt, CLIP, GPT, PID or CU-GL module is trained.",
+    "Hard-AUC is the historical one-hot hard prediction ROC-AUC, ASD=0 and TD=1."
+  ]
+}
