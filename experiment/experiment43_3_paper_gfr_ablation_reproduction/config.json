@@ -1,0 +1,177 @@
+{
+  "experiment": "43.3",
+  "seed": 0,
+  "protocols": {
+    "H": {
+      "datadir": "/data/adodas/SPromptGL-main/data/",
+      "datname": "ABIDE",
+      "cpu": false,
+      "gpu": "-1",
+      "nepoch": 450,
+      "early": 200,
+      "lr": 0.0038,
+      "reg": 0.11,
+      "dropout": 0.35,
+      "nlayer": 1,
+      "n_hidden": 18,
+      "n_head": 2,
+      "n_iter": 10,
+      "nmodal": 4,
+      "th": 0.9,
+      "GC_mode": "weighted-cosine",
+      "MP_mode": "GCN",
+      "MF_mode": "concat",
+      "alpha": 0.5,
+      "theta_smooth": 1.0,
+      "theta_degree": 0.5,
+      "theta_sparsity": 0.0,
+      "nclass": 2,
+      "mode": "simple-2",
+      "seed": 0
+    },
+    "P": {
+      "datadir": "/data/adodas/SPromptGL-main/data/",
+      "datname": "ABIDE",
+      "cpu": false,
+      "gpu": "-1",
+      "nepoch": 450,
+      "early": 200,
+      "lr": 0.0023,
+      "reg": 0.11,
+      "dropout": 0.75,
+      "nlayer": 4,
+      "n_hidden": 10,
+      "n_head": 4,
+      "n_iter": 10,
+      "nmodal": 4,
+      "th": 0.9,
+      "GC_mode": "weighted-cosine",
+      "MP_mode": "GCN",
+      "MF_mode": "concat",
+      "alpha": 1.0,
+      "theta_smooth": 1.0,
+      "theta_degree": 0.5,
+      "theta_sparsity": 0.0,
+      "nclass": 2,
+      "mode": "simple-2",
+      "seed": 0
+    }
+  },
+  "paper_protocol_label": "PAPER_TEXT_MAPPED_PROXY",
+  "groups": [
+    {
+      "id": "H-A-G",
+      "protocol": "H",
+      "base": "A",
+      "gfr": true,
+      "origin": "REUSED_VERIFIED"
+    },
+    {
+      "id": "H-A-R",
+      "protocol": "H",
+      "base": "A",
+      "gfr": false,
+      "origin": "NEWLY_TRAINED"
+    },
+    {
+      "id": "H-B-G",
+      "protocol": "H",
+      "base": "B",
+      "gfr": true,
+      "origin": "REUSED_VERIFIED"
+    },
+    {
+      "id": "H-B-R",
+      "protocol": "H",
+      "base": "B",
+      "gfr": false,
+      "origin": "REUSED_VERIFIED"
+    },
+    {
+      "id": "P-A-G",
+      "protocol": "P",
+      "base": "A",
+      "gfr": true,
+      "origin": "NEWLY_TRAINED"
+    },
+    {
+      "id": "P-A-R",
+      "protocol": "P",
+      "base": "A",
+      "gfr": false,
+      "origin": "NEWLY_TRAINED"
+    },
+    {
+      "id": "P-B-G",
+      "protocol": "P",
+      "base": "B",
+      "gfr": true,
+      "origin": "NEWLY_TRAINED"
+    },
+    {
+      "id": "P-B-R",
+      "protocol": "P",
+      "base": "B",
+      "gfr": false,
+      "origin": "NEWLY_TRAINED"
+    }
+  ],
+  "folds": 10,
+  "skf": {
+    "shuffle": true,
+    "random_state": 10
+  },
+  "metrics": [
+    "acc",
+    "hard_auc",
+    "spe",
+    "sen"
+  ],
+  "checkpoint_every": 10,
+  "early_stop": "wait>early",
+  "selection": "strict first test ACC improvement; val=test",
+  "historical_reuse": {
+    "H-A-G": "experiment43_corr_anchored_gfr_audit E00 / E32 B0",
+    "H-B-G": "experiment43_2_gfr_incremental_value_audit E00",
+    "H-B-R": "experiment43_2_gfr_incremental_value_audit E01"
+  },
+  "pairing": "Within protocol and base immutable untrained full model, both Adam, entry and post-construction RNG; A/B not bitwise paired",
+  "gpu_schedule": {
+    "H-A-R": {
+      "0": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "1": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "P-A-G": 0,
+    "P-A-R": 0,
+    "P-B-G": 1,
+    "P-B-R": 1
+  },
+  "P_G_rng": "Each base one seed0 continuous tenfold stream on own physical GPU; R restores corresponding G initialization and post-constructor RNG; no trained G weight reuse",
+  "GFR_evidence_threshold": {
+    "delta_acc_pp": 0.1,
+    "delta_hard_auc_pp": 0.1,
+    "acc_strict_wins": 7,
+    "auc_strict_wins": 7
+  },
+  "figure2_numeric_tolerance_pp": 1.0,
+  "retries": 4,
+  "retry_delays_seconds": [
+    0.15,
+    0.4,
+    1.0,
+    2.0
+  ],
+  "frozen_before_formal_results": true
+}

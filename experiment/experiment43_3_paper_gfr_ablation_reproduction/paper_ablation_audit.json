@@ -1,0 +1,512 @@
+{
+  "paper": {
+    "url": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "sha256": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+    "figure2_page": 7,
+    "read_method": "VISUALLY_VERIFIED_PRINTED_NUMERIC_LABELS; no digitization",
+    "ablation_implementation": "PAPER_ABLATION_IMPLEMENTATION_UNAVAILABLE",
+    "baseline_definition": "Sec3.3 baseline only uses CAM features; graph loss removal inferred from removal of all graph computation, private code unavailable"
+  },
+  "figure2_abide": [
+    {
+      "id": "a",
+      "model": "CAM-only",
+      "acc_percent": 86.48,
+      "auc_percent": 86.4
+    },
+    {
+      "id": "b",
+      "model": "CAM+GFR",
+      "acc_percent": 91.73,
+      "auc_percent": 91.54
+    },
+    {
+      "id": "c",
+      "model": "CAM+GFR+RES",
+      "acc_percent": 92.08,
+      "auc_percent": 91.93
+    },
+    {
+      "id": "d",
+      "model": "CAM+GFR+PEN",
+      "acc_percent": 92.3,
+      "auc_percent": 92.22
+    }
+  ],
+  "parameter_mapping": [
+    {
+      "field": "dropout",
+      "paper_text_original": "the dropout rate is 0.75",
+      "repo_argument": "dropout",
+      "H": 0.35,
+      "P": 0.75,
+      "mapping_evidence": "main.py parser; layers.Attention/VariLengthInputLayer/EncodeLayer/FeedForwardLayer",
+      "mapping_confidence": "HIGH",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": false
+    },
+    {
+      "field": "lr",
+      "paper_text_original": "the learning rate is 0.0023",
+      "repo_argument": "lr",
+      "H": 0.0038,
+      "P": 0.0023,
+      "mapping_evidence": "model.py Adam lr=hyperpm.lr",
+      "mapping_confidence": "HIGH",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": false
+    },
+    {
+      "field": "n_hidden",
+      "paper_text_original": "the number of hidden layers is 10",
+      "repo_argument": "n_hidden",
+      "H": 18,
+      "P": 10,
+      "mapping_evidence": "network.PLN d_q=d_k=d_v=hyperpm.n_hidden; NOT hidden layer count",
+      "mapping_confidence": "LOW",
+      "unresolved_ambiguity": "Paper natural language does not define code width; unique executable proxy only",
+      "assumed_mapping": true
+    },
+    {
+      "field": "n_head",
+      "paper_text_original": "number of attention heads is 4",
+      "repo_argument": "n_head",
+      "H": 2,
+      "P": 4,
+      "mapping_evidence": "network.PLN n_head and layer reshape",
+      "mapping_confidence": "HIGH",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": false
+    },
+    {
+      "field": "nlayer",
+      "paper_text_original": "the encoding layer is 4",
+      "repo_argument": "nlayer",
+      "H": 1,
+      "P": 4,
+      "mapping_evidence": "network.PLN for i in range(self.n_layer), Encoder+FeedForward pair",
+      "mapping_confidence": "MEDIUM",
+      "unresolved_ambiguity": "Paper does not explicitly name argparse variable",
+      "assumed_mapping": true
+    },
+    {
+      "field": "alpha",
+      "paper_text_original": "weight of original multi-modal features alpha=1",
+      "repo_argument": "alpha",
+      "H": 0.5,
+      "P": 1.0,
+      "mapping_evidence": "Eq4 CAM residual: layers.VariLengthInputLayer q += residual hardcodes1; EncodeLayer also uses residual1. hyperpm.alpha only stored in EvalHelper, never passed to CAM/GFR simple-2. GFR raw-X residual also independently hardcodes1.",
+      "mapping_confidence": "LOW",
+      "unresolved_ambiguity": "No functional mapping from hyperpm.alpha to Eq4/GFR residual; effective raw residual coefficient already1",
+      "assumed_mapping": true
+    },
+    {
+      "field": "reg",
+      "paper_text_original": "not disclosed",
+      "repo_argument": "reg",
+      "H": 0.11,
+      "P": 0.11,
+      "mapping_evidence": "Shell --reg .11; Adam weight_decay",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "th",
+      "paper_text_original": "not disclosed as numeric in implementation detail",
+      "repo_argument": "th",
+      "H": 0.9,
+      "P": 0.9,
+      "mapping_evidence": "main default .9; GraphLearn score>.9 detached mask",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "nepoch",
+      "paper_text_original": "not disclosed",
+      "repo_argument": "nepoch",
+      "H": 450,
+      "P": 450,
+      "mapping_evidence": "main default450",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "early",
+      "paper_text_original": "not disclosed",
+      "repo_argument": "early",
+      "H": 200,
+      "P": 200,
+      "mapping_evidence": "main wait_cnt>hyperpm.early",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "loss",
+      "paper_text_original": "Eq7 lambda=eta=1; Eq1 graph smoothness+supervised adjacency",
+      "repo_argument": "mode",
+      "H": "simple-2",
+      "P": "simple-2",
+      "mapping_evidence": "model.py loss=cls_loss+all_graph_loss; ALoss absent",
+      "mapping_confidence": "CODE_DIFFERS_FROM_PAPER",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": false
+    },
+    {
+      "field": "optimizer",
+      "paper_text_original": "not specified in paper",
+      "repo_argument": "optimizer",
+      "H": "two Adam",
+      "P": "two Adam",
+      "mapping_evidence": "model EvalHelper optimizer_MP0/optimizer_MF",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "seed",
+      "paper_text_original": "not disclosed",
+      "repo_argument": "seed",
+      "H": 0,
+      "P": 0,
+      "mapping_evidence": "main default0; historical continuous RNG",
+      "mapping_confidence": "INHERITED_UNDISCLOSED",
+      "unresolved_ambiguity": null,
+      "assumed_mapping": true
+    },
+    {
+      "field": "data",
+      "paper_text_original": "ABIDE871 four modalities",
+      "repo_argument": "data",
+      "H": "same historical preprocessed",
+      "P": "same",
+      "mapping_evidence": "main loads processed_standard_data.csv & modal_feat_dict.npy; no new preprocessing",
+      "mapping_confidence": "HIGH",
+      "unresolved_ambiguity": "Private ablation input hash unavailable",
+      "assumed_mapping": true
+    },
+    {
+      "field": "evaluation",
+      "paper_text_original": "10-fold ACC/AUC/SEN/SPE",
+      "repo_argument": "evaluation",
+      "H": "val=test strict first ACC; hard onehot AUC",
+      "P": "same",
+      "mapping_evidence": "main.py split/early loop; model.test/roc_auc_score",
+      "mapping_confidence": "PAPER_UNDISCLOSED_DETAIL",
+      "unresolved_ambiguity": "Paper no seed/init/fold-index/checkpoint full detail",
+      "assumed_mapping": true
+    }
+  ],
+  "official_commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+  "core_ast_equal": {
+    "GFR": true,
+    "GraphLearn": true,
+    "GCN": true
+  },
+  "line_evidence": {
+    "network.py": [
+      {
+        "line": 59,
+        "code": "self.d_q = hyperpm.n_hidden"
+      },
+      {
+        "line": 62,
+        "code": "self.n_head = hyperpm.n_head"
+      },
+      {
+        "line": 64,
+        "code": "self.n_layer = hyperpm.nlayer"
+      },
+      {
+        "line": 67,
+        "code": "self.d_out = self.d_v * self.n_head * self.modal_num"
+      },
+      {
+        "line": 69,
+        "code": "self.InputLayer = VariLengthInputLayer(self.input_data_dims, self.d_k, self.d_v, self.n_head, self.dropout)"
+      },
+      {
+        "line": 73,
+        "code": "for i in range(self.n_layer):"
+      },
+      {
+        "line": 74,
+        "code": "encoder = EncodeLayer(self.d_k * self.n_head, self.d_k, self.d_v, self.n_head, self.dropout)"
+      },
+      {
+        "line": 75,
+        "code": "#encoder = nn.MultiheadAttention(self.d_k * self.n_head, self.n_head, dropout = self.dropout) #nn.multi_head_attn"
+      },
+      {
+        "line": 79,
+        "code": "feedforward = FeedForwardLayer(self.d_v * self.n_head, self.d_v * self.n_head, dropout = self.dropout)"
+      },
+      {
+        "line": 82,
+        "code": "d_in = self.d_v * self.n_head * self.modal_num"
+      },
+      {
+        "line": 83,
+        "code": "self.Outputlayer = OutputLayer(d_in, self.d_v * self.n_head, self.n_class, self.modal_num, self.dropout)"
+      },
+      {
+        "line": 86,
+        "code": "self.MLP = MLP(input_dim = 4096,hidden_dim = 128, output_dim = 9)"
+      },
+      {
+        "line": 91,
+        "code": "self.register_buffer('prompt_text_features', get_prompt_text_features())"
+      },
+      {
+        "line": 100,
+        "code": "for i in range(self.n_layer):"
+      },
+      {
+        "line": 226,
+        "code": "combined_feat = []"
+      },
+      {
+        "line": 236,
+        "code": "A = normalize_adj(adj1.cuda() + torch.eye(adj1.size(0)).cuda())"
+      },
+      {
+        "line": 246,
+        "code": "normalized_adj0 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))"
+      },
+      {
+        "line": 247,
+        "code": "ALoss = torch.linalg.norm(normalized_adj0 - A).to(f_w.device)"
+      },
+      {
+        "line": 249,
+        "code": "combined_feat = f_w*feat0+torch.cat(x,dim=1)"
+      },
+      {
+        "line": 253,
+        "code": "normalized_adj1 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))"
+      },
+      {
+        "line": 254,
+        "code": "ALoss = torch.linalg.norm(normalized_adj1 - A).to(f_w.device) + ALoss"
+      },
+      {
+        "line": 256,
+        "code": "combined_feat = f_w*feat1+torch.cat(x,dim=1)"
+      },
+      {
+        "line": 260,
+        "code": "normalized_adj2 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))"
+      },
+      {
+        "line": 261,
+        "code": "ALoss = torch.linalg.norm(normalized_adj2 - A).to(f_w.device) + ALoss"
+      },
+      {
+        "line": 263,
+        "code": "combined_feat = f_w*feat3+combined_feat"
+      },
+      {
+        "line": 268,
+        "code": "normalized_adj3 = normalize_adj(adj + torch.eye(adj.size(0)).to(f_w.device))"
+      },
+      {
+        "line": 269,
+        "code": "ALoss = torch.linalg.norm(normalized_adj3 - A).to(f_w.device) + ALoss"
+      },
+      {
+        "line": 271,
+        "code": "combined_feat = f_w*feat3+combined_feat"
+      },
+      {
+        "line": 274,
+        "code": "return combined_feat , all_adj, ALoss/model_num"
+      }
+    ],
+    "model.py": [
+      {
+        "line": 15,
+        "code": "from sklearn.metrics import roc_auc_score"
+      },
+      {
+        "line": 41,
+        "code": "self.n_head = hyperpm.n_head"
+      },
+      {
+        "line": 69,
+        "code": "#self.out_dim = self.d_v * self.n_head + self.modal_num**2"
+      },
+      {
+        "line": 70,
+        "code": "self.out_dim = self.d_v * self.n_head"
+      },
+      {
+        "line": 108,
+        "code": "graph_loss = GraphConstructLoss(fusion_feat, adj, self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 110,
+        "code": "normalized_adj = normalize_adj(adj + torch.eye(adj.size(0)).to(dev))"
+      },
+      {
+        "line": 114,
+        "code": "loss = cls_loss + graph_loss"
+      },
+      {
+        "line": 131,
+        "code": "feat, adj, ALoss = self.MessagePassing0(feat1,model_num, self.targ, self.trn_idx)"
+      },
+      {
+        "line": 135,
+        "code": "graph_loss = GraphConstructLoss(feat1[i], adj[i], self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 143,
+        "code": "loss = cls_loss + all_graph_loss"
+      },
+      {
+        "line": 151,
+        "code": "print('trn-loss-MF: %.4f trn-loss-MF: %.4f' % (cls_loss, ALoss), end=' ')"
+      },
+      {
+        "line": 169,
+        "code": "normalized_adj = normalize_adj(adj + torch.eye(adj.size(0)).to(dev))"
+      },
+      {
+        "line": 173,
+        "code": "graph_loss = GraphConstructLoss(fusion_feat, adj, self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 174,
+        "code": "total_loss = cls_loss + graph_loss"
+      },
+      {
+        "line": 186,
+        "code": "adj = normalize_adj(adj + torch.eye(adj.size(0)).to(dev))"
+      },
+      {
+        "line": 190,
+        "code": "graph_loss = GraphConstructLoss(fusion_feat, adj, self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 191,
+        "code": "total_loss = cls_loss + graph_loss"
+      },
+      {
+        "line": 213,
+        "code": "normalized_adj = normalize_adj(adj + torch.eye(adj.size(0)).to(dev))"
+      },
+      {
+        "line": 217,
+        "code": "graph_loss = GraphConstructLoss(fusion_feat, adj, self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 218,
+        "code": "total_loss = cls_loss + graph_loss"
+      },
+      {
+        "line": 238,
+        "code": "adj = normalize_adj(adj + torch.eye(adj.size(0)).to(dev))"
+      },
+      {
+        "line": 242,
+        "code": "graph_loss = GraphConstructLoss(fusion_feat, adj, self.hyperpm.theta_smooth, self.hyperpm.theta_degree, self.hyperpm.theta_sparsity)"
+      },
+      {
+        "line": 243,
+        "code": "total_loss = cls_loss + graph_loss"
+      },
+      {
+        "line": 293,
+        "code": "auc = roc_auc_score(one_hot(targ, self.n_class).cpu().numpy(), one_hot(pred, self.n_class).cpu().numpy())"
+      },
+      {
+        "line": 312,
+        "code": "adj = normalize_adj(adj + torch.eye(adj.size(0)).to(self.dev))"
+      },
+      {
+        "line": 329,
+        "code": "adj = normalize_adj(adj_o + torch.eye(adj_o.size(0)).to(self.dev))"
+      }
+    ],
+    "layers.py": [
+      {
+        "line": 83,
+        "code": "self.n_head = n_head"
+      },
+      {
+        "line": 113,
+        "code": "q = torch.zeros(bs, modal_num, self.n_head * self.d_k).cuda()"
+      },
+      {
+        "line": 115,
+        "code": "k = torch.zeros(bs, modal_num, self.n_head * self.d_k).cuda()"
+      },
+      {
+        "line": 116,
+        "code": "v = torch.zeros(bs, modal_num, self.n_head * self.d_v).cuda()"
+      },
+      {
+        "line": 130,
+        "code": "q = q.view(bs, modal_num, self.n_head, self.d_k)"
+      },
+      {
+        "line": 131,
+        "code": "k = k.view(bs, modal_num, self.n_head, self.d_k)"
+      },
+      {
+        "line": 132,
+        "code": "v = v.view(bs, modal_num, self.n_head, self.d_v)"
+      },
+      {
+        "line": 147,
+        "code": "self.n_head = n_head"
+      },
+      {
+        "line": 163,
+        "code": "q = self.w_q(q).view(bs, modal_num, self.n_head, self.d_k)"
+      },
+      {
+        "line": 164,
+        "code": "k = self.w_k(k).view(bs, modal_num, self.n_head, self.d_k)"
+      },
+      {
+        "line": 165,
+        "code": "v = self.w_v(v).view(bs, modal_num, self.n_head, self.d_v)"
+      }
+    ],
+    "utils.py": [
+      {
+        "line": 31,
+        "code": "def GraphConstructLoss(feat, adj, theta_smooth, theta_degree, theta_sparsity):"
+      },
+      {
+        "line": 101,
+        "code": "def normalize_adj(adj):"
+      }
+    ]
+  },
+  "official_tree_has_ablation_script": false,
+  "P_label": "PAPER_TEXT_MAPPED_PROXY",
+  "C_D_not_trained": true,
+  "public_PEN_shape_conflict": {
+    "official_line": 96,
+    "code": "part_x = x.view(871, 4, 4, 9)",
+    "H_CAM_elements": 125424,
+    "P_proxy_CAM_elements": 139360,
+    "PEN_hardcoded_elements": 125424,
+    "P_full_PEN_reshape_compatible": false,
+    "P_CAM_only_and_CAM_GFR_without_PEN_compatible": true,
+    "interpretation": "Additional definitive evidence that body-mapped proxy cannot be claimed as exact public full-model implementation. Does not alter frozen H/P or bypass groups."
+  },
+  "parser_help_mismatch": {
+    "n_hidden_help": "Number of attention head",
+    "n_hidden_actual": "d_q=d_k=d_v, dimension per head",
+    "n_head_help": "Number of hidden units per modal",
+    "n_head_actual": "head count",
+    "nlayer_help": "Number of conv layers",
+    "nlayer_actual": "PLN Encoder+FeedForward repeat count; GFR GCN always two layers"
+  }
+}
