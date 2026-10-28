@@ -1,0 +1,23 @@
+{
+  "experiment": "50",
+  "name": "C²R-Align",
+  "seed": 0,
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "modal_map": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48,6,10,256], "labels": "ASD=0,TD=1"},
+  "cv": {"name": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10, "selection": "historical val_idx=test_idx; strict higher ACC; wait>200"},
+  "base": {"name": "B0-B", "pen": "physically removed", "gfr": "audited Experiment43.1 source snapshot", "epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "mode": "simple-2", "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0, "aloss_in_total": false},
+  "new": {"embedding": 32, "encoder_hidden": 64, "candidate_k": 8, "eta": 0.25, "rho": 0.05, "relation_temperature": 0.25, "lambda_relation": 0.1, "lambda_align": 0.03, "lr": 0.00038, "weight_decay": 0.11, "pair_count_target_per_stratum": 512, "sender_pool": "outer_train_only", "fc_anchor": "CORR raw cosine candidate pool", "confounders": ["age_bin_similarity", "site_same", "sex_same", "ANAT_FUNC_quality_cosine"]},
+  "groups": [
+    {"id":"E0", "name":"B0-B_REFERENCE", "mode":"REFERENCE", "gpu":null, "source":"Experiment43.1 E00_B0B_REPLAY"},
+    {"id":"E1", "name":"SELF_ONLY_CAPACITY", "mode":"E1_SELF", "gpu":0},
+    {"id":"E2", "name":"FC_ONLY", "mode":"E2_FC", "gpu":0},
+    {"id":"E3", "name":"UNCONDITIONAL_FOUR_MODAL_ALIGNMENT", "mode":"E3_UNCONDITIONAL", "gpu":0},
+    {"id":"E4", "name":"CONDITIONAL_NO_EXPLICIT_ALIGNMENT", "mode":"E4_NO_ALIGN", "gpu":1},
+    {"id":"E5", "name":"C2R_ALIGN_FULL", "mode":"E5_FULL", "gpu":1},
+    {"id":"E6", "name":"MISALIGNED_AUXILIARY_RELATIONS", "mode":"E6_MISALIGNED_AUX", "gpu":1},
+    {"id":"E7", "name":"REWIRED_PATIENT_RELATIONS", "mode":"E7_REWIRED", "gpu":1}
+  ],
+  "gpu_plan": {"gpu0": "all new groups folds 1-5", "gpu1": "all new groups folds 6-10", "workers_per_gpu": 3},
+  "metrics": ["acc", "hard_auc", "prob_auc", "spe", "sen", "ba", "asd_f1"],
+  "historical_reference": {"acc":91.7294,"hard_auc":91.6046,"spe":93.1360,"sen":90.0732,"source":"Experiment43.1 E00_B0B_REPLAY"},
+  "protected_root": ["main.py","model.py","network.py","layers.py","utils.py","ABIDE-simple-2-concat-weighted-cosine.sh","data/ABIDE/processed_standard_data.csv","data/ABIDE/modal_feat_dict.npy"]
+}
