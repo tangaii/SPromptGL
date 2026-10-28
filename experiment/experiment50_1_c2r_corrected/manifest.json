@@ -1,0 +1,124 @@
+{
+  "experiment": "50.1",
+  "name": "C2R-Align Corrected & Validated",
+  "status": "AUDITED_COMPLETE",
+  "actual_directory": "/tmp/SPromptGL-E501/experiment50_1_c2r_corrected",
+  "config_sha": "a01ac637c4922504d06e88d8bcc3fe6595ef9291b46db4549e543936c1f6a476",
+  "code_sha": {
+    "model50_1.py": "6b2fde774767e65a3256ffb49dd3eb6107493c5adb3803a24bf08b650c7b7dc7",
+    "run.py": "93cec08a461b23d34ffd8f5a380fa82ea2d800b3cd68e2a542f340cdbb634656",
+    "tests.py": "d2613812ff1a50ebbd67ed0a95e4f85cddcb78f642987dcfcb4687a1342f2ca9",
+    "integration.py": "a415d504d4172d871b90dee122178637d7a486fa5afb4c983cb8af8748540daf",
+    "audit.py": "3bab924b7374714ef4c9cdee81d8fc65272c79002cd2b974af17ce63a2753d73"
+  },
+  "source_sha": {
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "folds": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "planned_groups": 9,
+  "planned_new_folds": 80,
+  "historical_e0_folds": 10,
+  "semantic_tests": {
+    "0": {
+      "gpu": 0,
+      "tests": {
+        "modality_identity_fc_index": true,
+        "alignment_direction_and_aux_gradient": true,
+        "null_equals_fc_only": {
+          "max_abs": 0.0
+        },
+        "e6_fc_unchanged_aux_changed": true,
+        "e7_recomputes_relation_and_message": {
+          "changed_neighbors": 6968,
+          "h50_l2": 8.572534561157227
+        },
+        "test_label_isolation": true,
+        "site_bias_train_only_and_finite": true,
+        "optimizer_weight_decay_and_anchor_identity": true,
+        "train_eval_switch": true,
+        "checkpoint_rng_roundtrip": true
+      },
+      "base_gfr_params": 887836,
+      "base_cam_params": 49544
+    },
+    "1": {
+      "gpu": 1,
+      "tests": {
+        "modality_identity_fc_index": true,
+        "alignment_direction_and_aux_gradient": true,
+        "null_equals_fc_only": {
+          "max_abs": 0.0
+        },
+        "e6_fc_unchanged_aux_changed": true,
+        "e7_recomputes_relation_and_message": {
+          "changed_neighbors": 6968,
+          "h50_l2": 8.572534561157227
+        },
+        "test_label_isolation": true,
+        "site_bias_train_only_and_finite": true,
+        "optimizer_weight_decay_and_anchor_identity": true,
+        "train_eval_switch": true,
+        "checkpoint_rng_roundtrip": true
+      },
+      "base_gfr_params": 887836,
+      "base_cam_params": 49544
+    }
+  },
+  "completed_new_folds": 80,
+  "failed_task_files": 0,
+  "failed_processes": 0,
+  "formal_wall_seconds": 559.3495788574219,
+  "folds_complete": 90,
+  "summary_sha": "335161b9dcc256a3d50cf91cfb0314b1b5b7fbec335abf7bd8d8a1262919d811",
+  "paired_sha": "155435f10e2d3c136e98ac187be3df7de9490898c756514018393ebb39b831eb",
+  "audit_rows": 80,
+  "intervention_rows": 50,
+  "diagnostics_sha": "865003e6a10eac35abe2090027c2c6d8cb756496e9de8869d2bf3bb5145b0cde",
+  "report_sha": "af399044647501f52de30f036a11d5f02619bbd9529ce410a3e3599387afe4f1",
+  "report_time": 1793193029.0930185,
+  "validated_new_folds": 80,
+  "task_count": 80,
+  "e8_retrained_after_audit": true,
+  "e8_final_align_loss_nonzero": true,
+  "result_sha": {
+    "diagnostics.csv": "865003e6a10eac35abe2090027c2c6d8cb756496e9de8869d2bf3bb5145b0cde",
+    "fold_metrics.csv": "295ce939d49670326a97de7d0d70bc32bc9b0667211fee14e9ad0eab22cdd73c",
+    "interventions.csv": "775d99d0bd39bd878d67ac9b2116f5624e73a62cc34b0685d02a39e58ee86b77",
+    "paired_comparisons.csv": "155435f10e2d3c136e98ac187be3df7de9490898c756514018393ebb39b831eb",
+    "report.md": "af399044647501f52de30f036a11d5f02619bbd9529ce410a3e3599387afe4f1",
+    "summary.csv": "335161b9dcc256a3d50cf91cfb0314b1b5b7fbec335abf7bd8d8a1262919d811"
+  },
+  "checkpoint_note": "80个新增最佳checkpoint保留在scratch .runtime/checkpoints；正式交付目录不复制大体积checkpoint，manifest、任务状态和独立审计结果保留可追溯信息。",
+  "updated_at_utc": "2026-10-28T13:10:39Z"
+}
