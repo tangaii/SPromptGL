@@ -1,0 +1,50 @@
+{
+  "experiment": "Experiment 45.2 - Task-Information-Faithful PID Estimation for ABIDE Four-Modal Data",
+  "version": "45.2-preregistered-v1",
+  "seed": 0,
+  "dims": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+  "folds": {"n_splits": 10, "shuffle": true, "random_state": 10},
+  "labels": {"ASD": 0, "TD": 1},
+  "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+  "pairs": [["PHENO", "ANAT"], ["PHENO", "FUNC"], ["PHENO", "CORR"], ["ANAT", "FUNC"], ["ANAT", "CORR"], ["FUNC", "CORR"]],
+  "protocol": {
+    "inner_splits": 5,
+    "nested_score_splits": 4,
+    "linear_probe": {"class": "StandardScaler+LogisticRegression", "C": 1.0, "solver": "lbfgs", "max_iter": 2000},
+    "nonlinear_probe": {"class": "HistGradientBoostingClassifier", "learning_rate": 0.05, "max_iter": 100, "max_leaf_nodes": 7, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+    "primary_support": 4,
+    "support_sensitivity": [3, 6],
+    "bootstrap_replicates_fixed_codes": 40,
+    "pipeline_bootstrap_representative_fold": 1,
+    "pipeline_bootstrap_replicates": 10,
+    "global_full_pipeline_permutations": 29,
+    "site_conditional_full_pipeline_permutations": 19,
+    "oof_information_units": "bit",
+    "pid_units": "bit",
+    "fidelity_reference_target": 0.8,
+    "site_mapping": {"source": "modal_feat_dict.npy exact column names", "columns": 20},
+    "no_formal_model_training": true,
+    "no_gfr_or_pen_or_clip": true
+  },
+  "representations": {
+    "A_UNSUP_KMEANS": {"purpose": "historical unsupervised reference", "primary_k": 4, "sensitivity_k": [3, 6], "scaler": "StandardScaler fit on current training subset", "kmeans_n_init": 10},
+    "B_TASK_AWARE_SCORE": {"purpose": "single-modality disease redundancy/unique diagnostic only", "base_score": "OOF L2 logistic P(ASD)", "primary_k": 4, "sensitivity_k": [6], "quantiles": "label-independent empirical quantile edges from OOF training scores"},
+    "C_TASK_STRUCTURE_HYBRID": {"purpose": "candidate preserving task score and modality structure; not assumed valid", "task_states": 2, "structure_states_primary": 2, "structure_states_sensitivity": [3], "primary_joint_support": 4, "sensitivity_joint_support": 6, "structure": "StandardScaler + one-component PCA + KMeans", "structure_uses_labels": false}
+  },
+  "pid": {
+    "estimator": "BROJA_two_source_discrete_pid_v1",
+    "definition": "minimize I_Q((X1,X2);Y) over couplings preserving P(X1,Y) and P(X2,Y)",
+    "solver": "45.1 analytical-gradient SLSQP",
+    "identities": ["Ijoint=R+U1+U2+S", "I(X1;Y)=R+U1", "I(X2;Y)=R+U2", "R<=min(I(X1;Y),I(X2;Y))", "Ijoint<=H(Y)"],
+    "pairing": "patient-wise; shared resampling indices for X1,X2,Y",
+    "bootstrap_ci": "percentile 2.5/97.5; fixed encodings only, separate from refit sensitivity"
+  },
+  "frozen_decision_rules": {
+    "no_selection_by_largest_R": true,
+    "raw_signal_not_identifiable": "raw OOF predictive-information proxy <=0 or its 95% paired bootstrap interval includes 0",
+    "estimator_dependent": "material differences in supported component direction across A/B/C or support sizes",
+    "no_reliable_pid": "no method passes mathematical, synthetic, predictive-fidelity, and stability gates",
+    "permutation_retrains_supervised_representation": true
+  },
+  "sources_to_audit": ["main.py", "model.py", "network.py", "layers.py", "utils.py", "ABIDE data pipeline", "experiment/experiment43_2_gfr_incremental_value_audit", "experiment/experiment45_pid_guided_graph_adversarial_alignment", "experiment/experiment45_1_pid_correction_reaudit"]
+}

@@ -1,0 +1,292 @@
+{
+  "status": "AUDIT_PASS_WITH_LIMITATIONS",
+  "timestamp_unix": 1793129751.7398975,
+  "checks": {
+    "raw_root_source_and_data_hashes_unchanged": true,
+    "experiment45_sha256_unchanged": true,
+    "experiment45_1_sha256_unchanged": true,
+    "experiment43_2_sha256_unchanged": true,
+    "45_1_github_ref_checked": true,
+    "feature_dimensions_and_label_counts": true,
+    "site_onehot_exactly_one_of_20": true,
+    "historical_folds_match": true,
+    "handoff_prefix_unchanged": true,
+    "rows_predictive_fidelity.csv": true,
+    "rows_pid_components.csv": true,
+    "rows_reliability.csv": true,
+    "rows_full_pipeline_permutations.csv": true,
+    "rows_historical_451_comparison.csv": true,
+    "rows_pipeline_refit_bootstrap.csv": true,
+    "rows_synthetic_validation.csv": true,
+    "rows_pheno_without_site_pid.csv": true,
+    "rows_site_sensitivity.csv": true,
+    "rows_pheno_without_site.csv": true,
+    "all_six_pairs_present": true,
+    "pid_codes_and_oof_predictions_patient_aligned": true,
+    "outer_train_only_indices_and_all_oof_metrics_recompute": true,
+    "nested_oof_and_heldout_label_invariance": true,
+    "full_pipeline_permutation_hashes_reconstruct": true,
+    "within_site_permutation_preserves_site_counts": true,
+    "supervised_encoders_refit_under_permuted_labels": true,
+    "paired_bootstrap_saved_and_replayable": true,
+    "all_reported_values_finite": true,
+    "BROJA_three_identities_within_tolerance": true,
+    "I1_I2_Ijoint_and_R_information_bounds": true,
+    "main_K4_solver_and_components_valid": true,
+    "K3_invalid_components_explicitly_flagged": true,
+    "independent_numerical_solver_rechecks": true,
+    "all_required_synthetic_mechanisms": true,
+    "synthetic_truth_solver_and_identity": true,
+    "B_XOR_failure_and_C_XOR_positive_control_recorded": true,
+    "bootstrap_coverage_failure_recorded_as_limitation": true,
+    "report_generated_and_contains_conclusion": true,
+    "no_forbidden_full_model_training": true
+  },
+  "details": {
+    "raw_root_source_and_data_hashes_unchanged": {
+      "saved": {
+        "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+        "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+        "/data/adodas/SPromptGL-main/experiment/experiment43_2_gfr_incremental_value_audit/run.py": "75d934531ef4a35c252039345b8822a2ea0b6a425d3cf9d56521f6215bee34b1",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_pid_guided_graph_adversarial_alignment/run.py": "c84520e6cbf9bb958e17a338ddb294382489945fe894d7a6095f8daa3907e92a",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_1_pid_correction_reaudit/run.py": "72ccc7a7bdefe7e4f43d43eb2f84c747b3041e883c2963bcf625ce8a9af2268c",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_1_pid_correction_reaudit/pid_estimator.py": "70a2c8e9de924ecd4a7455ee57d1091cbb88c65f1841cda8ddf172871154447c"
+      },
+      "current": {
+        "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+        "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+        "/data/adodas/SPromptGL-main/experiment/experiment43_2_gfr_incremental_value_audit/run.py": "75d934531ef4a35c252039345b8822a2ea0b6a425d3cf9d56521f6215bee34b1",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_pid_guided_graph_adversarial_alignment/run.py": "c84520e6cbf9bb958e17a338ddb294382489945fe894d7a6095f8daa3907e92a",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_1_pid_correction_reaudit/run.py": "72ccc7a7bdefe7e4f43d43eb2f84c747b3041e883c2963bcf625ce8a9af2268c",
+        "/data/adodas/SPromptGL-main/experiment/experiment45_1_pid_correction_reaudit/pid_estimator.py": "70a2c8e9de924ecd4a7455ee57d1091cbb88c65f1841cda8ddf172871154447c"
+      }
+    },
+    "45_1_github_ref_checked": "65ad931d9a5aa6ef8947285be14938797c8e0f0e\trefs/heads/experiment45-1-pid-correction-reaudit",
+    "feature_dimensions_and_label_counts": {
+      "shape": [
+        871,
+        320
+      ],
+      "labels": [
+        403,
+        468
+      ]
+    },
+    "historical_folds_match": {
+      "1": true,
+      "2": true,
+      "3": true,
+      "4": true,
+      "5": true,
+      "6": true,
+      "7": true,
+      "8": true,
+      "9": true,
+      "10": true
+    },
+    "handoff_prefix_unchanged": {
+      "bytes": 481732,
+      "sha256": "924d00f51341a13669b8e2afd4c7aaec478a25e90cdcfacee31f9fe60ff2efb6"
+    },
+    "rows_predictive_fidelity.csv": {
+      "expected": 900,
+      "actual": 900
+    },
+    "rows_pid_components.csv": {
+      "expected": 420,
+      "actual": 420
+    },
+    "rows_reliability.csv": {
+      "expected": 180,
+      "actual": 180
+    },
+    "rows_full_pipeline_permutations.csv": {
+      "expected": 8640,
+      "actual": 8640
+    },
+    "rows_historical_451_comparison.csv": {
+      "expected": 60,
+      "actual": 60
+    },
+    "rows_pipeline_refit_bootstrap.csv": {
+      "expected": 60,
+      "actual": 60
+    },
+    "rows_synthetic_validation.csv": {
+      "expected": 540,
+      "actual": 540
+    },
+    "rows_pheno_without_site_pid.csv": {
+      "expected": 90,
+      "actual": 90
+    },
+    "rows_site_sensitivity.csv": {
+      "expected": 100,
+      "actual": 100
+    },
+    "rows_pheno_without_site.csv": {
+      "expected": 30,
+      "actual": 30
+    },
+    "pid_codes_and_oof_predictions_patient_aligned": {
+      "cache_n_by_fold": {}
+    },
+    "outer_train_only_indices_and_all_oof_metrics_recompute": {
+      "1": 783,
+      "2": 784,
+      "3": 784,
+      "4": 784,
+      "5": 784,
+      "6": 784,
+      "7": 784,
+      "8": 784,
+      "9": 784,
+      "10": 784
+    },
+    "nested_oof_and_heldout_label_invariance": {
+      "nested_probe_shapes": {
+        "('A_UNSUP_KMEANS', 4)": [
+          392,
+          392
+        ],
+        "('B_TASK_AWARE_SCORE', 4)": [
+          392,
+          392
+        ],
+        "('C_TASK_STRUCTURE_HYBRID', 4)": [
+          392,
+          392
+        ]
+      },
+      "heldout_label_invariance": true,
+      "xor_truth_S": 0.9999999999999997,
+      "route_spec_frozen_before_abide_pid": true,
+      "pid_solver": "BROJA discrete with analytical-gradient SLSQP"
+    },
+    "supervised_encoders_refit_under_permuted_labels": {
+      "A_UNSUP_KMEANS": {
+        "min": false,
+        "max": false
+      },
+      "B_TASK_AWARE_SCORE": {
+        "min": true,
+        "max": true
+      },
+      "C_TASK_STRUCTURE_HYBRID": {
+        "min": true,
+        "max": true
+      }
+    },
+    "paired_bootstrap_saved_and_replayable": {
+      "trace_values": 7176,
+      "sample_replay": true
+    },
+    "BROJA_three_identities_within_tolerance": {
+      "max_error_bit": 1.1102230246251563e-16
+    },
+    "K3_invalid_components_explicitly_flagged": {
+      "invalid_rows": 1,
+      "minimum_component_bit": -0.0001438712943121
+    },
+    "independent_numerical_solver_rechecks": {
+      "real_alternate_start_slsqp": [
+        {
+          "pair": "PHENO-ANAT",
+          "method": "A_UNSUP_KMEANS",
+          "primary_Imin_bit": 0.01086873038848307,
+          "alternate_start_Imin_bit": 0.010868730411854939,
+          "delta_bit": 2.3371868676513863e-11,
+          "marginal_error": 5.551115123125783e-17,
+          "success": true
+        },
+        {
+          "pair": "ANAT-CORR",
+          "method": "B_TASK_AWARE_SCORE",
+          "primary_Imin_bit": 0.3914128876466525,
+          "alternate_start_Imin_bit": 0.39141288764668,
+          "delta_bit": 2.7478019859472624e-14,
+          "marginal_error": 2.7755575615628914e-17,
+          "success": true
+        },
+        {
+          "pair": "FUNC-CORR",
+          "method": "C_TASK_STRUCTURE_HYBRID",
+          "primary_Imin_bit": 0.34286798025471305,
+          "alternate_start_Imin_bit": 0.342867878121875,
+          "delta_bit": 1.021328380201858e-07,
+          "marginal_error": 9.020562075079397e-17,
+          "success": true
+        }
+      ],
+      "exact_synthetic_trust_constr": [
+        {
+          "case": "unique_x1",
+          "trust_constr_success": true,
+          "Imin_slsqp_bit": 0.6725550808455237,
+          "Imin_trust_constr_bit": 0.6725550808455237,
+          "delta_bit": 0.0,
+          "marginal_error": 0.0
+        },
+        {
+          "case": "xor_synergy",
+          "trust_constr_success": true,
+          "Imin_slsqp_bit": 3.760885636248567e-16,
+          "Imin_trust_constr_bit": 0.0,
+          "delta_bit": 3.760885636248567e-16,
+          "marginal_error": 0.0
+        },
+        {
+          "case": "label_independent",
+          "trust_constr_success": true,
+          "Imin_slsqp_bit": 0.0,
+          "Imin_trust_constr_bit": 0.0,
+          "delta_bit": 0.0,
+          "marginal_error": 0.0
+        }
+      ]
+    },
+    "B_XOR_failure_and_C_XOR_positive_control_recorded": {
+      "B_mean_S_abs_error": 0.9885954094749536,
+      "C_mean_S_abs_error": 0.008938783995102336
+    },
+    "bootstrap_coverage_failure_recorded_as_limitation": {
+      "xor_S_coverage": 0.0
+    }
+  },
+  "limitations": [
+    "historical_global_preprocessing_and_preCV_RFE",
+    "no_route_passes_joint_scientific_reliability_gate",
+    "fixed_code_bootstrap_does_not_include_encoder_refit_uncertainty",
+    "folds_overlap_and_foldwise_p_values_are_not_independent"
+  ],
+  "failures": [],
+  "summary": {
+    "predictive_rows": 900,
+    "pid_rows": 420,
+    "fixed_code_bootstrap_rows": 180,
+    "full_pipeline_permutations": 8640,
+    "synthetic_rows": 540,
+    "main_K4_invalid_rows": 0,
+    "K3_invalid_rows": 1,
+    "outer_test_labels_used_for_fitting": false,
+    "training_protocol": "10 outer folds; all estimation/selection within each outer training fold",
+    "status_conclusion": "NO_RELIABLE_PID_ESTIMATOR_FOR_CURRENT_SAMPLE",
+    "alignment_conclusion": "PID_NOT_RELIABLE_FOR_ALIGNMENT_DECISIONS"
+  },
+  "limitations_notes": [
+    "固定码Bootstrap合成覆盖率不足，不能作为可靠分量显著性区间。",
+    "真实数据辅助trust-constr在稀疏列联表上不稳定；真实复核采用同一SLSQP从不同可行起点复算。",
+    "A KMeans K=3有一个小负分量点估计，保留并标无效；K=4主分析全部通过数值约束。",
+    "所有结果依赖历史全队列预处理和CV前RFE特征矩阵。"
+  ]
+}
