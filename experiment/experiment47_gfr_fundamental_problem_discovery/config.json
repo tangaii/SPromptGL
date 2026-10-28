@@ -1,0 +1,35 @@
+{
+  "experiment": "Experiment 47 — GFR Fundamental Problem Discovery",
+  "version": "47.0-stageAB-frozen",
+  "seed": 0,
+  "folds": 10,
+  "input_dims": [48, 6, 10, 256],
+  "gfr": {
+    "base": "B0-B physical PEN removal",
+    "threshold": 0.9,
+    "graph": "weighted-cosine",
+    "message_passing": "two-layer GCN",
+    "aggregation": "historical GFR including i==1 overwrite",
+    "loss": "original GraphConstructLoss; ALoss audited but not backpropagated"
+  },
+  "stage_a": {
+    "scope": "all 10 historical B0-B best checkpoints",
+    "null_repetitions": 20,
+    "nulls": ["degree-preserving row random", "site-matched row random"],
+    "diagnostics": ["graph degree", "homophily", "site enrichment", "components", "cross-modal overlap", "representation separation"]
+  },
+  "stage_b": {
+    "scope": "fixed checkpoint interventions and train-only conditional probes",
+    "probe": "separate self/residual standardization, fixed C=1 linear logistic probe",
+    "probe_controls": ["SELF", "TRUE", "SITE_RANDOM", "RANDOM", "PERMUTED"],
+    "spaces": ["RAW320", "CAM36"],
+    "synthetic_positive_control": true,
+    "interventions": ["all messages off", "per-modality off", "degree random", "site matched random", "within/cross site", "target-held cohort permutation", "all-test stress permutation"]
+  },
+  "stage_c": {
+    "status": "NOT_STARTED",
+    "reason": "Stage A/B fixed-checkpoint evidence was sufficient for attribution; no unregistered retraining was needed."
+  },
+  "protocol_limits": ["val=test checkpoint selection", "pre-CV RFE/standardization", "transductive 871-node graph", "single seed", "folds share participants"],
+  "gpu_plan": {"gpu0": "folds 1-5", "gpu1": "folds 6-10"}
+}
