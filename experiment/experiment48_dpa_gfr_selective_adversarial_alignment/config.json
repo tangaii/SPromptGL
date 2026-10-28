@@ -1,0 +1,78 @@
+{
+  "experiment": "Experiment48_DPA_GFR",
+  "version": "dpa-gfr-frozen-v1",
+  "seed": 0,
+  "data": {
+    "root": "/data/adodas/SPromptGL-main/data/ABIDE",
+    "csv": "processed_standard_data.csv",
+    "modal_mapping": "modal_feat_dict.npy",
+    "n_subject": 871,
+    "class_counts": {"ASD": 403, "TD": 468},
+    "label_encoding": "ASD=0, TD=1",
+    "dims": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+    "preprocessing_caveat": "historical global preprocessing and pre-CV RFE; not strict unbiased population estimation"
+  },
+  "cv": {
+    "outer": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "checkpoint_selection": "historical val_idx=test_idx; first strict higher ACC; wait>200"
+  },
+  "base_protocol": {
+    "epochs": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_layer": 1,
+    "graph_threshold": 0.9,
+    "graph_mode": "weighted-cosine",
+    "graph_regularizer": "original GraphConstructLoss(theta_smooth=1, theta_degree=0.5, theta_sparsity=0)",
+    "aloss": "computed by original GFR but excluded from simple-2 total loss",
+    "pen": "physically removed"
+  },
+  "dpa": {
+    "projection_dim": 32,
+    "evidence_dim": 64,
+    "top_k": 16,
+    "sender_set": "outer-train only; receiver != sender for train receivers; test receivers read outer-train only",
+    "graph_aux_weight": 0.1,
+    "new_lr": 0.00038,
+    "new_weight_decay": 0.0,
+    "lambda_adv_max": 0.03,
+    "lambda_schedule": "0 epochs 0-44; linear epochs 45-89; max from epoch 90",
+    "pairs": ["CORR-PHENO", "CORR-ANAT", "CORR-FUNC"],
+    "pcgrad_scope": "new graph evidence parameters only; domain discriminators normal minimization",
+    "gamma": "0.25*tanh(gamma_raw), initialized 0"
+  },
+  "groups": [
+    {"id": 0, "name": "E0_B0B_REFERENCE", "route": "base_only", "adv": []},
+    {"id": 1, "name": "E1_SELF_CAPACITY", "route": "self", "adv": []},
+    {"id": 2, "name": "E2_TRUE_GRAPH_ONLY", "route": "true", "adv": []},
+    {"id": 3, "name": "E3_FULL_ADVERSARIAL", "route": "true", "adv": ["CP", "CA", "CF"]},
+    {"id": 4, "name": "E4_SELECTIVE_ADVERSARIAL", "route": "true", "adv": ["CF"]},
+    {"id": 5, "name": "E5_DPA_GFR_FULL", "route": "true", "adv": ["CF"], "pcgrad": true},
+    {"id": 6, "name": "E6_RANDOM_GRAPH_CONTROL", "route": "random", "adv": ["CF"], "pcgrad": true},
+    {"id": 7, "name": "E7_WRONG_PAIR_CONTROL", "route": "true", "adv": ["CA"], "pcgrad": true}
+  ],
+  "formal_tasks": "8 groups x 10 folds = 80; E0 may reuse verified Experiment43.1 best checkpoints only after independent readback",
+  "gpu_assignment": {"GPU0": "folds 1-5", "GPU1": "folds 6-10"},
+  "metrics": ["ACC", "Hard-AUC", "SPE-TD", "SEN-ASD", "probability-AUC"],
+  "go": {
+    "GO_GRAPH": "E2-E1 ACC and Hard-AUC mean >= +0.1pp, each >=7/10 strict wins, independent neighbor dependency nonzero",
+    "GO_SELECTIVE_ALIGNMENT": "E4 has measurable positive comparison against E3 and/or E2; otherwise state limitation",
+    "GO_GRADIENT_PROTECTION": "E5-E4 positive and nonzero conflict/projection trajectory",
+    "GO_FINAL_MICCAI_CANDIDATE": "E5 beats E0, E1, E6, E7 on both main metrics, >=7/10 strict wins, mechanisms nontrivial"
+  },
+  "audit_constraints": {
+    "no_root_model_edit": true,
+    "no_new_seed": true,
+    "test_labels_for_graph_or_encoder": false,
+    "historical_test_selection_exception": true,
+    "no_pid_hard_gate": true,
+    "no_gfr_training": "only original B0-B path plus isolated evidence branch"
+  }
+}
