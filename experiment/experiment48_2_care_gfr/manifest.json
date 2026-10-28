@@ -1,0 +1,168 @@
+{
+  "experiment": "Experiment48.2_CARE_GFR",
+  "status": "COMPLETE_AUDITED",
+  "engineering_audit": "PASS",
+  "scientific_decision": "NO-GO",
+  "screen_acc": "SCREEN_ACC_FAIL",
+  "task_counts": {
+    "all_complete": true,
+    "total": 100,
+    "E0_reused_verified": 10,
+    "new_trained": 90,
+    "by_group": {
+      "0": {
+        "complete": 10
+      },
+      "1": {
+        "complete": 10
+      },
+      "2": {
+        "complete": 10
+      },
+      "3": {
+        "complete": 10
+      },
+      "4": {
+        "complete": 10
+      },
+      "5": {
+        "complete": 10
+      },
+      "6": {
+        "complete": 10
+      },
+      "7": {
+        "complete": 10
+      },
+      "8": {
+        "complete": 10
+      },
+      "9": {
+        "complete": 10
+      }
+    }
+  },
+  "independent_readback": "100/100_PASS",
+  "unique_group_fold": true,
+  "uniform_new_task_signatures": true,
+  "code_signature": "4891127b596f1a65ebda893e502478e087372cdfe8152bb494e57f11541b3826",
+  "protocol": {
+    "seed": 0,
+    "folds": 10,
+    "stratified_shuffle": true,
+    "random_state": 10,
+    "subjects": 871,
+    "labels": {
+      "ASD": 403,
+      "TD": 468
+    },
+    "dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "val_equals_test": true,
+    "transductive_nodes": 871
+  },
+  "preflight": {
+    "status": "PASS",
+    "shape": [
+      871,
+      320
+    ],
+    "folds": 10,
+    "attack": "nonzero constrained candidate replacement",
+    "groups": 10,
+    "first_step": {
+      "loss": 29491574784.0,
+      "main": 0.9763627052307129,
+      "pair": 48596.203125,
+      "cons": 1474578612224.0,
+      "robust": 0.9941946864128113,
+      "pair_auc": [
+        0.509411868126828,
+        0.500467726847521,
+        0.5295785871878198,
+        0.5
+      ],
+      "gates": [
+        0.590299129486084,
+        0.3857758939266205,
+        0.3031661808490753,
+        0.6055886149406433
+      ],
+      "msg_norms": [
+        36.911930084228516,
+        73.92102813720703,
+        73.61536407470703,
+        83.27877807617188
+      ]
+    }
+  },
+  "training_wall_seconds_sum": 13007.09931063652,
+  "protected_sha256_current": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "protected_sha256_initial": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "source_sha256": {
+    "README.md": "88d95ff1d8054b61011a7c76dae048fa79740e6dd89d1d16006095d4247c0ccd",
+    "audit.py": "358d575d83af1426071cd41eac5d94231392ebab72c1ee7a8854f9f1f18228ae",
+    "config.json": "ec3e6a5e8aa34b18cb256920d5666a32c2f0336151cac34e5916f372e5ed256f",
+    "finalize_report.py": "34631abed02a00cc3576e7a37106f86ead5fd8c66b51f6e533760ea0460a9bf7",
+    "method.py": "93cc649068dba531c619dc3c6cf10d6298422f9e09805c1da5567646caa69266",
+    "run.py": "f99a0f544af3fdd7b8918babec2a275d4e3f355d45fcb0c92f38eecbf45f6fd4",
+    "site_diagnostics.py": "2885bfaea21e37c0cad52b1c464866606338fbb52e63a99407e4adad2bed54c2",
+    ".runtime/sources/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    ".runtime/sources/network.py": "94e76d590477e86222d370b665675b1278be7c9eaedb17a52e83aa160f4c21b9",
+    ".runtime/sources/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    ".runtime/sources/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    ".runtime/sources/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    ".runtime/sources/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    ".runtime/sources/ABIDE-simple-2-concat-weighted-cosine.sh.snapshot": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    ".runtime/sources/main.py.snapshot": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    ".runtime/sources/model.py.snapshot": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda"
+  },
+  "result_sha256": {
+    "results/diagnostics.csv": "184a854b9000985af9740cec9543c2374b4c59672088e3b95bd4960520fd6442",
+    "results/fold_metrics.csv": "6e083183ecb5d983e25a2cc0988df7322f9f7d5cfc125a8a02f178c6f6dc7323",
+    "results/paired_comparisons.csv": "f321e1d9bb2b7a9b7b5836c31c0c658c13dead1b99cb899ff92250aa74b695f7",
+    "results/report.md": "c9c80fed300394f24b3f118afac658989cc5046061baef0b63246785f9259789",
+    "results/site_diagnostics.csv": "bd5c5d2a7a60122efb06637f48532d37ff15147cacec57350840fd4f94b2be77",
+    "results/summary.csv": "095339e4573f96c4c0fe03cac05f1374d68bc23dc54d8e1e3741697debf3509f"
+  },
+  "site_diagnostics": "/data/adodas/SPromptGL-main/experiment/experiment48_2_care_gfr/results/site_diagnostics.csv",
+  "notes": [
+    "E1-E9 were cleared and rerun after a mathematically equivalent vectorized inner-edge selection fix; no metric-driven parameter change was made.",
+    "E0 is read from verified historical checkpoints; E1-E9 are independently initialized and trained.",
+    "Historical preprocessing, CV-before-RFE, val=test checkpoint selection, transductive graph and single seed limit external interpretation.",
+    "Initial data SHA reference was independently present in the prior experiment49 manifest; current root protected SHA matches it."
+  ],
+  "root_protection_status": "PASS",
+  "root_protection_reference": "/data/adodas/SPromptGL-main/experiment/experiment49_b0b_dual_seed_robustness/manifest.json",
+  "protected_sha256_match": true,
+  "manifest_version": "final",
+  "handoff": {
+    "status": "APPENDED",
+    "marker": "<!-- EXPERIMENT48_2_CARE_GFR -->",
+    "marker_count": 1,
+    "sha256": "21fe68218e8aef4e37156845bdf9fe49b4af1025a4303d5c4f049e25ed219db3",
+    "prefix_verified": true
+  }
+}
