@@ -1,0 +1,30 @@
+{
+  "experiment": "47.2",
+  "name": "Active Patient Graph Failure Attribution",
+  "execution_root": "/tmp/SPromptGL-E47/experiment47_2_active_graph_failure_attribution",
+  "seed": 0,
+  "folds": 10,
+  "pilot_folds": [1, 6],
+  "dims": [48, 6, 10, 256],
+  "graph_threshold": 0.9,
+  "rho": 0.25,
+  "scale_epsilon": 1e-8,
+  "base_lr": 0.0038,
+  "weight_decay": 0.11,
+  "effective_gcn_weight_decay": 0.0,
+  "dropout": 0.35,
+  "epochs": 450,
+  "early_stop": 200,
+  "validation_protocol": "val=test historical checkpoint selection",
+  "groups": {
+    "D0": "dynamic true graph, effective GCN no-WD, centered rho-controlled message",
+    "D1": "fixed B0-B true graph, same controlled message",
+    "D2": "degree/site-pair/weight-matched fixed rewired graph",
+    "D3": "fixed implicit self-loop only graph"
+  },
+  "gates": {
+    "A": "D0 epoch100 train NLL <= 0.8*T1 and train centered ratio rho +/- 10% on folds 1,6",
+    "B": "D1/D2/D3 valid and D1 epoch100 train NLL <= 0.8*T1 on folds 1,6"
+  },
+  "gpu_plan": {"GPU0": "folds 1-5", "GPU1": "folds 6-10"}
+}
