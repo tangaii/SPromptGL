@@ -1,0 +1,21 @@
+{
+  "experiment": "Experiment48.1_DGAA-R",
+  "version": "dgaa-r-frozen-v1",
+  "seed": 0,
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48,6,10,256], "classes": [403,468], "labels": "ASD=0,TD=1"},
+  "cv": {"name": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10, "selection": "historical val_idx=test_idx; strict higher ACC; wait>200"},
+  "base": {"epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "graph_threshold": 0.9, "ALoss_in_total": false, "PEN": "physically removed"},
+  "new": {"projection": "LayerNorm320-Linear128-GELU-Linear64-LayerNorm64", "classifier": "Linear64-32-GELU-Linear32-2", "aux_weight": 0.1, "new_lr": 0.00038, "new_weight_decay": 0.0, "lambda_adv_max": 0.03, "warmup": [0,44], "ramp": [45,89], "pairs": ["CP","CA","CF"], "priority_weights": [0.1666666667,0.1666666667,0.1666666667,0.5]},
+  "groups": [
+    {"id":0,"name":"E0_B0B_REFERENCE","aux":"none","adv":"none"},
+    {"id":1,"name":"E1_AUX_ONLY","aux":"equal","adv":"none"},
+    {"id":2,"name":"E2_UNCONDITIONAL_DGAA","aux":"equal","adv":"unconditional","pairs":["CP","CA","CF"]},
+    {"id":3,"name":"E3_DISEASE_CONDITIONAL_DGAA","aux":"equal","adv":"conditional","pairs":["CP","CA","CF"]},
+    {"id":4,"name":"E4_SELECTIVE_CONDITIONAL_DGAA","aux":"equal","adv":"conditional","pairs":["CF"]},
+    {"id":5,"name":"E5_CORR_PRIORITY_DGAA_R","aux":"corr_priority","adv":"conditional","pairs":["CF"]},
+    {"id":6,"name":"E6_SITE_STRATIFIED_RELATION_NULL","aux":"corr_priority","adv":"conditional","pairs":["CF"],"propagation":"deterministic site/split permutation"},
+    {"id":7,"name":"E7_PERMUTED_DISEASE_CONDITION","aux":"corr_priority","adv":"conditional_permuted","pairs":["CF"]}
+  ],
+  "go": {"GO_AUX":"E1-E0 ACC and Hard-AUC >=0.1pp and >=7/10 strict wins", "GO_CONDITIONAL":"E3 positive versus E2 and E1", "GO_SELECTIVE":"E4 positive versus E3 and E1", "GO_CORR_PRIORITY":"E5 positive versus E4", "GO_REAL_RELATION":"E5-E6 >=0.1pp both main metrics and >=7/10 wins", "GO_DISEASE_CONDITION":"E5 positive versus E7", "GO_FINAL":"E5 >=E0 by 0.1pp both main metrics and >=7/10 wins"},
+  "audit": {"no_root_model_edit": true, "no_extra_seed": true, "no_new_topk_graph": true, "test_labels_for_training": false, "historical_test_selection_exception": true}
+}
