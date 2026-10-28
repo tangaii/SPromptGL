@@ -1,0 +1,172 @@
+{
+  "experiment": "Experiment 47.1 — GCN Message Amplitude Collapse Attribution",
+  "status": "COMPLETED",
+  "workdir": "/tmp/SPromptGL-E47/experiment47_1_gcn_message_collapse_attribution",
+  "stages": {
+    "stage_a": "PASS_10_FOLDS",
+    "stage_b": "PASS_FOLD1_FOLD6_T0_REPLAY",
+    "stage_c": "T1_10_FOLDS_PLUS_T0_T2_PILOTS"
+  },
+  "task_counts": {
+    "stage_a_folds": 10,
+    "t0": 2,
+    "t1": 10,
+    "t2": 2,
+    "total_full_tasks": 14
+  },
+  "gpu_assignment": {
+    "gpu0": [
+      "stage_a_folds1-5",
+      "T0_f1",
+      "T1_f1-5",
+      "T2_f1"
+    ],
+    "gpu1": [
+      "stage_a_folds6-10",
+      "T0_f6",
+      "T1_f6-10",
+      "T2_f6"
+    ]
+  },
+  "source_sha256": {
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a"
+  },
+  "anchor_sha256": {
+    "fold08.pt": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    "fold01.pt": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    "fold07.pt": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    "fold06.pt": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    "fold02.pt": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    "fold10.pt": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa",
+    "fold09.pt": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    "fold03.pt": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    "fold04.pt": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    "fold05.pt": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184"
+  },
+  "historical_best_sha256": {
+    "g0_f09.best.pt": "c40af69b05c358bb2242849e16185865aac4f3b425b837a8ba1671cd7d6a1133",
+    "g0_f02.best.pt": "b17266282d13d4f701a4365e86be572ae980ff236bce080313b5331eddb2a476",
+    "g0_f03.best.pt": "c1f20109fc9d9b39e630aefd13ff9bc8418c12e67a7ff8bddc0631b533c22a20",
+    "g0_f10.best.pt": "b26ec774ee2c3ab8f707e64a03d0e5c7910a88501e70e78f700e708c839f7667",
+    "g0_f04.best.pt": "0d0d9ea0cb4935ce421338df29d7a702606468fdf96771bc44f04c39910e2d0f",
+    "g0_f06.best.pt": "8fa4e205ed51f844a1fbe421b3ebcb98e89df1ead3f2e20667a284743b606990",
+    "g0_f01.best.pt": "34eed48cc72191616f571f5abadc0293982e3de9e99ee258960813d5cc2351a5",
+    "g0_f05.best.pt": "60bb22e93e669872bd0551f2f33edf27c552aea75372c01340d02b6711b22f96",
+    "g0_f07.best.pt": "0571fe6f22756857a19f8d51e1e5ebab9b282273fe3e7a76f84c8de60c9ff0a6",
+    "g0_f08.best.pt": "5850aadca128256f9d1937f9f85b493808c0ad4dacebc6a584ea79cd979f1487"
+  },
+  "outputs_sha256": {
+    "layer_amplitudes_gpu1.csv": "056715f495859876aef15646d5c81ba87e624d3cb25c5409d37317d6afd23512",
+    "pilot_amplitude.csv": "c9551151b6e734209c1cfd274a4288a1d6e7eacb6949b8d02163b757bc04a978",
+    "best_amplitudes.csv": "7a750518994af7f0b6a9a1ff3304447f8cbdf91df7a5459f4d83fcbb48ed9e39",
+    "pilot_T1_f09.trajectory.csv": "d83f2834cdc811d17fd89136fa0cde3872d258076b927eb450aef335369f94e2",
+    "pilot_T1_f07.trajectory.csv": "545af5b5ec50d736c9ce00b5c69618dd8ed57b5d32dc4976cd373dd2febdd366",
+    "pilot_T1_f07.optimizer.csv": "4d3768306d9f8346bd07b46eca3a4b35ce3442142478b573cb9b38fb3f5e70f7",
+    "pilot_T1_f09.metrics.csv": "b4e9bcaf7f08d7128413c0e0aaeaf1e361316fcb2dcd82901bef90e1bd6327bc",
+    "pilot_T1_f02.optimizer.csv": "eaa0fcbfc437e8ba9bbfc99022d6d70c461b9f1ba81dc864a9fe3e1217feeefd",
+    "pilot_T2_f01.amplitude.csv": "b41da566b7172781b3af6fb04e2a4a2e6c32ffaded7cb22dea18883a2c286296",
+    "pilot_T1_f06.amplitude.csv": "1d93b63daa23705680651650dbd159d48788e58d1f7b029947ed8ccf01f5207e",
+    "pilot_T2_f06.optimizer.csv": "f009c1cc9a960f817c95f6dbd75835db61d223ec5518d15f1e6521378d3837e9",
+    "layer_amplitudes.csv": "48877ae9d89cc7a99a88a9c3cabaddbe11b21b121e53eee4c99f3f5434bc955b",
+    "interventions.csv": "39a50b8a57ce73122d3a57886d91451df24da409a7f07f389033f191908d128a",
+    "pilot_T1_f05.amplitude.csv": "2778af52dc2aaef6318df0e5f4ee02534b7c55f405ee5be5386a63ff924cffaf",
+    "pilot_T1_f01.optimizer.csv": "265173b784b4163366842ad5cf3f876ff2d033789e8a5aca933332c31b10476b",
+    "pilot_metrics.csv": "725340cf291412f9dbb7c7d5ceaa34a1004b0fa37860442377a86ee4b51105df",
+    "pilot_T1_f03.trajectory.csv": "b55ef3fd13217a6fba2d0bdfc2bbca46469018e60dc9ea34066eae8292dd33fb",
+    "training_trajectory.csv": "6d28b2084b6efd3fcc2b7ec7bdfcc5b2489b1e9f7d2b8b2b6183fd61716d0860",
+    "pilot_T1_f05.metrics.csv": "0d4a51ed2fb17aae0c904eaa6e30b5e09784ac2506c135384012845fad35ca76",
+    "pilot_T0_f01.metrics.csv": "f2bbb32ecde904a559f7e231120da92cfcca19e76292c94150aedd0450c49c41",
+    "pilot_T1_f08.optimizer.csv": "dc2c508e25942bd47e9ca5e2d4138cb0b1151d6574aca724aa821431d2ff665f",
+    "pilot_T1_f08.trajectory.csv": "3d25270aa989207f3e70b299102e426a0d35f904ff7599b17f6b7ee771fa8e5d",
+    "pilot_T1_f06.trajectory.csv": "50f1c55e4427e4ff4a1a2cc6cb89a5afbbb7ae777858f97b619b5ea8f33d0e6d",
+    "gradient_diagnostics.csv": "d4e74751732ac979262a85ca46ad1b0a2ee01151de171c5ef30924f5b5085787",
+    "pilot_T1_f04.trajectory.csv": "4577a4a564d44fe985a9d5e4ca799e855813f4abf40977eaec1b2f343ccf9079",
+    "pilot_T1_f02.trajectory.csv": "f942729e5b5186244e40d4745e8cf5ce9c86356450e619de9a105162edf73ad7",
+    "pilot_T1_f03.metrics.csv": "a2a6a868616678d53e35d551b40977e50ac02df06553e5c778393dca1f49c9fe",
+    "optimizer_diagnostics.csv": "a7952bdb51f66ba7993e36dba3f09a5ac6dedb8c7dc5eff44d810e9a866894d3",
+    "pilot_T0_f06.amplitude.csv": "fe876c8f1ccda9abfcf96b009b4e4ef14a9fa329e315288070ab39bc8cf4b63e",
+    "pilot_T2_f06.amplitude.csv": "0c08d5fdd248360a29ac83e10e078f782f0625b5fe14b2e2393ee32f0b5a9c45",
+    "pilot_T1_f01.amplitude.csv": "ac9a359c43494e8682ba82acb50243e87ec05b641ac3a27b5e56e7d23485938b",
+    "pilot_T2_f06.trajectory.csv": "aa5c023e133b170396460a50f99c7e34a42b3b751c2b622b07c8d1e782b3506e",
+    "pilot_T1_f08.metrics.csv": "6d02f577ba7ac71b90420de30f1fc4a4bf9d05c0c0f04475b6e0374be9dc1faa",
+    "pilot_T0_f01.optimizer.csv": "b5df3a40c27e3f43d86c91719f04ea0465d7a99d8c1675c8903039e0e4f6d26f",
+    "pilot_T1_f01.metrics.csv": "86caa0c7f1d3f8d35c2cd1b34caf0ac4bee05eeec308c98158e6475b90612fe4",
+    "pilot_T1_f10.metrics.csv": "f2001cd3be3a351a60ace4b9612584466df381d0b0cfc71db758db089f4cd5a3",
+    "pilot_T1_f04.optimizer.csv": "2849018e9ad94fabae95331bb3f9bf51a5fbeb8fb6aa2f6f29a7affc2a7fa214",
+    "pilot_T2_f01.trajectory.csv": "83c0c46208953e0a2806b7ad9a71fe7459b25dbfec770bf3bf3c3c38a3c3f85a",
+    "pilot_T0_f06.metrics.csv": "aacd4d0827c9559aae9ceede3376f62f6514e6e167d20b079b1dca9b3117d49a",
+    "pilot_T1_f03.optimizer.csv": "7ea62fb9a39a691ed10702991a3f73285c92d3ff761476f92f9f7c55d9d7405e",
+    "pilot_T1_f07.amplitude.csv": "23ddbfec91680c2466dd33a593236316506704f1a459876bb448e3c62c65097b",
+    "layer_amplitudes_gpu0.csv": "d1c77d6213d99d357fad0de157c9e2b00656136843642099bba049d668295e8c",
+    "pilot_T0_f01.trajectory.csv": "ec4af6b8d1f956cc6a29bd8237b13fe33c09c6e5a9e1c2493ff3491b5194bb09",
+    "pilot_T1_f03.amplitude.csv": "1e0c6858d08d69536d3cdca86c9319a53539df2d3d2cb2e88e14554e990ac8ad",
+    "pilot_T1_f01.trajectory.csv": "6123ff51c27a1794b0330b9435a6495e9eca47ec9ee89d8eff747bb7aa8eadf2",
+    "pilot_T1_f05.trajectory.csv": "d8990281d446fa6ac8a2fcff57d54a111f3b704c0b0b4a41f87a5d5aab4267a0",
+    "pilot_T1_f07.metrics.csv": "7995c6eb1cec69f1f04920e34b18ead6751991ee2a1dcb3803d976c6e06d737c",
+    "pilot_T1_f05.optimizer.csv": "6873ce4fcdbc3dfad14f1d0b19107c5fe4d2acdf44c855a46d7ef089f138d3c2",
+    "pilot_T1_f09.optimizer.csv": "a7e7861b257d5f60225f33dbfe2706567ec9d5daaefe73d0e1a99a0ed1749b86",
+    "pilot_T1_f02.amplitude.csv": "ff7fff56f03638eac4c1bb4fcae4225f5dab7c644888cd466e7649da7abfc8f9",
+    "pilot_T2_f06.metrics.csv": "2311033cf9145bb34047048d3725affaebb5ee8c4899788031843ff5d3030024",
+    "pilot_T0_f01.amplitude.csv": "f44351f7758066d7566cf5dd397823e199ec0d972e25577b0634840e4656ce62",
+    "pilot_T2_f01.metrics.csv": "b49bcbb20f1c3a4d16f7d74ad16f21916d059d195b6d3ef463a1c0e72ee30d5b",
+    "pilot_T1_f06.metrics.csv": "bae784b496f18e6141faaa524019be295d708dbc4bc3d23f09863fe02eaa9472",
+    "pilot_T1_f10.trajectory.csv": "429b9199edf22ca85e4257183a1da0b01446ce6881fd1cf986f6148f6220abd4",
+    "pilot_T1_f09.amplitude.csv": "a626bb1b8603d487358d8f742daf619f8bdec102add00ce72ce8b0ad562d8eaf",
+    "pilot_T0_f06.optimizer.csv": "7c4da8f7653afd4f3f54b0ee7bef03eccd58cb6166f49fe2d201c993d8e8a1e0",
+    "pilot_T1_f04.amplitude.csv": "8cc5add30d6ebab22e06d6e4016ee5bee1ca7aec242207774484e7b39416ac13",
+    "pilot_T1_f08.amplitude.csv": "4df453e163fc213e7fbe10a99be45e76035237b2bc9b9141020d7b2cf21796a8",
+    "pilot_T2_f01.optimizer.csv": "235a66df6bf0a6a6f08c049e222438e66ae84354541601f6a0315d499d691f6b",
+    "pilot_T1_f02.metrics.csv": "8911cb68e9875d85fc838d176de6786d547b560643d5b13d7d73b7c372e5adc2",
+    "pilot_T1_f10.amplitude.csv": "5d5ecadf24d0a86aede0de8726a056a2e77f11addfd9cb801c6a7d4e21877599",
+    "pilot_T1_f10.optimizer.csv": "c4741d3e6e0e92d60c7e6fe9e3c9d4475043517b60a6923ef833684260a84270",
+    "pilot_T1_f04.metrics.csv": "839224ef5624d2cdf2eb0be51ec1ad845165275bd41bd4c555cc2f3356d15897",
+    "pilot_T1_f06.optimizer.csv": "ae88ec1420a68f03aa22e0c160f628d17ed6e83d3fa01e30a8785abdc631337c",
+    "pilot_T0_f06.trajectory.csv": "1acbe643a35fbdfc8dc68a7d45e4a6518da1cba3a951ae688e6fb1021d66564d"
+  },
+  "replay_check": "PASS",
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "runtime_sha256": {
+    "replay_check.json": "253bc8c0a989db29e01ddeaf4397f855f19b43b47b223feed1f999c78b7a44d4",
+    "preflight_checks.json": "1140a3c7115583ae54fe14049373bb5edea2ef4ee3c2064d777dd0afd0bab6eb"
+  },
+  "result_sha256": {
+    "best_amplitudes.csv": "7a750518994af7f0b6a9a1ff3304447f8cbdf91df7a5459f4d83fcbb48ed9e39",
+    "layer_amplitudes.csv": "48877ae9d89cc7a99a88a9c3cabaddbe11b21b121e53eee4c99f3f5434bc955b",
+    "interventions.csv": "39a50b8a57ce73122d3a57886d91451df24da409a7f07f389033f191908d128a",
+    "pilot_metrics.csv": "a006f47f0bc31b985c2f31f755db2fad2926be625bc635eb5b42335ed93aead3",
+    "training_trajectory.csv": "6d28b2084b6efd3fcc2b7ec7bdfcc5b2489b1e9f7d2b8b2b6183fd61716d0860",
+    "gradient_diagnostics.csv": "d4e74751732ac979262a85ca46ad1b0a2ee01151de171c5ef30924f5b5085787",
+    "optimizer_diagnostics.csv": "a7952bdb51f66ba7993e36dba3f09a5ac6dedb8c7dc5eff44d810e9a866894d3",
+    "report.md": "7e6c4331eb726a582b0581f95cc68a1f8cf884a7a9e6256d1243db9503820255",
+    "fold_metrics.csv": "056363ef54bff0572053f02ec7a42e0c8982f8e8e6aac7a8c0b1950ea743b48b"
+  },
+  "wall_time_seconds_approx": 3600,
+  "scientific_decision": {
+    "amplitude": "VERIFIED_GCN_WEIGHT_DECAY_ATTRIBUTION",
+    "classification": "AMPLITUDE_RESTORED_NO_INCREMENTAL_VALUE",
+    "graph_loss_direct_cause": "NOT_SUPPORTED",
+    "final": "FINAL_NO_GO_FOR_AMPLITUDE_ONLY_GFR_INNOVATION"
+  },
+  "code_sha256": {
+    "amplitude_audit.py": "00c25c82bcc58adfd57e0f03784ccd0fc66e4aae4a870a81d428a9d48207d70b",
+    "audit.py": "32c94588a01dab92c5d9e6add42cd28fa60969336984661ccde30a1f5877eadb",
+    "run.py": "a36dc932a82adf8538d5b15604e4731fcc237518dfd1cfa2cd1547e602884a21",
+    "optimizer_audit.py": "b427d360d8015113e4227b794f5b5f4f22a66125ad7e0d7c324435137f437cbb",
+    "integration.py": "fb97364d25783d382ecafaa3741aedeb4b9c0e14a93dc1464a87a64be7772acc",
+    "train.py": "75c7b4ebbc5caa3ac55cd2e1c9b2d0f37980b9bce3e3e8a67488437f1b37819c"
+  },
+  "handoff": {
+    "status": "PENDING_OSSFS_ERRNO5",
+    "pending_path": "/tmp/SPromptGL-E47/experiment47_1_cugl_handoff_append_pending.md"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "Experiment 47.1 — GCN Message Amplitude Collapse Attribution",
+  "version": "47.1-frozen-v1",
+  "seed": 0,
+  "input_dims": [48, 6, 10, 256],
+  "protocol": {
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "max_epoch": 450,
+    "early_stop": 200,
+    "threshold": 0.9,
+    "graph_mode": "weighted-cosine",
+    "message_mode": "GCN",
+    "val_equals_test": true,
+    "fold_seed": 10,
+    "n_folds": 10
+  },
+  "stage_a": {
+    "scope": "ten B0-B initialization anchors and best checkpoints",
+    "factor_replacements": ["best_adj_best_weights", "best_adj_initial_weights", "initial_adj_best_weights", "initial_adj_initial_weights"],
+    "layers": ["X", "XW1", "A_norm_XW1", "relu_A_norm_XW1", "relu_A_norm_XW1_W2", "A_norm_relu_A_norm_XW1_W2", "fusion_scaled_output", "GFR_minus_X"],
+    "precision": "FP32 plus independent FP64 matrix diagnostic"
+  },
+  "stage_b": {
+    "folds": [1, 6],
+    "epochs_sampled": [0, 1, 2, 5, 10, 20, 50, 100, 150, 200],
+    "interval_summary": 10,
+    "must_match_history": true
+  },
+  "stage_c": {
+    "pilot_folds": [1, 6],
+    "groups": {
+      "T0_B0B_REPLAY": "original B0-B",
+      "T1_GCN_NO_WD": "remove weight decay only for MessagePassing1/2/3 gcn1.W and gcn2.W",
+      "T2_NO_GRAPH_LOSS": "loss=classification loss only"
+    },
+    "expansion": "T1 priority if mechanism gate passes; otherwise T2; otherwise stop",
+    "mechanism_gate": "both pilot folds must increase aggregate ANAT/FUNC/CORR effective message ratio by >=10x"
+  },
+  "protected_scope": ["root model/data/history/checkpoints read-only", "handoff append attempted only after completion"],
+  "runtime": {
+    "gpu0": "folds 1-5",
+    "gpu1": "folds 6-10",
+    "workdir": "/tmp/SPromptGL-E47/experiment47_1_gcn_message_collapse_attribution"
+  }
+}
