@@ -1,0 +1,26 @@
+{
+  "experiment": "47.3",
+  "name": "Patient Graph Relation-Specific Value Verification",
+  "seed": 0,
+  "folds": 10,
+  "input_shape": [48, 6, 10, 256],
+  "rho": 0.25,
+  "max_epoch": 450,
+  "early_stop": 200,
+  "lr": 0.0038,
+  "weight_decay": 0.11,
+  "effective_gcn_weight_decay": 0.0,
+  "dropout": 0.35,
+  "selection": "historical val=test ACC, strict improvement, first tie",
+  "controls": {
+    "D4": "within-site, within-split cyclic patient node relabel P A P^T",
+    "D5": "within-site, within-split receiver-message permutation P M",
+    "gate_threshold": 0.25,
+    "gate_required_folds": 8
+  },
+  "formal_groups": ["D1_FIXED_TRUE", "D2_FIXED_REWIRE", "D3_FIXED_SELF", "D4_SITE_STRATIFIED_GRAPH_RELABEL", "D5_SITE_STRATIFIED_MESSAGE_PERMUTATION"],
+  "new_training_folds": 20,
+  "gpu_assignment": {"gpu0": "folds 1-5", "gpu1": "folds 6-10"},
+  "data_protocol": ["historical val=test", "pre-CV RFE/standardization", "871-node transductive input", "single seed"],
+  "formal_metrics": ["ACC", "Hard-AUC", "SPE-TD", "SEN-ASD"]
+}
