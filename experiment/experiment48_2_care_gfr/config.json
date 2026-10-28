@@ -1,0 +1,21 @@
+{
+  "experiment":"Experiment48.2_CARE-GFR","version":"care-gfr-frozen-v1","seed":0,
+  "data":{"csv":"/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv","mapping":"/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy","n":871,"dims":[48,6,10,256],"classes":[403,468],"labels":"ASD=0,TD=1"},
+  "cv":{"name":"StratifiedKFold","n_splits":10,"shuffle":true,"random_state":10,"selection":"historical val_idx=test_idx; strict higher ACC; wait>200"},
+  "base":{"epochs":450,"early":200,"lr":0.0038,"weight_decay":0.11,"dropout":0.35,"n_hidden":18,"n_head":2,"nlayer":1,"graph_threshold":0.9,"PEN":"physically removed","ALoss_in_total":false},
+  "care":{"relation_hidden":32,"candidate_k":24,"propagation_k":16,"lambda_pair":0.1,"lambda_cons":0.02,"lambda_robust":0.1,"lambda_stab":0.1,"inner_steps":3,"max_replacements":2,"attack_start":30,"attack_ramp_end":90,"new_lr":0.00038,"new_weight_decay":0.0001},
+  "groups":[
+   {"id":0,"name":"E0_B0B_REFERENCE","drel":false,"cata":false,"attack":"none"},
+   {"id":1,"name":"E1_REPAIRED_GFR","drel":false,"cata":false,"attack":"none"},
+   {"id":2,"name":"E2_DREL_ONLY","drel":true,"cata":false,"attack":"none"},
+   {"id":3,"name":"E3_DREL_CATA","drel":true,"cata":true,"attack":"none"},
+   {"id":4,"name":"E4_FULL_CARE_GFR","drel":true,"cata":true,"attack":"adversarial"},
+   {"id":5,"name":"E5_NO_CONSENSUS_ALIGNMENT","drel":true,"cata":false,"attack":"adversarial"},
+   {"id":6,"name":"E6_FEATURE_GRL_CONTROL","drel":true,"cata":true,"attack":"feature_grl"},
+   {"id":7,"name":"E7_WRONG_RELATION_CONTROL","drel":true,"cata":true,"attack":"wrong_relation"},
+   {"id":8,"name":"E8_SHUFFLED_PAIR_LABEL_CONTROL","drel":"shuffled","cata":true,"attack":"none"},
+   {"id":9,"name":"E9_RANDOM_PERTURB_CONTROL","drel":true,"cata":true,"attack":"random"}
+  ],
+  "go":{"SCREEN_ACC":"E4 mean ACC > 91.73%","GO_DREL":"E2>E1 on relation diagnostics and main metrics","GO_CATA":"E3/E4>E2/E5","GO_ACRL":"E4>E3 and E9","GO_VS_GRL":"E4>E6","GO_REAL_RELATION":"E4>E7","GO_DISEASE_RELATION_LABEL":"E4>E8","GO_GRAPH_RELIANCE":"E4 changes under message ablation"},
+  "audit":{"no_root_model_edit":true,"no_extra_seed":true,"test_labels_for_training":false,"historical_test_selection_exception":true}
+}
