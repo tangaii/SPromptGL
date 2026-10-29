@@ -1,0 +1,149 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "experiment_root_requested": "/data/adodas/SPromptGL-main/experiment/experiment48_5_alpha_ablation",
+  "staging_path": "/tmp/experiment48_5_alpha_ablation",
+  "parent_experiment_path": "/model/spromptgl/experiment/experiment48_4_verified_apcr",
+  "parent_48_4_code_signature": "32adfb609edab2ed90833e5fea283d9b52d22766e02771ad143c4e576353033b",
+  "code_signature": "9cbed58eab66fe4e79dbe272c1b6bd5d93c06967c83e8992644ce48b8bc1565f",
+  "data_sha": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "fold_sha256": [
+    "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  ],
+  "source_sha256": {
+    "experiment48_4_method.py": "b7c372d4941176fc170d19c9a8beb066cec32e22727cd1b80f740788fa3d6f42",
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "experiment48_4_run.py": "044f5e670330c71e0488c1b63515179ce6822a25388b262306f1681fa86449e5",
+    "experiment48_4_tests.py": "e95cba5ba80d124329dfe0b19d30a430deb02022976172a3ebff83434578ef1a",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "experiment48_4_audit.py": "0596745108e92a84089157f78f84a20e82183cf75aa2102b5561ec2dd29832ca",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "alpha_init": 0.0022,
+  "training_group": 6,
+  "worker_plan": {
+    "logical_workers": 5,
+    "folds": [
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        10
+      ]
+    ],
+    "gpu_concurrency": 5
+  },
+  "historical_reference_sha256": {
+    "48_4_fold_metrics.csv": "af4fedf8ed570323199f52a12483c4966947cd7a11327800ff3d867772f57295",
+    "48_3_summary.csv": "addc2394efd369b9713eb861db09ff3a577130f3a832a2a56e1f5232a04ec03b",
+    "48_4_summary.csv": "feb49c701625d2899599bc4b300340b484a7e12f4c9ecbe89771a0ecbee7e038"
+  },
+  "preflight_assertions": {
+    "inherited_48_4_parity": "10/10_PASS",
+    "same_initial_state_forward_loss": "10/10_PASS",
+    "shared_gradient_path": "PASS",
+    "fixed_alpha_grad_none": "PASS",
+    "learnable_alpha_nonzero_finite": "PASS",
+    "group6_losses_srd_sca_cra": "PASS"
+  },
+  "tasks": {
+    "total": 20,
+    "complete": 20
+  },
+  "trained_folds": 20,
+  "independent_readback": "20/20_PASS",
+  "training_signatures": [
+    "9cbed58eab66fe4e79dbe272c1b6bd5d93c06967c83e8992644ce48b8bc1565f"
+  ],
+  "protected_sha256_after": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "protected_sha_unchanged": true,
+  "alpha_audit": {
+    "fixed_alpha_exact_all_steps": true,
+    "learnable_alpha_updated_all_folds": true,
+    "initial_bundle_sha_match_all_folds": true,
+    "initial_gfr_sha_match_all_folds": true,
+    "initial_cam_sha_match_all_folds": true,
+    "initial_apcr_sha_match_all_folds": true
+  },
+  "results_sha256": {
+    "results/apcr_off_interventions.csv": "48aa6a33b0dd484667f648019ab8dfcf9776b59d8fd6915bff23dd1545108182",
+    "results/report.md": "2737e5c517973faf65f5adbb1ac439c8821e760605f278df33e47f0823196a86",
+    "results/summary.csv": "6b0ff0fc562a77dbb167bfd0cbb1bd50db601e1985f7258a49b5013ca7f8fa12",
+    "results/fold_metrics.csv": "73712cd734b2309f3466f0f341a6ab69e49b586c92d1183976ba31ac554df1fb",
+    "results/paired_comparisons.csv": "b9bf7f2c9c8d17c4f880e37a5542693d10d325f2249e92f4845e8e8be2c2615a"
+  },
+  "elapsed_wall_seconds": 643.4285109043121,
+  "training_seconds_by_group": {
+    "1": 2087.945779763162,
+    "2": 1862.937295384705
+  },
+  "preflight_sha256": "0884faa9c32ed8a1bad0214b60c1d7e1ce24e2e51e2b115e3789e320cdb49d62",
+  "parent_48_4_source_signature": "32adfb609edab2ed90833e5fea283d9b52d22766e02771ad143c4e576353033b",
+  "handoff_before_sha256": "bd98e2b2209f1bc086b7a433e2db477e36f7c8d202155835e637237bbc23c112",
+  "handoff_before_size": 535183,
+  "handoff_status": "HANDOFF_PENDING",
+  "handoff_error": "[Errno 5] Input/output error",
+  "handoff_pending_path": "/tmp/experiment48_5_alpha_ablation/.runtime/handoff_pending.md",
+  "delivery_status": "SYNC_PENDING",
+  "requested_target": "/data/adodas/SPromptGL-main/experiment/experiment48_5_alpha_ablation",
+  "artifact_sha256": {
+    "handoff_entry.md": "1b5cbff4a47ccac972fe6503f088ef54888bf0be7c396f191575c720db69dc27",
+    "run.py": "28f50e9c0a7e2b84efa7a00fc077334899a6579e6b43a7c61b517d6292047790",
+    "tests.py": "e95cba5ba80d124329dfe0b19d30a430deb02022976172a3ebff83434578ef1a",
+    "method.py": "eeaf57e546056b17f0995b846a7d3814612cb7c54f3149cd34c3f8997ed0cf85",
+    "audit.py": "849365759c7e5a17d20097d2627c9b0aa8a1fe2e7f0fb9b8904cf9195a7b0b78",
+    "README.md": "7f657419de2b70beaba6acc7e2a675cfb71c6008a5e08f8d10707663611dc1f7",
+    "manifest.json": "080f820eafd6795d05207d7c76cf4aab2c1ab4dd4e6c2938f3c05b15b54c4240",
+    "append_handoff.py": "dfd95d174bc1c0c3a010a61ffd4c35caf6b2dc79ee9942a3907cb8bce19f7f9e",
+    "config.json": "632d2c44367a6a6ec256c2976543e7f1a182681934e475413f49ba1a9be2843b",
+    "__pycache__/tests.cpython-312.pyc": "00053bb5fd0de2c7760b8516dcc5a47280f8dfa580f11f98d6aeb1a4c75402ba",
+    "__pycache__/method.cpython-312.pyc": "bc8e3c3362ecbba3a0cc8a10c377cde4b9e8ae58f196bf2ac6adc480f63b5db1",
+    "__pycache__/audit.cpython-312.pyc": "c433ba3686012dc7b9fc4a59ef0c98a7d9285a848e8b900a187fc3312897c8d5",
+    "__pycache__/run.cpython-312.pyc": "6edbe626d3e2221e77324de9fd52f4e0008599749b4a82aaba36c9bca056e799",
+    "results/apcr_off_interventions.csv": "48aa6a33b0dd484667f648019ab8dfcf9776b59d8fd6915bff23dd1545108182",
+    "results/report.md": "2737e5c517973faf65f5adbb1ac439c8821e760605f278df33e47f0823196a86",
+    "results/summary.csv": "6b0ff0fc562a77dbb167bfd0cbb1bd50db601e1985f7258a49b5013ca7f8fa12",
+    "results/fold_metrics.csv": "73712cd734b2309f3466f0f341a6ab69e49b586c92d1183976ba31ac554df1fb",
+    "results/paired_comparisons.csv": "b9bf7f2c9c8d17c4f880e37a5542693d10d325f2249e92f4845e8e8be2c2615a"
+  },
+  "handoff_entry_sha256": "1b5cbff4a47ccac972fe6503f088ef54888bf0be7c396f191575c720db69dc27"
+}
