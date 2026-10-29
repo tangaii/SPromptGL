@@ -1,0 +1,66 @@
+{
+  "experiment": "Experiment48.4_Verified_APCR",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "classes": [403, 468],
+    "labels": "ASD=0,TD=1"
+  },
+  "protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871
+  },
+  "base": {
+    "hidden": 18,
+    "heads": 2,
+    "layers": 1,
+    "dropout": 0.35,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "epochs": 450,
+    "wait": 200,
+    "pen": false,
+    "aloss_in_total": false
+  },
+  "apcr": {
+    "projection_dim": 32,
+    "message_dim": 64,
+    "candidate_k": 24,
+    "propagation_k": 16,
+    "alpha_init": 0.01,
+    "alpha_max": 0.2,
+    "lr": 0.00038,
+    "weight_decay": 0.0001,
+    "lambda_srd": 0.05,
+    "lambda_sca": 0.02,
+    "lambda_cra": 0.05,
+    "lambda_kl": 0.05,
+    "attack_steps": 2,
+    "max_replacements": 2,
+    "attack_targets_per_epoch": 32,
+    "attack_candidates_per_target": 4
+  },
+  "groups": [
+    {"id": 0, "name": "B0B_REFERENCE"},
+    {"id": 1, "name": "ANCHOR_PARITY"},
+    {"id": 2, "name": "FEATURE_CAPACITY"},
+    {"id": 3, "name": "REAL_RELATION"},
+    {"id": 4, "name": "SRD_ONLY"},
+    {"id": 5, "name": "SRD_SCA"},
+    {"id": 6, "name": "FULL_VERIFIED_APCR"},
+    {"id": 7, "name": "FULL_NO_SCA"},
+    {"id": 8, "name": "FULL_WRONG_RELATION"},
+    {"id": 9, "name": "FULL_SHUFFLED_SRD"},
+    {"id": 10, "name": "FULL_RANDOM_ATTACK"}
+  ],
+  "go": {
+    "screen_acc_gt": 91.73,
+    "pairs": ["E3-E2", "E4-E3", "E5-E4", "E6-E5", "E6-E7", "E6-E8", "E6-E9", "E6-E10", "E6-E0"]
+  }
+}
