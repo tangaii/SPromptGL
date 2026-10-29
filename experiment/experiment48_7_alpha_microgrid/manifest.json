@@ -1,0 +1,92 @@
+{
+  "status": "COMPLETE_SCRATCH_STAGED",
+  "experiment": "Experiment48.7",
+  "tasks": {
+    "B": 120,
+    "G": 120,
+    "total": 240,
+    "complete": 240
+  },
+  "code_signatures": {
+    "B": "22793991f118a109ba775568382fb9eedd6033f52f7ef31498408e5994bf56a0",
+    "G": "2e249ac60d89638b7cd64064eb84ef9ef974e3092106d105997ea4233f5d5945"
+  },
+  "data_sha256": {
+    "B": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "G": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "fold_sha256": [
+    "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  ],
+  "worker_plan": {
+    "gpu": "single GPU fallback",
+    "workers": 5,
+    "fold_pairs": [
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        10
+      ]
+    ]
+  },
+  "preflight": {
+    "B": "PASS",
+    "G": "PASS after matched nonzero-alpha assertion correction"
+  },
+  "independent_readback": {
+    "B_rows": 120,
+    "G_rows": 120,
+    "prediction_sha_match": 240,
+    "alpha_zero_interventions": 240
+  },
+  "delivery_status": "DATA_OSSFS_EIO; formal /data path not synchronized",
+  "handoff_status": "HANDOFF_PENDING",
+  "aggregate_sha256": {
+    "README.md": "c0251811a51a38b296ef54e95211b814c63a2438b348f6117978ea96a28746ef",
+    "config.json": "a125fdace67b4ad012d4d30707fc30a39ce80067c7dca395dc9a5c3a6ed8b672",
+    "method.py": "4e3d54cb814b29ac1bd5d305e4dad13297fc73c3067a3d02c351fb77d8c9e7f8",
+    "run.py": "04bd129aa1f8d3e44245eae3d444a407bf243cc554629099a8800d7ff698f18b",
+    "audit.py": "d9c03e8097cd9c6847e356f0c01d8efb64c219d1ed320f518d85fba63056c998",
+    "results/report.md": "212e2c0bee93a035f6dd72fed7b26ba774fd41b88668a0e27c39654b7036235d",
+    "results/fold_metrics.csv": "9e00fa6394e2dfa25d7b12f20cfa94bcc4be5e351a236780a2fdfb5c805b1d19",
+    "results/summary.csv": "a4fbf563f612a466a8e276f41c41f08021993c1ec7edd99f5d0908fedc90f207",
+    "results/paired_comparisons.csv": "7f8a1ee5d747d3f3680514d2639026ab0de7d02c5af1b8363310d96a8a85a64f",
+    "results/alpha_diagnostics.csv": "d71d134ddde96c3b1b634e417a033636892bbada670ae63d46792e6d5462307e",
+    "results/interventions.csv": "73d876f64b4f13f6e265bb46ecdeb588e747701aec9676e119a6340ca33ea934"
+  },
+  "runtime_source_files": 19,
+  "handoff_pending_sha256": "a039939fece5af3cc0cb891459c0fc228c20fd928770787fc609015d226f0a04"
+}

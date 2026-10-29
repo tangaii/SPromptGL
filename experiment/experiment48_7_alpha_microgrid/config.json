@@ -1,0 +1,264 @@
+{
+  "experiment": "Experiment48.7",
+  "status": "COMPLETE",
+  "protocol": {
+    "seed": 0,
+    "folds": 10,
+    "stratified_shuffle": true,
+    "random_state": 10,
+    "gpu": "single GPU fallback",
+    "workers": 5,
+    "training_group": 6,
+    "alpha_grid": [
+      0,
+      0.0001,
+      0.0003,
+      0.0006,
+      0.001,
+      0.0015
+    ]
+  },
+  "bases": {
+    "B": "48.5 B0-B engine, historical per-epoch RNG",
+    "G": "48.6.1 E51 LegacyFixedGFR engine, continuous main RNG plus APCR RNG"
+  },
+  "groups": [
+    {
+      "name": "B-F-00",
+      "base": "B",
+      "alpha_target": 0,
+      "alpha_init": 0,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-00",
+      "base": "B",
+      "alpha_target": 0,
+      "alpha_init": 1e-08,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "B-F-01",
+      "base": "B",
+      "alpha_target": 0.0001,
+      "alpha_init": 0.0001,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-01",
+      "base": "B",
+      "alpha_target": 0.0001,
+      "alpha_init": 0.0001,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "B-F-02",
+      "base": "B",
+      "alpha_target": 0.0003,
+      "alpha_init": 0.0003,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-02",
+      "base": "B",
+      "alpha_target": 0.0003,
+      "alpha_init": 0.0003,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "B-F-03",
+      "base": "B",
+      "alpha_target": 0.0006,
+      "alpha_init": 0.0006,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-03",
+      "base": "B",
+      "alpha_target": 0.0006,
+      "alpha_init": 0.0006,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "B-F-04",
+      "base": "B",
+      "alpha_target": 0.001,
+      "alpha_init": 0.001,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-04",
+      "base": "B",
+      "alpha_target": 0.001,
+      "alpha_init": 0.001,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "B-F-05",
+      "base": "B",
+      "alpha_target": 0.0015,
+      "alpha_init": 0.0015,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "B-L-05",
+      "base": "B",
+      "alpha_target": 0.0015,
+      "alpha_init": 0.0015,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-00",
+      "base": "G",
+      "alpha_target": 0,
+      "alpha_init": 0,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-00",
+      "base": "G",
+      "alpha_target": 0,
+      "alpha_init": 1e-08,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-01",
+      "base": "G",
+      "alpha_target": 0.0001,
+      "alpha_init": 0.0001,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-01",
+      "base": "G",
+      "alpha_target": 0.0001,
+      "alpha_init": 0.0001,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-02",
+      "base": "G",
+      "alpha_target": 0.0003,
+      "alpha_init": 0.0003,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-02",
+      "base": "G",
+      "alpha_target": 0.0003,
+      "alpha_init": 0.0003,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-03",
+      "base": "G",
+      "alpha_target": 0.0006,
+      "alpha_init": 0.0006,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-03",
+      "base": "G",
+      "alpha_target": 0.0006,
+      "alpha_init": 0.0006,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-04",
+      "base": "G",
+      "alpha_target": 0.001,
+      "alpha_init": 0.001,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-04",
+      "base": "G",
+      "alpha_target": 0.001,
+      "alpha_init": 0.001,
+      "strategy": "Learnable",
+      "training_group": 6
+    },
+    {
+      "name": "G-F-05",
+      "base": "G",
+      "alpha_target": 0.0015,
+      "alpha_init": 0.0015,
+      "strategy": "Fixed",
+      "training_group": 6
+    },
+    {
+      "name": "G-L-05",
+      "base": "G",
+      "alpha_target": 0.0015,
+      "alpha_init": 0.0015,
+      "strategy": "Learnable",
+      "training_group": 6
+    }
+  ],
+  "history": {
+    "('B', 'base')": {
+      "acc": 91.7294,
+      "hard_auc": 91.6046,
+      "spe": 93.136,
+      "sen": 90.0732,
+      "probability_auc": 93.2322
+    },
+    "('G', 'base')": {
+      "acc": 91.9592,
+      "hard_auc": 91.7434,
+      "spe": 94.6392,
+      "sen": 88.8476,
+      "probability_auc": 93.1856
+    },
+    "('B', 'fixed_0022')": {
+      "acc": 91.843,
+      "hard_auc": 91.6977,
+      "spe": 93.5661,
+      "sen": 89.8293,
+      "probability_auc": 93.4698
+    },
+    "('B', 'learn_0022')": {
+      "acc": 91.4995,
+      "hard_auc": 91.2806,
+      "spe": 94.2137,
+      "sen": 88.3476,
+      "probability_auc": 92.7895
+    },
+    "('G', 'fixed_0022')": {
+      "acc": 91.8443,
+      "hard_auc": 91.637,
+      "spe": 94.4265,
+      "sen": 88.8476,
+      "probability_auc": 93.7062
+    },
+    "('G', 'learn_0022')": {
+      "acc": 91.8443,
+      "hard_auc": 91.637,
+      "spe": 94.4265,
+      "sen": 88.8476,
+      "probability_auc": 93.1482
+    }
+  },
+  "delivery": "SCRATCH_ONLY_DATA_OSSFS_EIO"
+}
