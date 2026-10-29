@@ -1,0 +1,26 @@
+{
+  "experiment": "Experiment51.1_DC-SRA-GFR",
+  "seed": 0,
+  "dataset": "ABIDE",
+  "n_subjects": 871,
+  "label_order": {"ASD": 0, "TD": 1},
+  "modalities": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+  "cv": {"n_splits": 10, "shuffle": true, "random_state": 10, "val_equals_test": true},
+  "base": {"lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "threshold": 0.9, "n_hidden": 18, "n_head": 2, "nlayer": 1, "epochs": 450, "early": 200, "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0},
+  "new_module": {"hidden": 16, "s_dim": 8, "c_dim": 8, "lr": 0.001, "weight_decay": 0.001, "rho_max": 0.08, "rho_init": 0.02, "prototype_temperature": 0.2, "lambda_proto": 0.02, "lambda_align": 0.02, "lambda_dec": 0.001, "lambda_var": 0.001, "align_n": 128},
+  "gpu_plan": {"device": 0, "workers": 5},
+  "groups": {
+    "0": {"name": "B0-B_REFERENCE", "mode": "REFERENCE"},
+    "1": {"name": "E1_AGGREGATION_FIX", "mode": "E1"},
+    "2": {"name": "SELF_RESIDUAL_CAPACITY", "mode": "E2_SELF"},
+    "3": {"name": "ORDINARY_GRAPH_INCREMENT", "mode": "E3_GRAPH"},
+    "4": {"name": "SHARED_PRIVATE_FIXED_GATE", "mode": "E4_FIXED"},
+    "5": {"name": "ADAPTIVE_GATE_NO_PROTOTYPE", "mode": "E5_GATE"},
+    "6": {"name": "PROTOTYPE_NO_ALIGNMENT", "mode": "E6_PROTO"},
+    "7": {"name": "DC_SRA_FULL", "mode": "E7_FULL"},
+    "8": {"name": "UNIFORM_ALIGNMENT_WEIGHT", "mode": "E8_UNIFORM"},
+    "9": {"name": "WRONG_ALIGNMENT_CORRESPONDENCE", "mode": "E9_WRONG_ALIGN"},
+    "10": {"name": "WRONG_NEW_GRAPH_RELATION", "mode": "E10_WRONG_GRAPH"},
+    "11": {"name": "NO_PRIVATE_CONTRIBUTION", "mode": "E11_NO_PRIVATE"}
+  }
+}
