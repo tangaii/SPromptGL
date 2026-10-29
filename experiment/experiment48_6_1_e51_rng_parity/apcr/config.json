@@ -1,0 +1,64 @@
+{
+  "experiment": "Experiment48.6.1_E51_RNG_Parity",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "classes": [403, 468],
+    "labels": "ASD=0,TD=1"
+  },
+  "historical_protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true,
+    "max_epochs": 450,
+    "early_stopping_wait_gt": 200,
+    "r0_reproduction": "Experiment51 E1 original continuous RNG; no per-epoch reseeding",
+    "apcr_rng_isolation": true
+  },
+  "base": {
+    "source_experiment": "Experiment51 E1 LegacyFixedGFR",
+    "source_snapshot": ".runtime/sources/e51",
+    "group": "E1",
+    "learning_rate": 0.0038,
+    "weight_decay": 0.11,
+    "threshold": 0.9,
+    "graph_loss": {"theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0},
+    "pen": "physically removed"
+  },
+  "apcr": {
+    "source_experiment": "Experiment48.5 full APCR, training_group=6",
+    "source_snapshot": ".runtime/sources/48_5/method.py",
+    "alpha_init": 0.0022,
+    "alpha_max": 0.2,
+    "learning_rate": 0.00038,
+    "weight_decay": 0.0001,
+    "lambda_srd": 0.05,
+    "lambda_sca": 0.02,
+    "lambda_cra": 0.05,
+    "lambda_kl": 0.05,
+    "candidate_k": 24,
+    "propagation_k": 16,
+    "attack_steps": 2,
+    "max_replacements": 2,
+    "attack_targets_per_epoch": 32,
+    "attack_candidates_per_target": 4
+  },
+  "groups": [
+    {"id": 1, "name": "E51GFR_APCR_FIXED", "alpha_trainable": false, "training_group": 6},
+    {"id": 2, "name": "E51GFR_APCR_LEARNABLE", "alpha_trainable": true, "training_group": 6}
+  ],
+  "worker_plan": {
+    "logical_workers": 5,
+    "folds": [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]],
+    "gpu_concurrency": 5,
+    "device": 0
+  },
+  "r0": {"group": "E1", "source": "Experiment51 frozen runner", "folds": 10, "retrain": true},
+  "training_tasks": {"r0": 10, "e1": 10, "e2": 10, "total": 30}
+}

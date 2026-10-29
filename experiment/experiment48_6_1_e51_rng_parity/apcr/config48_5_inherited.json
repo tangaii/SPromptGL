@@ -1,0 +1,58 @@
+{
+  "experiment": "Experiment48.5_APCR_Alpha_Ablation",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "classes": [403, 468],
+    "labels": "ASD=0,TD=1"
+  },
+  "historical_protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true
+  },
+  "base": {
+    "hidden": 18,
+    "heads": 2,
+    "layers": 1,
+    "dropout": 0.35,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "epochs": 450,
+    "wait": 200,
+    "pen": false,
+    "aloss_in_total": false
+  },
+  "apcr": {
+    "inherited_from_experiment": "48.4 E6 / group=6",
+    "alpha_init": 0.0022,
+    "alpha_max": 0.2,
+    "lr": 0.00038,
+    "weight_decay": 0.0001,
+    "lambda_srd": 0.05,
+    "lambda_sca": 0.02,
+    "lambda_cra": 0.05,
+    "lambda_kl": 0.05,
+    "candidate_k": 24,
+    "propagation_k": 16,
+    "attack_steps": 2,
+    "max_replacements": 2,
+    "attack_targets_per_epoch": 32,
+    "attack_candidates_per_target": 4
+  },
+  "groups": [
+    {"id": 1, "name": "E1_FIXED_ALPHA", "alpha_trainable": false, "training_group": 6},
+    {"id": 2, "name": "E2_LEARNABLE_ALPHA", "alpha_trainable": true, "training_group": 6}
+  ],
+  "worker_plan": {
+    "logical_workers": 5,
+    "folds": [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]],
+    "gpu_concurrency": 5
+  }
+}

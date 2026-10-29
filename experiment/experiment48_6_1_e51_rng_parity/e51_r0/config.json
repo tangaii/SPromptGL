@@ -1,0 +1,24 @@
+{
+  "name": "Experiment51_DUGSA",
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48,6,10,256], "labels": "ASD=0,TD=1"},
+  "cv": {"n_splits": 10, "shuffle": true, "random_state": 10, "selection": "val_idx=test_idx; strict higher ACC; wait>200"},
+  "base": {"epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0, "pen": "physically removed"},
+  "new_module": {"hidden": 32, "shared_dim": 12, "complement_dim": 12, "nuisance_dim": 8, "lr": 0.001, "weight_decay": 0.001, "rho_max": 0.15},
+  "loss": {"alignment": 0.02, "nuisance": 0.005, "noncollapse": 0.005, "utility_scale": 0.03},
+  "gpu_plan": {"device": 0, "workers": 5, "planned_new_folds": 110},
+  "groups": [
+    {"id": 0, "name": "B0B_REFERENCE", "mode": "E0", "description": "verified historical B0-B"},
+    {"id": 1, "name": "GFR_AGGREGATION_FIX", "mode": "E1", "description": "four full-320 graph messages, PHENO overwrite repaired"},
+    {"id": 2, "name": "MODALITY_SPECIFIC_GFR", "mode": "E2_MODAL", "description": "modality-specific encoder and graph propagation"},
+    {"id": 3, "name": "SHARED_PRIVATE", "mode": "E3_SHARED_PRIVATE", "description": "shared and complementary candidate channels"},
+    {"id": 4, "name": "DISEASE_DECOMP_NO_ALIGN", "mode": "E4_DECOMP", "description": "S/C/N with constraints and neutral propagation"},
+    {"id": 5, "name": "DUGSA_FULL", "mode": "E5_FULL", "description": "utility selective alignment and utility-controlled propagation"},
+    {"id": 6, "name": "DUGSA_NO_GEOMETRIC_ALIGN", "mode": "E6_NO_ALIGN", "description": "full architecture with alignment loss removed"},
+    {"id": 7, "name": "DUGSA_UNIFORM_UTILITY", "mode": "E7_UNIFORM", "description": "utility multiset replaced by fold mean"},
+    {"id": 8, "name": "DUGSA_WRONG_UTILITY", "mode": "E8_WRONG_UTILITY", "description": "fixed modality-pair utility permutation"},
+    {"id": 9, "name": "DUGSA_WRONG_PATIENT_RELATION", "mode": "E9_FULL", "description": "site/split-stratified propagation relation permutation"},
+    {"id": 10, "name": "DUGSA_SELF_LOOP", "mode": "E10_SELF", "description": "self-loop propagation only"},
+    {"id": 11, "name": "DUGSA_NO_COMPLEMENT", "mode": "E11_NO_COMPLEMENT", "description": "complement branch removed from classifier"}
+  ],
+  "protected_root": ["main.py", "model.py", "network.py", "layers.py", "utils.py", "data/ABIDE/processed_standard_data.csv", "data/ABIDE/modal_feat_dict.npy"]
+}
