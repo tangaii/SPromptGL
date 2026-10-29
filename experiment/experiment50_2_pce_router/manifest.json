@@ -1,0 +1,100 @@
+{
+  "experiment": "50.2",
+  "name": "PCE-Router — Patient-specific Competitive Evidence Routing",
+  "status": "AUDITED_COMPLETE",
+  "actual_directory": "/tmp/SPromptGL-E502/experiment50_2_pce_router",
+  "config_sha": "a47471d34501e37d44e7b5b60f7959b8f4f5f018736cf7068d852c5149e0b7ce",
+  "code_sha": {
+    "pce_router.py": "9cd6ac7587a80b6e9e366980a01675918f010846f8179ceaa596dc1c397c3a68",
+    "run.py": "9b747077ebf7444b72476781985b192ff9c315b94f0e17796b0c15368bd878d0",
+    "tests.py": "aae994c5248fc49e38c71789b71097eaf64d92632b82630ed8640a952bf4e94a",
+    "integration.py": "84d95f6504636c78c023a5c90f806db639cf274b91360b173948c9e49f8f43d1"
+  },
+  "source_sha": {
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "folds": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "planned_groups": 9,
+  "planned_new_folds": 80,
+  "historical_e0_folds": 10,
+  "semantic_tests": {
+    "gpu": 0,
+    "tests": {
+      "zero_residual_identity": {
+        "max_abs": 0.0
+      },
+      "mask_gamma_bounds": true,
+      "residual_bound": 0.024713298305869102,
+      "signed_competitive_evidence": true,
+      "e6_e7_change_route": true,
+      "fc_only_residual_region": true,
+      "test_label_isolation": true,
+      "optimizer_and_anchor": true,
+      "train_eval_switch": true,
+      "checkpoint_rng_roundtrip": true
+    },
+    "base_gfr_params": 887836,
+    "base_cam_params": 49544,
+    "pce_params": 44706
+  },
+  "completed_new_folds": 80,
+  "failed_task_files": 0,
+  "failed_processes": 0,
+  "formal_wall_seconds": 1133.4561195373535,
+  "folds_complete": 90,
+  "summary_sha": "8143b38dbf076551c9eab8618c0eda3f1e7c983cd87c6a1e0ec7775908c44d16",
+  "paired_sha": "11a668deb36e0044c57d5085d61973ba387ab9f10c4d3747fea3b66ce884ce68",
+  "audit_rows": 80,
+  "intervention_rows": 50,
+  "evidence_rows": 10,
+  "diagnostics_sha": "fd52681a60ec7a65e4653686d0568afb609423d5e3961c1fe6c18edbf6bd9c4f",
+  "evidence_sha": "f39c8703bfea67389229dcd9224bb9d71a2a45211e556bd94fe0b95b542412e8",
+  "report_sha": "4ef668059b361de94e6efe14481742c324c2080e993e3028b5e96bdee3974a46",
+  "report_time": 1793213700.0501375,
+  "validated_new_folds": 80,
+  "task_count": 80,
+  "e1_retrained_after_semantic_design_fix": true,
+  "result_sha": {
+    "diagnostics.csv": "fd52681a60ec7a65e4653686d0568afb609423d5e3961c1fe6c18edbf6bd9c4f",
+    "evidence_audit.csv": "f39c8703bfea67389229dcd9224bb9d71a2a45211e556bd94fe0b95b542412e8",
+    "fold_metrics.csv": "87eac9ebcec0ed642b0ea57c8725e101b13bde9ff2e0a06035dce9884a54a3e6",
+    "interventions.csv": "948a59e71a6b9b5cc553ce6ae16b32cb793dfa0ff8a2a20f0adfb0b60648d9c6",
+    "paired_comparisons.csv": "11a668deb36e0044c57d5085d61973ba387ab9f10c4d3747fea3b66ce884ce68",
+    "report.md": "4ef668059b361de94e6efe14481742c324c2080e993e3028b5e96bdee3974a46",
+    "summary.csv": "8143b38dbf076551c9eab8618c0eda3f1e7c983cd87c6a1e0ec7775908c44d16"
+  },
+  "roi_mapping_sha": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+  "updated_at_utc": "2026-10-28T18:55:54Z",
+  "checkpoint_note": "80个有效新增折最佳checkpoint位于scratch .runtime/checkpoints；正式交付可排除.runtime。E1原先与E2路径重复，审计发现后只修正E1直接残差并从同一锚点重跑十折，旧E1结果不计入最终表。"
+}

@@ -1,0 +1,25 @@
+{
+  "experiment": "50.2",
+  "name": "PCE-Router — Patient-specific Competitive Evidence Routing",
+  "seed": 0,
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "modal_map": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48, 6, 10, 256], "labels": "ASD=0,TD=1"},
+  "cv": {"name": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10, "selection": "historical val_idx=test_idx; strict higher ACC; wait>200"},
+  "base": {"name": "B0-B", "pen": "physically removed", "epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "mode": "simple-2", "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0, "aloss_in_total": false},
+  "pce": {"fc_slice": [64, 320], "condition_slice": "age26+sex2+anat6+func10=44; site excluded", "hidden": 32, "tau_e": 1.0, "beta": 0.25, "residual_max": 0.05, "lambda_evidence": 0.02, "new_lr": 0.00038, "new_weight_decay": 0.11, "evidence_delete_k": 16, "full_recompute_samples_per_fold": 2},
+  "groups": [
+    {"id":"E0", "name":"B0-B_REFERENCE", "mode":"REFERENCE", "source":"Experiment43.1 verified B0-B"},
+    {"id":"E1", "name":"SELF_ONLY_RESIDUAL", "mode":"E1_SELF"},
+    {"id":"E2", "name":"CLASS_AGNOSTIC_FC_SELECTION", "mode":"E2_CLASS_AGNOSTIC"},
+    {"id":"E3", "name":"COMPETITIVE_NO_CONDITION", "mode":"E3_COMPETITIVE_NO_CONDITION"},
+    {"id":"E4", "name":"CONDITION_NO_COMPETITION", "mode":"E4_CONDITION_NO_COMPETITION"},
+    {"id":"E5", "name":"FULL_PCE_ROUTER", "mode":"E5_FULL"},
+    {"id":"E6", "name":"WRONG_INDIVIDUAL_CONDITION", "mode":"E6_WRONG_CONDITION"},
+    {"id":"E7", "name":"WRONG_FC_EVIDENCE_POSITION", "mode":"E7_WRONG_EVIDENCE_POSITION"},
+    {"id":"E8", "name":"NO_EVIDENCE_AUXILIARY_LOSS", "mode":"E8_NO_EVIDENCE_LOSS"}
+  ],
+  "gpu_plan": {"device": 0, "workers": 5},
+  "metrics": ["acc", "hard_auc", "prob_auc", "spe", "sen", "ba", "asd_f1"],
+  "historical_reference": {"acc": 91.7294, "hard_auc": 91.6046, "spe": 93.1360, "sen": 90.0732, "source": "Experiment43.1 E00_B0B_REPLAY"},
+  "protected_root": ["main.py", "model.py", "network.py", "layers.py", "utils.py", "ABIDE-simple-2-concat-weighted-cosine.sh", "data/ABIDE/processed_standard_data.csv", "data/ABIDE/modal_feat_dict.npy"],
+  "roi_mapping": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv"
+}
