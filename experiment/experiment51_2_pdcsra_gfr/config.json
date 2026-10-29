@@ -1,0 +1,22 @@
+{
+  "experiment": "Experiment51.2_PDC-SRA-GFR",
+  "seed": 0,
+  "data": {"n": 871, "dims": [48, 6, 10, 256], "labels": "ASD=0,TD=1", "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy"},
+  "cv": {"n_splits": 10, "shuffle": true, "random_state": 10, "val_equals_test": true},
+  "base": {"epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0},
+  "new_module": {"hidden": 16, "s_dim": 8, "c_dim": 8, "lr": 0.001, "weight_decay": 0.001, "rho_max": 0.12, "rho_init": 0.03, "pair_temperature": 0.5, "pair_max": 4096, "align_n": 128, "lambda_pair": 0.01, "lambda_align": 0.01, "lambda_var": 0.001},
+  "gpu_plan": {"device": 0, "workers": 5},
+  "groups": {
+    "0": {"name": "B0-B_REFERENCE", "mode": "E0"},
+    "1": {"name": "E1_AGGREGATION_REPLAY", "mode": "E1"},
+    "2": {"name": "SELF_ONLY_CAPACITY", "mode": "E2"},
+    "3": {"name": "ORDINARY_GRAPH", "mode": "E3"},
+    "4": {"name": "LEARNED_PAIR_SELECTION_NO_SUP", "mode": "E4"},
+    "5": {"name": "PAIR_SUPERVISED_NO_ALIGN", "mode": "E5"},
+    "6": {"name": "PDC_SRA_FULL", "mode": "E6"},
+    "7": {"name": "UNIFORM_RELATION_WEIGHT", "mode": "E7"},
+    "8": {"name": "WRONG_CROSS_MODAL_CORRESPONDENCE", "mode": "E8"},
+    "9": {"name": "WRONG_ADDED_PATIENT_GRAPH", "mode": "E9"},
+    "10": {"name": "NO_PRIVATE_CONTRIBUTION", "mode": "E10"}
+  }
+}
