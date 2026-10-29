@@ -1,0 +1,74 @@
+{
+  "experiment": "Experiment48.3_APCR_GFR",
+  "status": "COMPLETE_AUDITED",
+  "engineering_status": "ENGINEERING_PARTIAL",
+  "scientific_decision": "NO-GO",
+  "screen_acc": "SCREEN_ACC_PASS",
+  "tasks": {
+    "total": 100,
+    "complete": 100,
+    "by_group": {
+      "0": 10,
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10,
+      "7": 10,
+      "8": 10,
+      "9": 10
+    }
+  },
+  "independent_readback": "100/100_PASS",
+  "code_signature": "88a50d5b026b59522210700e38de6b93e9ab1c1a690da9f266a519618933882b",
+  "uniform_signatures": true,
+  "preflight": {
+    "status": "PASS",
+    "main": 1.0800412893295288,
+    "srd": 0.6892467737197876,
+    "sca": 0.0021699846256524324,
+    "attack": "two-candidate loss path",
+    "normalize": "p=2,dim=-1"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "source_sha256": {
+    "run.py": "be56ad30389edaa65e8db7031bc9717395d6448d07d881ee35548bdff1208563",
+    "method.py": "3e2e72e86df306f5449e1454a98815f33a326efaf28e0ab9dfdeafb3c137a957",
+    "audit.py": "7852c9f7aefbd1b40fb60627f0dbffb2a5158604b753da5467950405de377884",
+    "config.json": "18bbaca1698182ebd2bcd40f55df8273bcb9bb0c264d2724c0430b45b3836bb9",
+    "README.md": "1aa66e3bd601eba33a29981451e9a758c6a5d67e5240ce4b1005762d42ac330a",
+    ".runtime/sources/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    ".runtime/sources/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    ".runtime/sources/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "result_sha256": {
+    "results/diagnostics.csv": "ba18fe12f7cffa0a76b859eb8e7586c1e9f010a81d8d6c66e963a92e8ca95f93",
+    "results/fold_metrics.csv": "1883154abb77a2a01d30fbd411c3ebea03e57db42c9d74cc9fa3b30c67c79ef0",
+    "results/paired_comparisons.csv": "3176a729723e9bff8bd6fb39a34127b4374052f32bd7043e5485eefe630e86cf",
+    "results/report.md": "9b5aafe1f8551d924d77ad4df72e81dacd704be077dee595a925f60c04a99397",
+    "results/summary.csv": "addc2394efd369b9713eb861db09ff3a577130f3a832a2a56e1f5232a04ec03b"
+  },
+  "limitations": [
+    "E1 exact elementwise parity not independently proven",
+    "CRA restricted to two candidate paths rather than full candidate loss argmax",
+    "alpha actual initialization below declared 0.01",
+    "message-off intervention not independently recomputed",
+    "historical val=test, CV-before-RFE, transductive graph, single seed"
+  ],
+  "handoff": {
+    "marker_count": 1,
+    "sha256": "879cd3c776a382d9ae40a994c8023ea89c2b8e38958b3a31bcbf8eee32c46289",
+    "prefix_verified": true
+  },
+  "manifest_sha256_before_update": "2c0f9e79914e8e59b51e1d4af69cbb46902d25fa11f22b8e2ced30c7a79ad819"
+}

@@ -1,0 +1,5 @@
+# Experiment 48.3 — APCR-GFR
+
+APCR-GFR preserves the physical B0-B GFR+CAM path and adds an independently closable residual relation branch. It replaces the 48.2 whole-network CareGraph with an anchor-preserving design: E1 is the base parity control, E2 matches parameter capacity without other-patient messages, E3 adds real relation residuals, E4 adds symmetric reliable disease relation (SRD), E5 adds bounded selective conflict-aware alignment (SCA), and E6 adds constrained counterfactual relation attack (CRA). E7/E8/E9 are relation identity, shuffled SRD labels, and random attack controls.
+
+The immutable B0-B network snapshots are in `.runtime/sources/`; only outer-train labels supervise SRD, SCA and CRA. The historical transductive graph, global preprocessing/CV-before-RFE and `val=test` checkpoint protocol are retained for comparability and disclosed as limitations. The implementation uses `F.normalize(..., p=2, dim=-1)`, a symmetric pair scorer based on absolute difference/product/cosine, balanced deterministic pair sampling, bounded probability SCA, and a separate clean/attacked forward path.
