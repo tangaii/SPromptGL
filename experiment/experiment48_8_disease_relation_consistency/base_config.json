@@ -1,0 +1,183 @@
+{
+  "experiment": "Experiment48.7_E51_ALPHA_MICROGRID",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "classes": [
+      403,
+      468
+    ]
+  },
+  "historical_protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true,
+    "epochs": 450,
+    "wait_gt": 200,
+    "random_plan": "48.6.1 continuous main RNG + APCR isolated RNG"
+  },
+  "apcr": {
+    "alpha_max": 0.2,
+    "lr": 0.00038,
+    "weight_decay": 0.0001,
+    "group": 6
+  },
+  "groups": [
+    {
+      "id": 1,
+      "name": "G-F-00",
+      "alpha_init": 0,
+      "alpha_target": 0,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 2,
+      "name": "G-L-00",
+      "alpha_init": 1e-08,
+      "alpha_target": 0,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": true
+    },
+    {
+      "id": 3,
+      "name": "G-F-01",
+      "alpha_init": 0.0001,
+      "alpha_target": 0.0001,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 4,
+      "name": "G-L-01",
+      "alpha_init": 0.0001,
+      "alpha_target": 0.0001,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 5,
+      "name": "G-F-02",
+      "alpha_init": 0.0003,
+      "alpha_target": 0.0003,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 6,
+      "name": "G-L-02",
+      "alpha_init": 0.0003,
+      "alpha_target": 0.0003,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 7,
+      "name": "G-F-03",
+      "alpha_init": 0.0006,
+      "alpha_target": 0.0006,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 8,
+      "name": "G-L-03",
+      "alpha_init": 0.0006,
+      "alpha_target": 0.0006,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 9,
+      "name": "G-F-04",
+      "alpha_init": 0.001,
+      "alpha_target": 0.001,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 10,
+      "name": "G-L-04",
+      "alpha_init": 0.001,
+      "alpha_target": 0.001,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 11,
+      "name": "G-F-05",
+      "alpha_init": 0.0015,
+      "alpha_target": 0.0015,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    },
+    {
+      "id": 12,
+      "name": "G-L-05",
+      "alpha_init": 0.0015,
+      "alpha_target": 0.0015,
+      "alpha_trainable": true,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false
+    }
+  ],
+  "worker_plan": {
+    "workers": 5,
+    "folds": [
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        10
+      ]
+    ]
+  }
+}

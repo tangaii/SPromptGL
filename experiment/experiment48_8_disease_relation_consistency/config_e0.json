@@ -1,0 +1,76 @@
+{
+  "experiment": "Experiment48.7_E51_ALPHA_MICROGRID",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "classes": [
+      403,
+      468
+    ]
+  },
+  "historical_protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true,
+    "epochs": 450,
+    "wait_gt": 200,
+    "random_plan": "48.6.1 continuous main RNG + APCR isolated RNG"
+  },
+  "apcr": {
+    "alpha_max": 0.2,
+    "lr": 0.00038,
+    "weight_decay": 0.0001,
+    "group": 6
+  },
+  "groups": [
+    {
+      "id": 11,
+      "name": "G-F-05_E0_RETRAIN",
+      "alpha_init": 0.0015,
+      "alpha_target": 0.0015,
+      "alpha_trainable": false,
+      "base": "G",
+      "training_group": 6,
+      "near_zero": false,
+      "variant": {
+        "baseline": true
+      }
+    }
+  ],
+  "worker_plan": {
+    "workers": 5,
+    "folds": [
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        10
+      ]
+    ]
+  }
+}

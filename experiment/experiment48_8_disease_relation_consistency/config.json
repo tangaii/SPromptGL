@@ -1,0 +1,54 @@
+{
+  "experiment": "Experiment48.8_DiseaseRelationConsistentAPCR",
+  "seed": 0,
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "classes": [403, 468]
+  },
+  "protocol": {
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true,
+    "epochs": 450,
+    "wait_gt": 200,
+    "training_group": 6
+  },
+  "apcr": {
+    "alpha": 0.0015,
+    "alpha_trainable": false,
+    "alpha_max": 0.2,
+    "gfr_cam_lr": 0.0038,
+    "gfr_cam_weight_decay": 0.11,
+    "apcr_lr": 0.00038,
+    "apcr_weight_decay": 0.0001,
+    "srd_weight": 0.05,
+    "sca_weight": 0.02,
+    "cra_max_weight": 0.05,
+    "cra_kl_weight": 0.05,
+    "candidate_k": 24,
+    "propagation_k": 16,
+    "cra_steps": 2,
+    "cra_max_edges_per_view": 2,
+    "cra_targets": 32
+  },
+  "groups": [
+    {"id": 0, "name": "E0_G-F-05_RETRAIN", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"baseline": true}},
+    {"id": 1, "name": "E1_CANDIDATE_SRD", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "off", "cra": "off"}},
+    {"id": 2, "name": "E2_RELIABLE_SCA", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "original", "sca": "reliable", "cra": "off"}},
+    {"id": 3, "name": "E3_BOUNDARY_CRA", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "off", "sca": "off", "cra": "boundary"}},
+    {"id": 4, "name": "E4_SRD_SCA", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "reliable", "cra": "off"}},
+    {"id": 5, "name": "E5_SRD_CRA", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "off", "cra": "boundary"}},
+    {"id": 6, "name": "E6_SCA_CRA", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "original", "sca": "reliable", "cra": "boundary"}},
+    {"id": 7, "name": "E7_FULL_APCR_DRC", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "reliable", "cra": "boundary"}},
+    {"id": 8, "name": "E8_SHUFFLED_DISEASE_RELATION", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "reliable", "cra": "boundary", "shuffle_srd": true}},
+    {"id": 9, "name": "E9_RANDOM_LEGAL_ATTACK", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "reliable", "cra": "random"}},
+    {"id": 10, "name": "E10_PSEUDO_ATTACK_NO_EDGE_CHANGE", "alpha_init": 0.0015, "alpha_trainable": false, "variant": {"srd": "candidate", "sca": "reliable", "cra": "pseudo"}}
+  ],
+  "worker_plan": {"workers": 5, "folds": [[1,6],[2,7],[3,8],[4,9],[5,10]]}
+}

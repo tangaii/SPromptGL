@@ -1,0 +1,216 @@
+{
+  "experiment": "Experiment48.8_DiseaseRelationConsistentAPCR",
+  "created_utc": "2026-10-30T05:00:40Z",
+  "staging_path": "/tmp/SPromptGL-E48.8",
+  "requested_path": "/data/adodas/SPromptGL-main/experiment/experiment48_8_disease_relation_consistency",
+  "delivery_status": "SCRATCH_STAGED_HANDOFF_PENDING",
+  "protocol": {
+    "seed": 0,
+    "folds": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "n": 871,
+    "class_counts": [
+      403,
+      468
+    ],
+    "dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "transductive_nodes": 871,
+    "pre_cv_global_rfe": true,
+    "val_equals_test": true,
+    "alpha": 0.0015,
+    "training_group": 6
+  },
+  "source_code_signature": "a6e3b13a7d99a56676a07b276e2d88900a4757c9eb3028f97108c0f59d49630f",
+  "source_code_raw_sha256": {
+    "run.py": "ace11a7af1c739b635c6672be662e0ea165bd0b89153d311a3ff39fca5bc5f10",
+    "method.py": "2f99b76d91c39ad8a033467afe50bee0b622948f447e7f3ba7fe69af7c2bb355",
+    "config.json": "96a68b155d6c7aaf814aab09d049c726095dafe17657748b5cabcb3df8c1e09f",
+    "audit.py": "609c5fee11ff603dc5ad3e04fba470d7f6031ee0a4da32b4666c0ff80ea9839b",
+    "tests.py": "6e08388312d4c6ab91bd170bf6515729380048fe75e064c9c15bc53f82ef2c79",
+    "interventions.py": "dfe5819c9308bf766162d06b68e02fe3f38aeb9110a191b0ad0ecf1dce7fb367",
+    "mechanism.py": "cd82440266cb71b6f0185e7858500ce8088070be5f5a95284846b516eedcacc4",
+    "report_gen.py": "8161aaeb939c64c43b0cb081a98ce513302280354f0f5f88739ae26e1e8463c0",
+    "README.md": "0b0814e12d45ad9e09150d0c6e015aa2bc4a49b44834decc556e59645bd81987"
+  },
+  "frozen_training_signature": "a6e3b13a7d99a56676a07b276e2d88900a4757c9eb3028f97108c0f59d49630f",
+  "source_snapshots": {
+    ".runtime/sources/48_5/method.py": "eeaf57e546056b17f0995b846a7d3814612cb7c54f3149cd34c3f8997ed0cf85",
+    ".runtime/sources/e51/run.py": "32fc05c0e8c1211947f3003eae74d705eb4087e629b8a6af0fdf1878299a8718",
+    ".runtime/sources/e51/tests.py": "e56b2bf41b492758e780a98b0d95ad2a3c2deaec49e09e14635264bc3ebc2eaa",
+    ".runtime/sources/e51/README.md": "8c6b6fb62d795ac2c92f9bdf78675079b5c66dde798e88044d98712922faf43d",
+    ".runtime/sources/e51/dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    ".runtime/sources/e51/manifest.json": "4db1f5c52836dd573447f750c4bca1d61cce89f3a2c2683e6a44abaf738d66bb",
+    ".runtime/sources/e51/config.json": "f3447e150bc67ab29860dc0ae4804c194d5607fcbbdeccc9066ae1600c6ba531",
+    ".runtime/sources/e51/source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    ".runtime/sources/e51/source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    ".runtime/sources/e51/source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    ".runtime/sources/e51/results/report.md": "1ec25289790625b81636528a7c320f078d396119044277e43c4fbba8daf20243",
+    ".runtime/sources/e51/results/summary.csv": "6f5fbf08808dda13f578e0ca4e51c5a69bc4403890e018b3a123fa0cc986b2c7",
+    ".runtime/sources/e51/results/fold_metrics.csv": "9193879e87a6e7552d28c09d7ad1911e09256ba4f555d2b3338a07fc7bdea3ae"
+  },
+  "data_sha256": {
+    "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "protected_sha256_before_after": {
+    "before": {
+      "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+    },
+    "after": {
+      "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+    },
+    "verified_unchanged": true
+  },
+  "e0_gate": {
+    "status": "PASS",
+    "historical_match_fields": [
+      "acc",
+      "hard_auc",
+      "spe",
+      "sen",
+      "probability_auc",
+      "best_epoch",
+      "epochs_executed",
+      "prediction_sha256",
+      "initial_bundle_sha",
+      "split_sha"
+    ],
+    "tasks": 10,
+    "reference_task_signature": "e39e3ef8fac5952c1787ecd7cd7128c90cd2fc6dbc7aad6170119a4c8fc695ba"
+  },
+  "preflight": {
+    "status": "PASS",
+    "legacy_base_folds": [
+      {
+        "fold": 1,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 2,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 3,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 4,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 5,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 6,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 7,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 8,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 9,
+        "legacy_base_forward_exact": true
+      },
+      {
+        "fold": 10,
+        "legacy_base_forward_exact": true
+      }
+    ],
+    "alpha_fixed": 0.0015,
+    "groups": 11
+  },
+  "mechanism_preflight": {
+    "status": "PASS",
+    "tests": "tests.py PASS; candidate SRD, SCA fallback, CRA budget/argmax, E10 pseudo clean-CE gradient"
+  },
+  "formal_tasks": {
+    "expected": 100,
+    "complete": 100,
+    "failed": 0,
+    "groups": {
+      "7": 10,
+      "3": 10,
+      "5": 10,
+      "10": 10,
+      "6": 10,
+      "9": 10,
+      "8": 10,
+      "1": 10,
+      "4": 10,
+      "2": 10
+    },
+    "all_signatures": [
+      "a6e3b13a7d99a56676a07b276e2d88900a4757c9eb3028f97108c0f59d49630f"
+    ],
+    "all_training_group_6": true
+  },
+  "e0_tasks": {
+    "expected": 10,
+    "complete": 10,
+    "all_reference_signature": [
+      "e39e3ef8fac5952c1787ecd7cd7128c90cd2fc6dbc7aad6170119a4c8fc695ba"
+    ]
+  },
+  "archived_excluded": {
+    "path": "/tmp/SPromptGL-E48.8/.runtime/formal_v2_pre_fix",
+    "reason": "pre-v3 partial/old-signature tasks excluded from formal statistics"
+  },
+  "audit_status": {
+    "timestamp": "2026-10-30T04:34:43Z",
+    "tasks_seen": 100,
+    "tasks_complete": 100,
+    "tasks_expected": 100,
+    "failed_or_invalid": 0,
+    "groups_complete": 10,
+    "independent_recompute": true
+  },
+  "output_sha256": {
+    "results/interventions.csv": "af028c680a8a22e9b2d5338c63590f693b329f600dd7f32e8c6af738fcecbf93",
+    "results/report.md": "36040d8f7c1ccf438e55ff70d68ca045d9f2556f64d330338d09e34fc73cc63d",
+    "results/summary.csv": "a8151472e5a83805f41e7e916879ab4f84ac1c7523899f04aab93ad878d3b660",
+    "results/independent_recompute.csv": "47ca0c0e1cac59f46ed12e740f3d3248c76d1373041c342a6ad1313c7e5c0f21",
+    "results/fold_metrics.csv": "532326372dd2022c314d69f6448ca69b354de9434949230586d6c5ba0f523d47",
+    "results/mechanism_diagnostics.csv": "94c3f5a99f4008291d47381899009e4fedc0c2972a129c78f2a09801a67bc40e",
+    "results/paired_comparisons.csv": "ae9239872e941d7799257a8e4e1824290bb8bdcad239d2a49c90ea8749352c50"
+  },
+  "handoff": {
+    "before_sha256": "bd98e2b2209f1bc086b7a433e2db477e36f7c8d202155835e637237bbc23c112",
+    "append_status": "HANDOFF_APPEND_FAILED_EIO",
+    "pending_sha256": "6da0abe4df0c69e03af1c5eb3494f8229ee79b1fce50f38d8f865be9fa072f36",
+    "marker": "<!-- EXPERIMENT48_8_DISEASE_RELATION_CONSISTENCY -->",
+    "prefix_unchanged_not_written": true
+  },
+  "runtime_seconds": {
+    "formal_worker_sum": 17935.027970518917,
+    "e0_worker_sum": 4950.742440689355
+  },
+  "limitations": [
+    "global pre-CV RFE",
+    "val=test checkpoint selection",
+    "transductive graph",
+    "single seed",
+    "exploratory multi-group comparisons"
+  ]
+}
