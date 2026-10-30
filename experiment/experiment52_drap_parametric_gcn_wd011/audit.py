@@ -154,11 +154,12 @@ def preflight():
         raise SystemExit(2)
 
 
-def _load_checkpoint_state(group, fold):
+def _load_checkpoint_state(group, fold, checkpoint_override=None):
     import torch
     c = run.runtime()
     state = run.build_state(group, fold)
-    ck = run.torch_load(run.checkpoint_path(group, fold))
+    checkpoint_path = run.checkpoint_path(group, fold) if checkpoint_override is None else checkpoint_override
+    ck = run.torch_load(checkpoint_path)
     state["model"].load_state_dict(ck["model"], strict=True)
     state["cam"].load_state_dict(ck["cam"], strict=True)
     return state, run.load_fold_data(fold), ck
@@ -237,7 +238,7 @@ def post_audit():
             raw = base["raw"]
             row = {"group": group, "fold": fold, "best_epoch": ck["best_epoch"], "epochs_executed": ck.get("epochs_executed", -1), **met}
             row.update(_gcn_stats(state, base, raw))
-            if group == "E1":
+            if run.is_drap_group(group):
                 # Same checkpoint, same GCN weights: DRAP on, original graph,
                 # and self-loop-only propagation are three eval interventions.
                 with torch.no_grad():

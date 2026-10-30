@@ -43,6 +43,8 @@ CFG_PATH = EXP / "config.json"
 CFG = json.loads(CFG_PATH.read_text())
 DIMS = [48, 6, 10, 256]
 MODS = ["PHENO", "ANAT", "FUNC", "CORR"]
+DRAP_GROUPS = ("E1", "E2", "E3")
+SUPPLEMENTAL_GFR_WEIGHT_DECAY = {"E2": 0.20, "E3": 0.50}
 ANCHORS = ROOT / "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
 HIST_E51_2 = Path("/tmp/SPromptGL-E51_2/experiment51_2_pdcsra_gfr")
 HIST_E51_2_CK = HIST_E51_2 / ".runtime/checkpoints"
@@ -230,6 +232,14 @@ def hp():
     )
 
 
+def is_drap_group(group: str) -> bool:
+    return group in DRAP_GROUPS
+
+
+def gfr_weight_decay(group: str) -> float:
+    return float(SUPPLEMENTAL_GFR_WEIGHT_DECAY.get(group, CFG["base"]["weight_decay"]))
+
+
 def state_cpu(module):
     return {k: v.detach().cpu().clone() for k, v in module.state_dict().items()}
 
@@ -374,7 +384,7 @@ def build_state(group: str, fold: int):
     base = c["drap"].LegacyFixedGFR(c["network"].GraphLearn, c["network"].GCN, c["utils"], th=CFG["base"]["threshold"]).cuda()
     cam = c["drap"].PLNNoPEN(DIMS, hp(), c["layers"]).cuda()
     cam.apply(c["utils"].my_weight_init)
-    if group == "E1":
+    if is_drap_group(group):
         # New parameters are initialized in an isolated Torch RNG scope.  No
         # Python/NumPy/CUDA training RNG from the E1 base is consumed here.
         with torch.random.fork_rng(devices=[0]):
@@ -394,9 +404,9 @@ def build_state(group: str, fold: int):
     train = torch.as_tensor(tr, dtype=torch.long, device="cuda")
     counts = Counter(y[tr])
     weight = torch.from_numpy((len(tr) / np.asarray(list(counts.values())) / 2).astype(np.float32)).cuda()
-    opt_base = torch.optim.Adam(base.parameters(), lr=CFG["base"]["lr"], weight_decay=CFG["base"]["weight_decay"])
+    opt_base = torch.optim.Adam(base.parameters(), lr=CFG["base"]["lr"], weight_decay=gfr_weight_decay(group))
     opt_cam = torch.optim.Adam(cam.parameters(), lr=CFG["base"]["lr"], weight_decay=CFG["base"]["weight_decay"])
-    if group == "E1":
+    if is_drap_group(group):
         base_ids = {id(p) for p in base.parameters()}
         new_params = [p for p in model.parameters() if id(p) not in base_ids]
         opt_drap = torch.optim.Adam(new_params, lr=CFG["drap"]["optimizer_lr"], weight_decay=CFG["drap"]["optimizer_weight_decay"])
@@ -450,7 +460,7 @@ def forward_state(state, fd, train_mode=True, use_reweight=True, force_self=Fals
     state["model"].train(train_mode)
     state["cam"].train(train_mode)
     _, parts = c["layers"].InitialDataLayer(DIMS)(state["feat"])
-    if state["group"] == "E0":
+    if not is_drap_group(state["group"]):
         fused, adjs, details = state["base"](parts)
         pair_loss = fused.new_zeros(())
         adv_loss = fused.new_zeros(())
@@ -469,7 +479,7 @@ def forward_state(state, fd, train_mode=True, use_reweight=True, force_self=Fals
         for m in range(4)
     ) / 4.0
     cls = c["utils"].ClsLoss(logp, state["targ"], state["train"], state["weight"])
-    if state["group"] == "E0":
+    if not is_drap_group(state["group"]):
         total = cls + graph
     else:
         total = cls + graph + CFG["drap"]["lambda_pair"] * pair_loss + CFG["drap"]["lambda_adv"] * adv_loss
@@ -535,13 +545,13 @@ def train_one(group: str, fold: int):
     try:
         for epoch in range(start, CFG["base"]["epochs"]):
             state["epoch"] = epoch
-            use_rw = (group == "E0") or (epoch >= CFG["drap"]["warmup_epochs"])
+            use_rw = (not is_drap_group(group)) or (epoch >= CFG["drap"]["warmup_epochs"])
             state["opt_base"].zero_grad(); state["opt_cam"].zero_grad()
             if state["opt_drap"] is not None:
                 state["opt_drap"].zero_grad()
             out = forward_state(state, fd, train_mode=True, use_reweight=use_rw)
             assert torch.isfinite(out["total"])
-            if group == "E1" and use_rw and first_active_cls_grad == 0.0:
+            if is_drap_group(group) and use_rw and first_active_cls_grad == 0.0:
                 rel_params = list(state["model"].relation_encoders.parameters()) + list(state["model"].relation_scorers.parameters())
                 cls_grads = torch.autograd.grad(out["cls"], rel_params, retain_graph=True, allow_unused=True)
                 first_active_cls_grad = float(torch.stack([(g.detach() ** 2).sum() for g in cls_grads if g is not None]).sum().sqrt().cpu()) if any(g is not None for g in cls_grads) else 0.0
@@ -550,11 +560,11 @@ def train_one(group: str, fold: int):
                 for p in mod.parameters():
                     if p.grad is not None:
                         assert torch.isfinite(p.grad).all()
-            if group == "E1" and first_total_drap_grad == 0.0:
+            if is_drap_group(group) and first_total_drap_grad == 0.0:
                 first_total_drap_grad = module_grad_norm(state["model"])
             gn_base = module_grad_norm(state["base"])
             gn_cam = module_grad_norm(state["cam"])
-            gn_drap = module_grad_norm(state["model"]) if group == "E1" else 0.0
+            gn_drap = module_grad_norm(state["model"]) if is_drap_group(group) else 0.0
             state["opt_base"].step(); state["opt_cam"].step()
             if state["opt_drap"] is not None:
                 state["opt_drap"].step()

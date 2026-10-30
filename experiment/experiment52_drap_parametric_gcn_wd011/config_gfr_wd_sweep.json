@@ -1,0 +1,66 @@
+{
+  "experiment": "Experiment52_DRAP_GFR_WD_SWEEP",
+  "parent_experiment": "Experiment52_DRAP_PARAM_GCN_WD011",
+  "execution_root": "/model/spromptgl",
+  "parent_directory": "/model/spromptgl/experiment/experiment52_drap_parametric_gcn_wd011",
+  "new_groups": [
+    {
+      "id": "E2",
+      "name": "DRAP_GFR_WD020",
+      "model_branch": "E1_DRAP",
+      "gfr_weight_decay": 0.2,
+      "cam_weight_decay": 0.11,
+      "drap_weight_decay": 0.11
+    },
+    {
+      "id": "E3",
+      "name": "DRAP_GFR_WD050",
+      "model_branch": "E1_DRAP",
+      "gfr_weight_decay": 0.5,
+      "cam_weight_decay": 0.11,
+      "drap_weight_decay": 0.11
+    }
+  ],
+  "inherited_protocol": {
+    "seed": 0,
+    "seed_formula": "510000 + fold*100 + 1",
+    "new_module_rng": "torch.random.fork_rng; torch.manual_seed(520000+fold)",
+    "data_shape": [871, 320],
+    "modal_dims": [48, 6, 10, 256],
+    "stratified_kfold": {
+      "n_splits": 10,
+      "shuffle": true,
+      "random_state": 10
+    },
+    "val_equals_test": true,
+    "max_epochs": 450,
+    "early_stop": "wait>200",
+    "warmup_epochs": 10,
+    "base_lr": 0.0038,
+    "cam_lr": 0.0038,
+    "drap_lr": 0.001,
+    "grl_scale": 0.03,
+    "lambda_pair": 0.05,
+    "lambda_adv": 0.01,
+    "graph_threshold": 0.9,
+    "propagation": "original two-layer parameterized GCN on normalize_adj(A_drap+I)",
+    "test_labels_for_drap": "forbidden",
+    "device": "cuda:0",
+    "workers_max": 5
+  },
+  "parent_immutable_references": {
+    "config": "config.json",
+    "manifest": "manifest.json",
+    "run": "run.py",
+    "drap": "drap.py",
+    "audit": "audit.py",
+    "fold_metrics": "results/fold_metrics.csv",
+    "diagnostics": "results/diagnostics.csv",
+    "report": "results/report.md"
+  },
+  "output": {
+    "runtime": ".runtime/wd_sweep",
+    "results": "results/wd_sweep",
+    "checkpoint_policy": "best ACC only plus resumable latest every 10 epochs"
+  }
+}
