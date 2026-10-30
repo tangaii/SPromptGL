@@ -1,0 +1,160 @@
+{
+  "experiment": "Experiment53_DRAP_DISEASE_RELATION_PROPAGATION",
+  "status": "AUDITED_COMPLETE",
+  "formal_groups": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8"
+  ],
+  "formal_folds": 90,
+  "parent_manifest_sha256": "e91df6a814587544fa7cb232f971d4ae611cae397022c5f8d5cc9abf980f9209",
+  "parent_code_sha256": {
+    "run.py": "8c8cf60e05b4caacb97e334be0241a44637664a55cb015953b538a9b70ebd127",
+    "drap.py": "e1207e5bec4a32724c72f49a1165ca6c8b32ec1237bce66601a750b2b0cec6c9",
+    "audit.py": "530197b377885aeb619271e58350810273b5882464562b27e2878b79de9883b9"
+  },
+  "parent_data_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "design_sha256": "2b22b4bc9c9a0dd6b6da4783baa48405aeec8dc20124dba504bd55ce60898dbd",
+  "config_sha256": "b8e8acafa99243d4b0f31409fef0f73db46524ba178a9befe62525f3e2a0fb90",
+  "fold_sha256": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "anchor_sha256": {
+    "1": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    "2": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    "3": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    "4": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    "5": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184",
+    "6": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    "7": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    "8": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    "9": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    "10": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa"
+  },
+  "seed_rule": "510000 + fold*100 + 1",
+  "relation_rng_rule": "isolated fold-local pretraining and pair sampling",
+  "test_labels_for_drap": "forbidden",
+  "runtime_root": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/.runtime",
+  "results_root": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/results",
+  "relation_cache_status": "COMPLETE_10_10",
+  "relation_cache_sha256": {
+    "1": "d87dbecab22a074643f345b088b06f67316add24127c13d5211693267ae134ca",
+    "2": "e791c7b318391f3010bc2592d2f3135988a6b29bc2537dbb7faa5611f182a570",
+    "3": "81c8c4882a5609874f5f1ef3af98d2f9aa43d0c8c6189f75bd1e5a9b56e050c8",
+    "4": "2404710d5950845ea934dbc8dc61f3aabde7ef9635da1aa7ae6edfa4c869ca4e",
+    "5": "5e51a55ba140aab42e692f1acbab61949433d8d857cc2869f3591571ccf08aaa",
+    "6": "03eb963eaa268b01726c15ace8faf69eba5f165a5aa321fc62de74cdbfe2a7bc",
+    "7": "f81f198bd46b2eb55b59b161656b213eb2b98ce819be81a3dbfd170b6d752c99",
+    "8": "01be1da64e8ff5fc4edc2f27d35e42fcb53c4d36131a2fcdf704d06a4701ffde",
+    "9": "0a93964ae68789829def4764359d73a071c37dc52e345b773cbcf932173d616e",
+    "10": "1c1459efafa487d572be7d0b1333826f24d24490f3cd495515670a6fbfea355e"
+  },
+  "relation_meta_sha256": {
+    "1": "11959f5f0275c4dcf45e78ac7759b73220a6e5421712d513c182b2c19a2187df",
+    "2": "5d7c02706ff5dc8a919f6961499a9223baf6a252176bb991293e1423f111b958",
+    "3": "29194139392830c14c0b1ed06bbaa59f9ae8bb36fd686758dadfd47dabbcf7b5",
+    "4": "06cb9726041b125d7098ed2a17b88a3e3b5f86817e3d091e0e7ddf99a8950c55",
+    "5": "4c87b4f1e0e0590acf89be4713f5107440eecb779e81ed7f7606e26314aea1e0",
+    "6": "2b41b12326866251d173d17fb21a0fafe2031ab07b3672af023a1a3d25c5a6dd",
+    "7": "cbfae8891fdfd4d74778bd2c26fe83e1e45ca7bf33dd0042742ff38f064af029",
+    "8": "55290f62bacf9c19ce7e0d776e6719b4adb39e69731719755263c8a62bb254fa",
+    "9": "ee7ed4aa3f9378505660bab74ba923af07694d763dcc46e1916191a8bbc29f0b",
+    "10": "b86b1ac2e9d78579313b14a6f7d24f03cd8ab733c992655910eaa362eb39f6f6"
+  },
+  "controller_runs": [
+    {
+      "groups": [
+        "E0"
+      ],
+      "workers": 5,
+      "completed": 10,
+      "failed": 0,
+      "wall_seconds": 95.07778739929199
+    },
+    {
+      "groups": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "E7",
+        "E8"
+      ],
+      "workers": 5,
+      "completed": 80,
+      "failed": 0,
+      "wall_seconds": 1181.7841503620148
+    }
+  ],
+  "training_status": "COMPLETE",
+  "fold_metrics_sha256": "cb8ad96274ee497c3cdceb8bb96d748d144f4cbdc98400aede806d59813362e4",
+  "summary_sha256": "44c5338916b4f6fcceeae1fd15f10c9ca622a8e3e4adcb7ef9abd21e6499c683",
+  "paired_sha256": "5a8979fb31a057830e024be3b8d78a3befb8fc70f0252fb67129dfd981fbb51f",
+  "checkpoint_audit": {
+    "count": 90,
+    "pass": true
+  },
+  "initialization_audit": {
+    "count": 90,
+    "pass": true
+  },
+  "diagnostics_rows": 90,
+  "intervention_rows": 450,
+  "checkpoint_audit_sha256": "75259eccfa176e2bda7c009be3eb239babf4f565df237d08bcb253c7aaecf4cc",
+  "initialization_audit_sha256": "e052529e30de764e53f7366abdad1a912b42622c4e73ffb5108494f47d4e6641",
+  "diagnostics_sha256": "8f19f2b9fbccebe39b13aa76036e2c9644d3e00ea5d66f1f158d7e4ef4d2ff2a",
+  "interventions_sha256": "8884dbdb2f871065abd7263ff71669fa9e14f728c3f671bf14dc86c9d2fd84d6",
+  "report_path": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/results/report.md",
+  "report_sha256": "434b06d73fe72eacf40c2560f06f58083ac270fc6985021567f6512c175bb359",
+  "handoff_update_status": "PENDING_IO_ERROR",
+  "handoff_target": "/data/adodas/SPromptGL-main/handoff.md",
+  "handoff_pending_path": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/.runtime/handoff_append.md",
+  "handoff_pending_sha256": "dd8b8f623b23019587cf09904f7228591616220a16da2c4b833a0755c009d390",
+  "handoff_error": "OSError(5, 'Input/output error')",
+  "final_source_sha256": {
+    "config.json": "b8e8acafa99243d4b0f31409fef0f73db46524ba178a9befe62525f3e2a0fb90",
+    "design.md": "2b22b4bc9c9a0dd6b6da4783baa48405aeec8dc20124dba504bd55ce60898dbd",
+    "drap53.py": "fe006211d38b73a4d7b804c54b58eadbcee15cb8d20514657918ef2242c2ab04",
+    "run.py": "91c83978dffe45084db10fa89bf3195adfefcafbc6913998d767cc7a0d8ed539",
+    "audit.py": "2d2e21c8aa9cd00c59db73f6041851bf53865d06135f8721128590e78ea8a2ef"
+  },
+  "protected_data_sha256": {
+    "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "parent_experiment52_sha256": {
+    "config.json": "0267c00adf69aef713216585e2466be4f3d9476f2f379f70aba59abc4f9572ca",
+    "manifest.json": "e91df6a814587544fa7cb232f971d4ae611cae397022c5f8d5cc9abf980f9209",
+    "results/fold_metrics.csv": "82ed3719c067d53e9a713ea3af31cda64eba5f89b4d544fba5d3f9e2b67c1de9",
+    "results/diagnostics.csv": "ea2b3f475312c5dd0b8c26f37371870631b33a56939dba9618602192e86a7b57",
+    "results/report.md": "55c2eb9afbe958bb78a4e12df09d2795e65a0510b0a3a69efb531b4e2cef0693"
+  },
+  "formal_training_status": "90/90_COMPLETE",
+  "independent_checkpoint_status": "90/90_PASS",
+  "handoff_note": "Target /data/adodas/SPromptGL-main/handoff.md exists but OSSFS append returned Input/output error; pending content preserved under .runtime/handoff_append.md."
+}

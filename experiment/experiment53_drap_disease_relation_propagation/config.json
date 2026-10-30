@@ -1,0 +1,99 @@
+{
+  "experiment": "Experiment53_DRAP_DISEASE_RELATION_PROPAGATION",
+  "execution_root": "/model/spromptgl",
+  "experiment_dir": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation",
+  "read_only_source_root": "/data/adodas/SPromptGL-main",
+  "parent_experiment52": "/model/spromptgl/experiment/experiment52_drap_parametric_gcn_wd011",
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "labels": "ASD=0,TD=1",
+    "class_counts": [403, 468]
+  },
+  "cv": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "seed": 0,
+    "val_equals_test": true,
+    "selection": "strict ACC improvement; wait>200; historical val=test"
+  },
+  "base": {
+    "epochs": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nlayer": 1,
+    "graph_threshold": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "pen": "physically removed",
+    "graph": "four original GraphLearn graphs; normalize_adj(A+I); full 320-dimensional input in every GCN branch"
+  },
+  "relation": {
+    "hidden": 32,
+    "pair_feature_dim": 65,
+    "pair_max": 4096,
+    "inner_splits": 3,
+    "inner_epochs": 100,
+    "inner_pair_max": 2048,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay_matrix": 0.0001,
+    "weight_decay_bias_layernorm": 0.0,
+    "calibration": "outer-train-only logistic affine calibration on inner OOF logits",
+    "reliable_auc_threshold": 0.55,
+    "positive_threshold": 0.55,
+    "negative_threshold": 0.45,
+    "max_neighbors_per_sign": 12,
+    "candidate_support": "union of four initial GraphLearn off-diagonal supports; no test labels"
+  },
+  "propagation": {
+    "gamma_negative": 0.25,
+    "lambda_prop": 0.02,
+    "rms_tanh_bound": true,
+    "source": "raw 320-dimensional patient features, blockwise RMS bound",
+    "positive": "row-normalized A_pos times (X_j-X_i)",
+    "negative": "row-normalized A_neg times (X_j-X_i), subtracted by gamma",
+    "e6_uncertainty": "all candidate edges with continuous signed confidence; no hard skip",
+    "e7_shuffle": "fold-fixed relation identity permutation, same relation training and budget",
+    "e8_uniform": "fixed ordinary candidate-neighbor positive/negative budget independent of disease q"
+  },
+  "loss": {
+    "classification": 1.0,
+    "graph": 1.0,
+    "pair": 0.05,
+    "adversarial": 0.01,
+    "grl_scale": 0.03
+  },
+  "groups": [
+    {"id": "E0", "name": "E51_E1_EXACT_REPLAY", "mode": "base", "adv": "none", "propagation": "none"},
+    {"id": "E1", "name": "DRAP_RELATION_POSITIVE", "mode": "disease_relation", "adv": "none", "propagation": "positive", "uncertainty": "skip"},
+    {"id": "E2", "name": "DRAP_SIGNED_NO_ADV", "mode": "disease_relation", "adv": "none", "propagation": "signed", "uncertainty": "skip"},
+    {"id": "E3", "name": "DRAP_POSITIVE_CONDITIONAL_ADV", "mode": "disease_relation", "adv": "conditional", "propagation": "positive", "uncertainty": "skip"},
+    {"id": "E4", "name": "DRAP_FULL", "mode": "disease_relation", "adv": "conditional", "propagation": "signed", "uncertainty": "skip"},
+    {"id": "E5", "name": "DRAP_UNCONDITIONAL_ADV", "mode": "disease_relation", "adv": "unconditional", "propagation": "signed", "uncertainty": "skip"},
+    {"id": "E6", "name": "DRAP_NO_UNCERTAINTY_SKIP", "mode": "disease_relation", "adv": "conditional", "propagation": "signed", "uncertainty": "continuous"},
+    {"id": "E7", "name": "DRAP_SHUFFLED_RELATION_CONTROL", "mode": "disease_relation", "adv": "conditional", "propagation": "signed", "uncertainty": "skip", "relation_identity": "fixed_shuffle"},
+    {"id": "E8", "name": "DRAP_UNIFORM_RELATION_CONTROL", "mode": "disease_relation", "adv": "conditional", "propagation": "uniform_candidate", "uncertainty": "skip", "relation_identity": "ordinary_neighbors"}
+  ],
+  "runtime": {
+    "device": "cuda:0",
+    "workers_max": 5,
+    "checkpoint_policy": "best ACC only plus resumable latest every 10 epochs",
+    "formal_groups": 9,
+    "formal_folds": 90
+  },
+  "historical_protocol_limits": {
+    "val_test": "retained; validation/test checkpoint selection can be optimistic",
+    "preprocessing": "CV-before standardization/RFE retained",
+    "transductive_graph": "871-node features may enter graph construction and propagation",
+    "single_seed": "seed=0 only; no seed search or hyperparameter search"
+  }
+}
