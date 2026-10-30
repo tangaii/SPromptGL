@@ -1,0 +1,104 @@
+{
+  "experiment": "Experiment51.4_D3SAG",
+  "status": "AUDITED",
+  "config_sha": "6ef88c21c2ded57c947a215df84743a7415593c7057773dc5def3ebe5113aa4d",
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "folds": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "groups": 13,
+  "planned_new_folds": 110,
+  "e1_seed_rule": "510000 + fold*100 + 1",
+  "new_module_seed_rule": "isolated torch fork 514000 + fold",
+  "experiment52": "EXPERIMENT52_NOT_FOUND",
+  "protected_sha256": {
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "runtime_excluded_from_delivery": true,
+  "completed_new_folds": 110,
+  "failed_tasks": 0,
+  "summary_sha": "d2351cf0e05a5ac396bbbfcc83c74096a13f7877e1a47c2471c5636c9f8de7de",
+  "fold_metrics_sha": "3f24ca395218dea3442efbaafffc9476a46116d4f5a90a0f6b6f203628bac332",
+  "checkpoint_audit": {
+    "rows": 110,
+    "passed": 110,
+    "failures": [],
+    "max_error": 0.0,
+    "sha": "8b9c32f448b75e068c26a3278693756ec2cd35e97117eff0aa5219d9c57533f2"
+  },
+  "evidence_sha": "2cb770f38573ff614c1e92cd8de01de4028bca408c09d629670879c956c3d0c0",
+  "mechanism_sha": "6aaefc79434c262409d5a7a21d702747a837720c577855db3d33436cce4383c6",
+  "intervention_sha": "51d838c932c47491da78f5f5c26785e7b55dcabc29d011ead9ca197a5a2a3f61",
+  "report_sha": "905310ef33dae598360e237430ef502bb3d50d1fa5590202e9d8fd47804b28d3",
+  "code_sha": {
+    "d3sag.py": "71d33a26923f721403ba403ee1dd817dc9090efa09eb6891383f2421eb507163",
+    "evidence.py": "51c9336bbb6bf723b2fc913995e719411db265cc168c819b6b359bcd260ab552",
+    "run.py": "f10bde7812f5296ae11cc1bc011e481f5640411d09d56800bcf2d4a5ad8296b8",
+    "tests.py": "a932d5fc628fd3c49ea10527d778f02436fdec67f6a5b6d73ef459e9b6e39c9a",
+    "audit.py": "951eebfcf4a2336f360d2a93ecb1e785f701b9b4084c9c27146362605144a996",
+    "d3sag_base.py": "4595e1d29c163a8a0c8c05cb97ac955577bbd019a33215824e03a3e3b50d276c"
+  },
+  "source_sha": {
+    "source/evidence.py": "51c9336bbb6bf723b2fc913995e719411db265cc168c819b6b359bcd260ab552",
+    "source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "source/run.py": "f10bde7812f5296ae11cc1bc011e481f5640411d09d56800bcf2d4a5ad8296b8",
+    "source/tests.py": "a932d5fc628fd3c49ea10527d778f02436fdec67f6a5b6d73ef459e9b6e39c9a",
+    "source/d3sag.py": "71d33a26923f721403ba403ee1dd817dc9090efa09eb6891383f2421eb507163",
+    "source/d3sag_base.py": "4595e1d29c163a8a0c8c05cb97ac955577bbd019a33215824e03a3e3b50d276c",
+    "source/audit.py": "951eebfcf4a2336f360d2a93ecb1e785f701b9b4084c9c27146362605144a996",
+    "source/README.md": "e8bf7411f68b9ec330c4bf7d3b8e398b5851ee338007a8225f875009c0deb9d7",
+    "source/dcsra_base.py": "4595e1d29c163a8a0c8c05cb97ac955577bbd019a33215824e03a3e3b50d276c",
+    "source/config.json": "6ef88c21c2ded57c947a215df84743a7415593c7057773dc5def3ebe5113aa4d",
+    "source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "result_sha": {
+    "results/interventions.csv": "51d838c932c47491da78f5f5c26785e7b55dcabc29d011ead9ca197a5a2a3f61",
+    "results/report.md": "905310ef33dae598360e237430ef502bb3d50d1fa5590202e9d8fd47804b28d3",
+    "results/summary.csv": "d2351cf0e05a5ac396bbbfcc83c74096a13f7877e1a47c2471c5636c9f8de7de",
+    "results/fold_metrics.csv": "3f24ca395218dea3442efbaafffc9476a46116d4f5a90a0f6b6f203628bac332",
+    "results/mechanism_diagnostics.csv": "6aaefc79434c262409d5a7a21d702747a837720c577855db3d33436cce4383c6",
+    "results/checkpoint_audit.csv": "8b9c32f448b75e068c26a3278693756ec2cd35e97117eff0aa5219d9c57533f2",
+    "results/evidence_diagnostics.csv": "2cb770f38573ff614c1e92cd8de01de4028bca408c09d629670879c956c3d0c0",
+    "results/semantic_tests.json": "e3a937f6dc3f8894b932dc4f715f62d621a9079abfe11baad251853cc63aadd6",
+    "results/paired_comparisons.csv": "3e4e699279f3253e0f2bc97bc7f57fb9e108fa7363b2cee2f9e51aeafd832d01"
+  },
+  "semantic_tests": "PASS",
+  "gpu": "cuda:0",
+  "workers": 5,
+  "delivery_runtime_excluded": true,
+  "manifest_updated_after_report": true,
+  "handoff_targets": {
+    "/model/spromptgl/experiment/handoff.md": {
+      "status": "APPENDED",
+      "after_sha": "02fbf5448f11bf65b9a487afbfd3d8bdde0e64fbc76eed29652f07467aabf823"
+    },
+    "/data/adodas/SPromptGL-main/handoff.md": {
+      "status": "FAILED_OSSFS_EIO",
+      "pending_file": "/tmp/SPromptGL-E51_4/handoff_append_51_series.md"
+    }
+  },
+  "delivery_status": "PARTIAL_OSSFS_EIO"
+}

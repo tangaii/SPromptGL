@@ -1,0 +1,9 @@
+{
+  "experiment":"Experiment51.4_D3SAG","seed":0,
+  "data":{"n":871,"dims":[48,6,10,256],"labels":"ASD=0,TD=1","csv":"/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv","mapping":"/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy"},
+  "cv":{"n_splits":10,"shuffle":true,"random_state":10,"val_equals_test":true},
+  "base":{"epochs":450,"early":200,"lr":0.0038,"weight_decay":0.11,"dropout":0.35,"n_hidden":18,"n_head":2,"nlayer":1,"threshold":0.9,"theta_smooth":1.0,"theta_degree":0.5,"theta_sparsity":0.0},
+  "new_module":{"hidden":64,"evidence_inner_folds":5,"bootstrap":200,"align_n":256,"lambda_S":0.01,"lambda_D":0.02,"lambda_I":0.001,"lambda_C":0.001,"lambda_site":0.001,"lr":0.001,"weight_decay":0.001,"rho_max":0.05},
+  "gpu_plan":{"device":0,"workers":5},
+  "groups":{"0":{"name":"B0-B_REFERENCE"},"1":{"name":"E1_AGGREGATION_REPLAY"},"2":{"name":"ORDINARY_DUAL_VIEW_CAPACITY"},"3":{"name":"SMGD_STYLE_FIXED_ALIGNMENT"},"4":{"name":"DISEASE_ROUTING_NO_ALIGNMENT"},"5":{"name":"D3SAG_FULL"},"6":{"name":"UNIFORM_ALIGNMENT_BUDGET"},"7":{"name":"NO_COMPLEMENTARY_ROUTE"},"8":{"name":"NO_NONDIAGNOSTIC_CONSTRAINT"},"9":{"name":"WRONG_GEOMETRY_CORRESPONDENCE"},"10":{"name":"WRONG_RELIABILITY_GATE"},"11":{"name":"NO_QUALITY_CONDITION"},"12":{"name":"WRONG_AUXILIARY_PHENO"}}
+}
