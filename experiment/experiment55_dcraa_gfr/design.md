@@ -1,0 +1,78 @@
+# Experiment 55 — DCRAA-GFR
+
+## Frozen question and scope
+
+Test whether disease-conditional adversarial alignment of **CORR patient-pair relations** can suppress site-dependent relation variation without removing the AA/TT/AT disease relation signal, and whether reweighting the E1 CORR candidate graph yields useful, bounded cross-patient messages. The base remains Experiment 51 E1 (`LegacyFixedGFR + PLNNoPEN`), including four full-320 GCN messages added to the same 320-D input, the original four GraphLearn graphs and GraphConstructLoss, original CAM, two Adam optimizers, `lr=0.0038`, `weight_decay=0.11`, dropout 0.35, and the original `simple-2` loss/update order.
+
+No prompt, PEN, LLM, ROI graph, hypergraph, MoE, second classifier, or auxiliary prediction backbone is introduced. The additional CORR relation encoder, conditional site discriminator, fixed candidate-edge reweighter, and bounded CORR residual form one DCRAA-GFR module.
+
+## Source and paper audit
+
+The read-only E1 source snapshot is `source/e1_base.py`, `source/dugsa.py`, and the three source files under `source/`. Their SHA-256 values are recorded in `manifest.json`. The source hashes for `layers.py` and `utils.py` match the project versions; E1 uses the E51 `network.py` snapshot, which removes the unused prompt-dependent `PLN` path and retains the audited GraphLearn/GCN operators. No root model file is changed.
+
+The local SPromptGL paper was read at Figure 1, Sections 2.1–2.2, Equations 1–7, Table 2, and Figure 2. Figure 1 separates GFR from the prompt-guided PLN; Section 2.1 describes modality-specific subject edges, a label-derived graph regularizer, and graph convolution over concatenated modality inputs. Equations 1–2 and 7 describe those paper objectives and propagation. Section 2.2 and Equations 3–6 describe semantic prompt creation, within-patient cross-modal attention, local prompt scoring, and relation-aware embedding. Table 2 reports the paper's ABIDE comparison; Figure 2 is the baseline/GFR/RES/PEN ablation. These are paper claims, not assumed source behavior. In actual source, GraphLearn applies a learned linear projection, cosine similarity and a detached `score > 0.9` mask. E1 applies all four GCNs to the same complete 320-D concatenation and sums their messages; it repairs the earlier `i == 1` assignment that overwrote the prior PHENO message. `simple-2` adds weighted classification loss and the mean of four original GraphConstructLoss terms. The computed and printed ALoss is not included in the optimized loss. The original CAM consumes the GFR output. GFR and CAM are initialized in the E51 order, trained by separate Adam optimizers at weight decay 0.11, and use the historical dropout/RNG stream. No claim is made that the implementation realizes every paper equation literally.
+
+DeepASD Figure 1 and Methods Equations 1–9 were reviewed from the primary article. DeepASD's adversary predicts **modality source** for modality-specific patient feature embeddings; its feature extractors oppose that discriminator, then per-modality learnable-cosine patient graphs are fused and classified. Its Table 2 ablates feature extraction, modal discriminator, and multi-graph fusion. DCRAA-GFR instead adversarially aligns a single modality's **patient-pair relation representation**, conditioned on frozen disease-relation probabilities and with same-site/cross-site pair source labels. It does not align the four modality feature distributions. [DeepASD](https://www.nature.com/articles/s41398-024-02972-2).
+
+CDAN (NeurIPS 2018) conditions domain discrimination on classifier information and discusses multimodal mode mismatch and uncertain conditions. That conditional adversarial principle, GRL, and conditional discriminators are established methods and are not claimed as inventions here. The present design tests their use on CORR patient-pair relations with a frozen cross-fitted disease proxy. [CDAN](https://papers.neurips.cc/paper/2018/hash/ab88b15733f543179858600245108dd8-Abstract.html).
+
+## Actual source behavior and historical failures
+
+- Experiment 43.1 supplies the ten fold anchors and the corrected E1 structure. Its historical B0-B replay has ACC 91.7294%; E1's corrected four-way aggregation has ACC 91.9592%. Experiment 43.2 found the GFR-vs-raw ACC difference was 0.0000 pp on this protocol. Experiment 43.3 did not reproduce the paper's 5.25 pp GFR ablation gain. Experiment 43.4's physical-CAM control did not beat the corresponding anchored baseline.
+- Experiment 47.1 and 47.2 named directories were not found in the searched local experiment roots (`NOT_FOUND`). Experiment 47.3 is present: fixed true patient relations did not establish a stable advantage over its relation-rewire controls; self-only propagation reduced accuracy, which supports message dependence but not true relation identity.
+- Experiment 48.1 found small conditional/unconditional differences and no gain over its base; Experiment 48.2's relation/conditional design collapsed classification to approximately 59–61% ACC, demonstrating that those losses can overwhelm the E1 objective. Experiment 48.3/48.4 are present; neither supplies evidence to replace the required E51 E1 base.
+- Experiment 51.1–51.4 source/report archives are present under `/tmp/SPromptGL-E51_1` through `_4`. They preserve the E1 reference but do not establish a positive relation-alignment gain. In 51.4 several variants were numerically identical because the new route did not acquire a meaningful update. Experiment 53 and 53.1 are present: the train-fold OOF relation signal was concentrated in CORR (other modalities near 0.5); the earlier conditional-adversary gate disabled adversarial training when only one modality qualified, so it did not test CORR-internal site alignment. Experiment 54 is present and audited: full D2-ARG ACC 91.7294%, below E1; true and wrong patient graphs did not separate; removing new messages restored E1. Its CORR relation OOF signal was useful, but site discrimination was near chance. These failures motivate a CORR-only conditional adversary that remains active with one reliable modality, and separately matched wrong-condition, wrong-site, wrong-edge, and no-message retrains.
+
+The current source verifies the site column names directly: the 20 `SITE_ID_*` columns occupy PHENO positions 26–45 and each of 871 rows has exactly one active site. PHENO also contains 26 age-bin and two sex columns. ANAT has six named QA fields; FUNC has ten named QA/FD fields. No site index is inferred from undocumented positions.
+
+## E1 initialization and random-state contract
+
+E1 is reconstructed by the copied E51 `build_state("E1", fold)` implementation. Per fold it seeds with `510000 + 100*fold + 1`, instantiates the four GraphLearn branches, four full-320 GCNs and CAM in E51 order, loads that fold's Experiment 43.1 model anchor, applies the original CAM initializer before loading its checkpoint state, creates the same two Adam optimizers, and starts the original dropout stream. Anchor optimizer parameter groups are verified at LR 0.0038 / WD 0.11. The anchor stores model state and Python/NumPy/CPU/CUDA RNG snapshots; E51's replay path reconstructs from its fold seed rather than restoring the anchor snapshot as a training RNG. Experiment 55 follows that actual E51 path and records both anchor and replay RNG hashes. The E0 replay matched 10/10 historical folds on best and executed epochs, both model states, both optimizer states at the best epoch, predictions and all seven metrics; the first-forward loss was not persisted in the historical tasks and therefore cannot be checked against an old trace.
+
+E0 is fully re-trained before any new group starts. It must match E51 E1 per fold on ACC, Hard-AUC, Probability-AUC, SPE, SEN, BA, ASD-F1, best epoch, executed epochs, model/CAM best-state tensors, and predictions. Available source/data hashes and fold split hashes are checked first. New-module initialization runs inside a forked RNG; pair sampling, OOF teachers and edge controls use local deterministic NumPy generators; DCRAA forward has no dropout. A preflight compares the E1 first-forward dropout outputs/RNG against an E1-capacity model at alpha=0. Training parameter paths may diverge after losses update weights; only fold-entry initialization and common stochastic operations are claimed to match. Each fold restores its own E1 entry, so later folds are not affected by earlier groups' early stopping.
+
+Every latest checkpoint stores model parameters/buffers, all optimizers, epoch/best/early-stop state, Python/NumPy/CPU/CUDA RNG, and the fixed seeds for isolated auxiliary sampling streams. Resume equivalence is tested by checkpointing after two steps, restoring, and comparing step three with an uninterrupted run.
+
+## Frozen method
+
+For CORR patient `i`, `h_i = Linear(256,32) -> GELU -> LayerNorm`. The symmetric pair representation is `z_ij = g([abs(h_i-h_j), h_i*h_j, cosine(h_i,h_j)])`, with 32 dimensions. `z_ij == z_ji` is checked numerically. A three-way head predicts AA, TT, AT. Relation supervision samples equal counts from the six disease-relation × same/cross-site cells using outer-train patients only. Pair rows overlap patients and are not treated as independent observations.
+
+The disease proxy is a CORR-only logistic model. Five patient-disjoint inner folds produce OOF probabilities for outer-train patients; a full outer-train fit predicts outer-test patients. Temperature calibration is fit only to the outer-train OOF logits and all probabilities are frozen before DCRAA training. `c_ij = [p_i^ASD p_j^ASD, p_i^TD p_j^TD, p_i^ASD p_j^TD + p_i^TD p_j^ASD]` sums to one and is detached. True relation labels only supervise outer-train pair losses.
+
+The site adversary distinguishes same-site from cross-site **pairs**. Pair sampling balances both source labels within AA, TT and AT. E3 uses an unconditional discriminator; E4/E5 use three disease-relation heads, weighted by frozen `c_ij` and predeclared entropy confidence. A true GRL reverses only the encoder gradient at scale 0.03; discriminator gradients retain the minimizing direction. If any required site/relation cell has fewer than 32 supported pairs or confidence-weighted support is zero, the fold is marked `ADVERSARY_UNIDENTIFIABLE` or `ADVERSARY_INACTIVE`; a chance AUC alone is not called successful alignment.
+
+CORR's frozen relation teacher is a multinomial logistic model trained only on balanced outer-train pairs. E5 adds `0.005 * KL(student || teacher)` to the three-class relation CE, matching the frozen loss configuration. This is a train-only disease-information constraint; no test label is used. PHENO/ANAT/FUNC have patient-disjoint, site-balanced OOF three-relation AUCs; auxiliary cross-modal relation alignment is admitted only for AUC >= 0.55, correctly oriented class scores and valid class/site support. E5 adds same-pair, soft-condition-weighted prototype alignment only for admitted modalities. A lack of admitted auxiliaries does not turn off CORR-internal adversarial training.
+
+The added graph uses the initial E1 CORR GraphLearn support only, with at most eight non-self neighbors per receiver. The same directed support, edge budget and degree sequence are used across E1–E10; E8 performs directed double-edge swaps within receiver/source site × train/test strata, preserving each receiver out-degree, sender in-degree, and site-pair counts. Same-site edges are retained. Nonnegative edge weights combine original CORR edge strength, predicted AA+TT relation score/confidence, and fixed train-scaled ANAT/FUNC QA similarity; rows are normalized. Patient labels are never consulted when building test edges.
+
+`Delta_i = sum_j A_ij * (CORR_j - CORR_i)` uses raw CORR input so the additional path does not inherit the known E1 GCN shrinkage. A per-node tanh/RMS bound scales `Delta_i` to at most the CORR E1 row norm. Only the CORR 256-D slice is updated: `H_new[:,64:] = H_E1[:,64:] + 0.02*tanh(alpha)*Bound(Delta)`, with scalar `alpha=0` initialization. The 48/6/10 PHENO/ANAT/FUNC slices remain the exact E1 output. Preflight verifies zero residual at alpha=0, nonzero response at nonzero alpha, finite bounds and classifier gradient to alpha.
+
+## Pre-registered groups
+
+All groups independently train from the same fold E1 entry and use the same candidate support and message budget except E0, which is the exact unmodified E1 replay.
+
+| Group | Frozen change |
+|---|---|
+| E0 | Exact E51 E1 replay; no DCRAA path. |
+| E1 | Same DCRAA capacity/edge/message budget; no relation CE or site adversary. |
+| E2 | Adds balanced three-class relation supervision. |
+| E3 | E2 plus unconditional site-pair adversary. |
+| E4 | E2 plus AA/TT/AT-conditional site-pair adversary. |
+| E5 | E4 plus fixed CORR teacher protection and only qualified auxiliary relations. |
+| E6 | E5, but fixed training pair disease conditions are permuted; labels/edge budget remain fixed. |
+| E7 | E5, but site-pair source labels are permuted within relation/condition-confidence strata, preserving marginals. |
+| E8 | E5 with true candidate edges replaced by matched degree/site-pair-preserving wrong edges. |
+| E9 | E5 with new cross-patient message set identically to zero; relation/adversarial losses remain active. |
+| E10 | E5 with the disease relation CE and teacher protection removed; site adversary remains. |
+
+Training loss weights are fixed at relation CE 0.02, adversary 0.005, teacher KL 0.005, auxiliary prototype alignment 0.005; GRL scale 0.03. New modules use AdamW LR 0.001, matrix WD 0.0001, bias/LayerNorm WD 0. These values are not searched. E1's two original Adam optimizers and WD 0.11 are unchanged.
+
+E5 best-checkpoint interventions include neutral disease-condition weighting, a fixed matched wrong condition, relabeled site-source targets (source labels are not an inference input, so classification invariance is expected), matched wrong neighbors, zero new messages, and exact E1 output. These fixed-checkpoint interventions are not interpreted as independent retraining gains; the paired E3/E4/E5/E6/E7/E8/E9/E10 retrains supply those tests.
+
+## Protocol and decision rules
+
+Use ABIDE A at the verified data hashes, ASD=0 (403), TD=1 (468), features 48/6/10/256, seed 0, `StratifiedKFold(10, shuffle=True, random_state=10)`, 450 epochs maximum, early-stop when `wait > 200`, strict ACC improvement and first-best checkpoint. Preserve `val_idx=test_idx`, global pre-fold standardization/RFE, and the 871-node transductive graph. Hard-AUC is computed from hard class predictions (equal to BA in this binary setup); Probability-AUC uses continuous ASD probability. Report all 10 fold values, mean ± population SD, and E5 same-fold differences/strict win-tie-loss against E0/E3/E4/E6/E7/E8/E9/E10. Ten folds overlap in training patients; no independent-dataset inference, significance, or multi-seed stability is claimed.
+
+The predeclared exploratory screen is E5 vs E0 ACC >= +0.30 pp, with BA and Probability-AUC not below E0 and concordant positive evidence for correct disease condition, true site supervision, true graph identity, and message necessity. Required GO labels are evaluated independently for relation discrimination, conditional adversarial alignment, disease preservation, true patient relation, cross-patient propagation, classification gain, and MICCAI 2027 use. Otherwise report NO-GO/NOT_SUPPORTED without tuning.
+
+History limits remain: `val=test` checkpoint selection, CV-before-fold preprocessing/RFE, transductive 871-node graph, one seed, one ABIDE A cohort. These results cannot establish unbiased external-site generalization.

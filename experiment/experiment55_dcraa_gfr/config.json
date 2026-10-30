@@ -1,0 +1,93 @@
+{
+  "experiment": "Experiment55_DCRAA_GFR",
+  "seed": 0,
+  "execution_root": "/model/spromptgl/experiment/experiment55_dcraa_gfr",
+  "data": {
+    "root": "/data/adodas/SPromptGL-main/data/ABIDE",
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "shape": [871, 320],
+    "dims": [48, 6, 10, 256],
+    "labels": {"ASD": 0, "TD": 1, "ASD_count": 403, "TD_count": 468},
+    "site_prefix": "SITE_ID_"
+  },
+  "cv": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "checkpoint_selection": "first strict ACC improvement",
+    "epochs": 450,
+    "early_stop_wait_gt": 200
+  },
+  "base": {
+    "epochs": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nlayer": 1,
+    "threshold": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "pen": "physically removed"
+  },
+  "relation": {
+    "input": "CORR only",
+    "dimension": 32,
+    "classes": ["AA", "TT", "AT"],
+    "OOF_splits": 5,
+    "OOF_pair_cells": 128,
+    "teacher_pair_cells": 512,
+    "min_adversary_support_per_cell": 32,
+    "auxiliary_admission_auc": 0.55,
+    "OOF_patient_teacher": "CORR logistic, 5-fold, temperature fit on train OOF only"
+  },
+  "optimizer_new": {
+    "name": "AdamW",
+    "lr": 0.001,
+    "matrix_weight_decay": 0.0001,
+    "bias_layernorm_weight_decay": 0.0
+  },
+  "loss": {
+    "lambda_relation": 0.02,
+    "lambda_adversary": 0.005,
+    "lambda_teacher_anchor": 0.005,
+    "lambda_auxiliary": 0.005,
+    "grl_scale": 0.03,
+    "auxiliary_admission_auc": 0.55
+  },
+  "propagation": {
+    "candidate_relation": "initial E1 CORR graph only",
+    "max_neighbors": 8,
+    "same_site_edges_retained": true,
+    "wrong_graph": "directed double-edge swaps preserving receiver out-degree, sender in-degree, and site/split-pair counts",
+    "writeback_slice": "CORR[64:320]",
+    "alpha_init": 0.0,
+    "residual_scale": 0.02,
+    "bound": "per-row tanh/RMS, L2 bounded by E1 CORR row norm"
+  },
+  "groups": [
+    {"id": "E0", "name": "E51_E1_EXACT_REPLAY", "mode": "REPLAY"},
+    {"id": "E1", "name": "RELATION_CAPACITY_CONTROL", "mode": "E1"},
+    {"id": "E2", "name": "DISEASE_RELATION_ONLY", "mode": "E2"},
+    {"id": "E3", "name": "UNCONDITIONAL_RELATION_ADV", "mode": "E3"},
+    {"id": "E4", "name": "DISEASE_CONDITIONAL_ADV", "mode": "E4"},
+    {"id": "E5", "name": "FULL_DCRAA_GFR", "mode": "E5"},
+    {"id": "E6", "name": "WRONG_DISEASE_CONDITION", "mode": "E6"},
+    {"id": "E7", "name": "WRONG_SITE_ADVERSARY", "mode": "E7"},
+    {"id": "E8", "name": "WRONG_PATIENT_RELATION", "mode": "E8"},
+    {"id": "E9", "name": "NO_CROSS_PATIENT_MESSAGE", "mode": "E9"},
+    {"id": "E10", "name": "NO_DISEASE_PROTECTION", "mode": "E10"}
+  ],
+  "runtime": {"gpu": 0, "workers_max": 5, "cpu_threads_per_worker": 2},
+  "limits": {
+    "preserve_val_test": true,
+    "preserve_global_preprocessing_and_rfe": true,
+    "preserve_transductive_871_node_graph": true,
+    "single_seed_exploratory_only": true
+  }
+}
