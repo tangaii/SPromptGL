@@ -1,0 +1,123 @@
+{
+  "experiment": "Experiment53.1_DrapCorrectedAdversarialPropagation",
+  "requested_root": "/data/adodas/SPromptGL-main/experiment/experiment53_1_drap_corrected_adversarial_propagation",
+  "execution_root": "/model/spromptgl/experiment/experiment53_1_drap_corrected_adversarial_propagation",
+  "mount_fallback": {
+    "requested_mount": "/data/adodas/SPromptGL-main/experiment",
+    "probe": "mkdir returned OSError(5, Input/output error)",
+    "verified_execution_mount": "overlayfs",
+    "data_source_root": "/data/adodas/SPromptGL-main"
+  },
+  "historical_sources": {
+    "experiment52": "/model/spromptgl/experiment/experiment52_drap_parametric_gcn_wd011",
+    "experiment53": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation",
+    "e0_reference_checkpoints": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/.runtime/checkpoints/E0_f{fold:02d}.best.pt",
+    "anchors": "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "fold_data": "/model/spromptgl/experiment/experiment52_drap_parametric_gcn_wd011/.runtime/fold_data",
+    "relation_cache_source": "/model/spromptgl/experiment/experiment53_drap_disease_relation_propagation/.runtime/relation_cache"
+  },
+  "data": {
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy",
+    "subjects": 871,
+    "class_counts": {"ASD_0": 403, "TD_1": 468},
+    "modality_dims": {"PHENO": 48, "ANAT": 6, "FUNC": 10, "CORR": 256},
+    "total_dim": 320,
+    "cv": {"folds": 10, "shuffle": true, "random_state": 10, "seed": 0, "val_equals_test": true},
+    "preprocessing": "historical CV-before RFE and standardization retained; transductive 871-node features allowed; held-out labels forbidden to DRAP"
+  },
+  "base": {
+    "source": "Experiment 51 E1 corrected LegacyFixedGFR + original CAM, physically PEN-free",
+    "anchor_source": "Experiment 43.1 fold-specific untrained anchors",
+    "initialization_seed": "510000 + fold*100 + 1",
+    "gfr_optimizer": "Adam",
+    "gfr_lr": 0.0038,
+    "gfr_weight_decay": 0.11,
+    "cam_optimizer": "Adam",
+    "cam_lr": 0.0038,
+    "cam_weight_decay": 0.11,
+    "graph_threshold": 0.9,
+    "gcn": "four original parameterized two-layer 320x320 GCNs; full 320D input; ReLU after first layer",
+    "adjacency": "normalize_adj(A + I)",
+    "gfr_loss": "classification + mean original GraphConstructLoss",
+    "pen": "physically removed"
+  },
+  "relation": {
+    "hidden": 32,
+    "pair_feature_dim": 65,
+    "scorer": "65->32->1",
+    "inner_oof_splits": 3,
+    "inner_relation_epochs": 100,
+    "outer_train_pairs_max": 4096,
+    "pair_sampling": "balanced same/different; fixed outer-train pairs; no epoch resampling",
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "matrix_weight_decay": 0.0001,
+    "bias_layernorm_weight_decay": 0.0,
+    "reliable_auc_threshold": 0.55,
+    "positive_q_threshold": 0.55,
+    "negative_q_threshold": 0.45,
+    "max_neighbors_per_sign": 12,
+    "reliable_modalities_control": "OOF only; never changed by adversarial participation",
+    "adversarial_modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "adv_pair_weights": "stop-gradient calibrated CORR confidence 2*abs(q-0.5), normalized to mean 1 separately within same/different pair strata; identical across modalities and E3/E4/E5"
+  },
+  "adversarial": {
+    "grl_scale": 0.03,
+    "loss_weight": 0.01,
+    "pair_loss_weight": 0.05,
+    "discriminator": "65+2->64->4; same parameter count for conditional and unconditional",
+    "conditional_mode": "true same/different one-hot from outer-train pairs only",
+    "unconditional_mode": "all-zero 2D condition; same pair set, weights, modalities and discriminator",
+    "warmup": "adversarial and pair losses active from epoch 0; propagation off for epochs 0-9"
+  },
+  "propagation": {
+    "warmup_epochs": 10,
+    "epochs_0_to_9": "exact zero DRAP delta",
+    "enable_epoch": 10,
+    "positive_message": "row-normalized A_pos @ (X_neighbor-X_receiver)",
+    "negative_message": "row-normalized A_neg @ (X_neighbor-X_receiver), subtracted only when negative_enabled",
+    "gamma_negative": 0.25,
+    "lambda_prop": 0.02,
+    "bound": "per-modality-block RMS*tanh(delta/(RMS+eps))",
+    "aggregation": "deterministic dense weighted adjacency and matrix multiply; no CUDA index_add_",
+    "normalization_cancellation_audit": true
+  },
+  "groups": [
+    {"id":"E1","name":"DRAP_RELATION_POSITIVE","positive_enabled":true,"negative_enabled":false,"adversarial_mode":"none","uncertainty_mode":"skip","identity_mode":"disease"},
+    {"id":"E2","name":"DRAP_SIGNED_NO_ADV","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"none","uncertainty_mode":"skip","identity_mode":"disease"},
+    {"id":"E3","name":"DRAP_POSITIVE_CONDITIONAL_ADV","positive_enabled":true,"negative_enabled":false,"adversarial_mode":"conditional","uncertainty_mode":"skip","identity_mode":"disease"},
+    {"id":"E4","name":"DRAP_FULL","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"conditional","uncertainty_mode":"skip","identity_mode":"disease"},
+    {"id":"E5","name":"DRAP_UNCONDITIONAL_ADV","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"unconditional","uncertainty_mode":"skip","identity_mode":"disease"},
+    {"id":"E6","name":"DRAP_NO_UNCERTAINTY_SKIP","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"conditional","uncertainty_mode":"continuous","identity_mode":"disease"},
+    {"id":"E7","name":"DRAP_SHUFFLED_RELATION_CONTROL","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"conditional","uncertainty_mode":"skip","identity_mode":"per_forward_score_permutation_within_CORR_candidates"},
+    {"id":"E8","name":"DRAP_UNIFORM_RELATION_CONTROL","positive_enabled":true,"negative_enabled":true,"adversarial_mode":"conditional","uncertainty_mode":"skip","identity_mode":"ordinary_similarity_with_fixed_degree_budgets"}
+  ],
+  "training": {
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_rule": "strict ACC improvement; only epochs >=10 can be formal best",
+    "resume": "model, optimizers, epoch, early-stop state, best state and Python/NumPy/Torch CPU/CUDA RNG",
+    "workers_max": 5,
+    "device": "GPU0",
+    "formal_folds": 80,
+    "formal_groups": ["E1","E2","E3","E4","E5","E6","E7","E8"]
+  },
+  "determinism": {
+    "torch_deterministic_algorithms": true,
+    "cublas_workspace_config": ":4096:8",
+    "repeated_equivalent_instance_updates": 2,
+    "historical_E0_retrained": false,
+    "historical_E0_trajectory_claim": false
+  },
+  "controls": {
+    "E7": "each forward permutes calibrated q values among original CORR candidate edge slots; keep original endpoints; reselect using E4 fold-local per-node sign budgets; cap selected sign edge count at the initial matched target; report any unfilled budget and degree mismatch; fold-local fixed permutation",
+    "E8": "original GraphLearn candidate support, ordinary projected cosine ranking, fixed per-node sign budgets from fold's pretrained CORR score graph; no q in propagation forward",
+    "matching_status": "measure edge count, degree and message scale; report CONTROL_MATCHING_LIMITED if residual mismatch remains"
+  },
+  "selection_limits": {
+    "test_labels_forbidden_to": ["relation supervision", "adversarial condition", "confidence weights", "calibration", "edge selection", "propagation"],
+    "validation": "historical val=test; disclosed as optimistic",
+    "no_search": true
+  }
+}
