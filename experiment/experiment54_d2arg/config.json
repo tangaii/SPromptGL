@@ -1,0 +1,26 @@
+{
+  "experiment": "Experiment54_D2ARG",
+  "execution_root": "/model/spromptgl",
+  "experiment_dir": "/model/spromptgl/experiment/experiment54_d2arg",
+  "read_only_source_root": "/data/adodas/SPromptGL-main",
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48, 6, 10, 256], "labels": "ASD=0,TD=1", "site_columns": "PHENO positions 26:46"},
+  "cv": {"n_splits": 10, "shuffle": true, "random_state": 10, "seed": 0, "val_equals_test": true, "selection": "strict ACC improvement; wait>200; historical val=test"},
+  "base": {"epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0, "pen": "physically removed"},
+  "relation": {"hidden": 32, "pair_max": 4096, "inner_pair_max": 2048, "inner_splits": 5, "inner_epochs": 80, "lr": 0.001, "weight_decay": 0.11, "grl_scale": 0.03, "reliable_auc_threshold": 0.55, "candidate": "union of four anchor GraphLearn supports plus no label-dependent edges"},
+  "propagation": {"gamma_max": 0.50, "mu_max": 0.50, "rho_max": 0.08, "kappa_max": 1.0, "gamma_init": 0.15, "mu_init": 0.15, "rho_init": 0.012, "kappa_init": 0.25, "max_neighbors": 16, "corr_only_writeback": true, "upper_bound_fraction": 0.08},
+  "loss": {"lambda_rel": 0.02, "lambda_adv": 0.005},
+  "groups": [
+    {"id":"B0","name":"E1_IDENTITY_REPLAY","edge":false,"propagation":"none","adv":false,"pair_aux":false},
+    {"id":"B1","name":"PAIR_AUX_ONLY","edge":false,"propagation":"none","adv":false,"pair_aux":true},
+    {"id":"B2","name":"SIMILARITY_SIGNED","edge":true,"propagation":"signed","adv":false,"pair_aux":false,"similarity":true},
+    {"id":"B3","name":"DISEASE_EDGE_ONLY","edge":true,"propagation":"none","adv":false,"pair_aux":true},
+    {"id":"B4","name":"DISEASE_EDGE_SIGNED","edge":true,"propagation":"signed","adv":false,"pair_aux":true},
+    {"id":"B5","name":"FULL_D2ARG","edge":true,"propagation":"signed","adv":true,"pair_aux":true},
+    {"id":"B6","name":"NO_NEGATIVE_CHANNEL","edge":true,"propagation":"positive","adv":true,"pair_aux":true},
+    {"id":"B7","name":"WRONG_DISEASE_PAIR","edge":true,"propagation":"signed","adv":true,"pair_aux":true,"wrong_supervision":true},
+    {"id":"B8","name":"WRONG_PATIENT_GRAPH","edge":true,"propagation":"signed","adv":true,"pair_aux":true,"wrong_graph":true},
+    {"id":"B9","name":"NO_CROSS_PATIENT_MESSAGE","edge":true,"propagation":"none","adv":true,"pair_aux":true,"new_message_off":true}
+  ],
+  "runtime": {"device":"cuda:0","workers_max":5,"checkpoint_policy":"best ACC only plus latest every 10 epochs","formal_groups":10,"formal_folds":100},
+  "protocol_limits": {"val_test":"historical protocol retained; biased selection", "preprocessing":"CV-before-fold preprocessing/RFE retained", "transductive":"871-node graph retained", "external_generalization":"not claimed"}
+}

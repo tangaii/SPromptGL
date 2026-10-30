@@ -1,0 +1,148 @@
+{
+  "experiment": "Experiment54_D2ARG",
+  "status": "COMPLETE_AUDITED",
+  "formal_groups": [
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9"
+  ],
+  "formal_folds": 100,
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "source_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "private_source_sha256": {
+    "source/drap.py": "e1207e5bec4a32724c72f49a1165ca6c8b32ec1237bce66601a750b2b0cec6c9",
+    "source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "source/e1_base.py": "2063f55147470fc4c335ab04044078824ed71fbb0dcaccbfb3b42da0072b7355",
+    "source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "d2arg.py": "292ee8ac8bb975826960b49ed3271b194e99cbd93bcb742c5f0527ed627bd5f1",
+    "run.py": "fef92c834fe4fc931c884a881161d74d7d06bdb7ce45aa01998c1bc2e3944447"
+  },
+  "e1_anchor_sha256": {
+    "1": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    "2": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    "3": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    "4": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    "5": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184",
+    "6": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    "7": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    "8": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    "9": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    "10": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa"
+  },
+  "fold_sha256": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "e1_seed_rule": "510000 + fold*100 + 1",
+  "new_rng_rule": "torch.random.fork_rng; relation 553000+fold; pretrain fold-local",
+  "test_labels_forbidden": true,
+  "groups": [
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9"
+  ],
+  "controller_runs": [
+    {
+      "groups": [
+        "B0",
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "B9"
+      ],
+      "workers": 5,
+      "completed": 90,
+      "failed": 10,
+      "wall_seconds": 1087.605128288269
+    },
+    {
+      "groups": [
+        "B2"
+      ],
+      "workers": 5,
+      "completed": 10,
+      "failed": 0,
+      "wall_seconds": 125.06482696533203
+    }
+  ],
+  "training_status": "COMPLETE",
+  "formal_groups_complete": 10,
+  "formal_folds_complete": 100,
+  "fold_metrics_sha256": "b48a5ad36bbc30037586968943cb51ddd647d08c40395bc02b4e88bb4baf36ce",
+  "summary_sha256": "a08f047b1888dcbeac3ad6695238ade500848c5fbb7ed4127cd733c2554d672e",
+  "paired_sha256": "b94d9162ee1bd2cc7aa6d82cdfe6e59a02985f81033ed28b162599a4b9bf7199",
+  "scientific_decision": "NO-GO",
+  "checkpoint_audit": "PASS 100/100",
+  "preflight": "PASS",
+  "preflight_sha256": "3a36cd1521d2658314ab604e096d8f01650a331fe5fd5935bcb2c69c2e55ce75",
+  "checkpoint_audit_sha256": "a35c9fc70e814ebc158914086e8f70b45c60467941fcba745dffb5c2d299fa78",
+  "report_sha256": "72c7fa06d7f4d2d46b30eac77366b9297ca927fea7f5099614d57440c46a54ca",
+  "mechanism_sha256": "60c6da87d54dcbfaf0867689dd4ea3ef3fccd281e7defe3f15661dca1122b90c",
+  "interventions_sha256": "179f94a729845d3ccc53ce4391425df474957349f04e316683809fd50ca548b8",
+  "independent_audit_sha256": "76fca7e92ae9c46dcf591418f8097e4c1f67d90136298ef605478e032ffa13d5",
+  "handoff_targets": [
+    "/model/spromptgl/experiment/handoff.md"
+  ],
+  "handoff_sync_failures": {
+    "/data/adodas/SPromptGL-main/handoff.md": "Errno 5 Input/output error (OSSFS read-only/unwritable at finalization)"
+  },
+  "make_report_sha256": "8e603cb1203ae6b86a188fc4adeb6b081ad0d25ae91c77e37959335538647567",
+  "manifest_finalized": true,
+  "repair_log": [
+    {
+      "issue": "B5 bounded parameter device placement",
+      "affected": "B5 fold1",
+      "action": "initialize new parameters on CUDA and rerun fold1",
+      "final_status": "COMPLETE"
+    },
+    {
+      "issue": "B2 similarity diagnostics None",
+      "affected": "B2 folds1-10",
+      "action": "initialize label-free similarity diagnostics and rerun all B2 folds",
+      "final_status": "COMPLETE"
+    }
+  ]
+}
