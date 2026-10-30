@@ -1,0 +1,101 @@
+{
+  "experiment": "Experiment52_DRAP_PARAM_GCN_WD011",
+  "execution_root": "/model/spromptgl",
+  "seed": 0,
+  "data": {
+    "n": 871,
+    "dims": [48, 6, 10, 256],
+    "labels": "ASD=0,TD=1",
+    "csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy"
+  },
+  "cv": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "selection": "strict ACC improvement; wait>200"
+  },
+  "base": {
+    "epochs": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "weight_decay": 0.11,
+    "dropout": 0.35,
+    "n_hidden": 18,
+    "n_head": 2,
+    "nlayer": 1,
+    "threshold": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "pen": "physically removed",
+    "graph": "four original GraphLearn graphs; normalize_adj(A+I)"
+  },
+  "drap": {
+    "relation_hidden": 32,
+    "pair_max": 4096,
+    "pair_sampling": "balanced same/different outer-train pairs, fold-local precomputed RNG",
+    "grl_scale": 0.03,
+    "warmup_epochs": 10,
+    "lambda_pair": 0.05,
+    "lambda_adv": 0.01,
+    "optimizer_lr": 0.001,
+    "optimizer_weight_decay": 0.11,
+    "edge_rule": "confidence=2*abs(q-0.5); weight=clamp(1+0.5*(2*q-1)*confidence,0.5,1.5)",
+    "support": "original off-diagonal GraphLearn support only; diagonal preserved at weight 1",
+    "pair_features": "abs(normalized difference), normalized elementwise product, cosine similarity",
+    "condition": "same/different pair one-hot appended after GRL"
+  },
+  "groups": [
+    {
+      "id": "E0",
+      "name": "EXP51_E1_EXACT_REPLAY",
+      "mode": "legacy_fixed_gfr",
+      "formal_folds": 10,
+      "loss": "L_cls + L_graph",
+      "description": "Re-trained E51 E1 repaired four-way full-320 parametric GCN; no DRAP modules"
+    },
+    {
+      "id": "E1",
+      "name": "DRAP_PARAM_GCN_WD011",
+      "mode": "drap",
+      "formal_folds": 10,
+      "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv",
+      "description": "Differentiable disease-conditioned edge reweighting sent to the original four GCNs"
+    }
+  ],
+  "initialization": {
+    "seed_formula": "510000 + fold*100 + 1",
+    "anchor_root": "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "anchor_type": "fold01..fold10 complete GFR/CAM untrained anchors",
+    "new_module_rng": "torch.random.fork_rng; torch.manual_seed(520000+fold); restore outer RNG",
+    "post_construction_rng": "the RNG after base/CAM construction and anchor load is the training entry state; no historical anchor RNG overwrite"
+  },
+  "runtime": {
+    "device": "cuda:0",
+    "workers_max": 5,
+    "checkpoint_policy": "best ACC only plus resumable latest state every 10 epochs",
+    "formal_groups": 2,
+    "formal_folds": 20
+  },
+  "protected_sources": [
+    "/data/adodas/SPromptGL-main/main.py",
+    "/data/adodas/SPromptGL-main/model.py",
+    "/data/adodas/SPromptGL-main/network.py",
+    "/data/adodas/SPromptGL-main/layers.py",
+    "/data/adodas/SPromptGL-main/utils.py",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy"
+  ],
+  "historical_sources": [
+    "/data/adodas/SPromptGL-main/experiment/experiment51_dugsa",
+    "/tmp/SPromptGL-E51_2/experiment51_2_pdcsra_gfr",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest"
+  ],
+  "audit_notes": {
+    "val_test": "historical val_idx=test_idx retained; performance may be optimistic",
+    "preprocessing": "CV-before preprocessing retained; performance is not unbiased external generalization",
+    "transductive_graph": "all 871 features may enter graph construction/propagation; test labels are isolated from DRAP supervision"
+  }
+}
