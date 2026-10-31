@@ -1,0 +1,28 @@
+# Experiment 56.1 — DCRAG-GFR-R design freeze
+
+## Scope
+
+The only formal group is `E56_1_FULL_DCRAG_GFR_REPAIRED`, seed 0, the fixed E51 E1 ten-fold split. The aim is to repair the four mechanisms diagnosed in Experiment 56 while retaining the same DCRAG-GFR research question and the E51 E1 PEN-free CAM. No Experiment 56 checkpoint is used for initialization.
+
+The source and paper audit maps SPromptGL Figure 1, Section 2.1 and Equations (1), (2), and (7) to the executable code. The private E51 snapshot and E43.1 fold anchors are copied under `source/` and hashed in `manifest.json`. E51's four GraphLearn branches each project one modality, build a hard cosine graph, and its four GCN branches each receive the complete 320-D concatenation. E1's `LegacyFixedGFR` starts at raw X and adds all four sigmoid fusion-weighted messages. `GraphConstructLoss` is retained; the historical ALoss is not in the `simple-2` total. CAM is `PLNNoPEN`. These code facts control the implementation; paper equations are not treated as an executable specification.
+
+## E51 inheritance and random state
+
+Each fold calls the audited `build_state("E1", fold)` route with `510000 + 100*fold + 1`, loads only the E43.1 fold anchor, and then constructs the CAM in E51 order. All four GraphLearn parameters/buffers, four complete 320-D GCNs, fusion weight and CAM state are compared tensor-by-tensor. New modules are initialized inside `torch.random.fork_rng`; pair sampling and teachers use local NumPy generators. The reference bypass preserves the exact E1 graph normalization, GCN order, fusion and CAM dropout trace. The changed losses and optimizer updates mean later parameter trajectories are not claimed identical to E1. GCN WD=0.0001 is retained as the predeclared message-collapse repair; GraphLearn/CAM WD remain 0.11.
+
+## Repairs frozen before training
+
+1. **GraphLearn gradient chain.** The preparation stage creates only a fixed support pool (historical edges, top-48 raw modality cosine candidates and train-fold teacher candidates). In every forward pass, current inherited `GraphLearn.p` projections recompute candidate cosine scores. A deterministic per-receiver top-16 selection is made within the pool, and the selected continuous scores and edge weights remain differentiable to the current GraphLearn parameters. Four modalities have independent paths.
+2. **Single adjacency normalization and bounded messages.** Same edges use `row_normalize(W_same + I)` once; AT edges use `row_normalize(W_diff)` once. GCNs receive these matrices directly, while the reference bypass alone uses E1's historical symmetric normalization. Same and AT messages are row L2-scaled to the patient's input norm, then the fused message is limited by `rho=0.25` per patient. `beta=sigmoid(beta_gate)` is initialized at 0.4 and `eta_m=0.3*sigmoid(eta_raw_m)` starts at 0.03 (the fixed `eta_diff_initial=0.1` is the pre-sigmoid target). Limits, pre-limit norms and activation fraction are audited.
+3. **Shared disease supervision and adversary.** Each 32-D pair code is split into shared16/private16. `shared_disease_head(shared16)` directly receives AA/TT/AT loss; private has a lower-weight diagnostic head. The four-way conditional GRL adversary sees shared16 and detached AA/TT/AT soft conditions. `GRL_max=0.10`, adversarial loss weight=0.01, and 20-epoch warm-up are frozen. A reliability-weighted, class-balanced shared prototype loss (`lambda_prototype=0.01`) preserves disease structure without forcing weak modalities to match CORR at equal strength.
+4. **Patient gate.** The gate uses normalized raw X, normalized four messages, message norms, relation confidence summaries and fixed continuous modality reliability. It is initialized to uniform weights and the inherited fusion weights are applied once, without the former factor-of-four amplification. Gate mean, standard deviation and per-patient range are recorded.
+5. **Self-only intervention.** Disabling cross-patient messages replaces same adjacency with I and AT adjacency with zero, then runs the same trained GCN weights and CAM. It does not replace the result with raw X. Full-gate and naturally recomputed-gate diagnostics are separated.
+6. **Strict wrong graph.** The fixed-checkpoint wrong-neighbor diagnostic uses deterministic directed two-edge swaps only within identical site and outer train/test buckets. A valid swap preserves receiver outdegree, sender indegree, receiver destination site/partition composition, no self-loop and no duplicate edge. Achieved swap and insufficiency rates are reported; no unmatched edge is described as a strict control.
+
+## Frozen objective and protocol
+
+`L_total = L_cls + L_graph + .02 L_relation + .01 L_adversarial + .01 L_prototype + .002 L_consistency + .001 L_edge_stability`. GraphLearn/CAM use E1 Adam lr .0038 and WD .11; inherited GCN uses lr .0038 and WD .0001; new parameters use AdamW lr .001 and WD .0001. The ABIDE data, global preprocessing/RFE, 871-node transductive graph, `val=test` checkpoint selection, strict ACC improvement, 450 epochs and `wait>200` are retained and reported as historical limitations.
+
+## Preflight and audit
+
+Preflight must pass inheritance/RNG/bypass checks, GraphLearn classification gradients for all four branches, one-pass row normalization, bounded-message and nonzero-gradient checks, shared/private disease and GRL checks, test-label isolation, strict self-only execution and matched-swap validity, plus save/restore equivalence. All ten best checkpoints are independently reloaded and predictions/metrics recomputed. Engineering completion (`COMPLETE_AUDITED`) is separate from the scientific `GO/PARTIAL/NO-GO` decision. No external test, multi-seed stability or significance claim is allowed.
