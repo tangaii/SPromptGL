@@ -1,0 +1,51 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "formal_folds_required": 40,
+  "formal_folds_complete": 40,
+  "independent_checkpoint_audits_passed": 40,
+  "max_workers": 10,
+  "device": "GPU0",
+  "seed": 0,
+  "historical_53_2_and_previous_sweep_results_read_only": true,
+  "gfr_weight_decay_applies_to": "experiment 53.2 original GFR optimizer (GraphLearn, GCN, fusion parameters)",
+  "cam_weight_decay": 0.11,
+  "groups": [
+    {
+      "name": "CADR_WD_0p0001_GFR_WD_0p11",
+      "cadr_weight_decay": 0.0001,
+      "gfr_weight_decay": 0.11
+    },
+    {
+      "name": "CADR_WD_0p001_GFR_WD_0p2",
+      "cadr_weight_decay": 0.001,
+      "gfr_weight_decay": 0.2
+    },
+    {
+      "name": "CADR_WD_0p01_GFR_WD_0p11",
+      "cadr_weight_decay": 0.01,
+      "gfr_weight_decay": 0.11
+    },
+    {
+      "name": "CADR_WD_0p01_GFR_WD_0p2",
+      "cadr_weight_decay": 0.01,
+      "gfr_weight_decay": 0.2
+    }
+  ],
+  "initialization_and_pair_cache_match_reference": true,
+  "reference_manifest_status": "COMPLETE_AUDITED",
+  "source_sha256": {
+    "runner": "359b826381fe42adcc728fe85352437a653a3c7876d0780aa565d9e4308e10ca",
+    "config": "a60c47254297a689179c66a40ef2def1fccd9bf57d776d1e69f418d8ecc52a7b",
+    "base_run": "5600379b9ee6e4483b787ebb24f022b3753cf75fa86e5cb8d837e65249bd6684",
+    "cadr_gfr": "8eb060ca810992af2d03d6e411746553f7dcf9a91746fb7048e05c5e0b43220f",
+    "prior_sweep_runner": "054533c5d9ad0b9ffda5d7cf09619abd27c45abd9d3c9881d9588c0898339dad",
+    "prior_sweep_config": "e7b9ad49a950e497e9901f6ccae444ee8989b5f3ddbc8553c1bbc07e0d91bfa8"
+  },
+  "result_sha256": {
+    "fold_metrics.csv": "c041dd6e9c840f2a958ec9d9021bfb245651465252a8fab571acbda06adbe32b",
+    "preflight.csv": "03bbf2bcf47643d8dccb2152d29d10b0430cfa1a41fe1c709e7bcc070d0615a0",
+    "result_table.csv": "518d8c61800639d74ec0bd1d2fb38d1594c1cff2953064a8b019e002a243434b",
+    "summary.csv": "518d8c61800639d74ec0bd1d2fb38d1594c1cff2953064a8b019e002a243434b"
+  },
+  "created_epoch": 1793431055
+}

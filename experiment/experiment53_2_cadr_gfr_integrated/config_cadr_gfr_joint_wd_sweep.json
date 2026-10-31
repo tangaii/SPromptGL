@@ -1,0 +1,24 @@
+{
+  "experiment": "Experiment 53.2 CADR and GFR joint weight-decay sweep",
+  "formal_folds": 40,
+  "seed": 0,
+  "groups": [
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p001_GFR_WD_0p2", "cadr_weight_decay": 0.001, "gfr_weight_decay": 0.2},
+    {"name": "CADR_WD_0p01_GFR_WD_0p11", "cadr_weight_decay": 0.01, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p01_GFR_WD_0p2", "cadr_weight_decay": 0.01, "gfr_weight_decay": 0.2}
+  ],
+  "optimizer_contract": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "group_specific_weight_decay": [0.11, 0.2]},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "group_specific_weight_decay": [0.0001, 0.001, 0.01], "weight_decay_application": "same requested scalar on matrix and bias/normalization parameter groups"}
+  },
+  "unchanged_protocol": "Experiment 53.2 E1_CADR_GFR_FULL; same anchors, RNG, folds, relation cache, data, model, losses, pair inputs, warmup, epoch cap, ACC checkpoint selection and early stopping. Only GFR opt_base WD and CADR opt_added WD vary; CAM WD stays 0.11.",
+  "reference_only": {
+    "group": "E1_CADR_GFR_FULL",
+    "cadr_weight_decay": 0.0001,
+    "gfr_weight_decay": 0.11,
+    "checkpoint_source": "../.runtime/checkpoints/E1_CADR_GFR_FULL_f*.best.pt",
+    "retrained": false
+  }
+}

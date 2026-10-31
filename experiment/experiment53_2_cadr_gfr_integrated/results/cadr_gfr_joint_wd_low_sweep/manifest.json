@@ -1,0 +1,41 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "formal_folds_required": 20,
+  "formal_folds_complete": 20,
+  "independent_checkpoint_audits_passed": 20,
+  "max_workers": 10,
+  "device": "GPU0",
+  "seed": 0,
+  "historical_53_2_and_previous_sweep_results_read_only": true,
+  "gfr_weight_decay_applies_to": "experiment 53.2 original GFR optimizer (GraphLearn, GCN, fusion parameters)",
+  "cam_weight_decay": 0.11,
+  "groups": [
+    {
+      "name": "CADR_WD_0p00001_GFR_WD_0p11",
+      "cadr_weight_decay": 1e-05,
+      "gfr_weight_decay": 0.11
+    },
+    {
+      "name": "CADR_WD_0p000001_GFR_WD_0p11",
+      "cadr_weight_decay": 1e-06,
+      "gfr_weight_decay": 0.11
+    }
+  ],
+  "initialization_and_pair_cache_match_reference": true,
+  "reference_manifest_status": "COMPLETE_AUDITED",
+  "source_sha256": {
+    "runner": "8ac2e022eb8c90efb339b0daeeac6142286b8add3efdc29097875405d3e8887f",
+    "config": "95dda41a032a7c760a9086ebd67a7de5dc821b96cbcdb93f4c03ec5dec6b0ab1",
+    "base_run": "5600379b9ee6e4483b787ebb24f022b3753cf75fa86e5cb8d837e65249bd6684",
+    "cadr_gfr": "8eb060ca810992af2d03d6e411746553f7dcf9a91746fb7048e05c5e0b43220f",
+    "prior_sweep_runner": "054533c5d9ad0b9ffda5d7cf09619abd27c45abd9d3c9881d9588c0898339dad",
+    "prior_sweep_config": "e7b9ad49a950e497e9901f6ccae444ee8989b5f3ddbc8553c1bbc07e0d91bfa8"
+  },
+  "result_sha256": {
+    "fold_metrics.csv": "40711791a5191ef6b4a9fa92c209b7b832b519d1ecec88cd25b6a3548b9104b4",
+    "preflight.csv": "03d4bcc4e5d4c03fa72aeafd7d1cac8450708a4425c6490180f40882cf2092a4",
+    "result_table.csv": "532057514129a1836633fc01a58656013ce7e3fce55355bc3a8b4cfdd0f0dd67",
+    "summary.csv": "532057514129a1836633fc01a58656013ce7e3fce55355bc3a8b4cfdd0f0dd67"
+  },
+  "created_epoch": 1793432837
+}

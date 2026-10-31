@@ -1,0 +1,26 @@
+{
+  "experiment": "Experiment 53.2 additional low-CADR-weight-decay joint sweep",
+  "formal_folds": 20,
+  "seed": 0,
+  "runtime_subdir": "cadr_gfr_joint_wd_low_sweep",
+  "results_subdir": "cadr_gfr_joint_wd_low_sweep",
+  "groups": [
+    {"name": "CADR_WD_0p00001_GFR_WD_0p11", "cadr_weight_decay": 0.00001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p000001_GFR_WD_0p11", "cadr_weight_decay": 0.000001, "gfr_weight_decay": 0.11}
+  ],
+  "optimizer_contract": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {
+      "class": "AdamW",
+      "lr": 0.001,
+      "weight_decay_application": "same requested scalar on all CADR optimizer parameter groups"
+    }
+  },
+  "protocol": "Same Experiment 53.2 E1_CADR_GFR_FULL model, anchor initialization, per-fold RNG, data, folds, relation cache and training protocol. Only CADR optimizer WD varies; GFR and CAM WD remain 0.11.",
+  "reference_only": {
+    "experiment_53_2_group": "CADR_WD_0p00001_GFR_WD_0p11",
+    "source": "previous CADR-only WD sweep (same CADR WD=0.00001 and GFR WD=0.11)",
+    "reused_as_training_result": false
+  }
+}

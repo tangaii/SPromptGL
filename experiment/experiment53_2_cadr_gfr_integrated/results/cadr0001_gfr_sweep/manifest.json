@@ -1,0 +1,51 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "formal_folds_required": 40,
+  "formal_folds_complete": 40,
+  "independent_checkpoint_audits_passed": 40,
+  "max_workers": 10,
+  "device": "GPU0",
+  "seed": 0,
+  "historical_53_2_and_previous_sweep_results_read_only": true,
+  "gfr_weight_decay_applies_to": "experiment 53.2 original GFR optimizer (GraphLearn, GCN, fusion parameters)",
+  "cam_weight_decay": 0.11,
+  "groups": [
+    {
+      "name": "CADR_WD_0p0001_GFR_WD_0p05",
+      "cadr_weight_decay": 0.0001,
+      "gfr_weight_decay": 0.05
+    },
+    {
+      "name": "CADR_WD_0p0001_GFR_WD_0p2",
+      "cadr_weight_decay": 0.0001,
+      "gfr_weight_decay": 0.2
+    },
+    {
+      "name": "CADR_WD_0p0001_GFR_WD_0p01",
+      "cadr_weight_decay": 0.0001,
+      "gfr_weight_decay": 0.01
+    },
+    {
+      "name": "CADR_WD_0p0001_GFR_WD_0p5",
+      "cadr_weight_decay": 0.0001,
+      "gfr_weight_decay": 0.5
+    }
+  ],
+  "initialization_and_pair_cache_match_reference": true,
+  "reference_manifest_status": "COMPLETE_AUDITED",
+  "source_sha256": {
+    "runner": "8ac2e022eb8c90efb339b0daeeac6142286b8add3efdc29097875405d3e8887f",
+    "config": "8180b42b8d6595aa8cfe614ea07be73b0326a6e1520f0fa1d235176932155519",
+    "base_run": "5600379b9ee6e4483b787ebb24f022b3753cf75fa86e5cb8d837e65249bd6684",
+    "cadr_gfr": "8eb060ca810992af2d03d6e411746553f7dcf9a91746fb7048e05c5e0b43220f",
+    "prior_sweep_runner": "054533c5d9ad0b9ffda5d7cf09619abd27c45abd9d3c9881d9588c0898339dad",
+    "prior_sweep_config": "e7b9ad49a950e497e9901f6ccae444ee8989b5f3ddbc8553c1bbc07e0d91bfa8"
+  },
+  "result_sha256": {
+    "fold_metrics.csv": "29a5b2c33ec990a0437cb424e41553cb551c116542974e17a545d78dea7e4dbd",
+    "preflight.csv": "c6242848ce17de155b028dc3b21f1f2821353d170cb5b5f481b6afa488ee9e42",
+    "result_table.csv": "82e81ebf3f6d18c03b67e6dfcbd4f74aaf07951cf9aa94ceb72c7d94b013da30",
+    "summary.csv": "82e81ebf3f6d18c03b67e6dfcbd4f74aaf07951cf9aa94ceb72c7d94b013da30"
+  },
+  "created_epoch": 1793436391
+}

@@ -1,0 +1,19 @@
+{
+  "experiment": "Experiment 53.2 fixed CADR WD and GFR WD sweep",
+  "formal_folds": 40,
+  "seed": 0,
+  "runtime_subdir": "cadr0001_gfr_sweep",
+  "results_subdir": "cadr0001_gfr_sweep",
+  "groups": [
+    {"name": "CADR_WD_0p0001_GFR_WD_0p05", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.05},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p2", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.2},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p01", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.01},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p5", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.5}
+  ],
+  "optimizer_contract": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay_values": [0.05, 0.2, 0.01, 0.5]},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.0001, "same_weight_decay_on_all_added_parameter_groups": true}
+  },
+  "protocol": "Experiment 53.2 CADR-GFR joint sweep. Same model, initialization, RNG, splits, data, relation cache, losses, warmup, epoch cap, checkpoint selection and early stopping. Only GFR WD varies; CADR WD remains 0.0001 and CAM WD remains 0.11."
+}

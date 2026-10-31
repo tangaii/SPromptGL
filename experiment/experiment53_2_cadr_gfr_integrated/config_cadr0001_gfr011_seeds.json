@@ -1,0 +1,24 @@
+{
+  "experiment": "Experiment 53.2 fixed CADR/GFR weight decay across training seeds",
+  "formal_folds_per_seed": 10,
+  "seed_values": [1, 2, 3, 4, 5, 10, 2026, 2000],
+  "fold_split_seed": 10,
+  "runtime_subdir": "cadr0001_gfr011_seeds",
+  "results_subdir": "cadr0001_gfr011_seeds",
+  "groups": [
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_1", "seed": 1, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_2", "seed": 2, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_3", "seed": 3, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_4", "seed": 4, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_5", "seed": 5, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_10", "seed": 10, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_2026", "seed": 2026, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11_SEED_2000", "seed": 2000, "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11}
+  ],
+  "optimizer_contract": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.0001, "same_weight_decay_on_all_added_parameter_groups": true}
+  },
+  "protocol": "Experiment 53.2 CADR-GFR. The outer StratifiedKFold split stays fixed at random_state=10 for paired fold comparisons. Each requested seed offsets the main training RNG, CADR initialization, inner relation-model initialization, and independent balanced-pair RNGs. Inner fold membership, model, optimizers, losses, warmup, max epochs, checkpoint rule, and early stopping remain fixed."
+}
