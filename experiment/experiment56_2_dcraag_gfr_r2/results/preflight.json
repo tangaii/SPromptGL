@@ -1,0 +1,227 @@
+{
+  "status": "PASS",
+  "fold": 1,
+  "checks": {
+    "TEST_ENTROPY_CONFIDENCE": {
+      "status": "PASS",
+      "uniform": 0.05000000074505806,
+      "onehot": 0.9999996423721313,
+      "mid": 0.4183281660079956
+    },
+    "TEST_SOFTCAP_MATH": {
+      "status": "PASS",
+      "small_norm": 0.009900989942252636,
+      "large_norm": 0.9090909361839294
+    },
+    "TEST_NO_LABEL_LEAKAGE": {
+      "status": "PASS",
+      "teacher_equal": true
+    },
+    "TEST_ETA_INITIALIZATION": {
+      "status": "PASS",
+      "initial_eta": [
+        0.10000000894069672,
+        0.10000000894069672,
+        0.10000000894069672,
+        0.10000000894069672
+      ]
+    },
+    "TEST_E51_PARITY": {
+      "status": "PASS",
+      "bypass_bitwise": true,
+      "cam_bitwise": true,
+      "rng_bitwise": true
+    },
+    "TEST_GATE_INITIALIZATION": {
+      "status": "PASS",
+      "max_uniform_deviation": 0.0007204413414001465
+    },
+    "TEST_GATE_PATIENT_VARIANCE": {
+      "status": "PASS",
+      "std": 0.0001179910177597776
+    },
+    "TEST_MESSAGE_SCALE": {
+      "status": "PASS",
+      "max_bound_ratio": 0.09297620505094528,
+      "bound_active": 1.0
+    },
+    "TEST_GRAPH_ORIENTATION": {
+      "status": "PASS",
+      "same_row_sum_max_error": 3.5762786865234375e-07
+    },
+    "TEST_GATE_GRADIENT": {
+      "status": "PASS",
+      "first_weight": 9.893754759104922e-05,
+      "second_weight": 0.0034771075006574392
+    },
+    "TEST_MESSAGE_GRADIENT": {
+      "status": "PASS",
+      "graphlearn": [
+        2.5080685190914664e-06,
+        4.789555532624945e-06,
+        5.518403668247629e-06,
+        1.247403724846663e-05
+      ],
+      "gcn": [
+        0.023822471499443054,
+        0.018768690526485443,
+        0.021114932373166084,
+        0.018677357584238052
+      ],
+      "edge": [
+        1.3277065590955317e-05,
+        2.4870440029189922e-05,
+        1.42189064717968e-05,
+        1.2411172065185383e-05
+      ]
+    },
+    "TEST_ADVERSARIAL_GRADIENT": {
+      "status": "PASS",
+      "shared": [
+        6.012888889017631e-07,
+        8.121407972794259e-07,
+        5.852525077898463e-07,
+        1.0632921657816041e-05
+      ],
+      "private": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "TEST_PROTOTYPE_WEIGHTS": {
+      "status": "PASS",
+      "reliability": [
+        0.05000000074505806,
+        0.08082420378923416,
+        0.05760624632239342,
+        0.8832542300224304
+      ]
+    },
+    "TEST_DOUBLE_EDGE_SWAP": {
+      "status": "PASS",
+      "per_modality": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13665,
+          "changed_fraction": 0.9805539609644087,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13523,
+          "changed_fraction": 0.9703645235361653,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13827,
+          "changed_fraction": 0.9921785304247991,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13718,
+          "changed_fraction": 0.9843570608495982,
+          "insufficient_matched_control": false
+        }
+      ],
+      "message_delta": 0.004228559788316488
+    },
+    "TEST_WRONG_EDGE_PRIOR": {
+      "status": "PASS",
+      "recomputed": true
+    },
+    "TEST_SELECTED_EDGE_COVERAGE": {
+      "status": "PASS",
+      "coverage": [
+        0.9805539609644087,
+        0.9703645235361653,
+        0.9921785304247991,
+        0.9843570608495982
+      ]
+    },
+    "TEST_SELF_ONLY_GCN": {
+      "status": "PASS",
+      "same_gcn_identity": true
+    },
+    "TEST_FOUR_MODALITIES": {
+      "status": "PASS",
+      "modalities": 4
+    },
+    "TEST_GATE_UPDATE": {
+      "status": "PASS",
+      "updates": [
+        0.0009995438158512115,
+        0.0009986753575503826,
+        0.0009999941103160381,
+        0.000999997602775693
+      ]
+    },
+    "TEST_CHECKPOINT_RESUME": {
+      "status": "PASS",
+      "loss_equal": true,
+      "model_max_abs_diff": 3.0547380447387695e-07
+    },
+    "status": "PASS"
+  },
+  "e1_inherited_sha": "b4b86df1f0d0100cde4b85add6a43366fcbe0a5d76faccf04d9726c49c013e9b",
+  "anchor_parameter_sha": "d77290b4c887487e181c0bdb4e68a26594fc45e3492f8362893c8becf3df1d48",
+  "rng_entry_sha": "8b11014f0095d0116b37316fd68dfa333362d78efaf027fabf96b5f0427058e0",
+  "protected_sha": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "relation_oof_auc": [
+    0.48105743527412415,
+    0.5202060341835022,
+    0.5144015550613403,
+    0.7208135724067688
+  ],
+  "reliability": [
+    0.05000000074505806,
+    0.08082420378923416,
+    0.05760624632239342,
+    0.8832542300224304
+  ],
+  "selected_edge_coverage": [
+    0.9805539609644087,
+    0.9703645235361653,
+    0.9921785304247991,
+    0.9843570608495982
+  ],
+  "classification_graphlearn_gradients": [
+    2.5080685190914664e-06,
+    4.789555532624945e-06,
+    5.518403668247629e-06,
+    1.247403724846663e-05
+  ],
+  "classification_gcn_gradients": [
+    0.023822471499443054,
+    0.018768690526485443,
+    0.021114932373166084,
+    0.018677357584238052
+  ]
+}

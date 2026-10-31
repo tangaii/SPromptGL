@@ -1,0 +1,3969 @@
+{
+  "summary": {
+    "acc": {
+      "mean": 0.859926854754441,
+      "sd": 0.046784755322452944,
+      "historical_mean": 0.9195924764890282,
+      "historical_sd": 0.02868376624483554,
+      "delta_mean": -0.05966562173458725,
+      "wins": 0,
+      "ties": 0,
+      "losses": 10
+    },
+    "hard_auc": {
+      "mean": 0.8593296913427043,
+      "sd": 0.04500520823026999,
+      "historical_mean": 0.9174339195866519,
+      "historical_sd": 0.02894991260240007,
+      "delta_mean": -0.058104228243947564,
+      "wins": 0,
+      "ties": 0,
+      "losses": 10
+    },
+    "prob_auc": {
+      "mean": 0.8916243992689697,
+      "sd": 0.053992666284715225,
+      "historical_mean": 0.9318564563073937,
+      "historical_sd": 0.030235953517153167,
+      "delta_mean": -0.04023205703842422,
+      "wins": 2,
+      "ties": 0,
+      "losses": 8
+    },
+    "spe": {
+      "mean": 0.8649398704902869,
+      "sd": 0.07926068731184002,
+      "historical_mean": 0.9463922294172065,
+      "historical_sd": 0.033855801606377606,
+      "delta_mean": -0.08145235892691952,
+      "wins": 1,
+      "ties": 0,
+      "losses": 9
+    },
+    "sen": {
+      "mean": 0.853719512195122,
+      "sd": 0.050394377147322984,
+      "historical_mean": 0.8884756097560975,
+      "historical_sd": 0.041650805031665857,
+      "delta_mean": -0.034756097560975606,
+      "wins": 2,
+      "ties": 2,
+      "losses": 6
+    },
+    "ba": {
+      "mean": 0.8593296913427044,
+      "sd": 0.04500520823026998,
+      "historical_mean": 0.9174339195866519,
+      "historical_sd": 0.028949912602400082,
+      "delta_mean": -0.058104228243947564,
+      "wins": 0,
+      "ties": 0,
+      "losses": 10
+    },
+    "asd_f1": {
+      "mean": 0.8506124471962693,
+      "sd": 0.046467139445927286,
+      "historical_mean": 0.9109279671840135,
+      "historical_sd": 0.03140844714428777,
+      "delta_mean": -0.060315519987743926,
+      "wins": 0,
+      "ties": 0,
+      "losses": 10
+    }
+  },
+  "pooled_oof": {
+    "acc": 0.8599311136624569,
+    "hard_auc": 0.8594913151364765,
+    "prob_auc": 0.8866301881190217,
+    "spe": 0.8653846153846154,
+    "sen": 0.8535980148883374,
+    "ba": 0.8594913151364765,
+    "asd_f1": 0.8493827160493828,
+    "confusion_matrix": [
+      [
+        344,
+        59
+      ],
+      [
+        63,
+        405
+      ]
+    ],
+    "n": 871
+  },
+  "relation_oof_auc_mean": {
+    "PHENO": 0.4971963793039322,
+    "ANAT": 0.5266181826591492,
+    "FUNC": 0.5268316268920898,
+    "CORR": 0.7268178701400757
+  },
+  "posthoc_relation_mean": {
+    "PHENO": 0.500374914098669,
+    "ANAT": 0.5185558177806714,
+    "FUNC": 0.5314783732096354,
+    "CORR": 0.7520606712058738
+  },
+  "source_probe_pre_mean": 0.9996356289082593,
+  "source_probe_post_mean": 0.999990687743136,
+  "discriminator_mean": 0.7162237724649563,
+  "mean_graph": {
+    "PHENO": {
+      "selected_directed_edges": 13936.0,
+      "same_channel_nonzero_edges": 13936.0,
+      "different_channel_nonzero_edges": 13936.0,
+      "same_weight_mean": 0.002037012245698122,
+      "different_weight_mean": 0.0008968426961473597,
+      "edge_prior_reweighted_mean_l1": 0.028255832381546497,
+      "selected_confidence_mean": 0.2587643951177597,
+      "selected_confidence_std": 0.17922432869672775,
+      "receiver_confidence_mean": 0.25876439213752744,
+      "receiver_confidence_std": 0.13818757906556128,
+      "same_message_norm": 64.1211597442627,
+      "different_message_norm": 2.8433357000350954,
+      "same_message_over_input": 0.2713420793414116,
+      "different_message_over_input": 0.012032168451696634,
+      "modal_message_over_input": 0.2750708252191544,
+      "final_message_over_input": 0.0981941320002079,
+      "gate_mean": 0.3971475871745497,
+      "gate_std": 0.02695832827594131,
+      "eta": 0.10890941172838212,
+      "softcap_active_fraction": 1.0,
+      "graphlearn_parameter_delta_norm": 4.0748845351627185,
+      "gcn_parameter_delta_norm": 34.24808217409472,
+      "edge_network_parameter_delta_norm": 1.7598197963081605,
+      "wrong_edge_identity_change_fraction": 0.9864308266360504
+    },
+    "ANAT": {
+      "selected_directed_edges": 13936.0,
+      "same_channel_nonzero_edges": 13936.0,
+      "different_channel_nonzero_edges": 13936.0,
+      "same_weight_mean": 0.00383757738001691,
+      "different_weight_mean": 0.0019764894488417894,
+      "edge_prior_reweighted_mean_l1": 0.017241610726341606,
+      "selected_confidence_mean": 0.18119222968816756,
+      "selected_confidence_std": 0.11085489355027675,
+      "receiver_confidence_mean": 0.18119222447276115,
+      "receiver_confidence_std": 0.10639537535607815,
+      "same_message_norm": 71.44991760253906,
+      "different_message_norm": 2.706947445869446,
+      "same_message_over_input": 0.30235524475574493,
+      "different_message_over_input": 0.011455013323575259,
+      "modal_message_over_input": 0.3040461987257004,
+      "final_message_over_input": 0.0981941320002079,
+      "gate_mean": 0.1415249157231301,
+      "gate_std": 0.026122358022257687,
+      "eta": 0.10840958878397941,
+      "softcap_active_fraction": 1.0,
+      "graphlearn_parameter_delta_norm": 1.3097159652989436,
+      "gcn_parameter_delta_norm": 34.02201100869084,
+      "edge_network_parameter_delta_norm": 1.8068903529723737,
+      "wrong_edge_identity_change_fraction": 0.9632462686567165
+    },
+    "FUNC": {
+      "selected_directed_edges": 13936.0,
+      "same_channel_nonzero_edges": 13936.0,
+      "different_channel_nonzero_edges": 13936.0,
+      "same_weight_mean": 5.06642779295241e-05,
+      "different_weight_mean": 0.0018556986619501004,
+      "edge_prior_reweighted_mean_l1": 0.02250983826816082,
+      "selected_confidence_mean": 0.22293899580836296,
+      "selected_confidence_std": 0.1476596437394619,
+      "receiver_confidence_mean": 0.22293900325894356,
+      "receiver_confidence_std": 0.13141242414712906,
+      "same_message_norm": 73.25286102294922,
+      "different_message_norm": 2.7310996055603027,
+      "same_message_over_input": 0.30998477786779405,
+      "different_message_over_input": 0.011557218246161937,
+      "modal_message_over_input": 0.31166828870773317,
+      "final_message_over_input": 0.0981941320002079,
+      "gate_mean": 0.16307630110532045,
+      "gate_std": 0.018825312424451113,
+      "eta": 0.10881328731775283,
+      "softcap_active_fraction": 1.0,
+      "graphlearn_parameter_delta_norm": 1.861965526260958,
+      "gcn_parameter_delta_norm": 33.97685702919515,
+      "edge_network_parameter_delta_norm": 1.8363396629696598,
+      "wrong_edge_identity_change_fraction": 0.9908223306544202
+    },
+    "CORR": {
+      "selected_directed_edges": 13936.0,
+      "same_channel_nonzero_edges": 13936.0,
+      "different_channel_nonzero_edges": 13936.0,
+      "same_weight_mean": 0.09230337105691433,
+      "different_weight_mean": 0.023440002091228963,
+      "edge_prior_reweighted_mean_l1": 0.024069869704544545,
+      "selected_confidence_mean": 0.6567821025848388,
+      "selected_confidence_std": 0.21586239486932754,
+      "receiver_confidence_mean": 0.6567821055650711,
+      "receiver_confidence_std": 0.15895178467035292,
+      "same_message_norm": 82.81325721740723,
+      "different_message_norm": 2.3247492790222166,
+      "same_message_over_input": 0.3504415899515152,
+      "different_message_over_input": 0.00983766196295619,
+      "modal_message_over_input": 0.35141263604164125,
+      "final_message_over_input": 0.0981941320002079,
+      "gate_mean": 0.29825116544961927,
+      "gate_std": 0.02399565470404923,
+      "eta": 0.10520363748073577,
+      "softcap_active_fraction": 1.0,
+      "graphlearn_parameter_delta_norm": 9.31109883053944,
+      "gcn_parameter_delta_norm": 33.856689138196295,
+      "edge_network_parameter_delta_norm": 1.4133702750376798,
+      "wrong_edge_identity_change_fraction": 0.9881314580941446
+    }
+  },
+  "intervention_mean": {
+    "disable_ANAT_message": {
+      "delta_acc_pp": -0.4597701149425304,
+      "prediction_flip_rate": 0.004597701149425287,
+      "mean_abs_delta_p_asd": 0.0025021261077199596,
+      "residual_ratio": 0.08875778913497925,
+      "edge_weight_change_l1": 0.0
+    },
+    "disable_CORR_message": {
+      "delta_acc_pp": -6.893939393939396,
+      "prediction_flip_rate": 0.09422675026123302,
+      "mean_abs_delta_p_asd": 0.07991006970405579,
+      "residual_ratio": 0.08691985532641411,
+      "edge_weight_change_l1": 0.0
+    },
+    "disable_FUNC_message": {
+      "delta_acc_pp": -0.45846394984326083,
+      "prediction_flip_rate": 0.006857366771159874,
+      "mean_abs_delta_p_asd": 0.002807435872819042,
+      "residual_ratio": 0.0887544222176075,
+      "edge_weight_change_l1": 0.0
+    },
+    "disable_PHENO_message": {
+      "delta_acc_pp": -1.3780041797283205,
+      "prediction_flip_rate": 0.013780041797283177,
+      "mean_abs_delta_p_asd": 0.007591121469886275,
+      "residual_ratio": 0.08848249465227127,
+      "edge_weight_change_l1": 0.0
+    },
+    "disable_cross_patient_messages_self_only": {
+      "delta_acc_pp": -7.927115987460818,
+      "prediction_flip_rate": 0.09996081504702195,
+      "mean_abs_delta_p_asd": 0.0869811238721013,
+      "residual_ratio": 0.08620507270097733,
+      "edge_weight_change_l1": 0.0
+    },
+    "disable_cross_patient_messages_self_only_frozen_gate": {
+      "delta_acc_pp": -7.697230929989551,
+      "prediction_flip_rate": 0.0976619644723093,
+      "mean_abs_delta_p_asd": 0.08576436918228865,
+      "residual_ratio": 0.08630142733454704,
+      "edge_weight_change_l1": 0.0
+    },
+    "neutral_disease_edge_weights": {
+      "delta_acc_pp": -3.446969696969698,
+      "prediction_flip_rate": 0.05278213166144201,
+      "mean_abs_delta_p_asd": 0.054215035028755666,
+      "residual_ratio": 0.08316137716174125,
+      "edge_weight_change_l1": 0.07360841752961278
+    },
+    "reference_e51_bypass": {
+      "delta_acc_pp": -34.67737722048067,
+      "prediction_flip_rate": 0.4730538140020899,
+      "mean_abs_delta_p_asd": 0.4378828376531601,
+      "residual_ratio": 1.6384803116321565,
+      "edge_weight_change_l1": 0.0
+    },
+    "strict_wrong_patient_neighbors": {
+      "delta_acc_pp": -1.954022988505748,
+      "prediction_flip_rate": 0.024111807732497388,
+      "mean_abs_delta_p_asd": 0.021284625120460986,
+      "residual_ratio": 0.08836932331323624,
+      "edge_weight_change_l1": 0.010082483797929597
+    },
+    "strict_wrong_patient_neighbors_frozen_gate": {
+      "delta_acc_pp": -1.954022988505748,
+      "prediction_flip_rate": 0.024111807732497388,
+      "mean_abs_delta_p_asd": 0.020922537427395582,
+      "residual_ratio": 0.08839643374085426,
+      "edge_weight_change_l1": 0.010082483797929597
+    },
+    "wrong_disease_condition": {
+      "delta_acc_pp": -1.1468129571577859,
+      "prediction_flip_rate": 0.011468129571577848,
+      "mean_abs_delta_p_asd": 0.0038637388381175695,
+      "residual_ratio": 0.08883223831653594,
+      "edge_weight_change_l1": 0.000506537392317874
+    }
+  },
+  "wrong_selected_coverage_mean": 0.9821577210103329,
+  "gate_std_mean": 0.023975413356674836,
+  "mean_residual_ratio": 0.08892157524824143,
+  "strict_wrong_delta_acc": -1.954022988505748,
+  "classification_gain_screen": false,
+  "research_gates": {
+    "GO_RELATION_DISCRIMINATION": "GO",
+    "GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT": "NO-GO",
+    "GO_DISEASE_PRESERVATION": "GO",
+    "GO_TRUE_PATIENT_RELATION": "GO",
+    "GO_CROSS_PATIENT_PROPAGATION": "PARTIAL_CHECKPOINT_DEPENDENCE",
+    "GO_CLASSIFICATION_GAIN": "NO-GO",
+    "GO_MICCAI2027_MODULE": "NO-GO"
+  },
+  "decision": "PARTIAL",
+  "decision_reason": "The relation path and fixed-checkpoint propagation are active, but the full preregistered classification/alignment evidence is incomplete.",
+  "folds": [
+    {
+      "fold": 1,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5042645489728009,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                114,
+                125,
+                145
+              ],
+              [
+                92,
+                140,
+                152
+              ],
+              [
+                105,
+                137,
+                142
+              ]
+            ],
+            "mean_probability": [
+              0.28131940960884094,
+              0.3405643105506897,
+              0.3781163692474365
+            ],
+            "probability_entropy": 0.8693963289260864,
+            "shared_representation_variance": 0.7972041368484497,
+            "prototype_distances_AA_TT_AT": [
+              1.7081365585327148,
+              1.0368523597717285,
+              0.6765769124031067
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5695359971788194,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                99,
+                96,
+                189
+              ],
+              [
+                51,
+                195,
+                138
+              ],
+              [
+                67,
+                149,
+                168
+              ]
+            ],
+            "mean_probability": [
+              0.29205605387687683,
+              0.3494391143321991,
+              0.35850465297698975
+            ],
+            "probability_entropy": 1.0063433647155762,
+            "shared_representation_variance": 0.5645822286605835,
+            "prototype_distances_AA_TT_AT": [
+              0.6230974197387695,
+              0.4819149076938629,
+              0.3289695084095001
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5512797037760416,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                106,
+                163,
+                115
+              ],
+              [
+                48,
+                179,
+                157
+              ],
+              [
+                84,
+                162,
+                138
+              ]
+            ],
+            "mean_probability": [
+              0.30650708079338074,
+              0.34974759817123413,
+              0.34374547004699707
+            ],
+            "probability_entropy": 1.0217854976654053,
+            "shared_representation_variance": 0.622937798500061,
+            "prototype_distances_AA_TT_AT": [
+              0.6631033420562744,
+              0.35630106925964355,
+              0.5195841193199158
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7734115035445601,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                251,
+                9,
+                124
+              ],
+              [
+                51,
+                226,
+                107
+              ],
+              [
+                142,
+                51,
+                191
+              ]
+            ],
+            "mean_probability": [
+              0.374506413936615,
+              0.2479640394449234,
+              0.37752997875213623
+            ],
+            "probability_entropy": 0.4186047315597534,
+            "shared_representation_variance": 1.5992374420166016,
+            "prototype_distances_AA_TT_AT": [
+              6.86732292175293,
+              2.9941494464874268,
+              4.339799404144287
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.48105743527412415,
+          0.5202060341835022,
+          0.5144015550613403,
+          0.7208135724067688
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.08082420378923416,
+          0.05760624632239342,
+          0.8832542300224304
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9832899305555556,
+          "macro_auc_ovr": 0.999479191784015
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 1.0,
+          "macro_auc_ovr": 1.0
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.3728298544883728,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.7149795092672968,
+        "shared_cross_modal_pair_cosine_mean": 0.8502506911754608,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 9.215365821546584e-07,
+          "different_weight_mean": 2.0137081264692824e-06,
+          "edge_prior_reweighted_mean_l1": 0.033092375844717026,
+          "selected_confidence_mean": 0.26777905225753784,
+          "selected_confidence_std": 0.18777582049369812,
+          "receiver_confidence_mean": 0.26777902245521545,
+          "receiver_confidence_std": 0.14537657797336578,
+          "same_message_norm": 55.18186950683594,
+          "different_message_norm": 2.959500312805176,
+          "same_message_over_input": 0.23351360857486725,
+          "different_message_over_input": 0.012523743323981762,
+          "modal_message_over_input": 0.24123480916023254,
+          "final_message_over_input": 0.09230271726846695,
+          "gate_mean": 0.3098475933074951,
+          "gate_std": 0.008347262628376484,
+          "eta": 0.10887082666158676,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.065193600091351,
+          "gcn_parameter_delta_norm": 34.80397463495549,
+          "edge_network_parameter_delta_norm": 1.734193914857545,
+          "wrong_edge_identity_change_fraction": 0.9842853042479908,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13717,
+            "changed_fraction": 0.9842853042479908,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.6980236523522763e-06,
+          "different_weight_mean": 6.85084451106377e-05,
+          "edge_prior_reweighted_mean_l1": 0.023119023069739342,
+          "selected_confidence_mean": 0.23635022342205048,
+          "selected_confidence_std": 0.19056867063045502,
+          "receiver_confidence_mean": 0.23635022342205048,
+          "receiver_confidence_std": 0.18578477203845978,
+          "same_message_norm": 83.0546875,
+          "different_message_norm": 2.664952039718628,
+          "same_message_over_input": 0.351463258266449,
+          "different_message_over_input": 0.011277301236987114,
+          "modal_message_over_input": 0.35253825783729553,
+          "final_message_over_input": 0.09230271726846695,
+          "gate_mean": 0.013143906369805336,
+          "gate_std": 0.00546752056106925,
+          "eta": 0.10829572379589081,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.328264891045025,
+          "gcn_parameter_delta_norm": 34.61049924105175,
+          "edge_network_parameter_delta_norm": 2.0058230157210777,
+          "wrong_edge_identity_change_fraction": 0.9747416762342136,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13584,
+            "changed_fraction": 0.9747416762342136,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 8.891166025648545e-09,
+          "different_weight_mean": 1.0304325996912667e-06,
+          "edge_prior_reweighted_mean_l1": 0.035796768963336945,
+          "selected_confidence_mean": 0.10898842662572861,
+          "selected_confidence_std": 0.08329125493764877,
+          "receiver_confidence_mean": 0.10898842662572861,
+          "receiver_confidence_std": 0.0725630670785904,
+          "same_message_norm": 56.21221923828125,
+          "different_message_norm": 2.992490291595459,
+          "same_message_over_input": 0.23787374794483185,
+          "different_message_over_input": 0.012663347646594048,
+          "modal_message_over_input": 0.24547776579856873,
+          "final_message_over_input": 0.09230271726846695,
+          "gate_mean": 0.5776494741439819,
+          "gate_std": 0.028488855808973312,
+          "eta": 0.1096811443567276,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.8782528080035144,
+          "gcn_parameter_delta_norm": 35.166908106645515,
+          "edge_network_parameter_delta_norm": 2.0405421205137575,
+          "wrong_edge_identity_change_fraction": 0.9860792192881745,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13742,
+            "changed_fraction": 0.9860792192881745,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.11346247792243958,
+          "different_weight_mean": 0.021142620593309402,
+          "edge_prior_reweighted_mean_l1": 0.027251575142145157,
+          "selected_confidence_mean": 0.7813453078269958,
+          "selected_confidence_std": 0.192672997713089,
+          "receiver_confidence_mean": 0.7813453078269958,
+          "receiver_confidence_std": 0.13935136795043945,
+          "same_message_norm": 87.28684997558594,
+          "different_message_norm": 2.1915152072906494,
+          "same_message_over_input": 0.36937251687049866,
+          "different_message_over_input": 0.009273854084312916,
+          "modal_message_over_input": 0.3710228204727173,
+          "final_message_over_input": 0.09230271726846695,
+          "gate_mean": 0.09935902804136276,
+          "gate_std": 0.015003564767539501,
+          "eta": 0.1055268719792366,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.304775389761497,
+          "gcn_parameter_delta_norm": 34.879783603101934,
+          "edge_network_parameter_delta_norm": 1.3190736186017404,
+          "wrong_edge_identity_change_fraction": 0.9830654420206659,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13700,
+            "changed_fraction": 0.9830654420206659,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.00020966431475244462,
+        6.57438533835375e-07,
+        0.00020464902627281845,
+        0.0003918913716915995
+      ],
+      "classification_edge_gradients": [
+        0.00019211573817301542,
+        6.717511951137567e-06,
+        0.0003843804297503084,
+        0.0031572848092764616
+      ],
+      "residual_ratio": 0.08725803345441818,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13717,
+          "changed_fraction": 0.9842853042479908,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13584,
+          "changed_fraction": 0.9747416762342136,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13742,
+          "changed_fraction": 0.9860792192881745,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13700,
+          "changed_fraction": 0.9830654420206659,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.49124823676215273,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                159,
+                98,
+                127
+              ],
+              [
+                174,
+                107,
+                103
+              ],
+              [
+                176,
+                98,
+                110
+              ]
+            ],
+            "mean_probability": [
+              0.39845842123031616,
+              0.2865988612174988,
+              0.3149423599243164
+            ],
+            "probability_entropy": 0.8709726333618164,
+            "shared_representation_variance": 0.5599687099456787,
+            "prototype_distances_AA_TT_AT": [
+              0.8807741403579712,
+              0.5738494396209717,
+              0.35781756043434143
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.470550537109375,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                66,
+                149,
+                169
+              ],
+              [
+                107,
+                123,
+                154
+              ],
+              [
+                90,
+                126,
+                168
+              ]
+            ],
+            "mean_probability": [
+              0.2957955300807953,
+              0.3286289870738983,
+              0.3755756616592407
+            ],
+            "probability_entropy": 1.0478754043579102,
+            "shared_representation_variance": 0.5421903729438782,
+            "prototype_distances_AA_TT_AT": [
+              0.8146311044692993,
+              0.4100866913795471,
+              0.41136887669563293
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5081962302879051,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                115,
+                151,
+                118
+              ],
+              [
+                99,
+                137,
+                148
+              ],
+              [
+                103,
+                153,
+                128
+              ]
+            ],
+            "mean_probability": [
+              0.275136798620224,
+              0.3665858209133148,
+              0.35827744007110596
+            ],
+            "probability_entropy": 0.9787296652793884,
+            "shared_representation_variance": 0.5391371250152588,
+            "prototype_distances_AA_TT_AT": [
+              0.4270476698875427,
+              0.23105262219905853,
+              0.2695131003856659
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7516558611834491,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                265,
+                26,
+                93
+              ],
+              [
+                51,
+                227,
+                106
+              ],
+              [
+                114,
+                98,
+                172
+              ]
+            ],
+            "mean_probability": [
+              0.39016422629356384,
+              0.2860995829105377,
+              0.3237362802028656
+            ],
+            "probability_entropy": 0.6384364366531372,
+            "shared_representation_variance": 0.6964598894119263,
+            "prototype_distances_AA_TT_AT": [
+              4.102426052093506,
+              2.1563446521759033,
+              2.1686108112335205
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5109318494796753,
+          0.5234337449073792,
+          0.5133388638496399,
+          0.7414018511772156
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.09373508393764496,
+          0.053355395793914795,
+          0.9656074643135071
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9830729166666666,
+          "macro_auc_ovr": 0.9991728229287229
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 1.0,
+          "macro_auc_ovr": 1.0
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.3674045205116272,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.810818330741223,
+        "shared_cross_modal_pair_cosine_mean": 0.866599957148234,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 4.82569589621562e-07,
+          "different_weight_mean": 0.0006980460602790117,
+          "edge_prior_reweighted_mean_l1": 0.025642408058047295,
+          "selected_confidence_mean": 0.2893950045108795,
+          "selected_confidence_std": 0.16192230582237244,
+          "receiver_confidence_mean": 0.2893950045108795,
+          "receiver_confidence_std": 0.12467193603515625,
+          "same_message_norm": 46.979000091552734,
+          "different_message_norm": 2.7989463806152344,
+          "same_message_over_input": 0.1988014429807663,
+          "different_message_over_input": 0.011844325810670853,
+          "modal_message_over_input": 0.20430345833301544,
+          "final_message_over_input": 0.08493275195360184,
+          "gate_mean": 0.226350799202919,
+          "gate_std": 0.04336819425225258,
+          "eta": 0.10890167206525803,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.069071523792458,
+          "gcn_parameter_delta_norm": 33.8818280422467,
+          "edge_network_parameter_delta_norm": 1.7897146251453624,
+          "wrong_edge_identity_change_fraction": 0.9795493685419059,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13651,
+            "changed_fraction": 0.9795493685419059,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 8.264795781087741e-08,
+          "different_weight_mean": 9.719662193674594e-05,
+          "edge_prior_reweighted_mean_l1": 0.0158933624625206,
+          "selected_confidence_mean": 0.11189963668584824,
+          "selected_confidence_std": 0.06138674542307854,
+          "receiver_confidence_mean": 0.11189963668584824,
+          "receiver_confidence_std": 0.059371694922447205,
+          "same_message_norm": 49.57394790649414,
+          "different_message_norm": 2.7510106563568115,
+          "same_message_over_input": 0.20978251099586487,
+          "different_message_over_input": 0.011641476303339005,
+          "modal_message_over_input": 0.21526284515857697,
+          "final_message_over_input": 0.08493275195360184,
+          "gate_mean": 0.4718913733959198,
+          "gate_std": 0.12842591106891632,
+          "eta": 0.10871948301792145,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.2382543542871254,
+          "gcn_parameter_delta_norm": 34.22131037082148,
+          "edge_network_parameter_delta_norm": 1.8257604201772766,
+          "wrong_edge_identity_change_fraction": 0.9642652123995408,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13438,
+            "changed_fraction": 0.9642652123995408,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 4.134841219638474e-06,
+          "different_weight_mean": 0.0024975191336125135,
+          "edge_prior_reweighted_mean_l1": 0.012314893305301666,
+          "selected_confidence_mean": 0.2212144136428833,
+          "selected_confidence_std": 0.12555722892284393,
+          "receiver_confidence_mean": 0.2212144136428833,
+          "receiver_confidence_std": 0.11831352114677429,
+          "same_message_norm": 71.83739471435547,
+          "different_message_norm": 2.6297922134399414,
+          "same_message_over_input": 0.30399492383003235,
+          "different_message_over_input": 0.011128515005111694,
+          "modal_message_over_input": 0.30493560433387756,
+          "final_message_over_input": 0.08493275195360184,
+          "gate_mean": 0.0738890990614891,
+          "gate_std": 0.053595878183841705,
+          "eta": 0.10801901668310165,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.738264568120226,
+          "gcn_parameter_delta_norm": 33.738691681899134,
+          "edge_network_parameter_delta_norm": 1.8738255677117286,
+          "wrong_edge_identity_change_fraction": 0.9929678530424799,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13838,
+            "changed_fraction": 0.9929678530424799,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.13251563906669617,
+          "different_weight_mean": 0.021831665188074112,
+          "edge_prior_reweighted_mean_l1": 0.018506336957216263,
+          "selected_confidence_mean": 0.6409578919410706,
+          "selected_confidence_std": 0.2508879601955414,
+          "receiver_confidence_mean": 0.6409578919410706,
+          "receiver_confidence_std": 0.20830078423023224,
+          "same_message_norm": 77.15408325195312,
+          "different_message_norm": 2.290628671646118,
+          "same_message_over_input": 0.32649362087249756,
+          "different_message_over_input": 0.009693273343145847,
+          "modal_message_over_input": 0.32731327414512634,
+          "final_message_over_input": 0.08493275195360184,
+          "gate_mean": 0.2278686910867691,
+          "gate_std": 0.03369910269975662,
+          "eta": 0.10420142859220505,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.296204297531855,
+          "gcn_parameter_delta_norm": 33.70275193928902,
+          "edge_network_parameter_delta_norm": 1.2352068426153755,
+          "wrong_edge_identity_change_fraction": 0.9808409873708381,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13669,
+            "changed_fraction": 0.9808409873708381,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.00010925973765552044,
+        2.3859158318373375e-05,
+        2.3307931769522838e-05,
+        0.014293885789811611
+      ],
+      "classification_edge_gradients": [
+        0.00023883352696429938,
+        0.00040763369179330766,
+        4.848303069593385e-05,
+        0.01739422418177128
+      ],
+      "residual_ratio": 0.08024761080741882,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13651,
+          "changed_fraction": 0.9795493685419059,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13438,
+          "changed_fraction": 0.9642652123995408,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13838,
+          "changed_fraction": 0.9929678530424799,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13669,
+          "changed_fraction": 0.9808409873708381,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 3,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.4945893464265046,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                71,
+                184,
+                129
+              ],
+              [
+                89,
+                142,
+                153
+              ],
+              [
+                85,
+                158,
+                141
+              ]
+            ],
+            "mean_probability": [
+              0.2704869210720062,
+              0.36267340183258057,
+              0.36683934926986694
+            ],
+            "probability_entropy": 0.9139920473098755,
+            "shared_representation_variance": 0.597160816192627,
+            "prototype_distances_AA_TT_AT": [
+              0.7807819247245789,
+              0.3690398335456848,
+              0.47892841696739197
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.4972974989149306,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                122,
+                177,
+                85
+              ],
+              [
+                131,
+                163,
+                90
+              ],
+              [
+                112,
+                162,
+                110
+              ]
+            ],
+            "mean_probability": [
+              0.327255517244339,
+              0.3463326692581177,
+              0.3264118731021881
+            ],
+            "probability_entropy": 1.0543673038482666,
+            "shared_representation_variance": 0.3343915343284607,
+            "prototype_distances_AA_TT_AT": [
+              0.1705014705657959,
+              0.21609529852867126,
+              0.26613539457321167
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5528168854890047,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                97,
+                126,
+                161
+              ],
+              [
+                75,
+                163,
+                146
+              ],
+              [
+                81,
+                140,
+                163
+              ]
+            ],
+            "mean_probability": [
+              0.3143053650856018,
+              0.3361416459083557,
+              0.3495529294013977
+            ],
+            "probability_entropy": 1.0479093790054321,
+            "shared_representation_variance": 0.3575614094734192,
+            "prototype_distances_AA_TT_AT": [
+              0.3342408835887909,
+              0.36056914925575256,
+              0.17556650936603546
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.6503267641420717,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                170,
+                58,
+                156
+              ],
+              [
+                50,
+                165,
+                169
+              ],
+              [
+                103,
+                89,
+                192
+              ]
+            ],
+            "mean_probability": [
+              0.31541907787323,
+              0.28157931566238403,
+              0.403001993894577
+            ],
+            "probability_entropy": 0.795001745223999,
+            "shared_representation_variance": 0.35979485511779785,
+            "prototype_distances_AA_TT_AT": [
+              1.9026044607162476,
+              0.8600234389305115,
+              1.1031211614608765
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4868822395801544,
+          0.5300524234771729,
+          0.5287039279937744,
+          0.7481557130813599
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.12020978331565857,
+          0.11481571197509766,
+          0.9926229119300842
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9917534722222222,
+          "macro_auc_ovr": 0.9998101128472223
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 1.0,
+          "macro_auc_ovr": 1.0
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.2504340410232544,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.3882124787004887,
+        "shared_cross_modal_pair_cosine_mean": 0.8506196439266205,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.0103800579818198e-07,
+          "different_weight_mean": 0.0015022453153505921,
+          "edge_prior_reweighted_mean_l1": 0.016202347353100777,
+          "selected_confidence_mean": 0.17841756343841553,
+          "selected_confidence_std": 0.12125324457883835,
+          "receiver_confidence_mean": 0.17841756343841553,
+          "receiver_confidence_std": 0.08644405007362366,
+          "same_message_norm": 54.36921310424805,
+          "different_message_norm": 2.433297872543335,
+          "same_message_over_input": 0.2300746738910675,
+          "different_message_over_input": 0.010297007858753204,
+          "modal_message_over_input": 0.23246589303016663,
+          "final_message_over_input": 0.09447820484638214,
+          "gate_mean": 0.15766176581382751,
+          "gate_std": 0.023705478757619858,
+          "eta": 0.10700180381536484,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.048249983189937,
+          "gcn_parameter_delta_norm": 33.951464848103846,
+          "edge_network_parameter_delta_norm": 1.6138248858285682,
+          "wrong_edge_identity_change_fraction": 0.9832089552238806,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13702,
+            "changed_fraction": 0.9832089552238806,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 8.421036454819841e-07,
+          "different_weight_mean": 0.006413182243704796,
+          "edge_prior_reweighted_mean_l1": 0.005988941062241793,
+          "selected_confidence_mean": 0.06992257386445999,
+          "selected_confidence_std": 0.0459318533539772,
+          "receiver_confidence_mean": 0.06992257386445999,
+          "receiver_confidence_std": 0.041417196393013,
+          "same_message_norm": 64.19268798828125,
+          "different_message_norm": 2.4173312187194824,
+          "same_message_over_input": 0.2716447710990906,
+          "different_message_over_input": 0.010229441337287426,
+          "modal_message_over_input": 0.27319419384002686,
+          "final_message_over_input": 0.09447820484638214,
+          "gate_mean": 0.08870290219783783,
+          "gate_std": 0.027725541964173317,
+          "eta": 0.10689195245504379,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.1527205740122854,
+          "gcn_parameter_delta_norm": 33.801653181649264,
+          "edge_network_parameter_delta_norm": 1.7776045241152023,
+          "wrong_edge_identity_change_fraction": 0.9725889781859931,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13554,
+            "changed_fraction": 0.9725889781859931,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.6880051134648966e-07,
+          "different_weight_mean": 0.003911563195288181,
+          "edge_prior_reweighted_mean_l1": 0.008849013596773148,
+          "selected_confidence_mean": 0.08589145541191101,
+          "selected_confidence_std": 0.08208535611629486,
+          "receiver_confidence_mean": 0.08589145541191101,
+          "receiver_confidence_std": 0.07473701983690262,
+          "same_message_norm": 50.88883972167969,
+          "different_message_norm": 2.467158317565918,
+          "same_message_over_input": 0.21534675359725952,
+          "different_message_over_input": 0.010440295562148094,
+          "modal_message_over_input": 0.2189764380455017,
+          "final_message_over_input": 0.09447820484638214,
+          "gate_mean": 0.33016467094421387,
+          "gate_std": 0.01202057022601366,
+          "eta": 0.10688120871782303,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.803380211961491,
+          "gcn_parameter_delta_norm": 33.831331040338,
+          "edge_network_parameter_delta_norm": 1.6546506970602075,
+          "wrong_edge_identity_change_fraction": 0.9887342135476463,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13779,
+            "changed_fraction": 0.9887342135476463,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.07661554962396622,
+          "different_weight_mean": 0.020804863423109055,
+          "edge_prior_reweighted_mean_l1": 0.018300458788871765,
+          "selected_confidence_mean": 0.45203086733818054,
+          "selected_confidence_std": 0.21080440282821655,
+          "receiver_confidence_mean": 0.45203086733818054,
+          "receiver_confidence_std": 0.17201559245586395,
+          "same_message_norm": 80.2725601196289,
+          "different_message_norm": 2.261823892593384,
+          "same_message_over_input": 0.33969008922576904,
+          "different_message_over_input": 0.009571379981935024,
+          "modal_message_over_input": 0.3402915298938751,
+          "final_message_over_input": 0.09447820484638214,
+          "gate_mean": 0.423470675945282,
+          "gate_std": 0.03966701403260231,
+          "eta": 0.1037830039858818,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.329872795083151,
+          "gcn_parameter_delta_norm": 33.45600484597505,
+          "edge_network_parameter_delta_norm": 0.8246992641706302,
+          "wrong_edge_identity_change_fraction": 0.9891647531572905,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13785,
+            "changed_fraction": 0.9891647531572905,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        6.449080683523789e-05,
+        1.990018972719554e-05,
+        0.00014422864478547126,
+        0.0015805831644684076
+      ],
+      "classification_edge_gradients": [
+        5.785650137113407e-05,
+        1.4839716641290579e-05,
+        7.341014133999124e-05,
+        0.017596259713172913
+      ],
+      "residual_ratio": 0.08152942359447479,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13702,
+          "changed_fraction": 0.9832089552238806,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13554,
+          "changed_fraction": 0.9725889781859931,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13779,
+          "changed_fraction": 0.9887342135476463,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13785,
+          "changed_fraction": 0.9891647531572905,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 4,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5294076425057871,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                230,
+                117,
+                37
+              ],
+              [
+                187,
+                128,
+                69
+              ],
+              [
+                204,
+                124,
+                56
+              ]
+            ],
+            "mean_probability": [
+              0.4217114746570587,
+              0.310899555683136,
+              0.2673889398574829
+            ],
+            "probability_entropy": 0.9371268153190613,
+            "shared_representation_variance": 0.6636784076690674,
+            "prototype_distances_AA_TT_AT": [
+              1.2422767877578735,
+              0.7040973901748657,
+              0.5461897850036621
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.4700396502459491,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                130,
+                86,
+                168
+              ],
+              [
+                109,
+                68,
+                207
+              ],
+              [
+                110,
+                87,
+                187
+              ]
+            ],
+            "mean_probability": [
+              0.3564758896827698,
+              0.24868334829807281,
+              0.3948404788970947
+            ],
+            "probability_entropy": 1.0167745351791382,
+            "shared_representation_variance": 0.352838397026062,
+            "prototype_distances_AA_TT_AT": [
+              0.3968867361545563,
+              0.14804208278656006,
+              0.29570069909095764
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.4816363299334491,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                160,
+                94,
+                130
+              ],
+              [
+                155,
+                93,
+                136
+              ],
+              [
+                156,
+                87,
+                141
+              ]
+            ],
+            "mean_probability": [
+              0.3620487451553345,
+              0.29397737979888916,
+              0.3439738154411316
+            ],
+            "probability_entropy": 1.0029550790786743,
+            "shared_representation_variance": 0.30596426129341125,
+            "prototype_distances_AA_TT_AT": [
+              0.3135167062282562,
+              0.20232315361499786,
+              0.18318694829940796
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7694894296151621,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                327,
+                6,
+                51
+              ],
+              [
+                51,
+                180,
+                153
+              ],
+              [
+                173,
+                58,
+                153
+              ]
+            ],
+            "mean_probability": [
+              0.47019705176353455,
+              0.21753190457820892,
+              0.3122708797454834
+            ],
+            "probability_entropy": 0.7203270196914673,
+            "shared_representation_variance": 0.5887463092803955,
+            "prototype_distances_AA_TT_AT": [
+              4.345007419586182,
+              2.496734619140625,
+              1.9055885076522827
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4960395097732544,
+          0.5122828483581543,
+          0.5331822633743286,
+          0.7114842534065247
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.05000000074505806,
+          0.1327289491891861,
+          0.8459369540214539
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.986328125,
+          "macro_auc_ovr": 0.9991975007233797
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9958767361111112,
+          "macro_auc_ovr": 0.999943862726659
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.4049479067325592,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.7228517257627637,
+        "shared_cross_modal_pair_cosine_mean": 0.8716939191023508,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 4.885761768491648e-07,
+          "different_weight_mean": 1.6120588043122552e-05,
+          "edge_prior_reweighted_mean_l1": 0.02153107523918152,
+          "selected_confidence_mean": 0.1317010521888733,
+          "selected_confidence_std": 0.12485797703266144,
+          "receiver_confidence_mean": 0.1317010521888733,
+          "receiver_confidence_std": 0.09595390409231186,
+          "same_message_norm": 50.889793395996094,
+          "different_message_norm": 2.771287202835083,
+          "same_message_over_input": 0.21535079181194305,
+          "different_message_over_input": 0.011727279983460903,
+          "modal_message_over_input": 0.22282300889492035,
+          "final_message_over_input": 0.08783423900604248,
+          "gate_mean": 0.7176989912986755,
+          "gate_std": 0.02339363656938076,
+          "eta": 0.10843552649021149,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.1319376266469545,
+          "gcn_parameter_delta_norm": 34.53290967448207,
+          "edge_network_parameter_delta_norm": 1.7330313876889532,
+          "wrong_edge_identity_change_fraction": 0.9875861079219288,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13763,
+            "changed_fraction": 0.9875861079219288,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.9787971723417286e-06,
+          "different_weight_mean": 0.0009251557639800012,
+          "edge_prior_reweighted_mean_l1": 0.010424274951219559,
+          "selected_confidence_mean": 0.16595923900604248,
+          "selected_confidence_std": 0.05898124724626541,
+          "receiver_confidence_mean": 0.1659592241048813,
+          "receiver_confidence_std": 0.05451080948114395,
+          "same_message_norm": 79.0553207397461,
+          "different_message_norm": 2.478172540664673,
+          "same_message_over_input": 0.3345390856266022,
+          "different_message_over_input": 0.0104869045317173,
+          "modal_message_over_input": 0.33551225066185,
+          "final_message_over_input": 0.08783423900604248,
+          "gate_mean": 0.015891138464212418,
+          "gate_std": 0.004617955069988966,
+          "eta": 0.10804980993270874,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.3844936733314832,
+          "gcn_parameter_delta_norm": 34.22298596783582,
+          "edge_network_parameter_delta_norm": 1.8174109802645984,
+          "wrong_edge_identity_change_fraction": 0.9605338691159586,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13386,
+            "changed_fraction": 0.9605338691159586,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.00020001591474283487,
+          "different_weight_mean": 0.003645505290478468,
+          "edge_prior_reweighted_mean_l1": 0.017834648489952087,
+          "selected_confidence_mean": 0.19062186777591705,
+          "selected_confidence_std": 0.1234591081738472,
+          "receiver_confidence_mean": 0.19062186777591705,
+          "receiver_confidence_std": 0.10987658053636551,
+          "same_message_norm": 83.26002502441406,
+          "different_message_norm": 2.5246975421905518,
+          "same_message_over_input": 0.3523321747779846,
+          "different_message_over_input": 0.010683785192668438,
+          "modal_message_over_input": 0.35308602452278137,
+          "final_message_over_input": 0.08783423900604248,
+          "gate_mean": 0.013706071302294731,
+          "gate_std": 0.004121970385313034,
+          "eta": 0.10695253312587738,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.9038707549833196,
+          "gcn_parameter_delta_norm": 34.20225861882379,
+          "edge_network_parameter_delta_norm": 1.9545524361542712,
+          "wrong_edge_identity_change_fraction": 0.9893082663605052,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13787,
+            "changed_fraction": 0.9893082663605052,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.08422534167766571,
+          "different_weight_mean": 0.01640641875565052,
+          "edge_prior_reweighted_mean_l1": 0.023090239614248276,
+          "selected_confidence_mean": 0.46143776178359985,
+          "selected_confidence_std": 0.2951489984989166,
+          "receiver_confidence_mean": 0.46143776178359985,
+          "receiver_confidence_std": 0.255304217338562,
+          "same_message_norm": 88.10174560546875,
+          "different_message_norm": 2.318962574005127,
+          "same_message_over_input": 0.3728209435939789,
+          "different_message_over_input": 0.009813174605369568,
+          "modal_message_over_input": 0.3732414245605469,
+          "final_message_over_input": 0.08783423900604248,
+          "gate_mean": 0.2527037560939789,
+          "gate_std": 0.014892051927745342,
+          "eta": 0.1050480380654335,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.29337810818959,
+          "gcn_parameter_delta_norm": 34.00319791228053,
+          "edge_network_parameter_delta_norm": 1.3884192714329269,
+          "wrong_edge_identity_change_fraction": 0.9807692307692307,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13668,
+            "changed_fraction": 0.9807692307692307,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.0004193938511889428,
+        1.7902140143633005e-06,
+        1.0441283848194871e-05,
+        0.0017844389658421278
+      ],
+      "classification_edge_gradients": [
+        0.0004480272182263434,
+        6.313233825494535e-06,
+        1.199980397359468e-05,
+        0.0008238411974161863
+      ],
+      "residual_ratio": 0.08053159713745117,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13763,
+          "changed_fraction": 0.9875861079219288,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13386,
+          "changed_fraction": 0.9605338691159586,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13787,
+          "changed_fraction": 0.9893082663605052,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13668,
+          "changed_fraction": 0.9807692307692307,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 5,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.4675507722077546,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                125,
+                133,
+                126
+              ],
+              [
+                138,
+                112,
+                134
+              ],
+              [
+                147,
+                121,
+                116
+              ]
+            ],
+            "mean_probability": [
+              0.34080415964126587,
+              0.3241261839866638,
+              0.3350697159767151
+            ],
+            "probability_entropy": 0.7908012270927429,
+            "shared_representation_variance": 0.7579737305641174,
+            "prototype_distances_AA_TT_AT": [
+              0.4295695126056671,
+              0.33904901146888733,
+              0.2921995222568512
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5221648039641205,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                175,
+                128,
+                81
+              ],
+              [
+                155,
+                146,
+                83
+              ],
+              [
+                166,
+                148,
+                70
+              ]
+            ],
+            "mean_probability": [
+              0.35002321004867554,
+              0.32321834564208984,
+              0.32675835490226746
+            ],
+            "probability_entropy": 1.0384581089019775,
+            "shared_representation_variance": 0.49850255250930786,
+            "prototype_distances_AA_TT_AT": [
+              0.2824864089488983,
+              0.13912974298000336,
+              0.19449950754642487
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5204388653790509,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                143,
+                127,
+                114
+              ],
+              [
+                134,
+                174,
+                76
+              ],
+              [
+                140,
+                161,
+                83
+              ]
+            ],
+            "mean_probability": [
+              0.3336719274520874,
+              0.34473755955696106,
+              0.3215903639793396
+            ],
+            "probability_entropy": 1.0036133527755737,
+            "shared_representation_variance": 0.49385014176368713,
+            "prototype_distances_AA_TT_AT": [
+              0.3293136656284332,
+              0.24959880113601685,
+              0.18649518489837646
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7669915093315973,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                323,
+                40,
+                21
+              ],
+              [
+                75,
+                259,
+                50
+              ],
+              [
+                153,
+                135,
+                96
+              ]
+            ],
+            "mean_probability": [
+              0.45277971029281616,
+              0.37380149960517883,
+              0.17341886460781097
+            ],
+            "probability_entropy": 0.4378511607646942,
+            "shared_representation_variance": 1.2775094509124756,
+            "prototype_distances_AA_TT_AT": [
+              5.759460926055908,
+              3.3384830951690674,
+              2.642604351043701
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4930155575275421,
+          0.5297584533691406,
+          0.5259926319122314,
+          0.7190757989883423
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.11903373897075653,
+          0.10397063195705414,
+          0.8763032555580139
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9934895833333334,
+          "macro_auc_ovr": 0.9998391233844521
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9997829861111112,
+          "macro_auc_ovr": 0.999999811619888
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.3595920205116272,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.6939174824781378,
+        "shared_cross_modal_pair_cosine_mean": 0.8711618185043335,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 4.779854407388484e-06,
+          "different_weight_mean": 0.0002948096953332424,
+          "edge_prior_reweighted_mean_l1": 0.04504809528589249,
+          "selected_confidence_mean": 0.3672029674053192,
+          "selected_confidence_std": 0.2184094786643982,
+          "receiver_confidence_mean": 0.3672029674053192,
+          "receiver_confidence_std": 0.16578331589698792,
+          "same_message_norm": 92.45867156982422,
+          "different_message_norm": 2.9084994792938232,
+          "same_message_over_input": 0.391258180141449,
+          "different_message_over_input": 0.01230792235583067,
+          "modal_message_over_input": 0.39216622710227966,
+          "final_message_over_input": 0.11943843960762024,
+          "gate_mean": 0.27068692445755005,
+          "gate_std": 0.0020264077465981245,
+          "eta": 0.10796951502561569,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.064519801915047,
+          "gcn_parameter_delta_norm": 32.646333347784825,
+          "edge_network_parameter_delta_norm": 1.695363812779731,
+          "wrong_edge_identity_change_fraction": 0.9895952927669346,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13791,
+            "changed_fraction": 0.9895952927669346,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.7434346943900891e-07,
+          "different_weight_mean": 3.1368361419481516e-07,
+          "edge_prior_reweighted_mean_l1": 0.028272977098822594,
+          "selected_confidence_mean": 0.06824330985546112,
+          "selected_confidence_std": 0.0369764119386673,
+          "receiver_confidence_mean": 0.06824330985546112,
+          "receiver_confidence_std": 0.031944941729307175,
+          "same_message_norm": 84.1816177368164,
+          "different_message_norm": 2.8781938552856445,
+          "same_message_over_input": 0.35623207688331604,
+          "different_message_over_input": 0.012179678305983543,
+          "modal_message_over_input": 0.3576638102531433,
+          "final_message_over_input": 0.11943843960762024,
+          "gate_mean": 0.3132375180721283,
+          "gate_std": 0.012763592414557934,
+          "eta": 0.10913723707199097,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.3254269852107174,
+          "gcn_parameter_delta_norm": 32.94570432687318,
+          "edge_network_parameter_delta_norm": 1.7212449042480988,
+          "wrong_edge_identity_change_fraction": 0.9590987370838117,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13366,
+            "changed_fraction": 0.9590987370838117,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0001088209028239362,
+          "different_weight_mean": 0.004494820721447468,
+          "edge_prior_reweighted_mean_l1": 0.02019243687391281,
+          "selected_confidence_mean": 0.23261192440986633,
+          "selected_confidence_std": 0.17976127564907074,
+          "receiver_confidence_mean": 0.23261195421218872,
+          "receiver_confidence_std": 0.1538795381784439,
+          "same_message_norm": 95.91780853271484,
+          "different_message_norm": 2.8485724925994873,
+          "same_message_over_input": 0.40589624643325806,
+          "different_message_over_input": 0.012054328806698322,
+          "modal_message_over_input": 0.406400203704834,
+          "final_message_over_input": 0.11943843960762024,
+          "gate_mean": 0.20686686038970947,
+          "gate_std": 0.0063466583378612995,
+          "eta": 0.10885600745677948,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.871825471327882,
+          "gcn_parameter_delta_norm": 32.61830181479793,
+          "edge_network_parameter_delta_norm": 1.6030875998451,
+          "wrong_edge_identity_change_fraction": 0.9930396096440872,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13839,
+            "changed_fraction": 0.9930396096440872,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.1101122573018074,
+          "different_weight_mean": 0.016987795010209084,
+          "edge_prior_reweighted_mean_l1": 0.026213468983769417,
+          "selected_confidence_mean": 0.7927030920982361,
+          "selected_confidence_std": 0.18239788711071014,
+          "receiver_confidence_mean": 0.7927030920982361,
+          "receiver_confidence_std": 0.12755657732486725,
+          "same_message_norm": 95.50850677490234,
+          "different_message_norm": 2.211439371109009,
+          "same_message_over_input": 0.40416419506073,
+          "different_message_over_input": 0.00935816764831543,
+          "modal_message_over_input": 0.405769407749176,
+          "final_message_over_input": 0.11943843960762024,
+          "gate_mean": 0.20920860767364502,
+          "gate_std": 0.008355585858225822,
+          "eta": 0.10442803800106049,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.287426551833907,
+          "gcn_parameter_delta_norm": 32.71489295705255,
+          "edge_network_parameter_delta_norm": 1.4368851183355729,
+          "wrong_edge_identity_change_fraction": 0.9899540757749713,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13796,
+            "changed_fraction": 0.9899540757749713,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        6.528029916808009e-05,
+        0.0002647337969392538,
+        0.00020058262452948838,
+        0.003244588617235422
+      ],
+      "classification_edge_gradients": [
+        0.00025962991639971733,
+        0.000290858733933419,
+        9.476187551626936e-05,
+        0.006823734845966101
+      ],
+      "residual_ratio": 0.10968372970819473,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13791,
+          "changed_fraction": 0.9895952927669346,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13366,
+          "changed_fraction": 0.9590987370838117,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13839,
+          "changed_fraction": 0.9930396096440872,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13796,
+          "changed_fraction": 0.9899540757749713,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 6,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5447093822337963,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                196,
+                105,
+                83
+              ],
+              [
+                172,
+                160,
+                52
+              ],
+              [
+                171,
+                135,
+                78
+              ]
+            ],
+            "mean_probability": [
+              0.42059391736984253,
+              0.3218229413032532,
+              0.25758326053619385
+            ],
+            "probability_entropy": 0.8053346276283264,
+            "shared_representation_variance": 0.5131220817565918,
+            "prototype_distances_AA_TT_AT": [
+              0.5326550602912903,
+              0.34922724962234497,
+              0.2662676274776459
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.6001010470920138,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                272,
+                72,
+                40
+              ],
+              [
+                146,
+                179,
+                59
+              ],
+              [
+                222,
+                111,
+                51
+              ]
+            ],
+            "mean_probability": [
+              0.4309287965297699,
+              0.3186790943145752,
+              0.2503918409347534
+            ],
+            "probability_entropy": 0.9441130757331848,
+            "shared_representation_variance": 0.5088967084884644,
+            "prototype_distances_AA_TT_AT": [
+              1.2407153844833374,
+              0.8447248935699463,
+              0.4555565416812897
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.556186252170139,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                188,
+                127,
+                69
+              ],
+              [
+                113,
+                184,
+                87
+              ],
+              [
+                140,
+                156,
+                88
+              ]
+            ],
+            "mean_probability": [
+              0.3397781550884247,
+              0.3836267292499542,
+              0.27659493684768677
+            ],
+            "probability_entropy": 0.887706995010376,
+            "shared_representation_variance": 0.7329041361808777,
+            "prototype_distances_AA_TT_AT": [
+              0.6665153503417969,
+              0.3722909688949585,
+              0.4017985165119171
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.8404382776331017,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                319,
+                21,
+                44
+              ],
+              [
+                15,
+                304,
+                65
+              ],
+              [
+                131,
+                106,
+                147
+              ]
+            ],
+            "mean_probability": [
+              0.4012189209461212,
+              0.3583891987800598,
+              0.24039143323898315
+            ],
+            "probability_entropy": 0.5125027298927307,
+            "shared_representation_variance": 1.2021393775939941,
+            "prototype_distances_AA_TT_AT": [
+              7.4954094886779785,
+              3.975667953491211,
+              3.704977512359619
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4653587341308594,
+          0.5149789452552795,
+          0.5115951895713806,
+          0.7294238805770874
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.05991581827402115,
+          0.05000000074505806,
+          0.9176955223083496
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9895833333333334,
+          "macro_auc_ovr": 0.9996430824813529
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9971788194444444,
+          "macro_auc_ovr": 0.9999715546031056
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.3094618022441864,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.7077257446791408,
+        "shared_cross_modal_pair_cosine_mean": 0.8391328354676565,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.1195137403774424e-06,
+          "different_weight_mean": 4.528113277046941e-05,
+          "edge_prior_reweighted_mean_l1": 0.03946754336357117,
+          "selected_confidence_mean": 0.32732734084129333,
+          "selected_confidence_std": 0.24921828508377075,
+          "receiver_confidence_mean": 0.32732734084129333,
+          "receiver_confidence_std": 0.19819633662700653,
+          "same_message_norm": 61.61396789550781,
+          "different_message_norm": 3.1283295154571533,
+          "same_message_over_input": 0.26073238253593445,
+          "different_message_over_input": 0.013238179497420788,
+          "modal_message_over_input": 0.2659193277359009,
+          "final_message_over_input": 0.09103453904390335,
+          "gate_mean": 0.5488007068634033,
+          "gate_std": 0.018441105261445045,
+          "eta": 0.1103636771440506,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.061648609739282,
+          "gcn_parameter_delta_norm": 35.16791386373869,
+          "edge_network_parameter_delta_norm": 2.07682681900463,
+          "wrong_edge_identity_change_fraction": 0.9907433983926521,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13807,
+            "changed_fraction": 0.9907433983926521,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 6.046981980034616e-06,
+          "different_weight_mean": 0.0012541698524728417,
+          "edge_prior_reweighted_mean_l1": 0.01192869246006012,
+          "selected_confidence_mean": 0.5784463882446289,
+          "selected_confidence_std": 0.21965786814689636,
+          "receiver_confidence_mean": 0.5784463286399841,
+          "receiver_confidence_std": 0.21385271847248077,
+          "same_message_norm": 62.463951110839844,
+          "different_message_norm": 2.789030075073242,
+          "same_message_over_input": 0.2643292546272278,
+          "different_message_over_input": 0.011802363209426403,
+          "modal_message_over_input": 0.26653605699539185,
+          "final_message_over_input": 0.09103453904390335,
+          "gate_mean": 0.05981999635696411,
+          "gate_std": 0.009520995430648327,
+          "eta": 0.1085691824555397,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.3581085553953305,
+          "gcn_parameter_delta_norm": 34.89321303517303,
+          "edge_network_parameter_delta_norm": 2.021567469192863,
+          "wrong_edge_identity_change_fraction": 0.9431687715269805,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13144,
+            "changed_fraction": 0.9431687715269805,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 7.07172134184475e-08,
+          "different_weight_mean": 0.00021850666962563992,
+          "edge_prior_reweighted_mean_l1": 0.025034183636307716,
+          "selected_confidence_mean": 0.5475031137466431,
+          "selected_confidence_std": 0.23413269221782684,
+          "receiver_confidence_mean": 0.5475031137466431,
+          "receiver_confidence_std": 0.21468834578990936,
+          "same_message_norm": 78.03076171875,
+          "different_message_norm": 2.865159511566162,
+          "same_message_over_input": 0.33020347356796265,
+          "different_message_over_input": 0.012124520726501942,
+          "modal_message_over_input": 0.33087053894996643,
+          "final_message_over_input": 0.09103453904390335,
+          "gate_mean": 0.029869360849261284,
+          "gate_std": 0.006673245225101709,
+          "eta": 0.10918284207582474,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.8974047430162426,
+          "gcn_parameter_delta_norm": 34.80416052491067,
+          "edge_network_parameter_delta_norm": 1.9109947099138043,
+          "wrong_edge_identity_change_fraction": 0.9939006888633755,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13851,
+            "changed_fraction": 0.9939006888633755,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.06690765917301178,
+          "different_weight_mean": 0.026419738307595253,
+          "edge_prior_reweighted_mean_l1": 0.01560986414551735,
+          "selected_confidence_mean": 0.7291353940963745,
+          "selected_confidence_std": 0.22531919181346893,
+          "receiver_confidence_mean": 0.7291355133056641,
+          "receiver_confidence_std": 0.15610526502132416,
+          "same_message_norm": 85.69345092773438,
+          "different_message_norm": 2.5115766525268555,
+          "same_message_over_input": 0.3626297414302826,
+          "different_message_over_input": 0.010628260672092438,
+          "modal_message_over_input": 0.3632546067237854,
+          "final_message_over_input": 0.09103453904390335,
+          "gate_mean": 0.36150988936424255,
+          "gate_std": 0.0031339549459517,
+          "eta": 0.10708525031805038,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.355516020271164,
+          "gcn_parameter_delta_norm": 35.11936867530998,
+          "edge_network_parameter_delta_norm": 1.4167921043554261,
+          "wrong_edge_identity_change_fraction": 0.99648392652124,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13887,
+            "changed_fraction": 0.99648392652124,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.00017231529636774212,
+        1.201113536808407e-05,
+        1.5105190868780483e-05,
+        0.007429772987961769
+      ],
+      "classification_edge_gradients": [
+        0.0003509828238748014,
+        1.9408844309509732e-05,
+        2.0604880774044432e-05,
+        0.018135618418455124
+      ],
+      "residual_ratio": 0.08573164790868759,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13807,
+          "changed_fraction": 0.9907433983926521,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13144,
+          "changed_fraction": 0.9431687715269805,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13851,
+          "changed_fraction": 0.9939006888633755,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13887,
+          "changed_fraction": 0.99648392652124,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 7,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.47878802264178244,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                120,
+                109,
+                155
+              ],
+              [
+                139,
+                121,
+                124
+              ],
+              [
+                134,
+                131,
+                119
+              ]
+            ],
+            "mean_probability": [
+              0.326541930437088,
+              0.32986539602279663,
+              0.3435930013656616
+            ],
+            "probability_entropy": 0.7610296010971069,
+            "shared_representation_variance": 1.238993763923645,
+            "prototype_distances_AA_TT_AT": [
+              0.9596965312957764,
+              0.6114469766616821,
+              0.3612726032733917
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5327114529079862,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                164,
+                90,
+                130
+              ],
+              [
+                152,
+                123,
+                109
+              ],
+              [
+                164,
+                106,
+                114
+              ]
+            ],
+            "mean_probability": [
+              0.35924193263053894,
+              0.30483773350715637,
+              0.3359200358390808
+            ],
+            "probability_entropy": 1.0203958749771118,
+            "shared_representation_variance": 0.3183377981185913,
+            "prototype_distances_AA_TT_AT": [
+              0.3557578921318054,
+              0.21963872015476227,
+              0.17961348593235016
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5267627857349537,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                157,
+                113,
+                114
+              ],
+              [
+                137,
+                150,
+                97
+              ],
+              [
+                151,
+                136,
+                97
+              ]
+            ],
+            "mean_probability": [
+              0.3580550253391266,
+              0.33857858180999756,
+              0.3033658266067505
+            ],
+            "probability_entropy": 0.9444535374641418,
+            "shared_representation_variance": 1.032604694366455,
+            "prototype_distances_AA_TT_AT": [
+              0.40748706459999084,
+              0.28678491711616516,
+              0.16688504815101624
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.748691134982639,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                210,
+                83,
+                91
+              ],
+              [
+                26,
+                317,
+                41
+              ],
+              [
+                84,
+                185,
+                115
+              ]
+            ],
+            "mean_probability": [
+              0.2662302553653717,
+              0.4246349036693573,
+              0.3091347813606262
+            ],
+            "probability_entropy": 0.7825164794921875,
+            "shared_representation_variance": 0.4796568751335144,
+            "prototype_distances_AA_TT_AT": [
+              3.5721592903137207,
+              1.9880163669586182,
+              1.651769757270813
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4888790249824524,
+          0.5389179587364197,
+          0.5331068634986877,
+          0.7297368049621582
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.15567174553871155,
+          0.1324273943901062,
+          0.9189472794532776
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9943576388888888,
+          "macro_auc_ovr": 0.9999257782359183
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9971788194444444,
+          "macro_auc_ovr": 0.9999934066960843
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.4730902910232544,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.859785731437275,
+        "shared_cross_modal_pair_cosine_mean": 0.8720633387565613,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.020356982946395874,
+          "different_weight_mean": 0.002721982542425394,
+          "edge_prior_reweighted_mean_l1": 0.02249826490879059,
+          "selected_confidence_mean": 0.4342855215072632,
+          "selected_confidence_std": 0.26787447929382324,
+          "receiver_confidence_mean": 0.4342855215072632,
+          "receiver_confidence_std": 0.22518597543239594,
+          "same_message_norm": 82.57331085205078,
+          "different_message_norm": 2.487513542175293,
+          "same_message_over_input": 0.3494262099266052,
+          "different_message_over_input": 0.010526432655751705,
+          "modal_message_over_input": 0.3501838445663452,
+          "final_message_over_input": 0.11151707172393799,
+          "gate_mean": 0.0033415728248655796,
+          "gate_std": 0.023120786994695663,
+          "eta": 0.10832692682743073,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.073158660229801,
+          "gcn_parameter_delta_norm": 35.272940887976986,
+          "edge_network_parameter_delta_norm": 1.4916954997276983,
+          "wrong_edge_identity_change_fraction": 0.9870838117106774,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13756,
+            "changed_fraction": 0.9870838117106774,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.03835560753941536,
+          "different_weight_mean": 0.010342417284846306,
+          "edge_prior_reweighted_mean_l1": 0.009873316623270512,
+          "selected_confidence_mean": 0.2528437674045563,
+          "selected_confidence_std": 0.2578974664211273,
+          "receiver_confidence_mean": 0.2528437674045563,
+          "receiver_confidence_std": 0.2547638416290283,
+          "same_message_norm": 84.67349243164062,
+          "different_message_norm": 2.4005839824676514,
+          "same_message_over_input": 0.35831356048583984,
+          "different_message_over_input": 0.010158572345972061,
+          "modal_message_over_input": 0.3583639860153198,
+          "final_message_over_input": 0.11151707172393799,
+          "gate_mean": 0.003096496220678091,
+          "gate_std": 0.022647591307759285,
+          "eta": 0.10613284260034561,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.302160597098305,
+          "gcn_parameter_delta_norm": 35.18939409866629,
+          "edge_network_parameter_delta_norm": 1.5829768332251095,
+          "wrong_edge_identity_change_fraction": 0.9585246842709529,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13358,
+            "changed_fraction": 0.9585246842709529,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 4.077878111274913e-05,
+          "different_weight_mean": 0.0010279525304213166,
+          "edge_prior_reweighted_mean_l1": 0.025127246975898743,
+          "selected_confidence_mean": 0.27027010917663574,
+          "selected_confidence_std": 0.17703697085380554,
+          "receiver_confidence_mean": 0.27027013897895813,
+          "receiver_confidence_std": 0.14845535159111023,
+          "same_message_norm": 75.09764099121094,
+          "different_message_norm": 2.66223406791687,
+          "same_message_over_input": 0.3177913427352905,
+          "different_message_over_input": 0.011265799403190613,
+          "modal_message_over_input": 0.3186587691307068,
+          "final_message_over_input": 0.11151707172393799,
+          "gate_mean": 0.008155787363648415,
+          "gate_std": 0.029354417696595192,
+          "eta": 0.10999315232038498,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.7944992821536006,
+          "gcn_parameter_delta_norm": 34.93839269599687,
+          "edge_network_parameter_delta_norm": 1.9165789580987453,
+          "wrong_edge_identity_change_fraction": 0.9900258323765786,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13797,
+            "changed_fraction": 0.9900258323765786,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.028767529875040054,
+          "different_weight_mean": 0.025332318618893623,
+          "edge_prior_reweighted_mean_l1": 0.021731283515691757,
+          "selected_confidence_mean": 0.44007137417793274,
+          "selected_confidence_std": 0.2055393010377884,
+          "receiver_confidence_mean": 0.44007134437561035,
+          "receiver_confidence_std": 0.14372685551643372,
+          "same_message_norm": 76.92100524902344,
+          "different_message_norm": 2.611009359359741,
+          "same_message_over_input": 0.3255072832107544,
+          "different_message_over_input": 0.011049031279981136,
+          "modal_message_over_input": 0.32651373744010925,
+          "final_message_over_input": 0.11151707172393799,
+          "gate_mean": 0.9854061007499695,
+          "gate_std": 0.0741523876786232,
+          "eta": 0.10817796736955643,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.309730940561185,
+          "gcn_parameter_delta_norm": 34.39220627611817,
+          "edge_network_parameter_delta_norm": 1.828627969398893,
+          "wrong_edge_identity_change_fraction": 0.99648392652124,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13887,
+            "changed_fraction": 0.99648392652124,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.00010686257883207873,
+        0.0002501712879166007,
+        0.00013107119593769312,
+        0.003570395056158304
+      ],
+      "classification_edge_gradients": [
+        0.0016217294614762068,
+        0.0017311277333647013,
+        3.330079198349267e-05,
+        0.0008212889079004526
+      ],
+      "residual_ratio": 0.10036127269268036,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13756,
+          "changed_fraction": 0.9870838117106774,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13358,
+          "changed_fraction": 0.9585246842709529,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13797,
+          "changed_fraction": 0.9900258323765786,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13887,
+          "changed_fraction": 0.99648392652124,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 8,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5330494068287037,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                160,
+                125,
+                99
+              ],
+              [
+                83,
+                165,
+                136
+              ],
+              [
+                141,
+                146,
+                97
+              ]
+            ],
+            "mean_probability": [
+              0.33129608631134033,
+              0.36020827293395996,
+              0.3084957003593445
+            ],
+            "probability_entropy": 0.844977855682373,
+            "shared_representation_variance": 0.6347166895866394,
+            "prototype_distances_AA_TT_AT": [
+              1.0390619039535522,
+              0.6279979348182678,
+              0.4973040819168091
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5380147298177083,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                168,
+                102,
+                114
+              ],
+              [
+                124,
+                159,
+                101
+              ],
+              [
+                142,
+                142,
+                100
+              ]
+            ],
+            "mean_probability": [
+              0.34042325615882874,
+              0.33120545744895935,
+              0.32837140560150146
+            ],
+            "probability_entropy": 1.0327068567276,
+            "shared_representation_variance": 0.38387545943260193,
+            "prototype_distances_AA_TT_AT": [
+              1.2449102401733398,
+              0.5995861291885376,
+              0.6762155890464783
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5461708351417824,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                156,
+                137,
+                91
+              ],
+              [
+                116,
+                194,
+                74
+              ],
+              [
+                153,
+                157,
+                74
+              ]
+            ],
+            "mean_probability": [
+              0.33622241020202637,
+              0.3623341917991638,
+              0.30144333839416504
+            ],
+            "probability_entropy": 0.9609661102294922,
+            "shared_representation_variance": 0.4308265745639801,
+            "prototype_distances_AA_TT_AT": [
+              0.4902356266975403,
+              0.18045005202293396,
+              0.3397003412246704
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7159683792679398,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                226,
+                14,
+                144
+              ],
+              [
+                44,
+                184,
+                156
+              ],
+              [
+                107,
+                73,
+                204
+              ]
+            ],
+            "mean_probability": [
+              0.32597434520721436,
+              0.23694637417793274,
+              0.4370791018009186
+            ],
+            "probability_entropy": 0.3654751777648926,
+            "shared_representation_variance": 1.6546168327331543,
+            "prototype_distances_AA_TT_AT": [
+              5.483638763427734,
+              3.0372118949890137,
+              2.6751859188079834
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5247846841812134,
+          0.5358197093009949,
+          0.5309652090072632,
+          0.7314180731773376
+        ],
+        "continuous_relation_reliability": [
+          0.09913881868124008,
+          0.14327889680862427,
+          0.12386094033718109,
+          0.9256722927093506
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9963107638888888,
+          "macro_auc_ovr": 0.9999722453301827
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9986979166666666,
+          "macro_auc_ovr": 0.9999994348596644
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.5531684160232544,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.8895855813360019,
+        "shared_cross_modal_pair_cosine_mean": 0.8594852089881897,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 1.7558486433699727e-06,
+          "different_weight_mean": 5.182684162718942e-06,
+          "edge_prior_reweighted_mean_l1": 0.028368601575493813,
+          "selected_confidence_mean": 0.28056636452674866,
+          "selected_confidence_std": 0.21197359263896942,
+          "receiver_confidence_mean": 0.28056636452674866,
+          "receiver_confidence_std": 0.16751383244991302,
+          "same_message_norm": 48.691341400146484,
+          "different_message_norm": 3.209670305252075,
+          "same_message_over_input": 0.20604757964611053,
+          "different_message_over_input": 0.013582389801740646,
+          "modal_message_over_input": 0.20839402079582214,
+          "final_message_over_input": 0.08863867074251175,
+          "gate_mean": 0.5729621648788452,
+          "gate_std": 0.03793442249298096,
+          "eta": 0.11188112944364548,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.030664242467494,
+          "gcn_parameter_delta_norm": 33.64578909068943,
+          "edge_network_parameter_delta_norm": 1.7899675066204925,
+          "wrong_edge_identity_change_fraction": 0.9883036739380023,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13773,
+            "changed_fraction": 0.9883036739380023,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 6.7809978645527735e-06,
+          "different_weight_mean": 0.000359534373274073,
+          "edge_prior_reweighted_mean_l1": 0.02674134075641632,
+          "selected_confidence_mean": 0.14081427454948425,
+          "selected_confidence_std": 0.08734981715679169,
+          "receiver_confidence_mean": 0.14081427454948425,
+          "receiver_confidence_std": 0.08020886033773422,
+          "same_message_norm": 92.44766235351562,
+          "different_message_norm": 3.039860963821411,
+          "same_message_over_input": 0.391211599111557,
+          "different_message_over_input": 0.012863806448876858,
+          "modal_message_over_input": 0.39151155948638916,
+          "final_message_over_input": 0.08863867074251175,
+          "gate_mean": 0.07835151255130768,
+          "gate_std": 0.016174012795090675,
+          "eta": 0.11095233261585236,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.3357408836192162,
+          "gcn_parameter_delta_norm": 32.42646428362951,
+          "edge_network_parameter_delta_norm": 1.7214435646996802,
+          "wrong_edge_identity_change_fraction": 0.9711538461538461,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13534,
+            "changed_fraction": 0.9711538461538461,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.006876911764266e-06,
+          "different_weight_mean": 1.8501006707083434e-05,
+          "edge_prior_reweighted_mean_l1": 0.040527768433094025,
+          "selected_confidence_mean": 0.16323108971118927,
+          "selected_confidence_std": 0.130086287856102,
+          "receiver_confidence_mean": 0.16323108971118927,
+          "receiver_confidence_std": 0.10951051861047745,
+          "same_message_norm": 62.221778869628906,
+          "different_message_norm": 3.130779981613159,
+          "same_message_over_input": 0.2633044421672821,
+          "different_message_over_input": 0.013248548842966557,
+          "modal_message_over_input": 0.2645885646343231,
+          "final_message_over_input": 0.08863867074251175,
+          "gate_mean": 0.2630849778652191,
+          "gate_std": 0.019872169941663742,
+          "eta": 0.111935093998909,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.9852290455795918,
+          "gcn_parameter_delta_norm": 32.66373082676621,
+          "edge_network_parameter_delta_norm": 1.8176503002545183,
+          "wrong_edge_identity_change_fraction": 0.9909586681974741,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13810,
+            "changed_fraction": 0.9909586681974741,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.07573366165161133,
+          "different_weight_mean": 0.031617745757102966,
+          "edge_prior_reweighted_mean_l1": 0.043568965047597885,
+          "selected_confidence_mean": 0.8398928046226501,
+          "selected_confidence_std": 0.176060751080513,
+          "receiver_confidence_mean": 0.8398928046226501,
+          "receiver_confidence_std": 0.0904868096113205,
+          "same_message_norm": 88.25624084472656,
+          "different_message_norm": 2.3416476249694824,
+          "same_message_over_input": 0.37347471714019775,
+          "different_message_over_input": 0.009909170679748058,
+          "modal_message_over_input": 0.37502092123031616,
+          "final_message_over_input": 0.08863867074251175,
+          "gate_mean": 0.08560127764940262,
+          "gate_std": 0.016479356214404106,
+          "eta": 0.10413148254156113,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.31186143234681,
+          "gcn_parameter_delta_norm": 32.25377733450378,
+          "edge_network_parameter_delta_norm": 1.6631095698562506,
+          "wrong_edge_identity_change_fraction": 0.9842135476463835,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13716,
+            "changed_fraction": 0.9842135476463835,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        3.941755858249962e-05,
+        4.1934104046958964e-06,
+        0.00011083943536505103,
+        0.003128094831481576
+      ],
+      "classification_edge_gradients": [
+        0.0003330179024487734,
+        3.2379539334215224e-05,
+        0.0001219312907778658,
+        0.0003776424564421177
+      ],
+      "residual_ratio": 0.06947597116231918,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13773,
+          "changed_fraction": 0.9883036739380023,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13534,
+          "changed_fraction": 0.9711538461538461,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13810,
+          "changed_fraction": 0.9909586681974741,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13716,
+          "changed_fraction": 0.9842135476463835,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 9,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.49847412109375,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                181,
+                138,
+                65
+              ],
+              [
+                173,
+                129,
+                82
+              ],
+              [
+                173,
+                136,
+                75
+              ]
+            ],
+            "mean_probability": [
+              0.3822079598903656,
+              0.32524529099464417,
+              0.2925463020801544
+            ],
+            "probability_entropy": 0.9223223924636841,
+            "shared_representation_variance": 0.4391939640045166,
+            "prototype_distances_AA_TT_AT": [
+              0.32345783710479736,
+              0.2361186146736145,
+              0.1578814685344696
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.466217041015625,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                98,
+                190,
+                96
+              ],
+              [
+                131,
+                149,
+                104
+              ],
+              [
+                110,
+                175,
+                99
+              ]
+            ],
+            "mean_probability": [
+              0.29875820875167847,
+              0.37149980664253235,
+              0.32974159717559814
+            ],
+            "probability_entropy": 1.0132943391799927,
+            "shared_representation_variance": 0.32423487305641174,
+            "prototype_distances_AA_TT_AT": [
+              0.35616007447242737,
+              0.20083624124526978,
+              0.2755284607410431
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.4925322356047454,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                134,
+                136,
+                114
+              ],
+              [
+                115,
+                122,
+                147
+              ],
+              [
+                136,
+                112,
+                136
+              ]
+            ],
+            "mean_probability": [
+              0.3421027660369873,
+              0.3162479102611542,
+              0.3416491746902466
+            ],
+            "probability_entropy": 0.9962781071662903,
+            "shared_representation_variance": 0.4264271855354309,
+            "prototype_distances_AA_TT_AT": [
+              0.1909722536802292,
+              0.25946447253227234,
+              0.22700117528438568
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7362490053530092,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                253,
+                26,
+                105
+              ],
+              [
+                60,
+                219,
+                105
+              ],
+              [
+                131,
+                89,
+                164
+              ]
+            ],
+            "mean_probability": [
+              0.3600919544696808,
+              0.2934006452560425,
+              0.3465075194835663
+            ],
+            "probability_entropy": 0.6703522801399231,
+            "shared_representation_variance": 0.676054060459137,
+            "prototype_distances_AA_TT_AT": [
+              3.7748470306396484,
+              1.8759714365005493,
+              2.0173776149749756
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5161870718002319,
+          0.5264304280281067,
+          0.538718044757843,
+          0.7284886240959167
+        ],
+        "continuous_relation_reliability": [
+          0.06474826484918594,
+          0.10572174936532974,
+          0.15487214922904968,
+          0.9139544367790222
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9828559027777778,
+          "macro_auc_ovr": 0.9993672312041859
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9989149305555556,
+          "macro_auc_ovr": 0.9999991836861819
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.2962239682674408,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.6654251475393036,
+        "shared_cross_modal_pair_cosine_mean": 0.8917891383171082,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.2644887565093086e-07,
+          "different_weight_mean": 5.362260708352551e-05,
+          "edge_prior_reweighted_mean_l1": 0.027076750993728638,
+          "selected_confidence_mean": 0.13900527358055115,
+          "selected_confidence_std": 0.11896223574876785,
+          "receiver_confidence_mean": 0.13900527358055115,
+          "receiver_confidence_std": 0.0841306746006012,
+          "same_message_norm": 58.34821319580078,
+          "different_message_norm": 2.8432719707489014,
+          "same_message_over_input": 0.2469126433134079,
+          "different_message_over_input": 0.012031898833811283,
+          "modal_message_over_input": 0.25050967931747437,
+          "final_message_over_input": 0.09317047894001007,
+          "gate_mean": 0.4012633264064789,
+          "gate_std": 0.01830223761498928,
+          "eta": 0.10851389169692993,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.137616947054103,
+          "gcn_parameter_delta_norm": 34.15784838008728,
+          "edge_network_parameter_delta_norm": 1.9144609323679804,
+          "wrong_edge_identity_change_fraction": 0.9883036739380023,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13773,
+            "changed_fraction": 0.9883036739380023,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 5.135328819960705e-07,
+          "different_weight_mean": 8.365711437363643e-06,
+          "edge_prior_reweighted_mean_l1": 0.026505786925554276,
+          "selected_confidence_mean": 0.10369502007961273,
+          "selected_confidence_std": 0.09237739443778992,
+          "receiver_confidence_mean": 0.10369503498077393,
+          "receiver_confidence_std": 0.08729162067174911,
+          "same_message_norm": 56.32028579711914,
+          "different_message_norm": 2.8514480590820312,
+          "same_message_over_input": 0.23833104968070984,
+          "different_message_over_input": 0.012066497467458248,
+          "modal_message_over_input": 0.24096830189228058,
+          "final_message_over_input": 0.09317047894001007,
+          "gate_mean": 0.2225525677204132,
+          "gate_std": 0.004794626031070948,
+          "eta": 0.1085367426276207,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.391131967651361,
+          "gcn_parameter_delta_norm": 33.75149374587923,
+          "edge_network_parameter_delta_norm": 1.95815496105817,
+          "wrong_edge_identity_change_fraction": 0.9710820895522388,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13533,
+            "changed_fraction": 0.9710820895522388,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.4141052563209087e-05,
+          "different_weight_mean": 0.0009333026246167719,
+          "edge_prior_reweighted_mean_l1": 0.021716946735978127,
+          "selected_confidence_mean": 0.17178857326507568,
+          "selected_confidence_std": 0.1245502158999443,
+          "receiver_confidence_mean": 0.17178858816623688,
+          "receiver_confidence_std": 0.11207116395235062,
+          "same_message_norm": 80.60692596435547,
+          "different_message_norm": 2.695939540863037,
+          "same_message_over_input": 0.34110504388809204,
+          "different_message_over_input": 0.011408431455492973,
+          "modal_message_over_input": 0.3416062891483307,
+          "final_message_over_input": 0.09317047894001007,
+          "gate_mean": 0.10291431099176407,
+          "gate_std": 0.011114397086203098,
+          "eta": 0.10872461646795273,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.91046906856635,
+          "gcn_parameter_delta_norm": 33.47150085713078,
+          "edge_network_parameter_delta_norm": 1.9697641388954812,
+          "wrong_edge_identity_change_fraction": 0.9928243398392652,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13836,
+            "changed_fraction": 0.9928243398392652,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0823810026049614,
+          "different_weight_mean": 0.01834259368479252,
+          "edge_prior_reweighted_mean_l1": 0.021024208515882492,
+          "selected_confidence_mean": 0.5967875123023987,
+          "selected_confidence_std": 0.23154319822788239,
+          "receiver_confidence_mean": 0.5967874526977539,
+          "receiver_confidence_std": 0.1774531602859497,
+          "same_message_norm": 85.2036361694336,
+          "different_message_norm": 2.2907626628875732,
+          "same_message_over_input": 0.3605569899082184,
+          "different_message_over_input": 0.009693840518593788,
+          "modal_message_over_input": 0.3609686493873596,
+          "final_message_over_input": 0.09317047894001007,
+          "gate_mean": 0.27326980233192444,
+          "gate_std": 0.00906907208263874,
+          "eta": 0.10576412081718445,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.272711355032918,
+          "gcn_parameter_delta_norm": 33.7042387246443,
+          "edge_network_parameter_delta_norm": 1.5626291507750956,
+          "wrong_edge_identity_change_fraction": 0.9878013777267508,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13766,
+            "changed_fraction": 0.9878013777267508,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.00013095283065922558,
+        3.6586567148333415e-05,
+        7.5509786256589e-05,
+        0.008446767926216125
+      ],
+      "classification_edge_gradients": [
+        0.00023923211847431958,
+        0.00011281154729658738,
+        9.899996075546369e-05,
+        0.018249914050102234
+      ],
+      "residual_ratio": 0.0854320377111435,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13773,
+          "changed_fraction": 0.9883036739380023,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13533,
+          "changed_fraction": 0.9710820895522388,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13836,
+          "changed_fraction": 0.9928243398392652,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13766,
+          "changed_fraction": 0.9878013777267508,
+          "insufficient_matched_control": false
+        }
+      ]
+    },
+    {
+      "fold": 10,
+      "relation": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.4616676613136574,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                140,
+                149,
+                95
+              ],
+              [
+                178,
+                108,
+                98
+              ],
+              [
+                116,
+                156,
+                112
+              ]
+            ],
+            "mean_probability": [
+              0.35165199637413025,
+              0.33901405334472656,
+              0.30933475494384766
+            ],
+            "probability_entropy": 0.8899658918380737,
+            "shared_representation_variance": 0.4035170376300812,
+            "prototype_distances_AA_TT_AT": [
+              0.5700640082359314,
+              0.13347576558589935,
+              0.5419827699661255
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5189254195601852,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                175,
+                146,
+                63
+              ],
+              [
+                150,
+                151,
+                83
+              ],
+              [
+                184,
+                126,
+                74
+              ]
+            ],
+            "mean_probability": [
+              0.3470323979854584,
+              0.3322158455848694,
+              0.3207518458366394
+            ],
+            "probability_entropy": 1.0494298934936523,
+            "shared_representation_variance": 0.6280773282051086,
+            "prototype_distances_AA_TT_AT": [
+              0.3210444748401642,
+              0.15701811015605927,
+              0.2414216250181198
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5787636085792824,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                139,
+                147,
+                98
+              ],
+              [
+                72,
+                217,
+                95
+              ],
+              [
+                107,
+                181,
+                96
+              ]
+            ],
+            "mean_probability": [
+              0.3017188608646393,
+              0.38275548815727234,
+              0.31552577018737793
+            ],
+            "probability_entropy": 0.9817644953727722,
+            "shared_representation_variance": 0.39859530329704285,
+            "prototype_distances_AA_TT_AT": [
+              0.8980170488357544,
+              0.5412503480911255,
+              0.44786372780799866
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7673848470052084,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                203,
+                85,
+                96
+              ],
+              [
+                20,
+                317,
+                47
+              ],
+              [
+                77,
+                156,
+                151
+              ]
+            ],
+            "mean_probability": [
+              0.2606535255908966,
+              0.47426190972328186,
+              0.2650848925113678
+            ],
+            "probability_entropy": 0.353556364774704,
+            "shared_representation_variance": 1.7348555326461792,
+            "prototype_distances_AA_TT_AT": [
+              6.311517238616943,
+              3.1896274089813232,
+              3.6455883979797363
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5088276863098145,
+          0.5343012809753418,
+          0.5383117198944092,
+          0.7081801295280457
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.13720513880252838,
+          0.1532468944787979,
+          0.8327206373214722
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9956597222222222,
+          "macro_auc_ovr": 0.9999492001631624
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9989149305555556,
+          "macro_auc_ovr": 0.9999996232397762
+        },
+        "trained_conditional_discriminator_train_accuracy": 0.3704427182674408,
+        "trained_conditional_discriminator_train_macro_auc_ovr": 0.7089359927079315,
+        "shared_cross_modal_pair_cosine_mean": 0.8478218217690786,
+        "test_relation_metrics_posthoc_only": true
+      },
+      "graphs": {
+        "PHENO": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 3.1641245641367277e-06,
+          "different_weight_mean": 0.0036291226278990507,
+          "edge_prior_reweighted_mean_l1": 0.023630861192941666,
+          "selected_confidence_mean": 0.17196381092071533,
+          "selected_confidence_std": 0.12999586760997772,
+          "receiver_confidence_mean": 0.17196381092071533,
+          "receiver_confidence_std": 0.0886191874742508,
+          "same_message_norm": 90.10621643066406,
+          "different_message_norm": 2.893040418624878,
+          "same_message_over_input": 0.3813032805919647,
+          "different_message_over_input": 0.012242504395544529,
+          "modal_message_over_input": 0.38270798325538635,
+          "final_message_over_input": 0.1185942068696022,
+          "gate_mean": 0.7628620266914368,
+          "gate_std": 0.07094375044107437,
+          "eta": 0.10882914811372757,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 4.066784356500758,
+          "gcn_parameter_delta_norm": 34.4198189708819,
+          "edge_network_parameter_delta_norm": 1.759118579060647,
+          "wrong_edge_identity_change_fraction": 0.9856486796785304,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13736,
+            "changed_fraction": 0.9856486796785304,
+            "insufficient_matched_control": false
+          }
+        },
+        "ANAT": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.0488321297307266e-06,
+          "different_weight_mean": 0.0002960505080409348,
+          "edge_prior_reweighted_mean_l1": 0.013668391853570938,
+          "selected_confidence_mean": 0.08374786376953125,
+          "selected_confidence_std": 0.05742146074771881,
+          "receiver_confidence_mean": 0.08374787122011185,
+          "receiver_confidence_std": 0.05480729788541794,
+          "same_message_norm": 58.5355224609375,
+          "different_message_norm": 2.798891067504883,
+          "same_message_over_input": 0.24770528078079224,
+          "different_message_over_input": 0.011844092048704624,
+          "modal_message_over_input": 0.24891072511672974,
+          "final_message_over_input": 0.1185942068696022,
+          "gate_mean": 0.1485617458820343,
+          "gate_std": 0.029085833579301834,
+          "eta": 0.10881058126688004,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.2808571713385861,
+          "gcn_parameter_delta_norm": 34.157391835328816,
+          "edge_network_parameter_delta_norm": 1.636916857021665,
+          "wrong_edge_identity_change_fraction": 0.957304822043628,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13341,
+            "changed_fraction": 0.957304822043628,
+            "insufficient_matched_control": false
+          }
+        },
+        "FUNC": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.00012649600103031844,
+          "different_weight_mean": 0.0018082850147038698,
+          "edge_prior_reweighted_mean_l1": 0.017704475671052933,
+          "selected_confidence_mean": 0.23726898431777954,
+          "selected_confidence_std": 0.2166360467672348,
+          "receiver_confidence_mean": 0.23726898431777954,
+          "receiver_confidence_std": 0.2000291347503662,
+          "same_message_norm": 78.45521545410156,
+          "different_message_norm": 2.4941720962524414,
+          "same_message_over_input": 0.33199962973594666,
+          "different_message_over_input": 0.010554609820246696,
+          "modal_message_over_input": 0.33208268880844116,
+          "final_message_over_input": 0.1185942068696022,
+          "gate_mean": 0.024462398141622543,
+          "gate_std": 0.016664961352944374,
+          "eta": 0.1079072579741478,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 1.8364593088973626,
+          "gcn_parameter_delta_norm": 34.33329412464261,
+          "edge_network_parameter_delta_norm": 1.6217501012489837,
+          "wrong_edge_identity_change_fraction": 0.9903846153846154,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13802,
+            "changed_fraction": 0.9903846153846154,
+            "insufficient_matched_control": false
+          }
+        },
+        "CORR": {
+          "selected_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.15231259167194366,
+          "different_weight_mean": 0.035514261573553085,
+          "edge_prior_reweighted_mean_l1": 0.02540229633450508,
+          "selected_confidence_mean": 0.8334590196609497,
+          "selected_confidence_std": 0.18824926018714905,
+          "receiver_confidence_mean": 0.8334590196609497,
+          "receiver_confidence_std": 0.11921721696853638,
+          "same_message_norm": 63.734493255615234,
+          "different_message_norm": 2.2181267738342285,
+          "same_message_over_input": 0.26970580220222473,
+          "different_message_over_input": 0.009386466816067696,
+          "modal_message_over_input": 0.27072998881340027,
+          "final_message_over_input": 0.1185942068696022,
+          "gate_mean": 0.06411382555961609,
+          "gate_std": 0.02550445683300495,
+          "eta": 0.10389017313718796,
+          "softcap_active_fraction": 1.0,
+          "graphlearn_parameter_delta_norm": 9.349511414782308,
+          "gcn_parameter_delta_norm": 34.34066911368765,
+          "edge_network_parameter_delta_norm": 1.458259840834888,
+          "wrong_edge_identity_change_fraction": 0.9925373134328358,
+          "wrong_edge_invariants": {
+            "no_self": true,
+            "no_duplicate": true,
+            "receiver_outdegree": true,
+            "sender_indegree": true,
+            "receiver_sender_site_partition": true,
+            "changed_edges": 13832,
+            "changed_fraction": 0.9925373134328358,
+            "insufficient_matched_control": false
+          }
+        }
+      },
+      "classification_graphlearn_gradients": [
+        0.0002158145362045616,
+        6.284381379373372e-05,
+        2.086882886942476e-05,
+        0.0018962225876748562
+      ],
+      "classification_edge_gradients": [
+        0.00046025821939110756,
+        0.00010697269317461178,
+        1.3132630556356162e-05,
+        0.005644694436341524
+      ],
+      "residual_ratio": 0.10896442830562592,
+      "strict_swap": [
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13736,
+          "changed_fraction": 0.9856486796785304,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13341,
+          "changed_fraction": 0.957304822043628,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13802,
+          "changed_fraction": 0.9903846153846154,
+          "insufficient_matched_control": false
+        },
+        {
+          "no_self": true,
+          "no_duplicate": true,
+          "receiver_outdegree": true,
+          "sender_indegree": true,
+          "receiver_sender_site_partition": true,
+          "changed_edges": 13832,
+          "changed_fraction": 0.9925373134328358,
+          "insufficient_matched_control": false
+        }
+      ]
+    }
+  ],
+  "historical_protocol_limits": [
+    "val_idx=test_idx checkpoint selection",
+    "global preprocessing/RFE before outer CV",
+    "871-node transductive graph",
+    "single seed",
+    "single ABIDE-A cohort"
+  ]
+}

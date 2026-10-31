@@ -1,0 +1,27 @@
+{
+  "experiment": "Experiment56_2_DCRAG_GFR_R2",
+  "formal_group": "E56_2_FULL_DCRAG_GFR_R2",
+  "seed": 0,
+  "name": "DCRAG-GFR-R2",
+  "data": {"csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv", "mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy", "n": 871, "dims": [48, 6, 10, 256], "labels": "ASD=0,TD=1"},
+  "cv": {"n_splits": 10, "shuffle": true, "random_state": 10, "epochs": 450, "early_stop_wait_gt": 200, "selection": "test-fold ACC strict improvement; val=test historical E51 protocol"},
+  "base": {"epochs": 450, "early": 200, "lr": 0.0038, "weight_decay": 0.11, "dropout": 0.35, "n_hidden": 18, "n_head": 2, "nlayer": 1, "threshold": 0.9, "theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0, "pen": "physically removed"},
+  "groups": [{"id": 0, "name": "bootstrap-index-only", "mode": "unused"}, {"id": 1, "name": "GFR_AGGREGATION_FIX", "mode": "E1", "description": "E51 E1 initialization and fold anchor only"}],
+  "model": {
+    "relation_hidden": 32, "shared_dim": 16, "private_dim": 16, "candidate_neighbors": 16,
+    "relation_batch_per_class": 384, "inner_patient_folds": 5, "adversarial_classes": 4,
+    "grl_max": 0.10, "grl_warmup_epochs": 20, "eta_diff_initial": 0.10, "eta_diff_max": 0.30,
+    "beta_initial": 0.40, "beta_max": 1.0, "candidate_pool": 48, "rho": 0.25,
+    "same_radius_fraction": 0.50, "diff_radius_fraction": 0.15,
+    "lambda_prototype": 0.01, "lambda_adversarial": 0.01
+  },
+  "loss": {"classification": 1.0, "original_graph": 1.0, "relation": 0.02, "adversarial": 0.01, "consistency": 0.002, "edge_stability": 0.001, "prototype": 0.01},
+  "optimizer": {"graphlearn_lr": 0.0038, "graphlearn_weight_decay": 0.11, "gcn_lr": 0.0038, "gcn_weight_decay": 0.0001, "cam_lr": 0.0038, "cam_weight_decay": 0.11, "new_lr": 0.001, "new_weight_decay": 0.0001, "workers_max": 5, "cpu_threads_per_worker": 2},
+  "new_module": {"hidden": 32, "shared_dim": 16, "complement_dim": 16, "lr": 0.001, "weight_decay": 0.0001},
+  "gpu_plan": {"device": 0, "workers": 5},
+  "protected_root": ["main.py", "model.py", "network.py", "layers.py", "utils.py", "data/ABIDE/processed_standard_data.csv", "data/ABIDE/modal_feat_dict.npy"],
+  "historical_e51_e1_reference": {"acc": 0.9195924765, "hard_auc": 0.9174339196, "probability_auc_asd_positive": 0.9318564563, "spe_td": 0.9463922294, "sen_asd": 0.8884756098, "ba": 0.9174339196},
+  "historical_e56_reference": {"acc": 0.839263, "hard_auc": 0.837066, "probability_auc": 0.870762, "spe_td": 0.867669, "sen_asd": 0.806463, "ba": 0.837066},
+  "historical_e56_1_reference": {"acc": 0.896617, "hard_auc": 0.894201, "probability_auc": 0.921784, "spe_td": 0.927243, "sen_asd": 0.861159, "ba": 0.894201},
+  "repair": {"gate_xavier_nonzero": true, "entropy_confidence": true, "softcap_messages": true, "reliability_weighted_prototype": true, "dynamic_graphlearn_edges": true, "single_row_normalization": true, "rho": 0.25, "strict_self_only": true, "strict_selected_edge_double_swap": true, "selected_edge_coverage_min_total": 0.30, "selected_edge_coverage_min_modality": 0.20}
+}
