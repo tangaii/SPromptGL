@@ -1,0 +1,139 @@
+{
+  "experiment": "Experiment 53.2",
+  "name": "E1_CADR_GFR_FULL",
+  "formal_groups": 1,
+  "formal_folds": 10,
+  "seed": 0,
+  "paths": {
+    "root": "/data/adodas/SPromptGL-main",
+    "data_csv": "data/ABIDE/processed_standard_data.csv",
+    "modal_mapping": "data/ABIDE/modal_feat_dict.npy",
+    "anchor_dir": "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "historical_checkpoint_dir": "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/checkpoints",
+    "historical_cadr_reference": "experiment/experiment53_1_drap_corrected_adversarial_propagation/results"
+  },
+  "data": {
+    "n": 871,
+    "counts": {"ASD": 403, "TD": 468},
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dims": [48, 6, 10, 256],
+    "total_dim": 320,
+    "transductive_all_nodes": true,
+    "rfe_and_standardization": "historical pre-CV preprocessing retained"
+  },
+  "cv": {
+    "class": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "selection": "strict ACC improvement",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200
+  },
+  "base": {
+    "model": "Experiment 51 LegacyFixedGFR + PLNNoPEN",
+    "pen": "physically removed",
+    "graph_threshold": 0.9,
+    "gcn_input_dim": 320,
+    "gcn_hidden_dim": 320,
+    "gcn_layers": 2,
+    "gcn_activation": "ReLU after first layer",
+    "adjacency_normalization": "utils.normalize_adj(A + I)",
+    "gfr_fusion": "X + sum(sigmoid(fusion_weight_m) * message_m)",
+    "graph_loss": "mean of four original GraphConstructLoss values; no signed graph input",
+    "cam": "Experiment 51 PLNNoPEN unchanged",
+    "cam_hyperparameters": {"n_hidden": 18, "heads": 2, "dropout": 0.35, "layers": 1},
+    "graph_loss_coefficients": {"theta_smooth": 1.0, "theta_degree": 0.5, "theta_sparsity": 0.0},
+    "gfr_optimizer": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam_optimizer": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11}
+  },
+  "relation": {
+    "encoder": "Linear(d,32) -> GELU -> LayerNorm(32)",
+    "pair_representation": "concat(abs(z_i-z_j), z_i*z_j, cosine(z_i,z_j))",
+    "pair_dim": 65,
+    "scorer": "Linear(65,32) -> GELU -> Linear(32,1)",
+    "supervision": "same diagnosis pair; outer-train endpoints only",
+    "max_train_pairs": 4096,
+    "balanced_same_different": true,
+    "candidate_edge_coverage_priority": true,
+    "inner_folds": 3,
+    "inner_patient_disjoint": true,
+    "inner_max_epochs": 100,
+    "inner_early_stop_patience": 15,
+    "reliability_auc_threshold": 0.55,
+    "reliability_requires_positive_score_separation": true,
+    "reliability_formula": "valid ? clamp((OOF_AUC - 0.5)/0.25,0,1) : 0",
+    "calibration": "positive-slope Platt calibration fit only on outer-train OOF logits"
+  },
+  "adversarial": {
+    "discriminator": "shared four-way modality classifier over pair representation plus same/different one-hot",
+    "condition_source": "outer-train pair labels only",
+    "corr_anchor": "CORR relation representation detached in adversarial branch",
+    "student_modalities": ["PHENO", "ANAT", "FUNC"],
+    "gradient_reversal_scale": 0.03,
+    "loss_coefficient": 0.01
+  },
+  "disease_graph": {
+    "graph_source": "own modality GraphLearn threshold-0.9 support",
+    "support_selection": "deterministic mutual top-12 per node; optional modality-feature cosine fallback when anchor graph has <1 undirected edge per node",
+    "positive_q_threshold": 0.55,
+    "negative_q_threshold": 0.45,
+    "uncertain_edges": "skip",
+    "edge_confidence": "positive: clamp(2*(q-0.5),0,1); negative: clamp(2*(0.5-q),0,1)",
+    "edge_weight": "projected_similarity * confidence * OOF_reliability * sigmoid(edge_gate)",
+    "symmetric": true,
+    "positive_negative_normalized_separately": true
+  },
+  "integrated_propagation": {
+    "positive": "GCN_m(X, normalize_adj(A_m_pos + I))",
+    "negative": "GCN_m(X, normalize_adj(A_m_neg + I)) - GCN_m(X, I)",
+    "negative_coefficient": 0.25,
+    "direct_neighbor_difference": "sum_j(w_ij*(X_j-X_i))/max(1,sum_j w_ij)",
+    "direct_coefficient": 0.02,
+    "direct_bound": "per-modality-block RMS * tanh(delta/(RMS+eps))",
+    "final": "X + sum_m sigmoid(fusion_weight_m) * alpha_m * M_m",
+    "reliability_gate": "trainable sigmoid initialized from fold OOF reliability with floor 0.02"
+  },
+  "loss": {
+    "total": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "pair": 0.05,
+    "adversarial": 0.01,
+    "preserve": 0.01,
+    "preserve_margin_logit": 0.02
+  },
+  "new_optimizer": {
+    "class": "AdamW",
+    "lr": 0.001,
+    "matrix_weight_decay": 0.0001,
+    "bias_and_norm_weight_decay": 0.0,
+    "random_seed": "532000 + fold",
+    "main_rng_isolation": "torch.random.fork_rng"
+  },
+  "warmup": {
+    "epochs": 10,
+    "classification_forward": "exact Experiment 51 E1",
+    "new_modules_train": true,
+    "new_losses_update_shared_gfr_cam": false,
+    "formal_best_selection_starts_epoch": 10
+  },
+  "execution": {"gpu": 0, "max_workers": 2, "task_level_processes": true},
+  "comparison": {
+    "historical_e51_e1": {
+      "acc": 91.9592,
+      "hard_auc": 91.7434,
+      "probability_auc": 93.1856,
+      "spe": 94.6392,
+      "sen": 88.8476
+    },
+    "historical_53_1_e4": {
+      "acc": 91.7294,
+      "hard_auc": 91.4587,
+      "probability_auc": 92.8079,
+      "spe": 94.8381,
+      "sen": 88.0793
+    },
+    "historical_metrics_are_read_only": true
+  }
+}

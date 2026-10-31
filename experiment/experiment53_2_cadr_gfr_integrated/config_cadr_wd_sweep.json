@@ -1,0 +1,29 @@
+{
+  "experiment": "Experiment 53.2 CADR optimizer weight-decay sweep",
+  "formal_folds": 40,
+  "seed": 0,
+  "groups": [
+    {"name": "CADR_WD_0p01", "cadr_weight_decay": 0.01},
+    {"name": "CADR_WD_0p001", "cadr_weight_decay": 0.001},
+    {"name": "CADR_WD_0p1", "cadr_weight_decay": 0.1},
+    {"name": "CADR_WD_0p00001", "cadr_weight_decay": 0.00001}
+  ],
+  "optimizer_contract": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {
+      "class": "AdamW",
+      "lr": 0.001,
+      "weight_decay_application": "same requested scalar on matrix and bias/normalization parameter groups"
+    }
+  },
+  "unchanged_from": "config.json / E1_CADR_GFR_FULL",
+  "training_protocol": "same anchors, RNG seeds, fold splits, relation cache, data, model, losses, batch/pair inputs, warmup, epoch cap, ACC checkpoint selection and early stopping as Experiment 53.2",
+  "reference_only": {
+    "group": "E1_CADR_GFR_FULL",
+    "cadr_matrix_weight_decay": 0.0001,
+    "cadr_bias_norm_weight_decay": 0.0,
+    "checkpoint_source": "../.runtime/checkpoints/E1_CADR_GFR_FULL_f*.best.pt",
+    "retrained": false
+  }
+}
