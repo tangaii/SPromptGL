@@ -1,0 +1,4201 @@
+{
+  "folds": [
+    {
+      "fold": 1,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5175837764033565,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                107,
+                149,
+                128
+              ],
+              [
+                99,
+                172,
+                113
+              ],
+              [
+                105,
+                153,
+                126
+              ]
+            ],
+            "mean_probability": [
+              0.28365376591682434,
+              0.3769181966781616,
+              0.33942854404449463
+            ],
+            "probability_entropy": 0.951690673828125,
+            "shared_representation_variance": 1.3209726810455322,
+            "prototype_distances_AA_TT_AT": [
+              0.7064500451087952,
+              0.17396096885204315,
+              0.5713911652565002
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5504642062717015,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                161,
+                100,
+                123
+              ],
+              [
+                132,
+                156,
+                96
+              ],
+              [
+                150,
+                117,
+                117
+              ]
+            ],
+            "mean_probability": [
+              0.37366169691085815,
+              0.3318949043750763,
+              0.2944428324699402
+            ],
+            "probability_entropy": 0.31855952739715576,
+            "shared_representation_variance": 2.8547587394714355,
+            "prototype_distances_AA_TT_AT": [
+              1.3942440748214722,
+              0.46299031376838684,
+              1.072474479675293
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5121686017071759,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                121,
+                154,
+                109
+              ],
+              [
+                101,
+                133,
+                150
+              ],
+              [
+                124,
+                128,
+                132
+              ]
+            ],
+            "mean_probability": [
+              0.2945600152015686,
+              0.36187300086021423,
+              0.3435668647289276
+            ],
+            "probability_entropy": 0.23803557455539703,
+            "shared_representation_variance": 1.3476088047027588,
+            "prototype_distances_AA_TT_AT": [
+              0.6535040736198425,
+              0.41131576895713806,
+              0.38640856742858887
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.737186008029514,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                174,
+                65,
+                145
+              ],
+              [
+                28,
+                265,
+                91
+              ],
+              [
+                74,
+                130,
+                180
+              ]
+            ],
+            "mean_probability": [
+              0.24513475596904755,
+              0.39668190479278564,
+              0.358183354139328
+            ],
+            "probability_entropy": 0.2378593534231186,
+            "shared_representation_variance": 1.2683624029159546,
+            "prototype_distances_AA_TT_AT": [
+              5.0645599365234375,
+              2.763124942779541,
+              2.5975828170776367
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.48105743527412415,
+          0.5202060341835022,
+          0.5144015550613403,
+          0.7208135724067688
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.08082420378923416,
+          0.05760624632239342,
+          0.8832542300224304
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.990234375,
+          "macro_auc_ovr": 0.9996665318806967
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.99951171875,
+          "macro_auc_ovr": 0.9999992052714031
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.78466796875,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.9521200656890869,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.6030590981245041,
+        "teacher_condition_change_fraction": 0.9659090909090909,
+        "adversary_gradient_norm": 0.0012032194063067436,
+        "relation_encoder_gradient_norm": 0.0379648357629776,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.02622588723897934,
+          "different_weight_mean": 0.004885686095803976,
+          "prior_to_reweighted_distribution_mean_l1": 0.5333002209663391,
+          "mean_effective_same_neighbours": 7.849639415740967,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 1176.100341796875,
+          "different_message_norm": 59.162017822265625,
+          "same_message_over_input": 4.976913928985596,
+          "different_message_over_input": 0.25035643577575684,
+          "message_norm_over_raw_input": 4.985143184661865,
+          "fusion_gate_mean": 0.999863862991333,
+          "fusion_gate_std": 0.00023084477288648486,
+          "graphlearn_parameter_delta_norm": 4.052890300750732,
+          "gcn_parameter_delta_norm": 30.34406852722168,
+          "edge_network_parameter_delta_norm": 1.9878101348876953,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8958094144661309,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.04477611940298507,
+          "wrong_sender_indegree_total_variation": 0.2719575200918484,
+          "wrong_sender_indegree_max_abs_delta": 51
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 65268,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.08272186666727066,
+          "different_weight_mean": 0.123898945748806,
+          "prior_to_reweighted_distribution_mean_l1": 0.02696247026324272,
+          "mean_effective_same_neighbours": 15.636460304260254,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 578.1602172851562,
+          "different_message_norm": 6.164710521697998,
+          "same_message_over_input": 2.446605682373047,
+          "different_message_over_input": 0.026087259873747826,
+          "message_norm_over_raw_input": 2.446823835372925,
+          "fusion_gate_mean": 5.158208659850061e-05,
+          "fusion_gate_std": 8.86713169165887e-05,
+          "graphlearn_parameter_delta_norm": 1.5291311740875244,
+          "gcn_parameter_delta_norm": 30.888044357299805,
+          "edge_network_parameter_delta_norm": 0.3436717092990875,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8960246842709529,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.04477611940298507,
+          "wrong_sender_indegree_total_variation": 0.24569460390355913,
+          "wrong_sender_indegree_max_abs_delta": 92
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 24218,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.10915066301822662,
+          "different_weight_mean": 0.07172918319702148,
+          "prior_to_reweighted_distribution_mean_l1": 0.017779242247343063,
+          "mean_effective_same_neighbours": 14.383159637451172,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 724.8693237304688,
+          "different_message_norm": 6.010595798492432,
+          "same_message_over_input": 3.0674359798431396,
+          "different_message_over_input": 0.02543509192764759,
+          "message_norm_over_raw_input": 3.0674004554748535,
+          "fusion_gate_mean": 2.5459939934080467e-05,
+          "fusion_gate_std": 4.41575248260051e-05,
+          "graphlearn_parameter_delta_norm": 1.9398250579833984,
+          "gcn_parameter_delta_norm": 30.031314849853516,
+          "edge_network_parameter_delta_norm": 0.23899410665035248,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8958811710677382,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03559127439724455,
+          "wrong_sender_indegree_total_variation": 0.27540183696900117,
+          "wrong_sender_indegree_max_abs_delta": 90
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 12460,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.12775124609470367,
+          "different_weight_mean": 0.05633522942662239,
+          "prior_to_reweighted_distribution_mean_l1": 0.06750603020191193,
+          "mean_effective_same_neighbours": 14.489791870117188,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 963.7727661132812,
+          "different_message_norm": 10.649227142333984,
+          "same_message_over_input": 4.078405857086182,
+          "different_message_over_input": 0.045064426958560944,
+          "message_norm_over_raw_input": 4.090792655944824,
+          "fusion_gate_mean": 5.906153455725871e-05,
+          "fusion_gate_std": 9.831465285969898e-05,
+          "graphlearn_parameter_delta_norm": 9.293510437011719,
+          "gcn_parameter_delta_norm": 30.64455795288086,
+          "edge_network_parameter_delta_norm": 0.48091986775398254,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8959529276693455,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.021814006888633754,
+          "wrong_sender_indegree_total_variation": 0.5972301951779564,
+          "wrong_sender_indegree_max_abs_delta": 227
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.06099079176783562,
+        "train_graph": -1.9309661388397217,
+        "relation_loss": 0.05625109747052193,
+        "adversarial_loss": 0.13397347927093506,
+        "consistency_loss": 0.10032154619693756,
+        "edge_stability_loss": 0.00761957373470068,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            0.01030176505446434,
+            2.677545296592143e-07,
+            3.3352850437040615e-07,
+            5.768318942500628e-07,
+            0.06058952212333679,
+            5.802531859444571e-07,
+            3.036738007722306e-07,
+            1.5090619172042352e-06
+          ],
+          "relation": 0.0379648357629776,
+          "adversary": 0.0012032194063067436,
+          "difference": 0.05536023527383804,
+          "graphlearn": 0.3296453654766083,
+          "gcn": [
+            0.500720202922821,
+            1.080775837181136e-05,
+            5.612294899037806e-06,
+            2.0239403966115788e-05
+          ]
+        },
+        "message_norms": [
+          1178.044921875,
+          578.2117919921875,
+          724.8609619140625,
+          966.699951171875
+        ],
+        "same_message_norms": [
+          1176.100341796875,
+          578.1602172851562,
+          724.8693237304688,
+          963.7727661132812
+        ],
+        "difference_message_norms": [
+          59.162017822265625,
+          6.164710521697998,
+          6.010595798492432,
+          10.649227142333984
+        ],
+        "message_input_ratio": [
+          4.985143184661865,
+          2.446823835372925,
+          3.0674004554748535,
+          4.090792655944824
+        ],
+        "residual_ratio": 13.797184944152832,
+        "gate_mean": [
+          0.9998638033866882,
+          5.158208659850061e-05,
+          2.5459939934080467e-05,
+          5.906153455725871e-05
+        ],
+        "gate_std": [
+          0.00023084619897417724,
+          8.86713169165887e-05,
+          4.41575248260051e-05,
+          9.831465285969898e-05
+        ],
+        "beta_mean": 1.2497864961624146,
+        "beta_std": 0.00024544447660446167,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.08082420378923416,
+          0.05760624632239342,
+          0.8832542300224304
+        ],
+        "relation_oof_auc_raw": [
+          0.48105743527412415,
+          0.5202060341835022,
+          0.5144015550613403,
+          0.7208135724067688
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.8543837070465088,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 13.797184944152832
+    },
+    {
+      "fold": 2,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.46789268211082174,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                102,
+                145,
+                137
+              ],
+              [
+                135,
+                120,
+                129
+              ],
+              [
+                120,
+                130,
+                134
+              ]
+            ],
+            "mean_probability": [
+              0.31001195311546326,
+              0.3475467562675476,
+              0.34244105219841003
+            ],
+            "probability_entropy": 0.18797658383846283,
+            "shared_representation_variance": 1.9515163898468018,
+            "prototype_distances_AA_TT_AT": [
+              0.9028352499008179,
+              0.22248484194278717,
+              0.801306962966919
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.4545502839265046,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                66,
+                174,
+                144
+              ],
+              [
+                81,
+                143,
+                160
+              ],
+              [
+                80,
+                161,
+                143
+              ]
+            ],
+            "mean_probability": [
+              0.28785863518714905,
+              0.3586612939834595,
+              0.3534800112247467
+            ],
+            "probability_entropy": 0.9645006656646729,
+            "shared_representation_variance": 2.5135855674743652,
+            "prototype_distances_AA_TT_AT": [
+              1.2638906240463257,
+              0.616529643535614,
+              0.7329687476158142
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5251108805338541,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                124,
+                125,
+                135
+              ],
+              [
+                101,
+                141,
+                142
+              ],
+              [
+                110,
+                129,
+                145
+              ]
+            ],
+            "mean_probability": [
+              0.2891296148300171,
+              0.34963560104370117,
+              0.36123454570770264
+            ],
+            "probability_entropy": 0.2206643521785736,
+            "shared_representation_variance": 1.1090612411499023,
+            "prototype_distances_AA_TT_AT": [
+              0.4360114336013794,
+              0.21641921997070312,
+              0.3561701476573944
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7110188802083334,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                186,
+                60,
+                138
+              ],
+              [
+                26,
+                243,
+                115
+              ],
+              [
+                77,
+                122,
+                185
+              ]
+            ],
+            "mean_probability": [
+              0.2551840841770172,
+              0.36870014667510986,
+              0.37611550092697144
+            ],
+            "probability_entropy": 0.24773843586444855,
+            "shared_representation_variance": 1.986388087272644,
+            "prototype_distances_AA_TT_AT": [
+              5.311643600463867,
+              2.6579930782318115,
+              3.119614839553833
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5109318494796753,
+          0.5234337449073792,
+          0.5133388638496399,
+          0.7414018511772156
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.09373508393764496,
+          0.053355395793914795,
+          0.9656074643135071
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.988525390625,
+          "macro_auc_ovr": 0.9998544851938884
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.99951171875,
+          "macro_auc_ovr": 0.9999998410542806
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.400634765625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.5799007018407185,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.717658261458079,
+        "teacher_condition_change_fraction": 1.0,
+        "adversary_gradient_norm": 0.0014512347988784313,
+        "relation_encoder_gradient_norm": 0.016267087310552597,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.06608568131923676,
+          "different_weight_mean": 0.0544164665043354,
+          "prior_to_reweighted_distribution_mean_l1": 0.017340565100312233,
+          "mean_effective_same_neighbours": 12.121037483215332,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 2,
+          "same_message_norm": 484.73541259765625,
+          "different_message_norm": 5.8732686042785645,
+          "same_message_over_input": 2.0512590408325195,
+          "different_message_over_input": 0.024853961542248726,
+          "message_norm_over_raw_input": 2.0513405799865723,
+          "fusion_gate_mean": 1.8492406184122956e-07,
+          "fusion_gate_std": 7.244345283652365e-07,
+          "graphlearn_parameter_delta_norm": 4.0620222091674805,
+          "gcn_parameter_delta_norm": 31.901226043701172,
+          "edge_network_parameter_delta_norm": 0.3773001730442047,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8984644087256027,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03673938002296211,
+          "wrong_sender_indegree_total_variation": 0.2663605051664753,
+          "wrong_sender_indegree_max_abs_delta": 66
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 83000,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 2.8607158863991344e-09,
+          "different_weight_mean": 0.031322550028562546,
+          "prior_to_reweighted_distribution_mean_l1": 0.07275637984275818,
+          "mean_effective_same_neighbours": 1.0021189451217651,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 970.13623046875,
+          "different_message_norm": 42.8861198425293,
+          "same_message_over_input": 4.1053338050842285,
+          "different_message_over_input": 0.18148157000541687,
+          "message_norm_over_raw_input": 4.116987228393555,
+          "fusion_gate_mean": 0.9999997019767761,
+          "fusion_gate_std": 1.1726526736310916e-06,
+          "graphlearn_parameter_delta_norm": 1.3826982975006104,
+          "gcn_parameter_delta_norm": 31.33144187927246,
+          "edge_network_parameter_delta_norm": 2.4767374992370605,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.898320895522388,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03673938002296211,
+          "wrong_sender_indegree_total_variation": 0.24964121699196326,
+          "wrong_sender_indegree_max_abs_delta": 84
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 21660,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.04870538413524628,
+          "different_weight_mean": 0.11256705224514008,
+          "prior_to_reweighted_distribution_mean_l1": 0.02684446983039379,
+          "mean_effective_same_neighbours": 14.181001663208008,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 571.0599975585938,
+          "different_message_norm": 5.8953351974487305,
+          "same_message_over_input": 2.4165596961975098,
+          "different_message_over_input": 0.02494734153151512,
+          "message_norm_over_raw_input": 2.4165642261505127,
+          "fusion_gate_mean": 1.0640871295208854e-07,
+          "fusion_gate_std": 4.2597514493536437e-07,
+          "graphlearn_parameter_delta_norm": 1.824013590812683,
+          "gcn_parameter_delta_norm": 31.361650466918945,
+          "edge_network_parameter_delta_norm": 0.45625194907188416,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8984644087256027,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03788748564867968,
+          "wrong_sender_indegree_total_variation": 0.27123995407577495,
+          "wrong_sender_indegree_max_abs_delta": 57
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 16152,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.1469210982322693,
+          "different_weight_mean": 0.07484462857246399,
+          "prior_to_reweighted_distribution_mean_l1": 0.07111527025699615,
+          "mean_effective_same_neighbours": 13.911853790283203,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1172.1693115234375,
+          "different_message_norm": 9.374311447143555,
+          "same_message_over_input": 4.9602789878845215,
+          "different_message_over_input": 0.03966935724020004,
+          "message_norm_over_raw_input": 4.968750476837158,
+          "fusion_gate_mean": 4.218366544961327e-09,
+          "fusion_gate_std": 2.1219225487811855e-08,
+          "graphlearn_parameter_delta_norm": 9.28468132019043,
+          "gcn_parameter_delta_norm": 30.742918014526367,
+          "edge_network_parameter_delta_norm": 0.433837354183197,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8984644087256027,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.008036739380022962,
+          "wrong_sender_indegree_total_variation": 0.5954362801377727,
+          "wrong_sender_indegree_max_abs_delta": 236
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.11174888163805008,
+        "train_graph": -1.8722177743911743,
+        "relation_loss": 0.08792801946401596,
+        "adversarial_loss": 0.6050295829772949,
+        "consistency_loss": 0.14639218151569366,
+        "edge_stability_loss": 0.0001589986786711961,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            1.1496130980503949e-07,
+            0.016263151541352272,
+            1.5895957972134056e-07,
+            7.670612234278451e-08,
+            8.858420841306724e-08,
+            0.023104799911379814,
+            7.303063398467202e-08,
+            2.784310879633267e-07
+          ],
+          "relation": 0.016267087310552597,
+          "adversary": 0.0014512347988784313,
+          "difference": 0.059385232627391815,
+          "graphlearn": 0.1359342336654663,
+          "gcn": [
+            1.0049557204183657e-06,
+            0.3243810534477234,
+            1.040166239363316e-06,
+            1.988355506910011e-06
+          ]
+        },
+        "message_norms": [
+          484.7546691894531,
+          972.8900146484375,
+          571.0610961914062,
+          1174.171142578125
+        ],
+        "same_message_norms": [
+          484.73541259765625,
+          970.13623046875,
+          571.0599975585938,
+          1172.1693115234375
+        ],
+        "difference_message_norms": [
+          5.8732686042785645,
+          42.88612365722656,
+          5.8953351974487305,
+          9.374311447143555
+        ],
+        "message_input_ratio": [
+          2.0513405799865723,
+          4.116987228393555,
+          2.4165642261505127,
+          4.968750476837158
+        ],
+        "residual_ratio": 11.279783248901367,
+        "gate_mean": [
+          1.8492406184122956e-07,
+          0.9999997019767761,
+          1.0640871295208854e-07,
+          4.218366544961327e-09
+        ],
+        "gate_std": [
+          7.244345852086553e-07,
+          1.1717759207385825e-06,
+          4.2597511651365494e-07,
+          2.1219227264168694e-08
+        ],
+        "beta_mean": 1.2496837377548218,
+        "beta_std": 0.00040769134648144245,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.09373508393764496,
+          0.053355395793914795,
+          0.9656074643135071
+        ],
+        "relation_oof_auc_raw": [
+          0.5109318494796753,
+          0.5234337449073792,
+          0.5133388638496399,
+          0.7414018511772156
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.4322916567325592,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 11.279783248901367
+    },
+    {
+      "fold": 3,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.47175372088396994,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                114,
+                156,
+                114
+              ],
+              [
+                126,
+                137,
+                121
+              ],
+              [
+                119,
+                161,
+                104
+              ]
+            ],
+            "mean_probability": [
+              0.3218722343444824,
+              0.3881477117538452,
+              0.28997933864593506
+            ],
+            "probability_entropy": 0.17934522032737732,
+            "shared_representation_variance": 1.5322856903076172,
+            "prototype_distances_AA_TT_AT": [
+              0.7944867610931396,
+              0.29113760590553284,
+              0.5438930988311768
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.47583572952835645,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                114,
+                174,
+                96
+              ],
+              [
+                148,
+                124,
+                112
+              ],
+              [
+                135,
+                131,
+                118
+              ]
+            ],
+            "mean_probability": [
+              0.3289335370063782,
+              0.3538667559623718,
+              0.3171992301940918
+            ],
+            "probability_entropy": 0.9347178339958191,
+            "shared_representation_variance": 0.8668597340583801,
+            "prototype_distances_AA_TT_AT": [
+              0.49194976687431335,
+              0.18746033310890198,
+              0.3889671266078949
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.49733931929976855,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                119,
+                131,
+                134
+              ],
+              [
+                112,
+                130,
+                142
+              ],
+              [
+                114,
+                129,
+                141
+              ]
+            ],
+            "mean_probability": [
+              0.29644280672073364,
+              0.3401603400707245,
+              0.36339667439460754
+            ],
+            "probability_entropy": 0.19916824996471405,
+            "shared_representation_variance": 1.4609558582305908,
+            "prototype_distances_AA_TT_AT": [
+              0.48696815967559814,
+              0.2696141004562378,
+              0.3239205777645111
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.6836847375940392,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                165,
+                44,
+                175
+              ],
+              [
+                47,
+                187,
+                150
+              ],
+              [
+                85,
+                100,
+                199
+              ]
+            ],
+            "mean_probability": [
+              0.2631114423274994,
+              0.28927910327911377,
+              0.447609007358551
+            ],
+            "probability_entropy": 0.2166527807712555,
+            "shared_representation_variance": 1.846123218536377,
+            "prototype_distances_AA_TT_AT": [
+              5.163867473602295,
+              2.4200549125671387,
+              2.924086809158325
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4868822395801544,
+          0.5300524234771729,
+          0.5287039279937744,
+          0.7481557130813599
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.12020978331565857,
+          0.11481571197509766,
+          0.9926229119300842
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.98974609375,
+          "macro_auc_ovr": 0.9996979236602783
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 1.0,
+          "macro_auc_ovr": 1.0
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.6884765625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.8524995644887288,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.601159413655599,
+        "teacher_condition_change_fraction": 0.9885057471264368,
+        "adversary_gradient_norm": 0.0010412356350570917,
+        "relation_encoder_gradient_norm": 0.05124077945947647,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.03700787201523781,
+          "different_weight_mean": 0.07544148713350296,
+          "prior_to_reweighted_distribution_mean_l1": 0.010621541179716587,
+          "mean_effective_same_neighbours": 12.57534408569336,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 2,
+          "same_message_norm": 798.3231201171875,
+          "different_message_norm": 6.582564353942871,
+          "same_message_over_input": 3.3782708644866943,
+          "different_message_over_input": 0.027855494990944862,
+          "message_norm_over_raw_input": 3.378366231918335,
+          "fusion_gate_mean": 8.4001621871721e-06,
+          "fusion_gate_std": 1.8724056644714437e-05,
+          "graphlearn_parameter_delta_norm": 4.020862579345703,
+          "gcn_parameter_delta_norm": 29.931039810180664,
+          "edge_network_parameter_delta_norm": 0.6768671274185181,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8815298507462687,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03329506314580941,
+          "wrong_sender_indegree_total_variation": 0.2782721010332951,
+          "wrong_sender_indegree_max_abs_delta": 57
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 99400,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.042141616344451904,
+          "different_weight_mean": 0.09154021739959717,
+          "prior_to_reweighted_distribution_mean_l1": 0.14881868660449982,
+          "mean_effective_same_neighbours": 8.09879207611084,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 855.6773681640625,
+          "different_message_norm": 36.7087516784668,
+          "same_message_over_input": 3.6209774017333984,
+          "different_message_over_input": 0.1553407460451126,
+          "message_norm_over_raw_input": 3.6263809204101562,
+          "fusion_gate_mean": 0.9999792575836182,
+          "fusion_gate_std": 4.537252607406117e-05,
+          "graphlearn_parameter_delta_norm": 1.4092448949813843,
+          "gcn_parameter_delta_norm": 28.69481086730957,
+          "edge_network_parameter_delta_norm": 2.5457046031951904,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8815298507462687,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03559127439724455,
+          "wrong_sender_indegree_total_variation": 0.23887772675086108,
+          "wrong_sender_indegree_max_abs_delta": 80
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 21102,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.10441667586565018,
+          "different_weight_mean": 0.08049776405096054,
+          "prior_to_reweighted_distribution_mean_l1": 0.017942311242222786,
+          "mean_effective_same_neighbours": 14.102619171142578,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 734.4192504882812,
+          "different_message_norm": 6.314929008483887,
+          "same_message_over_input": 3.1078484058380127,
+          "different_message_over_input": 0.026722939684987068,
+          "message_norm_over_raw_input": 3.108222246170044,
+          "fusion_gate_mean": 1.2210855857119896e-05,
+          "fusion_gate_std": 2.6091838662978262e-05,
+          "graphlearn_parameter_delta_norm": 2.01027774810791,
+          "gcn_parameter_delta_norm": 29.678054809570312,
+          "edge_network_parameter_delta_norm": 0.364717036485672,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.881601607347876,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03559127439724455,
+          "wrong_sender_indegree_total_variation": 0.2865958668197474,
+          "wrong_sender_indegree_max_abs_delta": 69
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 13770,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.147657111287117,
+          "different_weight_mean": 0.0880422294139862,
+          "prior_to_reweighted_distribution_mean_l1": 0.06348030269145966,
+          "mean_effective_same_neighbours": 13.51509952545166,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1624.0386962890625,
+          "different_message_norm": 11.538723945617676,
+          "same_message_over_input": 6.8724589347839355,
+          "different_message_over_input": 0.04882851988077164,
+          "message_norm_over_raw_input": 6.885743141174316,
+          "fusion_gate_mean": 1.9937768058753136e-07,
+          "fusion_gate_std": 5.877636795048602e-07,
+          "graphlearn_parameter_delta_norm": 9.288297653198242,
+          "gcn_parameter_delta_norm": 27.562082290649414,
+          "edge_network_parameter_delta_norm": 0.6313818097114563,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8814580941446614,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.01951779563719862,
+          "wrong_sender_indegree_total_variation": 0.611796785304248,
+          "wrong_sender_indegree_max_abs_delta": 248
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.054816000163555145,
+        "train_graph": -2.0124576091766357,
+        "relation_loss": 0.10044694691896439,
+        "adversarial_loss": 0.2041770964860916,
+        "consistency_loss": 0.1543959677219391,
+        "edge_stability_loss": 0.0005187529604882002,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            4.644563432520954e-06,
+            0.10494775325059891,
+            6.595281547561171e-07,
+            9.810160008782987e-06,
+            5.052898814028595e-06,
+            0.0576823465526104,
+            4.377136065158993e-06,
+            5.466353741212515e-06
+          ],
+          "relation": 0.05124077945947647,
+          "adversary": 0.0010412356350570917,
+          "difference": 0.008652457036077976,
+          "graphlearn": 0.16514649987220764,
+          "gcn": [
+            3.5894697703042766e-06,
+            0.04514926299452782,
+            2.90706134364882e-06,
+            5.613203029497527e-06
+          ]
+        },
+        "message_norms": [
+          798.3456420898438,
+          856.9542846679688,
+          734.507568359375,
+          1627.177978515625
+        ],
+        "same_message_norms": [
+          798.3231201171875,
+          855.6773681640625,
+          734.4192504882812,
+          1624.0386962890625
+        ],
+        "difference_message_norms": [
+          6.582564353942871,
+          36.7087516784668,
+          6.314929008483887,
+          11.538723945617676
+        ],
+        "message_input_ratio": [
+          3.378366231918335,
+          3.6263809204101562,
+          3.108222246170044,
+          6.885743141174316
+        ],
+        "residual_ratio": 9.985190391540527,
+        "gate_mean": [
+          8.400161277677398e-06,
+          0.9999792575836182,
+          1.2210855857119896e-05,
+          1.9937768058753136e-07
+        ],
+        "gate_std": [
+          1.8724056644714437e-05,
+          4.5370041334535927e-05,
+          2.6091836843988858e-05,
+          5.877636226614413e-07
+        ],
+        "beta_mean": 1.2497806549072266,
+        "beta_std": 0.00027003593277186155,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.12020978331565857,
+          0.11481571197509766,
+          0.9926229119300842
+        ],
+        "relation_oof_auc_raw": [
+          0.4868822395801544,
+          0.5300524234771729,
+          0.5287039279937744,
+          0.7481557130813599
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.8025173544883728,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 9.985190391540527
+    },
+    {
+      "fold": 4,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5412269874855324,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                170,
+                70,
+                144
+              ],
+              [
+                139,
+                130,
+                115
+              ],
+              [
+                158,
+                96,
+                130
+              ]
+            ],
+            "mean_probability": [
+              0.40335527062416077,
+              0.2634791135787964,
+              0.33316507935523987
+            ],
+            "probability_entropy": 0.14554265141487122,
+            "shared_representation_variance": 2.1134915351867676,
+            "prototype_distances_AA_TT_AT": [
+              1.5412687063217163,
+              0.7255131602287292,
+              0.8303636312484741
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.48808006004050924,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                130,
+                66,
+                188
+              ],
+              [
+                100,
+                53,
+                231
+              ],
+              [
+                127,
+                70,
+                187
+              ]
+            ],
+            "mean_probability": [
+              0.3273760676383972,
+              0.25780218839645386,
+              0.4148218333721161
+            ],
+            "probability_entropy": 0.9668667316436768,
+            "shared_representation_variance": 1.2852702140808105,
+            "prototype_distances_AA_TT_AT": [
+              0.8896540403366089,
+              0.6383971571922302,
+              0.2791443467140198
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5410738344545717,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                138,
+                108,
+                138
+              ],
+              [
+                115,
+                151,
+                118
+              ],
+              [
+                112,
+                139,
+                133
+              ]
+            ],
+            "mean_probability": [
+              0.31908679008483887,
+              0.3441922664642334,
+              0.33672040700912476
+            ],
+            "probability_entropy": 0.21201811730861664,
+            "shared_representation_variance": 1.4646575450897217,
+            "prototype_distances_AA_TT_AT": [
+              1.4028247594833374,
+              1.0063749551773071,
+              0.4665871858596802
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7606913248697916,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                221,
+                28,
+                135
+              ],
+              [
+                18,
+                233,
+                133
+              ],
+              [
+                95,
+                88,
+                201
+              ]
+            ],
+            "mean_probability": [
+              0.28918156027793884,
+              0.30213701725006104,
+              0.40868085622787476
+            ],
+            "probability_entropy": 0.20554909110069275,
+            "shared_representation_variance": 2.110844373703003,
+            "prototype_distances_AA_TT_AT": [
+              7.702038288116455,
+              3.7345283031463623,
+              4.188723087310791
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4960395097732544,
+          0.5122828483581543,
+          0.5331822633743286,
+          0.7114842534065247
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.05000000074505806,
+          0.1327289491891861,
+          0.8459369540214539
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.99365234375,
+          "macro_auc_ovr": 0.9999204476674399
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.99365234375,
+          "macro_auc_ovr": 0.9998551209767659
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.60498046875,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.828972578048706,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.6747545202573141,
+        "teacher_condition_change_fraction": 0.9885057471264368,
+        "adversary_gradient_norm": 0.0008284167270176113,
+        "relation_encoder_gradient_norm": 0.053725436329841614,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.06712228804826736,
+          "different_weight_mean": 0.051044996827840805,
+          "prior_to_reweighted_distribution_mean_l1": 0.015347222797572613,
+          "mean_effective_same_neighbours": 11.840176582336426,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 1333.7147216796875,
+          "different_message_norm": 6.505044460296631,
+          "same_message_over_input": 5.643892288208008,
+          "different_message_over_input": 0.027527453377842903,
+          "message_norm_over_raw_input": 5.643945217132568,
+          "fusion_gate_mean": 1.6797539501567371e-06,
+          "fusion_gate_std": 3.9234510040842e-06,
+          "graphlearn_parameter_delta_norm": 4.121392726898193,
+          "gcn_parameter_delta_norm": 26.99942970275879,
+          "edge_network_parameter_delta_norm": 0.3506321609020233,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8818886337543054,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.04707233065442021,
+          "wrong_sender_indegree_total_variation": 0.2574626865671642,
+          "wrong_sender_indegree_max_abs_delta": 46
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 67622,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0006254974287003279,
+          "different_weight_mean": 0.03722408786416054,
+          "prior_to_reweighted_distribution_mean_l1": 0.2793519198894501,
+          "mean_effective_same_neighbours": 8.301032066345215,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1165.718994140625,
+          "different_message_norm": 54.9554328918457,
+          "same_message_over_input": 4.9329833984375,
+          "different_message_over_input": 0.23255538940429688,
+          "message_norm_over_raw_input": 4.940549373626709,
+          "fusion_gate_mean": 0.9999974370002747,
+          "fusion_gate_std": 6.201709311426384e-06,
+          "graphlearn_parameter_delta_norm": 1.640219807624817,
+          "gcn_parameter_delta_norm": 28.950746536254883,
+          "edge_network_parameter_delta_norm": 2.586956739425659,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8819603903559128,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.04362801377726751,
+          "wrong_sender_indegree_total_variation": 0.21046211251435132,
+          "wrong_sender_indegree_max_abs_delta": 55
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 27714,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.13215620815753937,
+          "different_weight_mean": 0.11561769992113113,
+          "prior_to_reweighted_distribution_mean_l1": 0.020477401092648506,
+          "mean_effective_same_neighbours": 14.708372116088867,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 915.9929809570312,
+          "different_message_norm": 5.820821285247803,
+          "same_message_over_input": 3.8762154579162598,
+          "different_message_over_input": 0.02463201992213726,
+          "message_norm_over_raw_input": 3.8766300678253174,
+          "fusion_gate_mean": 2.844783750788338e-07,
+          "fusion_gate_std": 8.028789579839213e-07,
+          "graphlearn_parameter_delta_norm": 2.0286080837249756,
+          "gcn_parameter_delta_norm": 28.18087387084961,
+          "edge_network_parameter_delta_norm": 0.41073527932167053,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8820321469575201,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.05166475315729047,
+          "wrong_sender_indegree_total_variation": 0.23213260619977039,
+          "wrong_sender_indegree_max_abs_delta": 54
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 15292,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.08196115493774414,
+          "different_weight_mean": 0.056592464447021484,
+          "prior_to_reweighted_distribution_mean_l1": 0.09150943160057068,
+          "mean_effective_same_neighbours": 13.898061752319336,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1517.7042236328125,
+          "different_message_norm": 9.719812393188477,
+          "same_message_over_input": 6.422482490539551,
+          "different_message_over_input": 0.04113141447305679,
+          "message_norm_over_raw_input": 6.429649829864502,
+          "fusion_gate_mean": 5.566567438108905e-07,
+          "fusion_gate_std": 1.4856500456517097e-06,
+          "graphlearn_parameter_delta_norm": 9.305598258972168,
+          "gcn_parameter_delta_norm": 28.566843032836914,
+          "edge_network_parameter_delta_norm": 0.658875048160553,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8818886337543054,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.01722158438576349,
+          "wrong_sender_indegree_total_variation": 0.5983783008036739,
+          "wrong_sender_indegree_max_abs_delta": 289
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.749156653881073,
+        "train_graph": -1.8964152336120605,
+        "relation_loss": 0.05632685124874115,
+        "adversarial_loss": 0.3067833185195923,
+        "consistency_loss": 0.1018071398139,
+        "edge_stability_loss": 0.0014880116796121001,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            4.2351820184194366e-07,
+            0.020940197631716728,
+            1.2357638752291678e-06,
+            1.4184092833602335e-06,
+            7.427896662193234e-07,
+            0.0333917960524559,
+            5.262626245894353e-07,
+            5.951077923782577e-07
+          ],
+          "relation": 0.053725436329841614,
+          "adversary": 0.0008284167270176113,
+          "difference": 0.021626006811857224,
+          "graphlearn": 0.27150627970695496,
+          "gcn": [
+            4.714111491921358e-05,
+            0.5130951404571533,
+            3.515830394462682e-05,
+            5.16723157488741e-05
+          ]
+        },
+        "message_norms": [
+          1333.7271728515625,
+          1167.5069580078125,
+          916.0909423828125,
+          1519.39794921875
+        ],
+        "same_message_norms": [
+          1333.7147216796875,
+          1165.718994140625,
+          915.9929809570312,
+          1517.7042236328125
+        ],
+        "difference_message_norms": [
+          6.505044460296631,
+          54.9554328918457,
+          5.820821285247803,
+          9.719812393188477
+        ],
+        "message_input_ratio": [
+          5.643945217132568,
+          4.940549373626709,
+          3.8766300678253174,
+          6.429649829864502
+        ],
+        "residual_ratio": 13.520216941833496,
+        "gate_mean": [
+          1.6797540638435748e-06,
+          0.9999974370002747,
+          2.844783750788338e-07,
+          5.566568006543093e-07
+        ],
+        "gate_std": [
+          3.9234510040842e-06,
+          6.201771157066105e-06,
+          8.028789579839213e-07,
+          1.4856501593385474e-06
+        ],
+        "beta_mean": 1.2427312135696411,
+        "beta_std": 0.003298107534646988,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.05000000074505806,
+          0.1327289491891861,
+          0.8459369540214539
+        ],
+        "relation_oof_auc_raw": [
+          0.4960395097732544,
+          0.5122828483581543,
+          0.5331822633743286,
+          0.7114842534065247
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.739366352558136,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 13.520216941833496
+    },
+    {
+      "fold": 5,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.4401041666666667,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                92,
+                136,
+                156
+              ],
+              [
+                145,
+                101,
+                138
+              ],
+              [
+                137,
+                128,
+                119
+              ]
+            ],
+            "mean_probability": [
+              0.3186219334602356,
+              0.3191436529159546,
+              0.36223429441452026
+            ],
+            "probability_entropy": 0.1767578125,
+            "shared_representation_variance": 1.7514957189559937,
+            "prototype_distances_AA_TT_AT": [
+              1.2799276113510132,
+              0.8804511427879333,
+              0.5941439867019653
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5151451958550347,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                139,
+                118,
+                127
+              ],
+              [
+                118,
+                146,
+                120
+              ],
+              [
+                126,
+                137,
+                121
+              ]
+            ],
+            "mean_probability": [
+              0.330483078956604,
+              0.34635505080223083,
+              0.3231618404388428
+            ],
+            "probability_entropy": 0.2647923231124878,
+            "shared_representation_variance": 2.5420804023742676,
+            "prototype_distances_AA_TT_AT": [
+              0.8335434794425964,
+              0.5775984525680542,
+              0.4397217929363251
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.4722911693431713,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                60,
+                176,
+                148
+              ],
+              [
+                76,
+                164,
+                144
+              ],
+              [
+                65,
+                182,
+                137
+              ]
+            ],
+            "mean_probability": [
+              0.28699517250061035,
+              0.36466047167778015,
+              0.3483443856239319
+            ],
+            "probability_entropy": 1.0043680667877197,
+            "shared_representation_variance": 1.1627986431121826,
+            "prototype_distances_AA_TT_AT": [
+              0.23674258589744568,
+              0.4143272042274475,
+              0.3998676538467407
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7213230839482061,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                223,
+                32,
+                129
+              ],
+              [
+                35,
+                231,
+                118
+              ],
+              [
+                128,
+                92,
+                164
+              ]
+            ],
+            "mean_probability": [
+              0.3292960226535797,
+              0.3083207607269287,
+              0.3623831570148468
+            ],
+            "probability_entropy": 0.2209281176328659,
+            "shared_representation_variance": 1.8991694450378418,
+            "prototype_distances_AA_TT_AT": [
+              6.77543830871582,
+              2.641408681869507,
+              4.222105979919434
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4930155575275421,
+          0.5297584533691406,
+          0.5259926319122314,
+          0.7190757989883423
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.11903373897075653,
+          0.10397063195705414,
+          0.8763032555580139
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9970703125,
+          "macro_auc_ovr": 0.9999949137369792
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.994140625,
+          "macro_auc_ovr": 0.9998839696248373
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.6806640625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.8835105498631795,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.721210261185964,
+        "teacher_condition_change_fraction": 0.9885057471264368,
+        "adversary_gradient_norm": 0.00128986407071352,
+        "relation_encoder_gradient_norm": 0.1937081664800644,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0611325241625309,
+          "different_weight_mean": 0.051957324147224426,
+          "prior_to_reweighted_distribution_mean_l1": 0.03902405872941017,
+          "mean_effective_same_neighbours": 12.307653427124023,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 2,
+          "same_message_norm": 1141.3809814453125,
+          "different_message_norm": 6.174427509307861,
+          "same_message_over_input": 4.829991817474365,
+          "different_message_over_input": 0.026128379628062248,
+          "message_norm_over_raw_input": 4.830000400543213,
+          "fusion_gate_mean": 0.0002795678738038987,
+          "fusion_gate_std": 0.00036022564745508134,
+          "graphlearn_parameter_delta_norm": 4.046874523162842,
+          "gcn_parameter_delta_norm": 27.501514434814453,
+          "edge_network_parameter_delta_norm": 0.5271972417831421,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8806687715269805,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03903559127439724,
+          "wrong_sender_indegree_total_variation": 0.24634041331802525,
+          "wrong_sender_indegree_max_abs_delta": 41
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 61574,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.11302075535058975,
+          "different_weight_mean": 0.10069132596254349,
+          "prior_to_reweighted_distribution_mean_l1": 0.017179379239678383,
+          "mean_effective_same_neighbours": 15.637558937072754,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 857.6807861328125,
+          "different_message_norm": 5.8667802810668945,
+          "same_message_over_input": 3.629455327987671,
+          "different_message_over_input": 0.02482650615274906,
+          "message_norm_over_raw_input": 3.629664897918701,
+          "fusion_gate_mean": 0.0003236850316170603,
+          "fusion_gate_std": 0.00044372931006364524,
+          "graphlearn_parameter_delta_norm": 1.5632561445236206,
+          "gcn_parameter_delta_norm": 28.983238220214844,
+          "edge_network_parameter_delta_norm": 0.43537017703056335,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8805970149253731,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03559127439724455,
+          "wrong_sender_indegree_total_variation": 0.23213260619977039,
+          "wrong_sender_indegree_max_abs_delta": 60
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 35110,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0297048632055521,
+          "different_weight_mean": 0.09401288628578186,
+          "prior_to_reweighted_distribution_mean_l1": 0.19364969432353973,
+          "mean_effective_same_neighbours": 3.829866647720337,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1591.2984619140625,
+          "different_message_norm": 68.95793151855469,
+          "same_message_over_input": 6.733911514282227,
+          "different_message_over_input": 0.29180988669395447,
+          "message_norm_over_raw_input": 6.74802827835083,
+          "fusion_gate_mean": 0.9993728995323181,
+          "fusion_gate_std": 0.0008480165852233768,
+          "graphlearn_parameter_delta_norm": 1.958282709121704,
+          "gcn_parameter_delta_norm": 29.251815795898438,
+          "edge_network_parameter_delta_norm": 2.8694183826446533,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8806687715269805,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.040183696900114814,
+          "wrong_sender_indegree_total_variation": 0.25997416762342135,
+          "wrong_sender_indegree_max_abs_delta": 53
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 16334,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.14748287200927734,
+          "different_weight_mean": 0.0791604295372963,
+          "prior_to_reweighted_distribution_mean_l1": 0.08911843597888947,
+          "mean_effective_same_neighbours": 14.293732643127441,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1464.2335205078125,
+          "different_message_norm": 9.219488143920898,
+          "same_message_over_input": 6.196209907531738,
+          "different_message_over_input": 0.039014190435409546,
+          "message_norm_over_raw_input": 6.204888820648193,
+          "fusion_gate_mean": 2.3840824724175036e-05,
+          "fusion_gate_std": 4.734590766020119e-05,
+          "graphlearn_parameter_delta_norm": 9.283332824707031,
+          "gcn_parameter_delta_norm": 28.753355026245117,
+          "edge_network_parameter_delta_norm": 0.8939399123191833,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8806687715269805,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.013777267508610792,
+          "wrong_sender_indegree_total_variation": 0.600459242250287,
+          "wrong_sender_indegree_max_abs_delta": 236
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.12329736351966858,
+        "train_graph": -1.9559167623519897,
+        "relation_loss": 0.10254288464784622,
+        "adversarial_loss": 0.25207236409187317,
+        "consistency_loss": 0.158488929271698,
+        "edge_stability_loss": 0.001081980881281197,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            3.783112276778411e-07,
+            1.4888014732150623e-07,
+            0.014497768133878708,
+            3.952100996684749e-06,
+            8.566532301301777e-07,
+            5.950743116045487e-07,
+            0.012291841208934784,
+            5.683958193003491e-07
+          ],
+          "relation": 0.1937081664800644,
+          "adversary": 0.00128986407071352,
+          "difference": 0.038592588156461716,
+          "graphlearn": 0.3733469843864441,
+          "gcn": [
+            5.3635983931599185e-05,
+            6.473743997048587e-05,
+            0.19237558543682098,
+            4.428538159118034e-05
+          ]
+        },
+        "message_norms": [
+          1141.3829345703125,
+          857.7302856445312,
+          1594.6343994140625,
+          1466.284423828125
+        ],
+        "same_message_norms": [
+          1141.3809814453125,
+          857.6807861328125,
+          1591.2984619140625,
+          1464.2335205078125
+        ],
+        "difference_message_norms": [
+          6.174427509307861,
+          5.8667802810668945,
+          68.95793151855469,
+          9.219488143920898
+        ],
+        "message_input_ratio": [
+          4.830000400543213,
+          3.629664897918701,
+          6.74802827835083,
+          6.204888820648193
+        ],
+        "residual_ratio": 17.751949310302734,
+        "gate_mean": [
+          0.0002795678738038987,
+          0.0003236850316170603,
+          0.9993729591369629,
+          2.3840822905185632e-05
+        ],
+        "gate_std": [
+          0.00036022564745508134,
+          0.00044372931006364524,
+          0.0008480158867314458,
+          4.734591129818e-05
+        ],
+        "beta_mean": 1.2497577667236328,
+        "beta_std": 0.00026424051611684263,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.11903373897075653,
+          0.10397063195705414,
+          0.8763032555580139
+        ],
+        "relation_oof_auc_raw": [
+          0.4930155575275421,
+          0.5297584533691406,
+          0.5259926319122314,
+          0.7190757989883423
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.7760416865348816,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 17.751949310302734
+    },
+    {
+      "fold": 6,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5478266963252315,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                191,
+                132,
+                61
+              ],
+              [
+                156,
+                179,
+                49
+              ],
+              [
+                187,
+                147,
+                50
+              ]
+            ],
+            "mean_probability": [
+              0.38864782452583313,
+              0.34821057319641113,
+              0.26314181089401245
+            ],
+            "probability_entropy": 0.9320666193962097,
+            "shared_representation_variance": 1.2969200611114502,
+            "prototype_distances_AA_TT_AT": [
+              0.6188455820083618,
+              0.20988962054252625,
+              0.44022035598754883
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.521810460973669,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                123,
+                117,
+                144
+              ],
+              [
+                109,
+                169,
+                106
+              ],
+              [
+                124,
+                140,
+                120
+              ]
+            ],
+            "mean_probability": [
+              0.30914002656936646,
+              0.3682572841644287,
+              0.3226028382778168
+            ],
+            "probability_entropy": 0.25324514508247375,
+            "shared_representation_variance": 2.7663145065307617,
+            "prototype_distances_AA_TT_AT": [
+              1.4270110130310059,
+              0.9423732161521912,
+              0.7122288346290588
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5279054994936342,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                158,
+                133,
+                93
+              ],
+              [
+                129,
+                136,
+                119
+              ],
+              [
+                145,
+                130,
+                109
+              ]
+            ],
+            "mean_probability": [
+              0.3712659776210785,
+              0.3429124355316162,
+              0.28582093119621277
+            ],
+            "probability_entropy": 0.19928959012031555,
+            "shared_representation_variance": 2.2861104011535645,
+            "prototype_distances_AA_TT_AT": [
+              0.9240100383758545,
+              0.4406970143318176,
+              0.5814440846443176
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.8009236653645834,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                233,
+                11,
+                140
+              ],
+              [
+                2,
+                233,
+                149
+              ],
+              [
+                66,
+                86,
+                232
+              ]
+            ],
+            "mean_probability": [
+              0.26013222336769104,
+              0.2874634861946106,
+              0.4524036645889282
+            ],
+            "probability_entropy": 0.1482393443584442,
+            "shared_representation_variance": 2.9936609268188477,
+            "prototype_distances_AA_TT_AT": [
+              10.470897674560547,
+              5.712821960449219,
+              5.26418924331665
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4653587341308594,
+          0.5149789452552795,
+          0.5115951895713806,
+          0.7294238805770874
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.05991581827402115,
+          0.05000000074505806,
+          0.9176955223083496
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.9833984375,
+          "macro_auc_ovr": 0.9991207122802734
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.9609375,
+          "macro_auc_ovr": 0.9955283006032308
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.88330078125,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.9788839817047119,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.6336454500754675,
+        "teacher_condition_change_fraction": 1.0,
+        "adversary_gradient_norm": 0.00012738152872771025,
+        "relation_encoder_gradient_norm": 0.1890619844198227,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.03579797223210335,
+          "different_weight_mean": 0.04459278658032417,
+          "prior_to_reweighted_distribution_mean_l1": 0.1699937880039215,
+          "mean_effective_same_neighbours": 7.630785942077637,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 1319.6434326171875,
+          "different_message_norm": 58.70806121826172,
+          "same_message_over_input": 5.584346771240234,
+          "different_message_over_input": 0.24843542277812958,
+          "message_norm_over_raw_input": 5.593992233276367,
+          "fusion_gate_mean": 0.9995317459106445,
+          "fusion_gate_std": 0.0007301067234948277,
+          "graphlearn_parameter_delta_norm": 4.05219030380249,
+          "gcn_parameter_delta_norm": 32.09408187866211,
+          "edge_network_parameter_delta_norm": 2.1376969814300537,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8966704936854191,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03903559127439724,
+          "wrong_sender_indegree_total_variation": 0.2610505166475316,
+          "wrong_sender_indegree_max_abs_delta": 39
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 65268,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.1592920869588852,
+          "different_weight_mean": 0.1574430912733078,
+          "prior_to_reweighted_distribution_mean_l1": 0.01943226158618927,
+          "mean_effective_same_neighbours": 15.665192604064941,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 358.19482421875,
+          "different_message_norm": 5.945716857910156,
+          "same_message_over_input": 1.5157761573791504,
+          "different_message_over_input": 0.025160541757941246,
+          "message_norm_over_raw_input": 1.5159698724746704,
+          "fusion_gate_mean": 0.00025482135242782533,
+          "fusion_gate_std": 0.00038351156399585307,
+          "graphlearn_parameter_delta_norm": 1.53166663646698,
+          "gcn_parameter_delta_norm": 32.621639251708984,
+          "edge_network_parameter_delta_norm": 0.3165668249130249,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8965269804822044,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.05281285878300804,
+          "wrong_sender_indegree_total_variation": 0.24612514351320322,
+          "wrong_sender_indegree_max_abs_delta": 86
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 24218,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.10635794699192047,
+          "different_weight_mean": 0.06688960641622543,
+          "prior_to_reweighted_distribution_mean_l1": 0.020158685743808746,
+          "mean_effective_same_neighbours": 14.379979133605957,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 390.3206481933594,
+          "different_message_norm": 5.978422164916992,
+          "same_message_over_input": 1.6517232656478882,
+          "different_message_over_input": 0.025298941880464554,
+          "message_norm_over_raw_input": 1.6517596244812012,
+          "fusion_gate_mean": 2.175936970161274e-05,
+          "fusion_gate_std": 4.4889398850500584e-05,
+          "graphlearn_parameter_delta_norm": 1.9324924945831299,
+          "gcn_parameter_delta_norm": 32.15880584716797,
+          "edge_network_parameter_delta_norm": 0.46582987904548645,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8966704936854191,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.030998851894374284,
+          "wrong_sender_indegree_total_variation": 0.2739667049368542,
+          "wrong_sender_indegree_max_abs_delta": 81
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 12460,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.08624009788036346,
+          "different_weight_mean": 0.07377217710018158,
+          "prior_to_reweighted_distribution_mean_l1": 0.04332597553730011,
+          "mean_effective_same_neighbours": 13.763937950134277,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 560.312744140625,
+          "different_message_norm": 9.359811782836914,
+          "same_message_over_input": 2.3710803985595703,
+          "different_message_over_input": 0.03960799798369408,
+          "message_norm_over_raw_input": 2.378523588180542,
+          "fusion_gate_mean": 0.00019166468700859696,
+          "fusion_gate_std": 0.00030324480030685663,
+          "graphlearn_parameter_delta_norm": 9.334354400634766,
+          "gcn_parameter_delta_norm": 32.17662811279297,
+          "edge_network_parameter_delta_norm": 0.5275833010673523,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8966704936854191,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.014925373134328358,
+          "wrong_sender_indegree_total_variation": 0.5946469575200919,
+          "wrong_sender_indegree_max_abs_delta": 245
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.10507383197546005,
+        "train_graph": -1.8474370241165161,
+        "relation_loss": 0.05015084519982338,
+        "adversarial_loss": 0.03809606283903122,
+        "consistency_loss": 0.09461691975593567,
+        "edge_stability_loss": 0.000720150419510901,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            8.014284685486928e-05,
+            3.77319120161701e-05,
+            0.00016470027912873775,
+            7.101977826096117e-05,
+            0.010098219849169254,
+            0.009810011833906174,
+            0.009398634545505047,
+            0.019111625850200653
+          ],
+          "relation": 0.1890619844198227,
+          "adversary": 0.00012738152872771025,
+          "difference": 0.05103616416454315,
+          "graphlearn": 0.26252034306526184,
+          "gcn": [
+            0.34768956899642944,
+            0.000135099035105668,
+            1.7563052097102627e-05,
+            0.00013922974176239222
+          ]
+        },
+        "message_norms": [
+          1321.9227294921875,
+          358.2406005859375,
+          390.3292236328125,
+          562.0716552734375
+        ],
+        "same_message_norms": [
+          1319.6434326171875,
+          358.19482421875,
+          390.3206481933594,
+          560.312744140625
+        ],
+        "difference_message_norms": [
+          58.70806121826172,
+          5.945716857910156,
+          5.978422164916992,
+          9.359811782836914
+        ],
+        "message_input_ratio": [
+          5.593992233276367,
+          1.5159698724746704,
+          1.6517596244812012,
+          2.378523588180542
+        ],
+        "residual_ratio": 14.779189109802246,
+        "gate_mean": [
+          0.9995317459106445,
+          0.00025482135242782533,
+          2.175936970161274e-05,
+          0.00019166467245668173
+        ],
+        "gate_std": [
+          0.0007301070727407932,
+          0.0003835115930996835,
+          4.4889398850500584e-05,
+          0.00030324480030685663
+        ],
+        "beta_mean": 1.2498786449432373,
+        "beta_std": 0.00016036852321121842,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.05991581827402115,
+          0.05000000074505806,
+          0.9176955223083496
+        ],
+        "relation_oof_auc_raw": [
+          0.4653587341308594,
+          0.5149789452552795,
+          0.5115951895713806,
+          0.7294238805770874
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.9459635615348816,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 14.779189109802246
+    },
+    {
+      "fold": 7,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5292844419126157,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                117,
+                121,
+                146
+              ],
+              [
+                113,
+                165,
+                106
+              ],
+              [
+                117,
+                151,
+                116
+              ]
+            ],
+            "mean_probability": [
+              0.3031303584575653,
+              0.3699604868888855,
+              0.3269088864326477
+            ],
+            "probability_entropy": 0.19635257124900818,
+            "shared_representation_variance": 1.3364115953445435,
+            "prototype_distances_AA_TT_AT": [
+              1.0078541040420532,
+              0.6006472706794739,
+              0.42976558208465576
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5027906629774306,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                124,
+                122,
+                138
+              ],
+              [
+                129,
+                146,
+                109
+              ],
+              [
+                123,
+                146,
+                115
+              ]
+            ],
+            "mean_probability": [
+              0.32686495780944824,
+              0.35520297288894653,
+              0.31793177127838135
+            ],
+            "probability_entropy": 0.3842596113681793,
+            "shared_representation_variance": 1.276158332824707,
+            "prototype_distances_AA_TT_AT": [
+              0.49277955293655396,
+              0.34774914383888245,
+              0.3063076436519623
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5184410942925347,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                125,
+                112,
+                147
+              ],
+              [
+                135,
+                149,
+                100
+              ],
+              [
+                134,
+                111,
+                139
+              ]
+            ],
+            "mean_probability": [
+              0.34552133083343506,
+              0.3258140981197357,
+              0.32866397500038147
+            ],
+            "probability_entropy": 0.21232059597969055,
+            "shared_representation_variance": 1.6566343307495117,
+            "prototype_distances_AA_TT_AT": [
+              0.7703449726104736,
+              0.519886314868927,
+              0.5365985035896301
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.6595425075954862,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                147,
+                49,
+                188
+              ],
+              [
+                43,
+                170,
+                171
+              ],
+              [
+                73,
+                92,
+                219
+              ]
+            ],
+            "mean_probability": [
+              0.2542852461338043,
+              0.295791894197464,
+              0.449923038482666
+            ],
+            "probability_entropy": 0.7750463485717773,
+            "shared_representation_variance": 0.28086763620376587,
+            "prototype_distances_AA_TT_AT": [
+              1.7201368808746338,
+              0.9196830987930298,
+              0.8363180160522461
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.4888790249824524,
+          0.5389179587364197,
+          0.5331068634986877,
+          0.7297368049621582
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.15567174553871155,
+          0.1324273943901062,
+          0.9189472794532776
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.993896484375,
+          "macro_auc_ovr": 0.9999514420827229
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.951416015625,
+          "macro_auc_ovr": 0.9948684374491374
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.59619140625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.8748487631479899,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.7121309836705526,
+        "teacher_condition_change_fraction": 0.9770114942528736,
+        "adversary_gradient_norm": 0.0005271224654279649,
+        "relation_encoder_gradient_norm": 0.10897544771432877,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.06042519211769104,
+          "different_weight_mean": 0.05715163052082062,
+          "prior_to_reweighted_distribution_mean_l1": 0.011938033625483513,
+          "mean_effective_same_neighbours": 12.028521537780762,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 400.5497131347656,
+          "different_message_norm": 5.993690013885498,
+          "same_message_over_input": 1.695009708404541,
+          "different_message_over_input": 0.025363551452755928,
+          "message_norm_over_raw_input": 1.6950957775115967,
+          "fusion_gate_mean": 0.004286875482648611,
+          "fusion_gate_std": 0.0035554254427552223,
+          "graphlearn_parameter_delta_norm": 4.0607404708862305,
+          "gcn_parameter_delta_norm": 31.82955551147461,
+          "edge_network_parameter_delta_norm": 0.3560003638267517,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8793771526980482,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03214695752009185,
+          "wrong_sender_indegree_total_variation": 0.2486366245694604,
+          "wrong_sender_indegree_max_abs_delta": 40
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 83000,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.11529698222875595,
+          "different_weight_mean": 0.1317196786403656,
+          "prior_to_reweighted_distribution_mean_l1": 0.02043093927204609,
+          "mean_effective_same_neighbours": 15.646869659423828,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 506.2394104003906,
+          "different_message_norm": 6.748784065246582,
+          "same_message_over_input": 2.1422576904296875,
+          "different_message_over_input": 0.028558889403939247,
+          "message_norm_over_raw_input": 2.142345666885376,
+          "fusion_gate_mean": 0.0016453734133392572,
+          "fusion_gate_std": 0.0016722746659070253,
+          "graphlearn_parameter_delta_norm": 1.374749779701233,
+          "gcn_parameter_delta_norm": 31.394811630249023,
+          "edge_network_parameter_delta_norm": 0.33211660385131836,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8795206659012629,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03903559127439724,
+          "wrong_sender_indegree_total_variation": 0.22380884041331803,
+          "wrong_sender_indegree_max_abs_delta": 49
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 21660,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.09581403434276581,
+          "different_weight_mean": 0.10799473524093628,
+          "prior_to_reweighted_distribution_mean_l1": 0.01822850853204727,
+          "mean_effective_same_neighbours": 14.353170394897461,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 422.73651123046875,
+          "different_message_norm": 5.64980936050415,
+          "same_message_over_input": 1.7888977527618408,
+          "different_message_over_input": 0.023908348754048347,
+          "message_norm_over_raw_input": 1.7891558408737183,
+          "fusion_gate_mean": 0.004990007728338242,
+          "fusion_gate_std": 0.004184091463685036,
+          "graphlearn_parameter_delta_norm": 1.8245116472244263,
+          "gcn_parameter_delta_norm": 31.682416915893555,
+          "edge_network_parameter_delta_norm": 0.30490803718566895,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8795206659012629,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03444316877152698,
+          "wrong_sender_indegree_total_variation": 0.25983065442020664,
+          "wrong_sender_indegree_max_abs_delta": 67
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 16152,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0016199134988710284,
+          "different_weight_mean": 0.0015945866471156478,
+          "prior_to_reweighted_distribution_mean_l1": 0.8595311641693115,
+          "mean_effective_same_neighbours": 5.38956880569458,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 573.4659423828125,
+          "different_message_norm": 17.922515869140625,
+          "same_message_over_input": 2.426740884780884,
+          "different_message_over_input": 0.07584286481142044,
+          "message_norm_over_raw_input": 2.4392271041870117,
+          "fusion_gate_mean": 0.9890776872634888,
+          "fusion_gate_std": 0.009270782582461834,
+          "graphlearn_parameter_delta_norm": 9.286221504211426,
+          "gcn_parameter_delta_norm": 28.645708084106445,
+          "edge_network_parameter_delta_norm": 1.8205138444900513,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8794489092996556,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.01722158438576349,
+          "wrong_sender_indegree_total_variation": 0.590772101033295,
+          "wrong_sender_indegree_max_abs_delta": 258
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.09854007512331009,
+        "train_graph": -1.9127142429351807,
+        "relation_loss": 0.4523909389972687,
+        "adversarial_loss": 0.22632071375846863,
+        "consistency_loss": 0.10330158472061157,
+        "edge_stability_loss": 0.010290657170116901,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            0.00022038695169612765,
+            8.457402145722881e-05,
+            0.00015196097956504673,
+            0.00010277422552462667,
+            0.011259590275585651,
+            0.011147413402795792,
+            0.009827504865825176,
+            0.016995202749967575
+          ],
+          "relation": 0.10897544771432877,
+          "adversary": 0.0005271224654279649,
+          "difference": 0.0003834927920252085,
+          "graphlearn": 0.20109587907791138,
+          "gcn": [
+            1.885600977402646e-05,
+            2.0981025954824872e-05,
+            1.9812308892142028e-05,
+            0.01935100369155407
+          ]
+        },
+        "message_norms": [
+          400.5700378417969,
+          506.26019287109375,
+          422.7974853515625,
+          576.4165649414062
+        ],
+        "same_message_norms": [
+          400.5497131347656,
+          506.2394104003906,
+          422.73651123046875,
+          573.4659423828125
+        ],
+        "difference_message_norms": [
+          5.993690013885498,
+          6.748784065246582,
+          5.64980936050415,
+          17.922515869140625
+        ],
+        "message_input_ratio": [
+          1.6950957775115967,
+          2.142345666885376,
+          1.7891558408737183,
+          2.4392271041870117
+        ],
+        "residual_ratio": 6.5477190017700195,
+        "gate_mean": [
+          0.004286875482648611,
+          0.0016453734133392572,
+          0.004990007728338242,
+          0.9890777468681335
+        ],
+        "gate_std": [
+          0.0035554252099245787,
+          0.0016722745494917035,
+          0.004184091463685036,
+          0.009270782582461834
+        ],
+        "beta_mean": 1.2418965101242065,
+        "beta_std": 0.004184807650744915,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.15567174553871155,
+          0.1324273943901062,
+          0.9189472794532776
+        ],
+        "relation_oof_auc_raw": [
+          0.4888790249824524,
+          0.5389179587364197,
+          0.5331068634986877,
+          0.7297368049621582
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.753038227558136,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 6.5477190017700195
+    },
+    {
+      "fold": 8,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5407483136212384,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                152,
+                117,
+                115
+              ],
+              [
+                100,
+                145,
+                139
+              ],
+              [
+                135,
+                134,
+                115
+              ]
+            ],
+            "mean_probability": [
+              0.33602654933929443,
+              0.3261216878890991,
+              0.3378514349460602
+            ],
+            "probability_entropy": 0.3687717020511627,
+            "shared_representation_variance": 0.8794817328453064,
+            "prototype_distances_AA_TT_AT": [
+              1.0192347764968872,
+              0.7238254547119141,
+              0.33000457286834717
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5348171657986112,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                152,
+                110,
+                122
+              ],
+              [
+                105,
+                154,
+                125
+              ],
+              [
+                128,
+                146,
+                110
+              ]
+            ],
+            "mean_probability": [
+              0.3358834981918335,
+              0.34085285663604736,
+              0.323263555765152
+            ],
+            "probability_entropy": 0.8739948272705078,
+            "shared_representation_variance": 0.38266730308532715,
+            "prototype_distances_AA_TT_AT": [
+              0.5392361283302307,
+              0.32878226041793823,
+              0.26450246572494507
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5508965386284722,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                160,
+                120,
+                104
+              ],
+              [
+                119,
+                176,
+                89
+              ],
+              [
+                150,
+                148,
+                86
+              ]
+            ],
+            "mean_probability": [
+              0.35430505871772766,
+              0.3633033335208893,
+              0.28239133954048157
+            ],
+            "probability_entropy": 0.7737018465995789,
+            "shared_representation_variance": 0.5685422420501709,
+            "prototype_distances_AA_TT_AT": [
+              0.6574708223342896,
+              0.30915725231170654,
+              0.4046996831893921
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7427537706163195,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                145,
+                13,
+                226
+              ],
+              [
+                11,
+                213,
+                160
+              ],
+              [
+                48,
+                71,
+                265
+              ]
+            ],
+            "mean_probability": [
+              0.19357384741306305,
+              0.26612648367881775,
+              0.5402999520301819
+            ],
+            "probability_entropy": 0.3416469395160675,
+            "shared_representation_variance": 1.216717004776001,
+            "prototype_distances_AA_TT_AT": [
+              5.310313701629639,
+              2.584688901901245,
+              2.9222662448883057
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5247846841812134,
+          0.5358197093009949,
+          0.5309652090072632,
+          0.7314180731773376
+        ],
+        "continuous_relation_reliability": [
+          0.09913881868124008,
+          0.14327889680862427,
+          0.12386094033718109,
+          0.9256722927093506
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.998779296875,
+          "macro_auc_ovr": 0.9999988873799641
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.979248046875,
+          "macro_auc_ovr": 0.999332586924235
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.734619140625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.9426448742548624,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.713568756977717,
+        "teacher_condition_change_fraction": 1.0,
+        "adversary_gradient_norm": 0.000580710475333035,
+        "relation_encoder_gradient_norm": 0.43478572368621826,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.07000327855348587,
+          "different_weight_mean": 0.045358043164014816,
+          "prior_to_reweighted_distribution_mean_l1": 0.0168977752327919,
+          "mean_effective_same_neighbours": 11.981685638427734,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 2161.339111328125,
+          "different_message_norm": 6.0114521980285645,
+          "same_message_over_input": 9.146157264709473,
+          "different_message_over_input": 0.025438714772462845,
+          "message_norm_over_raw_input": 9.14616870880127,
+          "fusion_gate_mean": 6.664824070412578e-08,
+          "fusion_gate_std": 1.9903654902009293e-07,
+          "graphlearn_parameter_delta_norm": 4.035619735717773,
+          "gcn_parameter_delta_norm": 20.132436752319336,
+          "edge_network_parameter_delta_norm": 0.18176910281181335,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8806687715269805,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.029850746268656716,
+          "wrong_sender_indegree_total_variation": 0.2567451205510907,
+          "wrong_sender_indegree_max_abs_delta": 40
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 99400,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.12911303341388702,
+          "different_weight_mean": 0.10579453408718109,
+          "prior_to_reweighted_distribution_mean_l1": 0.008603454567492008,
+          "mean_effective_same_neighbours": 15.739392280578613,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 2602.48193359375,
+          "different_message_norm": 6.734241962432861,
+          "same_message_over_input": 11.012946128845215,
+          "different_message_over_input": 0.028497351333498955,
+          "message_norm_over_raw_input": 11.013042449951172,
+          "fusion_gate_mean": 1.6767304211739997e-10,
+          "fusion_gate_std": 7.16014636470419e-10,
+          "graphlearn_parameter_delta_norm": 1.3434888124465942,
+          "gcn_parameter_delta_norm": 20.644329071044922,
+          "edge_network_parameter_delta_norm": 0.1898002028465271,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8808840413318025,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.045924225028702644,
+          "wrong_sender_indegree_total_variation": 0.2390212399540758,
+          "wrong_sender_indegree_max_abs_delta": 76
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 21102,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.09261707961559296,
+          "different_weight_mean": 0.08609989285469055,
+          "prior_to_reweighted_distribution_mean_l1": 0.014511209912598133,
+          "mean_effective_same_neighbours": 14.208450317382812,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 2956.542236328125,
+          "different_message_norm": 5.968585968017578,
+          "same_message_over_input": 12.511225700378418,
+          "different_message_over_input": 0.02525731734931469,
+          "message_norm_over_raw_input": 12.511523246765137,
+          "fusion_gate_mean": 2.524176125007216e-06,
+          "fusion_gate_std": 5.731965757149737e-06,
+          "graphlearn_parameter_delta_norm": 1.9936330318450928,
+          "gcn_parameter_delta_norm": 19.81294059753418,
+          "edge_network_parameter_delta_norm": 0.18855538964271545,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8807405281285878,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.030998851894374284,
+          "wrong_sender_indegree_total_variation": 0.29578071182548793,
+          "wrong_sender_indegree_max_abs_delta": 85
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 13770,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.02220265381038189,
+          "different_weight_mean": 0.0690813660621643,
+          "prior_to_reweighted_distribution_mean_l1": 0.2961523234844208,
+          "mean_effective_same_neighbours": 6.543278217315674,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 2054.226318359375,
+          "different_message_norm": 11.251432418823242,
+          "same_message_over_input": 8.692887306213379,
+          "different_message_over_input": 0.047612786293029785,
+          "message_norm_over_raw_input": 8.699442863464355,
+          "fusion_gate_mean": 0.9999974370002747,
+          "fusion_gate_std": 5.929841790930368e-06,
+          "graphlearn_parameter_delta_norm": 9.282581329345703,
+          "gcn_parameter_delta_norm": 22.710723876953125,
+          "edge_network_parameter_delta_norm": 1.3782122135162354,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.8809557979334098,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.02066590126291619,
+          "wrong_sender_indegree_total_variation": 0.5904133180252583,
+          "wrong_sender_indegree_max_abs_delta": 246
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.126316636800766,
+        "train_graph": -1.9926636219024658,
+        "relation_loss": 0.3147362172603607,
+        "adversarial_loss": 0.32438167929649353,
+        "consistency_loss": 0.15814459323883057,
+        "edge_stability_loss": 0.0011962215648964047,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            0.00019638780213426799,
+            0.00017901213141158223,
+            0.0002335012541152537,
+            0.00017069534806068987,
+            0.019138425588607788,
+            0.02320866845548153,
+            0.01791614666581154,
+            0.07634178549051285
+          ],
+          "relation": 0.43478572368621826,
+          "adversary": 0.000580710475333035,
+          "difference": 0.00025138695491477847,
+          "graphlearn": 0.09460163861513138,
+          "gcn": [
+            2.2645022909273393e-05,
+            2.3194132154458202e-05,
+            2.812143793562427e-05,
+            0.02706211246550083
+          ]
+        },
+        "message_norms": [
+          2161.341796875,
+          2602.5048828125,
+          2956.612548828125,
+          2055.775390625
+        ],
+        "same_message_norms": [
+          2161.339111328125,
+          2602.48193359375,
+          2956.542236328125,
+          2054.226318359375
+        ],
+        "difference_message_norms": [
+          6.0114521980285645,
+          6.734241962432861,
+          5.968585968017578,
+          11.251432418823242
+        ],
+        "message_input_ratio": [
+          9.14616870880127,
+          11.013042449951172,
+          12.511523246765137,
+          8.699442863464355
+        ],
+        "residual_ratio": 26.788482666015625,
+        "gate_mean": [
+          6.664824070412578e-08,
+          1.6767304211739997e-10,
+          2.5241763523808913e-06,
+          0.9999974370002747
+        ],
+        "gate_std": [
+          1.9903656323094765e-07,
+          7.16014636470419e-10,
+          5.731965757149737e-06,
+          5.932149178988766e-06
+        ],
+        "beta_mean": 1.193294882774353,
+        "beta_std": 0.0238023828715086,
+        "relation_reliability": [
+          0.09913881868124008,
+          0.14327889680862427,
+          0.12386094033718109,
+          0.9256722927093506
+        ],
+        "relation_oof_auc_raw": [
+          0.5247846841812134,
+          0.5358197093009949,
+          0.5309652090072632,
+          0.7314180731773376
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.740234375,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 26.788482666015625
+    },
+    {
+      "fold": 9,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.46640297218605326,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                94,
+                124,
+                166
+              ],
+              [
+                131,
+                116,
+                137
+              ],
+              [
+                113,
+                131,
+                140
+              ]
+            ],
+            "mean_probability": [
+              0.28476637601852417,
+              0.3261220157146454,
+              0.38911136984825134
+            ],
+            "probability_entropy": 0.2069745659828186,
+            "shared_representation_variance": 1.0635768175125122,
+            "prototype_distances_AA_TT_AT": [
+              0.6883156299591064,
+              0.2966211140155792,
+              0.4635905623435974
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5041560420283565,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                138,
+                222,
+                24
+              ],
+              [
+                141,
+                223,
+                20
+              ],
+              [
+                139,
+                215,
+                30
+              ]
+            ],
+            "mean_probability": [
+              0.36929261684417725,
+              0.4306495487689972,
+              0.20005814731121063
+            ],
+            "probability_entropy": 0.9256386160850525,
+            "shared_representation_variance": 0.676203727722168,
+            "prototype_distances_AA_TT_AT": [
+              0.5649446845054626,
+              0.18062002956867218,
+              0.47778040170669556
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5168999565972222,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                136,
+                112,
+                136
+              ],
+              [
+                118,
+                124,
+                142
+              ],
+              [
+                122,
+                112,
+                150
+              ]
+            ],
+            "mean_probability": [
+              0.3315252363681793,
+              0.30686089396476746,
+              0.361613392829895
+            ],
+            "probability_entropy": 0.278817743062973,
+            "shared_representation_variance": 0.9060031175613403,
+            "prototype_distances_AA_TT_AT": [
+              0.360943078994751,
+              0.1997990906238556,
+              0.28816524147987366
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.6951169614438656,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                248,
+                33,
+                103
+              ],
+              [
+                53,
+                186,
+                145
+              ],
+              [
+                145,
+                83,
+                156
+              ]
+            ],
+            "mean_probability": [
+              0.38574549555778503,
+              0.26207563281059265,
+              0.3521788716316223
+            ],
+            "probability_entropy": 0.23730744421482086,
+            "shared_representation_variance": 1.6808273792266846,
+            "prototype_distances_AA_TT_AT": [
+              5.613865375518799,
+              2.4281303882598877,
+              3.228545665740967
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5161870718002319,
+          0.5264304280281067,
+          0.538718044757843,
+          0.7284886240959167
+        ],
+        "continuous_relation_reliability": [
+          0.06474826484918594,
+          0.10572174936532974,
+          0.15487214922904968,
+          0.9139544367790222
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.98388671875,
+          "macro_auc_ovr": 0.9984495639801025
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.99658203125,
+          "macro_auc_ovr": 0.9998802344004314
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.811279296875,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.9585662682851155,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.6317412455876669,
+        "teacher_condition_change_fraction": 0.9885057471264368,
+        "adversary_gradient_norm": 0.00045437391963787377,
+        "relation_encoder_gradient_norm": 0.16309906542301178,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.061223383992910385,
+          "different_weight_mean": 0.06075838580727577,
+          "prior_to_reweighted_distribution_mean_l1": 0.012185577303171158,
+          "mean_effective_same_neighbours": 12.257305145263672,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 3,
+          "same_message_norm": 1325.256591796875,
+          "different_message_norm": 6.581834316253662,
+          "same_message_over_input": 5.608099937438965,
+          "different_message_over_input": 0.027852406725287437,
+          "message_norm_over_raw_input": 5.608000755310059,
+          "fusion_gate_mean": 5.122708355599637e-13,
+          "fusion_gate_std": 4.966387977950459e-12,
+          "graphlearn_parameter_delta_norm": 4.130965709686279,
+          "gcn_parameter_delta_norm": 26.302183151245117,
+          "edge_network_parameter_delta_norm": 0.21818894147872925,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9006888633754305,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.04247990815154994,
+          "wrong_sender_indegree_total_variation": 0.2495694603903559,
+          "wrong_sender_indegree_max_abs_delta": 39
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 67622,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.01290689967572689,
+          "different_weight_mean": 0.011704862117767334,
+          "prior_to_reweighted_distribution_mean_l1": 0.38204294443130493,
+          "mean_effective_same_neighbours": 8.103754997253418,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 958.6669921875,
+          "different_message_norm": 42.339141845703125,
+          "same_message_over_input": 4.056799411773682,
+          "different_message_over_input": 0.17916691303253174,
+          "message_norm_over_raw_input": 4.062755107879639,
+          "fusion_gate_mean": 1.0,
+          "fusion_gate_std": 0.0,
+          "graphlearn_parameter_delta_norm": 1.6311115026474,
+          "gcn_parameter_delta_norm": 28.809391021728516,
+          "edge_network_parameter_delta_norm": 2.634986639022827,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9007606199770379,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03788748564867968,
+          "wrong_sender_indegree_total_variation": 0.2408869115958668,
+          "wrong_sender_indegree_max_abs_delta": 61
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 27714,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.11667466163635254,
+          "different_weight_mean": 0.08907535672187805,
+          "prior_to_reweighted_distribution_mean_l1": 0.03937983885407448,
+          "mean_effective_same_neighbours": 14.713094711303711,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1668.44873046875,
+          "different_message_norm": 5.500720024108887,
+          "same_message_over_input": 7.060389041900635,
+          "different_message_over_input": 0.023277444764971733,
+          "message_norm_over_raw_input": 7.060536861419678,
+          "fusion_gate_mean": 7.824360733973967e-13,
+          "fusion_gate_std": 7.739698638931092e-12,
+          "graphlearn_parameter_delta_norm": 2.029092788696289,
+          "gcn_parameter_delta_norm": 24.338809967041016,
+          "edge_network_parameter_delta_norm": 0.28598934412002563,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9006888633754305,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.045924225028702644,
+          "wrong_sender_indegree_total_variation": 0.23335246842709528,
+          "wrong_sender_indegree_max_abs_delta": 51
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 15292,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.12405691295862198,
+          "different_weight_mean": 0.060113511979579926,
+          "prior_to_reweighted_distribution_mean_l1": 0.09404924511909485,
+          "mean_effective_same_neighbours": 14.101990699768066,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 2050.866943359375,
+          "different_message_norm": 9.399737358093262,
+          "same_message_over_input": 8.678671836853027,
+          "different_message_over_input": 0.03977695107460022,
+          "message_norm_over_raw_input": 8.685347557067871,
+          "fusion_gate_mean": 1.6446630168864829e-10,
+          "fusion_gate_std": 1.1289512658052558e-09,
+          "graphlearn_parameter_delta_norm": 9.281353950500488,
+          "gcn_parameter_delta_norm": 26.6551456451416,
+          "edge_network_parameter_delta_norm": 0.3230085074901581,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9007606199770379,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.016073478760045924,
+          "wrong_sender_indegree_total_variation": 0.6019661308840414,
+          "wrong_sender_indegree_max_abs_delta": 257
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.07058699429035187,
+        "train_graph": -1.9163702726364136,
+        "relation_loss": 0.10426075756549835,
+        "adversarial_loss": 0.19117480516433716,
+        "consistency_loss": 0.15116660296916962,
+        "edge_stability_loss": 0.0025682789273560047,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            0.00014219983131624758,
+            5.8103927585761994e-05,
+            0.00012187007087050006,
+            5.590225555351935e-05,
+            0.014590946026146412,
+            0.014389965683221817,
+            0.012641067616641521,
+            0.028649218380451202
+          ],
+          "relation": 0.16309906542301178,
+          "adversary": 0.00045437391963787377,
+          "difference": 0.06500791758298874,
+          "graphlearn": 0.323507159948349,
+          "gcn": [
+            1.4702111911901738e-05,
+            0.09647201001644135,
+            1.3655255315825343e-05,
+            1.893955959531013e-05
+          ]
+        },
+        "message_norms": [
+          1325.233154296875,
+          960.0744018554688,
+          1668.483642578125,
+          2052.444580078125
+        ],
+        "same_message_norms": [
+          1325.256591796875,
+          958.6669921875,
+          1668.44873046875,
+          2050.866943359375
+        ],
+        "difference_message_norms": [
+          6.581834316253662,
+          42.339141845703125,
+          5.500720024108887,
+          9.399737358093262
+        ],
+        "message_input_ratio": [
+          5.608000755310059,
+          4.062755107879639,
+          7.060536861419678,
+          8.685347557067871
+        ],
+        "residual_ratio": 12.127482414245605,
+        "gate_mean": [
+          5.122708355599637e-13,
+          1.0,
+          7.824360733973967e-13,
+          1.644663155664361e-10
+        ],
+        "gate_std": [
+          4.966387977950459e-12,
+          0.0,
+          7.739698638931092e-12,
+          1.1289512658052558e-09
+        ],
+        "beta_mean": 1.2485092878341675,
+        "beta_std": 0.0014656364219263196,
+        "relation_reliability": [
+          0.06474826484918594,
+          0.10572174936532974,
+          0.15487214922904968,
+          0.9139544367790222
+        ],
+        "relation_oof_auc_raw": [
+          0.5161870718002319,
+          0.5264304280281067,
+          0.538718044757843,
+          0.7284886240959167
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.8717448115348816,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 12.127482414245605
+    },
+    {
+      "fold": 10,
+      "relations_and_adversary": {
+        "relation_heads": {
+          "PHENO": {
+            "macro_auc_ovr_posthoc_test": 0.5003108271846064,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                133,
+                122,
+                129
+              ],
+              [
+                113,
+                147,
+                124
+              ],
+              [
+                112,
+                149,
+                123
+              ]
+            ],
+            "mean_probability": [
+              0.31057706475257874,
+              0.34698572754859924,
+              0.34243693947792053
+            ],
+            "probability_entropy": 0.5785884857177734,
+            "shared_representation_variance": 0.3859110474586487,
+            "prototype_distances_AA_TT_AT": [
+              0.265122652053833,
+              0.2204350233078003,
+              0.1395605206489563
+            ]
+          },
+          "ANAT": {
+            "macro_auc_ovr_posthoc_test": 0.5014998824508102,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                141,
+                124,
+                119
+              ],
+              [
+                146,
+                111,
+                127
+              ],
+              [
+                148,
+                104,
+                132
+              ]
+            ],
+            "mean_probability": [
+              0.3523455560207367,
+              0.3073686361312866,
+              0.34028589725494385
+            ],
+            "probability_entropy": 0.8884296417236328,
+            "shared_representation_variance": 0.3821456730365753,
+            "prototype_distances_AA_TT_AT": [
+              0.3588208258152008,
+              0.3322775959968567,
+              0.2578645646572113
+            ]
+          },
+          "FUNC": {
+            "macro_auc_ovr_posthoc_test": 0.5465087890624999,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                125,
+                106,
+                153
+              ],
+              [
+                94,
+                148,
+                142
+              ],
+              [
+                145,
+                110,
+                129
+              ]
+            ],
+            "mean_probability": [
+              0.3107448220252991,
+              0.3302190899848938,
+              0.3590359389781952
+            ],
+            "probability_entropy": 0.8019657135009766,
+            "shared_representation_variance": 0.3683229982852936,
+            "prototype_distances_AA_TT_AT": [
+              0.6264691352844238,
+              0.26274439692497253,
+              0.43570226430892944
+            ]
+          },
+          "CORR": {
+            "macro_auc_ovr_posthoc_test": 0.7321992097077547,
+            "confusion_matrix_AA_TT_AT": [
+              [
+                226,
+                18,
+                140
+              ],
+              [
+                57,
+                134,
+                193
+              ],
+              [
+                114,
+                39,
+                231
+              ]
+            ],
+            "mean_probability": [
+              0.3505175709724426,
+              0.1846938133239746,
+              0.4647881090641022
+            ],
+            "probability_entropy": 0.5432085394859314,
+            "shared_representation_variance": 0.5304358005523682,
+            "prototype_distances_AA_TT_AT": [
+              3.4855148792266846,
+              1.974714756011963,
+              1.6899179220199585
+            ]
+          }
+        },
+        "train_patient_disjoint_raw_relation_oof_macro_auc": [
+          0.5088276863098145,
+          0.5343012809753418,
+          0.5383117198944092,
+          0.7081801295280457
+        ],
+        "continuous_relation_reliability": [
+          0.05000000074505806,
+          0.13720513880252838,
+          0.1532468944787979,
+          0.8327206373214722
+        ],
+        "test_pair_sample_counts_AA_TT_AT": [
+          384,
+          384,
+          384
+        ],
+        "source_probe_pre_adversarial": {
+          "accuracy": 0.993408203125,
+          "macro_auc_ovr": 0.9999212423960367
+        },
+        "source_probe_post_adversarial": {
+          "accuracy": 0.99658203125,
+          "macro_auc_ovr": 0.9999221960703532
+        },
+        "trained_conditional_discriminator_test_accuracy": 0.32666015625,
+        "trained_conditional_discriminator_test_macro_auc_ovr": 0.7458233833312988,
+        "source_chance_accuracy": 0.25,
+        "shared_cross_modal_pair_cosine_mean": 0.6951027611891428,
+        "teacher_condition_change_fraction": 0.9885057471264368,
+        "adversary_gradient_norm": 0.0010945729445666075,
+        "relation_encoder_gradient_norm": 2.4532883167266846,
+        "relation_pair_rows_are_patient_dependent": true,
+        "test_relation_metrics_are_posthoc_only": true
+      },
+      "graphs_and_messages": {
+        "PHENO": {
+          "original_graph_nonzero_count": 6060,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.0629507452249527,
+          "different_weight_mean": 0.06076082959771156,
+          "prior_to_reweighted_distribution_mean_l1": 0.011629736050963402,
+          "mean_effective_same_neighbours": 12.091889381408691,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1362.65234375,
+          "different_message_norm": 5.868844985961914,
+          "same_message_over_input": 5.766347885131836,
+          "different_message_over_input": 0.024835241958498955,
+          "message_norm_over_raw_input": 5.766468048095703,
+          "fusion_gate_mean": 3.2022658160713036e-06,
+          "fusion_gate_std": 5.148121090314817e-06,
+          "graphlearn_parameter_delta_norm": 4.033885955810547,
+          "gcn_parameter_delta_norm": 25.78019905090332,
+          "edge_network_parameter_delta_norm": 0.1798906922340393,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9004018369690011,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03214695752009185,
+          "wrong_sender_indegree_total_variation": 0.28257749712973596,
+          "wrong_sender_indegree_max_abs_delta": 63
+        },
+        "ANAT": {
+          "original_graph_nonzero_count": 61574,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.13861437141895294,
+          "different_weight_mean": 0.09403921663761139,
+          "prior_to_reweighted_distribution_mean_l1": 0.007863190956413746,
+          "mean_effective_same_neighbours": 15.735923767089844,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1509.84619140625,
+          "different_message_norm": 6.51360559463501,
+          "same_message_over_input": 6.3892292976379395,
+          "different_message_over_input": 0.027563681825995445,
+          "message_norm_over_raw_input": 6.389286041259766,
+          "fusion_gate_mean": 1.4257753718993627e-05,
+          "fusion_gate_std": 2.2089256162871607e-05,
+          "graphlearn_parameter_delta_norm": 1.313060998916626,
+          "gcn_parameter_delta_norm": 25.29977798461914,
+          "edge_network_parameter_delta_norm": 0.2067488729953766,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9004018369690011,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.0505166475315729,
+          "wrong_sender_indegree_total_variation": 0.24289609644087257,
+          "wrong_sender_indegree_max_abs_delta": 63
+        },
+        "FUNC": {
+          "original_graph_nonzero_count": 35110,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.12029557675123215,
+          "different_weight_mean": 0.101203054189682,
+          "prior_to_reweighted_distribution_mean_l1": 0.008575750514864922,
+          "mean_effective_same_neighbours": 14.657366752624512,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 1664.3822021484375,
+          "different_message_norm": 6.188445568084717,
+          "same_message_over_input": 7.0431809425354,
+          "different_message_over_input": 0.026187699288129807,
+          "message_norm_over_raw_input": 7.0431437492370605,
+          "fusion_gate_mean": 0.0007391007384285331,
+          "fusion_gate_std": 0.0006643534288741648,
+          "graphlearn_parameter_delta_norm": 1.862413763999939,
+          "gcn_parameter_delta_norm": 24.5186767578125,
+          "edge_network_parameter_delta_norm": 0.16475807130336761,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9003300803673938,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.03214695752009185,
+          "wrong_sender_indegree_total_variation": 0.2680109070034443,
+          "wrong_sender_indegree_max_abs_delta": 48
+        },
+        "CORR": {
+          "original_graph_nonzero_count": 16334,
+          "candidate_directed_edges": 13936,
+          "same_channel_nonzero_edges": 13936,
+          "different_channel_nonzero_edges": 13936,
+          "same_weight_mean": 0.037993524223566055,
+          "different_weight_mean": 0.039212122559547424,
+          "prior_to_reweighted_distribution_mean_l1": 0.4101164937019348,
+          "mean_effective_same_neighbours": 8.566608428955078,
+          "isolated_same_channel_nodes": 0,
+          "undirected_components_union_same_diff": 1,
+          "same_message_norm": 527.7955322265625,
+          "different_message_norm": 15.42136001586914,
+          "same_message_over_input": 2.2334768772125244,
+          "different_message_over_input": 0.0652587041258812,
+          "message_norm_over_raw_input": 2.234792709350586,
+          "fusion_gate_mean": 0.999243438243866,
+          "fusion_gate_std": 0.0006891328957863152,
+          "graphlearn_parameter_delta_norm": 9.278841018676758,
+          "gcn_parameter_delta_norm": 24.433996200561523,
+          "edge_network_parameter_delta_norm": 1.5265554189682007,
+          "wrong_edge_identity_change_fraction": 1.0,
+          "wrong_edge_same_site_fraction": 0.9003300803673938,
+          "wrong_edge_same_outer_partition_fraction": 1.0,
+          "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+          "wrong_sender_indegree_exact_match_fraction": 0.01951779563719862,
+          "wrong_sender_indegree_total_variation": 0.5932118254879449,
+          "wrong_sender_indegree_max_abs_delta": 252
+        }
+      },
+      "training_diagnostics": {
+        "train_cls": 0.1372710019350052,
+        "train_graph": -1.9077750444412231,
+        "relation_loss": 0.7055279612541199,
+        "adversarial_loss": 0.6772021651268005,
+        "consistency_loss": 0.13302642107009888,
+        "edge_stability_loss": 0.0021137860603630543,
+        "gradient_norms": {
+          "classification_to_edge_diff": [
+            5.927317761234008e-05,
+            6.153989670565352e-05,
+            7.19421441317536e-05,
+            6.156828021630645e-05,
+            0.00893160980194807,
+            0.010007582604885101,
+            0.009778792969882488,
+            0.013690085150301456
+          ],
+          "relation": 2.4532883167266846,
+          "adversary": 0.0010945729445666075,
+          "difference": 0.0038749922532588243,
+          "graphlearn": 1.635998010635376,
+          "gcn": [
+            2.644883716129698e-05,
+            2.8090866180718876e-05,
+            0.000133255758555606,
+            0.3016034960746765
+          ]
+        },
+        "message_norms": [
+          1362.6807861328125,
+          1509.859619140625,
+          1664.3734130859375,
+          528.1064453125
+        ],
+        "same_message_norms": [
+          1362.65234375,
+          1509.84619140625,
+          1664.3822021484375,
+          527.7955322265625
+        ],
+        "difference_message_norms": [
+          5.868844985961914,
+          6.51360559463501,
+          6.188446044921875,
+          15.42136001586914
+        ],
+        "message_input_ratio": [
+          5.766468048095703,
+          6.389286041259766,
+          7.0431437492370605,
+          2.234792709350586
+        ],
+        "residual_ratio": 7.358760833740234,
+        "gate_mean": [
+          3.2022653613239527e-06,
+          1.4257752809498925e-05,
+          0.0007391007384285331,
+          0.999243438243866
+        ],
+        "gate_std": [
+          5.148121090314817e-06,
+          2.2089259800850414e-05,
+          0.0006643534288741648,
+          0.0006891305092722178
+        ],
+        "beta_mean": 1.2499876022338867,
+        "beta_std": 1.796082688088063e-05,
+        "relation_reliability": [
+          0.05000000074505806,
+          0.13720513880252838,
+          0.1532468944787979,
+          0.8327206373214722
+        ],
+        "relation_oof_auc_raw": [
+          0.5088276863098145,
+          0.5343012809753418,
+          0.5383117198944092,
+          0.7081801295280457
+        ],
+        "grl_scale": 0.03,
+        "adv_logits_train_accuracy": 0.3713107705116272,
+        "edge_count": [
+          13936,
+          13936,
+          13936,
+          13936
+        ]
+      },
+      "prediction_residual_ratio": 7.358760833740234
+    }
+  ],
+  "summary": {
+    "pooled_oof": {
+      "acc": 0.8392652123995408,
+      "hard_auc": 0.8369864902122965,
+      "prob_auc": 0.8541229242221798,
+      "spe": 0.8675213675213675,
+      "sen": 0.8064516129032258,
+      "ba": 0.8369864902122967,
+      "asd_f1": 0.8227848101265823,
+      "confusion_matrix": [
+        [
+          325,
+          78
+        ],
+        [
+          62,
+          406
+        ]
+      ],
+      "n": 871
+    },
+    "relation_oof_auc_mean": {
+      "PHENO": 0.4971963793039322,
+      "ANAT": 0.5266181826591492,
+      "FUNC": 0.5268316268920898,
+      "CORR": 0.7268178701400757
+    },
+    "adversarial_active_folds": 10,
+    "mean_acc_delta_vs_e51_e1_pp": -8.03291536050157,
+    "mean_prob_auc_delta_vs_e51_e1_pp": -6.109468423546399,
+    "mean_ba_delta_vs_e51_e1_pp": -8.03677996886352,
+    "classification_gain_screen": false,
+    "mean_graph_by_modality": {
+      "PHENO": {
+        "original_graph_nonzero_count": 6060.0,
+        "candidate_directed_edges": 13936.0,
+        "same_channel_nonzero_edges": 13936.0,
+        "different_channel_nonzero_edges": 13936.0,
+        "same_weight_mean": 0.05479748249053955,
+        "different_weight_mean": 0.050636763637885454,
+        "prior_to_reweighted_distribution_mean_l1": 0.08382785189896821,
+        "mean_effective_same_neighbours": 11.26840386390686,
+        "isolated_same_channel_nodes": 0.0,
+        "undirected_components_union_same_diff": 2.5,
+        "same_message_norm": 1150.369577026367,
+        "different_message_norm": 16.746120548248292,
+        "same_message_over_input": 4.868028950691223,
+        "different_message_over_input": 0.07086470630019903,
+        "message_norm_over_raw_input": 4.869852113723755,
+        "fusion_gate_mean": 0.20039755860131986,
+        "fusion_gate_std": 0.0004905321691374504,
+        "graphlearn_parameter_delta_norm": 4.061744451522827,
+        "gcn_parameter_delta_norm": 28.281573486328124,
+        "edge_network_parameter_delta_norm": 0.6993352919816971,
+        "wrong_edge_identity_change_fraction": 1.0,
+        "wrong_edge_same_site_fraction": 0.8896168197474168,
+        "wrong_edge_same_outer_partition_fraction": 1.0,
+        "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+        "wrong_sender_indegree_exact_match_fraction": 0.037657864523536165,
+        "wrong_sender_indegree_total_variation": 0.26189724454649826,
+        "wrong_sender_indegree_max_abs_delta": 48.2
+      },
+      "ANAT": {
+        "original_graph_nonzero_count": 75372.8,
+        "candidate_directed_edges": 13936.0,
+        "same_channel_nonzero_edges": 13936.0,
+        "different_channel_nonzero_edges": 13936.0,
+        "same_weight_mean": 0.07937331123479366,
+        "different_weight_mean": 0.08853785097599029,
+        "prior_to_reweighted_distribution_mean_l1": 0.09834416266530752,
+        "mean_effective_same_neighbours": 11.956709563732147,
+        "isolated_same_channel_nodes": 0.0,
+        "undirected_components_union_same_diff": 1.0,
+        "same_message_norm": 1036.2802947998048,
+        "different_message_norm": 21.48632855415344,
+        "same_message_over_input": 4.385236430168152,
+        "different_message_over_input": 0.09092388488352299,
+        "message_norm_over_raw_input": 4.388380539417267,
+        "fusion_gate_mean": 0.40022661163660433,
+        "fusion_gate_std": 0.0002663023717119739,
+        "graphlearn_parameter_delta_norm": 1.471862804889679,
+        "gcn_parameter_delta_norm": 28.761823081970213,
+        "edge_network_parameter_delta_norm": 1.2068659871816636,
+        "wrong_edge_identity_change_fraction": 1.0,
+        "wrong_edge_same_site_fraction": 0.8896526980482203,
+        "wrong_edge_same_outer_partition_fraction": 1.0,
+        "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+        "wrong_sender_indegree_exact_match_fraction": 0.04225028702640643,
+        "wrong_sender_indegree_total_variation": 0.2369546498277842,
+        "wrong_sender_indegree_max_abs_delta": 70.6
+      },
+      "FUNC": {
+        "original_graph_nonzero_count": 25960.8,
+        "candidate_directed_edges": 13936.0,
+        "same_channel_nonzero_edges": 13936.0,
+        "different_channel_nonzero_edges": 13936.0,
+        "same_weight_mean": 0.09558930937200785,
+        "different_weight_mean": 0.09256872311234474,
+        "prior_to_reweighted_distribution_mean_l1": 0.03775471122935414,
+        "mean_effective_same_neighbours": 13.351708054542542,
+        "isolated_same_channel_nodes": 0.0,
+        "undirected_components_union_same_diff": 1.0,
+        "same_message_norm": 1164.0070343017578,
+        "different_message_norm": 12.228559589385986,
+        "same_message_over_input": 4.925738775730133,
+        "different_message_over_input": 0.05174770317971707,
+        "message_norm_over_raw_input": 4.927296459674835,
+        "fusion_gate_mean": 0.10051643532285733,
+        "fusion_gate_std": 0.0005818561067721828,
+        "graphlearn_parameter_delta_norm": 1.9403150916099547,
+        "gcn_parameter_delta_norm": 28.101535987854003,
+        "edge_network_parameter_delta_norm": 0.5750157475471497,
+        "wrong_edge_identity_change_fraction": 1.0,
+        "wrong_edge_same_site_fraction": 0.889659873708381,
+        "wrong_edge_same_outer_partition_fraction": 1.0,
+        "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+        "wrong_sender_indegree_exact_match_fraction": 0.037543053960964405,
+        "wrong_sender_indegree_total_variation": 0.2656285878300803,
+        "wrong_sender_indegree_max_abs_delta": 65.5
+      },
+      "CORR": {
+        "original_graph_nonzero_count": 14801.6,
+        "candidate_directed_edges": 13936.0,
+        "same_channel_nonzero_edges": 13936.0,
+        "different_channel_nonzero_edges": 13936.0,
+        "same_weight_mean": 0.09238865849329159,
+        "different_weight_mean": 0.059874874574597926,
+        "prior_to_reweighted_distribution_mean_l1": 0.208590467274189,
+        "mean_effective_same_neighbours": 11.847392368316651,
+        "isolated_same_channel_nodes": 0.0,
+        "undirected_components_union_same_diff": 1.0,
+        "same_message_norm": 1250.8585998535157,
+        "different_message_norm": 11.385642051696777,
+        "same_message_over_input": 5.293269348144531,
+        "different_message_over_input": 0.04818072132766247,
+        "message_norm_over_raw_input": 5.301715874671936,
+        "fusion_gate_mean": 0.29885938899711767,
+        "fusion_gate_std": 0.0010416846442767747,
+        "graphlearn_parameter_delta_norm": 9.291877269744873,
+        "gcn_parameter_delta_norm": 28.089195823669435,
+        "edge_network_parameter_delta_norm": 0.867482727766037,
+        "wrong_edge_identity_change_fraction": 1.0,
+        "wrong_edge_same_site_fraction": 0.8896598737083812,
+        "wrong_edge_same_outer_partition_fraction": 1.0,
+        "wrong_receiver_outdegree_exact_match_fraction": 1.0,
+        "wrong_sender_indegree_exact_match_fraction": 0.01687715269804822,
+        "wrong_sender_indegree_total_variation": 0.5974311136624569,
+        "wrong_sender_indegree_max_abs_delta": 249.4
+      }
+    },
+    "intervention_mean": {
+      "disable_ANAT_message": {
+        "delta_acc_pp": -12.528735632183905,
+        "prediction_flip_rate": 0.1781609195402299,
+        "mean_abs_delta_p_asd": 0.15927777485267142,
+        "mean_abs_delta_logit": 0.5502098511369695,
+        "residual_ratio": 11.441304969787598,
+        "edge_weight_change_l1": 0.0
+      },
+      "disable_CORR_message": {
+        "delta_acc_pp": -8.620689655172413,
+        "prediction_flip_rate": 0.12298850574712646,
+        "mean_abs_delta_p_asd": 0.12117205594258848,
+        "mean_abs_delta_logit": 0.4187723049444685,
+        "residual_ratio": 15.699736499786377,
+        "edge_weight_change_l1": 0.0
+      },
+      "disable_FUNC_message": {
+        "delta_acc_pp": -2.9885057471264362,
+        "prediction_flip_rate": 0.04597701149425287,
+        "mean_abs_delta_p_asd": 0.0408870202955768,
+        "mean_abs_delta_logit": 0.13359195639955032,
+        "residual_ratio": 12.689295291900635,
+        "edge_weight_change_l1": 0.0
+      },
+      "disable_PHENO_message": {
+        "delta_acc_pp": -7.321055381400209,
+        "prediction_flip_rate": 0.08460031347962382,
+        "mean_abs_delta_p_asd": 0.08434629284190578,
+        "mean_abs_delta_logit": 0.31991478371046467,
+        "residual_ratio": 11.869246768951417,
+        "edge_weight_change_l1": 0.0
+      },
+      "disable_cross_patient_messages": {
+        "delta_acc_pp": -34.21368861024033,
+        "prediction_flip_rate": 0.4891849529780564,
+        "mean_abs_delta_p_asd": 0.4131388127803802,
+        "mean_abs_delta_logit": 1.4337115436792374,
+        "residual_ratio": 0.0,
+        "edge_weight_change_l1": 0.0
+      },
+      "neutral_edge_weights": {
+        "delta_acc_pp": -4.365203761755485,
+        "prediction_flip_rate": 0.11253918495297806,
+        "mean_abs_delta_p_asd": 0.11185659025795758,
+        "mean_abs_delta_logit": 0.421823082305491,
+        "residual_ratio": 12.633752870559693,
+        "edge_weight_change_l1": 0.24008602648973465
+      },
+      "original_e1_gfr_bypass": {
+        "delta_acc_pp": -32.14864158829676,
+        "prediction_flip_rate": 0.4523380355276907,
+        "mean_abs_delta_p_asd": 0.41109404861927035,
+        "mean_abs_delta_logit": 1.4298066258430482,
+        "residual_ratio": 8.361431527137757,
+        "edge_weight_change_l1": 0.3830635130405426
+      },
+      "wrong_disease_condition": {
+        "delta_acc_pp": -0.45977011494252923,
+        "prediction_flip_rate": 0.004597701149425287,
+        "mean_abs_delta_p_asd": 0.0036647660651397016,
+        "mean_abs_delta_logit": 0.012441155141277704,
+        "residual_ratio": 13.391697645187378,
+        "edge_weight_change_l1": 0.0010167898566578516
+      },
+      "wrong_patient_neighbors": {
+        "delta_acc_pp": -13.094305120167187,
+        "prediction_flip_rate": 0.24115726227795195,
+        "mean_abs_delta_p_asd": 0.2128687433898449,
+        "mean_abs_delta_logit": 0.7692652300000191,
+        "residual_ratio": 12.453752326965333,
+        "edge_weight_change_l1": 0.021823400072753428
+      }
+    },
+    "posthoc_test_relation_auc_mean": {
+      "PHENO": 0.5023134584780091,
+      "ANAT": 0.5049149689850985,
+      "FUNC": 0.5208635683412906,
+      "CORR": 0.7244440149377894
+    },
+    "source_probe_pre_mean_macro_auc": 0.999657615025838,
+    "source_probe_post_mean_macro_auc": 0.9989269892374674,
+    "discriminator_test_mean_macro_auc": 0.8597770730654398,
+    "research_gates": {
+      "GO_RELATION_DISCRIMINATION": "GO",
+      "GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT": "NO-GO",
+      "GO_DISEASE_PRESERVATION": "GO",
+      "GO_TRUE_PATIENT_RELATION": "PARTIAL_FIXED_CHECKPOINT_ONLY",
+      "GO_CROSS_PATIENT_PROPAGATION": "NO-GO_SCALE_DOMINATED",
+      "GO_CLASSIFICATION_GAIN": "NO-GO",
+      "GO_MICCAI2027_MODULE": "NO-GO"
+    },
+    "decision": "NO-GO",
+    "decision_reason": "The predeclared exploratory screen against E51 E1 is not met on mean ACC (+0.30 pp threshold) with nondecreasing BA and Probability-AUC. Mechanism-level fixed-checkpoint responses do not replace independent retraining controls.",
+    "mean_residual_ratio": 13.393595886230468,
+    "residual_scale_gate": "FAIL",
+    "historical_protocol_limits": [
+      "val_idx=test_idx checkpoint selection",
+      "global preprocessing/RFE before outer CV",
+      "871-node transductive graph",
+      "single seed",
+      "single ABIDE A cohort"
+    ]
+  },
+  "historical_e1_fold_metrics": {
+    "acc": [
+      0.9545454545454546,
+      0.8850574712643678,
+      0.8735632183908046,
+      0.9425287356321839,
+      0.9310344827586207,
+      0.9655172413793104,
+      0.9080459770114943,
+      0.896551724137931,
+      0.9080459770114943,
+      0.9310344827586207
+    ],
+    "hard_auc": [
+      0.9512195121951219,
+      0.8833510074231177,
+      0.8724814422057263,
+      0.9393617021276596,
+      0.9324468085106382,
+      0.9643617021276595,
+      0.9018617021276595,
+      0.8930851063829788,
+      0.9055851063829787,
+      0.9305851063829788
+    ],
+    "prob_auc": [
+      0.9626362221069019,
+      0.9130434782608696,
+      0.8960763520678685,
+      0.9611702127659574,
+      0.9441489361702128,
+      0.9686170212765957,
+      0.9542553191489362,
+      0.872872340425532,
+      0.9175531914893617,
+      0.9281914893617021
+    ],
+    "spe": [
+      1.0,
+      0.9130434782608695,
+      0.8913043478260869,
+      0.9787234042553191,
+      0.9148936170212766,
+      0.9787234042553191,
+      0.9787234042553191,
+      0.9361702127659575,
+      0.9361702127659575,
+      0.9361702127659575
+    ],
+    "sen": [
+      0.9024390243902439,
+      0.8536585365853658,
+      0.8536585365853658,
+      0.9,
+      0.95,
+      0.95,
+      0.825,
+      0.85,
+      0.875,
+      0.925
+    ],
+    "ba": [
+      0.9512195121951219,
+      0.8833510074231177,
+      0.8724814422057263,
+      0.9393617021276596,
+      0.9324468085106383,
+      0.9643617021276596,
+      0.9018617021276596,
+      0.8930851063829788,
+      0.9055851063829787,
+      0.9305851063829788
+    ],
+    "asd_f1": [
+      0.9487179487179487,
+      0.875,
+      0.8641975308641975,
+      0.935064935064935,
+      0.926829268292683,
+      0.9620253164556962,
+      0.8918918918918919,
+      0.8831168831168831,
+      0.8974358974358975,
+      0.925
+    ]
+  },
+  "paired_deltas_fraction": {
+    "acc": [
+      -0.11363636363636365,
+      -0.034482758620689724,
+      -0.04597701149425293,
+      -0.08045977011494254,
+      -0.1724137931034483,
+      -0.034482758620689724,
+      -0.08045977011494254,
+      -0.04597701149425293,
+      -0.13793103448275867,
+      -0.05747126436781602
+    ],
+    "hard_auc": [
+      -0.10793980280228332,
+      -0.03525980911983018,
+      -0.05010604453870615,
+      -0.08750000000000002,
+      -0.1688829787234042,
+      -0.0356382978723403,
+      -0.08005319148936163,
+      -0.044414893617021445,
+      -0.13696808510638303,
+      -0.05691489361702129
+    ],
+    "prob_auc": [
+      -0.10949662688116246,
+      -0.0015906680805938267,
+      -0.0440084835630965,
+      -0.03563829787234041,
+      -0.14255319148936174,
+      -0.006914893617021134,
+      -0.13829787234042556,
+      0.014893617021276562,
+      -0.12234042553191482,
+      -0.025000000000000022
+    ],
+    "spe": [
+      -0.19148936170212771,
+      -0.021739130434782594,
+      0.021739130434782594,
+      0.0,
+      -0.21276595744680848,
+      -0.02127659574468077,
+      -0.08510638297872342,
+      -0.06382978723404253,
+      -0.14893617021276595,
+      -0.06382978723404253
+    ],
+    "sen": [
+      -0.024390243902439046,
+      -0.04878048780487798,
+      -0.12195121951219512,
+      -0.17500000000000004,
+      -0.125,
+      -0.04999999999999993,
+      -0.07499999999999996,
+      -0.025000000000000022,
+      -0.125,
+      -0.050000000000000044
+    ],
+    "ba": [
+      -0.10793980280228332,
+      -0.03525980911983029,
+      -0.05010604453870626,
+      -0.08750000000000002,
+      -0.1688829787234043,
+      -0.03563829787234041,
+      -0.08005319148936174,
+      -0.044414893617021334,
+      -0.13696808510638303,
+      -0.05691489361702129
+    ],
+    "asd_f1": [
+      -0.11150864639236724,
+      -0.039556962025316444,
+      -0.06419753086419744,
+      -0.10649350649350642,
+      -0.1682085786375106,
+      -0.038948393378773094,
+      -0.09189189189189184,
+      -0.04767384514219952,
+      -0.14743589743589747,
+      -0.06080246913580256
+    ]
+  },
+  "relation_head_rows": 120
+}

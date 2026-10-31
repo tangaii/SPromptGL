@@ -1,0 +1,511 @@
+{
+  "experiment": "Experiment56_DCRAG_GFR",
+  "status": "COMPLETE_AUDITED",
+  "formal_group": "E56_FULL_DCRAG_GFR",
+  "seed": 0,
+  "planned_folds": 10,
+  "completed_folds": 10,
+  "git_commit": "76799f66ad07d3d7d2df4fc8d929408eb6e1e0ff",
+  "data_sha256": {
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "protected_sha_before": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "protected_sha_after_prepare": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "fold_sha": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "source_sha": {
+    "config.json": "a53bcc740a5651ac7ed3b01f9413af52ab34ca07cc2af128cafce7028a249bf2",
+    "design.md": "ac84c92b65a10ded7e7f341017811ddf0550b3fee53e7882ffd89b26f5f37cbf",
+    "run.py": "967a9ece57fbaf7643b4fce72b54b05c17ff2b1b8f89c96fa97f9b576e796ea5",
+    "dcraag.py": "5ba10dd357a9b20e5535b3545a8f042e73bf725733d35636aed68569452bc780",
+    "tests.py": "6a58916ecc2db86f1a773c3c71136ea49acd313483b47d3de5759b1cab7b60c5",
+    "audit.py": "d479a410d9c0cd8f705c99614185cb7f65de22fb957925df538e134e12003dc3",
+    "source/dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    "source/e1_base.py": "32fc05c0e8c1211947f3003eae74d705eb4087e629b8a6af0fdf1878299a8718",
+    "source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "anchor_source": "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+  "anchor_files": {
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold01.pt": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold02.pt": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold03.pt": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold04.pt": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold05.pt": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold06.pt": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold07.pt": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold08.pt": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold09.pt": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    "/data/adodas/SPromptGL-main/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold10.pt": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa"
+  },
+  "e51_reference_source_sha256": {
+    "experiment/experiment51_dugsa/config.json": "f3447e150bc67ab29860dc0ae4804c194d5607fcbbdeccc9066ae1600c6ba531",
+    "experiment/experiment51_dugsa/run.py": "32fc05c0e8c1211947f3003eae74d705eb4087e629b8a6af0fdf1878299a8718",
+    "experiment/experiment51_dugsa/dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    "experiment/experiment51_dugsa/source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "experiment/experiment51_dugsa/source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "experiment/experiment51_dugsa/source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "historical_e1_best_checkpoints_used_as_initialization": false,
+  "optimizer": {
+    "graphlearn_lr": 0.0038,
+    "graphlearn_weight_decay": 0.11,
+    "gcn_lr": 0.0038,
+    "gcn_weight_decay": 0.0001,
+    "cam_lr": 0.0038,
+    "cam_weight_decay": 0.11,
+    "new_lr": 0.001,
+    "new_weight_decay": 0.0001,
+    "workers_max": 5,
+    "cpu_threads_per_worker": 2
+  },
+  "protocol": {
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "epochs": 450,
+    "early_stop_wait_gt": 200,
+    "selection": "test-fold ACC strict improvement; val=test (historical E51 protocol)"
+  },
+  "runtime": {
+    "gpu": "cuda:0",
+    "max_workers": 5,
+    "cpu_threads_per_worker": 2
+  },
+  "preflight": {
+    "status": "PASS",
+    "fold": 1,
+    "e1_inherited_sha": "b4b86df1f0d0100cde4b85add6a43366fcbe0a5d76faccf04d9726c49c013e9b",
+    "anchor_parameter_sha": "d77290b4c887487e181c0bdb4e68a26594fc45e3492f8362893c8becf3df1d48",
+    "rng_entry_sha": "8b11014f0095d0116b37316fd68dfa333362d78efaf027fabf96b5f0427058e0",
+    "new_init_rng_isolated": true,
+    "reference_bypass_output_bitwise": true,
+    "reference_bypass_cam_bitwise": true,
+    "common_dropout_rng_bitwise": true,
+    "grl_sign_verified": true,
+    "classification_gradient_norms_edge_diff": [
+      7.893759902799502e-05,
+      5.3205225412966684e-05,
+      0.00038868305273354053,
+      6.719118391629308e-05,
+      0.010061739012598991,
+      0.01192734856158495,
+      0.009637397713959217,
+      0.025955937802791595
+    ],
+    "wrong_condition_edge_weight_change": 0.01168234832584858,
+    "wrong_neighbor_message_change": 0.17556080222129822,
+    "wrong_neighbor_identity_change_fraction": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "relation_head_gradient_norms": [
+      0.0012595629086717963,
+      0.0021745965350419283,
+      0.0024592543486505747,
+      0.03713773190975189
+    ],
+    "adversarial_shared_gradient_norms": [
+      1.4812029291988438e-07,
+      2.960353242542624e-07,
+      1.314506477001487e-07,
+      2.1719256437791046e-06
+    ],
+    "adversarial_private_gradient_norms": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "test_label_shuffle_invariance": true,
+    "test_label_shuffle_max_abs_output_diff": 4.76837158203125e-07,
+    "test_label_shuffle_loss_diff": 0.0,
+    "teacher_train_test_label_isolation": true,
+    "relation_oof_auc": [
+      0.48105743527412415,
+      0.5202060341835022,
+      0.5144015550613403,
+      0.7208135724067688
+    ],
+    "reliability": [
+      0.05000000074505806,
+      0.08082420378923416,
+      0.05760624632239342,
+      0.8832542300224304
+    ],
+    "candidate_edges": [
+      13936,
+      13936,
+      13936,
+      13936
+    ],
+    "resume_replay_bitwise_loss": true,
+    "resume_model_max_abs_diff": 3.3527612686157227e-08,
+    "resume_cam_max_abs_diff": 2.9802322387695312e-08,
+    "all_fold_initialization_audit": [
+      {
+        "fold": 1,
+        "anchor_parameter_sha": "d77290b4c887487e181c0bdb4e68a26594fc45e3492f8362893c8becf3df1d48",
+        "inherited_tensor_sha": "b4b86df1f0d0100cde4b85add6a43366fcbe0a5d76faccf04d9726c49c013e9b",
+        "new_init_sha": "d9ffa31863e6f2b59e49146bada6e46c78a2b071e7b4a3a4b64db1929245d6f9",
+        "rng_entry_sha": "8b11014f0095d0116b37316fd68dfa333362d78efaf027fabf96b5f0427058e0",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 2,
+        "anchor_parameter_sha": "03b972987225cf7741ca7d5a1aff8f29bba4c815444cb9ed8fa2de357656bcec",
+        "inherited_tensor_sha": "f9211be4706d7384198d706a2aa8dd3f18013f809194e5b96de3fdd6fd12830d",
+        "new_init_sha": "1acb5938b0b040de95a5f98db6445e0278dd3e448ab37d2a1118caba57db95eb",
+        "rng_entry_sha": "71bd4815bdacf7a415352bf302701ee2067d794bb9bcb0841e8d26db126492ce",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 3,
+        "anchor_parameter_sha": "44a2c35b64bb568a95e0ae9743256a3b1595841886b34c6d30dbc8e26058c5ed",
+        "inherited_tensor_sha": "c4d127031f0f898d7d8608b7ede9526aba11f11f0b09d0e030e38839ccd0685d",
+        "new_init_sha": "ac9c6cc734a13d90b28bc0b5931a3bb8c9cf63335b3e7c4f8a3010e873ff6d35",
+        "rng_entry_sha": "7298a5db132522286ef9069d27ead3d63353cb7926454330673f8c5b2f9abe4d",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 4,
+        "anchor_parameter_sha": "6ed414d793cf7872d703d7e031fd46e1e8c24e9a0668936b67d7493d398e19e5",
+        "inherited_tensor_sha": "3e5b526ffd148cc31e4a56ec4f62c049190159bf1e28c2b132550117a0cc6493",
+        "new_init_sha": "c63a8b59888f14ea6ad50240ab387f8694060b4a7e249b70c3b8c7b081c0205b",
+        "rng_entry_sha": "378f1d278c4274bdc66fea4b6105bab216b90d5d4939946cefbe86a94c307940",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 5,
+        "anchor_parameter_sha": "c56603f07b6c0f8d005f5391f4add5aad658771209d2f16ef77844cf22f917b8",
+        "inherited_tensor_sha": "2f023b837b477e79eaff8d19a008559de6b58c7d3012734d94dbadb800618f78",
+        "new_init_sha": "4e66b2a35fa5fdbbffc1dc88f65b9c7126b3bd2a526dfa72078774637b5875d9",
+        "rng_entry_sha": "3e65ff22c0c898ca4c84db4615363113a2f720321d1685a1f50f22f2f22ef124",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 6,
+        "anchor_parameter_sha": "d77290b4c887487e181c0bdb4e68a26594fc45e3492f8362893c8becf3df1d48",
+        "inherited_tensor_sha": "b4b86df1f0d0100cde4b85add6a43366fcbe0a5d76faccf04d9726c49c013e9b",
+        "new_init_sha": "1b0fa126ec453ec0c0efff359e3c343de7c6b68264f0b49811f3d5c301947d91",
+        "rng_entry_sha": "f45faf71b36d008e40f7338f8e066a757a134f6285834061760eef8b30422344",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 7,
+        "anchor_parameter_sha": "a3039a57cda160d3efe7e0d25d3edcc5373647dfa68de6f642407aaa36e58552",
+        "inherited_tensor_sha": "1f5446b3669c0f2894ac3ecf6da5f93596728c9ec1eac254e5fd7521b0a6fa2e",
+        "new_init_sha": "0bfdaa02ab50ff8ad9eeaec4ccf12e0d3af1dc3631f39a2041211dcb022fbafc",
+        "rng_entry_sha": "021f46bda7190e42989591da8a43c65aaa68b273e6bc78217f861da229eae3de",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 8,
+        "anchor_parameter_sha": "02c541690244a924e0987778b9bdd79d80596870f729bdb59258d6a30a627d7e",
+        "inherited_tensor_sha": "5940a2598b4826b3e762d0c4c794c107eafd9fb3c2765b2fafb60276b9bcfccd",
+        "new_init_sha": "61a725c57e7af394124e384c187550c831e991e36632e91e2d78d59ef6b019e3",
+        "rng_entry_sha": "948dd5bf257285732fc256de67758b1725d1209558bd219350249e7426592109",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 9,
+        "anchor_parameter_sha": "fc63f8c9a8c08da85f4177d70ebb75c180ad1a436ff94ae9524d6743fb31762e",
+        "inherited_tensor_sha": "b7b7ba9619fb64f6f6852dbdf37b7b6330c62372a87a67c49324aa5c1301f9f0",
+        "new_init_sha": "63fa98ad7ff1b5ced4d6f0d1fbb4ab8ebfa42105c61093fb0995a5ab7fdccd96",
+        "rng_entry_sha": "cc5c7b812657dbef1b5695c4e3d9324ef929c89f9f0f1327e553fb9fa9d6793a",
+        "entry_rng_unchanged_by_new_init": true
+      },
+      {
+        "fold": 10,
+        "anchor_parameter_sha": "dc46ecb09da668c689a2c0df41930ca58a4db8abea739690b50b026631000440",
+        "inherited_tensor_sha": "c3e265c7d93c32263efdb6c4e7354552d14faa381f1a9a9c1b35f48683f9192f",
+        "new_init_sha": "b3ece01dc4ce983c044bb583460674289b5516900e1e0349ff5135068ebcbbc3",
+        "rng_entry_sha": "ce125430197389134fe6e2ade540b77c880f67eac8a66ee12200d27ba90bdd91",
+        "entry_rng_unchanged_by_new_init": true
+      }
+    ],
+    "protected_sha": {
+      "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+      "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+    }
+  },
+  "preflight_sha": "e295cc38463b1533c7b34923ea8ec05f540faa5a39dc5db6599762917cc2292a",
+  "gpu_workers_started": [
+    {
+      "fold": 1,
+      "pid": 3712381,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold01.log",
+      "started_unix": 1793389741.6595235
+    },
+    {
+      "fold": 2,
+      "pid": 3712387,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold02.log",
+      "started_unix": 1793389741.714553
+    },
+    {
+      "fold": 3,
+      "pid": 3712388,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold03.log",
+      "started_unix": 1793389741.7672057
+    },
+    {
+      "fold": 4,
+      "pid": 3712390,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold04.log",
+      "started_unix": 1793389741.820311
+    },
+    {
+      "fold": 5,
+      "pid": 3712391,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold05.log",
+      "started_unix": 1793389741.9344609
+    },
+    {
+      "fold": 1,
+      "pid": 3716105,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold01.log",
+      "started_unix": 1793389936.6020164,
+      "resumed": true
+    },
+    {
+      "fold": 2,
+      "pid": 3716106,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold02.log",
+      "started_unix": 1793389936.644514,
+      "resumed": true
+    },
+    {
+      "fold": 3,
+      "pid": 3716107,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold03.log",
+      "started_unix": 1793389936.6865861,
+      "resumed": true
+    },
+    {
+      "fold": 4,
+      "pid": 3716108,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold04.log",
+      "started_unix": 1793389936.7485583,
+      "resumed": true
+    },
+    {
+      "fold": 5,
+      "pid": 3716109,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold05.log",
+      "started_unix": 1793389936.8033235,
+      "resumed": true
+    },
+    {
+      "fold": 6,
+      "pid": 3717905,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold06.log",
+      "started_unix": 1793390034.0533066,
+      "resumed": true
+    },
+    {
+      "fold": 7,
+      "pid": 3717939,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold07.log",
+      "started_unix": 1793390035.4681103,
+      "resumed": true
+    },
+    {
+      "fold": 8,
+      "pid": 3717945,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold08.log",
+      "started_unix": 1793390035.6437576,
+      "resumed": true
+    },
+    {
+      "fold": 9,
+      "pid": 3717986,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold09.log",
+      "started_unix": 1793390037.840279,
+      "resumed": true
+    },
+    {
+      "fold": 10,
+      "pid": 3718042,
+      "gpu": 0,
+      "log": "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/runtime/logs/fold10.log",
+      "started_unix": 1793390039.9481287,
+      "resumed": true
+    }
+  ],
+  "gpu_memory_start_mib": {
+    "total": 98304,
+    "used": 2,
+    "free": 98302
+  },
+  "max_workers_selected": 5,
+  "max_concurrent_gpu_workers": 5,
+  "controller_sha256": "6e8bb5e350719372eb33d4edf7ce2c44150944bda7c80948d98864321e910140",
+  "controller_note": "Separate OSSFS-safe scheduler; fold train code and model math remain byte-identical to preflight source signature.",
+  "resume_from_latest": true,
+  "gpu_memory_resume_mib": {
+    "total": 98304,
+    "used": 2,
+    "free": 98302
+  },
+  "fold_completion_events": [
+    {
+      "fold": 1,
+      "completed_unix": 1793390032.9335206,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 4,
+      "completed_unix": 1793390034.276215,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 5,
+      "completed_unix": 1793390034.3255956,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 2,
+      "completed_unix": 1793390036.7550864,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 3,
+      "completed_unix": 1793390038.8832173,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 8,
+      "completed_unix": 1793390159.181807,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 10,
+      "completed_unix": 1793390159.2286768,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 9,
+      "completed_unix": 1793390180.2864106,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 7,
+      "completed_unix": 1793390194.3463125,
+      "status": "COMPLETE"
+    },
+    {
+      "fold": 6,
+      "completed_unix": 1793390195.38672,
+      "status": "COMPLETE"
+    }
+  ],
+  "controller_wall_seconds": 258.82087540626526,
+  "independent_checkpoint_audit": "PASS 10/10",
+  "audited_checkpoint_sha": {
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold01.best.pt": "179f75170a27649f916685d0364624a4200c0494d7798b5903703fb88ee8bb02",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold02.best.pt": "7ee08b3191133cbc99287ced458ff7b7d37a11a89f0776178727e82d88724c50",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold03.best.pt": "2bd266f05dd7020a85a38a1801bfe8bfff9c9dfe5bed8d42f00b307e9917c1f5",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold04.best.pt": "d4d93545bb3ac560a66b6375a834f464d1e95e23050a30eef10b77624c2b3c37",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold05.best.pt": "3281e65dd00134741bd4e261d74a4483ce77f31cf0700e5dce3c5ce546e8a5d6",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold06.best.pt": "5290f10acb79d0767f742496ea640f191d02a93921373216f07970f8882a220b",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold07.best.pt": "05489f0a1473ac0413b50dd0fa409faa78be6366e91e0870c919a440e5ed0b58",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold08.best.pt": "a9e1b9d0e04f885679c2e8dc307dd38e8b80feb80a93cce636e45edafa5e57b3",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold09.best.pt": "76272b02cea3c87928fa8604b1881c566114958b0ea4cb7529746176fc4f4c79",
+    "/data/adodas/SPromptGL-main/experiment/experiment56_dcraag_gfr/checkpoints/fold10.best.pt": "86605a9dbdd4fc10ffab902052b0029bc3793876cf82838984f7b5ac86045f9f"
+  },
+  "metric_readback_max_abs_diff": 0.0,
+  "protected_sha_after": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "pooled_oof": {
+    "acc": 0.8392652123995408,
+    "hard_auc": 0.8369864902122965,
+    "prob_auc": 0.8541229242221798,
+    "spe": 0.8675213675213675,
+    "sen": 0.8064516129032258,
+    "ba": 0.8369864902122967,
+    "asd_f1": 0.8227848101265823,
+    "confusion_matrix": [
+      [
+        325,
+        78
+      ],
+      [
+        62,
+        406
+      ]
+    ],
+    "n": 871
+  },
+  "decision": "NO-GO",
+  "decision_reason": "The predeclared exploratory screen against E51 E1 is not met on mean ACC (+0.30 pp threshold) with nondecreasing BA and Probability-AUC. Mechanism-level fixed-checkpoint responses do not replace independent retraining controls.",
+  "audit_source_sha256": "d479a410d9c0cd8f705c99614185cb7f65de22fb957925df538e134e12003dc3",
+  "audit_wall_seconds": 21.08371901512146,
+  "result_sha": {
+    "results/fold_metrics.csv": "bfbd474af3257be718a1af426ce6dd81c70c69c900eb29455c7a9547ceb4bed9",
+    "results/interventions.csv": "1b412e6012a3897223e60fbb146b0a4cecad4fce049fff7968246abb03c0a845",
+    "results/mechanism.json": "07961808928fe0e474cd69a5912698a42e5d49516180cdb9abeca682e5ab19a7",
+    "results/oof_predictions.csv": "35f671b92b79b01bad5dd7d3a6e667a40923cbee8bff91e8f7c1b184a6bce55d",
+    "results/paired_comparisons.csv": "e694ed9e674095cfd970eceab7e8a16b5f61d4865fd774768cc22148e6838c8d",
+    "results/preflight.json": "e295cc38463b1533c7b34923ea8ec05f540faa5a39dc5db6599762917cc2292a",
+    "results/relation_diagnostics.csv": "77690761b25ffddf316abb51f77d0f86a8f7279a70c1da246bd81a1a7d4dcf28",
+    "results/report.md": "d942d0e1cc5b5ff42af55a307b0c37a9af348b40851468f1f3cb69504f13cf93",
+    "results/summary.csv": "97dbce42ec3a8fa31c10dd93935f425ea398d9df11245166f15235f2d4f4ef40"
+  }
+}
