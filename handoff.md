@@ -4128,3 +4128,913 @@ K=3/4/5 共 180 条主 PID 记录；K=4 的 AF/AC/FC 共 30 条诊断记录。Bo
 ## 交付
 
 实际主 PID 估计数：180；有效关系诊断：30；正式新增训练折：0；结果目录：`/data/adodas/SPromptGL-main/experiment/experiment45_1_pid_correction_reaudit/results`。
+
+
+<!-- EXPERIMENT46_PGIV -->
+## Experiment 46 — Patient Graph Incremental Value Probe
+
+- 状态：FORMAL_COMPLETE；新增探针折：80/80；历史参考折：20。
+- GPU0：fold1–5；GPU1：fold6–10；冻结CAM特征和候选图每fold缓存一次。
+- 最终判定：NO_GO_FIXED_NEIGHBOR_INCREMENTAL_VALUE。
+- 源码、结果和manifest哈希：{"README.md": "43a84799aa9a22050ecb8f5569cf8f267074b3ef8909ea4277ad025ea70f20ec", "audit.py": "40b79722ff1575718be6849fadd8c5f2d6f25aa847b16aef8c621cc88e4d4733", "config.json": "9e7466b49633fba5b379cb375ee71bae4066bddf0b76030fa203fffc35fe8ef6", "integration.py": "39a41152aa1deb81849e62003fb35797adaa46715e88c3d5145943bcaec996a7", "manifest.json": "65e7ed83cc1130b9f1a5010f9a1e21cac9070ad59407f9fd563afc73a08425f4", "probe.py": "492f3e38b6b2add76644d1edabed5621041d3e802df61c5fe012e70ca43d2708", "results/diagnostics.csv": "fe0f750b0e0cd527d2de9ba27ecca048a220c25204a1be3a6bef1602f0b1c836", "results/fold_metrics.csv": "741f6e66c555fdbf6116f007aa68a8f53b3d3abbc23c68d562f30be9ff4c5e2d", "results/report.md": "01478d297fe301161d922aab898a86e9e3f78b14a10d63ecbdcd553632d35598", "run.py": "a72f98b70cc021e6b094f1de88f2acb43492e212645fa3020240d786a4dec852"}。
+- 详细报告：`/data/adodas/SPromptGL-main/experiment/experiment46_patient_graph_incremental_value_probe/results/report.md`。
+# Experiment 46 — Patient Graph Incremental Value Probe
+
+状态：80/80新增探针折，20条历史参考折。
+
+## 方法与协议
+冻结Experiment43.4 E0_ANCHORED_PHYSICAL_CAM，实际提取OutputLayer.mlp_head后的36维hidden；并行使用原始320维输入。四模态候选为outer-train发送者的训练折Top-16余弦关系，训练接收者排除自身，测试接收者只接收outer-train消息。每个Arm使用LayerNorm→Linear(5d,36)→GELU→Dropout→Linear(36,2)探针，四组共享逐张量初始化。历史val=test、预CV RFE、原始标准化和transductive协议均保留。
+
+|组别|ACC|Hard-AUC|SPE-TD|SEN-ASD|折数|
+|---|---:|---:|---:|---:|---:|
+|R0_B0B_REFERENCE|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|10|
+|R1_CAM_REFERENCE|91.7294 ± 3.0819|91.4880 ± 3.0586|94.6346 ± 3.7878|88.3415 ± 3.3369|10|
+|H0_SELF|90.1202 ± 3.0589|90.0282 ± 3.0002|91.2211 ± 4.4633|88.8354 ± 3.1903|10|
+|H1_TRUE|90.3501 ± 2.6412|90.2650 ± 2.6034|91.4385 ± 3.7317|89.0915 ± 2.9470|10|
+|H2_RANDOM|90.9261 ± 2.4446|90.7752 ± 2.4258|92.7151 ± 3.5251|88.8354 ± 3.1997|10|
+|H3_PERMUTED|90.5799 ± 2.9970|90.3954 ± 3.0022|92.9371 ± 4.0806|87.8537 ± 4.5758|10|
+|X0_SELF|88.7448 ± 3.8476|88.6437 ± 3.8310|89.9399 ± 4.4298|87.3476 ± 4.0719|10|
+|X1_TRUE|83.4653 ± 4.9416|83.3321 ± 5.0688|85.2313 ± 5.6818|81.4329 ± 8.6534|10|
+|X2_RANDOM|79.9046 ± 5.0284|79.7942 ± 5.1725|81.6189 ± 4.7158|77.9695 ± 8.5075|10|
+|X3_PERMUTED|83.0029 ± 4.7748|82.9008 ± 4.7938|84.1674 ± 5.2291|81.6341 ± 5.7022|10|
+
+## 核心同折配对
+|比较|ΔACC|ΔHard-AUC|ΔSPE|ΔSEN|ACC胜/平/负|Hard-AUC胜/平/负|
+|---|---:|---:|---:|---:|---:|---:|
+|H1_TRUE−H0_SELF|+0.2299|+0.2367|+0.2174|+0.2561|2/7/1|4/3/3|
+|H1_TRUE−H2_RANDOM|-0.5760|-0.5102|-1.2766|+0.2561|1/3/6|2/2/6|
+|H1_TRUE−H3_PERMUTED|-0.2299|-0.1304|-1.4986|+1.2378|3/3/4|4/2/4|
+|X1_TRUE−X0_SELF|-5.2795|-5.3116|-4.7086|-5.9146|0/2/8|1/1/8|
+|X1_TRUE−X2_RANDOM|+3.5606|+3.5379|+3.6124|+3.4634|7/2/1|8/0/2|
+|X1_TRUE−X3_PERMUTED|+0.4624|+0.4313|+1.0638|-0.2012|4/1/5|5/0/5|
+
+## 固定 TRUE checkpoint 干预
+|Arm|条件|平均log-prob变化|平均绝对变化|平均翻转|
+|---|---|---:|---:|---:|
+|H|H0_SELF|-0.014977|0.212723|1.70|
+|H|H2_RANDOM|+0.010385|0.116468|1.40|
+|H|H3_PERMUTED|+0.005003|0.111367|1.20|
+|X|X0_SELF|-0.114345|0.506557|19.70|
+|X|X2_RANDOM|+0.048725|0.311044|9.80|
+|X|X3_PERMUTED|+0.010648|0.331492|10.00|
+
+## GFR审计与8组定义
+原论文GFR通过四模态相似关系图和两层GCN消息传播把患者间信息送入CAM；本轮没有重新训练GraphLearn、GCN、GAT、Transformer、PEN或任何文本模块。实验43.2显示历史GFR输出相对输入约6.92e-5且关闭消息无类别翻转，实验44/44.1也没有证明反事实效用监督有独立增益。因此本轮冻结实验43.4物理CAM-only编码器，只训练同结构轻量探针，直接检验固定患者关系的增量价值。
+H0/H1/H2/H3分别是CAM36自身重复槽位、真实Top-16四模态邻居、固定随机训练患者和真实支持下的双射错配；X0/X1/X2/X3在原始320维空间使用相同四种输入方式。每个Arm的探针均为LayerNorm→Linear(5d,36)→GELU→Dropout(0.35)→Linear(36,2)，H参数量6,950，X参数量60,910；同一Arm同一fold四组逐张量共享初始化、优化器和训练随机流。
+邻居候选严格由训练折发送者构建：PHENO 0:48、ANAT 48:54、FUNC 54:64、CORR 64:320，训练拟合标准化后取余弦Top-16；训练接收者排除自身，测试接收者只从outer-train接收。RANDOM和PERMUTED均不读取标签。
+
+## 同折预测纠错
+|Arm|对照→TRUE|对照错且TRUE对|对照对且TRUE错|
+|---|---|---:|---:|
+|H|SELF→TRUE|10|8|
+|H|RANDOM→TRUE|7|12|
+|H|PERMUTED→TRUE|10|12|
+|X|SELF→TRUE|22|68|
+|X|RANDOM→TRUE|87|56|
+|X|PERMUTED→TRUE|44|40|
+
+## 关系与站点诊断
+|Arm|邻居方式|同类比例|站点内比例|
+|---|---|---:|---:|
+|H|TRUE|0.5210|0.5528|
+|H|RANDOM|0.5014|0.0810|
+|H|PERMUTED|0.5023|0.0811|
+|X|TRUE|0.5210|0.5528|
+|X|RANDOM|0.5014|0.0810|
+|X|PERMUTED|0.5023|0.0811|
+
+## 预注册判定
+- `GO_PREDICTIVE_INCREMENT`: **FAIL**；X1必须同时超过X0/X2/X3并满足7/10折门槛。
+- `GO_REPRESENTATION_SPACE_ONLY`: **FAIL**。
+- `GO_PRACTICAL_B0B_IMPROVEMENT`: **FAIL**。
+- `FINAL_DECISION`: **NO_GO_FIXED_NEIGHBOR_INCREMENTAL_VALUE**。
+
+## 科研结论与局限
+H1相对H0只有+0.2299pp ACC且仅2/10折严格胜；H1低于RANDOM和PERMUTED，说明CAM36空间的真实相似邻居没有表现出稳定的独立增量。RAW320中X1为83.4653% ACC，低于X0的88.7448%，虽高于随机上下文但没有超过自身特征基线和错配对照，且SEN-ASD下降5.91pp。固定TRUE checkpoint替换邻居会改变连续输出（H平均1.70、X平均19.70次翻转），证明探针实际读取邻居槽位，但“产生影响”不等于“提供有益增量”。
+冻结CAM checkpoint本身经过历史val=test选择；本轮探针继续使用outer-test ACC选最佳epoch。原始RFE/标准化和transductive队列均保留，单seed结果不构成独立泛化或严格因果证据。结果支持暂停围绕固定Top-16患者相似图继续堆叠GFR创新：当前受控协议未发现稳定的真实患者图增量价值，不应启动Experiment47。
+
+产物目录：`/data/adodas/SPromptGL-main/experiment/experiment46_patient_graph_incremental_value_probe`。
+
+
+<!-- EXPERIMENT46_PGIV_FAIRNESS_CORRECTION -->
+## Experiment 46 — PGIV fairness-corrected final result
+
+- 先前追加的初步PGIV块发现探针组间未恢复统一post-initialization RNG；该初步数字不作为最终比较依据，历史记录保留以便审计。
+- 修正：每个Arm/fold/组在训练前恢复同一anchor start RNG；80/80新增fold已从头重跑，20个Arm×fold的start_rng_sha各自一致，80/80 checkpoint重载审计通过。
+- 最新最终判定：`NO_GO_FIXED_NEIGHBOR_INCREMENTAL_VALUE`；完整四指标和配对诊断见 `/data/adodas/SPromptGL-main/experiment/experiment46_patient_graph_incremental_value_probe/results/report.md`。
+- 修正后源码与结果哈希：{"README.md": "43a84799aa9a22050ecb8f5569cf8f267074b3ef8909ea4277ad025ea70f20ec", "audit.py": "40b79722ff1575718be6849fadd8c5f2d6f25aa847b16aef8c621cc88e4d4733", "config.json": "9e7466b49633fba5b379cb375ee71bae4066bddf0b76030fa203fffc35fe8ef6", "integration.py": "39a41152aa1deb81849e62003fb35797adaa46715e88c3d5145943bcaec996a7", "probe.py": "492f3e38b6b2add76644d1edabed5621041d3e802df61c5fe012e70ca43d2708", "results/diagnostics.csv": "eb2aaa3e98214ba1ef1b2a678d9d3ca1e6eed688fc17e4813fad5e7ce92acf47", "results/fold_metrics.csv": "e6d9cc05bb8b4328091ae68896090daa16c323d68e84008a57fb82b776a8fdad", "results/report.md": "dcd710c1d97cb474f08829f165d6c7511f8a1fd6a437b360927be073adbfff8f", "run.py": "f6fe2de14ad669dac606fa11c9e1016dbe1b99086eda673035cee3ade0de96ab"}
+
+## Experiment 47.3 — Patient Graph Relation-Specific Value Verification
+
+- 状态：COMPLETE；在 `/tmp/SPromptGL-E47/experiment47_3_patient_graph_relation_value_verification` 执行，根目录源码/数据/历史 checkpoint 未修改。
+- 目标：修正 47.2 尺度审计，验证原 D2 实际扰动，并用 D4 站点分层节点重标记、D5 站点分层消息接收置换检验真实患者关系特异性。
+- 历史复用：D1/D2/D3 共 30 个已核验折；新增 D4/D5 共 20/20 完整训练折。GPU0 folds1–5，GPU1 folds6–10；GPU1 通过 `CUDA_VISIBLE_DEVICES=1` 映射。
+- 47.2 修正：B0-B alpha=1 测试 ACC 91.7294%；T1 alpha=1 71.2970%；T1 alpha=0 54.2045%；T1 centered alpha=1 66.3623%。
+- 强负控制有效性：D4 10/10 折聚合消息距离≥0.25，均值 1.0524；D5 10/10 折，均值 1.2050；均无 NaN。D4 的对称性/边数/站点对边数/train-test 分层检查通过；D5 消息均值和中心化范数保持。
+- 十折结果（ACC / Hard-AUC / SPE / SEN，mean±population SD，%）：D1 90.6962±2.9809 / 90.6190±3.0133 / 91.6466±3.4323 / 89.5915±4.1041；D2 90.4676±2.8717 / 90.2928±2.8866 / 92.7197±3.6359 / 87.8659±4.2934；D3 88.3986±3.4762 / 88.3317±3.4310 / 89.0842±4.9485 / 87.5793±4.1998；D4 91.3858±3.0146 / 91.1936±3.0325 / 93.7835±3.5496 / 88.6037±4.1403；D5 90.5812±3.2908 / 90.4436±3.3060 / 92.2895±4.0005 / 88.5976±4.4536。
+- 配对：D1−D2 ACC +0.2286 pp（4/4/2），Hard-AUC +0.3263（7/1/2）；D1−D3 ACC +2.2975（8/2/0），Hard-AUC +2.2873（9/0/1）；D1−D4 ACC −0.6897（1/3/6），Hard-AUC −0.5746（3/1/6）；D1−D5 ACC +0.1149（4/3/3），Hard-AUC +0.1755（5/2/3）。
+- 结论：D1 相对 D3 支持有限的一般跨患者传播作用，但 D4 反而高于 D1、D5 与 D1 相近；没有真实患者—消息对应的稳定独立增量，且 D1 低于 CAM-only 91.7294%。
+- 最终判断：`NO-GO`（当前原始 GFR 固定患者图的关系特异性 MICCAI 第一创新点）；不启动 47.4/48。该结论不等同于所有患者图方法永远无效。
+- 关键结果目录：`/tmp/SPromptGL-E47/experiment47_3_patient_graph_relation_value_verification/results`；代码、输入、源快照和受保护文件 SHA 见 `manifest.json`。
+- 新增训练 wall time：约 460.9 秒；OSSFS handoff 同步状态以实际追加尝试为准。
+
+- SHA补充：results/report.md=8ed91aad3c26128579333f15e0bc5d32d467e48c6f6fe761e21d0a07f8946fca；results/fold_metrics.csv=f5706210094284dffaec4791e9e90bada5a7a9051847219c731e8ca79db65769；results/strong_null_effectiveness.csv=68d26ae551d87bd7f5818002e78526d7d54732aee1db908865c650374c9b0b8f；results/paired_analysis.csv=18a04faee26dc5dda9864e03ebe1cbee42fc40ba14cad50f401511002adc112e；manifest.json=ef767aef719e18bf42682f3ba7fe00ea9a024e3d500dedda863026a1324e2f84。源码快照、输入数据及受保护根文件 SHA 详见本实验 `manifest.json`。
+
+
+<!-- EXPERIMENT48_DPA_GFR_SELECTIVE_ADVERSARIAL_ALIGNMENT -->
+## Experiment 48 — DPA-GFR：判别性保持的选择性对抗患者图学习
+
+- **实验路径与状态**：隔离执行于 `/tmp/experiment48_dpa_gfr_selective_adversarial_alignment`；8组×10折共80/80完成。E0使用Experiment43.1已核验B0-B最佳检查点并在独立进程读回；E1–E7共70个新训练折从同折B0-B锚点开始。加速期间发现折2/7的新增组队列重叠，14个受影响任务已删除并以单GPU队列清洁重跑，未将竞态结果计入最终报告。
+- **目标与假设**：检验真实非自环患者关系是否具有超出自身容量的疾病判别增量（H1）、CORR-FUNC选择性对齐是否优于全部关系对齐（H2）、PCGrad是否在对抗梯度冲突下保持分类方向（H3）。保留原始B0-B GFR/CAM、双Adam、reg=0.11、450轮上限、wait>200、历史 `val_idx=test_idx` checkpoint规则；PEN物理移除。新增图发送者仅为outer-train，K=16，测试患者不参与构图或编码器/域判别器标签训练。
+- **论文/源码审计**：核对SPromptGL GFR式(1)、DGCN式(2)、CAM式(4)、PEN/RES式(5–6)、总损失式(7)；DeepASD模态判别器min-max式(1–5)、余弦图式(6)、S2GC及联合损失式(9)；AAAI 2026 PID约束 `I=R+U1+U2+S`、`I1=R+U1`、`I2=R+U2`；PCGrad负内积冲突与法向投影规则。源码位置、历史Experiment43.1/43.2/43.4/46/45/45.1证据和论文SHA见 `.runtime/literature_audit.json` 与 `.runtime/source_history_audit.json`。
+- **四指标（十折 mean ± population SD，%）**：
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|
+|E0_B0B_REFERENCE|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|
+|E1_SELF_CAPACITY|91.6144 ± 3.1353|91.5494 ± 3.0933|92.2757 ± 5.1619|90.8232 ± 4.1719|
+|E2_TRUE_GRAPH_ONLY|90.8124 ± 3.1326|90.6828 ± 3.1214|92.2803 ± 3.8116|89.0854 ± 3.6935|
+|E3_FULL_ADVERSARIAL|90.4663 ± 3.4190|90.2579 ± 3.4298|93.1499 ± 3.3062|87.3659 ± 4.1229|
+|E4_SELECTIVE_ADVERSARIAL|90.4676 ± 3.6059|90.3458 ± 3.5865|91.8501 ± 4.1297|88.8415 ± 3.6895|
+|E5_DPA_GFR_FULL|90.3514 ± 3.2264|90.2285 ± 3.2209|91.8594 ± 3.8519|88.5976 ± 3.9804|
+|E6_RANDOM_GRAPH_CONTROL|91.9592 ± 2.7747|91.7722 ± 2.7337|94.2091 ± 3.7586|89.3354 ± 2.9313|
+|E7_WRONG_PAIR_CONTROL|90.0065 ± 4.1526|89.9629 ± 3.9541|90.5782 ± 7.2976|89.3476 ± 4.0938|
+
+- **核心配对差（百分点，ACC / Hard-AUC）**：E2−E1 `−0.8020 / −0.8666`（ACC 1/2/7胜平负）；E3−E2 `−0.3461 / −0.4250`；E4−E3 `+0.0013 / +0.0879`；E4−E2 `−0.3448 / −0.3370`；E5−E4 `−0.1162 / −0.1173`；E5−E0 `−1.3780 / −1.3761`；E5−E6 `−1.6079 / −1.5437`；E5−E7 `+0.3448 / +0.2656`。
+- **机制证据**：真实图消息非零、K=16且每折0自环；E2 graph-only ACC均值约74.5%，但最终图依赖没有转化为正增量。E5域判别器末期准确率约1.00，梯度冲突约77.6%，PCGrad投影非零；E5仍低于E4，说明机制触发不等于分类收益。E6随机图反而高于E5，否定真实相似邻居在该新增通路中的可靠独立价值。E5相对E7略高，但仍低于B0-B，不能据此声称疾病相关选择性对齐成立。
+- **合成/工程控制**：真实同类人工图与标签相关系数1.0，随机图0.2227；人工模态来源域判别准确率1.0；GRL符号、非自环、PCGrad投影均PASS。预检PASS；独立80/80读回PASS；根源码、数据和历史锚点保护SHA未变。
+- **冻结GO/NO-GO**：`GO_GRAPH=NO-GO`、`GO_SELECTIVE_ALIGNMENT=NO-GO`、`GO_GRADIENT_PROTECTION=NO-GO`、`GO_FINAL_MICCAI_CANDIDATE=NO-GO_FOR_CURRENT_DPA_GFR`。当前不建议把DPA-GFR作为MICCAI 2027第一创新点提交，也不建议在不改变科学问题和无偏验证协议前继续堆叠对抗/图模块。该结论只针对本数据、历史评估偏倚和seed=0协议，不证明所有患者图或条件对齐方法普遍无效。
+- **资源/耗时**：GPU0 folds1–5、GPU1 folds6–10；E1–E7训练任务累计墙钟约4115秒，正式任务窗口约2296秒（并行）；E0为已核验检查点读回。无额外seed、PEN、GFR重训练或PID硬门槛。
+- **交付文件与SHA**：报告 `[report.md](/tmp/experiment48_dpa_gfr_selective_adversarial_alignment/results/report.md)` SHA `2e4b49d457b3baec0ddb14fca3934938f7722e14801d6990bf4decd6491f36c2`；逐折 `[fold_metrics.csv](/tmp/experiment48_dpa_gfr_selective_adversarial_alignment/results/fold_metrics.csv)` SHA `0117427cef981c2d12d87a1620a8415b5ba490d9466e82e6fbbec74a258f2362`；汇总 `[summary.csv](/tmp/experiment48_dpa_gfr_selective_adversarial_alignment/results/summary.csv)`；代码签名 `91cd94f5e30fca5db86faa38f7d444e324cb83562754f6686d6f94253dc480f7`；manifest `[manifest.json](/tmp/experiment48_dpa_gfr_selective_adversarial_alignment/manifest.json)`。完整训练检查点、任务状态、预检、论文审计和独立读回在该目录 `.runtime/`。
+
+
+### Experiment48最终审计补充（站点敏感性与最终哈希）
+
+- 只读站点诊断已完成：`results/site_diagnostics.csv` 共120行，覆盖E2真实图、E5真实图、E6随机图的4关系×10折；真实E2/E5同站点边比例约48.92%/48.45%，E6为8.05%。CORR同类边约70.0%、跨站点约87.5%，FUNC同类边约52.3%、跨站点约47.4%，因此同类富集包含站点与标签混合相关性，不能视作ASD生物学证明。
+- 最终报告SHA更新为 `3b0807905c1f9389ddb171623c3a1969529def786535d477666c0153dd7387b1`；站点诊断SHA为 `2c9afc14d6019509854cbc9889994f8dbcaa21a1c8acfc1e9a0197e6ff88d156`；manifest已记录 `site_diagnostics=PASS_120_rows_E2_E5_E6`。
+
+<!-- EXPERIMENT47_MISSING_ENTRIES_FILLED_2026-10-28 -->
+
+
+## Experiment 47 — GFR Fundamental Problem Discovery（缺项补齐，2026-10-28）
+
+- **执行状态**：Stage A 静态原图审计与 Stage B 固定 checkpoint 干预、条件信息探针均完成，10/10 折；未启动 Stage C 重训。GPU0 负责 folds 1–5，GPU1 负责 folds 6–10。
+- **基线核验**：B0-B 与 Experiment43.1 逐折预测、混淆计数和四项指标一致：ACC 91.7294±2.8596%、Hard-AUC 91.6046±2.8059%、SPE-TD 93.1360±4.5354%、SEN-ASD 90.0732±3.5117%；CAM-only 与 Experiment43.4 一致：ACC 91.7294±3.0819%、Hard-AUC 91.4880±3.0586%、SPE-TD 94.6346±3.7878%、SEN-ASD 88.3415±3.3369%。
+- **源码/机制发现**：四路 GFR 均从完整 320 维输入传播；`i==1` 的 `combined_feat=f_w*feat1+raw_features` 覆盖 PHENO 消息；simple-2 实际优化分类损失与四图 GraphConstructLoss 均值，`ALoss` 只计算不反传。原始 GFR 最终消息/输入约 `7e-05`，关闭全部消息无稳定类别翻转。
+- **问题归因**：P1 图疾病结构为 `INCONCLUSIVE`（CORR/FUNC 有小而跨折稳定的统计关系，不能据此证明条件增量）；P2 站点聚集为 `OBSERVED_ASSOCIATION_ONLY`；P3 条件邻居增量为 `SUPPORTED_BUT_NOT_FULLY_ATTRIBUTED`（真实邻居不超过自身特征）；P4 过平滑为 `HYPOTHESIS_NOT_SUPPORTED`；P5 图分支不可识别/优化捷径为 `VERIFIED_MAJOR_GFR_PROBLEM`；P6 测试 cohort 依赖为 `HYPOTHESIS_NOT_SUPPORTED`；P7 跨模态冲突为 `OBSERVED_ASSOCIATION_ONLY`。
+- **科学结论**：原始 GFR 的图关系并非完全没有统计结构，但在残差直通、PHENO 覆盖和损失/梯度路径下没有形成可辨认的增量决策通路。该问题支持后续问题导向归因研究，不支持宣称已有解决方案或 MICCAI 2027 第一创新点成立；不应把低同质性、站点聚集或固定干预单独包装成疾病机制。
+- **限制与交付**：沿用 `val=test`、外层前 RFE/标准化、871 人 transductive 图和单 seed；结论是内部机制证据，不是无偏独立泛化或临床因果证据。执行目录为 `/tmp/SPromptGL-E47/experiment47_gfr_fundamental_problem_discovery`；报告 SHA256=`c78df52537498ec6af37061cf754cd3c4e7c48543714ce37657014722fec3905`，manifest SHA256=`154d72fec99b79a285ff5d398b3f60f2070c0d8ed7a37c9154d21fdcc3feece5`。
+
+
+## Experiment 47.1 — GCN Message Amplitude Collapse Attribution（缺项补齐，2026-10-28）
+
+- **执行状态**：Stage A 十折逐层静态分解、Stage B 预定 fold1/fold6 的 B0-B 精确轨迹复演、Stage C 单因素训练均完成；T0 两折、T2 两折为 pilot，T1 扩展至 10 折，共 14 个完整训练任务。GPU0 负责 folds 1–5，GPU1 负责 folds 6–10。
+- **精确复演**：T0 fold1/fold6 首步损失、双 Adam 状态、RNG、best epoch（157/155）、预测和四项指标逐值匹配历史 B0-B；未混用 B0-A 或 PEN checkpoint。
+- **幅值归因**：ANAT/FUNC/CORR 初始化 W1/W2 范数约 25，训练后 W1/W2 比例约 0.0023–0.0040/0.0015–0.0026；最佳模型邻接归一化比例约 0.93–0.99，不能解释多数量级衰减。固定“初始图+初始 W”可恢复百量级消息，而“最佳图+初始 W”恢复、“初始图+最佳 W”不恢复，说明主要幅值损失来自训练后的 GCN W1/W2 收缩，ReLU 稀疏化为次要贡献。
+- **单因素结果**：T1 只取消 ANAT/FUNC/CORR 六个 GCN W 参数的 weight decay，十折 ACC 71.2970±4.7123%、Hard-AUC 70.9726±4.8432%、SPE-TD 75.4209±5.8353%、SEN-ASD 66.5244±8.6896%；T0/T2 仅两折 pilot，不生成十折均值。图正则不直接对 GCN W1/W2 反传；T2 pilot 未形成一致的图正则因果链。
+- **消息与分类关系**：T1 的消息确实进入决策，但其分类显著低于 B0-B；T0 原始消息关闭无类别翻转。去掉 weight decay 只恢复幅值，不恢复真实患者关系的疾病增量。
+- **最终判定**：`VERIFIED_GCN_WEIGHT_DECAY_ATTRIBUTION`（仅针对幅值衰减）；`AMPLITUDE_RESTORED_NO_INCREMENTAL_VALUE`；图目标归因为未证实；`FINAL_NO_GO_FOR_AMPLITUDE_ONLY_GFR_INNOVATION`。不建议把“放大消息/去 weight decay”作为 MICCAI 2027 第一创新点。
+- **限制与交付**：仍沿用历史 `val=test`、预 CV RFE/标准化、transductive 图和单 seed；T1 十折是归因扩展，T0/T2 仅 pilot。执行目录为 `/tmp/SPromptGL-E47/experiment47_1_gcn_message_collapse_attribution`；报告 SHA256=`7e6c4331eb726a582b0581f95cc68a1f8cf884a7a9e6256d1243db9503820255`，manifest SHA256=`a118345377f90c3b622232e43fcf9b8cd12326bbd9d683be557a07dee186adb1`。原先追加曾受 OSSFS OSError(5) 阻塞，本次在根 handoff 完成补记。
+
+
+## Experiment 47.2 — Active Patient Graph Failure Attribution（缺项补齐，2026-10-28）
+
+- **执行状态**：Stage A 十折只读诊断、fold1/fold6 的 D0–D3 pilot、Gate A/B 训练侧准入及剩余八折扩展全部完成，共 40/40 个新增训练折；GPU0 负责 folds 1–5，GPU1 负责 folds 6–10。扩展未使用 outer-test ACC 选择。
+- **方法核验**：固定 `rho=0.25`，只用 outer-train 估计消息中心化与尺度；D0 动态真实图继续优化 GraphLearn/原图正则，D1/D2/D3 冻结图且只优化同容量 GCN/CAM。D2 保持对称性、每节点非自环度数、总边数、自环、权重多重集和站点对边数等预注册结构约束；D3 为仅 self-loop。
+- **正式四指标（十折 mean±population SD，%）**：R0 B0-B=`91.7294±2.8596 / 91.6046±2.8059 / 93.1360±4.5354 / 90.0732±3.5117`；R1 CAM-only=`91.7294±3.0819 / 91.4880±3.0586 / 94.6346±3.7878 / 88.3415±3.3369`；R2 T1=`71.2970±4.7123 / 70.9726±4.8432 / 75.4209±5.8353 / 66.5244±8.6896`；D0=`90.4676±2.7781 / 90.3614±2.6960 / 91.6374±4.5046 / 89.0854±2.7628`；D1 固定真实图=`90.6962±2.9809 / 90.6190±3.0133 / 91.6466±3.4323 / 89.5915±4.1041`；D2 匹配重连=`90.4676±2.8717 / 90.2928±2.8866 / 92.7197±3.6359 / 87.8659±4.2934`；D3 仅 self-loop=`88.3986±3.4762 / 88.3317±3.4310 / 89.0842±4.9485 / 87.5793±4.1998`（顺序均为 ACC / Hard-AUC / SPE-TD / SEN-ASD）。
+- **配对证据**：D1−D2 的 ACC `+0.2286 pp`（4/4/2）、Hard-AUC `+0.3263 pp`（7/1/2），未同时达到预注册七折门槛；D1−D3 的 ACC `+2.2975 pp`（8/2/0）、Hard-AUC `+2.2873 pp`（9/0/1），说明跨患者传播相对纯 self-loop 有模型依赖，但不能排除一般图传播/尺度训练效应。D0 的训练 NLL相对 T1 降至同折约 0.309/0.383 倍，支持尺度/优化失衡确实存在。
+- **科学结论**：`SCALE_OPTIMIZATION_FAILURE_VERIFIED`（优化层面）和 `ACTIVE_GRAPH_NONDISCRIMINATIVE`（当前真实关系增量检验）。D1 与 D2 几乎相同，真实患者关系没有稳定超越结构匹配错误关系；D1 低于历史 B0-B/CAM-only。动态 GraphLearn 的独立失败原因未闭合，不应继续只增大消息、取消 weight decay 或堆叠门控。
+- **限制与交付**：固定干预存在分布偏移；历史 `val=test`、全队列 RFE/标准化、871 人 transductive 图和单 seed 仍在。执行目录为 `/tmp/SPromptGL-E47/experiment47_2_active_graph_failure_attribution`；报告 SHA256=`907cdbe7e84b293b4c55b10ef03823745f695614639c5eb92def1b2d8ed75f43`，manifest SHA256=`e590933fa2feb46b89647a88fdd91577436b7851a3491fdd20c2d8c12c664c81`。
+
+
+<!-- EXPERIMENT48_1_DGAA_R_DISEASE_CONDITIONAL_ALIGNMENT -->
+## Experiment 48.1 — DGAA-R：疾病判别保持的多关系图对抗对齐
+
+- **执行状态**：`COMPLETE_AUDITED`。80/80组折完成；E0为Experiment43.1已核验B0-B十折checkpoint独立读回，E1–E7共70折从同折B0-B锚点重新训练；独立读回80/80通过，最终审计`PASS`。未按中间测试结果减少任务。
+- **目标与假设**：检验四路原始GFR的疾病辅助监督、普通关系来源对抗、ASD/TD条件关系对抗、CORR–FUNC选择性对齐、CORR优先辅助权重，以及真实关系/置乱条件负控制能否改善最终GFR→CAM判别。保留原GFR/CAM、PHENO覆盖行为、完整320维GCN输入、ALoss不反传、原weight_decay、历史`val_idx=test_idx`规则；没有新增Top-K患者图、PEN或PCGrad。
+- **论文/源码审计**：已读取SPromptGL、DeepASD、AAAI 2026选择性对齐/PID及条件对抗材料；核对根`main.py/model.py/network.py/layers.py/utils.py`，并复核43.1/43.2/43.4/45/45.1/46/47.3及可定位的48历史记录。47.1/47.2目录缺失状态已记录，未将其伪称为源码复核证据。审计明细见`.runtime/source_history_audit.json`。
+- **固定配置**：seed=0，ABIDE A 871例（ASD403/TD468），10折StratifiedKFold(shuffle=True, random_state=10)，450轮上限、wait>200；新增共享320→128→64投影、共享疾病头、三组来源头，新增lr=0.00038、`lambda_adv_max=0.03`及条件分组规则见`config.json`。
+
+### 正式指标（十折 mean ± population SD，%）
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|
+|E0 E0_B0B_REFERENCE|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|
+|E1 E1_AUX_ONLY|91.6144 ± 3.1353|91.3972 ± 3.1155|94.2091 ± 4.2082|88.5854 ± 4.0433|
+|E2 E2_UNCONDITIONAL_DGAA|91.3845 ± 3.0589|91.1347 ± 3.0951|94.4218 ± 3.8972|87.8476 ± 4.7679|
+|E3 E3_DISEASE_CONDITIONAL_DGAA|91.7294 ± 2.8596|91.5697 ± 2.8546|93.5661 ± 4.4333|89.5732 ± 4.3041|
+|E4 E4_SELECTIVE_CONDITIONAL_DGAA|91.6144 ± 2.8713|91.4398 ± 2.8778|93.7882 ± 3.2660|89.0915 ± 3.6830|
+|E5 E5_CORR_PRIORITY_DGAA_R|91.6144 ± 2.8249|91.4586 ± 2.7355|93.3441 ± 4.9006|89.5732 ± 3.1266|
+|E6 E6_SITE_STRATIFIED_RELATION_NULL|91.6144 ± 2.8713|91.4051 ± 2.8335|93.9870 ± 4.8354|88.8232 ± 4.0863|
+|E7 E7_PERMUTED_DISEASE_CONDITION|91.8443 ± 2.4968|91.6628 ± 2.4560|93.9963 ± 3.9613|89.3293 ± 3.3427|
+
+### 关键配对差（百分点；胜/平/负为十折严格比较）
+
+|比较|ΔACC|胜/平/负|ΔHard-AUC|胜/平/负|ΔSPE|ΔSEN|
+|---|---:|---|---:|---|---:|---:|
+|E1-E0|-0.1149|1/7/2|-0.2074|2/2/6|1.0731|-1.4878|
+|E2-E1|-0.2299|2/5/3|-0.2625|4/2/4|0.2128|-0.7378|
+|E3-E2|0.3448|3/5/2|0.4350|4/3/3|-0.8557|1.7256|
+|E3-E1|0.1149|3/5/2|0.1724|5/2/3|-0.6429|0.9878|
+|E4-E3|-0.1149|1/6/3|-0.1298|2/4/4|0.2220|-0.4817|
+|E4-E1|0.0000|2/6/2|0.0426|3/4/3|-0.4209|0.5061|
+|E5-E4|0.0000|2/6/2|0.0188|4/3/3|-0.4440|0.4817|
+|E5-E0|-0.1149|2/5/3|-0.1459|3/3/4|0.2081|-0.5000|
+|E5-E6|0.0000|4/3/3|0.0535|4/3/3|-0.6429|0.7500|
+|E5-E7|-0.2299|3/3/4|-0.2041|4/2/4|-0.6522|0.2439|
+
+### 机制与归因
+- E1相对E0：`GO_AUX=NO-GO`，ACC −0.1149pp、Hard-AUC −0.2074pp；辅助视角测试ACC约48.1/50.3/52.7/50.3%，没有转化为最终CAM增量。
+- E2相对E1：普通无条件对抗继续下降（ACC −0.2299pp、Hard-AUC −0.2625pp）。E3相对E2为ACC +0.3448pp、Hard-AUC +0.4350pp，达到预注册的有限`GO_CONDITIONAL`，但只3/10与4/10折严格胜，不能据此声称稳健最终增益。
+- E4相对E3：ACC −0.1149pp、Hard-AUC −0.1298pp；选择CORR–FUNC没有优于全关系条件对抗。E5相对E4：ACC 0.0000pp、Hard-AUC +0.0188pp，CORR优先辅助监督不成立。
+- E5相对E0：ACC −0.1149pp、Hard-AUC −0.1459pp，SEN −0.5000pp；相对E6真实关系身份差异ACC 0.0000pp、Hard-AUC +0.0535pp，相对E7置乱条件ACC −0.2299pp、Hard-AUC −0.2041pp。真实关系和真实疾病条件没有提供预注册的稳定独立增量。
+- 原始E0四路GCN输出均值约PHENO 241.69、ANAT 0.018、FUNC 0.006、CORR 0.007（相对输入约1.02、7.7e−5、2.7e−5、2.9e−5）；PHENO关闭干预为零，其他关系关闭的预测翻转率为零。E1–E7的辅助/来源梯度探针确实非零，但消息幅值和CAM依赖仍未形成可靠最终增量。
+- 条件来源头在最佳checkpoint读回中多为接近0的来源准确率，显示来源判别训练存在反向/退化现象；对抗头接近随机或反向均不能解释为医学表征改善。
+- 站点诊断120行：E2/E5/E6全关系平均同站点边比例44.11%/44.61%/44.94%，跨站点同诊断比例50.52%/50.55%/50.44%；站点/标签混合相关性只能作为混杂敏感性解释。
+
+### GO/NO-GO
+- `GO_AUX=NO-GO`；`GO_CONDITIONAL=GO（有限机制证据）`；`GO_SELECTIVE=NO-GO`；`GO_CORR_PRIORITY=NO-GO`；`GO_REAL_RELATION=NO-GO`；`GO_DISEASE_CONDITION=NO-GO`；`GO_FINAL_MICCAI_CANDIDATE=NO-GO`。
+- 研究结论：DGAA-R在当前ABIDE、历史评估协议和单seed下不具备成为MICCAI 2027第一创新点的充分证据；不建议继续通过堆叠对抗权重/图模块推进48.2。可继续的方向应先修复无偏验证、关系消息可识别性和来源判别训练退化，并用独立数据/多seed验证。
+- 该NO-GO只针对本实验协议，不等同于所有疾病条件关系对齐方法都无效；E3的有限相对改善值得作为机制线索保留，不能作为最终分类收益声明。
+
+### 资源、路径与SHA
+- GPU分配：GPU0负责fold 1,3,5与2,4两个不重叠worker；GPU1负责fold 6,8,10与7,9两个不重叠worker。E1–E7累计任务wall time约11099.4秒（并行运行），无额外seed。
+- 实验目录：`/data/adodas/SPromptGL-main/experiment/experiment48_1_dgaa_r_disease_conditional_alignment`；报告：`results/report.md`；逐折：`results/fold_metrics.csv`；汇总：`results/summary.csv`；配对：`results/paired_comparisons.csv`；机制：`results/diagnostics.csv`；站点：`results/site_diagnostics.csv`；manifest：`manifest.json`；最终审计：`.runtime/final_audit.json`。
+- 结果SHA：report=073051e36601cf81d2c979f0183e96d337e0c73f6c86e0e53f820b932715e593；fold_metrics=c7594e66e70f7fb4d4bd270f5633830087289b8030158fb8350d02b6a77d584c；summary=c4fb143c14a88f9187bd4aff882c15110107a8079ab2411748c55df84a373877；paired=53eb80defbbeb2f93fb4c2cd7339d24405047bb5ebcaa240e7927402fc1e4a45；diagnostics=e98961a6ad24fdd1f3e3481ccea39c326b4cae5f7f91d387292a6f48396dc2ca；site=94cf2596f1edee38a6723c438f7b0ab0bfea1e7be2ff9505da746dea8e97498a；manifest=d1662a0e2992b702c19076afd50af3a625613583d91f50013a395f644d732206；code_signature_final=249fc1c2b29b1d307df3f7811ef6a8c46994c26c56639eafc4393704461544d8。
+- 训练过程中曾发现并修复了评估模式泄漏（评估后未恢复train导致dropout关闭）；修复后清理旧新增任务并从冻结锚点全量重跑，修复前结果未计入正式报告。
+- 根源码、原始数据及历史锚点保护SHA前后不变；本条记录写入前缀锁定并验证唯一标记。
+
+
+## Experiment 49 — B0-B Dual-Seed Robustness Study
+
+- 状态：20/20组、200/200 folds完成；GPU0执行E01、E03、E06、E08、E09、E11、E14、E16、E17、E19，GPU1执行其余10组；固定组合内fold1–10连续消费单一训练RNG。
+- B0-B协议：物理移除PEN，GFR+CAM、原始四图/两层GCN、PHENO覆盖、GraphConstructLoss、weight_decay=0.11、simple-2和val=test均保留；没有使用47.2/47.3的rho、中心化、固定图或关系错配。
+- 结果文件：`experiment/experiment49_b0b_dual_seed_robustness/results/fold_metrics.csv`（200行）、`group_summary.csv`（20行）、`factor_summary.csv`、`oof_predictions.csv`和`report.md`。
+- 历史参考：seed=0、cv_random_state=10 的 B0-B 为 ACC 91.7294%、Hard-AUC 91.6046%、SPE-TD 93.1360%、SEN-ASD 90.0732%；20组最高值只作描述性观察，不能作为无偏性能或方法增益。
+- 审计：20组配置唯一；200/200完整；相同CV seed的split SHA一致、不同CV seed不同；GFR/CAM参数量887,836/49,544；PEN/CLIP文本路径不存在；weight_decay=0.11；OOF覆盖与checkpoint独立读回通过。
+- 限制：val=test选模、外层前RFE/标准化、transductive全队列、单数据集和共享训练患者均保留，结果是内部稳健性描述，不是无偏独立泛化证据，也没有证明GFR相对CAM-only的独立增量。
+- 详细报告：`experiment/experiment49_b0b_dual_seed_robustness/results/report.md`。
+- 交付存储：200个checkpoint在`/tmp/SPromptGL-E49/experiment49_b0b_dual_seed_robustness/.runtime/checkpoints`已完成读回审计；因`/data` OSSFS逐文件同步阻塞，正式目录保留源码、结果、任务状态和轻量审计，未保留不完整checkpoint。
+
+
+## Experiment 50 — C²R-Align
+
+- 状态：E0历史参考读回、E1–E7新增70折训练和独立审计已完成；实际目录 `/tmp/SPromptGL-E50/experiment50_c2r_align`。
+- 设计：B0-B物理删除PEN，原始GFR/CAM、weight_decay=0.11、simple-2、val=test保留；C²R以CORR/FC为锚点，加入条件门控、NULL、训练折内疾病关系监督、受限残差和E6/E7负控制。
+- 结果：E5 ACC=0.8909±0.0322%，Hard-AUC=0.8883±0.0315%；E0 ACC=0.9173±0.0286%。完整ACC/Hard-AUC/Probability-AUC/SPE/SEN表和逐折配对见`results/report.md`。
+- GPU：所有E1–E7的fold1–5使用GPU0，所有E1–E7的fold6–10使用GPU1；共70个新增折，固定每卡最多3个并发worker。
+- 判定：以E5相对容量控制、FC-only、无条件对齐、无显式对齐、错配关系和重连关系的逐折结果及固定checkpoint干预共同决定GO/NO-GO；不把单项指标提升视为机制成立。
+- 限制：历史val=test、CV前RFE/标准化、transductive协议和单seed保留；不构成无偏临床泛化或医学因果结论。
+- 文件SHA：manifest=`6f200c2dd263709db500b84a692b0b45dec381833f84b6223786c64b05e5566f`，report=`496a0c46e3ccf4178493427eb5bd70531e80b7d5d32689c83ac267e745fb8fb5`，fold_metrics=`819e34274308af3e714127e8ce52c86fca546ec226d5ab52f528bd406a40f640`。
+- 八组十折均值（ACC/Hard-AUC/SPE/SEN，%）：E0 91.7294/91.6046/93.1360/90.0732；E1 91.4995/91.2753/94.2091/88.3415；E2 88.2889/88.1141/90.3562/85.8720；E3 89.2085/89.1403/90.1526/88.1280；E4 89.8929/89.7242/91.6374/87.8110；E5 89.0935/88.8269/92.2757/85.3780；E6 89.7766/89.6190/91.6466/87.5915；E7 90.0065/89.9456/91.0315/88.8598。
+- 机制：E5原始GFR消息范数均值约0.001012、GFR范数236.311，C²R残差/GFR约3.15%；NULL均值0.2382，门控未全拒绝。固定检查点关闭C²R平均使ACC下降2.4099pp，但重训E5低于E0 2.6358pp、E1 2.4060pp、E6 0.6831pp和E7 0.9130pp，未证明真实关系特异性收益。
+- 最终：NO-GO；C²R残差确实进入决策，但关系对齐没有带来超过容量控制、基线或强负控制的独立疾病分类增益。
+- 交付：正式目录 `/data/adodas/SPromptGL-main/experiment/experiment50_c2r_align` 已同步代码、配置、源码快照、10个锚点、fold缓存和全部结果；70个唯一best checkpoint约1.1GB保留在只读scratch `/tmp/SPromptGL-E50/experiment50_c2r_align/.runtime/checkpoints`，以避免向OSSFS复制冗余大文件，独立重载审计已在scratch完成。
+- 工程记录：首轮调度发现GPU计数条件错误并立即停止，未将其结果计入；随后修正并固定每卡并发上限。另修正了best模型CAM键名兼容和训练/评估模式显式传参；70个正式任务均以修正后的可读回路径完成，失败状态未计入最终结果。
+
+## Experiment 50.1 — C²R-Align Corrected & Validated
+
+### 状态与执行
+- 状态：COMPLETE；E0历史参考10折，E1–E8共80个新增折，合计90条正式折级记录；E8在审计后发现错误继承无显式对齐条件，删除其临时状态并从同一未训练锚点重跑十折，最终E8为修正结果。
+- 运行路径：完整训练/最佳checkpoint/重载审计位于`/tmp/SPromptGL-E501/experiment50_1_c2r_corrected`；正式代码与结果位于`/data/adodas/SPromptGL-main/experiment/experiment50_1_c2r_corrected`。
+- GPU：GPU0负责所有新增组fold1–5，GPU1负责fold6–10；控制器最终80/80完成、失败任务0、失败进程0；训练墙钟约559.35秒（并行控制器记录）。
+- 12项语义测试在GPU0/GPU1均通过；B0-B参数量GFR=887,836、CAM=49,544。
+
+### 修复与语义审计
+- FC锚点固定为CORR/FC index=3，辅助模态固定为PHENO/ANAT/FUNC index=0/1/2；门控差分均相对FC。
+- 对齐损失使用辅助关系对停止梯度的FC关系，辅助分支获得非零梯度，FC锚点未被错误detach。
+- NULL只拒绝辅助关系；NULL=1时最终关系、邻居消息和残差路径与FC-only恒等，最大绝对误差0。
+- E6只置乱辅助模态且保持FC分数不变；E7在重连邻居上重新计算四模态score、gate、relation、softmax权重和value；语义测试报告重连改变6968个候选并产生非零输出差异。
+- 站点关系校正只使用训练折配对统计、停止梯度，E8仅关闭该校正；测试标签隔离、训练/评估模式切换、优化器weight_decay=0.11、主干初始化和checkpoint/RNG恢复均通过。
+
+### 九组正式结果（十折 mean±population SD，百分比）
+|组|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|---:|
+|E0|91.7294±2.8596|91.6046±2.8059|93.2322±3.2881|93.1360±4.5354|90.0732±3.5117|
+|E1|91.4995±2.6885|91.2620±2.6818|93.6590±2.4351|94.4265±3.3763|88.0976±3.4542|
+|E2|88.1727±3.1766|88.1365±3.2106|91.4617±3.7948|88.6633±3.6128|87.6098±4.4067|
+|E3|88.2863±3.0413|88.0070±3.0526|91.7270±3.7794|91.6420±4.5110|84.3720±5.2688|
+|E4|88.8597±3.3812|88.6779±3.3132|91.8612±3.1319|91.0083±5.9671|86.3476±5.1620|
+|E5|88.8623±3.7818|88.8090±3.7694|91.4583±4.1411|89.5143±4.1398|88.1037±3.9364|
+|E6|88.3986±3.2401|88.3274±3.2885|91.2825±2.6113|89.5328±3.8522|87.1220±5.5142|
+|E7|89.6656±2.1866|89.4354±2.3225|92.3104±2.7690|92.7428±2.7107|86.1280±5.6566|
+|E8|89.2032±3.4265|89.2067±3.3113|92.5809±3.1517|89.0842±5.5557|89.3293±3.6650|
+
+### E5核心逐折比较（均值差，百分点；胜/平/负）
+|比较|ACC|Hard-AUC|Probability-AUC|SPE|SEN|
+|---|---:|---:|---:|---:|---:|
+|E5−E0|-2.8670 (0/1/9)|-2.7956 (1/0/9)|-1.7739 (1/0/9)|-3.6216|-1.9695|
+|E5−E1|-2.6371 (1/1/8)|-2.4530 (1/1/8)|-2.2007 (1/0/9)|-4.9121|+0.0061|
+|E5−E2|+0.6897 (4/4/2)|+0.6725 (5/2/3)|-0.0034 (4/0/6)|+0.8511|+0.4939|
+|E5−E3|+0.5760 (6/2/2)|+0.8020 (7/1/2)|-0.2687 (3/0/7)|-2.1277|+3.7317|
+|E5−E4|+0.0026 (3/2/5)|+0.1311 (5/0/5)|-0.4029 (6/0/4)|-1.4940|+1.7561|
+|E5−E6|+0.4637 (5/2/3)|+0.4816 (6/1/3)|+0.1758 (6/0/4)|-0.0185|+0.9817|
+|E5−E7|-0.8033 (2/3/5)|-0.6264 (2/3/5)|-0.8521 (4/0/6)|-3.2285|+1.9756|
+|E5−E8|-0.3409 (3/1/6)|-0.3977 (3/0/7)|-1.1226 (3/0/7)|+0.4302|-1.2256|
+
+### 机制结论
+- E5相对B0-B：ACC -2.8670pp，Hard-AUC -2.7956pp；没有超过91.7294%历史基线。
+- E5相对Self-only E1：ACC -2.6371pp；相对FC-only E2为+0.6897pp，但Probability-AUC几乎无差；这不足以证明辅助关系具有稳定增量。
+- E5相对E3（固定均匀对齐）ACC +0.5760pp、SEN为+3.7317pp，但SPE下降；相对E4（无显式对齐）ACC仅+0.0026pp且Probability-AUC下降，显式对齐的独立作用未证实。
+- E5相对E6（辅助错配）ACC +0.4637pp，属于有限局部优势；相对E7（患者关系重连）ACC -0.8033pp、Hard-AUC为-0.6264pp；相对E8（无站点校正）ACC -0.3409pp。真实关系特异性没有通过全部强对照。
+- 固定E5 checkpoint中关闭C²R平均使ACC下降3.5619pp、重连使ACC下降5.0549pp，证明新增分支和关系路径进入了决策；但固定干预依赖不等于独立重训收益，且E7/E8独立重训更高。
+- 原始GFR消息仍接近零（E5审计均值约0.001227，相对GFR范数约236.311），C²R残差相对GFR约3.18%；分支确实有界进入CAM，但没有转化为超过强基线的分类增量。
+
+### 科研判定
+- **最终：NO-GO（作为MICCAI 2027第一创新模块候选）**。工程错误已修复并通过语义审计，分支依赖可测；但E5低于B0-B、Self-only、关系重连E7和去站点校正E8，且未同时胜过所有预注册机制对照。
+- 本结果不支持“FC锚定的选择性多模态关系对齐已产生可归因疾病判别增益”；不再基于同一方案追加超参数或新模块。
+- 限制：历史`val=test`选模、CV前RFE/标准化、transductive全队列、单seed和单数据集保留；结果是内部协议比较，不是无偏临床泛化或医学因果证据。
+
+### 文件与SHA
+- 正式报告：`experiment/experiment50_1_c2r_corrected/results/report.md`；fold_metrics、summary、paired_comparisons、diagnostics、interventions均已同步。
+- manifest SHA：`82d6b02e970018bf523eb7ae7fc16a0f9b84278436f0392aa57b86e41e8cb7a0`；report SHA：`af399044647501f52de30f036a11d5f02619bbd9529ce410a3e3599387afe4f1`；fold_metrics SHA：`295ce939d49670326a97de7d0d70bc32bc9b0667211fee14e9ad0eab22cdd73c`；summary SHA：`335161b9dcc256a3d50cf91cfb0314b1b5b7fbec335abf7bd8d8a1262919d811`；paired SHA：`155435f10e2d3c136e98ac187be3df7de9490898c756514018393ebb39b831eb`。
+- 根目录main.py/model.py/network.py/layers.py/utils.py、Shell、原始数据SHA复核不变；正式目录未复制1.2GB checkpoint，完整最佳checkpoint仍在scratch且已独立重载审计。
+
+
+<!-- EXPERIMENT48_2_CARE_GFR -->
+## Experiment 48.2 — CARE-GFR
+
+- **科学目标**：验证疾病关系证据学习（DREL）、冲突感知可信共识（CATA）和受限反事实关系攻击（ACRL）能否使多模态患者关系为B0-B/CAM提供可靠的ASD/TD增量；不把图依赖、对齐程度或辅助头性能当作疾病增量。
+- **审计结论**：已读取并核对可缓存的SPromptGL/DeepASD/AAAI2026及可定位的43.2、43.3、43.4、47.3、48.1历史结果；RCMVL、UMCGL和ICML 2025图对抗论文PDF在服务器审计目录缺失，未声称完成原文逐式核验。确认原GFR完整320维传播、PHENO覆盖、ALoss未反传和GCN weight_decay消息收缩；修复只放入E1工程对照，没有计入CARE创新。缺失的47.1/47.2历史目录在`.runtime/source_history_audit.json`中如实记录。
+- **方法与对照**：E0历史B0-B；E1 repaired GFR；E2 DREL；E3 DREL+CATA；E4 FULL CARE-GFR；E5去共识；E6特征GRL控制；E7站点/outer-split关系错配；E8置乱DREL对标签；E9同预算随机边扰动。所有E1–E9从匹配初始化独立训练，训练后仅用外层测试标签读回评估。
+
+### 正式结果（mean±population SD，%）
+
+|组|定义|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---|---:|---:|---:|---:|---:|
+| E0 | E0_B0B_REFERENCE | 91.7294±2.8596 | 91.6046±2.8059 | 93.1360±4.5354 | 90.0732±3.5117 | 93.2322±3.2881 |
+| E1 | E1_REPAIRED_GFR | 89.0870±3.3514 | 89.0124±3.3025 | 90.1711±5.6452 | 87.8537±5.3440 | 91.4491±3.2009 |
+| E2 | E2_DREL_ONLY | 60.7301±2.9966 | 59.9731±3.0140 | 70.0925±11.1047 | 49.8537±12.0436 | 57.4217±7.1387 |
+| E3 | E3_DREL_CATA | 59.4684±2.6698 | 57.9241±2.9446 | 77.7567±15.4971 | 38.0915±17.9339 | 55.7787±4.6950 |
+| E4 | E4_FULL_CARE_GFR | 58.7800±3.2205 | 58.0860±2.6682 | 66.8733±20.9786 | 49.2988±20.6846 | 57.6049±4.3274 |
+| E5 | E5_NO_CONSENSUS_ALIGNMENT | 60.6165±3.3292 | 59.1669±4.2817 | 77.9741±11.1369 | 40.3598±18.5297 | 60.4353±8.2210 |
+| E6 | E6_FEATURE_GRL_CONTROL | 59.8145±2.5419 | 59.2717±2.7238 | 66.0130±16.3693 | 52.5305±18.2614 | 57.7942±6.5370 |
+| E7 | E7_WRONG_RELATION_CONTROL | 60.0431±2.2133 | 59.3621±2.6452 | 67.7058±16.3965 | 51.0183±19.2206 | 57.2845±7.1236 |
+| E8 | E8_SHUFFLED_PAIR_LABEL_CONTROL | 59.1262±2.4388 | 58.4163±2.1912 | 67.0583±24.5644 | 49.7744±25.9154 | 56.2219±4.1558 |
+| E9 | E9_RANDOM_PERTURB_CONTROL | 58.4483±3.5245 | 57.0560±3.5604 | 74.9352±15.9066 | 39.1768±17.2910 | 52.9498±6.5538 |
+
+- E0逐折历史checkpoint读回与参考一致：ACC 91.7294±2.8596%、Hard-AUC 91.6046±2.8059%。E4 ACC 58.7800±3.2205%，因此初筛为`SCREEN_ACC_FAIL`。
+- 关键配对：E4-E0: ΔACC=-32.9493pp (0/0/10)；E4-E1: ΔACC=-30.3069pp (0/0/10)；E4-E3: ΔACC=-0.6883pp (4/2/4)；E4-E5: ΔACC=-1.8365pp (2/3/5)；E4-E6: ΔACC=-1.0345pp (3/3/4)；E4-E7: ΔACC=-1.2631pp (1/3/6)；E4-E8: ΔACC=-0.3461pp (5/1/4)；E4-E9: ΔACC=0.3318pp (1/8/1)。E4−E9仅+0.3318pp ACC（1/8/1），同时SPE−8.0620pp、SEN+10.1220pp；不能视为稳定ACRL收益。
+
+### 机制和负控制
+
+- DREL患者对AUC接近随机（E2四关系平均约0.5007），E2相对E1 ACC/Hard-AUC分别−28.3568/−29.0393pp；没有可识别的疾病关系证据。
+- CATA不成立：E3−E2 ACC−1.2618pp，E4−E5 ACC−1.8365pp；一致性损失未带来独立收益，部分折损失尺度发散。
+- 正确关系不成立：E4−E7 ACC−1.2631pp（1/3/6），错配关系反而更高；E4−E8 ACC−0.3461pp，真实DREL标签没有独立贡献。
+- 图依赖可观测但无益：E4关闭跨患者消息后平均ACC约56.9410%，完整图约58.7800%，平均预测翻转约4.14%；这只说明分支改变了CAM输出，不证明关系的疾病有效性。
+- 站点诊断中E4四关系同标签率约0.50，跨站点同标签率也约0.50；不能把站点统计相关性解释成ASD生物学证据。
+
+### 判定、资源与交付
+
+- `GO_DREL=NO-GO`，`GO_CATA=NO-GO`，`GO_ACRL=NO-GO`，`GO_VS_GRL=NO-GO`，`GO_REAL_RELATION=NO-GO`，`GO_DISEASE_RELATION_LABEL=NO-GO`。仅标记`GRAPH_DEPENDENCE_DETECTED`，不等价于疾病增量。
+- **最终科研判定：NO-GO**，CARE-GFR没有超过91.73%，正确患者关系没有产生独立可重复的疾病诊断增量，反事实关系对抗没有证明优于普通控制或随机扰动；不继续以本配置启动后续方法。
+- 完成100/100组折：E0历史复用核验10折，E1–E9实际训练90折；GPU0负责fold1–5，GPU1负责fold6–10；累计训练wall time 13007.1秒。向量化了逐候选GPU同步瓶颈后，清空并统一重跑E1–E9，90折代码签名一致。
+- 工程独立审计：`AUDIT_PASS`，预检PASS，任务/预测SHA完整，根源码、数据和Shell SHA与独立历史manifest一致。`protected_sha256_match=true`。
+- 产物：`/data/adodas/SPromptGL-main/experiment/experiment48_2_care_gfr`；报告 `results/report.md`；逐折 `results/fold_metrics.csv`；汇总 `results/summary.csv`；配对 `results/paired_comparisons.csv`；机制 `results/diagnostics.csv`；站点 `results/site_diagnostics.csv`；清单 `manifest.json`；审计 `.runtime/final_audit.json`。
+- SHA与签名：训练代码签名 `4891127b596f1a65ebda893e502478e087372cdfe8152bb494e57f11541b3826`；当前manifest/report/fold_metrics/summary/paired SHA见实验目录`manifest.json`，根handoff最终SHA由`.runtime/handoff_append.json`记录。
+- 主要限制：CV前全局RFE/标准化、`val=test`选择checkpoint、transductive 871节点、单seed和单数据集；这些结果是历史协议下的内部比较，不是无偏外部泛化或因果证据。
+
+## Experiment 50.2 — PCE-Router
+
+### 执行状态
+- 状态：COMPLETE；E0历史参考10折，E1–E8有效新增80折，失败任务0、失败进程0。单GPU0，最多5个并行worker。
+- E1首次实现与E2共享无条件mask路径，审计发现后只将E1修正为直接患者自身FC残差，从同一B0-B锚点重跑E1十折；旧E1结果不计入最终表。E2–E8未重复训练。
+- 本轮未修改根模型源码、原始数据或历史目录；B0-B/GFR/CAM/OutputLayer、原始weight_decay=0.11、simple-2、val=test和CV前RFE/标准化均保留。
+- 论文/源码审计覆盖SPromptGL、DeepASD、To Align or Not to Align、跨注意力患者图工作、FC亚型工作及43–50.1历史失败证据；PCE不引入患者图、Prompt、CLIP、GPT或反事实教师。
+
+### PCE-Router定义
+- PCE插在原始GFR输出与CAM之间，只读取GFR后FC slice 64:320；前64维逐值保留。ASD/TD证据头输出有符号256维证据，差异生成FC mask；条件输入为PHENO年龄26、性别2、ANAT6、FUNC10，共44维，不含站点；残差上限5%，alpha初始化为0。
+- E6在训练/测试分组内按站点分层置乱条件；E7按患者固定置乱256维证据位置；E8只关闭证据辅助CE。证据选择与删除均不读取测试标签。
+
+### 九组正式结果（十折 mean±population SD，百分比）
+|组|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|---:|
+|E0|91.7294±2.8596|91.6046±2.8059|93.2322±3.2881|93.1360±4.5354|90.0732±3.5117|
+|E1|91.4995±2.8321|91.2992±2.8557|93.3541±2.9303|94.0009±3.1775|88.5976±3.8515|
+|E2|91.8443±2.9793|91.6556±2.9761|93.5043±2.8565|94.2137±3.3535|89.0976±3.4981|
+|E3|91.7294±3.0819|91.5495±3.0288|93.0865±3.2021|93.7697±4.8044|89.3293±3.7140|
+|E4|91.4995±2.9239|91.2699±2.9368|93.4727±3.0608|94.2044±4.3335|88.3354±4.6178|
+|E5|91.6144±2.8249|91.4245±2.7437|93.5316±2.4608|93.7697±5.0870|89.0793±3.7283|
+|E6|91.6144±3.0498|91.4268±2.9618|93.5857±2.9371|93.7743±4.5946|89.0793±2.5536|
+|E7|91.7294±3.0819|91.5122±3.0441|93.5460±3.2955|94.1952±5.1451|88.8293±4.5003|
+|E8|91.4995±2.9688|91.3125±2.9477|93.2977±2.9360|93.7835±4.0325|88.8415±3.7139|
+
+### E5配对结果（差值百分点；胜/平/负）
+|比较|ACC|Hard-AUC|Probability-AUC|SPE|SEN|
+|---|---:|---:|---:|---:|---:|
+|E5−E0|-0.1149 (2/6/2)|-0.1801 (2/4/4)|+0.2994 (5/0/5)|+0.6337|-0.9939|
+|E5−E1|+0.1149 (2/7/1)|+0.1252 (3/3/4)|+0.1774 (5/0/5)|-0.2313|+0.4817|
+|E5−E2|-0.2299 (1/6/3)|-0.2312 (1/5/4)|+0.0272 (5/0/5)|-0.4440|-0.0183|
+|E5−E3|-0.1149 (1/7/2)|-0.1250 (2/5/3)|+0.4451 (8/0/2)|+0.0000|-0.2500|
+|E5−E4|+0.1149 (3/5/2)|+0.1546 (3/4/3)|+0.0588 (3/0/7)|-0.4348|+0.7439|
+|E5−E6|-0.0000 (3/3/4)|-0.0023 (3/2/5)|-0.0542 (4/0/6)|-0.0046|-0.0000|
+|E5−E7|-0.1149 (2/5/3)|-0.0878 (3/3/4)|-0.0144 (5/0/5)|-0.4255|+0.2500|
+|E5−E8|+0.1149 (3/5/2)|+0.1120 (4/2/4)|+0.2339 (4/0/6)|-0.0139|+0.2378|
+
+### 机制与证据诊断
+- E5证据头训练/测试诊断准确率均值=49.33%/48.67%；mask熵=5.5438，接近256维均匀熵5.5452。竞争证据没有形成可重复的疾病区分。
+- E5 alpha均值约-1.938e-06，残差/GFR约1.926e-07；固定checkpoint关闭PCE、alpha=0、均匀mask、错误条件和错误证据位置均未改变测试预测。
+- 固定GFR输出Top-16/随机/幅值匹配遮蔽ACC差值均值=-4.8237/-6.1978/-5.0522pp；Top-16没有比随机负控造成更大损害。原始FC重算小样本平均概率变化=0.2476/0.2194/0.1985。
+- ROI映射使用Experiment11已核验的256维表；本轮Top-16映射均有可验证端点时才记录名称，未知端点不补写脑区解释。
+
+### 科研判定
+- E5 ACC=91.6144%，低于B0-B=91.7294%、E2=91.8443%和E7=91.7294%；E6错误条件与E5 ACC相同。E5只在E1/E4/E8等局部对照上有小幅优势，未满足完整机制门槛。
+- **最终：NO-GO。** PCE-Router在当前历史训练协议下近似恒等映射，竞争证据接近均匀且不能区分疾病；没有形成超过容量、竞争、条件、错误位置和B0-B的可归因分类增量。
+- 结论只适用于本轮PCE定义、单seed、ABIDE和历史val=test协议；不把失败解释为所有患者自身FC证据方法均无效。
+
+### 文件与SHA
+- 正式代码/结果目录：`experiment/experiment50_2_pce_router`；完整训练checkpoint、任务状态和审计运行位于`/tmp/SPromptGL-E502/experiment50_2_pce_router/.runtime`，正式交付可排除`.runtime`。
+- manifest=15cbbb02f21a63cc5c0535a659b436312961e33d8554a64eee89f4523c94532e；report=4ef668059b361de94e6efe14481742c324c2080e993e3028b5e96bdee3974a46；fold_metrics=87eac9ebcec0ed642b0ea57c8725e101b13bde9ff2e0a06035dce9884a54a3e6；summary=8143b38dbf076551c9eab8618c0eda3f1e7c983cd87c6a1e0ec7775908c44d16；paired=11a668deb36e0044c57d5085d61973ba387ab9f10c4d3747fea3b66ce884ce68；diagnostics=fd52681a60ec7a65e4653686d0568afb609423d5e3961c1fe6c18edbf6bd9c4f；evidence=f39c8703bfea67389229dcd9224bb9d71a2a45211e556bd94fe0b95b542412e8；ROI mapping=b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2。
+
+
+<!-- EXPERIMENT48_3_APCR_GFR -->
+## Experiment 48.3 — APCR-GFR
+
+- **研究问题**：在保留B0-B GFR→CAM主路径的前提下，检验对称可信疾病关系（SRD）、选择性冲突感知对齐（SCA）和反事实关系扰动（CRA）能否提供真实跨患者诊断增量。48.2的整体CareGraph替换架构已弃用。
+- **源码审计**：确认原GFR四路传播完整320维、PHENO覆盖、ALoss不反传、weight_decay=0.11消息收缩；48.2的错误normalize、非对称评分、偏置配对、无界一致性和clean/adv路径问题已记录。指定RCMVL/UMCGL/ICML图对抗论文未在服务器本地缓存，未声称完成逐式核验。
+- **方法与组别**：E0历史B0-B；E1 anchor parity；E2 feature-only容量控制；E3真实关系残差；E4 SRD；E5 SRD+SCA；E6 FULL APCR；E7错误关系；E8置乱SRD标签；E9随机攻击。
+
+### 正式结果（mean±population SD，%）
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|
+|E0|91.7294±2.8596|91.6046±2.8059|93.1360±4.5354|90.0732±3.5117|不可由历史硬预测重建|
+|E1|91.8443±2.7963|91.5914±2.7725|94.8474±3.7844|88.3354±3.3561|93.6388±2.7133|
+|E2|91.8443±2.8431|91.6202±2.8507|94.4172±4.0374|88.8232±4.2222|93.4621±3.0641|
+|E3|91.6144±2.9170|91.4166±2.8667|93.9917±4.0988|88.8415±3.1500|93.8019±2.6112|
+|E4|91.7294±3.0388|91.4827±3.0363|94.6300±4.0358|88.3354±4.0328|93.8746±2.8611|
+|E5|91.3845±3.1017|91.2589±3.1280|92.9325±3.2230|89.5854±4.0849|93.7804±2.9114|
+|E6|91.9592±2.9141|91.7273±2.8980|94.6253±4.2741|88.8293±3.9209|93.7393±2.8417|
+|E7|91.3845±3.1858|91.1829±3.1006|93.7743±4.7048|88.5915±2.7434|93.4079±2.8803|
+|E8|92.0729±3.3148|91.7723±3.3378|95.7031±3.4971|87.8415±4.2256|93.2062±3.2145|
+|E9|91.3845±3.2677|91.2069±3.2546|93.5661±4.1059|88.8476±4.1361|93.4101±2.6886|
+
+- **初筛**：E6=91.9592%，严格超过91.73%。E6−E0为+0.2299pp ACC，但SEN下降1.2439pp。
+- **关键差异**：E3−E2=−0.2299pp；E4−E3=+0.1149pp；E5−E4=−0.3448pp；E6−E5=+0.5747pp；E6−E7=+0.5747pp；E6−E8=−0.1136pp；E6−E9=+0.5747pp。
+
+### 工程与科研判定
+
+- 100/100组折完成，E1–E9共90折实际训练，统一源码签名，独立读回100/100。
+- 数学预检通过，归一化和SRD对称性正确，SCA初始尺度有界。
+- `ENGINEERING_FULL_PASS=NO-GO`：CRA使用两个固定候选替换路径，没有完成完整候选集合上的分类损失严格内层最大化；E1也没有完成逐元素前向、loss、梯度和第一步更新的独立parity证明；实际alpha约0.002而非声明的0.01；消息关闭干预尚未独立重算。
+- `SCREEN_ACC_PASS`，但`GO_REAL_MESSAGE=NO-GO`、`GO_SCA=NO-GO`、`GO_TRUE_PAIR_LABEL=NO-GO`；CRA和真实关系仅部分支持，不能称为严格机制验证。
+- **最终科研判定：NO-GO**。APCR-GFR超过指标门槛，但当前证据不足以支撑MICCAI 2027第一创新点；主要限制是关系增量弱、SCA无收益、CRA内层优化不完整和锚点parity未完成。
+
+### 资源与产物
+
+- 单GPU、最多5个逻辑worker；100/100任务完成。
+- 产物目录：`/data/adodas/SPromptGL-main/experiment/experiment48_3_apcr_gfr`；报告、逐折指标、汇总、配对、诊断、manifest和`.runtime/final_audit.json`均已保存。
+- 历史`val=test`、CV前RFE/全局预处理、transductive图和单seed限制仍然存在。
+
+
+<!-- EXPERIMENT48_4_VERIFIED_APCR -->
+## Experiment 48.4 — Verified APCR-GFR
+
+- 状态：PASS；历史E6冻结无重训干预10/10折；正式任务110/110，E1–E10共100/100折重训。单卡最多5个逻辑worker。墙钟时间：91.0分钟。
+- 研究目标：在B0-B GFR→CAM锚点上审计APCR直接消息贡献，修复SRD对称配对、SCA同患者对对齐、有限候选CRA最大化和负控制。
+- 旧E6重新加载48.3源码和最佳权重，十折预测SHA复现。原完整ACC=91.9592%；关闭APCR的ACC见下表。alpha均值=0.002231，实际残差/原始GFR范数=0.01670%。
+
+### 48.3 E6冻结checkpoint干预
+
+|干预|ACC|Hard-AUC|SPE|SEN|Probability-AUC|ΔACC pp|
+|---|---:|---:|---:|---:|---:|---:|
+|FULL|91.9592|91.7273|94.6253|88.8293|93.7393|+0.0000|
+|APCR_OFF|91.8443|91.6209|94.4126|88.8293|93.7075|-0.1149|
+|OFF_PHENO|91.9592|91.7273|94.6253|88.8293|93.7339|+0.0000|
+|OFF_ANAT|91.7294|91.4959|94.4126|88.5793|93.7288|-0.2299|
+|OFF_FUNC|91.8443|91.6209|94.4126|88.8293|93.7233|-0.1149|
+|OFF_CORR|91.9592|91.7273|94.6253|88.8293|93.7339|+0.0000|
+|IDENTITY_ONLY|91.7294|91.4959|94.4126|88.5793|93.7234|-0.2299|
+|FULL_WRONG|91.7294|91.4959|94.4126|88.5793|93.7234|-0.2299|
+|RANDOM|91.7294|91.4959|94.4126|88.5793|93.7288|-0.2299|
+
+### 新E6固定checkpoint干预
+
+|干预|ACC|Hard-AUC|SPE|SEN|Probability-AUC|ΔACC pp|
+|---|---:|---:|---:|---:|---:|---:|
+|FULL|90.9248|90.7061|93.5708|87.8415|92.6138|+0.0000|
+|APCR_OFF|89.2006|89.0646|90.7817|87.3476|92.6557|-1.7241|
+|ALPHA_ZERO|89.2006|89.0646|90.7817|87.3476|92.6557|-1.7241|
+|OFF_PHENO|90.2351|90.0120|92.9325|87.0915|92.7091|-0.6897|
+|OFF_ANAT|90.3501|90.1347|92.9278|87.3415|92.6456|-0.5747|
+|OFF_FUNC|89.6604|89.4382|92.2849|86.5915|92.6612|-1.2644|
+|OFF_CORR|90.0052|89.7813|92.7151|86.8476|92.7254|-0.9195|
+|WRONG_RELATION_REWEIGHTED|88.1688|87.9416|90.9991|84.8841|92.5978|-2.7560|
+|RANDOM_STRATIFIED_RELATION|88.8584|88.6103|91.8548|85.3659|92.7683|-2.0664|
+
+### Experiment 48.4重新训练
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|
+|E0 B0B_REFERENCE|91.7294 ± 2.8596|91.6046 ± 2.8059|93.1360 ± 4.5354|90.0732 ± 3.5117|93.2322 ± 3.2881|
+|E1 ANCHOR_PARITY|91.7294 ± 2.8596|91.5890 ± 2.7858|93.3488 ± 4.7951|89.8293 ± 3.4050|93.2166 ± 3.2704|
+|E2 FEATURE_CAPACITY|90.9248 ± 3.4340|90.7285 ± 3.4225|93.3534 ± 4.3743|88.1037 ± 4.3663|93.3909 ± 3.0867|
+|E3 REAL_RELATION|90.8111 ± 3.3382|90.6321 ± 3.3980|93.1545 ± 3.0073|88.1098 ± 4.8681|93.2863 ± 2.9820|
+|E4 SRD_ONLY|90.9261 ± 3.1105|90.7706 ± 3.1009|92.7058 ± 4.4823|88.8354 ± 4.2117|93.2504 ± 2.7634|
+|E5 SRD_SCA|90.5799 ± 3.4861|90.3563 ± 3.5485|93.5846 ± 3.6965|87.1280 ± 5.6430|93.1332 ± 2.5366|
+|E6 FULL_VERIFIED_APCR|90.9248 ± 3.1948|90.7061 ± 3.2182|93.5708 ± 3.6163|87.8415 ± 4.2256|92.6138 ± 2.7794|
+|E7 FULL_NO_SCA|90.3501 ± 3.7564|90.1624 ± 3.7946|92.7151 ± 4.3409|87.6098 ± 5.2961|93.2028 ± 2.9230|
+|E8 FULL_WRONG_RELATION|90.9248 ± 3.0683|90.7987 ± 3.0379|92.2803 ± 4.2696|89.3171 ± 3.5560|93.3887 ± 2.8412|
+|E9 FULL_SHUFFLED_SRD|90.5812 ± 3.1680|90.4167 ± 3.0588|92.2664 ± 5.7036|88.5671 ± 3.4356|93.0893 ± 2.5869|
+|E10 FULL_RANDOM_ATTACK|90.8111 ± 3.2580|90.5949 ± 3.3288|93.5800 ± 3.8326|87.6098 ± 5.6176|92.7453 ± 2.8659|
+
+### 主要配对差
+
+|比较|ΔACC pp|ΔHard-AUC pp|ΔSPE pp|ΔSEN pp|ACC胜/平/负|Hard-AUC胜/平/负|
+|---|---:|---:|---:|---:|---:|---:|
+|E1-E0|+0.0000|-0.0156|+0.2128|-0.2439|0/10/0|0/9/1|
+|E2-E1|-0.8046|-0.8605|+0.0046|-1.7256|1/3/6|1/3/6|
+|E3-E2|-0.1136|-0.0964|-0.1989|+0.0061|4/0/6|4/0/6|
+|E4-E3|+0.1149|+0.1385|-0.4487|+0.7256|3/5/2|6/1/3|
+|E5-E4|-0.3461|-0.4143|+0.8788|-1.7073|2/3/5|2/2/6|
+|E6-E5|+0.3448|+0.3498|-0.0139|+0.7134|4/4/2|6/2/2|
+|E6-E7|+0.5747|+0.5437|+0.8557|+0.2317|4/5/1|5/3/2|
+|E6-E8|-0.0000|-0.0926|+1.2905|-1.4756|3/4/3|4/1/5|
+|E6-E9|+0.3435|+0.2894|+1.3043|-0.7256|5/3/2|5/2/3|
+|E6-E10|+0.1136|+0.1112|-0.0093|+0.2317|4/4/2|5/1/4|
+|E6-E0|-0.8046|-0.8985|+0.4348|-2.2317|1/4/5|2/1/7|
+
+- 工程预检：十折B0-B初始输出、主/图loss、梯度、一步更新、优化器和RNG逐张量测试通过；SRD规范化与对称性、采样变异和同患者对SCA测试通过；CRA候选损失argmax、预算、无自环/重复、测试标签不变性及随机选择负控测试通过。真实fold预检的CRA损失上升量=8.3446503e-07，幅度很小。
+- E1最终best预测SHA与历史E0一致9/10折，故完整训练checkpoint parity为PARTIAL；这与十折一步数值parity分开报告。
+- 新E6固定best checkpoint干预见`results/apcr_e6_interventions.csv`；旧模型干预见`results/frozen_e6_interventions.csv`。历史E6关闭APCR只反映直接推理贡献，不能否定训练期的间接影响。
+- SCREEN_ACC：FAIL（新E6 ACC=90.9248%，门槛91.73%）。机制准入还取决于真实关系、SRD、SCA、CRA相对负控制及关闭消息干预，不能由ACC单独决定。
+- 科学解释保留限制：CV前全局预处理/RFE、871节点transductive图、历史`val=test`选checkpoint、单seed及十折训练集重叠；不能称为无偏外部泛化性能。
+- 代码签名：`32adfb609edab2ed90833e5fea283d9b52d22766e02771ad143c4e576353033b`；manifest SHA=3a412e0f92ad653c7f49e2d1f118867c0d73264648874b40b1cad7fd3438b2ce；报告SHA=2c15df338274c3aa8424395dd0a83084b0dc5a417e9b45574c19c46f53797a9b；产物目录：`/model/spromptgl/experiment/experiment48_4_verified_apcr`。
+
+建议：只有当新E6的真实关系相对错误关系、SRD相对置乱监督、CRA相对随机攻击均呈稳定配对收益且E6关闭消息产生实质损害时，才继续将APCR作为MICCAI 2027第一个创新候选；否则先报告NO-GO并分析训练优化/关系信号，不按ACC改写组别。
+
+
+补充说明：上文manifest SHA为handoff安全追加前快照；追加后的handoff最终SHA与原历史前缀SHA记录于本实验`manifest.json`的`handoff_after_sha256`和`handoff_prefix_sha256`字段。
+
+## Experiment 53.1 — DRAP机制修复与严格配对重训
+
+- 目标：修复实验53的正负传播分支、10轮warmup、单可靠模态时的跨模态对抗、E7逐前向关系置乱及执行端确定性设置；固定实验51 E1基座，重训E1–E8共80折。E0仅从历史checkpoint只读核验10/10折。
+- 路径：请求目录`/data/adodas/SPromptGL-main/experiment/experiment53_1_drap_corrected_adversarial_propagation`因OSSFS `OSError(5)`无法创建；实际产物位于`/model/spromptgl/experiment/experiment53_1_drap_corrected_adversarial_propagation`。两者为不同挂载。完整报告：`results/report.md`；配置、源文件和checkpoint SHA及归档记录：`manifest.json`。
+- 工程审计：E1–E8最终确定性重训80/80完成，最佳checkpoint独立重载和指标复算80/80一致；E0历史读回10/10一致；初始化、优化器、传播分支、warmup、四模态GRL及有限值审计通过。首轮E7错误实现及后续未启用确定性设置的80折版本均保存在实验`.runtime/superseded/`，最终结果不引用这些版本。
+- 基线E0：ACC 91.9592%、Hard-AUC 91.7434%、Probability-AUC 93.1856%、SPE 94.6392%、SEN 88.8476%。完整DRAP E4：ACC 91.7294%、Hard-AUC 91.4587%、Probability-AUC 92.8079%、SPE 94.8381%、SEN 88.0793%；E4−E0的ACC为−0.2299 pp，Probability-AUC为−0.3777 pp，未达到诊断增量标准。
+- 关系与机制：CORR患者互斥OOF AUC为0.7257且10/10折可靠；PHENO/ANAT/FUNC分别为0.4984/0.5031/0.4994。四模态对抗与GRL梯度确实执行，但E4模态判别准确率约0.590，模态来源仍可区分，且未显示相对无条件对抗的稳定收益。E4传播非零但影响小：平均有界delta范数1.0318，关闭传播后的相对logit变化0.00429、测试预测翻转率约0.00115。E7实际正/负无向边预算比E4少约248/244条，故关系错配控制标记为`CONTROL_MATCHING_LIMITED`；E4未稳定优于E7/E8。
+- 判断：工程实现GO；CORR关系信号GO（仅患者互斥OOF证据，站点混杂因数据无站点元信息而未能审计）；对抗有效性NO-GO；传播机制GO但分类影响很小；诊断增量NO-GO；MICCAI 2027完整候选模块NO-GO。保留历史`val=test`选模、CV前预处理/RFE、871节点transductive图及单seed，结果不能视为无偏外部泛化。
+
+## Experiment 55 — DCRAA-GFR
+
+- **状态：COMPLETE_AUDITED；最终MICCAI 2027第一创新模块：NO-GO。** 研究目标是检验疾病条件化患者对关系的站点对抗对齐，是否在保留CORR的AA/TT/AT疾病关系时改善E1的患者图边和真实跨患者消息。模块由CORR关系编码器、冻结CORR疾病概率条件、三头条件站点判别器/GRL、关系保护、固定CORR候选图重加权和有界CORR差分传播组成；没有加入Prompt、PEN、LLM、ROI图、超图、MoE或第二分类主干。
+- **源码/论文审计：** 已阅读并记录SPromptGL Figure 1、Figure 2、Section 2.1/2.2、Equations 1–7、Table 2；实际源码确认GraphLearn是投影后余弦相似度及`score>0.9`脱梯度阈值，E1四路GCN均接收完整320维并累加，原ALoss未进总loss，原CAM为`PLNNoPEN`，GFR/CAM为独立Adam且`weight_decay=0.11`。DeepASD Figure 1、对抗编码器Equations 1–5、患者图Equations 6–9及消融已审计；其对抗对象是模态来源特征，DCRAA对齐的是CORR患者对关系，二者未混同。CDAN条件判别、GRL及不确定条件的已知局限已记录，不宣称这些通用组件首创。历史43.1–43.4、47.3、48及相关对抗、51/51.1–51.4、53/53.1、54已审计；47.1、47.2本地未找到并明确标记`NOT_FOUND`。
+- **E1继承/RNG：** E0以E51 `build_state("E1",fold)`逐折重放，E1的GraphLearn/GCN/CAM初始化、两个Adam、dropout和fold入口均保持；10/10折在best epoch、实际执行epoch、模型/CAM张量、两个Adam状态、预测和七项指标上精确通过。历史任务没有保存第一forward loss，故该单项无法追溯比较。DCRAA初始化使用`torch.random.fork_rng`，配对/OOF/错配使用独立NumPy状态；结构预检确认新增初始化不改变E1共同dropout输出，恢复测试确认保存两步后第三步参数和loss一致。
+- **正式规模：** 预注册E0–E10共11组，E0回放10折，E1–E10独立训练100折；100/100新增任务完成，110/110最佳checkpoint重新加载、优化器契约核对和指标独立重算通过。新增组保留E1原始GFR/CAM WD=0.11；DCRAA使用AdamW lr=0.001、矩阵WD=0.0001、bias/LayerNorm WD=0。
+
+### 十折正式指标（mean ± population SD，%）
+
+|组|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|BA|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|E0 E51_E1_EXACT_REPLAY|91.9592 ± 2.8684|91.7434 ± 2.8950|93.1856 ± 3.0236|94.6392 ± 3.3856|88.8476 ± 4.1651|91.7434 ± 2.8950|91.0928 ± 3.1408|
+|E1 RELATION_CAPACITY_CONTROL|91.2709 ± 2.9237|91.0926 ± 2.9185|93.4094 ± 2.7886|93.5754 ± 3.7234|88.6098 ± 3.9623|91.0926 ± 2.9185|90.3935 ± 3.1610|
+|E2 DISEASE_RELATION_ONLY|91.3845 ± 3.1017|91.2433 ± 3.1045|93.3109 ± 2.8077|93.1452 ± 3.3236|89.3415 ± 3.6429|91.2433 ± 3.1045|90.5758 ± 3.3525|
+|E3 UNCONDITIONAL_RELATION_ADV|91.8443 ± 2.9346|91.6424 ± 2.9468|93.4987 ± 2.7822|94.4311 ± 3.4896|88.8537 ± 4.1343|91.6424 ± 2.9468|90.9813 ± 3.2201|
+|E4 DISEASE_CONDITIONAL_ADV|91.5008 ± 3.0557|91.3793 ± 3.0274|93.4045 ± 2.9583|92.9232 ± 4.0158|89.8354 ± 3.3922|91.3793 ± 3.0274|90.7572 ± 3.2154|
+|E5 FULL_DCRAA_GFR|91.6144 ± 3.0928|91.4484 ± 3.0923|93.4419 ± 2.9490|93.5615 ± 4.5605|89.3354 ± 4.5730|91.4484 ± 3.0923|90.8057 ± 3.2920|
+|E6 WRONG_DISEASE_CONDITION|91.7294 ± 2.7174|91.5115 ± 2.6844|93.1457 ± 3.0774|94.1998 ± 4.9534|88.8232 ± 4.3815|91.5115 ± 2.6844|90.8800 ± 2.8706|
+|E7 WRONG_SITE_ADVERSARY|91.9592 ± 3.0901|91.7885 ± 3.0261|93.6547 ± 3.0105|93.9917 ± 4.3141|89.5854 ± 2.8701|91.7885 ± 3.0261|91.2072 ± 3.2336|
+|E8 WRONG_PATIENT_RELATION|91.3845 ± 2.7399|91.1582 ± 2.6798|93.5219 ± 2.9039|93.9870 ± 5.1964|88.3293 ± 4.3396|91.1582 ± 2.6798|90.4959 ± 2.8723|
+|E9 NO_CROSS_PATIENT_MESSAGE|91.9592 ± 2.8684|91.7434 ± 2.8950|93.1856 ± 3.0236|94.6392 ± 3.3856|88.8476 ± 4.1651|91.7434 ± 2.8950|91.0928 ± 3.1408|
+|E10 NO_DISEASE_PROTECTION|91.7294 ± 3.0819|91.5462 ± 3.0715|93.3120 ± 3.6554|94.0009 ± 4.0539|89.0915 ± 4.0230|91.5462 ± 3.0715|90.8995 ± 3.3355|
+
+- **关键同折差异（E5−对照，pp）：** E0 ACC −0.3448、Hard-AUC −0.2950、Probability-AUC +0.2563、SPE −1.0777、SEN +0.4878（ACC胜/平/负=1/5/4）；E3 ACC −0.2299、Hard-AUC −0.1939；E4 ACC +0.1136、Hard-AUC +0.0691；E6 ACC −0.1149、Hard-AUC −0.0631；E7 ACC −0.3448、Hard-AUC −0.3401；E8 ACC +0.2299、Hard-AUC +0.2903但Probability-AUC −0.0800、SPE −0.4255且ACC胜/平/负=3/6/1；E9 ACC −0.3448、Hard-AUC −0.2950；E10 ACC −0.1149、Hard-AUC −0.0978。没有把E8的小幅平均ACC/Hard-AUC差异解释成稳定真实关系增量。
+- **关系与对抗：** CORR关系OOF宏AUC为0.6667±0.0085，独立外层测试患者对关系宏AUC为0.8072±0.0399，关系嵌入未坍塌，故`GO_RELATION_DISCRIMINATION`和`GO_DISEASE_PRESERVATION`。10/10折条件站点对抗实际激活；E5平均首轮GRL关系编码器梯度约0.00982、判别器梯度约0.1483，训练条件对抗loss约0.6597。原始CORR站点probe AUC约0.5667，对抗后条件判别AUC约0.5207；结合E5劣于E7的配对结果，不能证明条件对齐带来诊断收益，`GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT=NO-GO`。PHENO/ANAT/FUNC十折均未通过预注册OOF AUC≥0.55准入，因此本实验没有执行跨模态疾病关系对齐；报告范围仅是CORR内部跨站点患者对关系对抗。
+- **图边/消息/反事实：** E5候选图每个接收者最多8条边；E8真实边身份变化约16.6%，保持收发度和站点/训练测试分层。E5平均新增消息范数约60.95，新增残差/融合表示约0.001919，alpha最终均值约−0.253，路径数值上参与分类但幅度很小。固定E5最佳checkpoint的关系重加权、错误疾病条件、错误邻居和关闭新增消息均未造成测试预测翻转或ACC变化；独立重训中E5相对E9为−0.3448pp ACC，故`GO_CROSS_PATIENT_PROPAGATION=NOT_SUPPORTED`。E5相对E8只呈不一致的小幅指标差异，`GO_TRUE_PATIENT_RELATION=NOT_SUPPORTED`。`GO_CLASSIFICATION_GAIN=NO-GO`，E5未达到相对E0 ACC至少+0.30pp且BA/Probability-AUC不下降的预注册门槛；最终`GO_MICCAI2027_MODULE=NO-GO`。
+- **历史协议限制：** 保留`val_idx=test_idx`并用测试折ACC选checkpoint、CV前全局标准化/RFE、871人transductive图、seed=0、单一ABIDE A队列；十折训练患者重叠，结果不代表无偏外部泛化或多seed稳定性。
+- **交付与SHA：** 正式目录为`/model/spromptgl/experiment/experiment55_dcraa_gfr`；报告为`results/report.md`，逐折指标为`results/fold_metrics.csv`，汇总为`results/summary.csv`，配对为`results/paired_comparisons.csv`，机制为`results/diagnostics.csv`，干预为`results/interventions.csv`，独立审计为`results/checkpoint_audit.csv`，清单为`manifest.json`。主要SHA256：`design.md`=`56f76180173c98cfc7d890f5e68ece5d72fd18b152f680a1861a5424a71b65c5`；`config.json`=`6720cad2838a829ef5efcb06d6f4bbfc47ed11a37af14d7954f4422b917b2f43`；`dcraa.py`=`164b9760375080aabac3fcdd1253870dcfdbb54255afc684fa7bc9ba4da78830`；`run.py`=`84dadfb822376de61e5a2afd0c25c8a814e23eb812cd58136f7f434c1a9c1383`；`tests.py`=`2191dd6fcebb7e11fb03a6853c1ac8d18beeb3c5d977f66f80fae5f012fdbdd3`；`audit.py`=`66bb623a0003df7c4bdcdf132bc239915ca2fbd2afca19edb3dd34d0944d4e30`；`manifest.json`=`d56bab9c4ab3206aba9f1630b90cdfdc37c8fdb6481b9f46cafb518cad455167`；`results/report.md`=`b45efffc4f8c2feeb558c705f3ffacc9d874701d13b25ef6f2a687ac45de7d05`。根数据及受保护源码SHA与E1源快照均记录于manifest；无根源码、数据或历史checkpoint修改。
+
+## Experiment 53.2 — CADR-GFR
+
+- **目的与范围：** 将CORR锚定的疾病关系对齐、模态独立患者图、有符号GCN与可靠性融合整合进E51 E1的GFR。唯一正式组`E1_CADR_GFR_FULL`，seed 0，10折；未新增对照或调参。
+- **执行与审计：** `/data/adodas/SPromptGL-main/experiment/experiment53_2_cadr_gfr_integrated/`位于`/data`独立挂载，与`/model/spromptgl` overlayfs不同。10/10折完成，10/10最佳checkpoint独立读回并重算七项指标通过。根模型源码、ABIDE数据和历史实验均只读。共享初始化、CAM、post-construction RNG及fold split与历史审计一致；warmup两步主干更新与E51 E1基准一致。
+- **结果（mean ± population SD，%）：** ACC `91.8443 ± 2.8892`，Hard-AUC `91.6526 ± 2.8765`，Probability-AUC `93.4205 ± 3.1701`，SPE `94.2137 ± 3.4858`，SEN `89.0915 ± 3.3444`，BA `91.6526 ± 2.8765`，ASD-F1 `91.0178 ± 3.1135`。相对历史E51 E1，逐折均值差依次为ACC `-0.1149pp`（胜/平/负2/5/3）、Hard-AUC `-0.0908pp`（2/5/3）、Probability-AUC `+0.2349pp`（5/1/4）、SPE `-0.4255pp`（1/6/3）、SEN `+0.2439pp`（2/7/1），没有稳定诊断增量。
+- **机制审计：** CORR是唯一可靠模态，患者互斥OOF AUC `0.6660 ± 0.0279`，10/10折超过0.55；PHENO/ANAT/FUNC OOF AUC约0.504/0.504/0.514且可靠性门为0，因此三者疾病正负边均为零。CORR每折平均有效正/负边约1709/1526，outer-train有效边精度约0.944/0.950。四路原始GCN消息/输入范数比约`5.0e-7`，在WD=0.11下近零；CORR内部有界差分通道承担主要可测传播，最终表示与输入相对差约`2.47e-3`。关闭全部疾病传播对held-out logits产生连续变化，但10折共871个外层测试预测无硬标签翻转，ACC不变。对抗训练真实执行，判别器准确率约0.563、学生分支GRL梯度非零、CORR对抗梯度为零；缺少联合训练后的患者互斥OOF，因此对齐收益或负迁移均不能下结论。
+- **判断：** ENGINEERING_GO；CORR关系证据GO；四模态疾病图完整激活NO-GO（当前仅CORR通过可靠性门）；传播对分类连续输出有可测影响，但无硬预测增量；DIAGNOSTIC_NO-GO，MICCAI候选NO-GO。此处保留`val=test`、CV前预处理和全871节点transductive图，结果为探索性配对评估，不是无偏泛化结论。
+- **文件：** 报告`experiment/experiment53_2_cadr_gfr_integrated/results/report.md`；逐折、汇总、配对和机制审计见同目录`results/`；来源、数据、anchor、缓存、checkpoint及最终源码SHA见`manifest.json`。handoff追加状态记录在该manifest。
+
+## Experiment 56 — DCRAG-GFR
+
+- **状态与范围：** `COMPLETE_AUDITED`，唯一正式组`E56_FULL_DCRAG_GFR`，seed 0，固定10折完成10/10；科研结论`NO-GO`。实验目录：`experiment/experiment56_dcraag_gfr/`。未增加正式训练组或参数搜索。
+- **研究问题及设计：** 以E51 E1为唯一基座，把四个独立GraphLearn和四个继承的320维GCN整合到统一`DCRAGGFR`，每模态学习16维shared/16维private的对称患者对表示和AA/TT/AT关系；冻结CORR五折患者互斥疾病概率教师，构造detach软关系条件；shared relation经GRL进入PHENO/ANAT/FUNC/CORR四类模态来源判别器，private relation不受对抗梯度。训练标签只在outer-train患者对监督。四模态各自保留GraphLearn支持并独立重加权same/AT边，原GCN沿same通道传播、低秩差异消息沿AT通道传播，门控融合后直接送入E1的PEN-free CAM，没有在旧GFR之后外挂新残差。
+- **论文、源码与历史审计：** `design.md`对照SPromptGL论文Figure 1、Section 2.1、公式(1)(2)(7)和ABIDE结果，逐项映射`GraphLearn`、四路完整320维GCN、E1四路消息累加修复、`GraphConstructLoss`、未进入`simple-2`总损失的ALoss、PEN-free CAM和优化顺序。审计区分论文叙述与执行代码；查看E43/44/47/48、E51.1–51.4、E53/54/55相关报告。历史证据反复显示CORR关系较可靠、辅助模态关系弱，E53/54/55没有建立真实患者关系传播的稳定独立收益；E55完整组ACC 91.6144%，低于E51 E1的91.9592%。这些仅作设计约束，非E56结果替代。
+- **E1初始化与RNG：** 逐折复现E51 `build_state("E1", fold)`入口`seed=510000+100*fold+1`，使用E43.1十折锚点继承GraphLearn、四个GCN及PEN-free CAM全部同名参数与buffer；没有用E51最佳模型或E55权重初始化。10折继承tensor SHA和fold RNG入口SHA均记录于`manifest.json`。新增参数初始化隔离公共RNG；E1 reference bypass的GFR输出、CAM输出和共同dropout RNG逐位一致。中断恢复测试中继续步loss一致，参数最大误差约`3.4e-8`。训练期间发生一次OSSFS原子重命名`ENOENT`，worker从恢复状态继续完成，未静默吞错或重跑已完成折。
+- **优化器差异：** GraphLearn及CAM保持E1 Adam `lr=0.0038, weight_decay=0.11`；为处理已知消息收缩，继承GCN参数使用`lr=0.0038, weight_decay=0.0001`；新增模块AdamW `lr=0.001, weight_decay=0.0001`。因此初始化和入口RNG与E1逐折匹配，但优化器并非完整E1 parity，GCN WD变化是预先冻结的实验设计。
+- **分类结果（均值±population SD，%）：**
+
+  |指标|E56|E51 E1|同折均值差(pp)|
+  |---|---:|---:|---:|
+  |ACC|83.9263 ± 4.6834|91.9592 ± 2.8684|-8.0329|
+  |Hard-AUC|83.7066 ± 4.5597|91.7434 ± 2.8950|-8.0368|
+  |Probability-AUC|87.0762 ± 5.3312|93.1856 ± 3.0236|-6.1095|
+  |SPE-TD|86.7669 ± 7.8167|94.6392 ± 3.3856|-7.8723|
+  |SEN-ASD|80.6463 ± 6.1532|88.8476 ± 4.1651|-8.2012|
+  |BA|83.7066 ± 4.5597|91.7434 ± 2.8950|-8.0368|
+  |ASD-F1|82.3256 ± 4.7735|91.0928 ± 3.1408|-8.7672|
+
+  Hard-AUC由硬预测计算；Probability-AUC使用连续`P(ASD)`且ASD为正类。871条外层预测合并结果为ACC 83.9265%、Hard-AUC/BA 83.6986%、Probability-AUC 85.4123%、SPE 86.7521%、SEN 80.6452%，混淆矩阵`[[325,78],[62,406]]`。逐折数值和同折配对结果在`results/fold_metrics.csv`、`results/paired_comparisons.csv`；测试折同时用于checkpoint选择，因此合并预测也不是无偏独立OOF估计。
+- **关系与条件对抗机制：** 患者互斥训练OOF关系宏AUC：PHENO 0.4972、ANAT 0.5266、FUNC 0.5268、CORR 0.7268；因此CORR关系判别受支持，其他三模态的疾病关系证据不足。条件模态对抗10/10折有非零GRL路径且private梯度为零，但四模态来源probe宏AUC仅从0.99966降至0.99893，训练判别器held-out宏AUC为0.85978；不能证明模态对齐有效或带来诊断收益。CORR疾病判别保留、表示无共同坍塌；四模态条件对抗对齐`NO-GO`。
+- **四图和传播：** 四张图都独立改变边权，平均候选边各13,936条；prior到重加权分布的平均L1为PHENO 0.08383、ANAT 0.09834、FUNC 0.03775、CORR 0.20859。各模态same消息/输入范数比分别4.87、4.39、4.93、5.29；四图平均最终残差/原始输入范数比13.39，属于明显尺度失控，而不是传播塌缩。异类消息/输入比分别约0.071、0.091、0.052、0.048。真实图在训练模型中确有数值影响，但以该传播尺度不能据此认定机制有效。
+- **固定checkpoint干预与控制质量：** 中性边权使ACC变化-4.37pp；错误疾病条件-0.46pp（预测翻转0.46%）；错误邻居-13.09pp（翻转24.12%）；关闭全部跨患者消息-34.21pp（翻转48.92%）；逐一关闭PHENO/ANAT/FUNC/CORR消息的ACC变化为-7.32/-12.53/-2.99/-8.62pp；E1 GFR bypass为-32.15pp。它们说明当前checkpoint依赖学到的消息路径，不等于独立重训增益。错误邻居身份变化100%、receiver出度与outer train/test分区匹配100%，但仅88.96%替换边保留同站点属性，发送者入度精确匹配仅3.36%、平均入度TV 0.3405；因此真实图相对错误图的独立价值未被严格控制实验证明，判为`PARTIAL_FIXED_CHECKPOINT_ONLY`。
+- **审计与最终判断：** 10/10最佳checkpoint独立加载重算通过，保存指标最大差异0；数据、划分SHA和根目录保护文件训练前后相同。`GO_RELATION_DISCRIMINATION=GO`（CORR）；`GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT=NO-GO`；`GO_DISEASE_PRESERVATION=GO`（CORR）；`GO_TRUE_PATIENT_RELATION=PARTIAL_FIXED_CHECKPOINT_ONLY`；`GO_CROSS_PATIENT_PROPAGATION=NO-GO_SCALE_DOMINATED`；`GO_CLASSIFICATION_GAIN=NO-GO`；`GO_MICCAI2027_MODULE=NO-GO`。单GPU `cuda:0`，最多5个worker、每worker 2 CPU线程；正式任务约7.5分钟含恢复，恢复后控制器258.8秒，独立审计21.1秒。下一研究判断：先解决跨模态来源可辨识性与传播尺度控制，再评估是否值得另立实验；本轮不继续调参。
+- **协议限制：** 保留历史`val_idx=test_idx` checkpoint选择、外层CV前全局标准化/RFE、871人transductive图、单seed和单一ABIDE A数据。十折训练集相互重叠，不声称统计显著、多seed稳定、无偏独立测试或外部泛化。
+- **数据与受保护文件SHA-256：** CSV `b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1`；模态映射 `8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e`；`main.py` `dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2`；`model.py` `254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda`；`network.py` `484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec`；`layers.py` `4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a`；`utils.py` `95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67`。E51源码快照、E43.1十折anchor SHA及checkpoint SHA均在实验`manifest.json`。
+- **交付文件SHA-256：** `design.md` `ac84c92b65a10ded7e7f341017811ddf0550b3fee53e7882ffd89b26f5f37cbf`；`config.json` `a53bcc740a5651ac7ed3b01f9413af52ab34ca07cc2af128cafce7028a249bf2`；`dcraag.py` `5ba10dd357a9b20e5535b3545a8f042e73bf725733d35636aed68569452bc780`；`run.py` `967a9ece57fbaf7643b4fce72b54b05c17ff2b1b8f89c96fa97f9b576e796ea5`；`tests.py` `6a58916ecc2db86f1a773c3c71136ea49acd313483b47d3de5759b1cab7b60c5`；最终`audit.py` `d479a410d9c0cd8f705c99614185cb7f65de22fb957925df538e134e12003dc3`；`manifest.json` `8bfd7eaaf735195705d4310c479582961580b63b602a04cd90b0d7d3eaf62261`；`results/report.md` `d942d0e1cc5b5ff42af55a307b0c37a9af348b40851468f1f3cb69504f13cf93`；`results/fold_metrics.csv` `bfbd474af3257be718a1af426ce6dd81c70c69c900eb29455c7a9547ceb4bed9`；`results/mechanism.json` `07961808928fe0e474cd69a5912698a42e5d49516180cdb9abeca682e5ab19a7`。handoff章节已追加，未修改根源码、数据或历史实验，未执行commit/push。
+
+## Experiment 53.3 — CADR-GFR Original Graph Fallback Fix
+
+- **范围：** 唯一正式组`E1_CADR_WD0001_GRAPH_FALLBACK_FIX`，`cadr_weight_decay=0.001`，seed 0，10折。工作目录`/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/`。实验53.2 WD=0.001历史组、实验51 E1和43.1 anchors均只读；53.2关系OOF缓存、训练pair、校准参数及初始化按SHA逐折验证后复用。
+- **唯一模型修复：** OOF可靠度为0的PHENO、ANAT、FUNC仍保持疾病正负图和direct disease message为零，但使用对应原始GraphLearn图及anchor继承的两层320维GCN：`GCN_m(X, normalize_adj(A_original_m + I))`，以原`sigmoid(fusion_weight_m)`融合，不再乘疾病可靠度门。CORR十折均可靠，保留原53.2 CADR分支；`use_cadr=False`仍走实验51 E1路径。预检验证原图消息精确一致、零疾病边、`positive_off`不关闭回退、分类梯度到达回退GCN/GraphLearn，CORR消息和正负疾病图与53.2原实现逐位相等。
+- **配置与初始化：** GFR Adam `lr=0.0038, wd=0.11`；CAM Adam `lr=0.0038, wd=0.11`；CADR AdamW `lr=0.001, wd=0.001`，两个新增参数组均为0.001（含bias/LayerNorm），匹配53.2 WD=0.001实际扫描实现。十折共享参数SHA、CADR参数SHA、post-construction RNG SHA、split SHA及pair SHA均与53.2逐折一致。根模型代码、数据与历史实验未修改。
+- **执行与审计：** 10/10折训练完成；训练内读回及独立审计入口分别10/10通过。最佳checkpoint独立重算指标一致、无NaN/Inf，测试标签置换不影响预测。checkpoint和日志位于新实验`.runtime/`。
+- **结果（mean ± population SD，%）：** ACC `91.7294 ± 2.9950`，Hard-AUC `91.6046 ± 2.9574`，Probability-AUC `93.5681 ± 3.0886`，SPE-TD `93.1360 ± 4.3174`，SEN-ASD `90.0732 ± 3.5288`，BA `91.6046 ± 2.9574`，ASD-F1 `91.0065 ± 3.1369`。对比53.2 WD=0.001，逐折均值差：ACC `-0.2299pp`（胜/平/负2/4/4），Hard-AUC `-0.0799pp`（5/1/4），Probability-AUC `+0.3705pp`（5/0/5），SPE `-2.1415pp`（1/1/8），SEN `+1.9817pp`（4/6/0）。没有一致的诊断增量。
+- **传播机制：** PHENO/ANAT/FUNC的原始图回退模式均为10/10折。其平均消息/输入范数比依次约`7.39e-5`、`4.34e-5`、`1.70e-5`；分类损失到GCN和GraphLearn的梯度有限且非零，但原GCN消息仍受`wd=0.11`强烈压缩。CORR继续使用CADR疾病图。恢复原图路径修复了结构语义，但本次没有得到更高ACC：SPE下降、SEN上升，概率AUC增加而Hard-AUC略降。
+- **判断与限制：** 工程实现和独立checkpoint审计GO；不可靠模态原图传播路径已恢复；诊断增量NO-GO。单seed、测试折参与checkpoint选择、CV前标准化/RFE及871节点transductive图使结果仅为同口径探索性比较，不能视作无偏泛化估计。完整结果见`results/report.md`、`results/fold_metrics.csv`、`results/paired_comparisons.csv`、`results/diagnostics.csv`及`manifest.json`。
+
+#### Experiment 53.3 固定checkpoint干预审计补记
+
+复核了疾病消息关闭与整个PHENO模态贡献关闭两种干预。关闭疾病正边时，PHENO原图回退消息保持逐位不变；关闭PHENO整个模态贡献后，十折合计仅1/871个测试预测翻转，平均表示差范数为0.00968。四模态消息比例和完整逐折指标见实验目录`results/diagnostics.csv`与`results/interventions.csv`。最终checkpoint读回为10/10通过。训练使用的模型源码SHA为`ab9b88a9817932cbd4ec12f8b4da575ec5bb417798904b383c980d4c6f43a43c`；审计源码增加了仅用于whole-modality干预的门控，SHA为`f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d`，正式训练前向及已保存训练结果未改变。
+
+## Experiment 56.1 — DCRAG-GFR-R
+
+- **状态与范围：** `COMPLETE_AUDITED`，唯一正式组`E56_1_FULL_DCRAG_GFR_REPAIRED`，seed=0，固定E51十折完成10/10；工程审计通过，科研结论`NO-GO`。实验目录为`experiment/experiment56_1_dcraag_gfr_repair/`。未增加正式对照、seed或参数搜索，未使用实验56 checkpoint初始化。
+- **修复目标：** 针对Experiment 56已确认的GraphLearn与传播边权脱链、邻接重复归一化、融合消息13.39倍输入放大、shared relation缺少直接疾病监督、患者门控近乎固定以及self-only/错误邻居反事实定义错误进行修复。E51 E1的四GraphLearn、四个完整320维GCN、fusion weight和PEN-free CAM仍是唯一基座；新模型整体替代GFR并直接输出320维CAM输入。
+- **实现冻结：** 每模态使用固定最多48候选池，在正式forward通过继承GraphLearn的当前`p`投影重新计算余弦分数，并在池内确定性选择最多16条传播边；选中连续边权可微回传到四个GraphLearn。same图采用一次`row_normalize(W_same+I)`，AT图采用一次`row_normalize(W_diff)`。same和AT消息分别逐患者归一化，再对最终融合消息施加`rho=0.25`限幅；`beta`初始化0.4，AT贡献初始目标0.1。shared16直接接受AA/TT/AT关系监督，private16保留模态特异头；条件四模态GRL固定`GRL_max=0.10`、对抗权重0.01，新增可靠性加权疾病原型损失0.01。Gate输入归一化患者特征、四路消息、范数、置信度和可靠性，继承fusion weight只应用一次。self-only干预保留同一GCN并用`I`，AT消息置零；错误图采用同站点、同outer分区的有向双边交换并重新计算边权。
+- **E1初始化/RNG：** 每折复现E51 `build_state("E1", fold)`和`510000+100*fold+1`入口，加载E43.1十折anchor；逐tensor继承SHA、CAM、fusion weight和buffer匹配。新增模块在`fork_rng`中初始化，教师与采样使用局部生成器；reference bypass GFR/CAM和公共dropout RNG逐位一致，断点恢复模型误差`1.49e-8`、CAM误差`2.98e-8`。GraphLearn/CAM保持E1 WD=0.11，GCN使用冻结的修复配置WD=0.0001，新模块AdamW lr=0.001、WD=0.0001。训练后只追加了审计/控制器安全修改，模型和配置数学未改变；该来源差异在manifest中记录。
+- **训练与资源：** 单张`cuda:0`，最多5个worker、每worker 2 CPU线程；控制器经历一次task文件竞态后安全恢复，前5折未重训，最终10/10完成。正式训练控制器约530.4秒，独立checkpoint审计约165.0秒。受保护根源码、数据和历史文件训练前后SHA一致。
+- **分类结果（mean ± population SD，%）：**
+
+  |指标|E51 E1|E56历史|E56.1|E56.1−E51 E1|
+  |---|---:|---:|---:|---:|
+  |ACC|91.9592 ± 2.8684|83.9263 ± 4.6834|89.6617 ± 3.4186|-2.2975pp|
+  |Hard-AUC|91.7434 ± 2.8950|83.7066 ± 4.5597|89.4201 ± 3.5325|-2.3233pp|
+  |Probability-AUC|93.1856 ± 3.0236|87.0762 ± 5.3312|92.1784 ± 2.9105|-1.0072pp|
+  |SPE-TD|94.6392 ± 3.3856|86.7669 ± 7.8167|92.7243 ± 3.2175|-1.9149pp|
+  |SEN-ASD|88.8476 ± 4.1651|80.6463 ± 6.1532|86.1159 ± 5.8715|-2.7317pp|
+  |BA|91.7434 ± 2.8950|83.7066 ± 4.5597|89.4201 ± 3.5325|-2.3233pp|
+  |ASD-F1|91.0928 ± 3.1408|82.3256 ± 4.7735|88.4565 ± 3.9848|-2.6363pp|
+
+  E56.1相对E56 ACC提高5.7354pp，但仍未恢复E51 E1水平，预注册分类门槛未通过。871条合并外层预测为ACC 89.6670%、Hard-AUC/BA 89.4196%、Probability-AUC 91.7271%、SPE 92.7350%、SEN 86.1042%，混淆矩阵`[[347,56],[34,434]]`。测试折仍参与`val=test` checkpoint选择，因此这些结果不是无偏独立OOF。
+- **机制结果：** 训练患者互斥关系OOF宏AUC为PHENO 0.4972、ANAT 0.5266、FUNC 0.5268、CORR 0.7268；CORR疾病关系保持，弱模态未被人为包装成可靠关系。对抗梯度10/10折激活、private对抗梯度为零，但来源probe宏AUC由0.9998变为1.0000，未实现可验证的跨模态关系对齐。四个GraphLearn均获得分类路径梯度且参数发生变化，动态图端到端链路通过；四路same消息/input约1.0是预设逐患者归一化结果，AT消息/input约0.033–0.034，最终残差/input均值0.2342且低于0.25，尺度修复通过。
+- **融合与反事实：** 四路Gate均值约PHENO 0.2537、ANAT 0.2531、FUNC 0.2551、CORR 0.2382，但患者间Gate标准差为0，患者级自适应融合`NOT_SUPPORTED`。固定checkpoint下中性边ACC变化-2.64pp，错误疾病条件-0.69pp，严格交换邻居-0.80pp，self-only跨患者消息-7.24pp；逐模态关闭PHENO/ANAT/FUNC/CORR分别为-1.03/-1.27/-0.69/-3.91pp。self-only保留了GCN(I)，因此该-7.24pp只表示当前checkpoint依赖跨患者图路径，不能替代独立重训因果对照。
+- **严格错误图质量：** 双边交换保持receiver出度100%、sender入度100%、站点属性100%、outer train/test分区100%、入度TV=0，但四模态平均仅14.12%的候选边满足可交换并改变身份；其余边因约束不足保持原身份，故标记`INSUFFICIENT_MATCHED_CONTROL`，不据此宣称真实患者关系优于错误关系。
+- **最终门控：** `动态图构图梯度=PASS`；`四图传播尺度=PASS`；`GO_RELATION_DISCRIMINATION=GO`（CORR）；`GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT=NO-GO`；`GO_DISEASE_PRESERVATION=GO`（CORR）；`GO_TRUE_PATIENT_RELATION=INSUFFICIENT_MATCHED_CONTROL`；`GO_CROSS_PATIENT_PROPAGATION=PARTIAL_CHECKPOINT_DEPENDENCE`；`GO_CLASSIFICATION_GAIN=NO-GO`；`GO_MICCAI2027_MODULE=NO-GO`。DCRAG-GFR-R修复了数值失控和GraphLearn梯度断链，但没有恢复E51 E1分类，也没有证明条件对齐、患者自适应融合或真实关系的独立诊断收益。
+- **协议限制与文件：** 继续保留`val_idx=test_idx`选模、CV前全局标准化/RFE、871人transductive图、单seed、单ABIDE A队列及十折训练患者重叠；不声称统计显著、多seed稳定、外部泛化或临床可用。逐折指标见`results/fold_metrics.csv`，871条预测见`results/oof_predictions.csv`，机制和反事实见`results/mechanism.json`、`results/interventions.csv`，完整报告见`results/report.md`，清单见`manifest.json`。下一步最重要的问题是：在不牺牲E1性能的前提下，如何获得真正患者间变化的Gate并建立覆盖率足够的严格匹配关系对照；本轮不继续调参。
+
+## Experiment 56.2 — DCRAG-GFR-R2
+
+- **状态与范围：** `COMPLETE_AUDITED`；唯一正式组`E56_2_FULL_DCRAG_GFR_R2`，seed=0，固定E51十折完成10/10。实验目录为`/data/adodas/SPromptGL-main/experiment/experiment56_2_dcraag_gfr_r2/`。独立checkpoint审计10/10通过，数学/梯度/RNG预检通过。工程完成与科研判断分开：科研结论为`PARTIAL`，作为MICCAI 2027第一创新模块为`NO-GO`。
+- **研究目标与基座：** 本轮只修复56.1已确认的DCRAG-GFR实现错误，仍以E51 `E1_GFR_AGGREGATION_FIX`为唯一初始化基座。四个独立GraphLearn、四个完整320维GCN、原始fusion weight和PEN-free CAM均由E51十折anchor继承；未使用56/56.1训练权重。保留历史`val=test`选checkpoint、CV前标准化/RFE、871节点transductive图、450 epoch、`wait>200`和严格ACC提高规则，因此结果是历史可比性探索，不是无偏独立泛化估计。
+- **56.1错误的代码级修复：** (1) Gate第一层改为Xavier、第二层为`N(0,1e-3)`，两层均从第一步可训练；Gate输入改为患者级320维特征、四路消息方向/强度、接收者`index_add`得到的邻居置信度及训练折可靠性，去除`confidence.mean().expand(N)`。(2) 置信度改为`1+sum(p log p)/log(3)`的归一化熵补量，均匀分布约0.05、单峰约1。(3) `eta=0.30*sigmoid(eta_raw)`按`logit(0.10/0.30)`初始化，四模态实际初值均为0.1000000。(4) 用连续`SoftCap(v,R)=v/(1+||v||/(R+eps))`替代强制把每路消息归一到输入范数；same、AT和最终融合半径分别为0.5、0.15和0.25倍输入范数，保持小消息不被放大。(5) AA/TT/AT疾病原型改为训练患者互斥OOF可靠性加权、detach目标，CORR可靠性约0.883，弱模态贡献约0.05–0.081。(6) 错误邻居干预在实际选中的Top-16传播边上执行有向双边交换，当前边集合检查无自环/重复边，并精确保持接收出度、发送入度、发送者站点与outer train/test分区；新患者对重新计算先验、GraphLearn分数、关系概率和边权。
+- **E1初始化及RNG审计：** reference bypass的E51 GFR输出、CAM输出和共同dropout RNG逐位一致；新增初始化在`fork_rng`隔离；checkpoint恢复测试loss相同、模型最大绝对误差`3.05e-7`；四GraphLearn/GCN/CAM继承SHA、anchor SHA、入口RNG SHA记录于`manifest.json`。GraphLearn/CAM使用E1的Adam lr `0.0038`/WD `0.11`，GCN用预注册修复WD `0.0001`，新增模块AdamW lr `0.001`/WD `0.0001`。
+- **预检：** `TEST_E51_PARITY`、`TEST_GATE_INITIALIZATION`、`TEST_GATE_GRADIENT`、`TEST_GATE_PATIENT_VARIANCE`、`TEST_ENTROPY_CONFIDENCE`、`TEST_ETA_INITIALIZATION`、`TEST_SOFTCAP_MATH`、`TEST_MESSAGE_GRADIENT`、`TEST_PROTOTYPE_WEIGHTS`、`TEST_ADVERSARIAL_GRADIENT`、`TEST_NO_LABEL_LEAKAGE`、`TEST_GRAPH_ORIENTATION`、`TEST_WRONG_EDGE_PRIOR`、`TEST_DOUBLE_EDGE_SWAP`、`TEST_SELECTED_EDGE_COVERAGE`、`TEST_SELF_ONLY_GCN`、`TEST_CHECKPOINT_RESUME`和`TEST_FOUR_MODALITIES`均通过。Gate首/末层分类梯度约`9.89e-5`/`3.48e-3`，患者Gate初始标准差约`1.18e-4`；R2独立数学测试`tests.py`也通过。四个GraphLearn分类梯度均非零，约`2.51e-6`、`4.79e-6`、`5.52e-6`、`1.25e-5`。
+- **分类结果（十折mean ± population SD，%）：** ACC `85.9927 ± 4.6785`，Hard-AUC `85.9330 ± 4.5005`，Probability-AUC `89.1624 ± 5.3993`，SPE-TD `86.4940 ± 7.9261`，SEN-ASD `85.3720 ± 5.0394`，BA `85.9330 ± 4.5005`，ASD-F1 `85.0612 ± 4.6467`。与E51 E1的同折均值差分别为ACC `-5.9666pp`（0/0/10）、Hard-AUC `-5.8104pp`（0/0/10）、Probability-AUC `-4.0232pp`（2/0/8）、SPE `-8.1452pp`（1/0/9）、SEN `-3.4756pp`（2/2/6）、BA `-5.8104pp`（0/0/10）。固定历史值为E51 E1 ACC 91.9592、Hard-AUC/BA 91.7434、Probability-AUC 93.1856、SPE 94.6392、SEN 88.8476；E56为83.9263/83.7066/87.0762/86.7669/80.6463，E56.1为89.6617/89.4201/92.1784/92.7243/86.1159。871条合并外层预测为ACC `85.9931%`、Hard-AUC/BA `85.9491%`、Probability-AUC `88.6630%`、SPE `86.5385%`、SEN `85.3598%`，混淆矩阵`[[344,59],[63,405]]`；测试折参与选模，不能称无偏OOF泛化。
+- **关系、对抗与原型：** 训练患者互斥关系OOF宏AUC为PHENO `0.4972`、ANAT `0.5266`、FUNC `0.5268`、CORR `0.7268`；事后测试关系AUC约0.5004/0.5186/0.5315/0.7521，只有CORR有可靠疾病关系证据。可靠性加权原型和CORR保护通过，关系判别未塌缩。共享关系模态来源probe宏AUC由`0.9996`变为`1.0000`，训练条件判别器宏AUC约`0.7162`；GRL梯度实际存在，但来源可分性没有下降，条件跨模态对齐`NO-GO`。弱模态未被强行包装成疾病可靠模态，四模态仍分别保留关系和传播路径。
+- **四图传播与Gate：** PHENO/ANAT/FUNC/CORR的Gate均值约`0.3971/0.1415/0.1631/0.2983`，患者标准差约`0.0270/0.0261/0.0188/0.0240`，因此56.1的Gate死梯度已修复。same消息/输入约`0.2713/0.3024/0.3100/0.3504`，AT消息/输入约`0.0120/0.0115/0.0116/0.0098`，eta训练后约`0.1089/0.1084/0.1088/0.1052`；最终传播残差/输入平均`0.0889`，没有56的13.39倍放大或56.1的强制等范数。四个GraphLearn参数发生变化且分类梯度路径通过；CORR关闭消息平均使ACC下降`6.8939pp`，PHENO/ANAT/FUNC分别下降`1.3780/0.4598/0.4585pp`。
+- **固定checkpoint反事实：** 严格选中边身份改变平均`98.22%`，四模态均超过20%且总覆盖超过30%，无自环/重复边，出度、入度、站点和分区不变量100%保持。严格错误患者图使ACC下降`1.9540pp`（冻结Gate时相同），错误疾病条件下降`1.1468pp`，中性疾病边权下降`3.4470pp`；self-only使用同一GCN和单位邻接，ACC下降`7.9271pp`（冻结Gate `7.6972pp`）。这些结果证明固定模型依赖传播和真实选中关系，但不是独立重训因果增益；严格错误图的干预证据支持`GO_TRUE_PATIENT_RELATION`，跨患者传播仅为`PARTIAL_CHECKPOINT_DEPENDENCE`。
+- **最终科研判断：** `GO_RELATION_DISCRIMINATION=GO`（CORR）；`GO_CONDITIONAL_ADVERSARIAL_ALIGNMENT=NO-GO`；`GO_DISEASE_PRESERVATION=GO`；`GO_TRUE_PATIENT_RELATION=GO`（覆盖充分、严格不变量通过、固定模型真实图优于错误图）；`GO_CROSS_PATIENT_PROPAGATION=PARTIAL_CHECKPOINT_DEPENDENCE`；`GO_CLASSIFICATION_GAIN=NO-GO`（ACC/BA/Probability-AUC均低于E51 E1，未达到+0.30pp门槛）；`GO_MICCAI2027_MODULE=NO-GO`。综合工程修复有效、关系和传播路径实际激活，但分类性能损失约6pp、跨模态对齐未成立，因此本轮科研状态为`PARTIAL`，不支持作为MICCAI 2027第一创新模块继续推进。
+- **审计与资源：** 独立读回10/10 best checkpoint，保存指标与复算一致；单GPU `cuda:0`，最多5个worker、每worker 2 CPU线程，无OOM或未处理NaN/Inf；根目录模型源码、ABIDE数据和历史checkpoint保护SHA训练前后相同。完整机制、干预和逐折复算在`results/mechanism.json`、`results/interventions.csv`、`results/diagnostics.csv`、`results/fold_metrics.csv`、`results/oof_predictions.csv`、`results/summary.csv`和`results/paired_comparisons.csv`；正式报告为`results/report.md`，清单为`manifest.json`。主要交付SHA：`design.md` `8b23758cb9c801c6d0b6dd61431ae923d1caa0a40308bc65c593cf4a6aa31bbe`；`config.json` `ba61823ee0057f6fda715cd52fb09b5563bd3ac28f55dc9fb09a8e1582a0e12f`；`dcraag.py` `3f52620750d27f74428b0bc5166a8c506543519e607eda08868215b3e45bfb87`；`run.py` `675304a8c6e8a7704bfad068c4d5f7409499e110c0109bef989cd9545dff6a3f`；`tests.py` `3b8360844f599c943ec13707aa08e18f0ef7e391067d9e79ec1261b1970c3604`；`audit.py` `616f38acacf0f547f6742ba4f16141eb3d0df56d9d169c8bf4218842073e7374`；`manifest.json` `daef4b40cffac8a59a5afef92d11288759ee60c4fac6a7eb4df3d5302db93ee7`；`results/report.md` `1896597356aa7e3ab00272759bc4a94e733c6cb6105abc1b1f85fbb6c91418a3`；`results/mechanism.json` `e046844fd2782c146067636cf0684f75a97aa6d325761c62508f0599855b5bcf`；`results/diagnostics.csv` `fa0b6f6a23c893b21855f6db0ea360739b26246d262d75e20a064280231fcfa6`。hand off仅追加了本节，根源码/数据未修改，本轮未进行commit/push。
+## Experiment 57 — DCRAG-GFR v2
+
+- 状态：`COMPLETE_AUDITED`；唯一正式组 `E57_FULL_RELIABILITY_AWARE_DCRAG_GFR`，10/10 folds。
+- 实验路径：`/data/adodas/SPromptGL-main/experiment/experiment57_dcraag_gfr_v2`。
+- 目标：以CORR疾病关系作为可置信锚点，在可靠患者对上选择性进行疾病条件化关系对抗，并独立优化PHENO、ANAT、FUNC、CORR四张图；分类使用E51 E1的PEN-free CAM。
+- 论文与代码审计：MICCAI 2025原文将GFR关系学习与DGCN传播分开描述；实际E51 E1四个GraphLearn各建一图、每个GCN读取完整320维拼接输入并累加四路消息。E51实际优化分类损失与原始GraphConstructLoss；论文标签图监督没有被伪称为E1已执行损失。原CAM未改，PEN物理移除。
+- 历史证据：E51 E1 ACC 91.9592%；E56/E56.1/E56.2分别为83.9263%/89.6617%/85.9927%。早期图传播发生消息放大，后续全模态对抗没有降低来源可分性；弱模态疾病关系证据不足。实验57的条件对齐和传播结果见独立报告，不能由历史结论替代。
+- 模块：四模态对称患者对编码为shared16/private16；5折患者互斥关系可靠性；CORR OOF概率形成冻结AA/TT/AT软条件；三个CORR-辅助模态判别器只在同一患者对及高置信可靠子集上做GRL；候选图独立动态重评，分同类和AT两通道；用GCN(X,B)-GCN(X,I)表示邻居诱导增量，患者Gate融合并通过SoftCap限幅，再输出320维CAM输入。
+- E51初始化/RNG：十折E51 anchor继承逐项一致，post-build公开RNG SHA及reference bypass测试由preflight记录；`COMMON_RNG_TRACE_PARITY`为COMMON_RNG_TRACE_PARITY。此处不声称新模型与E51参数更新轨迹相同。
+- 关系对齐：
+- CORR–PHENO 高置信患者对来源探针AUC：1.0000 → 1.0000。
+- CORR–ANAT 高置信患者对来源探针AUC：1.0000 → 0.9996。
+- CORR–FUNC 高置信患者对来源探针AUC：1.0000 → 1.0000。
+- 四图机制：
+- PHENO：关系OOF AUC均值 0.4923，分类到GraphLearn投影的平均梯度范数 3.435e-03，同类/AT增量输入比 0.17787/0.12112，Gate患者间SD 0.16903。
+- ANAT：关系OOF AUC均值 0.5228，分类到GraphLearn投影的平均梯度范数 9.650e-04，同类/AT增量输入比 0.08678/0.10986，Gate患者间SD 0.07854。
+- FUNC：关系OOF AUC均值 0.5217，分类到GraphLearn投影的平均梯度范数 2.891e-03，同类/AT增量输入比 0.11368/0.10791，Gate患者间SD 0.10989。
+- CORR：关系OOF AUC均值 0.6533，分类到GraphLearn投影的平均梯度范数 9.189e-03，同类/AT增量输入比 0.22297/0.10689，Gate患者间SD 0.17945。
+- 结果：ACC 90.4650±2.9639%，Hard-AUC 90.3266±2.9758%，Probability-AUC 92.3794±2.6947%，SPE 92.0860±4.4858%，SEN 88.5671±4.8014%，BA 90.3266±2.9758%。相对E51同折ΔACC -1.4943pp，ΔBA -1.4168pp，ΔProbability-AUC -0.8062pp。
+- 严格错误图：四模态实际选中边身份改变的加权比例 64.88%，预注册覆盖 `PASS`；度数、站点、train/test分区、无重复边和无self-loop不变量状态 `PASS`。固定checkpoint干预仅是模型依赖证据，不是独立重训因果增益。
+- 保护SHA：根模型与数据训练前后不变=True；源码及配置SHA保存在本实验 `manifest.json`。
+- 历史限制：`val=test`用于checkpoint选择，标准化/RFE先于外层CV，871节点transductive图，单seed和单ABIDE-A队列；结果是历史可比性探索，不是无偏独立泛化估计。
+- 科研判断：`PARTIAL`。下一项关键判断是：可靠患者对上的来源可分性是否下降且关系判别保持；若未同时成立，不将DCRAG-GFR v2作为已验证MICCAI首创新模块。
+
+### Experiment 57 decision correction
+
+独立审计补充：早期自动汇总曾按‘任一图传播路径激活即PARTIAL’给出`PARTIAL`，但该回退分支未落实本实验的预注册否决条件。按冻结规则重新裁定：当分类未达到E51 E1且核心条件对齐证据缺失时，科研结论必须为`NO-GO`。
+- E57−E51同折差：ACC `-1.4943pp`、BA `-1.4168pp`、Probability-AUC `-0.8062pp`。
+- 高CORR置信子集来源探针：CORR–PHENO 1.0000→1.0000; CORR–ANAT 1.0000→0.9996; CORR–FUNC 1.0000→1.0000；没有达到预注册的来源可分性下降证据。
+- 严格匹配错误邻居覆盖充分（身份变化 `64.88%`、结构不变量通过）；固定checkpoint显示图依赖，但不构成独立重训增益，不能覆盖上述否决条件。
+- 最终科学结论：`NO-GO`，不支持将DCRAG-GFR v2作为MICCAI 2027第一创新模块；工程状态仍为`COMPLETE_AUDITED`。模型、训练参数和实测指标均未改变。
+
+
+<!-- HANDOFF_HISTORICAL_SUPPLEMENT_2026-10-31 -->
+> 以下历史章节根据只读参考文件 `/model/spromptgl/experiment/handoff.md` 补录；原文中的暂存、用户中止和交付限制均保留。
+
+<!-- EXPERIMENT48_5_ALPHA_ABLATION -->
+## Experiment 48.5 — APCR残差系数消融
+
+- **问题与设计**：在B0-B+APCR上比较固定`alpha=0.0022`与从同一初值学习alpha；SRD、SCA、CRA、优化器和训练协议保持48.4 E6实现。20/20折完成，checkpoint与指标审计通过。
+
+|组|最佳alpha|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|---:|
+|E1 固定alpha|0.002200|91.8430±3.1094|91.6977±3.0720|93.5661±4.2242|89.8293±3.4050|93.4698±3.5083|
+|E2 可学习alpha|0.002392±0.000072|91.4995±2.8784|91.2806±2.8831|94.2137±3.2156|88.3476±3.4922|92.7895±2.7829|
+
+- `E2−E1`：ACC −0.3435 pp（2/3/5胜平负），Hard-AUC −0.4171 pp（2/1/7），SPE +0.6475 pp，SEN −1.4817 pp。固定alpha组略高于B0-B历史ACC 0.1136 pp，但低于48.3 E6 0.1162 pp；可学习组低于B0-B 0.2299 pp。
+- alpha关闭干预显示直接APCR残差影响有限：E1残差/GFR均值约0.00026，逐折仅少数预测翻转；E2也没有稳定的硬分类增量。结论是固定小alpha优于本实验可学习alpha，但未证明APCR获得可重复的独立收益。结果保留CV前RFE/全局预处理、transductive图、`val=test`和单seed限制。
+- 来源：`/tmp/experiment48_5_alpha_ablation/results/report.md`、`summary.csv`；训练源码签名`9cbed58eab66fe4e79dbe272c1b6bd5d93c06967c83e8992644ce48b8bc1565f`。原正式目录同步状态曾标为`SYNC_PENDING`。
+
+<!-- EXPERIMENT48_6_E51GFR_APCR -->
+## Experiment 48.6 — LegacyFixedGFR基座上的APCR低残差
+
+- **问题与设计**：将GFR基座换为Experiment51 E1的`LegacyFixedGFR`，验证固定/可学习`alpha=0.0022`；继承48.5完整APCR。E1/E2各10折，20/20完成。十折基座前向及CAM接口parity通过，逐折checkpoint独立读回通过。
+
+|模型|最佳alpha|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|---:|
+|Experiment51 E1参考|—|91.9592±2.8684|91.7434±2.8950|94.6392±3.3856|88.8476±4.1651|93.1856±3.0236|
+|48.6 E1 固定|0.002200|91.6144±3.0062|91.4135±2.9872|93.9917±4.1984|88.8354±3.8959|93.2352±3.0435|
+|48.6 E2 可学习|0.0023761±0.0000919|91.1546±3.3400|90.8847±3.3939|94.4218±3.6575|87.3476±5.0209|93.4708±3.0486|
+
+- `E2−E1`：ACC −0.4598 pp，Hard-AUC −0.5288 pp，SPE +0.4302 pp，SEN −1.4878 pp，Probability-AUC +0.2355 pp；ACC胜平负0/6/4。两组均未超过Experiment51 E1；固定alpha组比B0-B历史ACC低0.1149 pp。
+- APCR关闭后，固定alpha组ACC下降0.4585 pp，可学习组ACC不变；该差异只支持固定checkpoint上的直接残差敏感性，不等价于训练期独立关系增量。工程审计确认没有叠加第二套GFR或重复注册GraphLearn。
+- `/data`当时存在OSSFS EIO，结果暂存`/tmp/SPromptGL-E48.6`，不能当作已同步到正式目录。
+
+<!-- EXPERIMENT48_6_1_E51_RNG_PARITY -->
+## Experiment 48.6.1 — Experiment51复现与随机轨迹修正
+
+- **任务**：R0原样重跑Experiment51 E1；E1/E2使用LegacyFixedGFR+完整APCR，alpha初值0.0022，分别固定/可学习。30/30折完成，独立读回通过。
+- **RNG修复**：去掉48.6的逐epoch全局Torch/CUDA设种子；GFR/CAM使用Experiment51的`seed_all(510000+fold*100+1)`并连续推进。APCR使用独立fold初始化与独立随机流，初始化后恢复基座RNG，额外APCR前向不污染主RNG；checkpoint同时保存两套状态。
+
+|模型|最佳alpha|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|---:|
+|R0 Experiment51 E1复现|—|91.9592±2.8684|91.7434±2.8950|94.6392±3.3856|88.8476±4.1651|93.1856±3.0236|
+|48.6.1 E1 固定|0.0022000|91.8443±2.8892|91.6370±2.8941|94.4265±3.5078|88.8476±3.8533|93.7062±2.5966|
+|48.6.1 E2 可学习|0.0024182±0.0000896|91.8443±2.9346|91.6370±2.9135|94.4265±3.2394|88.8476±2.9322|93.1482±3.2693|
+
+- R0的五项指标、best epoch和执行epoch均逐折复现Experiment51 E1；历史预测SHA没有保存，故该项不可核验。E1/E2均比R0低0.1149 pp ACC；E2与E1硬分类指标持平，未证明APCR提升修复版GFR。RNG隔离测试通过。结果暂存`/tmp/SPromptGL-E48.6.1`，`/data`同步待处理。
+
+<!-- EXPERIMENT48_7_ALPHA_MICROGRID -->
+## Experiment 48.7 — APCR残差系数系统消融
+
+- **设计**：B0-B与Experiment51 LegacyFixedGFR两种基座；alpha六档`[0,0.0001,0.0003,0.0006,0.0010,0.0015]`；Fixed/Learnable两种策略。24组、240/240折完成，最佳checkpoint独立读回及预测SHA核验通过。
+- `alpha=0`固定组精确关闭APCR直接残差但保留SRD/SCA/CRA训练；Learnable零档实际从`1e-8`近零初始化，不是精确零点。
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|
+|B-F-00|91.7307±2.9496|91.5337±2.9580|94.2137±3.2156|88.8537±3.8200|93.4056±3.0804|
+|B-L-00|91.8443±2.9346|91.6184±2.9651|94.6392±3.7654|88.5976±4.5918|93.6698±2.9015|
+|B-F-01|91.6144±3.3393|91.4143±3.3162|93.9870±4.7408|88.8415±4.3212|93.5900±3.0812|
+|B-L-01|91.4995±3.2655|91.3125±3.2601|93.7835±3.9186|88.8415±4.0215|93.3079±2.8803|
+|B-F-02|91.5008±2.8313|91.2730±2.8092|94.2044±4.5377|88.3415±4.3168|93.3145±3.0172|
+|B-L-02|91.6144±2.9619|91.4561±2.9577|93.5708±3.6218|89.3415±3.8106|93.5514±2.8319|
+|B-F-03|91.6157±2.8240|91.4296±2.8816|94.0056±2.5201|88.8537±4.2687|93.8069±3.1943|
+|B-L-03|91.4995±3.2655|91.2753±3.2735|94.2091±3.6362|88.3415±4.0018|93.1692±3.0158|
+|B-F-04|91.7294±3.1245|91.5834±3.1131|93.5754±3.7234|89.5915±3.7713|93.4139±3.0856|
+|B-L-04|91.7294±2.5155|91.5722±2.5135|93.3395±5.2683|89.8049±5.2020|93.3350±3.2401|
+|B-F-05|91.6144±2.7778|91.4561±2.7818|93.5708±3.3625|89.3415±3.4931|93.2516±2.7267|
+|B-L-05|91.4995±3.0565|91.3102±3.0365|93.7789±4.1674|88.8415±3.8630|93.2076±3.0302|
+|G-F-00|91.8443±2.8431|91.6814±2.7983|93.7835±3.9186|89.5793±2.9055|93.3893±3.0446|
+|G-L-00|91.3845±3.3079|91.1750±3.3265|93.9963±3.5967|88.3537±4.2657|93.4231±3.0241|
+|G-F-01|91.4995±3.0130|91.2776±3.0403|94.2137±3.4858|88.3415±4.3028|93.2863±3.2611|
+|G-L-01|91.4995±3.1418|91.3707±3.2386|93.1499±2.7035|89.5915±5.1461|93.6639±2.8523|
+|G-F-02|91.4995±3.3454|91.2651±3.3812|94.4265±3.7570|88.1037±4.7891|93.7976±3.0355|
+|G-L-02|91.6157±2.9161|91.4064±2.9190|94.2091±3.8772|88.6037±4.1475|93.3033±3.0798|
+|G-F-03|91.6157±2.8704|91.4296±2.8905|94.0056±3.2982|88.8537±4.1343|93.6110±2.7948|
+|G-L-03|91.4995±2.8321|91.3179±2.8502|93.7882±3.1244|88.8476±3.6875|93.7025±3.0838|
+|G-F-04|91.7294±3.1245|91.4699±3.2177|95.0740±2.7327|87.8659±5.3040|93.4154±2.9494|
+|G-L-04|91.7294±3.1245|91.4766±3.2085|94.6300±3.6840|88.3232±5.3703|93.2747±3.4932|
+|G-F-05|91.9592±3.2970|91.7350±3.3814|94.6346±3.4046|88.8354±5.2553|93.5623±2.7031|
+|G-L-05|91.4995±3.2655|91.3234±3.2615|93.5615±4.6588|89.0854±4.5981|93.3716±2.8417|
+
+- 网格最高ACC为G-F-05 91.9592%；B固定组最高B-F-00为91.7307%。240个固定checkpoint仅3次预测翻转，APCR直接残差通常没有可检测硬分类影响。多组网格比较有选择风险，最佳alpha为探索性结论；不支持“alpha越小越好”或APCR相对基座稳定增益。结果曾暂存`/tmp/SPromptGL-E48.7`，正式`/data`同步受EIO限制。
+
+<!-- EXPERIMENT48_8_DISEASE_RELATION_CONSISTENCY -->
+## Experiment 48.8 — Disease-Relation Consistent APCR
+
+- **设计**：在G-F-05、固定alpha=0.0015上测试候选感知SRD、可靠教师SCA、边界目标CRA的单模块/组合与负控制。E0基线重训并逐折复现历史；E1–E10共100折完成，独立重算和预测SHA通过。训练签名`a6e3b13a7d99a56676a07b276e2d88900a4757c9eb3028f97108c0f59d49630f`。
+
+|组|ACC|Hard-AUC|SPE-TD|SEN-ASD|Probability-AUC|
+|---|---:|---:|---:|---:|---:|
+|E0 G-F-05重训|91.9592±3.2970|91.7350±3.3814|94.6346±3.4046|88.8354±5.2553|93.5623±2.7031|
+|E1 候选感知SRD|91.7294±2.8130|91.6074±2.8241|93.3673±3.6373|89.8476±4.1644|93.1759±3.0084|
+|E2 可靠教师SCA|91.3845±3.3079|91.2280±3.2262|93.1267±5.3842|89.3293±3.7140|93.3648±3.1155|
+|E3 边界CRA|91.7307±2.8586|91.5431±2.8943|94.0009±2.8784|89.0854±3.8746|93.4506±3.0885|
+|E4 SRD+SCA|91.6157±2.5795|91.4398±2.5896|93.7882±3.1244|89.0915±3.5263|93.0045±3.3179|
+|E5 SRD+CRA|91.6144±2.7778|91.4260±2.7708|93.7789±4.2746|89.0732±4.2033|93.8883±2.1232|
+|E6 SCA+CRA|91.3845±2.9712|91.1844±2.9926|93.7835±3.9186|88.5854±4.4831|92.9242±3.1290|
+|E7 完整新方案|91.6144±3.2184|91.4857±3.1902|93.1360±4.2065|89.8354±3.5717|93.5181±2.8134|
+|E8 SRD标签置乱|91.7294±2.8596|91.6332±2.8610|92.9371±3.5986|90.3293±3.7517|93.9022±2.7189|
+|E9 随机合法攻击|91.6131±3.0927|91.4026±3.1275|94.2137±3.3535|88.5915±4.3123|93.3023±2.7645|
+|E10 无边变化伪攻击|91.5008±3.0987|91.2513±3.1372|94.4172±3.7961|88.0854±4.7099|93.5050±3.3987|
+
+- 主要比较：E7−E0 ACC −0.3448 pp、Hard-AUC −0.2493 pp；E7−E8 ACC −0.1149 pp，置乱监督组反而略高；E7−E9 ACC +0.0013 pp、Hard-AUC +0.0831 pp；E7−E10 ACC +0.1136 pp、Hard-AUC +0.2344 pp。单模块和组合均未超过G-F-05。
+- 机制诊断：SRD训练/校准结果没有转化为Top-16强疾病关系判别（Top-16 AUC约0.50–0.55）；SCA执行不等于有益，E7相对E8更差；CRA局部CE增量均值约1.21e-4、关系边变化约0.36%，扰动弱。冻结checkpoint的E7 alpha关闭/邻居错配/评分ID错配均没有改变ACC或预测。
+- **结论NO-GO**：三种改进均未提供有说服力的分类增量，真实疾病关系监督、损失最大化攻击和模块交互均未获支持。保留历史CV前RFE、transductive图、`val=test`及单seed限制。
+- 来源：`/tmp/SPromptGL-E48.8/results/report.md`、`manifest.json`。由于`/data`当时EIO，结果留在scratch，handoff曾pending。
+
+<!-- EXPERIMENT48_9_DECISION_CONSISTENT_APCR -->
+## Experiment 48.9 — Decision-Consistent Disease Relation Learning（用户中止）
+
+- **状态：USER_CANCELLED_PARTIAL。** 按用户最新指示，立即停止全部48.9 worker，不再恢复、继续训练或将部分结果作为正式结论。
+- **完成情况**：E0 G-F-05复现门10/10通过，五指标、best epoch、预测SHA、初始化SHA和fold SHA一致。E1–E10计划100折；停止前仅11/100折有`COMPLETE`任务记录：E1 fold1–5，以及E2、E3、E4、E5、E6、E7各fold5。其余89折未完成。未完成任务的latest恢复checkpoint保留在scratch供审计，不代表训练完成。
+- **未形成正式结果**：由于E1–E10完整矩阵没有完成，不报告组均值、配对比较、GO结论或MICCAI证据；单折/部分任务输出不得用于选择或声称方法效果。E0仅为复现检查，不构成48.9新方法结果。
+- **准入记录**：G-F-05初始化/基座前向parity与模块梯度预检通过；RNG边界短程验证通过。预检观察到CRA真实fold上的局部最大CE增量低于冻结的0.001攻击门槛，可能导致CRA稀疏或不启用；实验被用户中止，未修改门槛。
+- **运行与交付**：训练目录`/tmp/SPromptGL-E48.9`；五worker已停止。项目`/data`原实验目录因OSSFS EIO不可写，本次结果与恢复状态保留在scratch。此handoff副本按用户要求生成于`/model/spromptgl/experiment/handoff.md`；源`/data/adodas/SPromptGL-main/handoff.md`未修改。48.9不标记为完成或AUDIT_PASS。
+
+<!-- EXPERIMENT51_SERIES_COMPLETION_SUPPLEMENT_2026-10-30 -->
+## Experiment 51 — DUGSA（补录）
+
+- **状态**：COMPLETE_AUDITED；E0为B0-B历史十折读回，E1–E11完成110/110新增折；独立checkpoint读回110/110通过，保存指标与独立重算一致。
+- **目的与基座**：在Experiment51 E1四路GFR聚合修复（无PEN）上，把四模态分为候选Shared/Complement/Nuisance，并用outer-train内疾病关系效用控制几何对齐和共享消息。保留seed=0、10折StratifiedKFold(random_state=10)、历史`val=test`、CV前RFE/标准化、871节点transductive图、450 epoch/wait>200和原始GraphConstructLoss。
+- **结果（ACC / Hard-AUC / Probability-AUC / SPE / SEN，% mean±population SD）**：E0 91.7294±2.8596 / 91.6046±2.8059 / 93.2322±3.2881 / 93.1360±4.5354 / 90.0732±3.5117；E1 91.9592±2.8684 / 91.7434±2.8950 / 93.1856±3.0236 / 94.6392±3.3856 / 88.8476±4.1651；E2 91.4995±2.6885 / 91.2434±2.6599 / 93.7904±2.6951 / 94.6392±3.2491 / 87.8476±2.7916；E3 91.8443±2.9793 / 91.6712±2.9545 / 93.2551±2.9606 / 94.0009±3.7037 / 89.3415±3.3093；E4 91.3845±3.1441 / 91.1324±3.1197 / 93.3330±3.0983 / 94.4172±4.2557 / 87.8476±3.9029；E5完整DUGSA 90.2377±3.6501 / 90.0453±3.6623 / 92.9830±2.8726 / 92.4931±4.7944 / 87.5976±5.2903；E6 91.3858±3.3862 / 91.2729±3.4027 / 92.9536±2.4187 / 92.7105±3.9158 / 89.8354±4.3390；E7 90.4663±3.5702 / 90.2520±3.5576 / 93.2512±3.2946 / 92.9186±4.6682 / 87.5854±4.5856；E8 90.5812±3.9478 / 90.3443±3.9297 / 92.9194±2.9551 / 93.3349±5.4665 / 87.3537±5.1267；E9 90.9261±3.6571 / 90.8186±3.7207 / 93.2532±3.1700 / 92.2895±3.1091 / 89.3476±4.9193；E10 90.2351±4.0297 / 90.0614±4.1580 / 92.7236±3.8522 / 92.5069±2.7952 / 87.6159±6.7211；E11 90.8111±3.8526 / 90.6096±3.8987 / 92.5554±3.3390 / 93.3534±3.7017 / 87.8659±5.1848。
+- **结论**：NO-GO。完整DUGSA低于E1 1.7215 pp ACC、低于B0-B 1.4916 pp；选择性效用、几何对齐和真实关系没有形成可归因增量。
+- **来源**：`/tmp/SPromptGL-E51/experiment51_dugsa`，报告和独立审计均已保存。
+
+## Experiment 51.1 — DC-SRA-GFR（补录）
+
+- **状态**：COMPLETE_AUDITED；E0/E1各10折读回，E2–E11完成100/100新增折；独立读回最大指标误差0。
+- **方法**：继承E1完整四路320维GFR，新增轻量graph/self分支、CORR原型、患者级门控、CORR锚定关系几何和有界残差。门控从分类损失端到端学习，未使用测试标签。
+- **结果（ACC / Hard-AUC / Probability-AUC / SPE / SEN，%）**：E0 91.7294±2.8596 / 91.6046±2.8059 / 93.2322±3.2881 / 93.1360±4.5354 / 90.0732±3.5117；E1 91.9592±2.8684 / 91.7434±2.8950 / 93.1856±3.0236 / 94.6392±3.3856 / 88.8476±4.1651；E2 91.7294±3.1665 / 91.6000±3.1351 / 92.8946±3.2218 / 93.1267±4.9460 / 90.0732±4.1776；E3 91.7294±3.0819 / 91.4964±3.1229 / 93.4987±2.6591 / 94.6392±3.3856 / 88.3537±4.5493；E4 91.8443±2.8892 / 91.5914±2.8879 / 93.3141±3.2702 / 94.8474±3.6574 / 88.3354±3.7099；E5 91.9592±2.9141 / 91.7536±2.9064 / 93.4900±2.8343 / 94.4218±3.7740 / 89.0854±3.7179；E6 91.2709±2.8318 / 91.0500±2.8147 / 93.3461±2.9975 / 93.9963±3.8401 / 88.1037±3.7743；E7完整DC-SRA 91.6157±2.4750 / 91.4640±2.4102 / 93.7124±2.7327 / 93.3488±3.9485 / 89.5793±2.6817；E8 91.2696±2.9244 / 91.0921±2.8891 / 93.5371±2.7501 / 93.3488±4.2787 / 88.8354±3.5691；E9 91.6144±2.7298 / 91.4610±2.6451 / 92.8610±3.4705 / 93.3488±4.8886 / 89.5732±3.3205；E10 91.8443±3.0233 / 91.6712±2.9793 / 93.3883±2.9030 / 94.0009±4.1640 / 89.3415±3.6512；E11 91.4995±2.7851 / 91.2885±2.7756 / 93.0420±2.9445 / 93.9917±4.2078 / 88.5854±4.0507。
+- **机制**：E7低于E1 0.3435 pp ACC；门控均值接近0.5且gate-zero固定干预无硬分类变化；E7与错误辅助对应几乎相同，新增残差进入CAM但过弱。
+- **结论**：NO-GO；CORR原型存在辅助标签信号，但患者级门控、正确对应和新增图关系没有稳定独立增量。
+- **来源**：`/tmp/SPromptGL-E51_1/experiment51_1_dcsra_gfr`。
+
+## Experiment 51.2 — PDC-SRA-GFR（补录）
+
+- **状态**：COMPLETE_AUDITED；E0历史读回、E1严格按Experiment51随机轨迹重训10折、E2–E10完成90折；新增正式折100/100，独立checkpoint读回100/100通过。
+- **方法**：把疾病条件选择落实到有效候选患者对，训练侧pair监督只取图支持内outer-train患者对；同一选择权重控制新增传播和CORR锚定几何对齐；C私有分支独立保留。
+- **结果（ACC / Hard-AUC / Probability-AUC / SPE / SEN，%）**：E0 91.7294±2.8596 / 91.6046±2.8059 / 93.2322±3.2881 / 93.1360±4.5354 / 90.0732±3.5117；E1 91.9592±2.8684 / 91.7434±2.8950 / 93.1856±3.0236 / 94.6392±3.3856 / 88.8476±4.1651；E2 91.7294±2.9950 / 91.6479±2.9497 / 93.5583±2.8877 / 92.7105±4.5700 / 90.5854±3.6148；E3 90.9261±3.1527 / 90.8280±3.1477 / 92.7097±3.3614 / 92.0768±4.0930 / 89.5793±3.9927；E4 90.9248±3.1948 / 90.8180±3.1378 / 93.0918±3.5194 / 92.0629±4.8586 / 89.5732±3.5122；E5 91.3845±3.2270 / 91.2349±3.2846 / 93.2696±3.2782 / 93.1406±3.9660 / 89.3293±5.0044；E6完整PDC-SRA 91.7294±3.0819 / 91.5043±3.0530 / 93.6171±3.3249 / 94.4172±4.2557 / 88.5915±3.7117；E7 91.8443±3.0233 / 91.6714±2.9859 / 93.3399±2.9595 / 93.7697±4.8044 / 89.5732±4.0107；E8 91.0410±3.0394 / 90.8186±3.0510 / 93.2931±3.1983 / 93.7835±3.8013 / 87.8537±4.3359；E9 91.2696±3.0134 / 91.1265±2.9044 / 92.8361±2.9207 / 92.6920±5.8520 / 89.5610±3.8733；E10去私有 91.6144±2.9170 / 91.4321±2.9188 / 93.4780±2.7351 / 93.7789±3.8173 / 89.0854±3.8824。
+- **机制**：选择器非恒定且pair AUC约0.60，但E6低于E1 0.2299 pp，统一关系E7反而高0.1149 pp；固定checkpoint关闭图增量没有稳定硬预测作用。
+- **结论**：NO-GO；患者对选择可被训练，但疾病关系增量不可识别或过弱。
+- **来源**：`/tmp/SPromptGL-E51_2/experiment51_2_pdcsra_gfr`。
+
+## Experiment 51.3 — EC-SRGL（补录）
+
+- **状态**：COMPLETE_AUDITED；E0/E1历史参考各10折，E2–E12完成110/110折；单GPU0最多5 worker；独立checkpoint读回110/110通过，最大重算误差0。
+- **方法**：只在原GraphLearn支持内选择患者边，加入有效边pair监督、独立邻域诊断头、CORR锚定关系对齐，以及图残差/私有残差分离；E8匹配边权预算的统一关系，E9只打乱几何对应，E10只打乱新增图邻居身份。
+- **结果（ACC / Hard-AUC / Probability-AUC / SPE / SEN，%）**：E0 91.7294±2.8596 / 91.6046±2.8059 / 93.2322±3.2881 / 93.1360±4.5354 / 90.0732±3.5117；E1 91.9592±2.8684 / 91.7434±2.8950 / 93.1856±3.0236 / 94.6392±3.3856 / 88.8476±4.1651；E2 91.5008±3.1410 / 91.2916±3.1310 / 93.5416±2.9357 / 93.9917±4.0891 / 88.5915±4.0344；E3 91.5021±2.9662 / 91.4561±2.8718 / 94.2403±2.2991 / 92.0768±4.3177 / 90.8354±2.1556；E4 91.6170±2.2489 / 91.5036±2.2293 / 93.1266±3.5632 / 92.9278±3.0977 / 90.0793±2.7134；E5 91.3858±3.2670 / 91.3445±3.1649 / 93.2183±3.3069 / 91.6281±5.8714 / 91.0610±3.8986；E6 91.0423±2.9044 / 90.8954±2.8854 / 93.4854±3.3592 / 92.9371±3.3376 / 88.8537±3.1165；E7完整EC-SRGL 91.5008±3.0557 / 91.4602±3.0512 / 93.5805±3.4022 / 91.8594±4.0850 / 91.0610±3.9141；E8 91.6144±3.4175 / 91.4989±3.3774 / 92.9070±2.9264 / 92.9186±4.5615 / 90.0793±3.6731；E9 91.1560±2.8715 / 91.0143±2.8970 / 93.0809±2.9219 / 92.9371±3.1991 / 89.0915±4.0080；E10 91.2709±2.6882 / 91.1525±2.7492 / 93.7817±2.9682 / 92.7197±3.6359 / 89.5854±4.9302；E11 90.4663±3.2200 / 90.2675±3.2803 / 93.0066±3.3886 / 92.7058±4.0485 / 87.8293±5.0776；E12 91.3858±3.0581 / 91.0546±3.1228 / 92.6105±3.8926 / 95.4995±2.4590 / 86.6098±4.4394。
+- **机制**：E7低于E1 0.4585 pp，统一关系E8高于E7 0.1136 pp；E7与普通图E3几乎相同，邻域头和图残差虽有梯度但没有稳定疾病增量。
+- **结论**：NO-GO；有效边监督比51.2更严格，但正确关系、非均匀选择和对齐仍未形成超过E1的可归因收益。
+- **来源**：`/tmp/SPromptGL-E51_3/experiment51_3_ecsrgl`。
+
+## Experiment 51.4 — D³-SAG（本轮补录）
+
+- **状态**：科研COMPLETE_AUDITED；交付PARTIAL。E0/E1参考十折，E2–E12完成110/110折；GPU0、5 worker；独立checkpoint读回110/110，最大指标误差0；语义测试PASS；根模型源码、数据和历史实验未修改。
+- **研究问题**：只对被训练侧证据支持的CORR–PHENO共享信息进行几何对齐，保留C互补信息，I/N只进入有限阶非诊断约束；疾病有效性来自outer-train内5折OOF风险增量、200次bootstrap单侧90%下界和站点残差CKA零分布。D³-SAG借鉴SPromptGL的患者图/CAM、MGDR的公共/私有保留、MM-GTUNets的模态不对称、SMGD的S/C/I/N与关系几何，以及AAAI 2026关于“只在有冗余时对齐”的边界；SMGD患者内部ROI图与本数据患者图不等同。
+- **疾病有效性结果**：十折`r_S=0/10`、`r_C=0/10`。ΔF平均0.2071、ΔP平均−0.0305、ΔC平均−0.0941；PHENO没有在CORR之外稳定增益，站点校正后的CKA超出null不足以形成r_S。按预注册规则没有设置正下限，因此完整D³-SAG严格拒绝新增S/C诊断写回。
+- **结果（ACC / Hard-AUC / Probability-AUC / SPE / SEN，% mean±population SD）**：E0 91.7294±2.8596 / 91.6046±2.8059 / 93.2322±3.2881 / 93.1360±4.5354 / 90.0732±3.5117；E1 91.9592±2.8684 / 91.7434±2.8950 / 93.1856±3.0236 / 94.6392±3.3856 / 88.8476±4.1651；E2容量对照 91.4995±2.7372 / 91.3336±2.6854 / 93.4091±3.1181 / 93.3441±5.1703 / 89.3232±4.3445；E3固定强对齐 91.2696±2.8788 / 91.1209±2.8461 / 93.4147±3.3192 / 92.9186±4.8583 / 89.3232±4.1982；E4无对齐路由 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E5完整D³-SAG 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E6统一对齐预算 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E7去C 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E8去I/N约束 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E9错误几何对应 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E10错误可靠性 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E11关闭质量条件 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013；E12错误辅助PHENO 91.3845±3.0589 / 91.2140±3.0158 / 93.4452±3.0425 / 93.3488±4.9804 / 89.0793±4.2013。
+- **解释**：E4–E12新增路由全部为零，前向严格写回零增量；这些组是从E1锚点重新训练的同一结构轨迹，不应误写成历史E1最佳checkpoint复制。E2、E3均低于历史E1；完整E5低于E1 0.5747 pp ACC、低于B0-B 0.3448 pp。NO-GO：当前数据和冻结证据估计没有支持可执行的Shared/Complement路由，固定对齐也未带来收益。
+- **审计与文件**：scratch目录`/tmp/SPromptGL-E51_4/experiment51_4_d3sag`；`results/fold_metrics.csv`、`summary.csv`、`paired_comparisons.csv`、`evidence_diagnostics.csv`、`mechanism_diagnostics.csv`、`interventions.csv`、`report.md`、`manifest.json`均已生成。manifest在追加本记录前SHA为`67a1ee1bb706984607aa45cd89f88d77f9a837903d8606b9b1841a0e39526073`；protected root源码/数据SHA保存在manifest。由于`/data` OSSFS在创建正式目录时返回`Errno 5 Input/output error`，紧凑目录未同步到`/data/adodas/SPromptGL-main/experiment/experiment51_4_d3sag`；科研结果和唯一完整checkpoint仍保留在scratch，故交付状态为PARTIAL。
+- **总科研判断**：51–51.4连续四个患者关系/选择性对齐方向均未超过E1并且关键负控制未支持核心机制，建议停止在同一患者相似图上继续堆叠门控、对齐或辅助头。后续若继续，只应先改变关系证据来源并采用独立外部验证；不应以测试ACC驱动51.5。
+
+## Experiment 51 系列统一审计结论（补录）
+
+- E1工程修复（PHENO消息覆盖纠正、四路正确累加）可重复得到91.9592%，但这属于基座修复，不是新增疾病关系方法收益。
+- 51 DUGSA、51.1 DC-SRA-GFR、51.2 PDC-SRA-GFR、51.3 EC-SRGL和51.4 D³-SAG分别尝试静态效用、患者门控、患者对选择、有效边邻域证据和交叉拟合疾病可靠性；完整主方法没有同时满足“超过E1、正确关系优于严格负控制、互补信息有独立增量、审计可复现”的条件。
+- 各轮均保留历史`val=test`、CV前预处理、transductive图和单seed限制，不能把结果描述成无偏外部泛化。`Experiment52`在本次本地与已保存scratch范围内未找到可核实源码和结果，记为`EXPERIMENT52_NOT_FOUND`。
+- 交付同步状态必须与科研完成状态分开记录；51.4的科研训练/审计已完成，但正式`/data`目录因OSSFS Errno 5未写入。
+<!-- /EXPERIMENT51_SERIES_COMPLETION_SUPPLEMENT_2026-10-30 -->
+
+<!-- EXPERIMENT54_D2ARG_START -->
+## Experiment 54 — D²-ARG Disease-Discriminative Adversarial Relational Graph Learning
+
+- **状态**：`COMPLETE_AUDITED`；10/10 组、100/100 group-fold、100/100 checkpoint 独立读回通过；科研判定 `NO-GO`。
+- **执行目录**：`/model/spromptgl/experiment/experiment54_d2arg`。根源码、ABIDE 数据和历史实验只读；本轮新增代码、模型、日志和结果均在该目录。
+- **基座与 parity**：Experiment 51 `E1_GFR_AGGREGATION_FIX`，`LegacyFixedGFR + PLNNoPEN`，seed 规则 `510000 + fold*100 + 1`。fold 1/5/10 前向最大差 0，首个 optimizer step 最大参数差 0，RNG 相等；B0 完整 10 折均值与 E1 参考一致：ACC 91.9592%、Hard-AUC 91.7434%、Probability-AUC 93.1856%。
+- **方法**：单一 CORR 疾病关系编码器、患者对站点条件 GRL、四图边校准和 CORR 子空间有界正/负传播；不含 Prompt/PEN 或第二创新。
+- **关系诊断**：正确关系 OOF AUC 0.6994±0.0249，跨站点 AUC 0.6890±0.0280；标签置乱 B7 OOF AUC 0.5060。B5 站点判别器 AUC 0.5193±0.0396，接近机会水平。
+
+### 正式指标（十折 mean±population SD，百分比）
+
+|组|名称|ACC|Hard-AUC/BA|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---|---:|---:|---:|---:|---:|
+| B0 | E1_IDENTITY_REPLAY | 91.9592±2.8684 | 91.7434±2.8950 | 93.1856±3.0236 | 94.6392±3.3856 | 88.8476±4.1651 |
+| B1 | PAIR_AUX_ONLY | 91.9592±2.8684 | 91.7434±2.8950 | 93.1856±3.0236 | 94.6392±3.3856 | 88.8476±4.1651 |
+| B2 | SIMILARITY_SIGNED | 91.9592±2.9141 | 91.8173±2.8706 | 93.0315±2.9672 | 93.5615±4.6588 | 90.0732±3.7017 |
+| B3 | DISEASE_EDGE_ONLY | 91.4995±3.0565 | 91.3018±3.0250 | 93.4884±2.9867 | 93.7743±4.6921 | 88.8293±4.0771 |
+| B4 | DISEASE_EDGE_SIGNED | 91.0410±2.8137 | 90.7939±2.8443 | 93.4291±2.9958 | 93.9963±3.5967 | 87.5915±4.3254 |
+| B5 | FULL_D2ARG | 91.7294±3.0388 | 91.5306±3.0655 | 93.0581±3.3684 | 94.2137±3.3535 | 88.8476±4.1578 |
+| B6 | NO_NEGATIVE_CHANNEL | 91.4995±2.9688 | 91.2885±2.9562 | 93.2854±2.7464 | 93.9917±4.0988 | 88.5854±4.0283 |
+| B7 | WRONG_DISEASE_PAIR | 91.6144±3.0062 | 91.4584±3.0261 | 93.1903±3.1243 | 93.5754±3.5997 | 89.3415±4.2815 |
+| B8 | WRONG_PATIENT_GRAPH | 91.7294±3.1245 | 91.5408±3.1597 | 93.4359±3.3320 | 93.9963±3.4742 | 89.0854±4.3316 |
+| B9 | NO_CROSS_PATIENT_MESSAGE | 91.9592±2.7267 | 91.8120±2.6438 | 93.7006±2.8680 | 93.5569±4.9537 | 90.0671±3.3693 |
+
+### 关键同折差异
+
+- `B5_minus_B0`: acc -0.2299 pp (0/8/2), hard_auc -0.2128 pp (2/5/3), prob_auc -0.1275 pp (6/0/4)
+- `B5_minus_B4`: acc +0.6883 pp (6/3/1), hard_auc +0.7367 pp (6/2/2), prob_auc -0.3710 pp (5/0/5), acc +0.6883 pp (6/3/1), hard_auc +0.7367 pp (6/2/2), prob_auc -0.3710 pp (5/0/5)
+- `B5_minus_B7`: acc +0.1149 pp (1/9/0), hard_auc +0.0722 pp (4/3/3), prob_auc -0.1322 pp (5/0/5)
+- `B5_minus_B8`: acc +0.0000 pp (1/8/1), hard_auc -0.0102 pp (2/6/2), prob_auc -0.3778 pp (4/1/5)
+- `B5_minus_B9`: acc -0.2299 pp (1/6/3), hard_auc -0.2814 pp (2/4/4), prob_auc -0.6425 pp (4/0/6)
+
+B5 相对 B0 ACC −0.2299 pp，未达到预注册 +0.3 pp；B5 与 B8 ACC 相同，正确患者关系图没有得到独立支持；B9 关闭新增跨患者消息后 ACC 回到 B0 水平，B5 的新增传播没有独立诊断收益。B5 固定 checkpoint 的边变化非零、CORR 校正消息非零，但关闭边重加权没有硬预测变化；关闭传播使 ACC 从 91.7294% 降至 91.3845%，说明消息进入了 CAM，却没有超过可靠 E1 基座。
+
+- **独立审计**：`results/checkpoint_audit.csv`，100/100，最大指标差 0。
+- **机制与干预**：`results/mechanism.csv`、`results/interventions.csv`、`results/intervention_flips.csv`、`results/adversary_audit.csv`。
+- **科研报告**：`results/report.md`。
+- **配置/代码/审计**：`config.json`、`run.py`、`d2arg.py`、`audit.py`、`mechanism.py`、`manifest.json`、`.runtime/preflight.json`。
+- **限制**：保留历史 `val=test`、CV 前预处理、transductive 871 节点图和单 seed=0，不能宣称无偏外部泛化。
+- **下一步建议**：停止在同一患者相似图上继续堆叠关系门控或对抗分支；如继续，应先采用独立验证/外部站点和可验证的关系证据。
+
+<!-- EXPERIMENT54_D2ARG_END -->
+
