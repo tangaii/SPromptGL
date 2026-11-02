@@ -1,0 +1,19 @@
+{
+  "experiment": "Experiment 53.3 fallback-fixed CADR/GFR weight-decay sweep",
+  "seed": 0,
+  "folds": 10,
+  "requested_workers": 10,
+  "device": "cuda:0",
+  "camera_optimizer_weight_decay": 0.11,
+  "groups": [
+    {"name": "CADR_WD_0p0001_GFR_WD_0p11", "cadr_weight_decay": 0.0001, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p001_GFR_WD_0p20", "cadr_weight_decay": 0.001, "gfr_weight_decay": 0.2},
+    {"name": "CADR_WD_0p01_GFR_WD_0p11", "cadr_weight_decay": 0.01, "gfr_weight_decay": 0.11},
+    {"name": "CADR_WD_0p01_GFR_WD_0p20", "cadr_weight_decay": 0.01, "gfr_weight_decay": 0.2}
+  ],
+  "protocol_source": "Experiment 53.3 config.json and run.py",
+  "model_source": "Experiment 53.3 run_cadr_fallback.py",
+  "comparison_reference": "Experiment 53.3 E1_CADR_WD0001_GRAPH_FALLBACK_FIX",
+  "runtime_subdir": ".runtime/fallback_wd_sweep",
+  "results_subdir": "results/fallback_wd_sweep"
+}
