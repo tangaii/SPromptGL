@@ -1,0 +1,268 @@
+{
+  "experiment": "Experiment 59: SHAPE-PEN",
+  "status": "PREFLIGHT_PASS_CONFIG_FROZEN",
+  "seed": 0,
+  "folds": 10,
+  "fold_random_state": 10,
+  "max_workers": 10,
+  "warmup_epochs": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "checkpoint_selection": "strict ACC improvement; historical val=test",
+  "base": {
+    "group": "CADR_WD_0p01_GFR_WD_0p11",
+    "cadr_adamw_weight_decay": 0.01,
+    "gfr_adam_weight_decay": 0.11,
+    "cam_adam_weight_decay": 0.11,
+    "gfr_learning_rate": 0.0038,
+    "cam_learning_rate": 0.0038,
+    "cadr_learning_rate": 0.001,
+    "input_dimensions": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "cam_positions": 4,
+    "position_width": 36,
+    "cam_representation_width": 144,
+    "output_layer_hidden_width": 36,
+    "preserve_historical_val_equals_test": true,
+    "preserve_cv_before_fold_preprocessing": true,
+    "preserve_transductive_871_node_graph": true
+  },
+  "prompt_source": {
+    "repository": "https://github.com/AngusMonroe/BrainPrompt",
+    "commit": "c85304a023636a2701d465e4cb0acb13b637127e",
+    "text_file": ".runtime/brainprompt/abide_label.txt",
+    "embedding_file": ".runtime/brainprompt/abide_label.pt",
+    "official_order": [
+      "TC",
+      "ASD"
+    ],
+    "experiment_order": [
+      "ASD",
+      "TD"
+    ],
+    "experiment_to_official_indices": [
+      1,
+      0
+    ],
+    "encoder": "frozen official Llama-encoder-1.0B cached 2048-d embeddings",
+    "shared_across_subjects_and_folds": true
+  },
+  "semantic_projection": {
+    "shared_linear": true,
+    "input_width": 2048,
+    "output_width": 144,
+    "bias": true,
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.001,
+    "rng_isolated": true,
+    "initialization_seed": 590059,
+    "same_initial_projection_across_groups_within_fold": true,
+    "shape_temperature": 0.1,
+    "saber_temperature": 0.1,
+    "supcon_temperature": 0.1,
+    "shape_similarity": "dot product with unit-normalized shared-projection prototypes; preserves projected disease-component magnitude",
+    "rho_min": 0.2,
+    "rho_abs_scale_floor": 0.1,
+    "rho_scale_quantile": 0.75,
+    "rho_detached": true,
+    "gradient_target_ratio_to_original_cls": 0.1,
+    "coefficients_frozen": true,
+    "coefficients": {
+      "brainprompt_style": 0.736416082223469,
+      "saber_disease_cl": 0.059059601424840395,
+      "supervised_contrastive": 0.09448156444510578,
+      "shape_family": 0.003619779891840622
+    }
+  },
+  "groups": [
+    {
+      "id": "G01",
+      "name": "BrainPrompt-Disease",
+      "family": "brainprompt",
+      "text": "real",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G02",
+      "name": "SABER-DiseaseCL",
+      "family": "saber",
+      "text": "real",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G03",
+      "name": "RAND-DiseaseCL",
+      "family": "saber",
+      "text": "anonymous_fixed_geometry_matched",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G04",
+      "name": "LEARN-DiseasePrototype",
+      "family": "saber",
+      "text": "learnable_numeric_prototypes",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G05",
+      "name": "SupervisedContrastive",
+      "family": "supcon",
+      "text": "none",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G06",
+      "name": "SHAPE-PARTIAL-UNIFORM",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "uniform"
+    },
+    {
+      "id": "G07",
+      "name": "SHAPE-GLOBAL-GATED",
+      "family": "shape",
+      "text": "real",
+      "input": "global_144",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G08",
+      "name": "Evidence-Weighted-CE",
+      "family": "shape_ce_control",
+      "text": "none",
+      "input": "original_classifier",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G09",
+      "name": "SHAPE-SHUFFLED-EVIDENCE",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "within_class_fixed_shuffle"
+    },
+    {
+      "id": "G10",
+      "name": "SHAPE-RANDOM-TEXT",
+      "family": "shape",
+      "text": "anonymous_fixed_geometry_matched",
+      "input": "disease_projection",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G11",
+      "name": "SHAPE-FULL",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "patient_evidence"
+    }
+  ],
+  "rng_controls": {
+    "semantic_module_initialization_uses_fork_rng": true,
+    "anonymous_embeddings_use_private_generator": true,
+    "shuffle_uses_private_generator": true,
+    "evidence_classifier_path_is_deterministic_no_dropout": true,
+    "semantic_losses_disabled_during_warmup": true
+  },
+  "decision_thresholds": {
+    "interpretation": "descriptive, pre-registered engineering/scientific gates; no fold-level significance claim",
+    "go_base_acc_delta_min_pp": 0.5,
+    "go_min_acc_wins": 6,
+    "go_sen_noninferiority_margin_pp": -1.0,
+    "go_required_accuracy_comparators": [
+      "G01",
+      "G02",
+      "G04",
+      "G05"
+    ],
+    "go_min_mean_acc_delta_vs_required_comparators_pp": 0.0,
+    "go_min_wins_vs_required_comparators": 6,
+    "go_text_acc_delta_vs_G10_min_pp": 0.5,
+    "go_text_wins_vs_G10_min": 6,
+    "go_mechanism_min_acc_wins_vs_G06_G07_G08_G09": 6,
+    "rho_min_train_sd_for_noncollapse": 0.02,
+    "rho_max_boundary_fraction_for_noncollapse": 0.8,
+    "rho_max_class_mean_gap_for_noncollapse": 0.2,
+    "knn_k": 10,
+    "effective_rank_retention_min_fraction_vs_G02": 0.7
+  },
+  "protocol_notes": [
+    "The historical val=test checkpoint selector, CV-before-fold preprocessing and 871-node transductive graph are intentionally retained for protocol matching.",
+    "These single-seed results are exploratory, not unbiased external generalization estimates.",
+    "Experiment 58 FAVE-PEN is NO-GO and its anatomical connection-matching route is not reused."
+  ],
+  "preflight": {
+    "status": "PASS",
+    "calibration_fold": 1,
+    "labels_used": "outer-training labels only",
+    "validation_or_test_metrics_used": false,
+    "warmup_steps": 10,
+    "shared_warmup_cache_sha256": "91434b1c9505c4819ef769eab6571035e634008c73573661fe1c8c355a3d8b6f",
+    "base_classification_gradient_norm_at_CAM": 0.008420923724770546,
+    "target_auxiliary_to_classification_gradient_ratio": 0.1,
+    "unit_auxiliary_gradient_ratios": {
+      "G01": 0.1357927975962569,
+      "G02": 1.3933176419375666,
+      "G03": 1.693204789525385,
+      "G04": 1.693204789525385,
+      "G05": 1.058407537886404,
+      "G06": 22.270669277622908,
+      "G07": 24.064942117241312,
+      "G08": 1.0663947989680929,
+      "G09": 23.99642552924176,
+      "G10": 27.62598914519938,
+      "G11": 24.064942117241312
+    },
+    "frozen_gradient_ratios": {
+      "G01": 0.1,
+      "G02": 0.08228878459103117,
+      "G03": 0.1,
+      "G04": 0.1,
+      "G05": 0.1,
+      "G06": 0.0806149208289721,
+      "G07": 0.08710979357429859,
+      "G08": 0.0038601144500681247,
+      "G09": 0.08686177860680026,
+      "G10": 0.1,
+      "G11": 0.08710979357429859
+    },
+    "unscaled_losses": {
+      "G01": 0.6895713806152344,
+      "G02": 0.721615731716156,
+      "G03": 0.9657672047615051,
+      "G04": 0.9657672047615051,
+      "G05": 7.050236225128174,
+      "G06": 3.7381863594055176,
+      "G07": 3.58437442779541,
+      "G08": 0.6602467894554138,
+      "G09": 3.696274518966675,
+      "G10": 9.754664421081543,
+      "G11": 3.584372043609619
+    },
+    "frozen_coefficients": {
+      "brainprompt_style": 0.736416082223469,
+      "saber_disease_cl": 0.059059601424840395,
+      "supervised_contrastive": 0.09448156444510578,
+      "shape_family": 0.003619779891840622
+    },
+    "brainprompt_official_default_lambda1": 0.001,
+    "brainprompt_adaptation": "coefficient calibrated to the common 144-d representation gradient scale; reported as BrainPrompt-style, not an exact hyperparameter reproduction",
+    "saber_temperature_adaptation": 0.1,
+    "shape_temperature": 0.1,
+    "supcon_temperature": 0.1,
+    "coefficient_rule": "target_ratio / maximum unscaled family gradient ratio",
+    "note": "The fold is used only for numeric and gradient-scale preflight; no outer validation/test performance selects a coefficient."
+  }
+}

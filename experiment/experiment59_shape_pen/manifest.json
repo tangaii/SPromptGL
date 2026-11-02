@@ -1,0 +1,146 @@
+{
+  "experiment": "Experiment 59: SHAPE-PEN",
+  "status": "COMPLETE_AUDITED",
+  "experiment_root": "/data/adodas/SPromptGL-main/experiment/experiment59_shape_pen",
+  "base_group": "CADR_WD_0p01_GFR_WD_0p11",
+  "seed": 0,
+  "required_new_folds": 110,
+  "groups": [
+    {
+      "id": "G01",
+      "name": "BrainPrompt-Disease",
+      "family": "brainprompt",
+      "text": "real",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G02",
+      "name": "SABER-DiseaseCL",
+      "family": "saber",
+      "text": "real",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G03",
+      "name": "RAND-DiseaseCL",
+      "family": "saber",
+      "text": "anonymous_fixed_geometry_matched",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G04",
+      "name": "LEARN-DiseasePrototype",
+      "family": "saber",
+      "text": "learnable_numeric_prototypes",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G05",
+      "name": "SupervisedContrastive",
+      "family": "supcon",
+      "text": "none",
+      "input": "global_144",
+      "rho": "none"
+    },
+    {
+      "id": "G06",
+      "name": "SHAPE-PARTIAL-UNIFORM",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "uniform"
+    },
+    {
+      "id": "G07",
+      "name": "SHAPE-GLOBAL-GATED",
+      "family": "shape",
+      "text": "real",
+      "input": "global_144",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G08",
+      "name": "Evidence-Weighted-CE",
+      "family": "shape_ce_control",
+      "text": "none",
+      "input": "original_classifier",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G09",
+      "name": "SHAPE-SHUFFLED-EVIDENCE",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "within_class_fixed_shuffle"
+    },
+    {
+      "id": "G10",
+      "name": "SHAPE-RANDOM-TEXT",
+      "family": "shape",
+      "text": "anonymous_fixed_geometry_matched",
+      "input": "disease_projection",
+      "rho": "patient_evidence"
+    },
+    {
+      "id": "G11",
+      "name": "SHAPE-FULL",
+      "family": "shape",
+      "text": "real",
+      "input": "disease_projection",
+      "rho": "patient_evidence"
+    }
+  ],
+  "source_sha256": {
+    "base_run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+    "base_cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+    "base_config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa",
+    "base_fallback_runner.py": "ec2c1f6b5a7d4d2075f2b4f44c4d41002dffcfc3d18aa97d49744cb8109c3b70",
+    "base_wd_sweep_runner.py": "15ce27fe31e51eac972447e1c9d9829f959cde6123319834a57aeddbff1d492f",
+    "base_wd_sweep_config.json": "cdd3eb92b9d4a7b8e38c315ca9a831d5841ee494f16d11b51668053ab599d402",
+    "active_network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "active_layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "active_dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    "active_utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "experiment_51_config.json": "f3447e150bc67ab29860dc0ae4804c194d5607fcbbdeccc9066ae1600c6ba531",
+    "experiment_43_anchor_index.json": "4deb8fdd385bbdb7741b9c6409f2b1be0931b2fd9731e40436225d247b9018a2",
+    "experiment59_run.py": "a576235ea34324516d7b17207ff905ea5c4a43149df39021977efc3d6a8a1bda",
+    "experiment59_shape_pen.py": "7cf337c0cebb5cdaf43bc6d4640dd10477601dc53493573e3ab82b32a7660f00",
+    "experiment59_audit.py": "f7c9dd7068391098349fabd5dae6a0586a6b219211432240950aad671185199c",
+    "experiment59_design.md": "ccedd14e5da1c29493eb71f95ceaa4df15746dc2e973cbe027329fab40c2ef19",
+    "experiment59_config.json": "1b8906959330ff9e7f31c56be39a66a1dcbb9461d6d12dd88bd105906cd0559c",
+    "brainprompt_label_text": "ce6a7bb9755c26cd9643b6867bac5d1496e93bf9a0d7d8d90944dd3b119c431c",
+    "brainprompt_label_embedding": "adc544346b33fd007c026b8283de6f4bdf01abd57578cab353fa9883efa7b5af",
+    "anonymous_label_embedding": "50f177ce0b1b63aa6f489ef4b79b807583380f3a2fac29c808cf524f7acaaed4"
+  },
+  "data_sha256": {
+    "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "reference_manifest_sha256": "fae43596a9788d63bf8b0a0e52854fd1f7f014fea36c062bcf8a881806d7fcba",
+  "reference_baseline_csv_sha256": "2849ce9d161d5b5ea32bc1b210ebde4f4bd0daf25e316298934b8029b0f8f9a2",
+  "reference_wd": {
+    "cadr_adamw": 0.01,
+    "gfr_adam": 0.11,
+    "cam_adam": 0.11
+  },
+  "checkpoint_audit_passed": 120,
+  "checkpoint_audit_required": 120,
+  "training_completed_folds": 110,
+  "training_required_folds": 110,
+  "scientific_decision": "NO-GO",
+  "handoff_status": "APPENDED_AND_READBACK_PASS",
+  "handoff_sha256": "623fbc0ad8e6851f93b75c4dd1b2f898f07a66d33942d2b54e606f83df9bafbc",
+  "results_sha256": {
+    "fold_metrics.csv": "90cbb42a824212bbbb6a840fc7b0d79ba46291c4a2f3d3efc57125dd1e0b83d4",
+    "summary.csv": "cc67120d6a3f353935b855509cfef9f8662f371981380264e19ea8ce8454e54c",
+    "paired_comparisons.csv": "445695282645c513da3879a9f5059e15039ff161ef15ff6a16274cebf4202d0f",
+    "checkpoint_audit.csv": "71319273b29fb8ebbd73cb5f775bbdfe4a6c5858399e921f5297ec7f3754d643",
+    "mechanism.csv": "a57a3e78de2e90006810057cde5ae5759d01c4bffb143839a54508101d4d6ee3",
+    "report.md": "73ce1dfdaec28def6bfac756e75a50ef2d0427f33c1cd21885b01e26fe4694fc"
+  }
+}
