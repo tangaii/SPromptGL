@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention | MICCAI 2026 Satellite Events - Open Access</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention" />
+<meta name="author" content="Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Abstract Medical imaging models often operate as black boxes, limiting interpretability and systematic debugging. We introduce an easy-to-use, plug-and-play framework for concept-based interpretation and model refinement. By aligning a single-modality encoder to BioMedCLIP, we construct a Concept Bottleneck Model (CBM) that enables concept-level interventions. These interventions allow us to isolate causal versus spuriously correlated concepts, validate insights with domain experts, and generate counterfactual samples for targeted fine-tuning. We evaluate our framework on a Mayo Clinic ultrasound dataset and the CheXpert 5x200 chest X-ray dataset. Results demonstrate that concept intervention enables reliable model diagnosis while maintaining, and occasionally improving predictive performance via guided fine-tuning. Our findings highlight the practical value of this framework for controlled, interpretable refinement of clinical deep learning models. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026-sat/paper/AMAI_073.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to Open Review Open Review Page: https://openreview.net/profile?id=%7ESamrajya_Thapa1 BibTex @InProceedings{ThaSam_Beyond_MICCAISAT2026, Â  Â  Â  Â  author = { Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei}, Â  Â  Â  Â  title = { { Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026 Workshops and Challenges}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 17273}, Â  Â  Â  Â  month = {pending}, Â  Â  Â  Â page = {pending} } back to top" />
+<meta property="og:description" content="Abstract Medical imaging models often operate as black boxes, limiting interpretability and systematic debugging. We introduce an easy-to-use, plug-and-play framework for concept-based interpretation and model refinement. By aligning a single-modality encoder to BioMedCLIP, we construct a Concept Bottleneck Model (CBM) that enables concept-level interventions. These interventions allow us to isolate causal versus spuriously correlated concepts, validate insights with domain experts, and generate counterfactual samples for targeted fine-tuning. We evaluate our framework on a Mayo Clinic ultrasound dataset and the CheXpert 5x200 chest X-ray dataset. Results demonstrate that concept intervention enables reliable model diagnosis while maintaining, and occasionally improving predictive performance via guided fine-tuning. Our findings highlight the practical value of this framework for controlled, interpretable refinement of clinical deep learning models. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026-sat/paper/AMAI_073.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to Open Review Open Review Page: https://openreview.net/profile?id=%7ESamrajya_Thapa1 BibTex @InProceedings{ThaSam_Beyond_MICCAISAT2026, Â  Â  Â  Â  author = { Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei}, Â  Â  Â  Â  title = { { Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026 Workshops and Challenges}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 17273}, Â  Â  Â  Â  month = {pending}, Â  Â  Â  Â page = {pending} } back to top" />
+<link rel="canonical" href="https://papers.miccai.org/miccai-2026-sat/AMAI_073" />
+<meta property="og:url" content="https://papers.miccai.org/miccai-2026-sat/AMAI_073" />
+<meta property="og:site_name" content="MICCAI 2026 Satellite Events - Open Access" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-09-21T00:00:00-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention","dateModified":"2026-09-21T00:00:00-04:00","datePublished":"2026-09-21T00:00:00-04:00","url":"https://papers.miccai.org/miccai-2026-sat/AMAI_073","mainEntityOfPage":{"@type":"WebPage","@id":"https://papers.miccai.org/miccai-2026-sat/AMAI_073"},"author":{"@type":"Person","name":"Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei"},"description":"Abstract Medical imaging models often operate as black boxes, limiting interpretability and systematic debugging. We introduce an easy-to-use, plug-and-play framework for concept-based interpretation and model refinement. By aligning a single-modality encoder to BioMedCLIP, we construct a Concept Bottleneck Model (CBM) that enables concept-level interventions. These interventions allow us to isolate causal versus spuriously correlated concepts, validate insights with domain experts, and generate counterfactual samples for targeted fine-tuning. We evaluate our framework on a Mayo Clinic ultrasound dataset and the CheXpert 5x200 chest X-ray dataset. Results demonstrate that concept intervention enables reliable model diagnosis while maintaining, and occasionally improving predictive performance via guided fine-tuning. Our findings highlight the practical value of this framework for controlled, interpretable refinement of clinical deep learning models. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026-sat/paper/AMAI_073.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to Open Review Open Review Page: https://openreview.net/profile?id=%7ESamrajya_Thapa1 BibTex @InProceedings{ThaSam_Beyond_MICCAISAT2026, Â  Â  Â  Â  author = { Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei}, Â  Â  Â  Â  title = { { Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026 Workshops and Challenges}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 17273}, Â  Â  Â  Â  month = {pending}, Â  Â  Â  Â page = {pending} } back to top","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<meta
+  name="keywords"
+  content="Thapa, Samrajya,Quest, Daniel J.,Kline, Timothy L.,Langstraat, Carrie L.,Trabuco, Emanuel C.,Le, Wei" />
+
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-57x57.png"/>
+<link rel="apple-touch-icon" sizes="60x60" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-60x60.png"/>
+<link rel="apple-touch-icon" sizes="72x72" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-72x72.png"/>
+<link rel="apple-touch-icon" sizes="76x76" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-76x76.png"/>
+<link rel="apple-touch-icon" sizes="114x114" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-114x114.png"/>
+<link rel="apple-touch-icon" sizes="120x120" href=".https://conferences.miccai.org/2026/files/images/favicon/apple-icon-120x120.png"/>
+<link rel="apple-touch-icon" sizes="144x144" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-144x144.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-152x152.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-180x180.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="https://conferences.miccai.org/2026/files/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-96x96.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-16x16.png"/>
+
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="MICCAI 2026 Satellite Events - Open Access - "
+  href="/miccai-2026-sat/feed.xml" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/miccai-2026-sat/assets/css/base.css" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/miccai-2026-sat/assets/css/highlight.css" />
+
+<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+
+<!-- <script src="/assets/scripts/jekyllpaper.js" async></script> -->
+<script src="/miccai-2026-sat/assets/scripts/jekyllpaper.js" async></script>
+<script
+  src="https://unpkg.com/mermaid@8.5.1/dist/mermaid.min.js"
+  onload="javascript:loadMermaid();"
+  async>
+</script>
+
+
+  </head>
+  <body>
+    <div class="container-wrapper">
+      <header class="container-header">
+        <div class="header-info">
+
+  <p style="text-align:center;"><img src="/miccai-2026-sat/assets/images/miccai2026-banner.png" alt="MICCAI banner" width="100%"></p>
+  <br><br>
+  <span class="header-info-name">MICCAI 2026 Satellite Events - Open Access</span>
+  <span class="header-info-desc"></span>
+  <br><br>
+  <span>
+<!--
+<h2><i><font color="green">This page contains the open access versions of the MICCAI 2026 papers, provided by the MICCAI Society in agreement with Springer. 
+  These versions have a content identical to the accepted versions, and only differ in the format and added watermark; the final published version of the proceedings is available on <a href="https://conferences.miccai.org/2026/en/PROCEEDINGS.html" target="_blank">SpringerLink</a>.
+  They are made available here to facilitate timely dissemination of research work, in line with the MICCAI Society's commitment to open science. Copyright and all rights therein are retained by authors or by other copyright holders. Anyone copying this material is expected to adhere to the terms and conditions invoked by each author's copyright.
+</i></h2></font>
+-->
+<h2><i><font color="green">
+  This page provides open access versions of the MICCAI 2026 Satellite Event papers, made available by the MICCAI Society in agreement with Springer.  
+  These are the camera-ready versions submitted by the authors prior to typesetting by the publisher, with a watermark added. 
+  The final published versions of the proceedings are available on SpringerLink. The papers are made available here to facilitate the timely dissemination of research, in line with the MICCAI Societyâs commitment to open science. 
+  Copyright and all related rights are retained by the authors or other copyright holders. Anyone copying or otherwise using this material is expected to comply with the terms and conditions specified by the respective copyright holders.</i></h2></font>
+
+<br>
+</span>
+</div>
+<!--
+
+<nav class="header-nav">
+  <ul class="header-main-nav">
+    <h2> 
+    
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026-sat/"> 
+        
+          <b>List of Papers</b> |
+        
+      </a>
+    </li>
+      
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026-sat/categories"> 
+        
+          <b>Browse by Satellite Event</b> |
+        
+      </a>
+    </li>
+      
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026-sat/tags"> 
+        
+          <b>Author List</b> |
+        
+      </a>
+    </li>
+      
+    </h2>
+  </ul>
+</nav>
+-->
+      </header>
+      <main class="container-main">
+        <article class="container-post">
+  <div class="post-title">
+    <h1><span style="color:#1040a7"><b>Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention</b></span></h1>
+  </div>
+  
+  <div class="post-author print-post-author">
+    <span>Kitty K. Wong</span>
+  </div>
+  <div class="post-tags">
+    <!--<span>Author List</span>-->
+    <span><b> <h2>Author(s): </h2></b></span>
+    
+    <a href="/miccai-2026-sat/tags#Thapa, Samrajya"
+      class="post-category">
+      Thapa, Samrajya
+    </a> |  
+    
+    <a href="/miccai-2026-sat/tags#Quest, Daniel J."
+      class="post-category">
+      Quest, Daniel J.
+    </a> |  
+    
+    <a href="/miccai-2026-sat/tags#Kline, Timothy L."
+      class="post-category">
+      Kline, Timothy L.
+    </a> |  
+    
+    <a href="/miccai-2026-sat/tags#Langstraat, Carrie L."
+      class="post-category">
+      Langstraat, Carrie L.
+    </a> |  
+    
+    <a href="/miccai-2026-sat/tags#Trabuco, Emanuel C."
+      class="post-category">
+      Trabuco, Emanuel C.
+    </a> |  
+    
+    <a href="/miccai-2026-sat/tags#Le, Wei"
+      class="post-category">
+      Le, Wei
+    </a> |  
+    
+    <br><br><span><b> <h2>Satellite Event:</h2></b></span>
+     <a href="/miccai-2026-sat/categories#AMAI"> The Fifth Workshop on Applications of Medical AI (AMAI2026)</a>
+
+  </div>
+  
+
+  <hr>
+    
+   
+  <div class="post-content">
+    <!--
+    <div class="post-categories">
+      <h2><span style="color:#1040a7">Paper Topic(s):</span></h2> 
+      
+      
+      <a 
+        href="/miccai-2026-sat/categories#AMAI"
+        class="post-category">
+        AMAI
+      </a>
+      
+    
+    </div>
+    <div class="post-tags">
+      
+      <h2><span style="color:#1040a7">Author(s):</span></h2> 
+      
+      <a href="/miccai-2026-sat/tags#Thapa, Samrajya"
+        class="post-tags">
+        Thapa, Samrajya
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Quest, Daniel J."
+        class="post-tags">
+        Quest, Daniel J.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Kline, Timothy L."
+        class="post-tags">
+        Kline, Timothy L.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Langstraat, Carrie L."
+        class="post-tags">
+        Langstraat, Carrie L.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Trabuco, Emanuel C."
+        class="post-tags">
+        Trabuco, Emanuel C.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Le, Wei"
+        class="post-tags">
+        Le, Wei
+      </a> |  
+      
+    </div>
+  -->
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+    .sidenav {
+      width: 200px;
+      position: fixed;
+      z-index: 1;
+      top: 350px;
+      left: 0px;
+      background: #eee;
+      overflow-x: hidden;
+      padding: 0px 0;
+    }
+  
+    .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #2196F3;
+      color: #FF4500;
+      display: block;
+    }
+  
+    .sidenav a:hover {
+      color: #064579;
+    }
+    </style>
+  </head>
+
+  <div class="sidenav">
+    
+    
+      <a href="/miccai-2026-sat/"> 
+        
+          List of Papers
+        
+      </a>
+      
+      <a href="/miccai-2026-sat/categories"> 
+        
+          Browse by Satellite Event
+        
+      </a>
+      
+      <a href="/miccai-2026-sat/tags"> 
+        
+          Author List
+        
+      </a>
+      
+    
+
+  </div>
+
+    <h1 id="abstract-id">Abstract</h1>
+<p>Medical imaging models often operate as black boxes, limiting interpretability and systematic debugging. We introduce an easy-to-use, plug-and-play framework for concept-based interpretation and model refinement. By aligning a single-modality encoder to BioMedCLIP, we construct a Concept Bottleneck Model (CBM) that enables concept-level interventions. These interventions allow us to isolate causal versus spuriously correlated concepts, validate insights with domain experts, and generate counterfactual samples for targeted fine-tuning. We evaluate our framework on a Mayo Clinic ultrasound dataset and the CheXpert 5x200 chest X-ray dataset. Results demonstrate that concept intervention enables reliable model diagnosis while maintaining, and occasionally improving predictive performance via guided fine-tuning. Our findings highlight the practical value of this framework for controlled, interpretable refinement of clinical deep learning models.
+<br /><br /></p>
+
+<h1 id="link-id">Links to Paper and Supplementary Materials</h1>
+<p>Main Paper (Open Access Version): <a href="https://papers.miccai.org/miccai-2026-sat/paper/AMAI_073.pdf" target="_blank">https://papers.miccai.org/miccai-2026-sat/paper/AMAI_073.pdf</a></p>
+
+<p>SharedIt Link: Not yet available</p>
+
+<p>SpringerLink (DOI): Not yet available</p>
+
+<p>Supplementary Material: Not Submitted
+<br /><br /></p>
+
+<h1 id="link-to-open-review">Link to Open Review</h1>
+<p>Open Review Page: <a href="https://openreview.net/profile?id=%7ESamrajya_Thapa1" target="_blank">https://openreview.net/profile?id=%7ESamrajya_Thapa1</a>
+<br /><br /></p>
+
+<h1 id="bibtex-id">BibTex</h1>
+<pre><code class="language-{verbatim}">@InProceedings{ThaSam_Beyond_MICCAISAT2026,
+Â  Â  Â  Â  author = { Thapa, Samrajya AND Quest, Daniel J. AND Kline, Timothy L. AND Langstraat, Carrie L. AND Trabuco, Emanuel C. AND Le, Wei},
+Â  Â  Â  Â  title = { { Beyond Explanation: Debugging Medical Imaging Models via Concept Intervention } },
+Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026 Workshops and Challenges},
+Â  Â  Â  Â  year = {2026},
+        publisher = {Springer Nature Switzerland},
+Â  Â  Â  Â  volume = {LNCS 17273},
+Â  Â  Â  Â  month = {pending},
+ Â  Â  Â  Â page = {pending}
+}
+
+</code></pre>
+
+<hr />
+<p><a href=""><b>back to top</b></a></p>
+
+<hr />
+
+
+  </div>
+
+  <div class="post-info">
+    <!--
+    <div class="post-date">
+      Poster presentation date:  
+      2026-09-21
+      -->
+      <!--
+      
+        ,
+        updated at 
+        2026-09-21
+      
+      .
+      
+    </div>
+    -->
+    <!--
+    
+    <div class="post-author">
+      Author: Kitty K. Wong
+    </div>
+    
+    -->
+    <div class="post-categories">
+      <span><b>Satellite Event: </b></span>
+      
+      <a 
+        href="/miccai-2026-sat/categories#AMAI"
+        class="post-category">
+        AMAI
+      </a> 
+      
+    </div>
+    <div class="post-tags">
+      <!--<span>Author List</span>-->
+      <span><b> Author(s): </b></span>
+      
+      <a href="/miccai-2026-sat/tags#Thapa, Samrajya"
+        class="post-category">
+        Thapa, Samrajya
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Quest, Daniel J."
+        class="post-category">
+        Quest, Daniel J.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Kline, Timothy L."
+        class="post-category">
+        Kline, Timothy L.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Langstraat, Carrie L."
+        class="post-category">
+        Langstraat, Carrie L.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Trabuco, Emanuel C."
+        class="post-category">
+        Trabuco, Emanuel C.
+      </a> |  
+      
+      <a href="/miccai-2026-sat/tags#Le, Wei"
+        class="post-category">
+        Le, Wei
+      </a> |  
+      
+    </div>
+    <div class="post-other">
+      
+      <div>
+        <span><b>
+          Next paper: 
+        </b>
+        </span>
+        <a href="/miccai-2026-sat/AMPLIFAI_001.html">
+          Ordinal-aware Multi-Phase Classification with Manifold Mixup for LI-RADS Assessment in CT
+        </a>
+      </div>
+      
+      
+      <div>
+        <span><b>
+          Previous paper: 
+        </b>
+        </span>
+        <a href="/miccai-2026-sat/AMAI_069.html">
+          A Benchmark Audit of Site Confounds, Calibration, and Self-Supervision in Cross-Dataset Parkinsonâs EEG Detection
+        </a>
+      </div>
+      
+    </div>
+    
+  </div>
+</article>
+
+      </main>
+      <footer class="container-footer">
+        <div class="footer-copyright">
+  <span class="footer-copyright-text float-left">
+    Copyright &copy; 2026. The MICCAI Society
+  </span>
+  
+  <span class="footer-copyright-text float-right">
+    MICCAI 2026 Open Access</a>.
+  </span>
+
+</div>
+
+
+      </footer>
+    </div>
+  </body>
+</html>

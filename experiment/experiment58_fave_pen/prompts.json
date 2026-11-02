@@ -1,0 +1,81 @@
+{
+  "version": "E58_PROMPT_BANK_V1",
+  "status": "FROZEN_BEFORE_TRAINING",
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50 text tower",
+    "source": "repository-local CLIP/clip/clip.py; official RN50 checkpoint",
+    "checkpoint_expected_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "mapping_source": "experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv",
+  "mapping_sha256": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+  "eligible_feature_count": 252,
+  "excluded_extra_roi_feature_indices": [
+    195,
+    225,
+    232,
+    236
+  ],
+  "hypotheses": [
+    {
+      "prompt_id": "THAL_STG_IPSI_FC_001",
+      "full_text": "In a pediatric autism study using Harvard-Oxford cortical regions and thalamic seeds, functional connectivity was reported to be greater between the thalamus and superior temporal gyri. This is a population-level, cohort-specific hypothesis, not an individual diagnostic rule.",
+      "asd_direction": "INCREASED",
+      "candidate_feature_indices": [
+        0
+      ],
+      "candidate_connections": [
+        "Left Thalamus — Left Superior Temporal Gyrus, anterior division"
+      ],
+      "mapping_basis": "The feature-map CSV verifies both endpoint labels and numeric feature order; the study used Harvard-Oxford cortical/subcortical regions and reports bilateral superior temporal gyri. The study's whole superior temporal region and connectivity estimand are broader/different than this selected HO connection.",
+      "evidence_strength": "MODERATE_WITH_LIMITED_COVERAGE",
+      "counterfactual_text": "Counterfactual direction for model testing only: suppose functional connectivity between the thalamus and superior temporal gyri were lower in an autism cohort using Harvard-Oxford regions. This reversed direction is not the finding reported by Nair et al.",
+      "source": {
+        "title": "Regional specificity of aberrant thalamocortical connectivity in autism",
+        "authors": "Nair et al.",
+        "year": 2015,
+        "doi": "10.1002/hbm.22938",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4768761/",
+        "population": "Pediatric ASD and typically developing cohort; fMRI analysis final sample 37 ASD and 38 TD after motion exclusions",
+        "atlas": "Harvard-Oxford cortical/subcortical structural atlases for cortical ROIs and thalamus",
+        "direction_evidence": "The paper reports overconnectivity with bilateral superior temporal gyri; its sample and seed definitions limit direct transfer.",
+        "confidence_and_uncertainty": "A real directional ASD group hypothesis with direct atlas-family compatibility; small sample, age-specific and not an individual-level diagnostic marker. One selected feature is eligible, so evidence coverage is 1/252 named connections."
+      }
+    }
+  ],
+  "intervention_only_negative_control": {
+    "text": "Counterfactual anatomy mismatch for intervention testing only: functional connectivity between the left thalamus and an occipital cortical region is altered in autism. This is not an ASD-specific evidence claim and is not eligible for training matches.",
+    "counterfactual_text": "Counterfactual reverse direction for the anatomy-mismatch intervention only: functional connectivity between the left thalamus and an occipital cortical region is altered in the opposite direction in autism. This is not an ASD-specific evidence claim and is not eligible for training matches."
+  },
+  "non_edge_level_sources": [
+    {
+      "title": "Multiscale heterogeneity of atypical functional connectivity in autism",
+      "doi": "10.1038/s44220-026-00656-y",
+      "url": "https://www.nature.com/articles/s44220-026-00656-y",
+      "use": "Motivates individual-level rejection/uncertainty; network-scale Schaefer findings are not mapped to individual selected Harvard-Oxford connections."
+    },
+    {
+      "title": "BrainPrompt: Multi-Level Brain Prompt Enhancement for Neurological Condition Identification",
+      "doi": "10.1007/978-3-032-05162-2_17",
+      "url": "https://papers.miccai.org/miccai-2025/paper/2260_paper.pdf",
+      "use": "Methodological motivation for real ROI-anchored prompts; its AAL claims are not transferred to this atlas."
+    },
+    {
+      "title": "BrainPrompt+: Multi-Level Brain Prompt Learning for Knowledge-Guided Neurological Disorder Identification",
+      "doi": "10.1109/TMI.2026.3692958",
+      "url": "https://doi.org/10.1109/TMI.2026.3692958",
+      "use": "Methodological context only; not used as evidence for a specific ASD connection direction."
+    },
+    {
+      "title": "Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability",
+      "venue": "MICCAI 2026",
+      "url": "https://papers.miccai.org/miccai-2026/1039-Paper4538.html",
+      "use": "Methodological motivation for explicit concept interventions and reliability auditing; unrelated disease and modality."
+    }
+  ],
+  "embedding_artifact": {
+    "path": ".runtime/prompt_embeddings.pt",
+    "text_sha256": "5909c02cf0096997b2e87622a9c813a7d8fa9d8ee98ae598aabebe446043f2d7",
+    "embedding_sha256": "e3abec7c33860eaccfff80d670baa34e983f4b3869d59893433dae67d97dc999",
+    "rn50_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "experiment": "Experiment 58 — FAVE-PEN",
+  "status": "FROZEN_PRETRAIN",
+  "formal_groups": [
+    {"name": "E58-FULL", "text_bank": "frozen CLIP RN50 hypothesis embeddings", "seed": 0},
+    {"name": "E58-NUM", "text_bank": "frozen seeded anonymous embeddings; anatomy/direction prior retained", "seed": 0}
+  ],
+  "baseline": {
+    "group": "CADR_WD_0p01_GFR_WD_0p11",
+    "directory": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "cadr_weight_decay": 0.01,
+    "gfr_weight_decay": 0.11,
+    "cam_weight_decay": 0.11,
+    "folds": 10,
+    "source_of_truth": "actual fallback_wd_sweep config, runner, checkpoints, tasks, and manifest; not the old config.json CADR value"
+  },
+  "data": {
+    "source_root": "/data/adodas/SPromptGL-main",
+    "n": 871,
+    "counts": {"ASD": 403, "TD": 468},
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "dims": [48, 6, 10, 256],
+    "unknown_roi_features_excluded_from_prompt_only": [195, 225, 232, 236]
+  },
+  "cv": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10, "seed": 0, "val_equals_test": true, "max_epochs": 450, "early_stop_wait_gt": 200, "warmup_epochs": 10, "best_selection": "strict ACC improvement from inherited active epoch"},
+  "reference_model": {"type": "Ridge", "alpha": 5.0, "covariates": "categorical PHENO age-bin/site/sex one-hot indicators", "training_population": "outer-train TD only", "training_TD_residuals": "five-fold patient-level OOF", "sigma": "OOF residual standard deviation with shrinkage and floor"},
+  "evidence": {"directional_threshold_abs_z": 2.3, "roi_mapping_feature_indices": [0], "anatomy_mask_hard_zero_elsewhere": true, "reject_slot": true, "assignment": "softmax over anatomically allowed directions plus reject; row mass <= 1", "unknown_state": "reject", "excluded_unknown_roi_edges": [195, 225, 232, 236]},
+  "fave": {"connection_hidden": 32, "semantic_hidden": 32, "cam_position": "CORR only, after last CAM encoder before original OutputLayer", "residual_alpha_init": 0.0, "residual_rms_bound": 0.1, "quality_gate_inputs": ["ANAT", "FUNC"], "lambda_match": 0.05, "lambda_verify": 0.01, "verify_margin": 0.05, "optimizer": "AdamW", "learning_rate": 0.001, "matrix_weight_decay": 0.0001, "bias_and_norm_weight_decay": 0.0, "initialization_seed": "580000 + fold", "warmup_behavior": "FAVE forward/loss/update disabled for inherited epochs 0-9"},
+  "protected_mounts": {"requested_experiment_root": "/data/adodas/SPromptGL-main", "historical_source_root": "/model/spromptgl", "same_filesystem": false, "content_identity_required_by_sha": true},
+  "execution": {"device": "cuda:0", "max_workers": 5, "groups_total": 2},
+  "metrics": ["ACC", "Hard-AUC", "Probability-AUC", "SPE-TD", "SEN-ASD", "BA", "ASD-F1"],
+  "evaluation_limits": ["historical val=test", "pre-CV RFE/standardization", "transductive 871-node graph", "single seed"]
+}

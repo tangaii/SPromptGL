@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability | MICCAI 2026 - Open Access</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability" />
+<meta name="author" content="Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Abstract Pretreatment prediction of pathological complete response (pCR) from breast dynamic contrast-enhanced MRI (DCE-MRI) is clinically meaningful, yet explanations are often hard to validate and may be unstable under perturbations. We propose a testable projection-based concept bottleneck for pretreatment pCR classification that produces radiologist-readable concept evidence and enables quantitative evaluation of explanation quality. A 3D ResNet is trained end-to-end and then frozen as a feature extractor; a lightweight bottleneck projects image representations into a biomedical text-embedding space and scores K=13 BI-RADS-style radiologic concepts via cosine similarity using a frozen PMC-CLIP text encoder. Faithfulness is assessed by controlled concept interventions (top-m zeroing versus random controls), while reliability is quantified by concept stability under test-time augmentation (TTA) using a case-level score and summarized through coverageâperformance analysis under reliability-based subset selection. Experiments on pretreatment I-SPY2 DCE-MRI show performance comparable to the end-to-end baseline while providing controllable, testable, and stability-aware concept evidence. Code is available at https://github.com/dairoTJY/breast-mri-cbm. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026/paper/4538_paper.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to the Code Repository https://github.com/dairoTJY/breast-mri-cbm Link to the Dataset(s) N/A BibTex @InProceedings{TanJiy_Testable_MICCAI2026, Â  Â  Â  Â  author = { Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu}, Â  Â  Â  Â  title = { { Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 16882}, Â  Â  Â  Â  month = {September}, Â  Â  Â  Â page = {pending} } Reviews Review #1 Please describe the contribution of the paper The paper investigates whether pre-treatment MRI concepts derived from BI-RADS can predict pathologic complete response to treatment, using the iSPY trial dataset as the primary data source, implemented via a concept bottleneck model (CBM). Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. The clinical question is compelling and well-motivated: predicting complete response from pre-treatment MRI is a high-value problem. The choice of iSPY data is well-justified and appropriate for this question. The paper is clearly written relative to its stated intentions, well organized, stability analysis was performed, and appropriate statistics are reported. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. It is unclear whether the model is trained and tested across all iSPY treatment arms or within specific arms. Dataset composition and per-treatment group sizes are not reported, leaving a fundamental ambiguity in the experimental design. More fundamentally, the paper implies that the 13 BI-RADS-derived concepts are universal predictors of response independent of treatment, a strong hypothesis that ignores tumor biology. The link between these imaging concepts and underlying biology is not established, yet the paper proceeds as if this connection is self-evident. Such a bold hypothesis requires more supporting evidence than is provided. No sensitivity analysis was performed using treatment as a class variable, yet that is precisely the question that needs answering: is the CBMâs predictive performance independent of treatment? Without that analysis the results are difficult to interpret. The CBM does not perform meaningfully better than black-box models (Table 1), raising the question of whether the authors believe they have captured the full MRI-based predictive signal. No demographic or treatment-specific covariates were considered, which is a significant omission. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The submission has provided an anonymized link to the source code, dataset, or any other dependencies. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The paper addresses an important clinical question with appropriate data and is clearly presented overall. The interpretability advantage of the CBM approach is a meaningful contribution. However, the central hypothesis, that imaging morphology predicts response independent of treatment, requires substantially more biological justification. The lack of treatment-arm stratification and the absence of a sensitivity analysis with treatment as a covariate are significant gaps that the authors should address. Dependent on rebuttal. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #2 Please describe the contribution of the paper This paper presents a framework for predicting pathological Complete Response (pCR) from breast Dynamic Contrast-Enhanced MRI (DCE-MRI). This is achieved through a projection-based concept bottleneck model that extracts clinically relevant radiological concepts. By extracting these concepts first and using them for the final prediction, the proposed architecture offers greater transparency compared to standard end-to-end solutions. Furthermore, the work proposes specific metrics to evaluate the faithfulness and reliability of the concepts. Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. Clarity: The paper is well-written, with all methodological steps and configurations thoroughly detailed and justified. The proposed metrics are clearly formulated and investigate various aspects of faithfulness and reliability. All figures are clear and effectively support the narrative of the paper. Notably, Figure 1 is excellent, providing a highly comprehensive overview of the entire framework. Domain-Specific Methods: The framework effectively utilizes appropriate tools for the medical domain. Feature extraction is performed using a mask-guided 3D ResNet (chosen via model selection). Additionally, the concepts are derived from the well-established BI-RADS standard and converted into fixed-length embeddings using the PMC-CLIP text encoder, which is specifically trained on medical text data. Comprehensive Interpretability Evaluation: The interpretability insights provided by the framework are well-demonstrated both at a global level (Figure 2) and at a local level (Figure 3). Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. Inconclusive results: The most significant weakness concerns the test-set performance during the model selection phase. All evaluated models, including the one chosen for the final framework, report F1 scores around 0.5, which is quite poor for a binary classification task. The fact that specificity is significantly higher than sensitivity clearly suggests that the model is negatively affected by the unbalanced class distribution, as positive cases represent roughly one-third of the dataset. These low performance metrics contradict the claim of the authors in the introduction of having trained âa strong end-to-end 3D ResNet baseline,â which somewhat weakens the subsequent discussion. While the primary contribution of the paper lies in the proposed framework rather than raw predictive accuracy, the authors should acknowledge these performance issues and the dataset imbalance in a dedicated limitations section. Lack of training details: Section 3.1 does not specify the train/validation/test splitting strategy. If a random split was used, adopting a stratified split could help mitigate the imbalance issue discussed above. Furthermore, critical training details, such as the number of epochs and the use of early stopping, are not provided. The poor test performance might also stem from overfitting, which the authors could easily verify by comparing training and test metrics or by analyzing the learning curves. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html It is not clear from the text exactly what the results listed in Table 3 represent, nor is the meaning of the term âcoverageâ properly defined or contextualized for the reader. If the dataset used is publicly available, explicitly mentioning this detail in the abstract would be a very useful addition for the reader. The BI-RADS standard is mentioned in the text but never formally defined. The authors should include a brief explanation of what it is to accommodate readers who are not experts in the domain. The fact that the 3D ResNet encoder was chosen as the result of a model selection process is only mentioned in Section 3.2.Since this is a strong methodological point, the authors are encouraged to briefly highlight it earlier in the Introduction or Methods sections. As a minor question regarding the experimental setup: is there a specific reason or justification for choosing the values m=3 and m=5 for the experiments reported in Table 2? Adding a brief sentence to clarify this choice would make the evaluation more transparent. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The work introduces a well-designed framework, the methodology is well detailed, and the paper is remarkably well written. However, the poor performance of the chosen 3D ResNet encoder acts as a weak foundation for the entire pipeline. Since the extraction of concepts and the subsequent interpretability metrics cascade directly from this initial module, its weak predictive power casts doubt on the robustness of the results and discussions. I lean towards acceptance because the architectural contribution itself is interesting. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #3 Please describe the contribution of the paper The paper introduces a projection-based Concept Bottleneck Model (CBM) designed to predict pathological complete response (pCR) using pretreatment breast DCE-MRI. Because clinical translation of AI requires trustworthy explanations, the authors move away from standard post-hoc heatmaps and instead map 3D image representations into a biomedical text-embedding space. Using a frozen PMC-CLIP encoder, the model scores 13 BI-RADS-style radiologic concepts to make its final prediction. The authors evaluate their model not just on predictive accuracy, but on the âfaithfulnessâ of its explanations (via controlled concept zeroing) and its âreliabilityâ (via stability under test-time augmentation) Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. 1.Focusing strictly on pretreatment (T0) imaging aligns perfectly with the real-world clinical decision point for neoadjuvant therapy, avoiding the reliance on mid-treatment scans. 2.Instance-level concept labeling is highly resource-intensive in medical imaging. The authors cleverly bypass this by freezing a heavily trained 3D ResNet backbone and using a text encoder to project features into a semantic space, requiring minimal concept supervision. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. 1.One of the biggest drawbacks of posthoc based concept bottleneck methods is that it is not clear if the discoverd concepts are causal or not. Meaning, if the discovered concepts were actually used by the blackbox or encoder while doing the prediction in the first place. In any post-hoc based explainability our central question is to explain the blackbox. The current intervention analysis mainly shows the associational importance of concept dimensions in the linear head; establishing a causal effect of a concept on prediction is much harder and generally requires explicit causal treatment of confounding and dependencies between concepts, as emphasized by Goyal et al.âs Causal Concept Effect (CaCE) framework. 2.In addition, the method highlights influential concepts but does not learn explicit decision rules over concepts. This is a meaningful design choice, but it means the paper should better position itself relative to rule-based / neuro-symbolic concept explanation work. In particular, the paper already cites standard CBM, label-free CBM, and post-hoc CBM references, but it does not discuss rule-based concept explanation methods such as [1, 2, 3], which are directly relevant when the goal is not just to rank concepts but to expose interpretable rules over them. [1] Entropy-based Logic Explanations of Neural Networks. Barbiero et al. [2] Dividing and Conquering a BlackBox to a Mixture of Interpretable Models: Route, Interpret, Repeat. Ghosh et al. [3] Distilling BlackBox to Interpretable models for Efficient Transfer Learning. Ghosh et al. 3.The paperâs main contribution is concept-based interpretability, but there is no evaluation against expert concept annotations, even on a small subset. Without showing that the predicted concept scores agree with radiologists or correlate with known BI-RADS attributes, it is hard to trust the semantic interpretation of Fig. 2 and Fig. 3.A method can be internally decomposable without being clinically interpretable. 4.The paper compares predictive performance across backbones, but not explanation quality against relevant baselines such as post-hoc CBMs, label-free CBMs, or even Grad-CAM-based faithfulness/reliability analyses. There is also no ablation using shuffled prompts, random text embeddings, or a random low-dimensional basis. Without that, it is hard to know whether the chosen BI-RADS concept space is actually doing useful work, or whether almost any compressed linear probe on the frozen representation would behave similarly. 5.The method was evaluated on a single I-SPY2 split with 949 cases, no external validation, and no reader study. While this is a robust and standard dataset, testing the generalization of the learned concept projections on an external, multi-center cohort would solidify the reliability claims. Please rate the clarity and organization of this paper Good Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (3) Weak Reject â marginally below the acceptance threshold, but would not mind if accepted, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? I gave this rating mostly because of lack of datasets and baselines. Reviewer confidence Very confident (4) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Author Feedback We sincerely thank the reviewers for their thorough reading and constructive feedback. We are honored by your recognition of our work and would like to address the main concerns raised. 1.Data and treatment-arm stratification Concerns were raised regarding whether the model was trained and tested across different treatment arms. We used the eligible pretreatment T0 I-SPY2 cohort after applying our inclusion criteria, with patient-level 8:1:1 train/validation/test splits. Because treatment-arm labels are not publicly available, per-arm stratification or treatment-specific sensitivity analysis could not be performed. The evaluation was conducted on the aggregated eligible cohort to ensure representation of all treatment groups. 2.Concept interpretability and m parameter Concept contributions were evaluated using the top-m zeroing approach (Sec. 2.4, Table 2), which measured their effect on model predictions within the available data. We selected m=3 and m=5 to represent small- and medium-sized concept interventions. Coverage referred to the fraction of cases retained after ranking by mean concept stability U_mean (Sec. 2.5, Table 3). Future work will incorporate expert validation to further assess concept reliability. 3.Model performance and class imbalance The relatively low F1 (~0.5) and sensitivity were noted. CBM performance was comparable to the end-to-end 3D ResNet baseline (Table 1). The lower sensitivity resulted from class imbalance (pCR ~32.6%); we applied WeightedRandomSampler and reported AUC, ACC, F1, SEN, and SPE with 95% CIs for balanced evaluation (Sec. 3.2). The primary contribution remained the interpretability of concept-level evidence while maintaining competitive predictive performance. 4.Training details and backbone rationale Due to space limitations, detailed training settings including train/validation/test splits, number of epochs, and early stopping are not fully described in this manuscript. These details will be clearly presented in the camera-ready version. Similarly, the rationale for selecting 3D ResNet as the backbone will be emphasized earlier in the Introduction and Methods sections in the final version. 5.Decision rules, baseline comparisons, and generalization Finally, we acknowledge that explicit decision rule learning, comparisons with alternative interpretability baselines (post-hoc CBM, label-free CBM, Grad-CAM), and multi-center evaluation were not included in this study. Future work will extend the framework to learn decision rules, benchmark against other interpretability baselines, and validate concept reliability in external cohorts, enhancing generalization and practical utility. Meta-Review Meta-review #1 Your recommendation Provisional Accept Please justify your decision. In case you deviate from the reviewersâ recommendations, explain in detail the reasons why. In case of an invitation for rebuttal, clarify which points are important to address in the rebuttal. Reviewers feedback is mixed. However, all agreed that the paper proposed a framework with potential clinical value. The authors are encouraged to clarify iSPY arm selection, training details, and generalizability in the final version of the manuscript. back to top" />
+<meta property="og:description" content="Abstract Pretreatment prediction of pathological complete response (pCR) from breast dynamic contrast-enhanced MRI (DCE-MRI) is clinically meaningful, yet explanations are often hard to validate and may be unstable under perturbations. We propose a testable projection-based concept bottleneck for pretreatment pCR classification that produces radiologist-readable concept evidence and enables quantitative evaluation of explanation quality. A 3D ResNet is trained end-to-end and then frozen as a feature extractor; a lightweight bottleneck projects image representations into a biomedical text-embedding space and scores K=13 BI-RADS-style radiologic concepts via cosine similarity using a frozen PMC-CLIP text encoder. Faithfulness is assessed by controlled concept interventions (top-m zeroing versus random controls), while reliability is quantified by concept stability under test-time augmentation (TTA) using a case-level score and summarized through coverageâperformance analysis under reliability-based subset selection. Experiments on pretreatment I-SPY2 DCE-MRI show performance comparable to the end-to-end baseline while providing controllable, testable, and stability-aware concept evidence. Code is available at https://github.com/dairoTJY/breast-mri-cbm. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026/paper/4538_paper.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to the Code Repository https://github.com/dairoTJY/breast-mri-cbm Link to the Dataset(s) N/A BibTex @InProceedings{TanJiy_Testable_MICCAI2026, Â  Â  Â  Â  author = { Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu}, Â  Â  Â  Â  title = { { Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 16882}, Â  Â  Â  Â  month = {September}, Â  Â  Â  Â page = {pending} } Reviews Review #1 Please describe the contribution of the paper The paper investigates whether pre-treatment MRI concepts derived from BI-RADS can predict pathologic complete response to treatment, using the iSPY trial dataset as the primary data source, implemented via a concept bottleneck model (CBM). Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. The clinical question is compelling and well-motivated: predicting complete response from pre-treatment MRI is a high-value problem. The choice of iSPY data is well-justified and appropriate for this question. The paper is clearly written relative to its stated intentions, well organized, stability analysis was performed, and appropriate statistics are reported. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. It is unclear whether the model is trained and tested across all iSPY treatment arms or within specific arms. Dataset composition and per-treatment group sizes are not reported, leaving a fundamental ambiguity in the experimental design. More fundamentally, the paper implies that the 13 BI-RADS-derived concepts are universal predictors of response independent of treatment, a strong hypothesis that ignores tumor biology. The link between these imaging concepts and underlying biology is not established, yet the paper proceeds as if this connection is self-evident. Such a bold hypothesis requires more supporting evidence than is provided. No sensitivity analysis was performed using treatment as a class variable, yet that is precisely the question that needs answering: is the CBMâs predictive performance independent of treatment? Without that analysis the results are difficult to interpret. The CBM does not perform meaningfully better than black-box models (Table 1), raising the question of whether the authors believe they have captured the full MRI-based predictive signal. No demographic or treatment-specific covariates were considered, which is a significant omission. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The submission has provided an anonymized link to the source code, dataset, or any other dependencies. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The paper addresses an important clinical question with appropriate data and is clearly presented overall. The interpretability advantage of the CBM approach is a meaningful contribution. However, the central hypothesis, that imaging morphology predicts response independent of treatment, requires substantially more biological justification. The lack of treatment-arm stratification and the absence of a sensitivity analysis with treatment as a covariate are significant gaps that the authors should address. Dependent on rebuttal. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #2 Please describe the contribution of the paper This paper presents a framework for predicting pathological Complete Response (pCR) from breast Dynamic Contrast-Enhanced MRI (DCE-MRI). This is achieved through a projection-based concept bottleneck model that extracts clinically relevant radiological concepts. By extracting these concepts first and using them for the final prediction, the proposed architecture offers greater transparency compared to standard end-to-end solutions. Furthermore, the work proposes specific metrics to evaluate the faithfulness and reliability of the concepts. Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. Clarity: The paper is well-written, with all methodological steps and configurations thoroughly detailed and justified. The proposed metrics are clearly formulated and investigate various aspects of faithfulness and reliability. All figures are clear and effectively support the narrative of the paper. Notably, Figure 1 is excellent, providing a highly comprehensive overview of the entire framework. Domain-Specific Methods: The framework effectively utilizes appropriate tools for the medical domain. Feature extraction is performed using a mask-guided 3D ResNet (chosen via model selection). Additionally, the concepts are derived from the well-established BI-RADS standard and converted into fixed-length embeddings using the PMC-CLIP text encoder, which is specifically trained on medical text data. Comprehensive Interpretability Evaluation: The interpretability insights provided by the framework are well-demonstrated both at a global level (Figure 2) and at a local level (Figure 3). Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. Inconclusive results: The most significant weakness concerns the test-set performance during the model selection phase. All evaluated models, including the one chosen for the final framework, report F1 scores around 0.5, which is quite poor for a binary classification task. The fact that specificity is significantly higher than sensitivity clearly suggests that the model is negatively affected by the unbalanced class distribution, as positive cases represent roughly one-third of the dataset. These low performance metrics contradict the claim of the authors in the introduction of having trained âa strong end-to-end 3D ResNet baseline,â which somewhat weakens the subsequent discussion. While the primary contribution of the paper lies in the proposed framework rather than raw predictive accuracy, the authors should acknowledge these performance issues and the dataset imbalance in a dedicated limitations section. Lack of training details: Section 3.1 does not specify the train/validation/test splitting strategy. If a random split was used, adopting a stratified split could help mitigate the imbalance issue discussed above. Furthermore, critical training details, such as the number of epochs and the use of early stopping, are not provided. The poor test performance might also stem from overfitting, which the authors could easily verify by comparing training and test metrics or by analyzing the learning curves. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html It is not clear from the text exactly what the results listed in Table 3 represent, nor is the meaning of the term âcoverageâ properly defined or contextualized for the reader. If the dataset used is publicly available, explicitly mentioning this detail in the abstract would be a very useful addition for the reader. The BI-RADS standard is mentioned in the text but never formally defined. The authors should include a brief explanation of what it is to accommodate readers who are not experts in the domain. The fact that the 3D ResNet encoder was chosen as the result of a model selection process is only mentioned in Section 3.2.Since this is a strong methodological point, the authors are encouraged to briefly highlight it earlier in the Introduction or Methods sections. As a minor question regarding the experimental setup: is there a specific reason or justification for choosing the values m=3 and m=5 for the experiments reported in Table 2? Adding a brief sentence to clarify this choice would make the evaluation more transparent. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The work introduces a well-designed framework, the methodology is well detailed, and the paper is remarkably well written. However, the poor performance of the chosen 3D ResNet encoder acts as a weak foundation for the entire pipeline. Since the extraction of concepts and the subsequent interpretability metrics cascade directly from this initial module, its weak predictive power casts doubt on the robustness of the results and discussions. I lean towards acceptance because the architectural contribution itself is interesting. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #3 Please describe the contribution of the paper The paper introduces a projection-based Concept Bottleneck Model (CBM) designed to predict pathological complete response (pCR) using pretreatment breast DCE-MRI. Because clinical translation of AI requires trustworthy explanations, the authors move away from standard post-hoc heatmaps and instead map 3D image representations into a biomedical text-embedding space. Using a frozen PMC-CLIP encoder, the model scores 13 BI-RADS-style radiologic concepts to make its final prediction. The authors evaluate their model not just on predictive accuracy, but on the âfaithfulnessâ of its explanations (via controlled concept zeroing) and its âreliabilityâ (via stability under test-time augmentation) Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. 1.Focusing strictly on pretreatment (T0) imaging aligns perfectly with the real-world clinical decision point for neoadjuvant therapy, avoiding the reliance on mid-treatment scans. 2.Instance-level concept labeling is highly resource-intensive in medical imaging. The authors cleverly bypass this by freezing a heavily trained 3D ResNet backbone and using a text encoder to project features into a semantic space, requiring minimal concept supervision. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. 1.One of the biggest drawbacks of posthoc based concept bottleneck methods is that it is not clear if the discoverd concepts are causal or not. Meaning, if the discovered concepts were actually used by the blackbox or encoder while doing the prediction in the first place. In any post-hoc based explainability our central question is to explain the blackbox. The current intervention analysis mainly shows the associational importance of concept dimensions in the linear head; establishing a causal effect of a concept on prediction is much harder and generally requires explicit causal treatment of confounding and dependencies between concepts, as emphasized by Goyal et al.âs Causal Concept Effect (CaCE) framework. 2.In addition, the method highlights influential concepts but does not learn explicit decision rules over concepts. This is a meaningful design choice, but it means the paper should better position itself relative to rule-based / neuro-symbolic concept explanation work. In particular, the paper already cites standard CBM, label-free CBM, and post-hoc CBM references, but it does not discuss rule-based concept explanation methods such as [1, 2, 3], which are directly relevant when the goal is not just to rank concepts but to expose interpretable rules over them. [1] Entropy-based Logic Explanations of Neural Networks. Barbiero et al. [2] Dividing and Conquering a BlackBox to a Mixture of Interpretable Models: Route, Interpret, Repeat. Ghosh et al. [3] Distilling BlackBox to Interpretable models for Efficient Transfer Learning. Ghosh et al. 3.The paperâs main contribution is concept-based interpretability, but there is no evaluation against expert concept annotations, even on a small subset. Without showing that the predicted concept scores agree with radiologists or correlate with known BI-RADS attributes, it is hard to trust the semantic interpretation of Fig. 2 and Fig. 3.A method can be internally decomposable without being clinically interpretable. 4.The paper compares predictive performance across backbones, but not explanation quality against relevant baselines such as post-hoc CBMs, label-free CBMs, or even Grad-CAM-based faithfulness/reliability analyses. There is also no ablation using shuffled prompts, random text embeddings, or a random low-dimensional basis. Without that, it is hard to know whether the chosen BI-RADS concept space is actually doing useful work, or whether almost any compressed linear probe on the frozen representation would behave similarly. 5.The method was evaluated on a single I-SPY2 split with 949 cases, no external validation, and no reader study. While this is a robust and standard dataset, testing the generalization of the learned concept projections on an external, multi-center cohort would solidify the reliability claims. Please rate the clarity and organization of this paper Good Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (3) Weak Reject â marginally below the acceptance threshold, but would not mind if accepted, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? I gave this rating mostly because of lack of datasets and baselines. Reviewer confidence Very confident (4) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Author Feedback We sincerely thank the reviewers for their thorough reading and constructive feedback. We are honored by your recognition of our work and would like to address the main concerns raised. 1.Data and treatment-arm stratification Concerns were raised regarding whether the model was trained and tested across different treatment arms. We used the eligible pretreatment T0 I-SPY2 cohort after applying our inclusion criteria, with patient-level 8:1:1 train/validation/test splits. Because treatment-arm labels are not publicly available, per-arm stratification or treatment-specific sensitivity analysis could not be performed. The evaluation was conducted on the aggregated eligible cohort to ensure representation of all treatment groups. 2.Concept interpretability and m parameter Concept contributions were evaluated using the top-m zeroing approach (Sec. 2.4, Table 2), which measured their effect on model predictions within the available data. We selected m=3 and m=5 to represent small- and medium-sized concept interventions. Coverage referred to the fraction of cases retained after ranking by mean concept stability U_mean (Sec. 2.5, Table 3). Future work will incorporate expert validation to further assess concept reliability. 3.Model performance and class imbalance The relatively low F1 (~0.5) and sensitivity were noted. CBM performance was comparable to the end-to-end 3D ResNet baseline (Table 1). The lower sensitivity resulted from class imbalance (pCR ~32.6%); we applied WeightedRandomSampler and reported AUC, ACC, F1, SEN, and SPE with 95% CIs for balanced evaluation (Sec. 3.2). The primary contribution remained the interpretability of concept-level evidence while maintaining competitive predictive performance. 4.Training details and backbone rationale Due to space limitations, detailed training settings including train/validation/test splits, number of epochs, and early stopping are not fully described in this manuscript. These details will be clearly presented in the camera-ready version. Similarly, the rationale for selecting 3D ResNet as the backbone will be emphasized earlier in the Introduction and Methods sections in the final version. 5.Decision rules, baseline comparisons, and generalization Finally, we acknowledge that explicit decision rule learning, comparisons with alternative interpretability baselines (post-hoc CBM, label-free CBM, Grad-CAM), and multi-center evaluation were not included in this study. Future work will extend the framework to learn decision rules, benchmark against other interpretability baselines, and validate concept reliability in external cohorts, enhancing generalization and practical utility. Meta-Review Meta-review #1 Your recommendation Provisional Accept Please justify your decision. In case you deviate from the reviewersâ recommendations, explain in detail the reasons why. In case of an invitation for rebuttal, clarify which points are important to address in the rebuttal. Reviewers feedback is mixed. However, all agreed that the paper proposed a framework with potential clinical value. The authors are encouraged to clarify iSPY arm selection, training details, and generalizability in the final version of the manuscript. back to top" />
+<link rel="canonical" href="https://papers.miccai.org/miccai-2026/1039-Paper4538" />
+<meta property="og:url" content="https://papers.miccai.org/miccai-2026/1039-Paper4538" />
+<meta property="og:site_name" content="MICCAI 2026 - Open Access" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-09-21T00:00:00-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability","dateModified":"2026-09-21T00:00:00-04:00","datePublished":"2026-09-21T00:00:00-04:00","url":"https://papers.miccai.org/miccai-2026/1039-Paper4538","mainEntityOfPage":{"@type":"WebPage","@id":"https://papers.miccai.org/miccai-2026/1039-Paper4538"},"author":{"@type":"Person","name":"Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu"},"description":"Abstract Pretreatment prediction of pathological complete response (pCR) from breast dynamic contrast-enhanced MRI (DCE-MRI) is clinically meaningful, yet explanations are often hard to validate and may be unstable under perturbations. We propose a testable projection-based concept bottleneck for pretreatment pCR classification that produces radiologist-readable concept evidence and enables quantitative evaluation of explanation quality. A 3D ResNet is trained end-to-end and then frozen as a feature extractor; a lightweight bottleneck projects image representations into a biomedical text-embedding space and scores K=13 BI-RADS-style radiologic concepts via cosine similarity using a frozen PMC-CLIP text encoder. Faithfulness is assessed by controlled concept interventions (top-m zeroing versus random controls), while reliability is quantified by concept stability under test-time augmentation (TTA) using a case-level score and summarized through coverageâperformance analysis under reliability-based subset selection. Experiments on pretreatment I-SPY2 DCE-MRI show performance comparable to the end-to-end baseline while providing controllable, testable, and stability-aware concept evidence. Code is available at https://github.com/dairoTJY/breast-mri-cbm. Links to Paper and Supplementary Materials Main Paper (Open Access Version): https://papers.miccai.org/miccai-2026/paper/4538_paper.pdf SharedIt Link: Not yet available SpringerLink (DOI): Not yet available Supplementary Material: Not Submitted Link to the Code Repository https://github.com/dairoTJY/breast-mri-cbm Link to the Dataset(s) N/A BibTex @InProceedings{TanJiy_Testable_MICCAI2026, Â  Â  Â  Â  author = { Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu}, Â  Â  Â  Â  title = { { Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability } }, Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026}, Â  Â  Â  Â  year = {2026}, publisher = {Springer Nature Switzerland}, Â  Â  Â  Â  volume = {LNCS 16882}, Â  Â  Â  Â  month = {September}, Â  Â  Â  Â page = {pending} } Reviews Review #1 Please describe the contribution of the paper The paper investigates whether pre-treatment MRI concepts derived from BI-RADS can predict pathologic complete response to treatment, using the iSPY trial dataset as the primary data source, implemented via a concept bottleneck model (CBM). Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. The clinical question is compelling and well-motivated: predicting complete response from pre-treatment MRI is a high-value problem. The choice of iSPY data is well-justified and appropriate for this question. The paper is clearly written relative to its stated intentions, well organized, stability analysis was performed, and appropriate statistics are reported. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. It is unclear whether the model is trained and tested across all iSPY treatment arms or within specific arms. Dataset composition and per-treatment group sizes are not reported, leaving a fundamental ambiguity in the experimental design. More fundamentally, the paper implies that the 13 BI-RADS-derived concepts are universal predictors of response independent of treatment, a strong hypothesis that ignores tumor biology. The link between these imaging concepts and underlying biology is not established, yet the paper proceeds as if this connection is self-evident. Such a bold hypothesis requires more supporting evidence than is provided. No sensitivity analysis was performed using treatment as a class variable, yet that is precisely the question that needs answering: is the CBMâs predictive performance independent of treatment? Without that analysis the results are difficult to interpret. The CBM does not perform meaningfully better than black-box models (Table 1), raising the question of whether the authors believe they have captured the full MRI-based predictive signal. No demographic or treatment-specific covariates were considered, which is a significant omission. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The submission has provided an anonymized link to the source code, dataset, or any other dependencies. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The paper addresses an important clinical question with appropriate data and is clearly presented overall. The interpretability advantage of the CBM approach is a meaningful contribution. However, the central hypothesis, that imaging morphology predicts response independent of treatment, requires substantially more biological justification. The lack of treatment-arm stratification and the absence of a sensitivity analysis with treatment as a covariate are significant gaps that the authors should address. Dependent on rebuttal. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #2 Please describe the contribution of the paper This paper presents a framework for predicting pathological Complete Response (pCR) from breast Dynamic Contrast-Enhanced MRI (DCE-MRI). This is achieved through a projection-based concept bottleneck model that extracts clinically relevant radiological concepts. By extracting these concepts first and using them for the final prediction, the proposed architecture offers greater transparency compared to standard end-to-end solutions. Furthermore, the work proposes specific metrics to evaluate the faithfulness and reliability of the concepts. Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. Clarity: The paper is well-written, with all methodological steps and configurations thoroughly detailed and justified. The proposed metrics are clearly formulated and investigate various aspects of faithfulness and reliability. All figures are clear and effectively support the narrative of the paper. Notably, Figure 1 is excellent, providing a highly comprehensive overview of the entire framework. Domain-Specific Methods: The framework effectively utilizes appropriate tools for the medical domain. Feature extraction is performed using a mask-guided 3D ResNet (chosen via model selection). Additionally, the concepts are derived from the well-established BI-RADS standard and converted into fixed-length embeddings using the PMC-CLIP text encoder, which is specifically trained on medical text data. Comprehensive Interpretability Evaluation: The interpretability insights provided by the framework are well-demonstrated both at a global level (Figure 2) and at a local level (Figure 3). Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. Inconclusive results: The most significant weakness concerns the test-set performance during the model selection phase. All evaluated models, including the one chosen for the final framework, report F1 scores around 0.5, which is quite poor for a binary classification task. The fact that specificity is significantly higher than sensitivity clearly suggests that the model is negatively affected by the unbalanced class distribution, as positive cases represent roughly one-third of the dataset. These low performance metrics contradict the claim of the authors in the introduction of having trained âa strong end-to-end 3D ResNet baseline,â which somewhat weakens the subsequent discussion. While the primary contribution of the paper lies in the proposed framework rather than raw predictive accuracy, the authors should acknowledge these performance issues and the dataset imbalance in a dedicated limitations section. Lack of training details: Section 3.1 does not specify the train/validation/test splitting strategy. If a random split was used, adopting a stratified split could help mitigate the imbalance issue discussed above. Furthermore, critical training details, such as the number of epochs and the use of early stopping, are not provided. The poor test performance might also stem from overfitting, which the authors could easily verify by comparing training and test metrics or by analyzing the learning curves. Please rate the clarity and organization of this paper Satisfactory Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html It is not clear from the text exactly what the results listed in Table 3 represent, nor is the meaning of the term âcoverageâ properly defined or contextualized for the reader. If the dataset used is publicly available, explicitly mentioning this detail in the abstract would be a very useful addition for the reader. The BI-RADS standard is mentioned in the text but never formally defined. The authors should include a brief explanation of what it is to accommodate readers who are not experts in the domain. The fact that the 3D ResNet encoder was chosen as the result of a model selection process is only mentioned in Section 3.2.Since this is a strong methodological point, the authors are encouraged to briefly highlight it earlier in the Introduction or Methods sections. As a minor question regarding the experimental setup: is there a specific reason or justification for choosing the values m=3 and m=5 for the experiments reported in Table 2? Adding a brief sentence to clarify this choice would make the evaluation more transparent. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? The work introduces a well-designed framework, the methodology is well detailed, and the paper is remarkably well written. However, the poor performance of the chosen 3D ResNet encoder acts as a weak foundation for the entire pipeline. Since the extraction of concepts and the subsequent interpretability metrics cascade directly from this initial module, its weak predictive power casts doubt on the robustness of the results and discussions. I lean towards acceptance because the architectural contribution itself is interesting. Reviewer confidence Confident but not absolutely certain (3) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Review #3 Please describe the contribution of the paper The paper introduces a projection-based Concept Bottleneck Model (CBM) designed to predict pathological complete response (pCR) using pretreatment breast DCE-MRI. Because clinical translation of AI requires trustworthy explanations, the authors move away from standard post-hoc heatmaps and instead map 3D image representations into a biomedical text-embedding space. Using a frozen PMC-CLIP encoder, the model scores 13 BI-RADS-style radiologic concepts to make its final prediction. The authors evaluate their model not just on predictive accuracy, but on the âfaithfulnessâ of its explanations (via controlled concept zeroing) and its âreliabilityâ (via stability under test-time augmentation) Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting. 1.Focusing strictly on pretreatment (T0) imaging aligns perfectly with the real-world clinical decision point for neoadjuvant therapy, avoiding the reliance on mid-treatment scans. 2.Instance-level concept labeling is highly resource-intensive in medical imaging. The authors cleverly bypass this by freezing a heavily trained 3D ResNet backbone and using a text encoder to project features into a semantic space, requiring minimal concept supervision. Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work. 1.One of the biggest drawbacks of posthoc based concept bottleneck methods is that it is not clear if the discoverd concepts are causal or not. Meaning, if the discovered concepts were actually used by the blackbox or encoder while doing the prediction in the first place. In any post-hoc based explainability our central question is to explain the blackbox. The current intervention analysis mainly shows the associational importance of concept dimensions in the linear head; establishing a causal effect of a concept on prediction is much harder and generally requires explicit causal treatment of confounding and dependencies between concepts, as emphasized by Goyal et al.âs Causal Concept Effect (CaCE) framework. 2.In addition, the method highlights influential concepts but does not learn explicit decision rules over concepts. This is a meaningful design choice, but it means the paper should better position itself relative to rule-based / neuro-symbolic concept explanation work. In particular, the paper already cites standard CBM, label-free CBM, and post-hoc CBM references, but it does not discuss rule-based concept explanation methods such as [1, 2, 3], which are directly relevant when the goal is not just to rank concepts but to expose interpretable rules over them. [1] Entropy-based Logic Explanations of Neural Networks. Barbiero et al. [2] Dividing and Conquering a BlackBox to a Mixture of Interpretable Models: Route, Interpret, Repeat. Ghosh et al. [3] Distilling BlackBox to Interpretable models for Efficient Transfer Learning. Ghosh et al. 3.The paperâs main contribution is concept-based interpretability, but there is no evaluation against expert concept annotations, even on a small subset. Without showing that the predicted concept scores agree with radiologists or correlate with known BI-RADS attributes, it is hard to trust the semantic interpretation of Fig. 2 and Fig. 3.A method can be internally decomposable without being clinically interpretable. 4.The paper compares predictive performance across backbones, but not explanation quality against relevant baselines such as post-hoc CBMs, label-free CBMs, or even Grad-CAM-based faithfulness/reliability analyses. There is also no ablation using shuffled prompts, random text embeddings, or a random low-dimensional basis. Without that, it is hard to know whether the chosen BI-RADS concept space is actually doing useful work, or whether almost any compressed linear probe on the frozen representation would behave similarly. 5.The method was evaluated on a single I-SPY2 split with 949 cases, no external validation, and no reader study. While this is a robust and standard dataset, testing the generalization of the learned concept projections on an external, multi-center cohort would solidify the reliability claims. Please rate the clarity and organization of this paper Good Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance. The authors claimed to release the source code and/or dataset upon acceptance of the submission. Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation? N/A Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html N/A Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making. (3) Weak Reject â marginally below the acceptance threshold, but would not mind if accepted, dependent on rebuttal Please justify your recommendation. What were the major factors that led you to your overall score for this paper? I gave this rating mostly because of lack of datasets and baselines. Reviewer confidence Very confident (4) [Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper. N/A [Post rebuttal] Please justify your final decision from above. N/A Author Feedback We sincerely thank the reviewers for their thorough reading and constructive feedback. We are honored by your recognition of our work and would like to address the main concerns raised. 1.Data and treatment-arm stratification Concerns were raised regarding whether the model was trained and tested across different treatment arms. We used the eligible pretreatment T0 I-SPY2 cohort after applying our inclusion criteria, with patient-level 8:1:1 train/validation/test splits. Because treatment-arm labels are not publicly available, per-arm stratification or treatment-specific sensitivity analysis could not be performed. The evaluation was conducted on the aggregated eligible cohort to ensure representation of all treatment groups. 2.Concept interpretability and m parameter Concept contributions were evaluated using the top-m zeroing approach (Sec. 2.4, Table 2), which measured their effect on model predictions within the available data. We selected m=3 and m=5 to represent small- and medium-sized concept interventions. Coverage referred to the fraction of cases retained after ranking by mean concept stability U_mean (Sec. 2.5, Table 3). Future work will incorporate expert validation to further assess concept reliability. 3.Model performance and class imbalance The relatively low F1 (~0.5) and sensitivity were noted. CBM performance was comparable to the end-to-end 3D ResNet baseline (Table 1). The lower sensitivity resulted from class imbalance (pCR ~32.6%); we applied WeightedRandomSampler and reported AUC, ACC, F1, SEN, and SPE with 95% CIs for balanced evaluation (Sec. 3.2). The primary contribution remained the interpretability of concept-level evidence while maintaining competitive predictive performance. 4.Training details and backbone rationale Due to space limitations, detailed training settings including train/validation/test splits, number of epochs, and early stopping are not fully described in this manuscript. These details will be clearly presented in the camera-ready version. Similarly, the rationale for selecting 3D ResNet as the backbone will be emphasized earlier in the Introduction and Methods sections in the final version. 5.Decision rules, baseline comparisons, and generalization Finally, we acknowledge that explicit decision rule learning, comparisons with alternative interpretability baselines (post-hoc CBM, label-free CBM, Grad-CAM), and multi-center evaluation were not included in this study. Future work will extend the framework to learn decision rules, benchmark against other interpretability baselines, and validate concept reliability in external cohorts, enhancing generalization and practical utility. Meta-Review Meta-review #1 Your recommendation Provisional Accept Please justify your decision. In case you deviate from the reviewersâ recommendations, explain in detail the reasons why. In case of an invitation for rebuttal, clarify which points are important to address in the rebuttal. Reviewers feedback is mixed. However, all agreed that the paper proposed a framework with potential clinical value. The authors are encouraged to clarify iSPY arm selection, training details, and generalizability in the final version of the manuscript. back to top","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<meta
+  name="keywords"
+  content="Tan, Jiyang,Liang, Xinglong,Hu, Xinyi,Zhao, Youran,Xu, Jun,Zhang, Tianyu" />
+
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-57x57.png"/>
+<link rel="apple-touch-icon" sizes="60x60" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-60x60.png"/>
+<link rel="apple-touch-icon" sizes="72x72" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-72x72.png"/>
+<link rel="apple-touch-icon" sizes="76x76" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-76x76.png"/>
+<link rel="apple-touch-icon" sizes="114x114" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-114x114.png"/>
+<link rel="apple-touch-icon" sizes="120x120" href=".https://conferences.miccai.org/2026/files/images/favicon/apple-icon-120x120.png"/>
+<link rel="apple-touch-icon" sizes="144x144" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-144x144.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-152x152.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="https://conferences.miccai.org/2026/files/images/favicon/apple-icon-180x180.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="https://conferences.miccai.org/2026/files/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-96x96.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="https://conferences.miccai.org/2026/files/images/favicon/favicon-16x16.png"/>
+
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="MICCAI 2026 - Open Access - "
+  href="/miccai-2026/feed.xml" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/miccai-2026/assets/css/base.css" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/miccai-2026/assets/css/highlight.css" />
+
+<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!--<script
+
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async>
+</script>
+
+-->
+
+<!-- <script src="/assets/scripts/jekyllpaper.js" async></script> -->
+<script src="/miccai-2026/assets/scripts/jekyllpaper.js" async></script>
+<script
+  src="https://unpkg.com/mermaid@8.5.1/dist/mermaid.min.js"
+  onload="javascript:loadMermaid();"
+  async>
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ["\\(", "\\)"] ],
+      displayMath: [ ['$$', '$$'], ["\\[", "\\]"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+    //,
+    //displayAlign: "left",
+    //displayIndent: "2em"
+  });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script> -->
+
+  </head>
+  <body>
+    <div class="container-wrapper">
+      <header class="container-header">
+        <div class="header-info">
+
+  <p style="text-align:center;"><img src="/miccai-2026/assets/images/miccai2026-banner.png" alt="MICCAI banner" width="100%"></p>
+  <br><br>
+  <span class="header-info-name">MICCAI 2026 - Open Access</span>
+  <span class="header-info-desc"></span>
+  <br><br>
+  <span>
+<!--
+<h2><i><font color="green">This page contains the open access versions of the MICCAI 2026 papers, provided by the MICCAI Society in agreement with Springer. 
+  These versions have a content identical to the accepted versions, and only differ in the format and added watermark; the final published version of the proceedings is available on <a href="https://conferences.miccai.org/2026/en/PROCEEDINGS.html" target="_blank">SpringerLink</a>.
+  They are made available here to facilitate timely dissemination of research work, in line with the MICCAI Society's commitment to open science. Copyright and all rights therein are retained by authors or by other copyright holders. Anyone copying this material is expected to adhere to the terms and conditions invoked by each author's copyright.
+</i></h2></font>
+-->
+<h2><i><font color="green">This page contains the open access versions of the MICCAI 2026 papers, provided by the MICCAI Society in agreement with Springer. 
+  These versions have a content identical to the accepted versions, and only differ in the format and added watermark; the final published version of the proceedings is available on <a href="https://link.springer.com/book/10.1007/978-3-032-38059-3" target=_blank">SpringerLink</a>.
+  They are made available here to facilitate timely dissemination of research work, in line with the MICCAI Society's commitment to open science. Copyright and all rights therein are retained by authors or by other copyright holders. Anyone copying this material is expected to adhere to the terms and conditions invoked by each author's copyright.
+</i></h2></font>
+
+<br>
+</span>
+</div>
+<!--
+
+<nav class="header-nav">
+  <ul class="header-main-nav">
+    <h2> 
+    
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026/"> 
+        
+          <b>List of Papers</b> |
+        
+      </a>
+    </li>
+      
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026/categories"> 
+        
+          <b>Browse by Subject Areas</b> |
+        
+      </a>
+    </li>
+      
+    <li class="header-main-nav-item">
+      <a href="/miccai-2026/tags"> 
+        
+          <b>Author List</b> |
+        
+      </a>
+    </li>
+      
+    </h2>
+  </ul>
+</nav>
+-->
+      </header>
+      <main class="container-main">
+        <!-- <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> -->
+
+<article class="container-post">
+  <div class="post-title">
+    <h1><span style="color:#1040a7"><b>Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability</b></span></h1>
+  </div>
+  
+  <div class="post-author print-post-author">
+    <span>Kitty K. Wong</span>
+  </div>
+  <div class="post-tags">
+    <!--<span>Author List</span>-->
+    <span><b> <h2>Author(s): </h2></b></span>
+    
+    <a href="/miccai-2026/tags#Tan, Jiyang"
+      class="post-category">
+      Tan, Jiyang
+    </a> |  
+    
+    <a href="/miccai-2026/tags#Liang, Xinglong"
+      class="post-category">
+      Liang, Xinglong
+    </a> |  
+    
+    <a href="/miccai-2026/tags#Hu, Xinyi"
+      class="post-category">
+      Hu, Xinyi
+    </a> |  
+    
+    <a href="/miccai-2026/tags#Zhao, Youran"
+      class="post-category">
+      Zhao, Youran
+    </a> |  
+    
+    <a href="/miccai-2026/tags#Xu, Jun"
+      class="post-category">
+      Xu, Jun
+    </a> |  
+    
+    <a href="/miccai-2026/tags#Zhang, Tianyu"
+      class="post-category">
+      Zhang, Tianyu
+    </a> |  
+    
+  </div>
+  
+
+  <hr>
+    
+   
+  <div class="post-content">
+    <!--
+    <div class="post-categories">
+      <h2><span style="color:#1040a7">Paper Topic(s):</span></h2> 
+      
+      
+      <a 
+        href="/miccai-2026/categories#Body -> Breast"
+        class="post-category">
+        Body -> Breast
+      </a>
+      
+      <a 
+        href="/miccai-2026/categories#Modalities -> MRI"
+        class="post-category">
+        Modalities -> MRI
+      </a>
+      
+      <a 
+        href="/miccai-2026/categories#Applications -> Outcome Prediction / Prognosis / Longitudinal Modeling"
+        class="post-category">
+        Applications -> Outcome Prediction / Prognosis / Longitudinal Modeling
+      </a>
+      
+      <a 
+        href="/miccai-2026/categories#Machine Learning -> Deep Learning"
+        class="post-category">
+        Machine Learning -> Deep Learning
+      </a>
+      
+      <a 
+        href="/miccai-2026/categories#Machine Learning -> Interpretability / Explainability"
+        class="post-category">
+        Machine Learning -> Interpretability / Explainability
+      </a>
+      
+    
+    </div>
+    <div class="post-tags">
+      
+      <h2><span style="color:#1040a7">Author(s):</span></h2> 
+      
+      <a href="/miccai-2026/tags#Tan, Jiyang"
+        class="post-tags">
+        Tan, Jiyang
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Liang, Xinglong"
+        class="post-tags">
+        Liang, Xinglong
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Hu, Xinyi"
+        class="post-tags">
+        Hu, Xinyi
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Zhao, Youran"
+        class="post-tags">
+        Zhao, Youran
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Xu, Jun"
+        class="post-tags">
+        Xu, Jun
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Zhang, Tianyu"
+        class="post-tags">
+        Zhang, Tianyu
+      </a> |  
+      
+    </div>
+  -->
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+    .sidenav {
+      width: 200px;
+      position: fixed;
+      z-index: 1;
+      top: 350px;
+      left: 0px;
+      background: #eee;
+      overflow-x: hidden;
+      padding: 0px 0;
+    }
+  
+    .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #2196F3;
+      color: #FF4500;
+      display: block;
+    }
+  
+    .sidenav a:hover {
+      color: #064579;
+    }
+    </style>
+  </head>
+
+  <div class="sidenav">
+    <a href="#abstract-id">Paper Info</a>
+    <a href="#review-id">Reviews</a>
+    <a href="#authorFeedback-id">Author Feedback</a>
+    <a href="#metareview-id">Meta-Review</a>
+    <!-- <a href="#postrebuttal-id">Post-rebuttal Meta-Reviews</a> -->
+    <a href="">Back to top</a>
+    <hr style="height:1px;border-width:0;color:#FF4500;background-color:gray">
+    
+      <a href="/miccai-2026/"> 
+        
+          List of Papers
+        
+      </a>
+      
+      <a href="/miccai-2026/categories"> 
+        
+          Browse by Subject Areas
+        
+      </a>
+      
+      <a href="/miccai-2026/tags"> 
+        
+          Author List
+        
+      </a>
+      
+    
+
+  </div>
+
+    <h1 id="abstract-id">Abstract</h1>
+<p>Pretreatment prediction of pathological complete response (pCR) from breast dynamic contrast-enhanced MRI (DCE-MRI) is clinically meaningful, yet explanations are often hard to validate and may be unstable under perturbations. We propose a testable projection-based concept bottleneck for pretreatment pCR classification that produces radiologist-readable concept evidence and enables quantitative evaluation of explanation quality. A 3D ResNet is trained end-to-end and then frozen as a feature extractor; a lightweight bottleneck projects image representations into a biomedical text-embedding space and scores K=13 BI-RADS-style radiologic concepts via cosine similarity using a frozen PMC-CLIP text encoder. Faithfulness is assessed by controlled concept interventions (top-m zeroing versus random controls), while reliability is quantified by concept stability under test-time augmentation (TTA) using a case-level score and summarized through coverageâperformance analysis under reliability-based subset selection. Experiments on pretreatment I-SPY2 DCE-MRI show performance comparable to the end-to-end baseline while providing controllable, testable, and stability-aware concept evidence. Code is available at https://github.com/dairoTJY/breast-mri-cbm.
+<br /><br /></p>
+
+<h1 id="link-id">Links to Paper and Supplementary Materials</h1>
+<p>Main Paper (Open Access Version): <a href="https://papers.miccai.org/miccai-2026/paper/4538_paper.pdf" target="_blank">https://papers.miccai.org/miccai-2026/paper/4538_paper.pdf</a></p>
+
+<p>SharedIt Link: Not yet available</p>
+
+<p>SpringerLink (DOI): Not yet available</p>
+
+<p>Supplementary Material: Not Submitted
+<br /><br /></p>
+
+<h1 id="code-id">Link to the Code Repository</h1>
+<p><a href="https://github.com/dairoTJY/breast-mri-cbm">https://github.com/dairoTJY/breast-mri-cbm</a>
+<br /><br /></p>
+
+<h1 id="dataset-id">Link to the Dataset(s)</h1>
+<p>N/A
+<br /><br /></p>
+
+<h1 id="bibtex-id">BibTex</h1>
+<pre><code class="language-{verbatim}">@InProceedings{TanJiy_Testable_MICCAI2026,
+Â  Â  Â  Â  author = { Tan, Jiyang AND Liang, Xinglong AND Hu, Xinyi AND Zhao, Youran AND Xu, Jun AND Zhang, Tianyu},
+Â  Â  Â  Â  title = { { Testable Concept Bottlenecks for Pretreatment pCR Prediction in Breast DCE-MRI: Faithfulness and Reliability } },
+Â  Â  Â  Â  booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026},
+Â  Â  Â  Â  year = {2026},
+        publisher = {Springer Nature Switzerland},
+Â  Â  Â  Â  volume = {LNCS 16882},
+Â  Â  Â  Â  month = {September},
+ Â  Â  Â  Â page = {pending}
+}
+
+</code></pre>
+
+<hr />
+<h1 id="review-id">Reviews</h1>
+
+<h3 id="review-1">Review #1</h3>
+
+<ul>
+  <li><strong>Please describe the contribution of the paper</strong>
+    <blockquote>
+      <p>The paper investigates whether pre-treatment MRI concepts derived from BI-RADS can predict pathologic complete response to treatment, using the iSPY trial dataset as the primary data source, implemented via a concept bottleneck model (CBM).</p>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting.</strong>
+    <blockquote>
+      <p>The clinical question is compelling and well-motivated: predicting complete response from pre-treatment MRI is a high-value problem. The choice of iSPY data is well-justified and appropriate for this question. The paper is clearly written relative to its stated intentions, well organized, stability analysis was performed, and appropriate statistics are reported.</p>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work.</strong>
+    <blockquote>
+      <p>It is unclear whether the model is trained and tested across all iSPY treatment arms or within specific arms. Dataset composition and per-treatment group sizes are not reported, leaving a fundamental ambiguity in the experimental design. 
+More fundamentally, the paper implies that the 13 BI-RADS-derived concepts are universal predictors of response independent of treatment, a strong hypothesis that ignores tumor biology. The link between these imaging concepts and underlying biology is not established, yet the paper proceeds as if this connection is self-evident. Such a bold hypothesis requires more supporting evidence than is provided. 
+No sensitivity analysis was performed using treatment as a class variable, yet that is precisely the question that needs answering: is the CBMâs predictive performance independent of treatment? Without that analysis the results are difficult to interpret. 
+The CBM does not perform meaningfully better than black-box models (Table 1), raising the question of whether the authors believe they have captured the full MRI-based predictive signal. No demographic or treatment-specific covariates were considered, which is a significant omission.</p>
+    </blockquote>
+  </li>
+  <li><strong>Please rate the clarity and organization of this paper</strong>
+    <blockquote>
+      <p>Satisfactory</p>
+    </blockquote>
+  </li>
+  <li><strong>Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance.</strong>
+    <blockquote>
+      <p>The submission has provided an anonymized link to the source code, dataset, or any other dependencies.</p>
+    </blockquote>
+  </li>
+  <li><strong>Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation?</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making.</strong>
+    <blockquote>
+      <p>(4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal</p>
+    </blockquote>
+  </li>
+  <li><strong>Please justify your recommendation. What were the major factors that led you to your overall score for this paper?</strong>
+    <blockquote>
+      <p>The paper addresses an important clinical question with appropriate data and is clearly presented overall. The interpretability advantage of the CBM approach is a meaningful contribution. However, the central hypothesis, that imaging morphology predicts response independent of treatment, requires substantially more biological justification. The lack of treatment-arm stratification and the absence of a sensitivity analysis with treatment as a covariate are significant gaps that the authors should address. Dependent on rebuttal.</p>
+    </blockquote>
+  </li>
+  <li><strong>Reviewer confidence</strong>
+    <blockquote>
+      <p>Confident but not absolutely certain (3)</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] Please justify your final decision from above.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><br /><br /></p>
+<h3 id="review-2">Review #2</h3>
+
+<ul>
+  <li><strong>Please describe the contribution of the paper</strong>
+    <blockquote>
+      <p>This paper presents a framework for predicting pathological Complete Response (pCR) from breast Dynamic Contrast-Enhanced MRI (DCE-MRI). This is achieved through a projection-based concept bottleneck model that extracts clinically relevant radiological concepts. By extracting these concepts first and using them for the final prediction, the proposed architecture offers greater transparency compared to standard end-to-end solutions. Furthermore, the work proposes specific metrics to evaluate the faithfulness and reliability of the concepts.</p>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting.</strong>
+    <blockquote>
+      <ul>
+        <li>
+          <p>Clarity: The paper is well-written, with all methodological steps and configurations thoroughly detailed and justified. The proposed metrics are clearly formulated and investigate various aspects of faithfulness and reliability. All figures are clear and effectively support the narrative of the paper. Notably, Figure 1 is excellent, providing a highly comprehensive overview of the entire framework.</p>
+        </li>
+        <li>
+          <p>Domain-Specific Methods: The framework effectively utilizes appropriate tools for the medical domain. Feature extraction is performed using a mask-guided 3D ResNet (chosen via model selection). Additionally, the concepts are derived from the well-established BI-RADS standard and converted into fixed-length embeddings using the PMC-CLIP text encoder, which is specifically trained on medical text data.</p>
+        </li>
+        <li>
+          <p>Comprehensive Interpretability Evaluation: The interpretability insights provided by the framework are well-demonstrated both at a global level (Figure 2) and at a local level (Figure 3).</p>
+        </li>
+      </ul>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work.</strong>
+    <blockquote>
+      <ul>
+        <li>
+          <p>Inconclusive results: The most significant weakness concerns the test-set performance during the model selection phase. All evaluated models, including the one chosen for the final framework, report F1 scores around 0.5, which is quite poor for a binary classification task. The fact that specificity is significantly higher than sensitivity clearly suggests that the model is negatively affected by the unbalanced class distribution, as positive cases represent roughly one-third of the dataset. These low performance metrics contradict the claim of the authors in the introduction of having trained âa strong end-to-end 3D ResNet baseline,â which somewhat weakens the subsequent discussion. While the primary contribution of the paper lies in the proposed framework rather than raw predictive accuracy, the authors should acknowledge these performance issues and the dataset imbalance in a dedicated limitations section.</p>
+        </li>
+        <li>
+          <p>Lack of training details: Section 3.1 does not specify the train/validation/test splitting strategy. If a random split was used, adopting a stratified split could help mitigate the imbalance issue discussed above. Furthermore, critical training details, such as the number of epochs and the use of early stopping, are not provided. The poor test performance might also stem from overfitting, which the authors could easily verify by comparing training and test metrics or by analyzing the learning curves.</p>
+        </li>
+      </ul>
+
+    </blockquote>
+  </li>
+  <li><strong>Please rate the clarity and organization of this paper</strong>
+    <blockquote>
+      <p>Satisfactory</p>
+    </blockquote>
+  </li>
+  <li><strong>Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance.</strong>
+    <blockquote>
+      <p>The authors claimed to release the source code and/or dataset upon acceptance of the submission.</p>
+    </blockquote>
+  </li>
+  <li><strong>Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation?</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html</strong>
+    <blockquote>
+      <p>It is not clear from the text exactly what the results listed in Table 3 represent, nor is the meaning of the term âcoverageâ properly defined or contextualized for the reader.</p>
+
+      <p>If the dataset used is publicly available, explicitly mentioning this detail in the abstract would be a very useful addition for the reader.</p>
+
+      <p>The BI-RADS standard is mentioned in the text but never formally defined. The authors should include a brief explanation of what it is to accommodate readers who are not experts in the domain.</p>
+
+      <p>The fact that the 3D ResNet encoder was chosen as the result of a model selection process is only mentioned in Section 3.2.Since this is a strong methodological point, the authors are encouraged to briefly highlight it earlier in the Introduction or Methods sections.</p>
+
+      <p>As a minor question regarding the experimental setup: is there a specific reason or justification for choosing the values m=3 and m=5 for the experiments reported in Table 2? Adding a brief sentence to clarify this choice would make the evaluation more transparent.</p>
+
+    </blockquote>
+  </li>
+  <li><strong>Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making.</strong>
+    <blockquote>
+      <p>(4) Weak Accept â marginally above the acceptance threshold, but would not mind if rejected, dependent on rebuttal</p>
+    </blockquote>
+  </li>
+  <li><strong>Please justify your recommendation. What were the major factors that led you to your overall score for this paper?</strong>
+    <blockquote>
+      <p>The work introduces a well-designed framework, the methodology is well detailed, and the paper is remarkably well written. However, the poor performance of the chosen 3D ResNet encoder acts as a weak foundation for the entire pipeline. Since the extraction of concepts and the subsequent interpretability metrics cascade directly from this initial module, its weak predictive power casts doubt on the robustness of the results and discussions. I lean towards acceptance because the architectural contribution itself is interesting.</p>
+    </blockquote>
+  </li>
+  <li><strong>Reviewer confidence</strong>
+    <blockquote>
+      <p>Confident but not absolutely certain (3)</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] Please justify your final decision from above.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><br /><br /></p>
+<h3 id="review-3">Review #3</h3>
+
+<ul>
+  <li><strong>Please describe the contribution of the paper</strong>
+    <blockquote>
+      <p>The paper introduces a projection-based Concept Bottleneck Model (CBM) designed to predict pathological complete response (pCR) using pretreatment breast DCE-MRI. Because clinical translation of AI requires trustworthy explanations, the authors move away from standard post-hoc heatmaps and instead map 3D image representations into a biomedical text-embedding space. Using a frozen PMC-CLIP encoder, the model scores 13 BI-RADS-style radiologic concepts to make its final prediction. The authors evaluate their model not just on predictive accuracy, but on the âfaithfulnessâ of its explanations (via controlled concept zeroing) and its âreliabilityâ (via stability under test-time augmentation)</p>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major strengths of the paper: you should highlight a novel formulation, an original way to use data, demonstration of clinical feasibility, a novel application, a particularly strong evaluation, or anything else that is a strong aspect of this work. Please provide details, for instance, if a method is novel, explain what aspect is novel and why this is interesting.</strong>
+    <blockquote>
+      <p>1.Focusing strictly on pretreatment (T0) imaging aligns perfectly with the real-world clinical decision point for neoadjuvant therapy, avoiding the reliance on mid-treatment scans.
+2.Instance-level concept labeling is highly resource-intensive in medical imaging. The authors cleverly bypass this by freezing a heavily trained 3D ResNet backbone and using a text encoder to project features into a semantic space, requiring minimal concept supervision.</p>
+    </blockquote>
+  </li>
+  <li><strong>Please list the major weaknesses of the paper. Please provide details: for instance, if you state that a formulation, way of using data, demonstration of clinical feasibility, or application is not novel, then you must provide specific references to prior work.</strong>
+    <blockquote>
+      <p>1.One of the biggest drawbacks of posthoc based concept bottleneck methods is that it is not clear if the discoverd concepts are causal or not. Meaning, if the discovered concepts were actually used by the blackbox or encoder while doing the prediction in the first place. In any post-hoc based explainability our central question is to explain the blackbox. The current intervention analysis mainly shows the associational importance of concept dimensions in the linear head; establishing a causal effect of a concept on prediction is much harder and generally requires explicit causal treatment of confounding and dependencies between concepts, as emphasized by Goyal et al.âs Causal Concept Effect (CaCE) framework.</p>
+
+      <p>2.In addition, the method highlights influential concepts but does not learn explicit decision rules over concepts. This is a meaningful design choice, but it means the paper should better position itself relative to rule-based / neuro-symbolic concept explanation work. In particular, the paper already cites standard CBM, label-free CBM, and post-hoc CBM references, but it does not discuss rule-based concept explanation methods such as [1, 2, 3], which are directly relevant when the goal is not just to rank concepts but to expose interpretable rules over them.</p>
+
+      <p>[1] Entropy-based Logic Explanations of Neural Networks. Barbiero et al.
+[2] Dividing and Conquering a BlackBox to a Mixture of Interpretable Models: Route, Interpret, Repeat. Ghosh et al.
+[3] Distilling BlackBox to Interpretable models for Efficient Transfer Learning. Ghosh et al.</p>
+
+      <p>3.The paperâs main contribution is concept-based interpretability, but there is no evaluation against expert concept annotations, even on a small subset. Without showing that the predicted concept scores agree with radiologists or correlate with known BI-RADS attributes, it is hard to trust the semantic interpretation of Fig. 2 and Fig. 3.A method can be internally decomposable without being clinically interpretable.</p>
+
+      <p>4.The paper compares predictive performance across backbones, but not explanation quality against relevant baselines such as post-hoc CBMs, label-free CBMs, or even Grad-CAM-based faithfulness/reliability analyses. There is also no ablation using shuffled prompts, random text embeddings, or a random low-dimensional basis. Without that, it is hard to know whether the chosen BI-RADS concept space is actually doing useful work, or whether almost any compressed linear probe on the frozen representation would behave similarly.</p>
+
+      <p>5.The method was evaluated on a single I-SPY2 split with 949 cases, no external validation, and no reader study. While this is a robust and standard dataset, testing the generalization of the learned concept projections on an external, multi-center cohort would solidify the reliability claims.</p>
+    </blockquote>
+  </li>
+  <li><strong>Please rate the clarity and organization of this paper</strong>
+    <blockquote>
+      <p>Good</p>
+    </blockquote>
+  </li>
+  <li><strong>Please comment on the reproducibility of the paper. Please be aware that providing code and data is a plus, but not a requirement for acceptance.</strong>
+    <blockquote>
+      <p>The authors claimed to release the source code and/or dataset upon acceptance of the submission.</p>
+    </blockquote>
+  </li>
+  <li><strong>Based on your review and your understanding of the MICCAI Scientific Code of Ethics, do you believe this submission may involve a potential ethics concern or violation?</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>Optional: If you have any additional comments to share with the authors, please provide them here. Please also refer to our Reviewerâs guide on what makes a good review and pay specific attention to the different assessment criteria for the different paper categories: https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1: reject). Please use the entire range of the distribution. Spreading the score helps create a distribution for decision-making.</strong>
+    <blockquote>
+      <p>(3) Weak Reject â marginally below the acceptance threshold, but would not mind if accepted, dependent on rebuttal</p>
+    </blockquote>
+  </li>
+  <li><strong>Please justify your recommendation. What were the major factors that led you to your overall score for this paper?</strong>
+    <blockquote>
+      <p>I gave this rating mostly because of lack of datasets and baselines.</p>
+    </blockquote>
+  </li>
+  <li><strong>Reviewer confidence</strong>
+    <blockquote>
+      <p>Very confident (4)</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] After reading the authorsâ rebuttal, please state your final opinion of the paper.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+  <li><strong>[Post rebuttal] Please justify your final decision from above.</strong>
+    <blockquote>
+      <p>N/A</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2><br /><br /></h2>
+<h1 id="authorFeedback-id">Author Feedback</h1>
+<blockquote>
+  <p>We sincerely thank the reviewers for their thorough reading and constructive feedback. We are honored by your recognition of our work and would like to address the main concerns raised.
+1.Data and treatment-arm stratification
+Concerns were raised regarding whether the model was trained and tested across different treatment arms. We used the eligible pretreatment T0 I-SPY2 cohort after applying our inclusion criteria, with patient-level 8:1:1 train/validation/test splits. Because treatment-arm labels are not publicly available, per-arm stratification or treatment-specific sensitivity analysis could not be performed. The evaluation was conducted on the aggregated eligible cohort to ensure representation of all treatment groups.
+2.Concept interpretability and m parameter
+Concept contributions were evaluated using the top-m zeroing approach (Sec. 2.4, Table 2), which measured their effect on model predictions within the available data. We selected m=3 and m=5 to represent small- and medium-sized concept interventions. Coverage referred to the fraction of cases retained after ranking by mean concept stability U_mean (Sec. 2.5, Table 3). Future work will incorporate expert validation to further assess concept reliability.
+3.Model performance and class imbalance
+The relatively low F1 (~0.5) and sensitivity were noted. CBM performance was comparable to the end-to-end 3D ResNet baseline (Table 1). The lower sensitivity resulted from class imbalance (pCR ~32.6%); we applied WeightedRandomSampler and reported AUC, ACC, F1, SEN, and SPE with 95% CIs for balanced evaluation (Sec. 3.2). The primary contribution remained the interpretability of concept-level evidence while maintaining competitive predictive performance.
+4.Training details and backbone rationale
+Due to space limitations, detailed training settings including train/validation/test splits, number of epochs, and early stopping are not fully described in this manuscript. These details will be clearly presented in the camera-ready version. Similarly, the rationale for selecting 3D ResNet as the backbone will be emphasized earlier in the Introduction and Methods sections in the final version.
+5.Decision rules, baseline comparisons, and generalization
+Finally, we acknowledge that explicit decision rule learning, comparisons with alternative interpretability baselines (post-hoc CBM, label-free CBM, Grad-CAM), and multi-center evaluation were not included in this study. Future work will extend the framework to learn decision rules, benchmark against other interpretability baselines, and validate concept reliability in external cohorts, enhancing generalization and practical utility.</p>
+</blockquote>
+
+<p><br /><br /></p>
+
+<hr />
+<h1 id="metareview-id">Meta-Review</h1>
+
+<h2 id="meta-review-1">Meta-review #1</h2>
+<ul>
+  <li><strong>Your recommendation</strong>
+    <blockquote>
+      <p>Provisional Accept</p>
+    </blockquote>
+  </li>
+  <li><strong>Please justify your decision.  In case you deviate from the reviewersâ recommendations, explain in detail the reasons why. In case of an invitation for rebuttal, clarify which points are important to address in the rebuttal.</strong>
+    <blockquote>
+      <p>Reviewers feedback is mixed. However, all agreed that the paper proposed a framework with potential clinical value. The authors are encouraged to clarify iSPY arm selection, training details, and generalizability in the final version of the manuscript.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><br /><br />
+<a href=""><b>back to top</b></a></p>
+
+<hr />
+
+
+  </div>
+
+  <div class="post-info">
+    <!--
+    <div class="post-date">
+      Poster presentation date:  
+      2026-09-21
+      -->
+      <!--
+      
+        ,
+        updated at 
+        2026-09-21
+      
+      .
+      
+    </div>
+    -->
+    <!--
+    
+    <div class="post-author">
+      Author: Kitty K. Wong
+    </div>
+    
+    -->
+    <div class="post-categories">
+      <span><b>Topic(s): </b></span>
+      
+      <a 
+        href="/miccai-2026/categories#Body -> Breast"
+        class="post-category">
+        Body -> Breast
+      </a> |
+      
+      <a 
+        href="/miccai-2026/categories#Modalities -> MRI"
+        class="post-category">
+        Modalities -> MRI
+      </a> |
+      
+      <a 
+        href="/miccai-2026/categories#Applications -> Outcome Prediction / Prognosis / Longitudinal Modeling"
+        class="post-category">
+        Applications -> Outcome Prediction / Prognosis / Longitudinal Modeling
+      </a> |
+      
+      <a 
+        href="/miccai-2026/categories#Machine Learning -> Deep Learning"
+        class="post-category">
+        Machine Learning -> Deep Learning
+      </a> |
+      
+      <a 
+        href="/miccai-2026/categories#Machine Learning -> Interpretability / Explainability"
+        class="post-category">
+        Machine Learning -> Interpretability / Explainability
+      </a> |
+      
+    </div>
+    <div class="post-tags">
+      <!--<span>Author List</span>-->
+      <span><b> Author(s): </b></span>
+      
+      <a href="/miccai-2026/tags#Tan, Jiyang"
+        class="post-category">
+        Tan, Jiyang
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Liang, Xinglong"
+        class="post-category">
+        Liang, Xinglong
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Hu, Xinyi"
+        class="post-category">
+        Hu, Xinyi
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Zhao, Youran"
+        class="post-category">
+        Zhao, Youran
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Xu, Jun"
+        class="post-category">
+        Xu, Jun
+      </a> |  
+      
+      <a href="/miccai-2026/tags#Zhang, Tianyu"
+        class="post-category">
+        Zhang, Tianyu
+      </a> |  
+      
+    </div>
+    <div class="post-other">
+      
+      <div>
+        <span><b>
+          Next paper: 
+        </b>
+        </span>
+        <a href="/miccai-2026/1040-Paper2304.html">
+          Test-Time Adaptation for ECG Classification via SQI-Gated Self-training and Beat-Rhythm Consistency
+        </a>
+      </div>
+      
+      
+      <div>
+        <span><b>
+          Previous paper: 
+        </b>
+        </span>
+        <a href="/miccai-2026/1038-Paper1936.html">
+          Temporal Phase-Difference Guided Spatiotemporal Learning for DSA Vessel Segmentation
+        </a>
+      </div>
+      
+    </div>
+    
+  </div>
+</article>
+
+      </main>
+      <footer class="container-footer">
+        <div class="footer-copyright">
+  <span class="footer-copyright-text float-left">
+    Copyright &copy; 2026. The MICCAI Society
+  </span>
+  
+  <span class="footer-copyright-text float-right">
+    MICCAI 2026 Open Access</a>.
+  </span>
+
+</div>
+
+
+      </footer>
+    </div>
+  </body>
+</html>
