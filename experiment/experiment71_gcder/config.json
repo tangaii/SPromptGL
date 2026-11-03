@@ -1,0 +1,116 @@
+{
+  "experiment": "Experiment 71",
+  "name": "GCDER_Graph_Conditioned_Dual_Disease_Evidence_Retrieval",
+  "status": "FROZEN_PENDING_PREFLIGHT",
+  "formal_groups": 3,
+  "formal_folds": 30,
+  "seed": 0,
+  "groups": [
+    {"id": "G1", "name": "GCDER-BRAINPROMPT-2", "text_source": "brainprompt_2"},
+    {"id": "G2", "name": "GCDER-SPROMPTGL-8", "text_source": "spromptgl_8"},
+    {"id": "G3", "name": "GCDER-ANONYMOUS-2", "text_source": "anonymous_2"}
+  ],
+  "paths": {
+    "root": "/data/adodas/SPromptGL-main",
+    "experiment_root": "/model/spromptgl/experiment/experiment71_gcder",
+    "base_experiment": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e59_experiment": "/data/adodas/SPromptGL-main/experiment/experiment59_shape_pen",
+    "text_cache": "/model/spromptgl/experiment/experiment60_dss_pen/.runtime/text_embeddings.pt",
+    "data_csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "modal_mapping": "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy"
+  },
+  "base": {
+    "name": "CADR_WD_0p01_GFR_WD_0p11",
+    "reference_experiment": "Experiment 53.3 fallback WD sweep",
+    "gfr_output": [871, 320],
+    "cam_output": [871, 4, 36],
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "output_classifier": [144, 36, 2],
+    "gfr_optimizer": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam_optimizer": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr_optimizer": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "reference_metrics_percent": {
+      "acc": 92.0742,
+      "hard_auc": 91.8653,
+      "prob_auc": 93.6684,
+      "spe": 94.6392,
+      "sen": 89.0915,
+      "asd_f1": 91.2470
+    },
+    "reference_population_sd_percent": {
+      "acc": 2.8427,
+      "hard_auc": 2.8348,
+      "prob_auc": 3.2619,
+      "spe": 3.5168,
+      "sen": 3.5263,
+      "asd_f1": 3.0658
+    }
+  },
+  "cv": {
+    "class": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "val_equals_test": true,
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "selection": "strict ACC improvement",
+    "seed": 0
+  },
+  "gcder": {
+    "query": "LayerNorm(W_t t_c + W_f f_i)",
+    "text_projection": "Linear(D,36,bias=False)",
+    "graph_projection": "Linear(320,36,bias=False)",
+    "key": "shared Linear(36,36,bias=False)",
+    "value": "shared Linear(36,36,bias=False)",
+    "attention": "softmax(Q K^T / sqrt(36), dim=modalities)",
+    "score": "shared Linear36->1(GELU(Linear36->36(LayerNorm(r))))",
+    "beta": "0.5*tanh(beta_raw), beta_raw=0",
+    "optimizer": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001},
+    "init_seed": "710000 + fold",
+    "parameter_count_formula": "D*36 + 320*36 + 72 + 2*36*36 + 72 + (36*36+36) + (36+1) + 1",
+    "parameter_count_expected_at_D1024": 52490
+  },
+  "loss": "L_cls(final logp) + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+  "prompt_policy": {
+    "encoder": "frozen OpenAI CLIP RN50 cached text embeddings",
+    "training_order": ["ASD", "TD"],
+    "brainprompt_official_order": ["TC", "ASD"],
+    "spromptgl_grouping": "first four TD, last four ASD; normalize each, average per group, normalize means, reorder ASD/TD",
+    "anonymous": "fixed private CPU torch generator, norm and cosine matched to G1, no labels/predictions",
+    "anonymous_seed": 710071
+  },
+  "audit_requirements": {
+    "initialization_folds": 10,
+    "warmup_folds": 10,
+    "checkpoint_folds": 30,
+    "independent_checkpoint_pass": 30
+  },
+  "pre_registered_decision_thresholds": {
+    "minimum_acc_gain_pp_vs_base": 0.5,
+    "minimum_acc_winning_folds": 6,
+    "minimum_prob_auc_delta_pp": -0.5,
+    "maximum_sen_drop_pp": 1.0,
+    "noncollapse_min_mean_abs_delta_attention": 0.0001,
+    "noncollapse_min_std_delta_score": 0.000001,
+    "noncollapse_min_abs_beta": 0.0001,
+    "noncollapse_min_mean_abs_beta_delta_score": 0.00001,
+    "semantics_positive_mean_acc_vs_anonymous": true
+  },
+  "execution": {
+    "primary_root": "/data/adodas/SPromptGL-main",
+    "active_root_after_explicit_io_error": "/model/spromptgl/experiment/experiment71_gcder",
+    "gpu": 0,
+    "max_workers": 10,
+    "max_epochs": 450,
+    "resume_latest": true,
+    "skip_verified_complete_tasks": true
+  },
+  "limitations": [
+    "Historical val=test checkpoint selection is retained.",
+    "RFE and standardization before outer CV are retained.",
+    "The 871-node patient graph is transductive.",
+    "PHENO includes demographic/site variables; ANAT/FUNC are quality-related feature blocks and are not interpreted as lesions or neural time series."
+  ]
+}
