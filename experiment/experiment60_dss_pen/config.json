@@ -1,0 +1,163 @@
+{
+  "experiment": "Experiment 60 DSS-PEN",
+  "status": "DESIGN_FROZEN",
+  "seed": 0,
+  "base": {
+    "experiment": "53.3 fallback-fixed CADR/GFR WD sweep",
+    "group": "CADR_WD_0p01_GFR_WD_0p11",
+    "gfr_weight_decay": 0.11,
+    "cam_weight_decay": 0.11,
+    "cadr_weight_decay": 0.01,
+    "base_source": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "historical_checkpoint_root": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/.runtime/fallback_wd_sweep/CADR_WD_0p01_GFR_WD_0p11/checkpoints",
+    "initialization_source": "Experiment 43.1 untrained fold anchors plus 53.3 third-group builder; never initialize from a trained checkpoint",
+    "formal_groups": 18,
+    "folds_per_group": 10
+  },
+  "data": {
+    "root": "/data/adodas/SPromptGL-main",
+    "features": "data/ABIDE/processed_standard_data.csv",
+    "modality_map": "data/ABIDE/modal_feat_dict.npy",
+    "n": 871,
+    "counts": {"ASD": 403, "TD": 468},
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dimensions": [48, 6, 10, 256],
+    "total_dimension": 320,
+    "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+    "protocol_preserved": ["historical global RFE/standardization", "all-node transductive graph", "validation equals test"]
+  },
+  "cam_insertion": {
+    "input": "CADR-GFR X: [871,320]",
+    "cam_positions": "H: [871,4,36] after unchanged PLNNoPEN encoder and feed-forward block",
+    "output": "H_prime: [871,4,36] flattened to 144 for the unchanged OutputLayer",
+    "attn_embedding_used_by_outputlayer": false,
+    "new_post_classifier": false,
+    "corr_slot_index": 3
+  },
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50",
+    "weights_path": "/tmp/e58_models/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "text_dimension": 1024,
+    "encoding_policy": "offline once before formal training; frozen text encoder; trainable shared linear adapter; no online model calls"
+  },
+  "dss": {
+    "concepts_per_class": 6,
+    "semantic_dimension": 64,
+    "patient_projector": ["Linear(144,128)", "GELU", "Linear(128,64)", "L2 normalize"],
+    "shared_text_adapter": "bias-free Linear(1024,64), L2 normalize; same parameters for both classes",
+    "projection": {
+      "objective": "squared_distance + epsilon * squared_coefficient_norm",
+      "epsilon": 0.05,
+      "solver": "deterministic unrolled FISTA with autograd",
+      "iterations": 128,
+      "default_constraints": "a >= 0 and sum(a) <= 1",
+      "stepsize": "inverse of 2*(squared Frobenius norm of projected text matrix + epsilon)",
+      "incompatible_concept_constraints": null,
+      "empty_match": "zero coefficient vector is feasible"
+    },
+    "distance": "d_ic = squared_norm(z_i - P_c*a_ic), excluding coefficient regularizer",
+    "set_margin": 0.1,
+    "set_loss": "class-balanced mean relu(margin + d_i,y - d_i,1-y), outer-train labels only",
+    "geometry_loss": "mean squared error between pre-adapter and post-adapter 12x12 cosine Gram matrices",
+    "loss_coefficients": {
+      "calibration": "outer-train-only fold-1 initial-state gradient ratio; freeze before formal training",
+      "set_target_gradient_ratio_to_base_cls": 0.1,
+      "geometry_target_gradient_ratio_to_set_on_text_adapter": 0.05,
+      "no_test_or_validation_metric_used": true
+    },
+    "class_probability_temperature": 0.2,
+    "empty_match_gate": "clamp(1 - min_c(d_ic),0,1); exactly zero when both d_ic >= 1",
+    "residual_mapping": "shared Linear(64,144), zero initialized, reshape [4,36]",
+    "residual_norm_cap_per_position": 0.1,
+    "residual_schedule": "0 through epoch 10, linear ramp to 0.1 by epoch 20, then 0.1",
+    "warmup_semantic_loss": "detach H for epochs 0-9; new losses do not update shared GFR/CADR/CAM in warmup",
+    "loss_geometric_regularizer": "included in DSS groups unless group definition explicitly removes it"
+  },
+  "brainprompt": {
+    "encoder_note": "CLIP adaptation; official BrainPrompt uses LLM2Vec",
+    "texts_in_published_order_TC_then_ASD": [
+      "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+      "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+    ],
+    "internal_label_order": ["ASD", "TD"],
+    "loss": "cross entropy over normalized cosine similarity between patient projection and two normalized class text projections; no residual",
+    "loss_weight": 0.001,
+    "loss_weight_source": "BrainPrompt official training code default lambda1"
+  },
+  "saber": {
+    "status": "paper-equation reimplementation; no official code verified",
+    "patient_text_fields": ["categorical age bin", "site one-hot category", "sex one-hot category"],
+    "patient_token_templates": ["Age category: {age_bin} years.", "Scanning site category: {site}.", "Recorded sex category: {sex}."] ,
+    "patient_text_must_exclude": ["diagnosis", "labels", "split identity", "test statistics", "label-derived clinical descriptions"],
+    "cross_attention_dimension": 64,
+    "contrastive_temperature": 0.07,
+    "contrastive_gradient_ratio_to_base_cls": 0.1,
+    "contrastive_loss_weight": "calibrated once on fold 1 outer-train only; frozen before formal training",
+    "residual_norm_cap_per_position": 0.1,
+    "note": "R05 retrieves patient metadata text; disease text is used in a separate contrastive objective. R06 deliberately changes the retrieval target to disease text."
+  },
+  "original_spromptgl_pen": {
+    "texts_in_source_order": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "class_groups": [[0, 1, 2, 3], [4, 5, 6, 7]],
+    "mlp": "4096->128->9 with ReLU after both Linear layers",
+    "spgs_res": "source-code CAM 4x4x9 maximum class-softmax weighting plus average-pool residual before original OutputLayer",
+    "optimizer": "original CAM Adam group at LR 0.0038 and weight_decay 0.11"
+  },
+  "optimizers": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": [0.01, 0.01]},
+    "new_semantic_modules": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001},
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_metric": "strict ACC improvement after warmup",
+    "base_optimizer_step_order": ["GFR/CADR base", "CAM", "CADR added"],
+    "semantic_step": "after all unchanged base optimizer steps"
+  },
+  "groups": [
+    {"id": "R01", "name": "E60_BASE_REPLAY", "kind": "base", "pen": false, "semantic_loss": false, "correction": false},
+    {"id": "R02", "name": "E60_ORIGINAL_PEN", "kind": "original_spromptgl", "pen": true, "semantic_loss": false, "correction": true},
+    {"id": "R03", "name": "E60_BRAINPROMPT_LABEL", "kind": "brainprompt", "bank": "label", "semantic_loss": "cosine_ce", "correction": false},
+    {"id": "R04", "name": "E60_BRAINPROMPT_MEDICAL", "kind": "brainprompt", "bank": "medical_centroids", "semantic_loss": "cosine_ce", "correction": false},
+    {"id": "R05", "name": "E60_SABER_DECISION", "kind": "saber_patient_text", "patient_text": true, "disease_contrast": true, "correction": true},
+    {"id": "R06", "name": "E60_DISEASE_QUERY", "kind": "saber_disease_text_query", "patient_text": false, "disease_contrast": true, "correction": true, "method_note": "modified SABER-style adaptation"},
+    {"id": "R07", "name": "E60_DSS_FULL", "kind": "dss", "bank": "medical", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R08", "name": "E60_DSS_CLASS_ONLY", "kind": "dss", "bank": "class_only", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R09", "name": "E60_DSS_WRONG_SEMANTICS", "kind": "dss", "bank": "medical_swapped", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R10", "name": "E60_DSS_RANDOM_ANCHORS", "kind": "dss", "bank": "random_gram_matched", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R11", "name": "E60_DSS_LEARNED_PROTOTYPES", "kind": "dss", "bank": "learned_from_random_slots", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R12", "name": "E60_DSS_SINGLE_PROTOTYPE", "kind": "dss", "bank": "repeated_class_centroid", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R13", "name": "E60_DSS_SOFTMAX_ATTENTION", "kind": "dss", "bank": "medical", "projection": "class_softmax_attention", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R14", "name": "E60_DSS_FORCE_MATCH", "kind": "dss", "bank": "medical", "projection": "simplex_sum_eq_one", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R15", "name": "E60_DSS_FREE_SET", "kind": "dss", "bank": "medical", "projection": "nonnegative_box", "set_loss": true, "geometry_loss": true, "correction": true},
+    {"id": "R16", "name": "E60_DSS_NO_SET_LOSS", "kind": "dss", "bank": "medical", "projection": "partial_simplex", "set_loss": false, "geometry_loss": true, "correction": true},
+    {"id": "R17", "name": "E60_DSS_NO_RESIDUAL", "kind": "dss", "bank": "medical", "projection": "partial_simplex", "set_loss": true, "geometry_loss": true, "correction": false},
+    {"id": "R18", "name": "E60_DSS_CORR_ONLY", "kind": "dss", "bank": "medical", "input_slot_mask": [0, 0, 0, 1], "output_slot_mask": [0, 0, 0, 1], "set_loss": true, "geometry_loss": true, "correction": true}
+  ],
+  "evaluation": {
+    "metrics": ["acc", "hard_auc", "prob_auc_asd_positive", "spe_td", "sen_asd", "balanced_accuracy", "asd_f1"],
+    "confusion_counts": ["asd_tp", "asd_fn", "td_fp", "td_tn"],
+    "mean_sd": "mean and population SD, percentage units",
+    "paired_tests": {"test": "exact two-sided paired sign-flip permutation", "permutations": 1024, "bootstrap_resamples": 10000, "bootstrap_seed": 60001, "multiple_comparison": "Holm correction per metric family"}
+  },
+  "execution": {
+    "formal_folds": 180,
+    "max_workers": 10,
+    "gpu": 0,
+    "cpu_threads_per_worker": 2,
+    "text_encoding": "one pre-training cache build; no encoder load in train loop",
+    "restart_policy": "resume only tasks with exact source/config/cache/initialization signatures; preserve successful checkpoints"
+  }
+}

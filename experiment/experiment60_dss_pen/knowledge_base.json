@@ -1,0 +1,175 @@
+{
+  "schema": "experiment60-medical-semantic-bank-v1",
+  "status": "FROZEN_BEFORE_ENCODING_AND_TRAINING",
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50",
+    "checkpoint_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "note": "General vision-language encoder; text-vector geometry is not clinical validation."
+  },
+  "scope": {
+    "dataset": "ABIDE-derived processed cohort used by Experiment 53.3",
+    "current_fc_features": 256,
+    "named_roi_connections": 252,
+    "unknown_roi_connections": 4,
+    "atlas": "Harvard-Oxford mapping recovered by Experiment 11",
+    "atlas_transfer": "The cited 2026 normative ASD studies used different parcellations and cohorts. No cited regional/network result is assigned to a specific current feature.",
+    "symptom_features": false,
+    "individual_biomarker_claim": false
+  },
+  "classes": {
+    "ASD": [
+      {
+        "concept_id": "ASD_HETEROGENEOUS_CONNECTIONS",
+        "medical_description": "In autism, atypical functional connectivity can vary substantially from one person to another at the individual-connection level.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Normative modeling in a separate multisite cohort of 796 autistic and 1028 neurotypical participants; cross-sectional population result.",
+        "direction": "heterogeneous, no fixed edge direction",
+        "confidence_and_limitation": "The study reports no single FC estimate with extreme normative deviation in more than 4% of either group. This is not a per-person diagnostic rule.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "The model has 256 current FC values, but no source-study normative z scores, individual subtype labels, or matching atlas-level regional map."
+      },
+      {
+        "concept_id": "ASD_REGIONAL_NETWORK_CONVERGENCE",
+        "medical_description": "Connection-level variability in autism can coexist with convergence of atypical connectivity across regions and larger functional networks.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Regional and network-level convergence in the cited cohort; not an annotation of this experiment's selected edges.",
+        "direction": "heterogeneous at connection level; convergence at broader scales",
+        "confidence_and_limitation": "The cited analysis used Schaefer cortical parcels and subcortical regions; exact regional labels are not transferred to the current Harvard-Oxford feature map.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "Requires regional aggregation and atlas correspondence not present in the 256-value model input."
+      },
+      {
+        "concept_id": "ASD_BIDIRECTIONAL_SUBTYPES",
+        "medical_description": "Autism cohorts can contain both lower-connectivity and higher-connectivity patterns, so a single direction should not be imposed on every person.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026); autism subtype analyses in Nature Neuroscience (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y; https://doi.org/10.1038/s41593-026-02287-z",
+        "evidence_scope": "Separate large multisite cohorts; the subtype analysis found replicable hypo- and hyperconnectivity-dominant subgroups accounting for a minority of autistic participants.",
+        "direction": "both positive and negative deviations occur across people",
+        "confidence_and_limitation": "Subgroup-level evidence does not identify the subtype of any Experiment 60 participant.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "No normative deviation estimates or independently validated subgroup assignments are available."
+      },
+      {
+        "concept_id": "ASD_SENSORIMOTOR_ATTENTION_HYPO",
+        "medical_description": "Some autistic participants show convergent lower functional connectivity in sensorimotor and attention-associated regions.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Group-level convergence in the cited multisite cohort, alongside pronounced individual-edge heterogeneity.",
+        "direction": "lower connectivity at an aggregate level in some regions",
+        "confidence_and_limitation": "No exact current ROI/edge or individual expected direction is established; this is not a universal ASD profile.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "Current FC values exist, but the required region/network grouping and person-specific normative reference are unavailable."
+      },
+      {
+        "concept_id": "ASD_FPN_DMN_HYPER",
+        "medical_description": "The cited autism cohort showed convergent higher connectivity between frontoparietal and default-mode networks at an aggregate network scale.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Network-pair result from a cohort and parcellation different from Experiment 60.",
+        "direction": "higher between-network connectivity in the cited aggregate analysis",
+        "confidence_and_limitation": "Experiment 11's recovered ROI names do not provide a validated mapping to the cited network definitions; no edge-level claim is made.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "The model lacks the cited network assignments and normative residuals."
+      },
+      {
+        "concept_id": "ASD_REPLICABLE_HYPO_HYPER_SUBGROUPS",
+        "medical_description": "Large multisite analyses have reported reproducible autism subgroups with predominantly lower or higher functional connectivity and different network patterns.",
+        "source_paper": "Autism subtypes identified using cross-species functional connectivity analyses. Nature Neuroscience (2026).",
+        "doi_url": "https://doi.org/10.1038/s41593-026-02287-z",
+        "evidence_scope": "Cross-species analysis with independent human discovery/replication samples; the identified subtypes covered about one quarter of the examined autistic cohort.",
+        "direction": "one subgroup predominantly lower; another predominantly higher",
+        "confidence_and_limitation": "Subtype membership is not supplied for the Experiment 60 cohort; the findings do not establish an individual causal or biological subtype.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "The current classifier input has no external subtype labels or matching subtype-generation pipeline."
+      }
+    ],
+    "TD": [
+      {
+        "concept_id": "TD_RESTING_WITHIN_NETWORK_CORRELATION",
+        "medical_description": "In typical healthy adults, resting-state fMRI reveals reproducible patterns of correlated activity among functionally connected brain regions.",
+        "source_paper": "Damoiseaux et al. Consistent resting-state networks across healthy subjects. PNAS (2006).",
+        "doi_url": "https://doi.org/10.1073/pnas.0601417103",
+        "evidence_scope": "Resting-state network organization in healthy participants; a population-level reference rather than an individual diagnostic template.",
+        "direction": "within-network positive association at an aggregate functional-network level",
+        "confidence_and_limitation": "The cited networks are not mapped edge-for-edge onto the current 256 features.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "Current values are pairwise FC, but current network assignments are not verified."
+      },
+      {
+        "concept_id": "TD_RESTING_BETWEEN_NETWORK_ANTICORRELATION",
+        "medical_description": "Resting-state functional organization can include anticorrelation between distributed networks as well as correlation within networks.",
+        "source_paper": "Fox et al. The human brain is intrinsically organized into dynamic, anticorrelated functional networks. PNAS (2005).",
+        "doi_url": "https://doi.org/10.1073/pnas.0504136102",
+        "evidence_scope": "General resting-state organization in healthy adults; not an ASD-versus-TD edge rule.",
+        "direction": "negative association between some network-level signals",
+        "confidence_and_limitation": "A network-level result cannot be applied to a named Experiment 60 edge without independent mapping.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "The current model does not use the cited network time series or validated network membership."
+      },
+      {
+        "concept_id": "TD_RESTING_NETWORK_REPRODUCIBILITY",
+        "medical_description": "Several resting-state network patterns can be detected consistently across healthy participants.",
+        "source_paper": "Damoiseaux et al. Consistent resting-state networks across healthy subjects. PNAS (2006).",
+        "doi_url": "https://doi.org/10.1073/pnas.0601417103",
+        "evidence_scope": "Group reproducibility across healthy subjects under the source study's acquisition and analysis conditions.",
+        "direction": "recurrent network organization, with individual variation",
+        "confidence_and_limitation": "It does not imply identical FC values or a disease-free feature vector for every control.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "A single subject's current 256 values do not estimate cross-subject network reproducibility."
+      },
+      {
+        "concept_id": "TD_NORMATIVE_COVARIATE_REFERENCE",
+        "medical_description": "Functional connectivity reference distributions may depend on age, sex and head-motion characteristics, which should be accounted for in normative comparisons.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "The cited cohort modeled connection values using age, sex and mean framewise displacement; this is a method description, not evidence that all covariates are available here.",
+        "direction": "reference conditional on measured covariates",
+        "confidence_and_limitation": "Experiment 60 has categorical age bins, sex and site, but does not establish the cited normative model or include the same motion variable in the DSS input.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "The classifier receives raw processed FC and categorical PHENO; it has no fitted normative residuals."
+      },
+      {
+        "concept_id": "TD_RARE_EXTREME_EDGE_DEVIATION",
+        "medical_description": "In the cited healthy comparison group, extreme normative deviation at any one functional connection was uncommon at the individual level.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Study-specific threshold and cohort; no single FC estimate showed extreme deviation in more than 4% of either group.",
+        "direction": "no fixed sign",
+        "confidence_and_limitation": "The 4% result must not be imported as a threshold for Experiment 60 or as a subject-level expected probability.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "No Experiment 60 normative distribution or extreme-deviation labels are constructed."
+      },
+      {
+        "concept_id": "TD_REFERENCE_NOT_DIAGNOSIS",
+        "medical_description": "A typical-control connectivity distribution is a comparison reference; deviation from it alone is not a diagnosis of autism.",
+        "source_paper": "Ilioska et al. Multiscale heterogeneity of atypical functional connectivity in autism. Nature Mental Health (2026).",
+        "doi_url": "https://doi.org/10.1038/s44220-026-00656-y",
+        "evidence_scope": "Interpretive boundary implied by the cohort's normative analyses and explicit absence of validated person-specific biomarkers.",
+        "direction": "reference statement",
+        "confidence_and_limitation": "This statement constrains interpretation and is not itself a discriminative biological marker.",
+        "directly_observable_in_experiment60": false,
+        "observable_evidence": "It is a limitation statement, not a measured input feature."
+      }
+    ]
+  },
+  "class_only_templates": {
+    "ASD": [
+      "A functional brain connectivity network from an individual with autism spectrum disorder.",
+      "A functional brain connectivity network from a person diagnosed with ASD.",
+      "Autism spectrum disorder brain-network class description.",
+      "ASD functional connectivity category.",
+      "Autism class prompt for functional brain networks.",
+      "A brain network assigned to the ASD category."
+    ],
+    "TD": [
+      "A functional brain connectivity network from a typically developing control.",
+      "A functional brain connectivity network from a neurotypical person.",
+      "Typical-control brain-network class description.",
+      "TD functional connectivity category.",
+      "Control class prompt for functional brain networks.",
+      "A brain network assigned to the typical-control category."
+    ]
+  }
+}

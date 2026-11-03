@@ -1,0 +1,49 @@
+{
+  "rows": [
+    {
+      "gate": "GO_BASE_PARITY",
+      "result": "PASS",
+      "evidence": "R01 10/10 checkpoint state and prediction parity"
+    },
+    {
+      "gate": "GO_DIAGNOSTIC",
+      "result": "FAIL",
+      "evidence": "ΔACC -0.575 pp; W/T/L 2/3/5; 95% CI [-1.264, +0.115]; ΔSEN +0.000 pp"
+    },
+    {
+      "gate": "GO_SET_PROJECTION",
+      "result": "FAIL",
+      "evidence": "R12: ΔACC -0.115 pp; W/T/L 4/3/3; 95% CI [-0.920, +0.690]; ΔSEN -0.482 pp; R13: ΔACC +0.114 pp; W/T/L 4/4/2; 95% CI [-0.809, +0.920]; ΔSEN +1.000 pp; heterogeneity 4/10 folds"
+    },
+    {
+      "gate": "GO_PATIENT_HETEROGENEITY",
+      "result": "FAIL",
+      "evidence": "frozen criteria met in 4/10 folds"
+    },
+    {
+      "gate": "GO_SEMANTIC_CONTENT",
+      "result": "FAIL",
+      "evidence": "CLASS_ONLY: ΔACC -0.346 pp; W/T/L 3/3/4; 95% CI [-1.149, +0.456]; ΔSEN -0.250 pp; WRONG_SEMANTICS: ΔACC -0.229 pp; W/T/L 1/6/3; 95% CI [-0.686, +0.230]; ΔSEN -0.738 pp; RANDOM_ANCHORS: ΔACC -0.345 pp; W/T/L 2/5/3; 95% CI [-1.034, +0.345]; ΔSEN +0.018 pp; LEARNED_PROTOTYPES: ΔACC -0.115 pp; W/T/L 2/5/3; 95% CI [-0.575, +0.345]; ΔSEN -0.732 pp"
+    },
+    {
+      "gate": "GO_DECISION_INJECTION",
+      "result": "PASS",
+      "evidence": "residual_off: max |Δlogit|=0.0342, mean |ΔP_ASD|=0.001034, flips=1; wrong_semantics: max |Δlogit|=4.77e-07, mean |ΔP_ASD|=6.423e-10, flips=0"
+    },
+    {
+      "gate": "GO_VS_BRAINPROMPT",
+      "result": "FAIL",
+      "evidence": "R03: ΔACC -0.000 pp; W/T/L 2/6/2; 95% CI [-0.690, +0.690]; ΔSEN +0.012 pp; R04: ΔACC +0.345 pp; W/T/L 3/5/2; 95% CI [-0.345, +1.264]; ΔSEN +1.244 pp"
+    },
+    {
+      "gate": "GO_VS_SABER",
+      "result": "FAIL",
+      "evidence": "R05: ΔACC -0.115 pp; W/T/L 3/4/3; 95% CI [-1.379, +1.034]; ΔSEN -0.982 pp; R06: ΔACC +0.115 pp; W/T/L 3/3/4; 95% CI [-0.690, +0.920]; ΔSEN +0.488 pp"
+    },
+    {
+      "gate": "GO_MICCAI_CANDIDATE",
+      "result": "FAIL",
+      "evidence": "all frozen scientific gates, 180/180 readback audits, and 180/180 method audits"
+    }
+  ]
+}

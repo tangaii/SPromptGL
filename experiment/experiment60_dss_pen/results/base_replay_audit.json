@@ -1,0 +1,424 @@
+{
+  "status": "PASS",
+  "scope": "R01_BASE_REPLAY",
+  "folds_audited": 10,
+  "base_replay_historical_state_and_prediction_gate": "PASS",
+  "absolute_tolerance": 1e-07,
+  "relative_tolerance": 1e-06,
+  "rows": [
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 1,
+      "status": "PASS",
+      "checkpoint_sha256": "36f52df4559903b4b9361c18574d3a2f482a9a361e475fefd6ca895f581bffc7",
+      "best_epoch": 196,
+      "epochs_executed": 398,
+      "metrics": {
+        "acc": 0.9545454545454546,
+        "hard_auc": 0.9512195121951219,
+        "prob_auc": 0.9688635184224184,
+        "spe": 1.0,
+        "sen": 0.9024390243902439,
+        "ba": 0.9512195121951219,
+        "asd_f1": 0.9487179487179487
+      },
+      "confusion": {
+        "asd_tp": 37,
+        "asd_fn": 4,
+        "td_fp": 0,
+        "td_tn": 47
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": []
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 2,
+      "status": "PASS",
+      "checkpoint_sha256": "a5c906cd5d7897f75a27c48f034d169509f990000c1ea4485afeff1626e33999",
+      "best_epoch": 167,
+      "epochs_executed": 369,
+      "metrics": {
+        "acc": 0.896551724137931,
+        "hard_auc": 0.8955461293743372,
+        "prob_auc": 0.9172852598091198,
+        "spe": 0.9130434782608695,
+        "sen": 0.8780487804878049,
+        "ba": 0.8955461293743372,
+        "asd_f1": 0.8888888888888888
+      },
+      "confusion": {
+        "asd_tp": 36,
+        "asd_fn": 5,
+        "td_fp": 4,
+        "td_tn": 42
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 3,
+      "status": "PASS",
+      "checkpoint_sha256": "696f6581e467c7786d4386ccef8c59c89189792651123179a50c6fbd74bce182",
+      "best_epoch": 156,
+      "epochs_executed": 358,
+      "metrics": {
+        "acc": 0.8735632183908046,
+        "hard_auc": 0.8724814422057263,
+        "prob_auc": 0.882290562036055,
+        "spe": 0.8913043478260869,
+        "sen": 0.8536585365853658,
+        "ba": 0.8724814422057263,
+        "asd_f1": 0.8641975308641975
+      },
+      "confusion": {
+        "asd_tp": 35,
+        "asd_fn": 6,
+        "td_fp": 5,
+        "td_tn": 41
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 4,
+      "status": "PASS",
+      "checkpoint_sha256": "5d34c5dd49db93a73d3ede10067c40f4ab0db787f7af626776ff402a611020b9",
+      "best_epoch": 233,
+      "epochs_executed": 435,
+      "metrics": {
+        "acc": 0.9425287356321839,
+        "hard_auc": 0.9393617021276596,
+        "prob_auc": 0.9638297872340424,
+        "spe": 0.9787234042553191,
+        "sen": 0.9,
+        "ba": 0.9393617021276596,
+        "asd_f1": 0.935064935064935
+      },
+      "confusion": {
+        "asd_tp": 36,
+        "asd_fn": 4,
+        "td_fp": 1,
+        "td_tn": 46
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 5,
+      "status": "PASS",
+      "checkpoint_sha256": "8a1af40e1a20f67e83cfaa845596ebbffc7d4ebb16f0987222309b4c74b4f9fa",
+      "best_epoch": 213,
+      "epochs_executed": 415,
+      "metrics": {
+        "acc": 0.9310344827586207,
+        "hard_auc": 0.9324468085106382,
+        "prob_auc": 0.9611702127659574,
+        "spe": 0.9148936170212766,
+        "sen": 0.95,
+        "ba": 0.9324468085106383,
+        "asd_f1": 0.926829268292683
+      },
+      "confusion": {
+        "asd_tp": 38,
+        "asd_fn": 2,
+        "td_fp": 4,
+        "td_tn": 43
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 6,
+      "status": "PASS",
+      "checkpoint_sha256": "45622a64fb688f7c3a5f10389f0310b4310fa317a655ae195db71083b42e0bf4",
+      "best_epoch": 111,
+      "epochs_executed": 313,
+      "metrics": {
+        "acc": 0.9655172413793104,
+        "hard_auc": 0.9643617021276595,
+        "prob_auc": 0.9686170212765957,
+        "spe": 0.9787234042553191,
+        "sen": 0.95,
+        "ba": 0.9643617021276596,
+        "asd_f1": 0.9620253164556962
+      },
+      "confusion": {
+        "asd_tp": 38,
+        "asd_fn": 2,
+        "td_fp": 1,
+        "td_tn": 46
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 7,
+      "status": "PASS",
+      "checkpoint_sha256": "d32610757a0bc5b3247b60fb74ed5b8dbadef4552ea4ab9de32e7f1a3174cb7f",
+      "best_epoch": 215,
+      "epochs_executed": 417,
+      "metrics": {
+        "acc": 0.9195402298850575,
+        "hard_auc": 0.9143617021276595,
+        "prob_auc": 0.9601063829787234,
+        "spe": 0.9787234042553191,
+        "sen": 0.85,
+        "ba": 0.9143617021276595,
+        "asd_f1": 0.9066666666666666
+      },
+      "confusion": {
+        "asd_tp": 34,
+        "asd_fn": 6,
+        "td_fp": 1,
+        "td_tn": 46
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 8,
+      "status": "PASS",
+      "checkpoint_sha256": "b672de3d3d0afb5985273947bd58e96c5604da7473c3c6ff3c9d197d8d94d878",
+      "best_epoch": 206,
+      "epochs_executed": 408,
+      "metrics": {
+        "acc": 0.8850574712643678,
+        "hard_auc": 0.8824468085106383,
+        "prob_auc": 0.8845744680851064,
+        "spe": 0.9148936170212766,
+        "sen": 0.85,
+        "ba": 0.8824468085106383,
+        "asd_f1": 0.8717948717948718
+      },
+      "confusion": {
+        "asd_tp": 34,
+        "asd_fn": 6,
+        "td_fp": 4,
+        "td_tn": 43
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 9,
+      "status": "PASS",
+      "checkpoint_sha256": "37f3c35e916576e19baeb8be4559711d39ad95074ea8ead296f7a88231bb7d75",
+      "best_epoch": 241,
+      "epochs_executed": 443,
+      "metrics": {
+        "acc": 0.9080459770114943,
+        "hard_auc": 0.9055851063829787,
+        "prob_auc": 0.9132978723404256,
+        "spe": 0.9361702127659575,
+        "sen": 0.875,
+        "ba": 0.9055851063829787,
+        "asd_f1": 0.8974358974358975
+      },
+      "confusion": {
+        "asd_tp": 35,
+        "asd_fn": 5,
+        "td_fp": 3,
+        "td_tn": 44
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    },
+    {
+      "group": "E60_BASE_REPLAY",
+      "fold": 10,
+      "status": "PASS",
+      "checkpoint_sha256": "c2bf7b946d4da2e03e6e9743c22cf9f2e4b4188b3c81406cf4127b856af7492a",
+      "best_epoch": 299,
+      "epochs_executed": 450,
+      "metrics": {
+        "acc": 0.9310344827586207,
+        "hard_auc": 0.9287234042553192,
+        "prob_auc": 0.946808510638298,
+        "spe": 0.9574468085106383,
+        "sen": 0.9,
+        "ba": 0.9287234042553192,
+        "asd_f1": 0.9230769230769231
+      },
+      "confusion": {
+        "asd_tp": 36,
+        "asd_fn": 4,
+        "td_fp": 2,
+        "td_tn": 45
+      },
+      "readback": "PASS",
+      "historical_metrics_match": true,
+      "historical_state_match": true,
+      "source_signature_exceptions": [
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/run.py",
+          "trained_sha256": "5d944a00cf329b6af3dd6002956079c2a64abc25831154afb3a9b9e8a2bb152e",
+          "current_sha256": "035d7cafcbd153733aabed7763f6ebc82c2483ba8cd989cb0bdbadbb57928988"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/semantic.py",
+          "trained_sha256": "8fcbba5b1dbf5dc260233b4d043f749bedc2d75835ed10bc6061123e008c0e13",
+          "current_sha256": "e8f521f758faf90b9b7485e5b032916374f4eefbb27e71728346d36e2d3a76c3"
+        },
+        {
+          "path": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/audit.py",
+          "trained_sha256": "862393ba92b3a3d7e6ebb94d1dea851e00917955b00eca77a01e1e9a34619c35",
+          "current_sha256": "1be64c15baa4fbc7952307af15aef6913fbbf3fae1f1bdbae26837932e1677fe"
+        }
+      ]
+    }
+  ]
+}
