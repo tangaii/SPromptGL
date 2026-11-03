@@ -1,0 +1,15 @@
+{
+  "experiment": "Experiment 70 GCDSI",
+  "status": "DESIGN_FROZEN",
+  "seed": 0,
+  "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+  "data": {"n": 871, "labels": {"ASD": 0, "TD": 1}, "modalities": ["PHENO", "ANAT", "FUNC", "CORR"], "dimensions": [48, 6, 10, 256], "transductive": true},
+  "base": {"group": "CADR_WD_0p01_GFR_WD_0p11", "cadr_adamw_lr": 0.001, "cadr_adamw_wd": [0.01, 0.01], "gfr_adam_lr": 0.0038, "gfr_adam_wd": 0.11, "cam_adam_lr": 0.0038, "cam_adam_wd": 0.11, "warmup_epochs": 10, "max_epochs": 450, "early_stop_wait_gt": 200, "checkpoint_selection": "strict ACC improvement; historical val=test"},
+  "gcdsi": {"query": "LayerNorm(Linear(36,36)(h_m)+Linear(320,36)(F)+q_CLS)", "attention": "softmax(Q K^T / sqrt(36)) over ASD and TD tokens for every modality", "gate": "sigmoid(MLP([h,Q,U]))", "residual": "h + 0.5*tanh(gamma_raw)*gate*W_O(U)", "gamma_raw_init": 0.0, "output_projection_zero_init": true, "dropout": 0, "optimizer": "AdamW", "lr": 0.001, "weight_decay": 0.001},
+  "groups": [
+    {"id": "E70-G1", "name": "GCDSI-BRAINPROMPT-2", "bank": "official BrainPrompt ABIDE text, reordered [ASD,TD]"},
+    {"id": "E70-G2", "name": "GCDSI-SPROMPTGL-8", "bank": "eight exact SPromptGL CLIP strings; normalized first-four/last-four means; ordered [ASD,TD]"},
+    {"id": "E70-G3", "name": "GCDSI-ANONYMOUS-2", "bank": "deterministic geometry-matched anonymous bank"}
+  ],
+  "evaluation_limits": ["global pre-CV RFE/standardization retained", "871-node transductive graph retained", "historical val=test selection retained", "single seed exploratory only"]
+}

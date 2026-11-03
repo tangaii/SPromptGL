@@ -1,0 +1,229 @@
+{
+  "experiment": "70",
+  "status": "COMPLETE_AUDITED",
+  "formal_groups": 3,
+  "formal_folds_required": 30,
+  "preflight": "PASS",
+  "reference_folds_read_only": 10,
+  "preflight_sha256": "45a6471d6ac94c120d04786e99855ebf29286156a1b8873cccbd89a02b72ffb6",
+  "completed_formal_folds": 30,
+  "failed_formal_folds": 0,
+  "independently_audited_checkpoints": 30,
+  "checkpoint_audit_status": "PASS",
+  "initialization_parity": "PASS_10_OF_10",
+  "warmup_parity": "PASS_10_OF_10",
+  "active_short_replay_resume": "PASS",
+  "decision": "NO-GO",
+  "best_group": "E70-G2",
+  "scientific_gates": [
+    {
+      "group": "E70-G1",
+      "base_gate": "FAIL",
+      "delta_acc_pp": -0.6896551724137923,
+      "acc_wins": 0,
+      "delta_sen_pp": -1.2439024390243902,
+      "delta_prob_auc_pp": -0.5515613366124406
+    },
+    {
+      "group": "E70-G2",
+      "base_gate": "FAIL",
+      "delta_acc_pp": -0.5747126436781624,
+      "acc_wins": 0,
+      "delta_sen_pp": -0.2439024390243893,
+      "delta_prob_auc_pp": -0.1317941833442371
+    },
+    {
+      "group": "E70-G3",
+      "base_gate": "FAIL",
+      "delta_acc_pp": -1.2643678160919547,
+      "acc_wins": 0,
+      "delta_sen_pp": -0.2682926829268262,
+      "delta_prob_auc_pp": -0.25190090476297833
+    }
+  ],
+  "mechanism_gates": [
+    {
+      "group": "E70-G1",
+      "status": "PASS",
+      "nonzero_residual": true,
+      "nonconstant_patient_and_modality_attention": true,
+      "two_token_attention_not_saturated": true,
+      "gate_not_collapsed": true,
+      "graph_query_gradient_and_sensitivity": true
+    },
+    {
+      "group": "E70-G2",
+      "status": "PASS",
+      "nonzero_residual": true,
+      "nonconstant_patient_and_modality_attention": true,
+      "two_token_attention_not_saturated": true,
+      "gate_not_collapsed": true,
+      "graph_query_gradient_and_sensitivity": true
+    },
+    {
+      "group": "E70-G3",
+      "status": "PASS",
+      "nonzero_residual": true,
+      "nonconstant_patient_and_modality_attention": true,
+      "two_token_attention_not_saturated": true,
+      "gate_not_collapsed": true,
+      "graph_query_gradient_and_sensitivity": true
+    }
+  ],
+  "text_value_gate": "FAIL",
+  "provenance": {
+    "reference_group": "CADR_WD_0p01_GFR_WD_0p11",
+    "reference_manifest_sha256": "fae43596a9788d63bf8b0a0e52854fd1f7f014fea36c062bcf8a881806d7fcba",
+    "reference_metrics_sha256": "2849ce9d161d5b5ea32bc1b210ebde4f4bd0daf25e316298934b8029b0f8f9a2",
+    "text_metadata": {
+      "cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+      "text_encoder": "OpenAI CLIP RN50; frozen Experiment 60 verified cache",
+      "text_dim": 1024,
+      "brainprompt_texts_published_order_TC_ASD": [
+        "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+        "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+      ],
+      "brainprompt_embedding_order": [
+        "ASD",
+        "TD"
+      ],
+      "spromptgl_texts_source_order": [
+        "Nromal brain volume",
+        "Uniform cortical thickness",
+        "Symmetrical brain structure",
+        "Normal ventricular morphology",
+        "Altered brain volume",
+        "Abnormal functional connectivity",
+        "White matter integrity issues",
+        "Different activation patterns"
+      ],
+      "spromptgl_aggregation": "normalize each; mean first four -> TD; mean last four -> ASD; normalize means; reorder [ASD,TD]",
+      "anonymous_seed": 700070,
+      "anonymous_generator": "private CPU torch.Generator; no data or labels",
+      "banks_sha256": {
+        "E70-G1": "225e6b1307618a7e019f8105618e65db7d2cb9f9d071c2311995446f80bb867e",
+        "E70-G2": "bcc827ed1c9dcf3e69ddda9eebda87a26b9c4ecf933d2c72ff5ea393c999f1b5",
+        "E70-G3": "a9c2dd39686455e8032b8cbfd44ede1c43f3716f8414446d40f480b5b2e2c797"
+      },
+      "g1_cosine": 0.9847824573516846,
+      "g3_cosine": 0.9847824573516846
+    },
+    "prompt_text_sha256": {
+      "brainprompt": "bd30576e77ceb02886a24686f23a7e4d33828368cc892d0d62a3b5a2759ed48f",
+      "spromptgl": "6095cd1694c0b47fcc35010f0bf6924d307c094db790a8ef11e858ad5dc9016c"
+    },
+    "label_order": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "input": {
+      "patients": 871,
+      "modalities": [
+        "PHENO",
+        "ANAT",
+        "FUNC",
+        "CORR"
+      ],
+      "dimensions": [
+        48,
+        6,
+        10,
+        256
+      ]
+    },
+    "warmup_parity": {
+      "e59_preflight_status": "PASS",
+      "rng_and_warmup_parity": {
+        "status": "PASS",
+        "steps": 2,
+        "stochastic_cam_forward_equal": true,
+        "base_and_cam_parameters_equal": true,
+        "base_optimizer_states_equal": true,
+        "shared_rng_equal": true,
+        "captured_positions_shape": [
+          871,
+          4,
+          36
+        ],
+        "deterministic_evidence_rng_unchanged": true,
+        "isolated_module_initial_sha": "334ec0d8b918fd1b535552b547e21cf9afc361b4296ddb0639b6d7a06d6da3d9"
+      },
+      "shared_cache_status": "PASS",
+      "folds": 10,
+      "all_fold_readbacks_pass": true,
+      "e70_fold_binding_pass": true
+    },
+    "short_replay_resume": {
+      "status": "PASS",
+      "fold": 1,
+      "group": "E70-G1",
+      "active_epochs_replayed": 2,
+      "warmup_sha256": "91434b1c9505c4819ef769eab6571035e634008c73573661fe1c8c355a3d8b6f",
+      "continuous_state_sha256": "0ce7563a79ee5576153c8e005ad292ec0063f76fd61288bec63df680d26ce4a1",
+      "repeated_state_sha256": "0ce7563a79ee5576153c8e005ad292ec0063f76fd61288bec63df680d26ce4a1",
+      "resumed_state_sha256": "0ce7563a79ee5576153c8e005ad292ec0063f76fd61288bec63df680d26ce4a1",
+      "continuous_repeat_logits_equal": true,
+      "continuous_resume_logits_equal": true,
+      "optimizer_rng_and_model_state_equal": true
+    },
+    "integrity": {
+      "historical_source_hashes_match_preflight_and_manifest": true,
+      "historical_checkpoints_match_reference_manifest": true,
+      "historical_base_retrained": false,
+      "historical_base_checkpoint_sha256": {
+        "1": "f6b80a169eef02badab4e641a20909fdc9c82939457464cf72eb8b6d7ca593af",
+        "2": "928c8546e88448e333c859bb43f2a83bf27fbef41e8a63cc5097c103550b3f9f",
+        "3": "a6500485b8c45705f8e7c960ca98268abe68d4ae2e39e737a173f54f93ab64da",
+        "4": "305217e8913117f860fd6f4922ddf8b0772c57fb1e8d425b39b156b1fd4d30d9",
+        "5": "03606eab853bbd8b772af5e783ea736af87c375151a4d3efcf0f802430ef7a4e",
+        "6": "fa1a52ca29c8ce22a46128e8f836da7b2a0e8fbb989d2b15078559b6af6f575c",
+        "7": "b50b9e3ae0fd4117a18b9d30944666ae48d966639fb1b5b76265270b8329555c",
+        "8": "aadda19061428dc3c035069a638b803c8d960053844bc355954f0742a90d0c3e",
+        "9": "fa63f12442e9863fdfa22f543d70b9db5d7237b883c8f1657c0606ec65f6b350",
+        "10": "cc473f2ea1473753be496e921c8a77dea0ad6a5827441fc64db1f704cecc7e07"
+      },
+      "data_sha256_at_final_audit": {
+        "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+        "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+      },
+      "base_source_sha256": {
+        "run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+        "cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+        "config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa"
+      },
+      "experiment70_source_sha256": {
+        "run.py": "0af9797eaecbf7012ade7f62ad2b3850c814fbe4991033aa98edc37a45dc70ed",
+        "gcdsi.py": "8cceca39dc885ce4e54cc2400c4dc46dc4eb1d2dab53bfebb528883cbdcf87b6",
+        "audit.py": "1262140a38b59aba542976a89c40c0e4798b45ac8ea34256a6a40a89523e97d6",
+        "config.json": "e9711494784b36374a14526cfe07e3e5f5e1efe18e4f38c4f596745324ba733d",
+        "design.md": "604d20265c713ec6fe51b786274d28d9f6f0f3da4d0dc7704b65030ebb9e95f9"
+      },
+      "e59_preflight_sha256": "0f6ec4aeb7a553b9deabaceca414be803ad7833d27066a0dace028206107852e",
+      "e70_preflight_sha256": "45a6471d6ac94c120d04786e99855ebf29286156a1b8873cccbd89a02b72ffb6",
+      "text_embedding_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+      "warmup_cache_sha256": {
+        "1": "91434b1c9505c4819ef769eab6571035e634008c73573661fe1c8c355a3d8b6f",
+        "2": "e2cd294389aa3def700872e4e7f83c181baa93027e579ad755b811c4c73920ce",
+        "3": "31daa7ca7f183c39c3eee01a1f52bd961ee488cd2b6ba777b94090ef71e0422c",
+        "4": "55e4c4a34d1809e27bbff4f897b3d1a9108558e74ff9eae502f410890375894d",
+        "5": "ef041fcadf8267ecb8dd0bdd3bc0d81fb1c2ea273a2ee20494a5a4f7a0053800",
+        "6": "e6e15c2da4ae46158250055551de996de164dcdfc4a46fccb48a85f27d27537c",
+        "7": "4c8e97aff3c0e605368ae8c6cfa8c4d9aad77fc5ec5bcd1dccdd6eb33b2b9638",
+        "8": "14b72208a67a5daf9a2bebc7e9a761fe8ef27fdb947439fa706632744931d2b1",
+        "9": "1f5b3c945402faf7d1e7b3cd5437ba04bb237a5a9004d03c07839638ad62f05f",
+        "10": "59310e4d21692192f7323530106232aafbbfb6acb354656966de457e6eb55e3d"
+      }
+    }
+  },
+  "result_sha256": {
+    "audit_status.json": "8a668f453ba0d386ccd5a5b64865a0a96cf3d9d7b19f47139eb5a05b840c3123",
+    "fold_metrics.csv": "d3d7a0f560403416223217e1b866e6e5eea0910ff8df2bb5b2c04cb8435de8ad",
+    "mechanism.csv": "42dfaac8e421967cdbc2132394fa2272984d87a862141e517bbcbcac380905e1",
+    "paired_comparisons.csv": "593373ac7204a512ac73a3e617fa355150f3035b839928d1805e8d5dce4adfec",
+    "report.md": "eb3c4de9b0b0ee7b391e483314e922f0db7aad306dbca585cee949060503338f",
+    "summary.csv": "f32cf301d3b6fc100765432f5911ea995714f3fc4f13994046a229fff7e59ed6"
+  },
+  "audit_status_sha256": "8a668f453ba0d386ccd5a5b64865a0a96cf3d9d7b19f47139eb5a05b840c3123",
+  "handoff_path": "/model/spromptgl/experiment/handoff.md",
+  "handoff_sha256": "10456ea79fde3146836f14079e459d5e3f75a00cba90eb215085fdcc44d72a89"
+}
