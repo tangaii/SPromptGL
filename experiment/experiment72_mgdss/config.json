@@ -1,0 +1,108 @@
+{
+  "experiment": "Experiment 72 - MGDSS",
+  "status": "FROZEN_PRETRAINING_PREFLIGHT",
+  "base": {
+    "name": "Experiment 53.3 / CADR_WD_0p01_GFR_WD_0p11",
+    "labels": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "input_dimensions": [48, 6, 10, 256],
+    "gfr_output_dim": 320,
+    "cam_output_shape": [871, 4, 36],
+    "classifier_input_dim": 144,
+    "loss": {
+      "classification": 1.0,
+      "graph": 1.0,
+      "pair": 0.05,
+      "adversarial": 0.01,
+      "preserve": 0.01
+    },
+    "optimizer": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    }
+  },
+  "cv": {
+    "splitter": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "seed": 0,
+    "max_epochs": 450,
+    "warmup_epochs": 10,
+    "early_stop_wait_gt": 200,
+    "best_selection": "strict ACC improvement",
+    "validation_equals_test": true
+  },
+  "text": {
+    "encoder": "frozen OpenAI CLIP RN50",
+    "dimension": 1024,
+    "rn50_weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "experiment60_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "brainprompt_text_sha256": "dbbfa807a88834a35d097aea130337c884e5264920980dd57e584c6f083f828d",
+    "spromptgl_text_sha256": "23791903292668e54164e4d3db1b0556776f29f5fa37cc46fe7fe13c48cefa6e",
+    "frozen_span_rank": 10,
+    "frozen_span_basis_sha256": "3e79ee238447ff47ad1029408b99db94c3b4c4fbc657aa5a5251754563dc3868",
+    "brainprompt_class_bank_sha256": "f7105b19f5a81fb078c51636136b1e18d56fa1b204bb4a5d82a488b6f48b8176",
+    "spromptgl_class_bank_sha256": "ee741144039d60c5de8bb36576476bdc9fa67ed2ff3f7cb97a13bba08c78a55a",
+    "prompt_projection": "CPU float64 SVD of the 10 raw frozen prompt embeddings; each basis-axis sign anchored by its largest-magnitude entry",
+    "bank_order": ["ASD", "TD"],
+    "spromptgl_aggregation": "L2-normalize each source vector; mean prompts 1-4 for TD and 5-8 for ASD; L2-normalize class means; order ASD then TD",
+    "geometry_tolerance": 1e-10
+  },
+  "runtime_dependencies": {
+    "ftfy": {
+      "version": "6.1.1",
+      "wheel": ".runtime/wheels/ftfy-6.1.1-py3-none-any.whl",
+      "wheel_sha256": "0ffd33fce16b54cccaec78d6ec73d95ad370e5df5a25255c8966a6147bd667ca",
+      "installed_to": ".runtime/vendor/python"
+    },
+    "wcwidth": {
+      "version": "0.5.2",
+      "provided_by_runtime": true
+    }
+  },
+  "auxiliary_projection": {
+    "fine": {"class": "Linear", "input_dim": 36, "output_dim": 10},
+    "global": {"class": "Linear", "input_dim": 144, "output_dim": 10},
+    "shared_fine_projection_across_modalities": true,
+    "xavier_uniform": true,
+    "bias_initial_value": 0.0,
+    "dropout": 0.0,
+    "private_seed_formula": "720000 + fold",
+    "optimizer": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001}
+  },
+  "supervision": {
+    "brainprompt_temperature": 1.0,
+    "saber_adaptation_temperature": 0.1,
+    "fine_weights": {"PHENO": 0.1, "ANAT": 0.1, "FUNC": 0.1, "CORR": 0.7},
+    "joint": {"global": 0.5, "fine": 0.5},
+    "global_only": {"global": 1.0},
+    "gradient_budget_ratio": 0.1,
+    "alpha_max": 10.0
+  },
+  "groups": [
+    {"id": "G1", "prompt": "BrainPrompt-2", "temperature": 1.0, "grain": "joint"},
+    {"id": "G2", "prompt": "BrainPrompt-2", "temperature": 0.1, "grain": "joint"},
+    {"id": "G3", "prompt": "SPromptGL-8", "temperature": 1.0, "grain": "joint"},
+    {"id": "G4", "prompt": "SPromptGL-8", "temperature": 0.1, "grain": "joint"},
+    {"id": "G5", "prompt": "BrainPrompt-2", "temperature": 1.0, "grain": "global_only"},
+    {"id": "G6", "prompt": "BrainPrompt-2", "temperature": 0.1, "grain": "global_only"}
+  ],
+  "paths": {
+    "repository_root": "/data/adodas/SPromptGL-main",
+    "base_reference": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e59": "/data/adodas/SPromptGL-main/experiment/experiment59_shape_pen",
+    "e60": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen",
+    "e70": "/model/spromptgl/experiment/experiment70_gcdsi",
+    "e70_1": "/model/spromptgl/experiment/experiment70_1_dcc_gcdsi",
+    "e71": "/model/spromptgl/experiment/experiment71_gcder"
+  },
+  "audit": {
+    "prompt_label_information_allowed": false,
+    "test_labels_allowed_for_auxiliary_loss": false,
+    "auxiliary_heads_used_for_inference": false,
+    "semantic_residual_injection": false,
+    "original_cam_forward_count": 1
+  }
+}
