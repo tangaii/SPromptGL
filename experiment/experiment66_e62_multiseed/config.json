@@ -1,0 +1,56 @@
+{
+  "experiment": "Experiment 66 — E62-E2 multi-seed robustness",
+  "experiment_root": "/model/spromptgl/experiment/experiment66_e62_multiseed",
+  "base": {
+    "experiment": "Experiment 62",
+    "group": "E62-E2",
+    "commit": "31ced6bdd279654154b90dc2ece056d8e435df2b",
+    "source_experiment": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "initialization_source": "same SHA-verified per-fold Experiment 43.1/E61 anchor parameters; each seed replays ten-epoch E62-E2 warmup from epoch 1",
+    "best_checkpoint_is_finetuning_source": false
+  },
+  "e62_reference": {
+    "path": "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity",
+    "group": "E62-E2",
+    "config_sha256": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+    "run_sha256": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+    "manifest_sha256": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+    "fold_metrics_sha256": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9"
+  },
+  "seed_protocol": {
+    "requested_seeds": [1, 2, 3, 2020, 2026],
+    "fold_split_random_state": 10,
+    "effective_construction_seed": "510000 + fold * 100 + 1 + requested_seed",
+    "seed_zero_compatibility": "requested seed 0 reproduces the E61 fold construction RNG; E62-E2 remains a read-only reference",
+    "parameter_initialization": "all trainable model parameters still load from the same per-fold historical anchor; requested seed changes the construction/training RNG stream used from epoch 1, including dropout",
+    "pair_sampling": "same fixed per-fold pair cache as E62-E2; no seed-dependent resampling"
+  },
+  "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+  "data": {"n": 871, "modalities": ["PHENO", "ANAT", "FUNC", "CORR"], "dims": [48, 6, 10, 256], "total_dim": 320, "labels": {"ASD": 0, "TD": 1}},
+  "optimization": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "warmup_epochs": 10,
+    "branch_epoch": 11,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_checkpoint": "strict ACC improvement under historical val=test protocol",
+    "loss": "L_cls + L_graph + .05 L_pair + .01 L_adv + .01 L_preserve"
+  },
+  "formal_task_count": 50,
+  "formal_groups": {
+    "E66-S1": {"name": "seed=1", "seed": 1, "edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99], "gfr_weight_decay": 0.11, "cadr_weight_decay": 0.01},
+    "E66-S2": {"name": "seed=2", "seed": 2, "edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99], "gfr_weight_decay": 0.11, "cadr_weight_decay": 0.01},
+    "E66-S3": {"name": "seed=3", "seed": 3, "edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99], "gfr_weight_decay": 0.11, "cadr_weight_decay": 0.01},
+    "E66-S2020": {"name": "seed=2020", "seed": 2020, "edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99], "gfr_weight_decay": 0.11, "cadr_weight_decay": 0.01},
+    "E66-S2026": {"name": "seed=2026", "seed": 2026, "edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99], "gfr_weight_decay": 0.11, "cadr_weight_decay": 0.01}
+  },
+  "group_order": ["E66-S1", "E66-S2", "E66-S3", "E66-S2020", "E66-S2026"],
+  "protocol_limits": [
+    "Only the requested training RNG seed changes; E62-E2 architecture, optimizer settings, losses, gates, data, fixed folds, pair cache, and stopping/checkpoint rules are unchanged.",
+    "The five seed groups each independently replay ten warmup epochs from the same per-fold untrained anchor; E62-E2 best checkpoints and seed-0 warmups are read-only references.",
+    "Historical val=test checkpoint selection, pre-CV preprocessing, and the transductive 871-node graph are retained.",
+    "Single-run seeds and overlapping outer folds provide descriptive robustness evidence, not independent external validation."
+  ]
+}

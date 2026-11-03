@@ -1,0 +1,49 @@
+{
+  "experiment": "Experiment 63 — CORR fusion and edge gate initialization refinement",
+  "experiment_root": "/model/spromptgl/experiment/experiment63_corr_gate_init_refinement",
+  "base": {
+    "experiment": "Experiment 62",
+    "group": "E62-E2",
+    "commit": "31ced6bdd279654154b90dc2ece056d8e435df2b",
+    "e61_warmup_epoch": 10,
+    "branch_epoch": 11,
+    "initialization_source": "same SHA-verified E61 per-fold epoch-10 shared state used by E62-E2; gate logits set before epoch 11",
+    "best_checkpoint_is_finetuning_source": false
+  },
+  "e62_reference": {
+    "path": "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity",
+    "group": "E62-E2",
+    "config_sha256": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+    "run_sha256": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+    "manifest_sha256": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+    "fold_metrics_sha256": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9"
+  },
+  "seed": 0,
+  "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+  "data": {"n": 871, "modalities": ["PHENO", "ANAT", "FUNC", "CORR"], "dims": [48, 6, 10, 256], "total_dim": 320, "labels": {"ASD": 0, "TD": 1}},
+  "optimization": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_checkpoint": "strict ACC improvement with historical val=test protocol",
+    "loss": "L_cls + L_graph + .05 L_pair + .01 L_adv + .01 L_preserve"
+  },
+  "formal_task_count": 30,
+  "formal_groups": {
+    "E63-G1": {"edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.999]},
+    "E63-G2": {"edge_gate": [0.45, 0.45, 0.45, 0.45], "adaptive_gate": [0.001, 0.001, 0.001, 0.999]},
+    "E63-G3": {"edge_gate": [0.55, 0.55, 0.55, 0.55], "adaptive_gate": [0.001, 0.001, 0.001, 0.999]}
+  },
+  "group_order": ["E63-G1", "E63-G2", "E63-G3"],
+  "gate_parameterization": "store logit(torch.tensor(configured_sigmoid_value)); edge and fusion gate vectors remain trainable",
+  "protocol_limits": [
+    "Only edge_gate and CORR adaptive fusion gate initial values differ from E62-E2; non-CORR adaptive gates remain at 0.001.",
+    "No OOF, reliability multiplier, extra model component, loss, or hyperparameter search.",
+    "Each group/fold branches from the exact SHA-verified E61 epoch-10 shared checkpoint used by E62-E2; gate logits are reset to the configured sigmoid-space values before epoch 11.",
+    "E62-E2 best checkpoints are read-only comparison references, not fine-tuning starts.",
+    "Historical val=test checkpoint selection, pre-CV preprocessing, and the transductive 871-node graph are retained.",
+    "Single seed and overlapping outer folds provide exploratory paired evidence only."
+  ]
+}

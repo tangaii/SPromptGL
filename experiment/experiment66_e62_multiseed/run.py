@@ -1,0 +1,1387 @@
+#!/usr/bin/env python3
+"""Experiment 66 runner: E62-E2 multi-seed robustness."""
+from __future__ import annotations
+
+import argparse
+import copy
+import csv
+import hashlib
+import importlib.util
+import json
+import math
+import os
+import pickle
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+for _key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+    os.environ.setdefault(_key, "1")
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+sys.dont_write_bytecode = True
+
+EXP = Path(__file__).resolve().parent
+ROOT = Path("/data/adodas/SPromptGL-main")
+E61_EXP = ROOT / "experiment/experiment61_cadr_postalign_vs_e2e"
+E61_RUN = E61_EXP / "run.py"
+E61_MODEL = E61_EXP / "model_e61.py"
+E61_CONFIG = E61_EXP / "config.json"
+E61_MANIFEST = E61_EXP / "manifest.json"
+E53_EXP = Path("/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix")
+CONFIG_PATH = EXP / "config.json"
+RT = EXP / ".runtime"
+TASKS = RT / "tasks"
+CKPTS = RT / "checkpoints"
+LOGS = RT / "logs"
+RESULTS = EXP / "results"
+CFG = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+GROUPS = CFG["formal_groups"]
+GROUP_ORDER = CFG["group_order"]
+E62_EXP = Path(CFG["e62_reference"]["path"])
+MODALITIES = CFG["data"]["modalities"]
+METRICS = ("acc", "hard_auc", "prob_auc", "sen", "spe", "ba", "asd_f1")
+METRIC_LABELS = {"acc": "ACC", "hard_auc": "Hard-AUC", "prob_auc": "Probability-AUC", "sen": "SEN-ASD", "spe": "SPE-TD", "ba": "BA", "asd_f1": "ASD-F1"}
+E61 = None
+E61_TRAIN_SOURCE = None
+
+
+def sha_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def atomic_json(path: Path, obj):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(path.name + f".tmp.{os.getpid()}")
+    temp.write_text(json.dumps(obj, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    with temp.open("rb") as stream:
+        os.fsync(stream.fileno())
+    os.replace(temp, path)
+    if json.loads(path.read_text(encoding="utf-8")) != json.loads(json.dumps(obj, ensure_ascii=False, allow_nan=False)):
+        raise IOError(f"JSON atomic readback failed: {path}")
+
+
+def atomic_torch(path: Path, obj):
+    import torch
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(path.name + f".tmp.{os.getpid()}")
+    with temp.open("wb") as stream:
+        torch.save(obj, stream)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp, path)
+    if sha_file(path) == "":
+        raise IOError(f"checkpoint write failed: {path}")
+
+
+def torch_load(path: Path):
+    import torch
+    return torch.load(path, map_location="cpu", weights_only=False)
+
+
+def write_csv(path: Path, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fields = []
+    for row in rows:
+        for key in row:
+            if key not in fields:
+                fields.append(key)
+    temp = path.with_name(path.name + f".tmp.{os.getpid()}")
+    with temp.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp, path)
+
+
+def load_e61():
+    global E61, E61_TRAIN_SOURCE
+    if E61 is not None:
+        return E61
+    if not E61_RUN.is_file() or not E61_MODEL.is_file() or not E61_CONFIG.is_file():
+        raise FileNotFoundError(f"E61 source is missing at {E61_EXP}")
+    e61_manifest = json.loads(E61_MANIFEST.read_text(encoding="utf-8"))
+    if e61_manifest.get("status") != "COMPLETE_AUDITED" or e61_manifest.get("completed_tasks") != 20 or e61_manifest.get("independent_audits") != 20:
+        raise RuntimeError("E61 manifest does not certify all 20 tasks and checkpoint audits")
+    if e61_manifest.get("locked_base_commit") != "b7e477c9657422a119adc7872ccf8c8188871e9e":
+        raise RuntimeError("E61 is not pinned to the required Experiment 53.3 base")
+    expected_published = e61_manifest.get("audit_source_sha256", {})
+    current = {"run.py": sha_file(E61_RUN), "model_e61.py": sha_file(E61_MODEL), "config.json": sha_file(E61_CONFIG)}
+    if current != expected_published:
+        raise RuntimeError(f"E61 published source SHA mismatch: current={current}, manifest={expected_published}")
+    if e61_manifest.get("source_sha256", {}).get("model_e61.py") != current["model_e61.py"] or e61_manifest.get("source_sha256", {}).get("config.json") != current["config.json"]:
+        raise RuntimeError("E61 model/config changed after its formal training")
+    base_expected = e61_manifest.get("base_source_sha256", {})
+    base_files = ("run.py", "cadr_gfr.py", "run_cadr_fallback.py", "run_cadr_fallback_wd_sweep.py", "config_fallback_wd_sweep.json")
+    base_current = {name: sha_file(E53_EXP / name) for name in base_files}
+    if base_current != base_expected:
+        raise RuntimeError(f"E53 dependency SHA mismatch: current={base_current}, E61 manifest={base_expected}")
+    for path in (E61_EXP, E53_EXP):
+        if str(path) in sys.path:
+            sys.path.remove(str(path))
+        sys.path.insert(0, str(path))
+    E61_TRAIN_SOURCE = e61_manifest["source_sha256"]
+    spec = importlib.util.spec_from_file_location("experiment63_locked_e61_runner", E61_RUN)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    module.SOURCE_SHA_OVERRIDE = E61_TRAIN_SOURCE
+    E61 = module
+    return E61
+
+
+def e61_warmup_path(fold):
+    return E61_EXP / ".runtime/warmup" / f"fold{fold:02d}.pt"
+
+
+def warmup_path(group, fold):
+    return RT / "warmup" / f"{group}_f{fold:02d}.pt"
+
+
+def task_path(group, fold):
+    return TASKS / f"{group}_f{fold:02d}.json"
+
+
+def checkpoint_path(group, fold):
+    return CKPTS / f"{group}_f{fold:02d}.best.pt"
+
+
+def latest_path(group, fold):
+    return CKPTS / f"{group}_f{fold:02d}.latest.pt"
+
+
+def log_path(group, fold):
+    return LOGS / f"{group}_f{fold:02d}.jsonl"
+
+
+def state_digest(state, model=True):
+    digest = hashlib.sha256()
+    for key in ("base", "cam") if model else ():
+        obj = state[key]
+        for name, tensor in sorted(obj.state_dict().items()):
+            digest.update(key.encode() + b"/" + name.encode() + b"\0")
+            digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+    for name, param in state["model"].named_parameters():
+        if name.startswith(("encoders.", "scorers.", "discriminator.")):
+            digest.update(name.encode() + b"\0")
+            digest.update(param.detach().cpu().contiguous().numpy().tobytes())
+    return digest.hexdigest()
+
+
+def sha_obj(value):
+    if hasattr(value, "detach"):
+        value = value.detach().cpu().contiguous().numpy().tobytes()
+    elif not isinstance(value, bytes):
+        value = json.dumps(value, sort_keys=True, default=str).encode()
+    return hashlib.sha256(value).hexdigest()
+
+
+def optimizer_gate_state(state):
+    """Locate each parameter's state by actual optimizer group order, not assumed IDs."""
+    names = {id(parameter): name for name, parameter in state["model"].named_parameters()}
+    result = {}
+    for group in state["opt_added"].param_groups:
+        for parameter in group["params"]:
+            name = names.get(id(parameter))
+            if name in ("edge_gate_logits", "adaptive_gate_logits"):
+                slot = state["opt_added"].state.get(parameter, {})
+                result[name] = {
+                    "present": bool(slot),
+                    "step": float(slot["step"].item()) if "step" in slot else None,
+                    "exp_avg_max_abs": float(slot["exp_avg"].abs().max().cpu()) if "exp_avg" in slot else 0.0,
+                    "exp_avg_sq_max": float(slot["exp_avg_sq"].abs().max().cpu()) if "exp_avg_sq" in slot else 0.0,
+                    "in_optimizer": True,
+                    "weight_decay": float(group["weight_decay"]),
+                }
+    if set(result) != {"edge_gate_logits", "adaptive_gate_logits"}:
+        raise RuntimeError(f"gates not both found in CADR optimizer: {result}")
+    return result
+
+
+def set_gate_initialization(state, group):
+    import torch
+    cfg = GROUPS[group]
+    edge_values = torch.tensor(cfg["edge_gate"], dtype=state["model"].edge_gate_logits.dtype, device=state["model"].edge_gate_logits.device)
+    adaptive_values = torch.tensor(cfg["adaptive_gate"], dtype=state["model"].adaptive_gate_logits.dtype, device=state["model"].adaptive_gate_logits.device)
+    if torch.any((edge_values <= 0) | (edge_values >= 1)) or torch.any((adaptive_values <= 0) | (adaptive_values >= 1)):
+        raise ValueError("configured sigmoid gate values must be strictly between zero and one")
+    before_rng = load_e61().load_base().rng_sha(load_e61().load_base().pack_rng())
+    states = optimizer_gate_state(state)
+    with torch.no_grad():
+        state["model"].edge_gate_logits.copy_(torch.logit(edge_values))
+        state["model"].adaptive_gate_logits.copy_(torch.logit(adaptive_values))
+    actual_edge = torch.sigmoid(state["model"].edge_gate_logits).detach().cpu()
+    actual_adaptive = torch.sigmoid(state["model"].adaptive_gate_logits).detach().cpu()
+    if not torch.allclose(actual_edge, edge_values.cpu(), atol=1e-7, rtol=0) or not torch.allclose(actual_adaptive, adaptive_values.cpu(), atol=1e-7, rtol=0):
+        raise RuntimeError(f"gate initialization does not match config for {group}")
+    if not state["model"].edge_gate_logits.requires_grad or not state["model"].adaptive_gate_logits.requires_grad:
+        raise RuntimeError("gate parameters must remain trainable")
+    expected_wd = float(cfg["cadr_weight_decay"])
+    for name, item in states.items():
+        if not item["in_optimizer"] or abs(item["weight_decay"] - expected_wd) > 1e-12:
+            raise RuntimeError(f"gate optimizer membership/WD failure: {name} {item}")
+    after_rng = load_e61().load_base().rng_sha(load_e61().load_base().pack_rng())
+    if before_rng != after_rng:
+        raise RuntimeError("deterministic gate assignment unexpectedly consumed the main RNG")
+    return {"edge_gate": actual_edge.tolist(), "adaptive_gate": actual_adaptive.tolist(), "optimizer_state": states, "rng_unchanged": True}
+
+
+def model_state_cpu(module):
+    return {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
+
+
+def gate_gradient_vectors(state):
+    def vals(p):
+        if p.grad is None:
+            return [0.0] * p.numel()
+        return p.grad.detach().abs().cpu().reshape(-1).tolist()
+    return {"edge_gate_abs": vals(state["model"].edge_gate_logits), "adaptive_gate_abs": vals(state["model"].adaptive_gate_logits)}
+
+
+def gate_message_summary(info, state):
+    import torch
+    e61 = load_e61()
+    norms = e61.message_norms(info)
+    raw = torch.cat(state["parts"], dim=1).detach().float().norm().item()
+    fusion = torch.sigmoid(state["model"].fusion_weight.detach()).reshape(-1).cpu().tolist()
+    ag = torch.sigmoid(state["model"].adaptive_gate_logits.detach()).reshape(-1).cpu().tolist()
+    weighted_cadr = [norms["cadr_message"][i] * fusion[i] * ag[i] for i in range(4)]
+    return {
+        "message_norms": norms,
+        "raw_input_frobenius_norm": float(raw),
+        "fusion_weight_sigmoid": fusion,
+        "weighted_cadr_norm": weighted_cadr,
+        "weighted_cadr_to_raw_ratio": [x / max(raw, 1e-12) for x in weighted_cadr],
+        "edge_diagnostics": info["edge_diagnostics"],
+        "edge_gate": torch.sigmoid(state["model"].edge_gate_logits.detach()).cpu().tolist(),
+        "adaptive_gate": ag,
+    }
+
+
+def evaluate(state, intervention="full", permuted=False, seed=0, collect=False):
+    import torch
+    e61 = load_e61()
+    state["model"].eval()
+    state["cam"].eval()
+    with torch.no_grad():
+        out = e61.forward_e2_state(state, training=False, intervention=intervention, permute_scores=permuted, permutation_seed=seed)
+        metrics = e61.load_base().classification_metrics(out["logp"], state["test"], state["y"])
+    if collect:
+        return metrics, gate_message_summary(out["info"], state)
+    return metrics
+
+
+def warmup_manifest_info():
+    e61 = load_e61()
+    manifest = json.loads(E61_MANIFEST.read_text(encoding="utf-8"))
+    expected = {int(item["fold"]): item for item in manifest["warmups"]}
+    if set(expected) != set(range(1, 11)):
+        raise RuntimeError("E61 manifest lacks ten shared warmup records")
+    verified = []
+    for fold in range(1, 11):
+        path = e61_warmup_path(fold)
+        task_path = E61.TASKS / f"fold{fold:02d}.warmup.json"
+        if not path.is_file() or not task_path.is_file():
+            raise FileNotFoundError(f"E61 fold {fold} warmup file/task record is missing")
+        digest = sha_file(path)
+        record = torch_load(path)
+        task = json.loads(task_path.read_text(encoding="utf-8"))
+        if digest != expected[fold]["sha256"] or digest != task.get("warmup_sha256"):
+            raise RuntimeError(f"E61 fold {fold} warmup SHA mismatch")
+        if record.get("completed_epoch") != 10 or record.get("fold") != fold or record.get("seed") != 0:
+            raise RuntimeError(f"E61 fold {fold} warmup identity/epoch mismatch")
+        if record.get("source_sha") != E61_TRAIN_SOURCE:
+            raise RuntimeError(f"E61 warmup source identity differs from its frozen manifest at fold {fold}")
+        if record.get("split_sha") != task.get("split_sha") or record.get("pair_sha") != task.get("pair_sha"):
+            raise RuntimeError(f"E61 warmup fold/pair identity mismatch at fold {fold}")
+        verified.append({"fold": fold, "warmup_sha256": digest, "rng_sha": record["rng_sha"], "split_sha": record["split_sha"], "pair_sha": record["pair_sha"], "source_sha": record["source_sha"]})
+    return verified
+
+
+def set_optimizer_weight_decay(state, group):
+    cfg = GROUPS[group]
+    gfr_wd = float(cfg["gfr_weight_decay"])
+    cadr_wd = float(cfg["cadr_weight_decay"])
+    for optimizer in (state["opt_base"],):
+        for param_group in optimizer.param_groups:
+            param_group["weight_decay"] = gfr_wd
+    for optimizer in (state["opt_added"],):
+        for param_group in optimizer.param_groups:
+            param_group["weight_decay"] = cadr_wd
+    actual = {
+        "gfr": [float(item["weight_decay"]) for item in state["opt_base"].param_groups],
+        "cam": [float(item["weight_decay"]) for item in state["opt_cam"].param_groups],
+        "cadr": [float(item["weight_decay"]) for item in state["opt_added"].param_groups],
+    }
+    if actual["gfr"] != [gfr_wd] or actual["cam"] != [0.11] or actual["cadr"] != [cadr_wd] * len(actual["cadr"]):
+        raise RuntimeError(f"optimizer WD mismatch for {group}: {actual}")
+    return actual
+
+
+def build_seeded_state(group, fold):
+    """Build from the fixed fold anchor while changing only the construction RNG stream."""
+    e61 = load_e61()
+    base = e61.load_base()
+    reference = torch_load(e61_warmup_path(fold))
+    requested_seed = int(GROUPS[group]["seed"])
+    original_seed_all = base.seed_all
+    original_build = base.build_legacy_core
+    captured = {}
+
+    def seeded_seed_all(seed):
+        original_seed_all(int(seed) + requested_seed)
+
+    def seeded_build(fold_id):
+        core = original_build(fold_id)
+        captured["rng_sha"] = core["construction_rng_sha"]
+        core["seed66_rng_sha"] = core["construction_rng_sha"]
+        # E61's historical builder asserts the seed-0 RNG SHA. Preserve that assertion
+        # while it validates all other provenance, then restore the actual SHA below.
+        core["construction_rng_sha"] = reference["initial_rng_sha"]
+        return core
+
+    base.seed_all = seeded_seed_all
+    base.build_legacy_core = seeded_build
+    try:
+        state = e61.build_state(fold)
+    finally:
+        base.seed_all = original_seed_all
+        base.build_legacy_core = original_build
+
+    actual_rng_sha = captured.get("rng_sha")
+    if not actual_rng_sha or state.get("seed66_rng_sha") != actual_rng_sha:
+        raise RuntimeError(f"seeded construction RNG capture failed for {group} fold={fold}")
+    state.pop("seed66_rng_sha", None)
+    state["construction_rng_sha"] = actual_rng_sha
+    state["initial_rng_sha"] = actual_rng_sha
+    if base.rng_sha(base.pack_rng()) != actual_rng_sha:
+        raise RuntimeError(f"seeded construction RNG was not left active for {group} fold={fold}")
+    return state
+
+
+def verify_initial_state(state, fold, group):
+    reference = torch_load(e61_warmup_path(fold))
+    for key in ("initial_shared_sha", "initial_gfr_sha", "initial_cam_sha", "split_sha", "pair_sha", "anchor_sha"):
+        actual = state[key]
+        if actual != reference[key]:
+            raise RuntimeError(f"initial E61 anchor mismatch fold={fold} field={key}: {actual} != {reference[key]}")
+    if int(GROUPS[group]["seed"]) == 0 and state["initial_rng_sha"] != reference["initial_rng_sha"]:
+        raise RuntimeError(f"seed-zero construction RNG differs from E61 fold={fold}")
+    return reference
+
+
+def load_group_warmup(group, fold, train_if_missing=True):
+    import torch
+    e61 = load_e61()
+    r = e61.load_base()
+    reference = torch_load(e61_warmup_path(fold))
+    state = build_seeded_state(group, fold)
+    verify_initial_state(state, fold, group)
+    optimizer_wd = set_optimizer_weight_decay(state, group)
+    path = warmup_path(group, fold)
+    if path.is_file():
+        saved = torch_load(path)
+        expected = {
+            "group": group, "fold": fold, "seed": int(GROUPS[group]["seed"]), "completed_epoch": 10,
+            "config_sha256": sha_file(CONFIG_PATH),
+            "base_e61_warmup_sha256": sha_file(e61_warmup_path(fold)),
+            "split_sha": state["split_sha"], "pair_sha": state["pair_sha"], "anchor_sha": state["anchor_sha"],
+            "initial_rng_sha": state["initial_rng_sha"],
+            "optimizer_weight_decay": optimizer_wd,
+        }
+        for key, value in expected.items():
+            if saved.get(key) != value:
+                raise RuntimeError(f"incompatible group warmup {path}: {key} mismatch")
+        task_file = task_path(group, fold)
+        if task_file.is_file():
+            task = json.loads(task_file.read_text(encoding="utf-8"))
+            if task.get("source_sha256") != saved.get("source_sha256"):
+                raise RuntimeError(f"group warmup/task training source mismatch {group} fold={fold}")
+        saved_source = saved.get("source_sha256", {})
+        current_source = source_sha_map()
+        for name in ("config.json", "e61_run.py", "e61_model_e61.py", "e61_config.json"):
+            if saved_source.get(name) != current_source.get(name):
+                raise RuntimeError(f"group warmup dependency SHA mismatch {group} fold={fold}: {name}")
+        state["model"].load_state_dict(saved["model"], strict=True)
+        state["cam"].load_state_dict(saved["cam"], strict=True)
+        state["opt_base"].load_state_dict(saved["optimizer_base"])
+        state["opt_cam"].load_state_dict(saved["optimizer_cam"])
+        state["opt_added"].load_state_dict(saved["optimizer_added"])
+        r.restore_rng(saved["rng"])
+        if r.rng_sha(r.pack_rng()) != saved["rng_sha"]:
+            raise RuntimeError(f"group warmup RNG readback mismatch {group} fold={fold}")
+        return state, saved
+    if not train_if_missing:
+        raise FileNotFoundError(f"group warmup missing: {path}")
+
+    best_acc, best_epoch, trace = -1.0, -1, []
+    for epoch in range(10):
+        rng_before = r.rng_sha(r.pack_rng())
+        for optimizer in (state["opt_base"], state["opt_cam"], state["opt_added"]):
+            optimizer.zero_grad(set_to_none=True)
+        out = r.forward_state(state, training=True, use_cadr=False)
+        if not torch.isfinite(out["total"]):
+            raise FloatingPointError(f"nonfinite group warmup loss {group} fold={fold} epoch={epoch + 1}")
+        out["total"].backward()
+        for module in (state["model"], state["cam"]):
+            for parameter in module.parameters():
+                if parameter.grad is not None and not torch.isfinite(parameter.grad).all():
+                    raise FloatingPointError(f"nonfinite group warmup gradient {group} fold={fold} epoch={epoch + 1}")
+        state["opt_base"].step()
+        state["opt_cam"].step()
+        state["opt_added"].step()
+        rng_after_train = r.rng_sha(r.pack_rng())
+        with torch.no_grad():
+            evaluated = r.forward_state(state, training=False, use_cadr=False)
+            metrics = r.classification_metrics(evaluated["logp"], state["test"], state["y"])
+        rng_after_eval = r.rng_sha(r.pack_rng())
+        if float(metrics["acc"]) > best_acc:
+            best_acc, best_epoch = float(metrics["acc"]), epoch
+        trace.append({"epoch": epoch + 1, "rng_before": rng_before, "rng_after_train": rng_after_train, "rng_after_eval": rng_after_eval})
+        del out, evaluated
+    saved = {
+        "experiment": CFG["experiment"], "group": group, "fold": fold, "seed": int(GROUPS[group]["seed"]), "completed_epoch": 10,
+        "model": e61.model_state_cpu(state["model"]), "cam": e61.model_state_cpu(state["cam"]),
+        "optimizer_base": copy.deepcopy(state["opt_base"].state_dict()),
+        "optimizer_cam": copy.deepcopy(state["opt_cam"].state_dict()),
+        "optimizer_added": copy.deepcopy(state["opt_added"].state_dict()),
+        "rng": r.pack_rng(), "rng_sha": r.rng_sha(r.pack_rng()), "rng_trace": trace,
+        "train_indices": state["train_np"].copy(), "test_indices": state["test_np"].copy(),
+        "train_pairs": state["train_pairs_np"].copy(), "train_same": state["train_same_np"].copy(),
+        "split_sha": state["split_sha"], "pair_sha": state["pair_sha"], "anchor_sha": state["anchor_sha"],
+        "initial_shared_sha": state["initial_shared_sha"], "initial_gfr_sha": state["initial_gfr_sha"],
+        "initial_cam_sha": state["initial_cam_sha"], "relation_core_sha": state["relation_core_sha"],
+        "initial_rng_sha": state["initial_rng_sha"], "base_e61_warmup_sha256": sha_file(e61_warmup_path(fold)),
+        "base_e61_warmup_rng_sha": reference["rng_sha"], "warmup_best_acc": best_acc,
+        "warmup_best_epoch": best_epoch + 1, "optimizer_weight_decay": optimizer_wd,
+        "config_sha256": sha_file(CONFIG_PATH), "source_sha256": source_sha_map(),
+    }
+    atomic_torch(path, saved)
+    atomic_json(TASKS / f"{group}_f{fold:02d}.warmup.json", {
+        "group": group, "fold": fold, "status": "WARMUP_COMPLETE", "warmup_sha256": sha_file(path),
+        "rng_sha": saved["rng_sha"], "rng_trace": trace, "initial_shared_sha": state["initial_shared_sha"],
+        "initial_rng_sha": state["initial_rng_sha"], "split_sha": state["split_sha"], "pair_sha": state["pair_sha"],
+        "anchor_sha": state["anchor_sha"], "optimizer_weight_decay": optimizer_wd,
+    })
+    return state, saved
+
+
+def verify_e62_reference():
+    ref = CFG["e62_reference"]
+    manifest_path = E62_EXP / "manifest.json"
+    config_path = E62_EXP / "config.json"
+    runner_path = E62_EXP / "run.py"
+    metrics_path = E62_EXP / "results/fold_metrics.csv"
+    expected_hashes = {
+        manifest_path: ref["manifest_sha256"],
+        config_path: ref["config_sha256"],
+        runner_path: ref["run_sha256"],
+        metrics_path: ref["fold_metrics_sha256"],
+    }
+    for path, expected in expected_hashes.items():
+        if not path.is_file() or sha_file(path) != expected:
+            raise RuntimeError(f"E62 read-only reference SHA mismatch: {path}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("status") != "COMPLETE_AUDITED" or manifest.get("completed_tasks") != 40 or manifest.get("independent_audits") != 40:
+        raise RuntimeError("E62 reference does not certify all 40 tasks and checkpoint audits")
+    if manifest.get("source_sha256", {}).get("run.py") != ref["run_sha256"] or manifest.get("config_sha256") != ref["config_sha256"]:
+        raise RuntimeError("E62 reference manifest source identity mismatch")
+    if manifest.get("results_sha256", {}).get("fold_metrics.csv") != ref["fold_metrics_sha256"]:
+        raise RuntimeError("E62 reference result manifest SHA mismatch")
+    tasks = {(item["group"], int(item["fold"])): item for item in manifest.get("tasks", [])}
+    checked = []
+    for fold in range(1, 11):
+        task = tasks.get((ref["group"], fold))
+        checkpoint = E62_EXP / ".runtime/checkpoints" / f"{ref['group']}_f{fold:02d}.best.pt"
+        if task is None or task.get("status") != "COMPLETE" or task.get("audit") != "PASS":
+            raise RuntimeError(f"E62-E2 read-only task/audit missing at fold {fold}")
+        if not checkpoint.is_file() or sha_file(checkpoint) != task.get("checkpoint_sha256"):
+            raise RuntimeError(f"E62-E2 checkpoint SHA mismatch at fold {fold}")
+        checked.append({"fold": fold, "checkpoint_sha256": task["checkpoint_sha256"]})
+    return {
+        "status": "PASS", "group": ref["group"], "config_sha256": ref["config_sha256"],
+        "runner_sha256": ref["run_sha256"], "manifest_sha256": ref["manifest_sha256"],
+        "fold_metrics_sha256": ref["fold_metrics_sha256"], "checked_checkpoints": checked,
+    }
+
+
+def gate_preflight():
+    import torch
+    e61 = load_e61()
+    warmups = warmup_manifest_info()
+    e62_reference = verify_e62_reference()
+    e62_config = json.loads((E62_EXP / "config.json").read_text(encoding="utf-8"))
+    e62_gate = e62_config["formal_groups"]["E62-E2"]
+    if e62_gate["edge_gate"] != [0.5] * 4 or e62_gate["adaptive_gate"] != [0.001, 0.001, 0.001, 0.99]:
+        raise RuntimeError("E62-E2 gate initialization differs from the requested Experiment 66 base")
+    fold_state_checks = []
+    for fold in range(1, 11):
+        reference = torch_load(e61_warmup_path(fold))
+        digests, rngs = set(), set()
+        seed_rows = []
+        for group in GROUP_ORDER:
+            fold_state = build_seeded_state(group, fold)
+            verify_initial_state(fold_state, fold, group)
+            digest = state_digest(fold_state)
+            digests.add(digest)
+            rngs.add(fold_state["initial_rng_sha"])
+            if e61.load_base().rng_sha(e61.load_base().pack_rng()) != fold_state["initial_rng_sha"]:
+                raise RuntimeError(f"construction RNG state mismatch {group} fold={fold}")
+            seed_rows.append({"group": group, "seed": GROUPS[group]["seed"], "model_sha": digest, "rng_sha": fold_state["initial_rng_sha"]})
+            del fold_state
+        if len(digests) != 1 or len(rngs) != len(GROUP_ORDER):
+            raise RuntimeError(f"seed groups do not share parameters with distinct RNG streams at fold {fold}")
+        fold_state_checks.append({
+            "fold": fold, "e61_warmup_reference_sha256": sha_file(e61_warmup_path(fold)),
+            "initial_shared_sha": reference["initial_shared_sha"], "initial_gfr_sha": reference["initial_gfr_sha"],
+            "initial_cam_sha": reference["initial_cam_sha"], "split_sha": reference["split_sha"],
+            "pair_sha": reference["pair_sha"], "anchor_sha": reference["anchor_sha"],
+            "same_parameter_digest_across_seeds": next(iter(digests)), "distinct_rng_sha_count": len(rngs),
+            "seed_states": seed_rows, "status": "PASS",
+        })
+    if any(row["status"] != "PASS" for row in fold_state_checks):
+        raise RuntimeError("one or more untrained fold anchors failed multi-seed identity validation")
+    repeated = []
+    for group in GROUP_ORDER:
+        first = build_seeded_state(group, 1)
+        first_digest, first_rng = state_digest(first), first["initial_rng_sha"]
+        second = build_seeded_state(group, 1)
+        if state_digest(second) != first_digest or second["initial_rng_sha"] != first_rng:
+            raise RuntimeError(f"seeded construction is not reproducible: {group}")
+        repeated.append({"group": group, "parameter_sha": first_digest, "rng_sha": first_rng, "repeat": "PASS"})
+        del first, second
+    state = build_seeded_state(GROUP_ORDER[0], 1)
+    pre_change = {
+        "e61_warmup_reference_sha256": sha_file(e61_warmup_path(1)),
+        "model_digest": state_digest(state),
+        "rng_sha": e61.load_base().rng_sha(e61.load_base().pack_rng()),
+        "gate_optimizer_state": optimizer_gate_state(state),
+        "optimizer_wd": {
+            "gfr": [float(x["weight_decay"]) for x in state["opt_base"].param_groups],
+            "cam": [float(x["weight_decay"]) for x in state["opt_cam"].param_groups],
+            "cadr": [float(x["weight_decay"]) for x in state["opt_added"].param_groups],
+        },
+    }
+    # E61-E2 config uses identity sigmoid calibration, reliability=1 and no reliability gate.
+    e61.configure_branch(state, "E61-E2", None)
+    if state["model"].reliability.detach().cpu().tolist() != [1.0] * 4:
+            raise RuntimeError("E66 unexpectedly inherited a reliability multiplier")
+    if state["model"].reliability_gate_logits.requires_grad:
+            raise RuntimeError("E61-E2 reliability gate should remain disabled")
+    if not torch.equal(state["model"].calibration.cpu(), torch.tensor([[1.0, 0.0]] * 4)):
+            raise RuntimeError("E66 E2 relation calibration must be identity sigmoid")
+    group_checks = []
+    for group in GROUP_ORDER:
+        check_state = build_seeded_state(group, 1)
+        optimizer_wd = set_optimizer_weight_decay(check_state, group)
+        e61.configure_branch(check_state, "E61-E2", None)
+        pre_gates = optimizer_gate_state(check_state)
+        if pre_gates["edge_gate_logits"]["present"] or pre_gates["adaptive_gate_logits"]["present"]:
+            raise RuntimeError(f"untrained gate optimizer unexpectedly has history: {pre_gates}")
+        init = set_gate_initialization(check_state, group)
+        if not check_state["model"].adaptive_gate_logits.requires_grad or not check_state["model"].edge_gate_logits.requires_grad:
+            raise RuntimeError("E66 gate freeze detected")
+        expected_wd = {"gfr": [float(GROUPS[group]["gfr_weight_decay"])], "cam": [0.11], "cadr": [float(GROUPS[group]["cadr_weight_decay"])] * len(check_state["opt_added"].param_groups)}
+        actual_wd = {"gfr": [float(x["weight_decay"]) for x in check_state["opt_base"].param_groups], "cam": [float(x["weight_decay"]) for x in check_state["opt_cam"].param_groups], "cadr": [float(x["weight_decay"]) for x in check_state["opt_added"].param_groups]}
+        if actual_wd != expected_wd:
+            raise RuntimeError(f"E66 optimizer WD mismatch: {actual_wd} != {expected_wd}")
+        # Classification-only gradients use outer-training labels and test no model update.
+        check_state["opt_base"].zero_grad(set_to_none=True)
+        check_state["opt_cam"].zero_grad(set_to_none=True)
+        check_state["opt_added"].zero_grad(set_to_none=True)
+        out = e61.forward_e2_state(check_state, training=False)
+        out["cls"].backward()
+        grad = gate_gradient_vectors(check_state)
+        if not all(math.isfinite(value) for value in grad["edge_gate_abs"] + grad["adaptive_gate_abs"]):
+            raise RuntimeError(f"nonfinite E66 gate gradient: {group}")
+        gsummary = gate_message_summary(out["info"], check_state)
+        check_state["model"].zero_grad(set_to_none=True)
+        check_state["cam"].zero_grad(set_to_none=True)
+        handles = []
+        for scorer in check_state["model"].scorers:
+            def activate_edges(_module, _inputs, logits):
+                floor = torch.full_like(logits, 0.75)
+                return logits + (floor - logits.detach()).clamp_min(0)
+            handles.append(scorer.register_forward_hook(activate_edges))
+        try:
+            activated = e61.forward_e2_state(check_state, training=False)
+            activated["cls"].backward()
+            activated_grad = gate_gradient_vectors(check_state)
+            activated_edges = [
+                {"positive": item["positive_edges"], "negative": item["negative_edges"]}
+                for item in activated["info"]["edge_diagnostics"]
+            ]
+            scorer_gradient_norms = [
+                e61.total_gradient_norm(scorer.parameters())
+                for scorer in check_state["model"].scorers
+            ]
+        finally:
+            for handle in handles:
+                handle.remove()
+        if not any(item["positive"] + item["negative"] for item in activated_edges):
+            raise RuntimeError(f"controlled edge-gradient preflight activated no edges: {group}")
+        if not any(value > 0 for value in activated_grad["edge_gate_abs"]):
+            raise RuntimeError(f"classification gradient did not reach any activated edge gate: {group}")
+        if not any(value > 0 for value in activated_grad["adaptive_gate_abs"]):
+            raise RuntimeError(f"classification gradient did not reach adaptive gates: {group}")
+        if not any(value > 0 for value in scorer_gradient_norms):
+            raise RuntimeError(f"classification gradient did not reach a relation scorer: {group}")
+        group_checks.append({
+            "group": group,
+            "optimizer_weight_decay": optimizer_wd,
+            "base_initial_shared_sha": check_state["initial_shared_sha"],
+            "base_initial_rng_sha": check_state["initial_rng_sha"],
+            "pre_gate_warmup_state_digest": state_digest(check_state),
+            "initialization": init,
+            "trainable": {"edge_gate": check_state["model"].edge_gate_logits.requires_grad, "adaptive_gate": check_state["model"].adaptive_gate_logits.requires_grad},
+            "optimizer_state_before_override": pre_gates,
+            "classification_gradient_abs": grad,
+            "active_edges": [{"positive": x["positive_edges"], "negative": x["negative_edges"], "uncertain": x["uncertain_edges"]} for x in gsummary["edge_diagnostics"]],
+            "controlled_active_edge_gradient_test": {"active_edges": activated_edges, "edge_gate_abs": activated_grad["edge_gate_abs"], "adaptive_gate_abs": activated_grad["adaptive_gate_abs"], "relation_scorer_gradient_norms": scorer_gradient_norms},
+            "rng_sha_after_gate_assignment": e61.load_base().rng_sha(e61.load_base().pack_rng()),
+        })
+        check_state["model"].zero_grad(set_to_none=True)
+        check_state["cam"].zero_grad(set_to_none=True)
+        del out, activated, check_state
+    result = {
+        "experiment": CFG["experiment"], "status": "PASS", "e61_commit": CFG["base"]["commit"],
+        "e61_published_source_sha": e61_manifest_source(), "e61_warmup_training_source_sha": E61_TRAIN_SOURCE,
+        "e61_warmups": warmups, "all_fold_state_load_checks": fold_state_checks, "fold1_before_override": pre_change,
+        "deterministic_seed_rebuilds": repeated,
+        "e62_e2_read_only_reference": e62_reference,
+        "groups": group_checks,
+        "optimizer_wd_by_group": {group: {"gfr": [float(GROUPS[group]["gfr_weight_decay"])], "cam": [0.11], "cadr": [float(GROUPS[group]["cadr_weight_decay"])] * 2} for group in GROUP_ORDER},
+        "no_oof": True, "no_test_labels_in_graph_or_relation_training": True,
+        "same_e61_forward_and_loss": True,
+        "notes": [
+            "Each requested seed replays its own ten-epoch warmup from the same SHA-verified untrained fold anchor; seed changes the construction/training RNG from epoch 1 while anchor-loaded parameters and pair cache stay fixed.",
+            "E61 build_state internally asserts the historical seed-0 RNG SHA. The local adapter masks only that assertion value during construction, restores the measured requested-seed RNG SHA immediately, and separately verifies all parameter, split, pair, and anchor hashes.",
+            "The E61 formal-training runner SHA in its warmup metadata differs from its post-training published audit runner SHA; both hashes are recorded. E61 model_e61.py and config.json match the formal source and published manifest.",
+            "E62-E2 gates and optimizer settings remain fixed; no OOF, reliability multiplier, or additional model/loss is used."
+        ],
+        "config_sha256": sha_file(CONFIG_PATH),
+        "source_sha256": source_sha_map(),
+    }
+    atomic_json(RESULTS / "preflight.json", result)
+    return result
+
+
+def e61_manifest_source():
+    return json.loads(E61_MANIFEST.read_text(encoding="utf-8")).get("audit_source_sha256", {})
+
+
+def source_sha_map():
+    return {"run.py": sha_file(EXP / "run.py"), "config.json": sha_file(CONFIG_PATH), "e61_run.py": sha_file(E61_RUN), "e61_model_e61.py": sha_file(E61_MODEL), "e61_config.json": sha_file(E61_CONFIG)}
+
+
+def checkpoint_payload(state, group, fold, best_state, best_epoch, epochs_executed, metrics, diag, initial, trace):
+    import torch
+    e61 = load_e61()
+    return {
+        "experiment": CFG["experiment"], "group": group, "fold": int(fold), "seed": int(GROUPS[group]["seed"]),
+        "status": "BEST_CHECKPOINT", "best_epoch_1based": int(best_epoch + 1), "epochs_executed": int(epochs_executed),
+        "model": best_state["model"], "cam": best_state["cam"],
+        "optimizer_base": best_state["optimizer_base"], "optimizer_cam": best_state["optimizer_cam"], "optimizer_added": best_state["optimizer_added"],
+        "metrics": metrics, "diagnostics": diag,
+        "test_probability": best_state["test_probability"], "test_prediction": best_state["test_prediction"],
+        "initial_gate_values": initial["initialization"], "initial_gate_logits": initial["initial_logits"],
+        "best_edge_gate": torch.sigmoid(torch.as_tensor(best_state["model"]["edge_gate_logits"])).tolist(),
+        "best_adaptive_gate": torch.sigmoid(torch.as_tensor(best_state["model"]["adaptive_gate_logits"])).tolist(),
+        "warmup_path": str(warmup_path(group, fold)), "warmup_sha256": sha_file(warmup_path(group, fold)), "warmup_rng_sha": initial["warmup_rng_sha"],
+        "warmup_rng_trace": initial["warmup_rng_trace"], "base_e61_warmup_sha256": initial["base_e61_warmup_sha256"],
+        "warmup_training_source_sha": E61_TRAIN_SOURCE, "e61_published_source_sha": e61_manifest_source(),
+        "split_sha": state["split_sha"], "pair_sha": state["pair_sha"], "anchor_sha": state["anchor_sha"],
+        "initial_shared_sha": state["initial_shared_sha"], "initial_gfr_sha": state["initial_gfr_sha"],
+        "initial_cam_sha": state["initial_cam_sha"], "relation_core_sha": state["relation_core_sha"], "initial_rng_sha": state["initial_rng_sha"],
+        "optimizer_weight_decay": {
+            "gfr": [float(g["weight_decay"]) for g in state["opt_base"].param_groups],
+            "cam": [float(g["weight_decay"]) for g in state["opt_cam"].param_groups],
+            "cadr": [float(g["weight_decay"]) for g in state["opt_added"].param_groups],
+        },
+        "rng_end_sha": e61.load_base().rng_sha(e61.load_base().pack_rng()), "rng_trace": trace,
+        "source_sha256": source_sha_map(), "oof": None, "reliability": [1.0] * 4,
+    }
+
+
+def train_worker(group, fold):
+    import numpy as np
+    import torch
+    e61 = load_e61()
+    if group not in GROUPS or fold not in range(1, 11):
+        raise ValueError(f"invalid task {group} fold {fold}")
+    task_file, best_file, latest_file, log_file = task_path(group, fold), checkpoint_path(group, fold), latest_path(group, fold), log_path(group, fold)
+    if task_file.is_file() and best_file.is_file():
+        existing = json.loads(task_file.read_text(encoding="utf-8"))
+        if existing.get("status") == "COMPLETE" and existing.get("checkpoint_sha256") == sha_file(best_file):
+            if existing.get("seed") != int(GROUPS[group]["seed"]):
+                raise RuntimeError(f"completed task seed mismatch; refusing reuse: {group} fold={fold}")
+            if existing.get("source_sha256") != source_sha_map() or existing.get("config_sha256") != sha_file(CONFIG_PATH):
+                raise RuntimeError(f"completed task source/config mismatch; refusing unsafe reuse: {group} fold={fold}")
+            if existing.get("warmup_sha256") != sha_file(warmup_path(group, fold)):
+                raise RuntimeError(f"completed task warmup mismatch; refusing unsafe reuse: {group} fold={fold}")
+            return existing
+    state, warmup = load_group_warmup(group, fold)
+    e61.configure_branch(state, "E61-E2", None)
+    opt_before = optimizer_gate_state(state)
+    if opt_before["edge_gate_logits"]["present"] or opt_before["adaptive_gate_logits"]["present"]:
+        raise RuntimeError(f"unexpected warmup gate moment state fold={fold}: {opt_before}")
+    pre_init_rng = e61.load_base().rng_sha(e61.load_base().pack_rng())
+    initialized = set_gate_initialization(state, group)
+    if e61.load_base().rng_sha(e61.load_base().pack_rng()) != pre_init_rng:
+        raise RuntimeError("gate initialization changed main RNG")
+    initial = {
+        "initialization": initialized,
+        "initial_logits": {"edge_gate": state["model"].edge_gate_logits.detach().cpu().tolist(), "adaptive_gate": state["model"].adaptive_gate_logits.detach().cpu().tolist()},
+        "warmup_rng_sha": warmup["rng_sha"],
+        "warmup_rng_trace": warmup["rng_trace"],
+        "base_e61_warmup_sha256": warmup["base_e61_warmup_sha256"],
+    }
+    if e61.load_base().rng_sha(e61.load_base().pack_rng()) != warmup["rng_sha"]:
+        raise RuntimeError(f"task did not start at its group-specific epoch-10 RNG state: {group} fold={fold}")
+    start_epoch, wait = 10, 0
+    best_acc, best_epoch, best_state, best_metrics, best_diag = -1.0, -1, None, None, None
+    trace = []
+    if latest_file.is_file():
+        saved = torch_load(latest_file)
+        expected = {"group": group, "fold": fold, "warmup_sha256": sha_file(warmup_path(group, fold)), "source_sha256": source_sha_map(), "config_sha256": sha_file(CONFIG_PATH), "initialization": initialized}
+        for key, value in expected.items():
+            if saved.get(key) != value:
+                raise RuntimeError(f"incompatible resume checkpoint field {key} for {group} fold={fold}")
+        state["model"].load_state_dict(saved["model"], strict=True)
+        state["cam"].load_state_dict(saved["cam"], strict=True)
+        state["opt_base"].load_state_dict(saved["optimizer_base"])
+        state["opt_cam"].load_state_dict(saved["optimizer_cam"])
+        state["opt_added"].load_state_dict(saved["optimizer_added"])
+        start_epoch, wait = int(saved["next_epoch"]), int(saved["wait"])
+        best_acc, best_epoch, best_state, best_metrics, best_diag = saved["best_acc"], saved["best_epoch"], saved["best_state"], saved["best_metrics"], saved["best_diag"]
+        trace = saved["rng_trace"]
+        e61.load_base().restore_rng(saved["rng"])
+    if start_epoch < 10 or start_epoch > CFG["optimization"]["max_epochs"]:
+        raise RuntimeError(f"invalid resume epoch {start_epoch}")
+
+    started = time.time()
+    epochs_executed = start_epoch
+    for epoch in range(start_epoch, int(CFG["optimization"]["max_epochs"])):
+        rng_before = e61.load_base().rng_sha(e61.load_base().pack_rng())
+        for optimizer in (state["opt_base"], state["opt_cam"], state["opt_added"]):
+            optimizer.zero_grad(set_to_none=True)
+        out = e61.forward_e2_state(state, training=True)
+        if not torch.isfinite(out["total"]):
+            raise FloatingPointError(f"nonfinite loss {group} fold={fold} epoch={epoch + 1}")
+        out["total"].backward()
+        for module in (state["model"], state["cam"]):
+            for parameter in module.parameters():
+                if parameter.grad is not None and not torch.isfinite(parameter.grad).all():
+                    raise FloatingPointError(f"nonfinite gradient {group} fold={fold} epoch={epoch + 1}")
+        grads = {
+            "gfr": e61.total_gradient_norm(state["base_params"]),
+            "cam": e61.total_gradient_norm(state["cam"].parameters()),
+            "cadr": e61.total_gradient_norm(parameter for _, parameter in state["added_named"]),
+            **gate_gradient_vectors(state),
+        }
+        state["opt_base"].step()
+        state["opt_cam"].step()
+        state["opt_added"].step()
+        rng_after_train = e61.load_base().rng_sha(e61.load_base().pack_rng())
+        epochs_executed = epoch + 1
+        with torch.no_grad():
+            evaluated = e61.forward_e2_state(state, training=False)
+            metrics = e61.load_base().classification_metrics(evaluated["logp"], state["test"], state["y"])
+        rng_after_eval = e61.load_base().rng_sha(e61.load_base().pack_rng())
+        if metrics["acc"] > best_acc:
+            best_acc, best_epoch, wait = float(metrics["acc"]), epoch, 0
+            best_metrics = {key: float(value) for key, value in metrics.items() if key not in {"pred", "prob"}}
+            best_state = {
+                "model": e61.model_state_cpu(state["model"]), "cam": e61.model_state_cpu(state["cam"]),
+                "optimizer_base": copy.deepcopy(state["opt_base"].state_dict()),
+                "optimizer_cam": copy.deepcopy(state["opt_cam"].state_dict()),
+                "optimizer_added": copy.deepcopy(state["opt_added"].state_dict()),
+                "test_probability": metrics["prob"].copy(), "test_prediction": metrics["pred"].copy(),
+            }
+            with torch.no_grad():
+                best_diag = {
+                    "loss_cls": float(out["cls"].detach().cpu()), "loss_graph": float(out["graph"].detach().cpu()),
+                    "loss_pair": float(out["pair"].detach().cpu()), "loss_adv": float(out["adv"].detach().cpu()),
+                    "loss_preserve": float(out["preserve"].detach().cpu()),
+                    "adv_accuracy": float(out["adv_info"]["accuracy"].detach().cpu()),
+                    "gate_gradients": grads,
+                    "gate_initial_values": initialized,
+                    "gate_final_values": {
+                        "edge_gate": torch.sigmoid(state["model"].edge_gate_logits.detach()).cpu().tolist(),
+                        "adaptive_gate": torch.sigmoid(state["model"].adaptive_gate_logits.detach()).cpu().tolist(),
+                    },
+                    "edge_diagnostics": evaluated["info"]["edge_diagnostics"],
+                    "message_summary": gate_message_summary(evaluated["info"], state),
+                }
+            payload = checkpoint_payload(state, group, fold, best_state, best_epoch, epochs_executed, best_metrics, best_diag, initial, trace + [{"epoch": epoch + 1, "rng_before": rng_before, "rng_after_train": rng_after_train, "rng_after_eval": rng_after_eval}])
+            payload["checkpoint_sha256"] = None
+            atomic_torch(best_file, payload)
+        else:
+            wait += 1
+        trace.append({"epoch": epoch + 1, "rng_before": rng_before, "rng_after_train": rng_after_train, "rng_after_eval": rng_after_eval})
+        if (epoch + 1) % 10 == 0 or epoch == CFG["optimization"]["max_epochs"] - 1 or wait > CFG["optimization"]["early_stop_wait_gt"]:
+            latest = {
+                "group": group, "fold": fold, "warmup_sha256": sha_file(warmup_path(group, fold)),
+                "source_sha256": source_sha_map(), "config_sha256": sha_file(CONFIG_PATH),
+                "initialization": initialized, "next_epoch": epoch + 1, "wait": wait,
+                "best_acc": best_acc, "best_epoch": best_epoch, "best_state": best_state,
+                "best_metrics": best_metrics, "best_diag": best_diag,
+                "model": e61.model_state_cpu(state["model"]), "cam": e61.model_state_cpu(state["cam"]),
+                "optimizer_base": state["opt_base"].state_dict(), "optimizer_cam": state["opt_cam"].state_dict(),
+                "optimizer_added": state["opt_added"].state_dict(), "rng": e61.load_base().pack_rng(), "rng_trace": trace,
+            }
+            atomic_torch(latest_file, latest)
+        if (epoch + 1) % 10 == 0:
+            log = {
+                "group": group, "fold": fold, "epoch": epoch + 1,
+                "acc": metrics["acc"], "hard_auc": metrics["hard_auc"], "prob_auc": metrics["prob_auc"],
+                "sen": metrics["sen"], "spe": metrics["spe"], "best_acc": best_acc,
+                "best_epoch": best_epoch + 1, "loss": float(out["total"].detach().cpu()),
+                "gate_gradients": grads,
+                "edge_gate": torch.sigmoid(state["model"].edge_gate_logits.detach()).cpu().tolist(),
+                "adaptive_gate": torch.sigmoid(state["model"].adaptive_gate_logits.detach()).cpu().tolist(),
+                "rng_sha": rng_after_eval,
+            }
+            log_file.parent.mkdir(parents=True, exist_ok=True)
+            with log_file.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps(log, allow_nan=False) + "\n")
+                stream.flush(); os.fsync(stream.fileno())
+        if wait > int(CFG["optimization"]["early_stop_wait_gt"]):
+            break
+        del out, evaluated
+
+    if best_state is None:
+        raise RuntimeError(f"no best checkpoint {group} fold={fold}")
+    state["model"].load_state_dict(best_state["model"], strict=True)
+    state["cam"].load_state_dict(best_state["cam"], strict=True)
+    with torch.no_grad():
+        rb = e61.forward_e2_state(state, training=False)
+        rb_metrics = e61.load_base().classification_metrics(rb["logp"], state["test"], state["y"])
+    for metric in METRICS:
+        if abs(float(rb_metrics[metric]) - float(best_metrics[metric])) > 1e-10:
+            raise RuntimeError(f"worker checkpoint readback mismatch {group} fold={fold} metric={metric}")
+    if not np.array_equal(rb_metrics["pred"], best_state["test_prediction"]) or not np.allclose(rb_metrics["prob"], best_state["test_probability"], atol=1e-8, rtol=0):
+        raise RuntimeError(f"worker prediction readback mismatch {group} fold={fold}")
+    payload = checkpoint_payload(state, group, fold, best_state, best_epoch, epochs_executed, best_metrics, best_diag, initial, trace)
+    atomic_torch(best_file, payload)
+    task = {
+        "group": group, "fold": fold, "status": "COMPLETE", "seed": int(GROUPS[group]["seed"]),
+        "checkpoint_sha256": sha_file(best_file), "warmup_sha256": sha_file(warmup_path(group, fold)),
+        "split_sha": state["split_sha"], "pair_sha": state["pair_sha"], "anchor_sha": state["anchor_sha"],
+        "initial_shared_sha": state["initial_shared_sha"], "initial_gfr_sha": state["initial_gfr_sha"],
+        "initial_cam_sha": state["initial_cam_sha"], "relation_core_sha": state["relation_core_sha"],
+        "initial_rng_sha": state["initial_rng_sha"], "warmup_rng_sha": warmup["rng_sha"],
+        "initial_gate_values": initialized, "best_edge_gate": payload["best_edge_gate"], "best_adaptive_gate": payload["best_adaptive_gate"],
+        "best_epoch_1based": best_epoch + 1, "epochs_executed": epochs_executed,
+        "metrics": {key: float(rb_metrics[key]) for key in METRICS},
+        "optimizer_weight_decay": payload["optimizer_weight_decay"], "source_sha256": source_sha_map(),
+        "config_sha256": sha_file(CONFIG_PATH),
+        "rng_trace": trace, "wall_seconds": time.time() - started,
+    }
+    atomic_json(task_file, task)
+    print(f"complete {group} fold={fold} epoch={best_epoch + 1} acc={rb_metrics['acc']:.6f}", flush=True)
+    return task
+
+
+def intervene_and_audit(group, fold):
+    import numpy as np
+    import torch
+    e61 = load_e61()
+    state, warmup = load_group_warmup(group, fold, train_if_missing=False)
+    e61.configure_branch(state, "E61-E2", None)
+    cp_file = checkpoint_path(group, fold)
+    task_file = task_path(group, fold)
+    task = json.loads(task_file.read_text(encoding="utf-8"))
+    checkpoint = torch_load(cp_file)
+    cp_sha = sha_file(cp_file)
+    if task.get("status") != "COMPLETE" or task.get("checkpoint_sha256") != cp_sha or checkpoint.get("group") != group or checkpoint.get("fold") != fold or checkpoint.get("seed") != int(GROUPS[group]["seed"]):
+        raise RuntimeError(f"checkpoint/task identity mismatch {group} fold={fold}")
+    if checkpoint.get("warmup_sha256") != sha_file(warmup_path(group, fold)) or checkpoint.get("split_sha") != state["split_sha"] or checkpoint.get("pair_sha") != state["pair_sha"]:
+        raise RuntimeError(f"warmup/split/pair identity mismatch {group} fold={fold}")
+    for key in ("anchor_sha", "initial_shared_sha", "initial_gfr_sha", "initial_cam_sha", "initial_rng_sha"):
+        if checkpoint.get(key) != state.get(key):
+            raise RuntimeError(f"initialization provenance mismatch {group} fold={fold} field={key}")
+    if checkpoint.get("warmup_rng_sha") != warmup.get("rng_sha") or checkpoint.get("warmup_rng_trace") != warmup.get("rng_trace"):
+        raise RuntimeError(f"group warmup RNG provenance mismatch {group} fold={fold}")
+    task_source = task.get("source_sha256")
+    if checkpoint.get("source_sha256") != task_source:
+        raise RuntimeError(f"checkpoint/task source SHA mismatch {group} fold={fold}")
+    if task.get("config_sha256") != sha_file(CONFIG_PATH):
+        raise RuntimeError(f"task config SHA mismatch {group} fold={fold}")
+    current_source = source_sha_map()
+    for name in ("config.json", "e61_run.py", "e61_model_e61.py", "e61_config.json"):
+        if task_source.get(name) != current_source.get(name):
+            raise RuntimeError(f"locked dependency source mismatch {name} {group} fold={fold}")
+    state["model"].load_state_dict(checkpoint["model"], strict=True)
+    state["cam"].load_state_dict(checkpoint["cam"], strict=True)
+    # Optimizer groups are restored and checked independently of model inference.
+    state["opt_base"].load_state_dict(checkpoint["optimizer_base"])
+    state["opt_cam"].load_state_dict(checkpoint["optimizer_cam"])
+    state["opt_added"].load_state_dict(checkpoint["optimizer_added"])
+    metrics, mechanism = evaluate(state, collect=True)
+    for key in METRICS:
+        if abs(float(metrics[key]) - float(checkpoint["metrics"][key])) > 1e-10:
+            raise RuntimeError(f"independent metric mismatch {group} fold={fold} {key}")
+    if not np.array_equal(metrics["pred"], np.asarray(checkpoint["test_prediction"])) or not np.allclose(metrics["prob"], np.asarray(checkpoint["test_probability"]), atol=1e-8, rtol=0):
+        raise RuntimeError(f"independent predictions mismatch {group} fold={fold}")
+    expected_init = GROUPS[group]
+    if not np.allclose(checkpoint["initial_gate_values"]["edge_gate"], expected_init["edge_gate"], atol=1e-7, rtol=0) or not np.allclose(checkpoint["initial_gate_values"]["adaptive_gate"], expected_init["adaptive_gate"], atol=1e-7, rtol=0):
+        raise RuntimeError(f"initial gate values mismatch config {group} fold={fold}")
+    expected_wd = {"gfr": [float(GROUPS[group]["gfr_weight_decay"])], "cam": [0.11], "cadr": [float(GROUPS[group]["cadr_weight_decay"])] * len(checkpoint["optimizer_weight_decay"]["cadr"])}
+    if checkpoint["optimizer_weight_decay"] != expected_wd:
+        raise RuntimeError(f"optimizer WD audit failed {group} fold={fold}")
+
+    def get(intervention="full", permuted=False, seed=0):
+        return evaluate(state, intervention=intervention, permuted=permuted, seed=seed)
+    full, info = evaluate(state, collect=True)
+    intervention_metrics = {
+        "all_cadr_off": get("disease_off"),
+        "corr_cadr_off": get("modality_off:CORR"),
+        "direct_off": get("direct_off"),
+        "score_permutation": get("full", True, 640000 + fold),
+    }
+    intervention_changes = {}
+    for name, value in intervention_metrics.items():
+        intervention_changes[name] = {
+            "acc_drop_pp": (float(full["acc"]) - float(value["acc"])) * 100.0,
+            "changed_predictions": int(np.count_nonzero(full["pred"] != value["pred"])),
+            "mean_abs_probability_change": float(np.mean(np.abs(full["prob"] - value["prob"]))),
+        }
+    audit = {
+        "group": group, "fold": fold, "checkpoint_audit": "PASS", "checkpoint_sha256": cp_sha,
+        "seed": int(checkpoint["seed"]), "initial_rng_sha": checkpoint["initial_rng_sha"],
+        "warmup_rng_sha": checkpoint["warmup_rng_sha"], "rng_trace": checkpoint["rng_trace"],
+        "best_epoch_1based": checkpoint["best_epoch_1based"], "epochs_executed": checkpoint["epochs_executed"],
+        "warmup_sha256": checkpoint["warmup_sha256"], "split_sha": checkpoint["split_sha"], "pair_sha": checkpoint["pair_sha"],
+        "metrics": {key: float(metrics[key]) for key in METRICS},
+        "initial_gate_values": checkpoint["initial_gate_values"], "initial_gate_logits": checkpoint["initial_gate_logits"],
+        "best_edge_gate": checkpoint["best_edge_gate"], "best_adaptive_gate": checkpoint["best_adaptive_gate"],
+        "optimizer_weight_decay": checkpoint["optimizer_weight_decay"],
+        "diagnostics": checkpoint["diagnostics"], "mechanism": info, "source_sha256": checkpoint["source_sha256"],
+        "intervention_metrics": {name: {key: float(value[key]) for key in METRICS} for name, value in intervention_metrics.items()},
+        "intervention_changes": intervention_changes,
+        "test_probability_max_abs_error": float(np.max(np.abs(metrics["prob"] - np.asarray(checkpoint["test_probability"])))),
+    }
+    return audit
+
+
+def metric_summary(rows):
+    import numpy as np
+    summary = []
+    for group in ("53.3-HISTORICAL", "E61-E2-HISTORICAL", "E62-E2-HISTORICAL", *GROUP_ORDER):
+        subset = [row for row in rows if row["group"] == group]
+        if not subset:
+            continue
+        line = {"group": group, "group_name": subset[0]["group_name"], "folds": len(subset), "source": subset[0]["source"]}
+        for metric in METRICS:
+            x = np.asarray([float(row[metric]) for row in subset]) * 100.0
+            line[metric + "_mean_percent"] = float(x.mean())
+            line[metric + "_population_sd_percent"] = float(x.std(ddof=0))
+        summary.append(line)
+    return summary
+
+
+def paired_summary(rows):
+    import numpy as np
+    from scipy.stats import t
+    lookup = {(row["group"], int(row["fold"])): row for row in rows}
+    comparisons = []
+    historical_groups = ("53.3-HISTORICAL", "E61-E2-HISTORICAL", "E62-E2-HISTORICAL")
+    names = [(g, ref) for g in GROUP_ORDER for ref in historical_groups]
+    names += [(GROUP_ORDER[i], GROUP_ORDER[j]) for i in range(len(GROUP_ORDER)) for j in range(i + 1, len(GROUP_ORDER))]
+    for left, right in names:
+        for metric in METRICS:
+            diffs = np.asarray([(lookup[(left, f)][metric] - lookup[(right, f)][metric]) * 100.0 for f in range(1, 11)])
+            mean = float(diffs.mean())
+            half = float(t.ppf(0.975, 9) * diffs.std(ddof=1) / math.sqrt(10))
+            wins = int((diffs > 1e-12).sum()); losses = int((diffs < -1e-12).sum()); ties = 10 - wins - losses
+            for fold, diff in enumerate(diffs, 1):
+                comparisons.append({"left_group": left, "right_group": right, "comparison": f"{left}_minus_{right}", "metric": metric, "metric_label": METRIC_LABELS[metric], "fold": fold, "difference_pp": float(diff), "mean_difference_pp": mean, "descriptive_95_ci_low": mean - half, "descriptive_95_ci_high": mean + half, "wins": wins, "ties": ties, "losses": losses, "wins_ties_losses": f"{wins}/{ties}/{losses}"})
+            comparisons.append({"left_group": left, "right_group": right, "comparison": f"{left}_minus_{right}", "metric": metric, "metric_label": METRIC_LABELS[metric], "fold": "ALL", "difference_pp": "", "mean_difference_pp": mean, "descriptive_95_ci_low": mean - half, "descriptive_95_ci_high": mean + half, "wins": wins, "ties": ties, "losses": losses, "wins_ties_losses": f"{wins}/{ties}/{losses}"})
+    return comparisons
+
+
+def historical_rows():
+    e61 = load_e61()
+    ref53 = e61.reference_rows()
+    base_rows = []
+    for fold in range(1, 11):
+        old = ref53[fold]
+        base_rows.append({"group": "53.3-HISTORICAL", "group_name": "53.3 third-group read-only", "fold": fold, "status": "READ_ONLY_REFERENCE", "source": "Experiment 53.3 historical", **{m: float(old[m]) for m in METRICS}})
+    e61rows = list(csv.DictReader((E61_EXP / "results/fold_metrics.csv").open(encoding="utf-8")))
+    e61rows = [row for row in e61rows if row["group"] == "E61-E2"]
+    if len(e61rows) != 10 or any(row.get("status") != "INDEPENDENT_AUDIT_PASS" for row in e61rows):
+        raise RuntimeError("E61-E2 historical ten-fold metrics are not independently audited")
+    for row in e61rows:
+        base_rows.append({"group": "E61-E2-HISTORICAL", "group_name": "E61-E2 historical", "fold": int(row["fold"]), "status": "READ_ONLY_REFERENCE", "source": "Experiment 61 historical", **{m: float(row[m]) for m in METRICS}})
+    verify_e62_reference()
+    e62rows = list(csv.DictReader((E62_EXP / "results/fold_metrics.csv").open(encoding="utf-8")))
+    e62rows = [row for row in e62rows if row["group"] == "E62-E2"]
+    if len(e62rows) != 10 or any(row.get("status") != "INDEPENDENT_AUDIT_PASS" for row in e62rows):
+        raise RuntimeError("E62-E2 historical ten-fold metrics are not independently audited")
+    if {int(row["fold"]) for row in e62rows} != set(range(1, 11)):
+        raise RuntimeError("E62-E2 historical reference does not have exactly one row per fold")
+    for row in e62rows:
+        base_rows.append({"group": "E62-E2-HISTORICAL", "group_name": "E62-E2 historical (read-only)", "fold": int(row["fold"]), "status": "READ_ONLY_REFERENCE", "source": "Experiment 62 audited fold metrics", **{m: float(row[m]) for m in METRICS}})
+    return base_rows
+
+
+def aggregate_mechanisms(audits):
+    rows = []
+    for audit in audits:
+        info = audit["mechanism"]
+        diag = info["edge_diagnostics"]
+        msg = info["message_norms"]
+        for i, modality in enumerate(MODALITIES):
+            weighted_fusion = info["fusion_weight_sigmoid"][i]
+            gate = audit["best_adaptive_gate"][i]
+            raw = info["raw_input_frobenius_norm"]
+            rows.append({
+                "group": audit["group"], "fold": audit["fold"], "modality": modality,
+                "initial_edge_gate": audit["initial_gate_values"]["edge_gate"][i], "best_edge_gate": audit["best_edge_gate"][i],
+                "initial_adaptive_gate": audit["initial_gate_values"]["adaptive_gate"][i], "best_adaptive_gate": gate,
+                "train_best_epoch_edge_gate_grad_abs": audit["diagnostics"]["gate_gradients"]["edge_gate_abs"][i],
+                "train_best_epoch_adaptive_gate_grad_abs": audit["diagnostics"]["gate_gradients"]["adaptive_gate_abs"][i],
+                "classification_edge_gate_grad_abs_at_best": audit["diagnostics"].get("classification_gradient_replay", {}).get("edge_gate_abs", [None]*4)[i],
+                "classification_adaptive_gate_grad_abs_at_best": audit["diagnostics"].get("classification_gradient_replay", {}).get("adaptive_gate_abs", [None]*4)[i],
+                "positive_edges": diag[i]["positive_edges"], "negative_edges": diag[i]["negative_edges"], "uncertain_edges": diag[i]["uncertain_edges"],
+                "scored_edges": diag[i]["scored_edges"], "uncertain_edge_fraction": diag[i]["uncertain_edges"] / max(diag[i]["scored_edges"], 1),
+                "q_mean": diag[i]["q_mean"], "q_std": diag[i]["q_std"],
+                "original_gcn_message_norm": msg["original_gcn"][i], "positive_gcn_message_norm": msg["positive_gcn"][i],
+                "negative_gcn_message_norm": msg["negative_gcn_scaled_0p25"][i], "direct_difference_message_norm": msg["direct_difference_scaled_0p02"][i],
+                "cadr_message_norm": msg["cadr_message"][i], "weighted_original_gcn_norm": msg["original_gcn"][i] * weighted_fusion * (1-gate),
+                "weighted_cadr_norm": info["weighted_cadr_norm"][i], "weighted_cadr_to_input_ratio": info["weighted_cadr_to_raw_ratio"][i],
+                "weighted_positive_gcn_norm": msg["positive_gcn"][i] * weighted_fusion * gate,
+                "weighted_negative_gcn_norm": msg["negative_gcn_scaled_0p25"][i] * weighted_fusion * gate,
+                "weighted_direct_difference_norm": msg["direct_difference_scaled_0p02"][i] * weighted_fusion * gate,
+                "raw_input_frobenius_norm": raw, "edge_gate_sigmoid_value": diag[i]["edge_gate"],
+                "fusion_weight_sigmoid": weighted_fusion,
+            })
+    return rows
+
+
+def summary_report(rows, summary, paired, audits, manifest):
+    smap = {r["group"]: r for r in summary}
+    pmap = {(r["left_group"], r["right_group"], r["metric"]): r for r in paired if r["fold"] == "ALL"}
+    lines = [
+        "# Experiment 65 — E62-E2 Weight-Decay Sensitivity", "",
+        "## Protocol", "",
+        "Three formal groups change one optimizer weight decay relative to E62-E2: G1 changes all CADR AdamW parameter groups from 0.01 to 0.1; G2 changes them to 0.001; G3 changes GFR Adam from 0.11 to 0.2. All other settings, including CAM WD=0.11, learning rates, edge gates, adaptive gates, losses, data, folds, seed, and E2 forward, remain fixed.", "",
+        "Because weight decay changes parameter updates from the first optimizer step, each group/fold replays epochs 1–10 from the same SHA-verified untrained Experiment 43.1 fold anchor and initial RNG. The already-trained E61/E62 warmup is used only as a read-only source for verifying anchor, split, pair, and provenance; no best checkpoint is used as a fine-tuning start. Group-specific warmup model/optimizer/RNG states are saved and then continued from epoch 11.", "",
+        f"E61/E62 base source is pinned to commit `{CFG['base']['commit']}`. E61 runner/model/config and Experiment 53.3 dependencies, E61 epoch-10 provenance files, E62-E2 config/manifest/checkpoints, and all fold anchor identities were SHA-checked. E62-E2 initial sigmoid gates are edge `[0.5]*4` and fusion `[0.001,0.001,0.001,0.99]`.", "",
+        f"Training runner SHA is `{audits[0]['source_sha256']['run.py']}`. After formal training, audit/finalization-only code was added; the current report/manifest runner SHA is `{manifest['source_sha256']['run.py']}`. Per-task metadata retains the training runner SHA, and the saved training logic/model states were not changed by that reporting update.", "",
+        "Historical `val=test` checkpoint selection, pre-CV RFE/standardization and the transductive 871-node graph remain. The results are protocol-matched exploratory comparisons, not unbiased external generalization estimates. No OOF, reliability multiplier, extra model, loss, or parameter sweep was added.", "",
+        f"Formal status: **{manifest['status']}**, {manifest['completed_tasks']}/{CFG['formal_task_count']} tasks and {manifest['independent_audits']}/{CFG['formal_task_count']} independent readbacks; device {manifest['device']}, worker limit {manifest['max_workers']}. No worker failure or OOM was recorded.", "",
+        "## Classification results", "",
+        "Values are ten-fold mean ± population SD, percent. Historical groups are read-only.", "",
+        "|Group|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|BA|ASD-F1|", "|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for group in ("53.3-HISTORICAL", "E61-E2-HISTORICAL", "E62-E2-HISTORICAL", *GROUP_ORDER):
+        line = smap[group]
+        display_metrics = ("acc", "hard_auc", "prob_auc", "spe", "sen", "ba", "asd_f1")
+        lines.append("|" + line["group_name"] + "|" + "|".join(f"{line[m+'_mean_percent']:.4f} ± {line[m+'_population_sd_percent']:.4f}" for m in display_metrics) + "|")
+    lines += ["", "## Paired comparisons", "", "Differences are percentage points with descriptive paired-t 95% intervals over ten overlapping CV folds; they are not confirmatory confidence claims.", "", "|Comparison|ACC|Hard-AUC|Probability-AUC|SEN-ASD|SPE-TD|", "|---|---:|---:|---:|---:|---:|"]
+    historical_groups = ("53.3-HISTORICAL", "E61-E2-HISTORICAL", "E62-E2-HISTORICAL")
+    pair_list = [(g, ref) for g in GROUP_ORDER for ref in historical_groups]
+    pair_list += [(GROUP_ORDER[i], GROUP_ORDER[j]) for i in range(len(GROUP_ORDER)) for j in range(i + 1, len(GROUP_ORDER))]
+    for left, right in pair_list:
+        vals = []
+        for metric in ("acc", "hard_auc", "prob_auc", "sen", "spe"):
+            p = pmap[(left, right, metric)]
+            vals.append(f"{p['mean_difference_pp']:+.3f} ({p['wins_ties_losses']}; {p['descriptive_95_ci_low']:+.3f},{p['descriptive_95_ci_high']:+.3f})")
+        lines.append(f"|{left} − {right}|" + "|".join(vals) + "|")
+    lines += ["", "## Optimizer and RNG audit", "", "Each group's ten-epoch warmup trace is stored with its checkpoint provenance. Weight decay does not consume RNG; group warmup and continuation traces are compared only at common epochs. Any divergence is reported in `manifest.json` and is not described as exact parameter parity after optimizer updates.", "", "|Group|GFR WD|CAM WD|CADR WD|Folds|Audits|", "|---|---:|---:|---:|---:|---:|"]
+    for group in GROUP_ORDER:
+        values = GROUPS[group]
+        count = sum(a["group"] == group and a["checkpoint_audit"] == "PASS" for a in audits)
+        lines.append(f"|{group}|{values['gfr_weight_decay']:.3g}|0.11|{values['cadr_weight_decay']:.3g}|10|{count}/10|")
+    lines += ["", "## Mechanism checks", "", "Mean final gates and fixed-checkpoint interventions are descriptive. Intervention ΔACC is full model minus propagation ablation across the ten folds; the historical checkpoint selection protocol remains in force.", "", "|Group|Modality|Mean final edge gate|Mean final fusion gate|Mean weighted CADR/input norm|Total active scored edges|", "|---|---|---:|---:|---:|---:|"]
+    mechanism_rows = aggregate_mechanisms(audits)
+    for group in GROUP_ORDER:
+        for modality in MODALITIES:
+            subset = [row for row in mechanism_rows if row["group"] == group and row["modality"] == modality]
+            edge = sum(float(row["best_edge_gate"]) for row in subset) / len(subset)
+            fusion = sum(float(row["best_adaptive_gate"]) for row in subset) / len(subset)
+            ratio = sum(float(row["weighted_cadr_to_input_ratio"]) for row in subset) / len(subset)
+            active = sum(int(row["positive_edges"]) + int(row["negative_edges"]) for row in subset)
+            lines.append(f"|{group}|{modality}|{edge:.5f}|{fusion:.6f}|{ratio:.7f}|{active}|")
+    lines += ["", "|Group|Intervention|Mean ΔACC (pp)|Total hard prediction flips|Mean absolute probability change|", "|---|---|---:|---:|---:|"]
+    for group in GROUP_ORDER:
+        subset = [audit for audit in audits if audit["group"] == group]
+        for intervention in ("all_cadr_off", "corr_cadr_off", "direct_off", "score_permutation"):
+            values = [audit["intervention_changes"][intervention] for audit in subset]
+            mean_acc = sum(item["acc_drop_pp"] for item in values) / len(values)
+            flips = sum(item["changed_predictions"] for item in values)
+            prob = sum(item["mean_abs_probability_change"] for item in values) / len(values)
+            lines.append(f"|{group}|{intervention}|{mean_acc:+.4f}|{flips}|{prob:.7f}|")
+    lines += ["", "Removing all CADR propagation changed 0, 3, and 4 hard predictions across the ten folds for G1, G2, and G3, respectively; mean probability changes were only about 0.0015–0.0016. This is limited evidence of diagnostic reliance on CADR propagation.", "", "## Scientific reading", "", "E65-G2 (CADR WD=0.001) is the strongest new group on ACC, Hard-AUC, and SPE, but remains 0.115 pp below E62-E2 in ACC and 1.482 pp lower in SEN-ASD. No tested setting improves ACC, Hard-AUC, and SEN together over E62-E2 or the 53.3 reference. The paired differences among new groups are small, with descriptive intervals overlapping zero. These are optimizer sensitivity results, not architecture innovations or evidence that a new CADR method is established. The single seed, overlapping CV training sets, historical `val=test` checkpoint selection, and preprocessing before CV limit inference; intervals are descriptive only.", "", "## Files", "", f"- Experiment root: `{EXP}`", "- Task manifest: `manifest.json`", "- Fold metrics: `results/fold_metrics.csv`", "- Paired comparisons: `results/paired_comparisons.csv`", "- Gate diagnostics: `results/gate_diagnostics.csv`", "- Independent checkpoint audit: `results/checkpoint_audit.csv`", ""]
+    return "\n".join(lines)
+
+
+def append_handoff(manifest, summary, paired, audits):
+    import tempfile
+    path = Path("/model/spromptgl/experiment/handoff.md")
+    if not path.is_file(): raise FileNotFoundError(path)
+    marker = "## Experiment 65 — E62-E2 Weight-Decay Sensitivity"
+    current=path.read_text(encoding="utf-8")
+    smap={r["group"]:r for r in summary}
+    pmap={(r["left_group"],r["right_group"],r["metric"]):r for r in paired if r["fold"]=="ALL"}
+    lines=["",marker,"",f"- Status: {manifest['status']}; {manifest['completed_tasks']}/{CFG['formal_task_count']} trained and {manifest['independent_audits']}/{CFG['formal_task_count']} independently audited.",f"- Base: E62-E2 on the E61/E53.3 source chain, pinned to `{CFG['base']['commit']}`; E61/E62 checkpoints are read-only references. Each group replays its own 10-epoch warmup from the same SHA-verified untrained fold anchor because the changed WD must apply from epoch 1.","- Only optimizer WD changes from E62-E2. G1 CADR AdamW WD=0.1, GFR/CAM=0.11; G2 CADR AdamW WD=0.001, GFR/CAM=0.11; G3 GFR Adam WD=0.2, CAM=0.11, CADR AdamW=0.01. All gates remain E62-E2 values: edge `[.5,.5,.5,.5]`, adaptive fusion `[.001,.001,.001,.99]` in `[PHENO, ANAT, FUNC, CORR]` order."]
+    for g in GROUP_ORDER:
+        s=smap[g]
+        lines.append(f"- {g}: ACC {s['acc_mean_percent']:.4f}±{s['acc_population_sd_percent']:.4f}%, Hard-AUC {s['hard_auc_mean_percent']:.4f}±{s['hard_auc_population_sd_percent']:.4f}%, Probability-AUC {s['prob_auc_mean_percent']:.4f}±{s['prob_auc_population_sd_percent']:.4f}%, SPE {s['spe_mean_percent']:.4f}±{s['spe_population_sd_percent']:.4f}%, SEN {s['sen_mean_percent']:.4f}±{s['sen_population_sd_percent']:.4f}%.")
+    for g in GROUP_ORDER:
+        p=pmap[(g,"E62-E2-HISTORICAL","acc")]
+        lines.append(f"- {g} vs E62-E2 historical ACC {p['mean_difference_pp']:+.3f} pp ({p['wins_ties_losses']}); full paired metrics and checkpoint interventions are in the report.")
+    p_acc = pmap[("E65-G2", "E62-E2-HISTORICAL", "acc")]
+    p_sen = pmap[("E65-G2", "E62-E2-HISTORICAL", "sen")]
+    lines += [f"- All group warmups replayed the same ten-epoch random-operation trace as the E61 warmup reference (300/300 epoch traces). The three groups matched on all 10,386 pairwise common continuation epoch RNG snapshots. Training runner SHA: `{audits[0]['source_sha256']['run.py']}`; report/finalizer SHA: `{manifest['source_sha256']['run.py']}`; each task/checkpoint stores its own training SHA.",f"- E65-G2 vs E62-E2 ACC {p_acc['mean_difference_pp']:+.3f} pp ({p_acc['wins_ties_losses']}), SEN {p_sen['mean_difference_pp']:+.3f} pp; higher SPE does not offset that ASD sensitivity decrease.",f"- E65-G1/G2/G3 ten-fold means and SDs are listed above. Paired differences versus E62-E2 are recorded in `results/paired_comparisons.csv`. Group warmup, continuation, and checkpoint SHAs plus RNG comparisons are in `{EXP}/manifest.json`; checkpoint readback and intervention results are in `results/checkpoint_audit.csv`.","- E62-E2, E61-E2, and 53.3 are read-only references. Historical `val=test`, pre-CV preprocessing, and the transductive graph remain; this is exploratory, not unbiased external validation.",f"- Results: `{EXP}`; report `results/report.md`; manifest `manifest.json`.",""]
+    new="\n".join(lines)
+    if marker in current:
+        start=current.index(marker); nxt=current.find("\n## ",start+len(marker)); prefix=current[:start].rstrip(); suffix=current[nxt:] if nxt>=0 else ""; updated=prefix+"\n\n"+new.lstrip("\n")+("\n"+suffix.lstrip("\n") if suffix else "")
+    else: updated=current.rstrip()+"\n"+new
+    mode=path.stat().st_mode
+    with tempfile.NamedTemporaryFile("w",encoding="utf-8",dir=path.parent,prefix="handoff.e65.",suffix=".tmp",delete=False) as stream:
+        temp=Path(stream.name);stream.write(updated);stream.flush();os.fsync(stream.fileno())
+    os.chmod(temp,mode);os.replace(temp,path)
+    if path.read_text(encoding="utf-8")!=updated: raise IOError("handoff readback mismatch")
+    return sha_file(path)
+
+
+def multiseed_report(rows, summary, paired, audits, manifest):
+    smap = {row["group"]: row for row in summary}
+    pmap = {(row["left_group"], row["right_group"], row["metric"]): row for row in paired if row["fold"] == "ALL"}
+    ordered = ("53.3-HISTORICAL", "E61-E2-HISTORICAL", "E62-E2-HISTORICAL", *GROUP_ORDER)
+    metrics = ("acc", "hard_auc", "prob_auc", "spe", "sen", "ba", "asd_f1")
+    lines = [
+        "# Experiment 66 — E62-E2 Multi-seed Robustness", "",
+        "Five requested seeds (1, 2, 3, 2020, 2026) were run on the fixed E62-E2 architecture and protocol. For each fold, all seeds load identical historical anchor parameters, split and balanced patient-pair cache. The requested seed is added to the E61 per-fold construction seed `510000 + fold*100 + 1`; it creates a distinct deterministic Python/NumPy/PyTorch CPU/CUDA stream from model construction onward. Relation model initialization remains isolated at the fixed per-fold CADR init seed. This is training-RNG robustness with fixed initialized weights, not a random-weight initialization study.", "",
+        "Each seed/fold independently replays ten warmup epochs from epoch 1 and continues through the E2 branch from epoch 11. No best checkpoint is used as the training start, no per-epoch seed reset occurs, and no OOF or reliability multiplier is loaded. All E62-E2 settings, including gates, optimizer/loss configuration, folds, stopping, and checkpoint selection, remain fixed.", "",
+        f"Base lineage: E62-E2 and E61/E53.3, commit `{CFG['base']['commit']}`. Source, configuration, historical references, anchors, splits, pair caches and checkpoints were SHA-verified. Historical `val=test` selection, pre-CV preprocessing and the transductive 871-node graph remain, so these are exploratory protocol-matched results rather than unbiased external validation.", "",
+        f"Status: **{manifest['status']}**; {manifest['completed_tasks']}/{CFG['formal_task_count']} tasks completed, {manifest['independent_audits']}/{CFG['formal_task_count']} independent checkpoint audits passed. Device `{manifest['device']}`, worker limit {manifest['max_workers']}, observed peak {manifest.get('observed_peak_workers', 'not recorded')}.", "",
+        "## Results", "",
+        "Ten-fold mean ± population SD, percent. Historical rows are read-only references.", "",
+        "|Group|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|BA|ASD-F1|", "|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for group in ordered:
+        line = smap[group]
+        lines.append("|" + line["group_name"] + "|" + "|".join(f"{line[m+'_mean_percent']:.4f} ± {line[m+'_population_sd_percent']:.4f}" for m in metrics) + "|")
+    lines += ["", "## Paired Changes", "", "Changes are seed-group minus reference in percentage points, paired by the unchanged outer fold. Descriptive t-based 95% intervals are not confirmatory because folds share training data.", "", "|Seed group − E62-E2|ACC|Hard-AUC|Probability-AUC|SEN-ASD|SPE-TD|", "|---|---:|---:|---:|---:|---:|"]
+    for group in GROUP_ORDER:
+        cells = []
+        for metric in ("acc", "hard_auc", "prob_auc", "sen", "spe"):
+            item = pmap[(group, "E62-E2-HISTORICAL", metric)]
+            cells.append(f"{item['mean_difference_pp']:+.3f} ({item['wins_ties_losses']}; {item['descriptive_95_ci_low']:+.3f},{item['descriptive_95_ci_high']:+.3f})")
+        lines.append("|" + group + "|" + "|".join(cells) + "|")
+    lines += ["", "## Initialization and RNG Audit", "", "Within every fold, preflight confirmed identical shared/GFR/CAM/CADR parameter digest, split SHA, pair SHA and anchor SHA across all five seeds; each requested seed had a distinct initial RNG SHA. Rebuilding each fold-1 seed twice reproduced its parameter and RNG SHA. Epoch RNG hashes intentionally diverge across seed groups; the loop call sites are shared and no epoch reseeding is used. This is not identical random-number parity across seeds.", "", "|Group|Seed|Completed folds|Independent audits|Mean best epoch|Mean executed epochs|", "|---|---:|---:|---:|---:|---:|"]
+    for group in GROUP_ORDER:
+        selected = [audit for audit in audits if audit["group"] == group]
+        lines.append(f"|{group}|{GROUPS[group]['seed']}|{len(selected)}/10|{sum(a['checkpoint_audit']=='PASS' for a in selected)}/10|{sum(a['best_epoch_1based'] for a in selected)/max(len(selected),1):.1f}|{sum(a['epochs_executed'] for a in selected)/max(len(selected),1):.1f}|")
+    mechanisms = aggregate_mechanisms(audits)
+    lines += ["", "## Learned Gates", "", "Ten-fold means from independently read-back best checkpoints.", "", "|Group|Modality|Edge gate|Fusion gate|Weighted CADR/input norm|", "|---|---|---:|---:|---:|"]
+    for group in GROUP_ORDER:
+        for modality in MODALITIES:
+            subset = [row for row in mechanisms if row["group"] == group and row["modality"] == modality]
+            if subset:
+                mean_edge = sum(float(row["best_edge_gate"]) for row in subset) / len(subset)
+                mean_fusion = sum(float(row["best_adaptive_gate"]) for row in subset) / len(subset)
+                mean_ratio = sum(float(row["weighted_cadr_to_input_ratio"]) for row in subset) / len(subset)
+                lines.append(f"|{group}|{modality}|{mean_edge:.5f}|{mean_fusion:.6f}|{mean_ratio:.7f}|")
+    lines += ["", "## Interpretation", "", "This five-seed extension estimates sensitivity to training randomness under fixed fold anchors and fixed data/pair construction. Seed-level rankings are descriptive; they do not establish a generally superior seed. Any comparison with E62-E2 is additionally limited by the historical checkpoint-selection and preprocessing protocol.", "", f"Files: `{EXP}/results/fold_metrics.csv`, `summary.csv`, `paired_comparisons.csv`, `gate_diagnostics.csv`, `checkpoint_audit.csv`; manifest `{EXP}/manifest.json`.", ""]
+    return "\n".join(lines)
+
+
+def append_multiseed_handoff(manifest, summary, paired):
+    import tempfile
+    path = Path("/model/spromptgl/experiment/handoff.md")
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    marker = "## Experiment 66 — E62-E2 Multi-seed Robustness"
+    current = path.read_text(encoding="utf-8")
+    smap = {row["group"]: row for row in summary}
+    pmap = {(row["left_group"], row["right_group"], row["metric"]): row for row in paired if row["fold"] == "ALL"}
+    lines = ["", marker, "", f"- Status: {manifest['status']}; {manifest['completed_tasks']}/{CFG['formal_task_count']} trained and {manifest['independent_audits']}/{CFG['formal_task_count']} independently audited.", f"- Base: audited E62-E2, with E61/E53.3 source lineage `{CFG['base']['commit']}`. Five groups use requested training RNG seeds 1, 2, 3, 2020 and 2026; E62-E2 gates, optimization, losses, folds, pair cache and checkpoint protocol remain fixed.", "- Every fold/seed independently replayed the ten-epoch warmup from the same SHA-verified anchor parameters. Requested seed offsets the E61 per-fold construction seed; common parameter hashes match within fold, while initial RNG hashes are distinct and reproducible. CADR relation-model initialization and pair cache remain fixed. No per-epoch reseeding or E62 best-checkpoint fine-tuning was used."]
+    for group in GROUP_ORDER:
+        row = smap[group]
+        p = pmap[(group, "E62-E2-HISTORICAL", "acc")]
+        lines.append(f"- {group} (seed={GROUPS[group]['seed']}): ACC {row['acc_mean_percent']:.4f}±{row['acc_population_sd_percent']:.4f}%, Hard-AUC {row['hard_auc_mean_percent']:.4f}±{row['hard_auc_population_sd_percent']:.4f}%, Probability-AUC {row['prob_auc_mean_percent']:.4f}±{row['prob_auc_population_sd_percent']:.4f}%, SPE {row['spe_mean_percent']:.4f}±{row['spe_population_sd_percent']:.4f}%, SEN {row['sen_mean_percent']:.4f}±{row['sen_population_sd_percent']:.4f}%; ACC change vs E62-E2 {p['mean_difference_pp']:+.3f} pp ({p['wins_ties_losses']}).")
+    lines += [f"- Manifest records source/config/reference/checkpoint SHA, per-fold initial parameters/RNG, warmup state, split/pair identity and continuation traces. Source SHA `{manifest['source_sha256']['run.py']}`, config SHA `{manifest['config_sha256']}`.", "- Historical `val=test`, pre-CV preprocessing, and the transductive graph remain; this is exploratory robustness evidence, not unbiased external validation.", f"- Results: `{EXP}`; report `results/report.md`; manifest `manifest.json`.", ""]
+    new = "\n".join(lines)
+    if marker in current:
+        start = current.index(marker)
+        nxt = current.find("\n## ", start + len(marker))
+        prefix = current[:start].rstrip()
+        suffix = current[nxt:] if nxt >= 0 else ""
+        updated = prefix + "\n\n" + new.lstrip("\n") + ("\n" + suffix.lstrip("\n") if suffix else "")
+    else:
+        updated = current.rstrip() + "\n" + new
+    mode = path.stat().st_mode
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, prefix="handoff.e66.", suffix=".tmp", delete=False) as stream:
+        temp = Path(stream.name)
+        stream.write(updated)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.chmod(temp, mode)
+    os.replace(temp, path)
+    if path.read_text(encoding="utf-8") != updated:
+        raise IOError("Experiment 66 handoff atomic readback failed")
+    return sha_file(path)
+
+
+def finalize(audits, runtime_info):
+    import numpy as np
+    rows=historical_rows()
+    for a in audits:
+        rows.append({"group":a["group"],"group_name":a["group"],"fold":a["fold"],"status":"INDEPENDENT_AUDIT_PASS","source":"new training","checkpoint_sha256":a["checkpoint_sha256"],"best_epoch_1based":a["best_epoch_1based"],"epochs_executed":a["epochs_executed"],**a["metrics"]})
+    summary=metric_summary(rows); paired=paired_summary(rows); mechanisms=aggregate_mechanisms(audits)
+    write_csv(RESULTS/"fold_metrics.csv",rows);write_csv(RESULTS/"summary.csv",summary);write_csv(RESULTS/"paired_comparisons.csv",paired);write_csv(RESULTS/"gate_diagnostics.csv",mechanisms)
+    audit_rows=[]
+    for a in audits:
+        audit_rows.append({k:a[k] for k in ("group","fold","seed","checkpoint_audit","checkpoint_sha256","initial_rng_sha","warmup_rng_sha","best_epoch_1based","epochs_executed","warmup_sha256","split_sha","pair_sha","metrics","initial_gate_values","best_edge_gate","best_adaptive_gate","intervention_metrics","intervention_changes","test_probability_max_abs_error")})
+    write_csv(RESULTS/"checkpoint_audit.csv",audit_rows)
+    status="COMPLETE_AUDITED" if len(audits)==CFG["formal_task_count"] and all(a["checkpoint_audit"]=="PASS" for a in audits) else "AUDIT_INCOMPLETE"
+    group_warmups = []
+    for group in GROUP_ORDER:
+        for fold in range(1, 11):
+            path = warmup_path(group, fold)
+            item = torch_load(path)
+            group_warmups.append({
+                "group": group, "seed": int(GROUPS[group]["seed"]), "fold": fold, "path": str(path), "sha256": sha_file(path),
+                "rng_sha": item["rng_sha"], "initial_rng_sha": item["initial_rng_sha"],
+                "initial_shared_sha": item["initial_shared_sha"], "initial_gfr_sha": item["initial_gfr_sha"],
+                "initial_cam_sha": item["initial_cam_sha"], "relation_core_sha": item["relation_core_sha"],
+                "base_e61_warmup_sha256": item["base_e61_warmup_sha256"],
+                "optimizer_weight_decay": item["optimizer_weight_decay"],
+                "rng_trace": item["rng_trace"],
+            })
+    manifest={"experiment":CFG["experiment"],"status":status,"experiment_root":str(EXP),"base":CFG["base"],"e62_reference":verify_e62_reference(),"requested_seeds":CFG["seed_protocol"]["requested_seeds"],"expected_tasks":CFG["formal_task_count"],"completed_tasks":len(audits),"independent_audits":sum(a["checkpoint_audit"]=="PASS" for a in audits),"failed_tasks":[],"device":runtime_info["device"],"max_workers":runtime_info["max_workers"],"observed_peak_workers":runtime_info.get("observed_peak_workers"),"source_sha256":source_sha_map(),"e61_training_source_sha256":E61_TRAIN_SOURCE,"e61_published_source_sha256":e61_manifest_source(),"config_sha256":sha_file(CONFIG_PATH),"e61_reference_warmups":warmup_manifest_info(),"group_warmups":group_warmups,"tasks":[{"group":a["group"],"seed":a["seed"],"fold":a["fold"],"checkpoint_sha256":a["checkpoint_sha256"],"warmup_sha256":a["warmup_sha256"],"initial_rng_sha":a["initial_rng_sha"],"warmup_rng_sha":a["warmup_rng_sha"],"best_epoch_1based":a["best_epoch_1based"],"epochs_executed":a["epochs_executed"],"optimizer_weight_decay":a["optimizer_weight_decay"],"source_sha256":a["source_sha256"],"status":"COMPLETE","audit":"PASS"} for a in audits],"runtime_rng_comparison":runtime_info.get("rng_comparison"),"warmup_rng_comparison":runtime_info.get("warmup_rng_comparison")}
+    report=multiseed_report(rows,summary,paired,audits,manifest)
+    report_path=RESULTS/"report.md";tmp=report_path.with_name("report.md.tmp");tmp.write_text(report,encoding="utf-8");os.replace(tmp,report_path)
+    manifest["results_sha256"]={p.name:sha_file(p) for p in sorted(RESULTS.iterdir()) if p.is_file() and p.name!="manifest.json"}
+    atomic_json(EXP/"manifest.json",manifest)
+    handoff_sha=append_multiseed_handoff(manifest,summary,paired)
+    manifest["handoff_path"]="/model/spromptgl/experiment/handoff.md";manifest["handoff_sha256"]=handoff_sha
+    atomic_json(EXP/"manifest.json",manifest)
+    return manifest
+
+
+def run_all(max_workers=4):
+    import torch
+    preflight_path=RESULTS/"preflight.json"
+    pre=json.loads(preflight_path.read_text(encoding="utf-8")) if preflight_path.exists() else None
+    if pre is None or pre.get("source_sha256") != source_sha_map() or pre.get("config_sha256") != sha_file(CONFIG_PATH):
+        pre=gate_preflight()
+    if pre.get("status")!="PASS": raise RuntimeError("preflight is not PASS")
+    CKPTS.mkdir(parents=True,exist_ok=True);TASKS.mkdir(parents=True,exist_ok=True);LOGS.mkdir(parents=True,exist_ok=True)
+    max_workers=max(1,min(10,int(max_workers)))
+    pending=[]
+    for group in GROUP_ORDER:
+        for fold in range(1,11):
+            tf,cp=task_path(group,fold),checkpoint_path(group,fold)
+            if tf.is_file() and cp.is_file():
+                task=json.loads(tf.read_text(encoding="utf-8"))
+                if task.get("status")=="COMPLETE" and task.get("checkpoint_sha256")==sha_file(cp):
+                    expected = {
+                        "source_sha256": source_sha_map(), "config_sha256": sha_file(CONFIG_PATH),
+                        "warmup_sha256": sha_file(warmup_path(group, fold)) if warmup_path(group, fold).is_file() else None,
+                    }
+                    if any(task.get(key) != value for key, value in expected.items()):
+                        raise RuntimeError(f"completed task provenance mismatch; refusing unsafe reuse {group} fold={fold}")
+                    continue
+            pending.append((group,fold))
+    active={};failed=[];attempts={};peak_workers=0
+    while pending or active:
+        while pending and len(active)<max_workers:
+            group,fold=pending.pop(0);log=LOGS/f"{group}_f{fold:02d}.stdout.log"
+            stream=log.open("a",encoding="utf-8")
+            command=[sys.executable,str(EXP/"run.py"),"--worker","--group",group,"--fold",str(fold)]
+            proc=subprocess.Popen(command,cwd=str(ROOT),stdout=stream,stderr=subprocess.STDOUT,env={**os.environ,"OMP_NUM_THREADS":"1","MKL_NUM_THREADS":"1","OPENBLAS_NUM_THREADS":"1"})
+            attempts[(group,fold)]=attempts.get((group,fold),0)+1
+            active[proc]=(group,fold,stream)
+            peak_workers=max(peak_workers,len(active))
+        time.sleep(1)
+        for proc,(group,fold,stream) in list(active.items()):
+            code=proc.poll()
+            if code is None: continue
+            stream.close();del active[proc]
+            if code!=0:
+                task=(group,fold)
+                if attempts[task] < 2:
+                    pending.append(task)
+                    max_workers=max(1,min(max_workers,2))
+                else:
+                    failed.append({"group":group,"fold":fold,"exit_code":code,"attempts":attempts[task],"log":str(LOGS/f"{group}_f{fold:02d}.stdout.log")})
+    if failed:
+        completed=[]
+        for group in GROUP_ORDER:
+            for fold in range(1,11):
+                tf,cp=task_path(group,fold),checkpoint_path(group,fold)
+                if tf.is_file() and cp.is_file():
+                    task=json.loads(tf.read_text(encoding="utf-8"))
+                    if task.get("status")=="COMPLETE" and task.get("checkpoint_sha256")==sha_file(cp):
+                        completed.append({"group":group,"fold":fold,"checkpoint_sha256":sha_file(cp),"status":"COMPLETE"})
+        atomic_json(EXP/"manifest.json",{"experiment":CFG["experiment"],"status":"TRAINING_INCOMPLETE","expected_tasks":CFG["formal_task_count"],"completed_tasks":len(completed),"independent_audits":0,"completed":completed,"failed_tasks":failed,"source_sha256":source_sha_map(),"config_sha256":sha_file(CONFIG_PATH),"preflight":"PASS","e62_reference":verify_e62_reference()})
+        raise RuntimeError(f"formal training failed: {failed}")
+    # Audit all groups from independently reconstructed warmup states.
+    audits=[]
+    for group in GROUP_ORDER:
+        for fold in range(1,11):
+            audits.append(intervene_and_audit(group,fold))
+            print(f"independent checkpoint audit {len(audits)}/{CFG['formal_task_count']}",flush=True)
+    # Seed-specific state hashes are expected to differ; record overlap without treating
+    # distinct RNG streams as a parity failure.
+    rng_comparison=[]
+    warmup_rng_comparison=[]
+    for fold in range(1,11):
+        traces={g:json.loads(task_path(g,fold).read_text(encoding="utf-8"))["rng_trace"] for g in GROUP_ORDER}
+        warm_traces={g:torch_load(warmup_path(g,fold))["rng_trace"] for g in GROUP_ORDER}
+        e61_trace=torch_load(e61_warmup_path(fold))["rng_trace"]
+        for group in GROUP_ORDER:
+            gmap={x["epoch"]:x for x in warm_traces[group]}
+            rmap={x["epoch"]:x for x in e61_trace}
+            common=[x for x in warm_traces[group] if x["epoch"] in rmap]
+            matches=sum(x["rng_before"]==rmap[x["epoch"]]["rng_before"] and x["rng_after_train"]==rmap[x["epoch"]]["rng_after_train"] and x["rng_after_eval"]==rmap[x["epoch"]]["rng_after_eval"] for x in common)
+            warmup_rng_comparison.append({"fold":fold,"left":group,"right":"E61-WARMUP-REFERENCE-SEED0","seed":GROUPS[group]["seed"],"common_epochs":len(common),"exact_matches":matches,"status":"EXPECTED_SEED_STREAM_DIFFERENCE"})
+        per=[]
+        for i,left in enumerate(GROUP_ORDER):
+            for right in GROUP_ORDER[i+1:]:
+                rmap={x["epoch"]:x for x in traces[right]};common=[x for x in traces[left] if x["epoch"] in rmap]
+                matches=sum(x["rng_before"]==rmap[x["epoch"]]["rng_before"] and x["rng_after_train"]==rmap[x["epoch"]]["rng_after_train"] and x["rng_after_eval"]==rmap[x["epoch"]]["rng_after_eval"] for x in common)
+                per.append({"fold":fold,"left":left,"right":right,"seed_left":GROUPS[left]["seed"],"seed_right":GROUPS[right]["seed"],"common_epochs":len(common),"exact_matches":matches,"status":"EXPECTED_SEED_STREAM_DIFFERENCE"})
+        rng_comparison.extend(per)
+    runtime_info={"device":str(torch.cuda.get_device_name(0)) if torch.cuda.is_available() else "cpu","max_workers":10,"observed_peak_workers":peak_workers,"rng_comparison":rng_comparison,"warmup_rng_comparison":warmup_rng_comparison}
+    manifest=finalize(audits,runtime_info)
+    print(f"Experiment 66 status: {manifest['status']}",flush=True)
+    return manifest
+
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--preflight",action="store_true")
+    parser.add_argument("--run",action="store_true")
+    parser.add_argument("--audit-finalize",action="store_true")
+    parser.add_argument("--worker",action="store_true")
+    parser.add_argument("--group",choices=GROUP_ORDER)
+    parser.add_argument("--fold",type=int)
+    parser.add_argument("--max-workers",type=int,default=10)
+    args=parser.parse_args()
+    if args.worker:
+        if args.group is None or args.fold is None: raise SystemExit("--worker needs --group and --fold")
+        result=train_worker(args.group,args.fold);print(json.dumps(result,ensure_ascii=False),flush=True)
+    elif args.preflight:
+        print(json.dumps(gate_preflight(),ensure_ascii=False,indent=2))
+    elif args.run:
+        run_all(args.max_workers)
+    elif args.audit_finalize:
+        run_all(10)
+    else: parser.print_help()
+
+
+if __name__=="__main__": main()

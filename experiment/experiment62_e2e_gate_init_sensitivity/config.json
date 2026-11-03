@@ -1,0 +1,37 @@
+{
+  "experiment": "Experiment 62 — E61-E2 adaptive gate initialization sensitivity",
+  "base": {
+    "experiment": "Experiment 61",
+    "group": "E61-E2 E2E_ADAPTIVE_GATE",
+    "commit": "31ced6bdd279654154b90dc2ece056d8e435df2b",
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "warmup_epoch": 10,
+    "warmup_manifest_status": "COMPLETE_AUDITED"
+  },
+  "seed": 0,
+  "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+  "data": {"n": 871, "modalities": ["PHENO", "ANAT", "FUNC", "CORR"], "dims": [48, 6, 10, 256], "total_dim": 320, "labels": {"ASD": 0, "TD": 1}},
+  "optimization": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_checkpoint": "strict ACC improvement with historical val=test protocol",
+    "loss": "L_cls + L_graph + .05 L_pair + .01 L_adv + .01 L_preserve"
+  },
+  "formal_groups": {
+    "E62-E1": {"edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.01, 0.01, 0.01, 0.99]},
+    "E62-E2": {"edge_gate": [0.5, 0.5, 0.5, 0.5], "adaptive_gate": [0.001, 0.001, 0.001, 0.99]},
+    "E62-E3": {"edge_gate": [0.4, 0.4, 0.4, 0.4], "adaptive_gate": [0.001, 0.001, 0.001, 0.99]},
+    "E62-E4": {"edge_gate": [0.6, 0.6, 0.6, 0.6], "adaptive_gate": [0.001, 0.001, 0.001, 0.99]}
+  },
+  "group_order": ["E62-E1", "E62-E2", "E62-E3", "E62-E4"],
+  "gate_parameterization": "store logit(torch.tensor(configured_sigmoid_value)); both vectors remain trainable",
+  "protocol_limits": [
+    "No OOF, no reliability multiplier, no additional model component or loss.",
+    "Use exact E61 per-fold epoch-10 shared warmup state and all optimizer/RNG state.",
+    "Historical val=test checkpoint selection, pre-CV preprocessing and 871-node transductive graph are retained.",
+    "Single seed and overlapping outer folds provide exploratory paired evidence only."
+  ]
+}
