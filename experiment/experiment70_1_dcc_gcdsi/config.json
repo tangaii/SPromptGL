@@ -1,0 +1,97 @@
+{
+  "experiment": "70.1",
+  "name": "DCC-GCDSI",
+  "status": "FROZEN_BEFORE_FORMAL_TRAINING",
+  "base": "Experiment 53.3 CADR_WD_0p01_GFR_WD_0p11",
+  "seed": 0,
+  "folds": {
+    "type": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "patients": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "input_dims": [48, 6, 10, 256],
+    "input_width": 320,
+    "gfr_width": 320,
+    "cam_shape": [4, 36],
+    "classifier_input_width": 144
+  },
+  "training": {
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stopping_wait_strictly_greater_than": 200,
+    "checkpoint_metric": "ACC",
+    "checkpoint_update": "strict improvement only",
+    "validation_equals_test": true,
+    "scheduler_max_workers": 10,
+    "checkpoint_latest_each_epoch": true
+  },
+  "optimizers": {
+    "cad_r": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "dcc_gcdsi": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001}
+  },
+  "loss": {
+    "total": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "new_auxiliary_loss": false
+  },
+  "module": {
+    "query": "LayerNorm(W_h*h + W_f*F + q_CLS)",
+    "disease_key": "K_ASD=+sqrt(36)*normalize(W_d*d), K_TD=-sqrt(36)*normalize(W_d*d)",
+    "signed_competition": "s=softmax([z,-z])[ASD]-softmax([z,-z])[TD]=tanh(z)",
+    "shared_semantic_modulation": "v_center=normalize(W_c*c); u=tanh(W_o(h elementwise v_center))",
+    "gate": "sigmoid(MLP([h,q,v_center]))",
+    "residual": "delta=lambda*s*RMS(h)*normalize_RMS(gate elementwise u)",
+    "residual_bound": 0.15,
+    "lambda": "0.15*tanh(lambda_raw)",
+    "lambda_raw_initial": 0.0,
+    "dropout": 0.0,
+    "trainable_parameter_initialization": "Xavier uniform, gain=1.0; biases zero; LayerNorm scale=1 and bias=0; q_CLS Xavier uniform; lambda_raw zero",
+    "per_fold_initialization_seed": "701000 + fold inside torch.random.fork_rng",
+    "registered_inside_cam": false
+  },
+  "groups": [
+    {
+      "id": "E70.1-G1",
+      "source_group": "E70-G1",
+      "name": "DCC-GCDSI-BRAINPROMPT-2",
+      "bank_sha256": "225e6b1307618a7e019f8105618e65db7d2cb9f9d071c2311995446f80bb867e"
+    },
+    {
+      "id": "E70.1-G2",
+      "source_group": "E70-G2",
+      "name": "DCC-GCDSI-SPROMPTGL-8",
+      "bank_sha256": "bcc827ed1c9dcf3e69ddda9eebda87a26b9c4ecf933d2c72ff5ea393c999f1b5"
+    },
+    {
+      "id": "E70.1-G3",
+      "source_group": "E70-G3",
+      "name": "DCC-GCDSI-ANONYMOUS-2",
+      "bank_sha256": "a9c2dd39686455e8032b8cbfd44ede1c43f3716f8414446d40f480b5b2e2c797"
+    }
+  ],
+  "prompt_assets": {
+    "text_encoder": "OpenAI CLIP RN50, frozen Experiment 60 embeddings",
+    "text_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "brainprompt_published_order": ["TC", "ASD"],
+    "brainprompt_model_order": ["ASD", "TD"],
+    "spromptgl_aggregation": "L2-normalize each; mean first four to TD and last four to ASD; L2-normalize means; order [ASD,TD]",
+    "anonymous_seed": 700070,
+    "anonymous_generator": "private CPU torch.Generator; matched to G1 row norms and cosine geometry"
+  },
+  "pre_registered_engineering_gates": {
+    "base_acc_mean_delta_pp_at_least": 0.5,
+    "base_acc_fold_wins_at_least": 6,
+    "probability_auc_delta_pp_at_least": -0.5,
+    "sen_asd_delta_pp_at_least": -1.0,
+    "true_text_acc_delta_vs_anonymous_positive": true,
+    "true_text_acc_fold_wins_vs_anonymous_at_least": 6,
+    "statistical_significance_claim": false
+  }
+}
