@@ -1,0 +1,233 @@
+{
+  "experiment": "Experiment 72.2 - E69.3-G2 DARG-320 disease semantic supervision diagnostic",
+  "status": "FROZEN_IMPLEMENTATION_PREFLIGHT",
+  "base": {
+    "name": "Experiment 69.3-G2 / E61-E2 E2E-CADR-GFR",
+    "reference_branch": "upload/experiment69-3-g2-two-rows",
+    "reference_commit": "41dbcb45a0273673857051d8e821b8c3315eef00",
+    "reference_commit_tree_verified": true,
+    "e61_source_commit": "31ced6bdd279654154b90dc2ece056d8e435df2b",
+    "edge_gate_initial": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "adaptive_gate_initial": [
+      0.001,
+      0.001,
+      0.001,
+      0.99
+    ],
+    "training_additions_by_test_fold_1based": {
+      "2": [
+        377,
+        407
+      ]
+    },
+    "labels_exposed_in_fold2_training_and_semantic_calibration": [
+      377,
+      407
+    ],
+    "metrics_are_generalization_estimates": false,
+    "labels": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "modalities": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "CORR"
+    ],
+    "input_dimensions": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "gfr_output_dim": 320,
+    "cam_output_shape": [
+      871,
+      4,
+      36
+    ],
+    "classifier_input_dim": 144,
+    "loss": {
+      "classification": 1.0,
+      "graph": 1.0,
+      "pair": 0.05,
+      "adversarial": 0.01,
+      "preserve": 0.01
+    },
+    "optimizer": {
+      "gfr": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "cam": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "cadr": {
+        "class": "AdamW",
+        "lr": 0.001,
+        "weight_decay": 0.01
+      }
+    }
+  },
+  "cv": {
+    "splitter": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "seed": 0,
+    "max_epochs": 450,
+    "warmup_epochs": 10,
+    "early_stop_wait_gt": 200,
+    "best_selection": "strict ACC improvement",
+    "validation_equals_test": true,
+    "intentional_train_test_overlap": {
+      "2": [
+        377,
+        407
+      ]
+    }
+  },
+  "text": {
+    "encoder": "frozen OpenAI CLIP RN50",
+    "dimension": 1024,
+    "rn50_weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "experiment60_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "brainprompt_text_sha256": "dbbfa807a88834a35d097aea130337c884e5264920980dd57e584c6f083f828d",
+    "spromptgl_text_sha256": "23791903292668e54164e4d3db1b0556776f29f5fa37cc46fe7fe13c48cefa6e",
+    "frozen_span_rank": 10,
+    "frozen_span_basis_sha256": "3e79ee238447ff47ad1029408b99db94c3b4c4fbc657aa5a5251754563dc3868",
+    "brainprompt_class_bank_sha256": "f7105b19f5a81fb078c51636136b1e18d56fa1b204bb4a5d82a488b6f48b8176",
+    "spromptgl_class_bank_sha256": "ee741144039d60c5de8bb36576476bdc9fa67ed2ff3f7cb97a13bba08c78a55a",
+    "prompt_projection": "CPU float64 SVD of the 10 raw frozen prompt embeddings; each basis-axis sign anchored by its largest-magnitude entry",
+    "bank_order": [
+      "ASD",
+      "TD"
+    ],
+    "spromptgl_aggregation": "L2-normalize each source vector; mean prompts 1-4 for TD and 5-8 for ASD; L2-normalize class means; order ASD then TD",
+    "geometry_tolerance": 1e-10
+  },
+  "runtime_dependencies": {
+    "ftfy": {
+      "version": "6.1.1",
+      "wheel": ".runtime/wheels/ftfy-6.1.1-py3-none-any.whl",
+      "wheel_sha256": "0ffd33fce16b54cccaec78d6ec73d95ad370e5df5a25255c8966a6147bd667ca",
+      "installed_to": ".runtime/vendor/python"
+    },
+    "wcwidth": {
+      "version": "0.5.2",
+      "provided_by_runtime": true
+    }
+  },
+  "auxiliary_projection": {
+    "global": {
+      "class": "Linear",
+      "input_dim": 320,
+      "output_dim": 10
+    },
+    "fine": {
+      "class": "IndependentLinearByModality",
+      "input_dimensions": [
+        48,
+        6,
+        10,
+        256
+      ],
+      "output_dim": 10
+    },
+    "all_six_groups_same_module_schema": true,
+    "initialization": "Xavier uniform weights; zero biases; private RNG seed 720000+fold",
+    "dropout": 0.0,
+    "optimizer": {
+      "class": "AdamW",
+      "lr": 0.001,
+      "weight_decay": 0.001
+    },
+    "global_only_fine_heads_initialized_but_unused": true
+  },
+  "supervision": {
+    "brainprompt_temperature": 1.0,
+    "saber_adaptation_temperature": 0.1,
+    "fine_weights": {
+      "PHENO": 0.1,
+      "ANAT": 0.1,
+      "FUNC": 0.1,
+      "CORR": 0.7
+    },
+    "joint": {
+      "global": 0.5,
+      "fine": 0.5
+    },
+    "global_only": {
+      "global": 1.0
+    },
+    "gradient_budget_ratio": 0.1,
+    "alpha_max": 10.0
+  },
+  "groups": [
+    {
+      "id": "G1",
+      "prompt": "BrainPrompt-2",
+      "temperature": 1.0,
+      "grain": "joint"
+    },
+    {
+      "id": "G2",
+      "prompt": "BrainPrompt-2",
+      "temperature": 0.1,
+      "grain": "joint"
+    },
+    {
+      "id": "G3",
+      "prompt": "SPromptGL-8",
+      "temperature": 1.0,
+      "grain": "joint"
+    },
+    {
+      "id": "G4",
+      "prompt": "SPromptGL-8",
+      "temperature": 0.1,
+      "grain": "joint"
+    },
+    {
+      "id": "G5",
+      "prompt": "BrainPrompt-2",
+      "temperature": 1.0,
+      "grain": "global_only"
+    },
+    {
+      "id": "G6",
+      "prompt": "BrainPrompt-2",
+      "temperature": 0.1,
+      "grain": "global_only"
+    }
+  ],
+  "paths": {
+    "repository_root": "/data/adodas/SPromptGL-main",
+    "e69_3_g2": "/model/spromptgl/experiment/experiment69_3_g2_two_rows",
+    "e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "e62": "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity",
+    "e72": "/model/spromptgl/experiment/experiment72_mgdss",
+    "e72_1": "/model/spromptgl/experiment/experiment72_1_e693_mgdss"
+  },
+  "audit": {
+    "prompt_label_information_allowed": false,
+    "test_labels_allowed_for_auxiliary_loss": "only for rows 377 and 407 in fold 2 through the inherited E69.3 effective training set",
+    "train_test_overlap_is_explicit": true,
+    "auxiliary_heads_used_for_inference": false,
+    "semantic_residual_injection": false,
+    "original_cam_forward_count": 1,
+    "semantic_source": "E61-E2 output[\"fused\"] [871,320]",
+    "cam_forward_count": 1,
+    "all_semantic_branches_from_fused_F": true,
+    "segment_interpretation": "F already contains cross-modality message passing; slices are aligned to original modality dimensions but are not independent raw modality evidence."
+  }
+}
