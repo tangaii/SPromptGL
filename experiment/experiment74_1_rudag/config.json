@@ -1,0 +1,81 @@
+{
+  "experiment": "Experiment 74.1 — RUDAG (Reliability-guided Unified Disease-Aware Graph Learning)",
+  "root": "/model/spromptgl/experiment/experiment74_1_rudag",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag",
+  "root_fallback_reason": "OSSFS mkdir failed with Input/output error (errno 5); existing E74 and E72 records report the same preferred-root write failure.",
+  "base": {
+    "path": "/model/spromptgl/experiment/experiment69_3_g2_two_rows",
+    "commit": "41dbcb45a0273673857051d8e821b8c3315eef00",
+    "branch": "upload/experiment69-3-g2-two-rows",
+    "group": "E69.3-G2",
+    "run_sha256": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+    "manifest_sha256": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+    "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+    "warmup_source": "E61-E2 epoch 10"
+  },
+  "historical_references": {
+    "E69.3-G2": "/model/spromptgl/experiment/experiment69_3_g2_two_rows/results/fold_metrics.csv",
+    "E62-E2": "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/results/summary.csv",
+    "E74-UDAG": "/model/spromptgl/experiment/experiment74_udag/results/fold_metrics.csv"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "n": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dims": [48, 6, 10, 256],
+    "total_dim": 320,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "folds": 10,
+    "fold_split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "seed": 0,
+    "added_training_rows_by_test_fold_1based": {"2": [377, 407]},
+    "val_idx_equals_test_idx": true
+  },
+  "training": {
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test ACC improvement; save first epoch at each new best",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg_added": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "pair_count": 4096,
+    "pair_balance": "2048 same-disease and 2048 different-disease pairs",
+    "no_per_epoch_reseed": true
+  },
+  "rudag": {
+    "groups": ["G1-RUDAG-U", "G2-RUDAG-Full"],
+    "common_parameters": true,
+    "only_group_difference": "G2 enables bounded direct neighbor difference",
+    "adjacency": "CORR: every positive off-diagonal GraphLearn edge; non-CORR: original-positive support intersected with historical mutual Top-12; never add edges",
+    "corr_weight": "S*(1 + 0.8*sigmoid(theta_corr)*(2*q-1))",
+    "noncorr_weight": "S*(1 + 0.8*0.01*sigmoid(theta_m)*h(q)) on eligible original mutual Top-12 edges; h=2q-1 outside [0.45,0.55], else 0",
+    "gate_order": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "effective_gate_init": [0.001, 0.001, 0.001, 0.99],
+    "theta_init": ["logit(0.1)", "logit(0.1)", "logit(0.1)", "logit(0.99)"],
+    "reweight_strength": 0.8,
+    "direct_scale": 0.02,
+    "direct_gate_scale": [0.01, 0.01, 0.01, 1.0],
+    "gcn_calls_per_modality": 1,
+    "graph_normalization": "historical normalize_adj(A_unified + I), once",
+    "pair_score_chunk_size": 16384,
+    "score_permutation_seed_base": 741001,
+    "edge_gate_logits": "frozen compatibility parameter; unused",
+    "adaptive_gate_logits": "reused and deterministically reparameterized; no new trainable parameters"
+  },
+  "resources": {
+    "device": "single PPU-ZW810E exposed through torch.cuda",
+    "worker_limit": 10,
+    "cpu_threads_per_worker": 1,
+    "memory_policy": "preflight measured peak and available device memory; ramp only within estimated budget"
+  },
+  "protocol_limits": [
+    "Fold 2 rows 377 and 407 remain in test after their labels are added to training pairs and classification training, reproducing the historical label-exposure protocol.",
+    "Historical val=test selection, pre-cross-validation RFE and standardization, and the transductive 871-node graph are retained.",
+    "All reported cross-validation results are protocol-matched exploratory comparisons, not unbiased independent generalization estimates.",
+    "Historical groups differ in initialization/training trajectories and are descriptive references; only G1 versus G2 is the planned retrained architectural comparison."
+  ]
+}
