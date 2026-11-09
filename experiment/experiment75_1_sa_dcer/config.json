@@ -1,0 +1,102 @@
+{
+  "experiment": "Experiment 75.1 - Semantic-Anchored Disease-Contrastive Evidence Refinement",
+  "root": "/model/spromptgl/experiment/experiment75_1_sa_dcer",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_1_sa_dcer",
+  "root_fallback_reason": "Attempted preferred directory creation; OSSFS raised OSError(5, Input/output error). The /model experiment mount is used.",
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+    "run_sha256": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "model_sha256": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "audit_sha256": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "config_sha256": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "manifest_sha256": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "status": "COMPLETE_AUDITED",
+    "completed_tasks": 30,
+    "independent_audits": 30,
+    "formal_group": "E74.4-G2-Positive-DCR"
+  },
+  "history": {
+    "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+    "e61_manifest_sha256": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+    "e61_run_sha256": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+    "e61_model_sha256": "28266568bcebcfdbab961dbedb7257c15ff4e862cd02ae744feacad54b7bc81b",
+    "e61_config_sha256": "7a1a2e7d37918baf615c704a47d09e3a3eb8a9de5bfc752d852b15a8ada6569b",
+    "e61_manifest_status": "COMPLETE_AUDITED",
+    "expected_pair_count": 4096,
+    "fold2_overlap_1based": [377, 407]
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "modality_dims": [48, 6, 10, 256],
+    "label_order": ["ASD", "TD"],
+    "label_mapping": {"ASD": 0, "TD": 1},
+    "rfe_and_scaling": "Historical preprocessing before CV; inherited unchanged",
+    "graph_mode": "871-node transductive graph"
+  },
+  "training": {
+    "seed": 0,
+    "cv": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+    "warmup": "Restore E61 epoch-10 full warmup independently for each fold and group",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "Strict historical test-fold ACC improvement; first best epoch",
+    "workers_max": 10,
+    "no_epoch_reseed": true,
+    "loss_base": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "loss_aux": "0.02*L_dir + 0.01*L_conf for G2/G3 only",
+    "new_optimizer": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001},
+    "base_optimizers_inherited": true
+  },
+  "method": {
+    "insertion": "CAM 144-D outputlayer input pre-hook; one CAM and one OutputLayer call",
+    "tokens": {"reshape": [16, 9], "global_pool": "AvgPool1d(kernel_size=4,stride=4) on [N*4,1,36], then [N,4,9] flattened"},
+    "text_source": "E60 frozen CLIP RN50 cache; original SPromptGL-8, first four TD, last four ASD",
+    "text_order": ["TD", "ASD"],
+    "text_strings": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "text_embedding_shape": [8, 1024],
+    "fixed_projection_shape": [1024, 128],
+    "projection_init": "per-fold CPU private generator Gaussian/sqrt(128), frozen",
+    "anonymous_transform": "per-fold shared random coordinate permutation and sign flip applied to all eight text embeddings; exact Gram preservation",
+    "temperature": 0.2,
+    "class_aggregation": "logsumexp of four scaled prompt scores minus log(4)",
+    "signed_evidence": "tanh(0.5*(s_ASD-s_TD)); both ASD and TD ReLU directions are projected jointly 18->9 with shared bias-free Linear",
+    "gamma": "0.15*sigmoid(gamma_raw), initialized to 0.05; gamma_raw=logit(1/3)",
+    "bounded_residual": "RMS(T)*tanh(R_token/RMS(T))",
+    "confidence": "sigmoid(MLP_small(T,G,d)); factor 0.75+0.5*r for G2/G3",
+    "signed_teacher": "training-only, no-grad, deterministic OutputLayer margin difference from halving one token; scale=max(q75(abs(delta)),0.05); tanh(delta/scale)",
+    "groups": {
+      "G1-Anchor": {"semantic": "original", "direction_loss": false, "confidence_loss": false, "confidence_gate": false},
+      "G2-Faithful": {"semantic": "original", "direction_loss": true, "confidence_loss": true, "confidence_gate": true},
+      "G3-Anonymous": {"semantic": "geometry-preserving-anonymous", "direction_loss": true, "confidence_loss": true, "confidence_gate": true}
+    },
+    "interventions": ["dcer_off", "confidence_neutral", "prompt_class_swap", "prompt_within_class_shuffle"],
+    "new_graph_or_gcn": false,
+    "parameters_shared_across_groups_per_fold": true
+  },
+  "sources": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/0861-Paper5129.html",
+    "spromptgl_original_repo": "https://github.com/wanxixi11/SPromptGL",
+    "brainprompt_paper": "https://papers.miccai.org/miccai-2025/0116-Paper2260.html",
+    "brainprompt_repo": "https://github.com/AngusMonroe/BrainPrompt",
+    "saber_paper": "https://arxiv.org/abs/2607.01901",
+    "eraser": "https://aclanthology.org/2020.acl-main.408/",
+    "right_for_right_reasons": "https://ijcai.org/proceedings/2017/371",
+    "e75_path": "/model/spromptgl/experiment/experiment75_dcer_v2",
+    "e75_base": "E69.3-G2, historical mechanism reference only; not the base for this experiment",
+    "saber_official_code_audited": false
+  },
+  "status": "LOCKED_BEFORE_TRAINING"
+}
