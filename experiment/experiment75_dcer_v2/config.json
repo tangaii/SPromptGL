@@ -1,0 +1,76 @@
+{
+  "experiment": "Experiment 75 - DCER-v2 Disease-Contrastive and Reliable Evidence Enhancement",
+  "status": "DESIGN_FROZEN",
+  "experiment_root": "/model/spromptgl/experiment/experiment75_dcer_v2",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_dcer_v2",
+  "path_fallback_reason": "Creating the preferred OSSFS path returned Input/output error; the fallback path was writable.",
+  "base": {
+    "experiment": "E69.3-G2",
+    "branch": "upload/experiment69-3-g2-two-rows",
+    "commit": "41dbcb45a0273673857051d8e821b8c3315eef00",
+    "path": "/model/spromptgl/experiment/experiment69_3_g2_two_rows",
+    "e61_epoch10_warmup_root": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+    "e61_commit": "31ced6bdd279654154b90dc2ece056d8e435df2b",
+    "e61_source_root": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "base_model": "E61-E2 end-to-end adaptive propagation with E69.3-G2 fold-2 rows added",
+    "seed": 0
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "n": 871,
+    "class_counts": {"ASD": 403, "TD": 468},
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dimensions": [48, 6, 10, 256],
+    "gfr_dimension": 320,
+    "cam_shape": [871, 4, 36],
+    "cam_flat_dimension": 144,
+    "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+    "transductive_graph": true,
+    "pre_cv_rfe_and_standardization": "historical preprocessing retained"
+  },
+  "groups": {
+    "G1": {"name": "DCER-v2-basic", "prototype": "SPromptGL-8", "competition": true, "common_response_suppression": false, "validity": false, "valid_loss_weight": 0.0},
+    "G2": {"name": "DCER-v2-common-suppression", "prototype": "SPromptGL-8", "competition": true, "common_response_suppression": true, "validity": false, "valid_loss_weight": 0.0},
+    "G3": {"name": "DCER-v2-reliable", "prototype": "SPromptGL-8", "competition": true, "common_response_suppression": true, "validity": true, "valid_loss_weight": 0.02},
+    "G4": {"name": "DCER-v2-anonymous", "prototype": "anonymous-matched", "competition": true, "common_response_suppression": true, "validity": true, "valid_loss_weight": 0.02}
+  },
+  "dcer": {
+    "text_encoder": "frozen cached OpenAI CLIP RN50, 1024-D; no training-time text inference",
+    "spromptgl_prompt_source_order": ["Nromal brain volume", "Uniform cortical thickness", "Symmetrical brain structure", "Normal ventricular morphology", "Altered brain volume", "Abnormal functional connectivity", "White matter integrity issues", "Different activation patterns"],
+    "prototype_order": ["ASD", "TD"],
+    "spromptgl_aggregation": "L2-normalize each embedding; mean first four for TD and last four for ASD; normalize class means; order ASD then TD",
+    "anonymous_seed": 750075,
+    "anonymous_geometry": "same per-class L2 norm and pairwise cosine as SPromptGL-8 prototypes",
+    "internal_dimension": 32,
+    "token_shape": [4, 4, 9],
+    "global_pool": "AvgPool1d(kernel_size=4,stride=4) on H.reshape(N*4,1,36), then reshape [N,4,9]",
+    "temperature": 0.2,
+    "difference": "tanh((s_ASD-s_TD)/(2*tau)) with cosine scores; disease-wise token attention softmax(s/tau)",
+    "common_response": "clamp(16*relu(min(A_ASD,A_TD)-1/16),0,1)",
+    "residual": "shared bias-free Linear(18,9); token RMS-tanh bound; shared gamma=0.15*tanh(gamma_raw), gamma_raw initialized to zero",
+    "validity": "sigmoid(MLP_small([token(9), pooled_global(36), difference(1)])); training-only normalized leave-one-token-out true-margin drop target",
+    "validity_loss_weight": 0.02,
+    "new_optimizer": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001},
+    "new_parameter_rng": "private torch.random.fork_rng; same fold seed across groups; does not advance base RNG"
+  },
+  "optimization": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC increase, historical protocol",
+    "step_order": ["GFR Adam", "CAM Adam", "CADR AdamW", "DCER-v2 AdamW"]
+  },
+  "protocol_limits": [
+    "Historical val_idx == test_idx checkpoint selection retained.",
+    "Historical pre-CV RFE and standardization retained.",
+    "871-node transductive graph retained.",
+    "Fold 2 trains on 1-based rows 377 and 407 while retaining them in test; this is a label-exposure diagnostic, not leakage-free cross-validation.",
+    "Nine-fold summaries excluding Fold 2 are descriptive and do not remove val=test or pre-CV preprocessing limitations."
+  ],
+  "resources": {"device": "single PPU-ZW810E, CUDA device 0", "max_workers": 10, "expected_tasks": 40}
+}
