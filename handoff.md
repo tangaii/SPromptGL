@@ -5038,3 +5038,859 @@ B5 相对 B0 ACC −0.2299 pp，未达到预注册 +0.3 pp；B5 与 B8 ACC 相�
 
 <!-- EXPERIMENT54_D2ARG_END -->
 
+<!-- HANDOFF_MISSING_EXPERIMENTS_SUPPLEMENT_2026-11-02 -->
+## Experiment 52 — DRAP Parametric-GCN under weight decay 0.11（补录）
+
+- **状态**：E0/E1共20折重训并独立读回20/20通过，E0逐折重放Experiment51 E1通过10/10。续实验E2/E3新增20折，独立checkpoint读回20/20通过；E0/E1为只读参考。
+- **方法**：保留PEN-free `LegacyFixedGFR`、四路完整320维参数化GCN、原CAM和GraphConstructLoss。E1只在原GraphLearn候选边上进行患者对疾病关系重加权，并把`normalize_adj(A_drap+I)`送入原GCN；关系监督/条件对抗系数为0.05/0.01，前10 epoch预热关系模块。
+
+|组|GFR WD|DRAP WD|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|E0 E51 E1重放|0.11|—|91.9592±2.8684|91.7434±2.8950|93.1856±3.0236|94.6392±3.3856|88.8476±4.1651|
+|E1 DRAP|0.11|0.11|91.6157±2.8704|91.5252±2.9730|93.5698±2.8624|92.7151±3.5251|90.3354±5.3779|
+|E2 DRAP GFR-WD0.20|0.20|0.11|91.4995±2.7372|91.2962±2.7332|93.3127±2.8316|94.0009±3.3169|88.5915±3.5222|
+|E3 DRAP GFR-WD0.50|0.50|0.11|91.4995±3.0565|91.3762±2.9764|93.5571±2.6067|92.9232±4.7522|89.8293±3.0156|
+
+- **配对与机制**：E2−E1 ACC为−0.1162 pp（2/5/3胜平负），E3−E1为−0.1162 pp（1/7/2）。GCN消息/输入范数比由WD0.11的`4.79542e-5`降至WD0.20的`9.77047e-6`、WD0.50的`5.52783e-7`；`||F-X||/||X||`分别为`8.3962e-5`、`2.10954e-5`、`7.49595e-7`。关闭重加权的表示差约`1e-10`量级，预测翻转率为0。更高GFR WD进一步收缩了GCN消息，但没有带来诊断增量；关系分数接近0.5也说明疾病关系评分退化。
+- 详细报告：`experiment/experiment52_drap_parametric_gcn_wd011/results/report.md`及`results/wd_sweep/report.md`；清单为`manifest.json`与`manifest_wd_sweep.json`。
+
+## Experiment 53 — DRAP疾病判别驱动的对抗式患者图重构与消息传播（补录）
+
+- **状态**：E0–E8共90/90折训练完成，最佳checkpoint独立读回90/90。E0为Experiment52 E0重放；历史Experiment51 E1 ACC为91.9592%。
+- **方法与边界**：保留原GFR/CAM，增加患者对疾病关系学习、inner patient-disjoint OOF可靠度筛选，以及正负有界患者消息。只有CORR显示可靠关系证据；PHENO/ANAT/FUNC的OOF AUC接近随机。原始报告的分组结果如下，但Experiment53.1后续源码审计发现原53的E1/E3负向消息未按定义关闭、warmup标志未实际传入前向、仅CORR可靠时对抗被关闭。因此原53组间差异不能作为相应消融因素的严格因果证据。
+
+|组|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|---:|
+|E0 基线重放|91.9592±2.8684|91.7434±2.8950|93.1856±3.0236|94.6392±3.3856|88.8476±4.1651|
+|E1 正向关系|92.0742±2.6997|91.8521±2.7121|93.2288±2.7367|94.8566±3.0810|88.8476±3.6794|
+|E2 正负关系无对抗|91.6144±3.1771|91.4245±3.1009|93.4837±2.9001|93.7697±4.8127|89.0793±3.0035|
+|E3 正向+条件对抗|91.6144±2.6809|91.4296±2.6865|93.4620±2.7780|94.0056±3.1579|88.8537±3.6527|
+|E4 完整DRAP|91.4995±2.8321|91.2860±2.8224|93.8074±2.7073|94.2183±3.4678|88.3537±3.6326|
+|E5 无条件对抗|91.6157±2.8704|91.3924±2.9006|93.1227±2.7939|94.4311±2.9318|88.3537±3.9618|
+|E6 不跳过不确定边|91.8443±3.1095|91.6714±3.0504|93.2562±2.6163|93.7697±5.3622|89.5732±4.1564|
+|E7 置乱关系|91.4995±3.0130|91.2464±3.0518|92.7563±3.4633|94.6392±3.3856|87.8537±4.4777|
+|E8 普通邻域|91.4995±3.1418|91.2837±3.1432|93.4937±3.1226|94.2137±3.6134|88.3537±3.9618|
+
+- **关系与诊断结论**：CORR OOF AUC=0.7257，PHENO/ANAT/FUNC=0.4984/0.5031/0.4994。E4−E0 ACC为−0.4598 pp（0/6/4胜平负）、Hard-AUC为−0.4574 pp、Probability-AUC为+0.6218 pp；E4−E7和E4−E8 ACC均为0.0000 pp（两项均2/6/2）。完整方法未超过E0，且ACC未优于置乱关系或普通邻域控制，诊断增量及MICCAI候选结论为NO-GO。
+- 详细逐折指标、机制及干预见`experiment/experiment53_drap_disease_relation_propagation/results/`。
+<!-- /HANDOFF_MISSING_EXPERIMENTS_SUPPLEMENT_2026-11-02 -->
+
+<!-- EXPERIMENT53_3_FALLBACK_WD_SWEEP_2026-11-02 -->
+## Experiment 53.3 — CADR/GFR WD配对扫描（补录）
+
+- **状态**：新增4组共40/40折完成，40/40最佳checkpoint独立读回审计通过；GPU0（`cuda:0`）、10个worker。实验基于53.3原始图回退修复，E0/E1基线为历史只读结果。所有新增结果及代码位于`/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/results/fallback_wd_sweep/`；本轮配置为CAM WD=0.11，其余训练协议固定。
+- **结果（% mean±population SD）**：
+
+|组|CADR WD|GFR WD|ACC|Hard-AUC|Probability-AUC|SPE-TD|SEN-ASD|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|53.3历史参考|0.001|0.11|91.7294±2.9950|91.6046±2.9574|93.5681±3.0886|93.1360±4.3174|90.0732±3.5288|
+|新增组1|0.0001|0.11|91.6144±3.0062|91.4242±3.0003|93.3971±2.9957|94.0009±3.4506|88.8476±3.5140|
+|新增组2|0.001|0.20|91.2709±2.9237|91.0577±3.0159|93.0486±3.0915|94.0056±2.5201|88.1098±4.8927|
+|新增组3|0.01|0.11|92.0742±2.8427|91.8653±2.8348|93.6684±3.2619|94.6392±3.5168|89.0915±3.5263|
+|新增组4|0.01|0.20|91.6144±2.8249|91.4554±2.8484|93.7277±2.7780|93.5754±3.3387|89.3354±4.0041|
+
+- **配对结果**：相对53.3历史参考，四组ACC差依次为−0.1149、−0.4585、+0.3448、−0.1149个百分点；ACC胜/平/负分别为2/6/2、2/3/5、4/5/1、1/7/2。组3虽有最高平均ACC和SPE，但仅4折ACC严格胜出，SEN低0.9817个百分点；不据此宣称稳定诊断增量，也不据WD组合推断单调效应。
+- **解释与限制**：结果为单seed、同折配对的探索性比较；保留历史`val=test`选模、CV前预处理及871节点transductive图，不代表无偏外部泛化。逐折指标、其余指标、配对统计和完整审计见`results/fallback_wd_sweep/report.md`；清单见`manifest_fallback_wd_sweep.json`。本记录只补充交接，不改写53.3历史正式结果。
+<!-- /EXPERIMENT53_3_FALLBACK_WD_SWEEP_2026-11-02 -->
+
+
+
+<!-- EXPERIMENT58_FAVE_PEN_2026-11-02 -->
+## Experiment 58 — FAVE-PEN
+
+- **状态**：E58-FULL与E58-NUM共20/20折训练完成，20/20最佳checkpoint独立读回通过。实验位于`/data/adodas/SPromptGL-main/experiment/experiment58_fave_pen/`；历史53.3第三组只读引用，基座配置为CADR WD=0.01、GFR/CAM WD=0.11，并逐折从43.1未训练anchor重新初始化。
+- **方法**：FAVE-PEN使用仅由outer-train TD拟合的CORR条件参考、训练TD交叉拟合残差、ANAT/FUNC质量门控、解剖约束的拒绝式Prompt证据匹配，并将有界证据残差加到原CAM的CORR位置。真实医学文本和等容量匿名向量各一组；匿名组仍保留相同解剖/方向约束。252/256条连接具可信名称，但仅1条连接进入唯一方向明确且可映射的候选假说，覆盖范围很窄；四条未知ROI连接只留在基座CORR，不参与Prompt匹配。
+- **结果（% mean±population SD）**：
+
+|组别|ACC|Hard-AUC|Probability-AUC|SEN-ASD|SPE-TD|BA|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|---:|
+|53.3第三组只读参考|92.0742±2.8427|91.8653±2.8348|93.6684±3.2619|89.0915±3.5263|94.6392±3.5168|91.8653±2.8348|91.2470±3.0658|
+|E58-NUM匿名向量|91.6144±3.1353|91.3980±3.1128|93.5309±2.9064|88.5915±4.0194|94.2044±4.3427|91.3980±3.1128|90.7465±3.3504|
+|E58-FULL医学文本|91.3845±3.3868|91.1533±3.4558|93.1971±2.9079|88.0976±5.5228|94.2091±3.8720|91.1533±3.4558|90.4152±3.7959|
+
+- **配对与机制结论**：FULL−历史参考ACC −0.6897 pp（胜/平/负0/6/4），Hard-AUC −0.7120 pp（2/4/4），Probability-AUC −0.4714 pp（3/1/6），SPE −0.4302 pp，SEN −0.9939 pp。FULL−NUM的ACC为−0.2299 pp（1/6/3），Probability-AUC为−0.3338 pp（2/0/8），未显示真实医学文本的额外价值。FULL/NUM的平均拒绝率为0.9414/0.9471，CORR位置残差与输入比为0.000517/0.000447；固定checkpoint提示错配、参考替换及置零干预均未造成硬标签翻转。整体判断：工程审计GO；医学语义增量与诊断增量未建立，FAVE-PEN为**NO-GO**。
+- **审计说明**：交付前发现并修正了一处基线报告字段错配：旧生成路径把WD=0.01/GFR-WD=0.11 checkpoint身份配上另一只读组的指标。基线现由同组fold指标、checkpoint SHA、epoch和PASS审计记录绑定；修正后未重训，20个Experiment 58 checkpoint重新独立读回通过。
+- **限制与文件**：保留历史`val=test`选模、CV前RFE/标准化、871节点transductive图和单seed，不能解释为无偏外部泛化。完整方法、逐折结果、干预、文献/ROI证据及来源哈希见`/data/adodas/SPromptGL-main/experiment/experiment58_fave_pen/results/report.md`、`manifest.json`和`baseline_audit.json`。后续应先扩充可可靠定位且有方向性支持的连接假说，再用独立验证和患者级外部队列检验语义增量。
+
+<!-- EXP59_SHAPE_PEN_START -->
+## Experiment 59 — SHAPE-PEN
+
+### 来源与方法审计
+
+- 唯一基座：Experiment 53.3 `CADR_WD_0p01_GFR_WD_0p11`，只读引用；逐折从Experiment 43.1未训练anchor重建。GFR/CAM Adam WD=0.11，CADR AdamW WD=0.01，seed=0，原10折、四模态输入、CADR可靠传播/fallback、GFR、CAM、OutputLayer与原损失完整保留。
+- 144维CAM位置表示是所有疾病级目标的共同输入；320维GFR融合表示及OutputLayer内部36维隐藏表示不混淆。`attn_embedding`在原OutputLayer中未参与分类。
+- BrainPrompt官方ABIDE文本及Llama编码缓存SHA：`adc544346b33fd007c026b8283de6f4bdf01abd57578cab353fa9883efa7b5af`；标签顺序从`[TC, ASD]`重排成`[ASD, TD]`。G01借鉴共享投影、归一化余弦CE。SABER无公开实现，G02只按论文疾病级对比损失公式实现，同文本同144维输入；均未移植额外主干。
+- SHAPE对表示投影到共享文本原型差方向及其正交残余；仅疾病分量用文本原型内积监督，原分类器仍读取未拆分完整144维。rho来自四个CAM位置训练折替换的真实类别margin变化，stop-gradient、类平衡且有rho下界。该边际是CAM位置功能证据，不是原始模态因果效应。
+- Experiment 58 FAVE-PEN仍为NO-GO；E59没有重启连接—医学假说匹配路线。
+
+### 基座、预检与执行
+
+- 53.3正式参考manifest SHA：`fae43596a9788d63bf8b0a0e52854fd1f7f014fea36c062bcf8a881806d7fcba`；10折初始参数、RNG、split、pair cache逐折匹配PASS。共同10轮warmup逐折分别比较原始CAM前向与位置捕获路径，参数、原优化器状态和主RNG相同后共享缓存。
+- 系数按outer-train梯度尺度冻结：`{"brainprompt_style": 0.736416082223469, "saber_disease_cl": 0.059059601424840395, "shape_family": 0.003619779891840622, "supervised_contrastive": 0.09448156444510578}`；类别文本、匿名向量、随机初始化、rho置乱均使用隔离随机流。
+- 11组×10折全部完成。独立审计重建模型、验证初始化/split/pair/cache SHA、读取每个完整checkpoint并重算预测及七项指标；基座参考10折也重新只读复核。详见Experiment 59 `checkpoint_audit.csv`。
+- 训练后独立审计曾因历史NumPy折索引类型假设中断；修复仅作用于审计读取，并全量重跑120/120 PASS。所有训练代码、配置与checkpoint SHA不变。
+
+### 结果
+
+指标为10折mean ± population SD，百分比：
+
+| 组别 | ACC | Hard-AUC | Prob-AUC | SEN-ASD | SPE-TD | BA | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 53.3第三组历史参考 | 92.0742 ± 2.8427 | 91.8653 ± 2.8348 | 93.6684 ± 3.2619 | 89.0915 ± 3.5263 | 94.6392 ± 3.5168 | 91.8653 ± 2.8348 | 91.2470 ± 3.0658 |
+| BrainPrompt-Disease | 91.8443 ± 2.9793 | 91.6821 ± 2.9419 | 93.7245 ± 2.8181 | 89.5854 ± 3.0899 | 93.7789 ± 3.9341 | 91.6821 ± 2.9419 | 91.0786 ± 3.1464 |
+| SABER-DiseaseCL | 91.8443 ± 2.7486 | 91.6255 ± 2.7503 | 93.8584 ± 3.0840 | 88.8293 ± 3.9209 | 94.4218 ± 3.8972 | 91.6255 ± 2.7503 | 90.9837 ± 2.9862 |
+| RAND-DiseaseCL | 91.7307 ± 2.7647 | 91.6683 ± 2.6977 | 93.4349 ± 3.3881 | 91.0610 ± 3.4015 | 92.2757 ± 4.7858 | 91.6683 ± 2.6977 | 91.1063 ± 2.8406 |
+| LEARN-DiseasePrototype | 91.3858 ± 3.0146 | 91.1587 ± 3.0646 | 93.7381 ± 3.1358 | 88.1037 ± 4.9179 | 94.2137 ± 3.6134 | 91.1587 ± 3.0646 | 90.4297 ± 3.3421 |
+| SupervisedContrastive | 91.3845 ± 3.1017 | 91.1984 ± 3.0693 | 93.8329 ± 2.9089 | 88.8354 ± 4.3298 | 93.5615 ± 4.8492 | 91.1984 ± 3.0693 | 90.5410 ± 3.3032 |
+| SHAPE-PARTIAL-UNIFORM | 91.5008 ± 2.5875 | 91.4290 ± 2.4998 | 93.5853 ± 2.8552 | 90.5732 ± 2.8947 | 92.2849 ± 4.5649 | 91.4290 ± 2.4998 | 90.8392 ± 2.6333 |
+| SHAPE-GLOBAL-GATED | 91.7294 ± 2.9505 | 91.4934 ± 2.9628 | 93.4611 ± 2.9140 | 88.3476 ± 3.9932 | 94.6392 ± 3.5168 | 91.4934 ± 2.9628 | 90.8205 ± 3.2178 |
+| Evidence-Weighted-CE | 91.4995 ± 3.1418 | 91.2620 ± 3.1557 | 93.5427 ± 2.8706 | 88.0976 ± 4.1148 | 94.4265 ± 3.6345 | 91.2620 ± 3.1557 | 90.5642 ± 3.4364 |
+| SHAPE-SHUFFLED-EVIDENCE | 91.7294 ± 3.0819 | 91.5120 ± 3.1030 | 93.4082 ± 2.8666 | 88.5976 ± 4.4468 | 94.4265 ± 3.7570 | 91.5120 ± 3.1030 | 90.8382 ± 3.3884 |
+| SHAPE-RANDOM-TEXT | 91.7294 ± 3.0388 | 91.5571 ± 3.0138 | 93.3023 ± 2.7245 | 89.3354 ± 4.2909 | 93.7789 ± 4.5813 | 91.5571 ± 3.0138 | 90.9277 ± 3.2606 |
+| SHAPE-FULL | 91.8443 ± 2.7963 | 91.7054 ± 2.8005 | 93.3865 ± 2.9521 | 89.8354 ± 3.7507 | 93.5754 ± 3.5997 | 91.7054 ± 2.8005 | 91.0758 ± 3.0505 |
+
+- G11减53.3：ACC -0.230 pp，Hard-AUC -0.160 pp；ACC胜折 1/10；SEN差 +0.744 pp。
+- G11相对G01/G02/G05/G10 ACC差：+0.000, -0.000, +0.460, +0.115 pp。具体所有配对差及胜平负折见`results/paired_comparisons.csv`。
+- rho、四位置delta、表征有效秩和邻域保持、年龄/site/性别相关、梯度余弦及语义原型几何见`results/mechanism.csv`；测试证据权重使用预测类别与训练折尺度，不用测试真标签。
+- G11训练rho均值±折间SD 0.656±0.022；ASD/TD rho均值 0.701/0.617，边界占比 0.0003，rho非塌缩10/10。PHENO支持/冲突=0.792/0.208; ANAT支持/冲突=0.535/0.465; FUNC支持/冲突=0.264/0.736; CORR支持/冲突=0.961/0.039。
+- 投影原型余弦G11真实/G10匿名 0.959/0.956；乘系数后的CAM语义/分类梯度比 G11/G10/G08 0.123/0.113/0.0037。G08的有效辅助梯度剂量明显更小，G11-G08不是剂量匹配的排除性检验。
+
+### 科研判断：NO-GO
+
+预注册描述判据结果：基座门槛=FAIL；强标签对照均胜=FAIL；G11-G10医学语言增量=FAIL；部分对齐/证据对照=FAIL；rho非塌缩=10/10；个体结构保持=PASS。
+- 如文本优于基座但不优于匿名文本，只能解释为对齐或正则化收益，不能归因于医学语言知识。标签监督增益不等于医学语义增益；数学正交不等于生物学解耦。
+- 本结果使用单seed、十折配对描述，不能把折数当作独立临床队列或声称严格统计显著性。历史val=test、CV前预处理及transductive图均保留，外部泛化风险仍在。
+
+### 交接
+
+结果根目录：`/data/adodas/SPromptGL-main/experiment/experiment59_shape_pen`。正式组配置、实现、独立审计和运行状态分别见`config.json`、`shape_pen.py`/`run.py`、`audit.py`、`manifest.json`。11组110折任务完成并独立读回审计；最佳checkpoint及复现缓存只保留在`.runtime/`。下一轮应围绕上述实测成立部分重新提出假设，不得把未通过的文本增量或门控机制写成已验证结论。
+<!-- EXP59_SHAPE_PEN_END -->
+
+## Experiment 61 — Post-alignment OOF Reliability versus End-to-end Adaptive CADR Graph Propagation
+
+- Status: COMPLETE_AUDITED; completed 20/20 formal tasks; independently audited 20/20 checkpoints.
+- Sole base: Experiment 53.3 `CADR_WD_0p01_GFR_WD_0p11`, source commit `b7e477c9657422a119adc7872ccf8c8188871e9e`; base checkpoints and fold metrics were read-only.
+- E61-E1 POSTALIGN_OOF: ACC 91.9592 ± 2.8684%, Hard-AUC 91.7434 ± 2.8950%, Probability-AUC 93.1856 ± 3.0236%, SPE 94.6392 ± 3.3856%, SEN 88.8476 ± 4.1651%.
+- E61-E2 E2E_ADAPTIVE_GATE: ACC 91.4995 ± 2.4842%, Hard-AUC 91.2480 ± 2.5179%, Probability-AUC 93.8126 ± 2.6938%, SPE 94.6485 ± 2.4105%, SEN 87.8476 ± 3.5514%.
+- Historical 53.3 third-group ACC 92.0742 ± 2.8427%, Hard-AUC 91.8653 ± 2.8348%, Probability-AUC 93.6684 ± 3.2619%, SPE 94.6392 ± 3.5168%, SEN 89.0915 ± 3.5263% (read-only).
+- Paired E1−base ACC -0.115 pp; E2−base ACC -0.575 pp; E2−E1 ACC -0.460 pp.
+- E1 post-alignment OOF AUCs: PHENO=0.5012, ANAT=0.5016, FUNC=0.5032, CORR=0.5081; nonzero reliability 0/40 modality-folds, so E1 used GraphLearn fallback throughout. E2 mean gates: PHENO=0.0999, ANAT=0.0992, FUNC=0.0971, CORR=0.1200; CADR edges active in 10/10 folds.
+- Best-checkpoint classification-gradient replay: all four adaptive and edge gates had nonzero gradients in 10/10 folds; all four relation scorers and encoders had nonzero gradients in 10/10 folds. Replay left the main RNG unchanged.
+- E2 mean all-CADR-off and score-permutation ACC effects were +0.000 and +0.000 pp. Mean summed modality message norms relative to the 320D input: CADR 0.09637%, its GCN positive+negative components 0.0041921%, direct difference 0.09531%.
+- Mechanism and per-fold reliability/gate status are in `experiment/experiment61_cadr_postalign_vs_e2e/results/report.md` and `mechanism_metrics.csv`. Historical `val=test` checkpoint selection and pre-CV preprocessing remain; results are exploratory, not unbiased external testing.
+- Files: `/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e`; report `results/report.md`; manifest `manifest.json`.
+
+<!-- EXPERIMENT60_DSS_PEN_2026-11-02 -->
+## Experiment 60 — DSS-PEN
+
+- **状态**：18/18正式组、180/180折训练完成；180/180 checkpoint 独立读回和组别实际生效核验均为`PASS`。R01 基座 parity：`PASS`，10/10 折。源文件、逐折SHA及审计记录位于`/model/spromptgl/experiment/experiment60_dss_pen/`。
+- **唯一基座**：Experiment 53.3第三组`CADR_WD_0p01_GFR_WD_0p11`；CADR AdamW 两个参数组 WD=0.01，GFR/CAM Adam WD=0.11。所有新增折均从同一逐折未训练锚点独立开始。固定 seed=0、10折、传导式图、全局预处理与历史`val=test`选模协议保留。
+- **方法和对照**：R02复原SPromptGL原SPGS+RES代码路径；R03/R04为统一CLIP编码器的BrainPrompt式类别文本/医学中心适配；R05按SABER公式检索PHENO患者文本并另加疾病监督，R06为疾病文本查询改编。R07使用每类6个医学概念、共享64维适配器、128步可微部分集合投影（系数非负且总和≤1、含空匹配）、集合距离损失和有界CAM残差。R08–R18分别对比类别名、错配/随机/可学习语义、单原型、Softmax、强制/自由匹配、无集合损失、无残差及CORR单槽干预式训练消融。全部细节见`design.md`和`config.json`。
+
+指标为十折mean±population SD（%）；ΔACC为R07减相应组，胜/平/负按折统计：
+
+| Group | ACC | Hard-AUC | Probability-AUC |
+|---|---:|---:|---:|
+| E60_REF_533_G3 | 92.074 ± 2.843 | 91.865 ± 2.835 | 93.668 ± 3.262 |
+| E60_BASE_REPLAY | 92.074 ± 2.843 | 91.865 ± 2.835 | 93.668 ± 3.262 |
+| E60_ORIGINAL_PEN | 91.270 ± 3.225 | 91.116 ± 3.207 | 93.181 ± 3.268 |
+| E60_BRAINPROMPT_LABEL | 91.499 ± 2.924 | 91.320 ± 2.913 | 93.356 ± 2.756 |
+| E60_BRAINPROMPT_MEDICAL | 91.155 ± 3.136 | 90.922 ± 3.157 | 93.329 ± 3.275 |
+| E60_SABER_DECISION | 91.614 ± 2.825 | 91.501 ± 2.832 | 92.936 ± 2.933 |
+| E60_DISEASE_QUERY | 91.385 ± 3.464 | 91.194 ± 3.481 | 92.875 ± 3.439 |
+| E60_DSS_FULL | 91.499 ± 3.225 | 91.326 ± 3.223 | 93.769 ± 2.829 |
+| E60_DSS_CLASS_ONLY | 91.846 ± 2.842 | 91.671 ± 2.819 | 93.539 ± 2.613 |
+| E60_DSS_WRONG_SEMANTICS | 91.728 ± 3.329 | 91.589 ± 3.288 | 93.436 ± 2.914 |
+| E60_DSS_RANDOM_ANCHORS | 91.844 ± 2.889 | 91.634 ± 2.822 | 93.657 ± 2.856 |
+| E60_DSS_LEARNED_PROTOTYPES | 91.614 ± 3.135 | 91.475 ± 3.035 | 93.394 ± 3.194 |
+| E60_DSS_SINGLE_PROTOTYPE | 91.614 ± 3.050 | 91.459 ± 2.963 | 93.565 ± 2.828 |
+| E60_DSS_SOFTMAX_ATTENTION | 91.386 ± 2.641 | 91.153 ± 2.644 | 93.245 ± 2.631 |
+| E60_DSS_FORCE_MATCH | 91.155 ± 3.300 | 91.045 ± 3.246 | 93.423 ± 3.182 |
+| E60_DSS_FREE_SET | 91.499 ± 3.306 | 91.276 ± 3.312 | 93.235 ± 3.019 |
+| E60_DSS_NO_SET_LOSS | 91.385 ± 3.059 | 91.206 ± 3.023 | 93.548 ± 3.072 |
+| E60_DSS_NO_RESIDUAL | 91.385 ± 3.059 | 91.244 ± 3.013 | 93.421 ± 3.105 |
+| E60_DSS_CORR_ONLY | 91.156 ± 3.177 | 91.026 ± 3.089 | 93.662 ± 2.883 |
+
+| R07 comparison | ΔACC (pp) | Wins/Ties/Losses |
+|---|---:|---:|
+| E60_REF_533_G3 | -0.575 | 2/3/5 |
+| E60_ORIGINAL_PEN | +0.230 | 3/4/3 |
+| E60_BRAINPROMPT_LABEL | -0.000 | 2/6/2 |
+| E60_BRAINPROMPT_MEDICAL | +0.345 | 3/5/2 |
+| E60_SABER_DECISION | -0.115 | 3/4/3 |
+| E60_DISEASE_QUERY | +0.115 | 3/3/4 |
+| E60_DSS_CLASS_ONLY | -0.346 | 3/3/4 |
+| E60_DSS_WRONG_SEMANTICS | -0.229 | 1/6/3 |
+| E60_DSS_RANDOM_ANCHORS | -0.345 | 2/5/3 |
+| E60_DSS_LEARNED_PROTOTYPES | -0.115 | 2/5/3 |
+| E60_DSS_SINGLE_PROTOTYPE | -0.115 | 4/3/3 |
+| E60_DSS_SOFTMAX_ATTENTION | +0.114 | 4/4/2 |
+| E60_DSS_FORCE_MATCH | +0.345 | 3/5/2 |
+| E60_DSS_FREE_SET | +0.000 | 2/6/2 |
+| E60_DSS_NO_SET_LOSS | +0.115 | 2/6/2 |
+| E60_DSS_NO_RESIDUAL | +0.115 | 3/6/1 |
+| E60_DSS_CORR_ONLY | +0.344 | 4/4/2 |
+
+- R07 vs历史R00：ΔACC -0.575 pp，2/3/5 折胜/平/负。完整配对结果、exact sign-flip、bootstrap区间和Holm校正见`results/paired_comparisons.csv`。
+- R07 ASD患者异质性冻结规则通过4/10折；ASD/TD空匹配率分别为12.63%/1.30%。语义分配、几何、分类梯度、拒绝分层与固定checkpoint干预见`results/diagnostics.csv`、`semantic_patient_assignments.csv`、`interventions.csv`。
+
+### 预注册判定
+
+- GO_BASE_PARITY: **PASS** — R01 10/10 checkpoint state and prediction parity
+- GO_DIAGNOSTIC: **FAIL** — ΔACC -0.575 pp; W/T/L 2/3/5; 95% CI [-1.264, +0.115]; ΔSEN +0.000 pp
+- GO_SET_PROJECTION: **FAIL** — R12: ΔACC -0.115 pp; W/T/L 4/3/3; 95% CI [-0.920, +0.690]; ΔSEN -0.482 pp; R13: ΔACC +0.114 pp; W/T/L 4/4/2; 95% CI [-0.809, +0.920]; ΔSEN +1.000 pp; heterogeneity 4/10 folds
+- GO_PATIENT_HETEROGENEITY: **FAIL** — frozen criteria met in 4/10 folds
+- GO_SEMANTIC_CONTENT: **FAIL** — CLASS_ONLY: ΔACC -0.346 pp; W/T/L 3/3/4; 95% CI [-1.149, +0.456]; ΔSEN -0.250 pp; WRONG_SEMANTICS: ΔACC -0.229 pp; W/T/L 1/6/3; 95% CI [-0.686, +0.230]; ΔSEN -0.738 pp; RANDOM_ANCHORS: ΔACC -0.345 pp; W/T/L 2/5/3; 95% CI [-1.034, +0.345]; ΔSEN +0.018 pp; LEARNED_PROTOTYPES: ΔACC -0.115 pp; W/T/L 2/5/3; 95% CI [-0.575, +0.345]; ΔSEN -0.732 pp
+- GO_DECISION_INJECTION: **PASS** — residual_off: max |Δlogit|=0.0342, mean |ΔP_ASD|=0.001034, flips=1; wrong_semantics: max |Δlogit|=4.77e-07, mean |ΔP_ASD|=6.423e-10, flips=0
+- GO_VS_BRAINPROMPT: **FAIL** — R03: ΔACC -0.000 pp; W/T/L 2/6/2; 95% CI [-0.690, +0.690]; ΔSEN +0.012 pp; R04: ΔACC +0.345 pp; W/T/L 3/5/2; 95% CI [-0.345, +1.264]; ΔSEN +1.244 pp
+- GO_VS_SABER: **FAIL** — R05: ΔACC -0.115 pp; W/T/L 3/4/3; 95% CI [-1.379, +1.034]; ΔSEN -0.982 pp; R06: ΔACC +0.115 pp; W/T/L 3/3/4; 95% CI [-0.690, +0.920]; ΔSEN +0.488 pp
+- GO_MICCAI_CANDIDATE: **FAIL** — all frozen scientific gates, 180/180 readback audits, and 180/180 method audits
+
+报告：`/model/spromptgl/experiment/experiment60_dss_pen/results/report.md`。保留的全局预处理、transductive图和`val=test`协议限制了外部泛化解释；单seed配对统计仅作探索性证据。模型诊断不构成因果解释或经过验证的生物标志物。
+<!-- /EXPERIMENT60_DSS_PEN_2026-11-02 -->
+
+## Experiment 62 — E61-E2 Gate Initialization Sensitivity
+
+- Status: **COMPLETE_AUDITED**, 40/40 tasks and 40/40 independent checkpoint audits; GPU PPU-ZW810E, peak concurrency 10, no failed tasks. All 60 between-group/fold RNG comparisons matched over 21,416 shared epochs.
+- Sole model base: E61-E2 at commit `31ced6bdd279654154b90dc2ece056d8e435df2b`. All ten read-only epoch-10 warmups were SHA-checked and reused with model, optimizer and RNG states intact. E61-E2 and 53.3 third-group results were read-only.
+- Frozen sigmoid-space initialization, modality order `[PHENO, ANAT, FUNC, CORR]`: E62-E1 edge `[.5,.5,.5,.5]`, fusion `[.01,.01,.01,.99]`; E62-E2 edge `[.5,.5,.5,.5]`, fusion `[.001,.001,.001,.99]`; E62-E3 edge `[.4,.4,.4,.4]`, fusion `[.001,.001,.001,.99]`; E62-E4 edge `[.6,.6,.6,.6]`, fusion `[.001,.001,.001,.99]`. The gates remained trainable; only the two logit vectors were overwritten after warmup.
+- Historical references: 53.3 third group ACC/Hard-AUC/Probability-AUC/SPE/SEN = 92.0742/91.8653/93.6684/94.6392/89.0915%; E61-E2 = 91.4995/91.2480/93.8126/94.6485/87.8476%.
+- E62-E1: ACC 91.7294±3.3292%, Hard-AUC 91.4804±3.3144%, Probability-AUC 93.2417±3.0625%, SPE 94.6253±4.8724%, SEN 88.3354±4.6178%.
+- E62-E2: ACC 91.8443±2.9346%, Hard-AUC 91.6821±2.8919%, Probability-AUC 93.2010±3.0942%, SPE 93.7789±4.2653%, SEN 89.5854±3.4710%.
+- E62-E3: ACC 91.3845±2.8809%, Hard-AUC 91.1929±2.8559%, Probability-AUC 93.5756±2.6162%, SPE 93.7882±3.6583%, SEN 88.5976±3.3293%.
+- E62-E4: ACC 91.7294±2.9054%, Hard-AUC 91.5487±2.8374%, Probability-AUC 93.1600±2.9441%, SPE 93.7743±4.8934%, SEN 89.3232±3.5531%.
+- Best new ACC and Hard-AUC: E62-E2. Versus historical E61-E2 it gained +0.345 pp ACC (4/5/1 W/T/L; descriptive 95% CI -0.210,+0.900), +0.434 pp Hard-AUC (7/1/2; -0.088,+0.956), and +1.738 pp SEN (6/3/1; +0.064,+3.411), while Probability-AUC fell 0.612 pp and SPE fell 0.870 pp. Versus 53.3 E62-E2 remained lower by 0.230 pp ACC, 0.183 pp Hard-AUC, 0.467 pp Probability-AUC and 0.860 pp SPE; SEN was +0.494 pp. It did not beat the historical base as a full metric profile.
+- Gate means at the best checkpoints, modality order `[PHENO, ANAT, FUNC, CORR]`: edge/fusion E62-E1 `[.476,.473,.458,.549]` / `[.00958,.00978,.00932,.99183]`; E62-E2 `[.485,.485,.471,.546]` / `[.000962,.000979,.000944,.99175]`; E62-E3 `[.382,.383,.368,.450]` / `[.000955,.000977,.000940,.99182]`; E62-E4 `[.581,.583,.566,.645]` / `[.000948,.000964,.000921,.99193]`. Gate values retained much of their starting differences; 0.4/0.5/0.6 showed no monotonic diagnostic trend.
+- CORR had the largest weighted CADR message, approximately 0.39–0.41% of input norm; the weighted direct-neighbor-difference norm was about 218–1814 times the positive-plus-negative GCN norm. Turning all CADR off changed 1/1/2/2 predictions across the ten folds in E62-E1/E2/E3/E4; CORR-only off and direct-difference off had the same 1/1/2/2 flip totals. E62-E4 fixed score permutation changed five predictions. Thus direct differences dominated message magnitude, but CADR interventions had little hard-decision effect.
+- Judgment: **NO-GO as a reliable diagnostic improvement or new architecture.** E62-E2's small paired ACC/Hard-AUC gains versus E61-E2 coexist with lower Probability-AUC/SPE, overlap-zero descriptive intervals, and negligible intervention effects. No group surpassed 53.3 on ACC/Hard-AUC/Probability-AUC together. Single seed, overlapping folds, historical `val=test`, pre-CV RFE/standardization and the 871-node transductive graph constrain generalization claims.
+- Provenance: config SHA-256 `fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83`; published runner SHA-256 `c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc`. E62-E1 fold 1 used runner SHA `b3c23c4d5f6434c1db718d5a1958e418c388a82516655cd13f2d533016f0aeff` because the independent-audit gate comparison was corrected to tolerance after that task; training code, model and config were unchanged. Per-task hashes are in the manifest.
+- Results: `/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity`; report `results/report.md`, task/source/checkpoint hashes in `manifest.json`, fold metrics in `results/fold_metrics.csv`, paired results in `results/paired_comparisons.csv`, gate/message details in `results/gate_diagnostics.csv`, independent reads and interventions in `results/checkpoint_audit.csv`. Manifest status is `COMPLETE_AUDITED`, 40/40, with all result SHA values recorded.
+- Next: retain E62 as an initialization-sensitivity result. Further work should test whether a causal or ablation-defined CADR contribution remains under a validation protocol not selecting on the outer test fold, before investing in new gate designs.
+
+## Experiment 63 — CORR Fusion and Edge Gate Initialization Refinement
+
+- Status: COMPLETE_AUDITED; 30/30 trained and 30/30 independently audited.
+- Base: E62-E2 configuration on E61-E2 source commit `31ced6bdd279654154b90dc2ece056d8e435df2b`; all groups branched from the same ten SHA-verified E61 epoch-10 warmups used by E62-E2. E62-E2 best checkpoints, E61-E2, and 53.3 results are read-only references.
+- Sigmoid-space gate initialization in `[PHENO, ANAT, FUNC, CORR]` order: E63-G1 edge `[.50,.50,.50,.50]`, fusion `[.001,.001,.001,.999]`; E63-G2 edge `[.45,.45,.45,.45]`, same fusion; E63-G3 edge `[.55,.55,.55,.55]`, same fusion. Only these gate initial values differ between groups.
+- E63-G1: ACC 91.6144±3.0062%, Hard-AUC 91.4214±2.9596%, Probability-AUC 93.3886±3.0773%, SPE 93.7697±4.9973%, SEN 89.0732±4.0741%.
+- E63-G2: ACC 91.2696±2.6890%, Hard-AUC 91.0834±2.7421%, Probability-AUC 93.6322±2.9261%, SPE 93.5754±3.0556%, SEN 88.5915±4.3192%.
+- E63-G3: ACC 91.6144±3.2184%, Hard-AUC 91.4219±3.2192%, Probability-AUC 93.5200±3.0031%, SPE 93.9963±4.0740%, SEN 88.8476±4.3055%.
+- E63-G1 vs E62-E2 historical ACC -0.230 pp (1/6/3); full paired metrics and checkpoint interventions are in the report.
+- E63-G2 vs E62-E2 historical ACC -0.575 pp (0/5/5); full paired metrics and checkpoint interventions are in the report.
+- E63-G3 vs E62-E2 historical ACC -0.230 pp (0/8/2); full paired metrics and checkpoint interventions are in the report.
+- E63-G1 vs E62-E2: Hard-AUC -0.261 pp, Probability-AUC +0.188 pp, SEN -0.512 pp, SPE -0.009 pp; G2: ACC -0.575 pp, Hard-AUC -0.599 pp, Probability-AUC +0.431 pp, SEN -0.994 pp, SPE -0.204 pp; G3: Hard-AUC -0.260 pp, Probability-AUC +0.319 pp (descriptive paired 95% CI +0.048 to +0.590; 7/1/2 W/T/L), SEN -0.738 pp, SPE +0.217 pp. G3's ACC/Hard-AUC remain below E62-E2; no group improves the whole metric profile.
+- Mean final edge gates `[PHENO, ANAT, FUNC, CORR]`: G1 `[.4810,.4859,.4674,.5471]`, G2 `[.4323,.4305,.4181,.4992]`, G3 `[.5276,.5323,.5156,.5965]`. Final fusion gates remain near initialization: CORR `.99917–.99918`; other modalities `.00093–.00098`.
+- Fixed-checkpoint disabling all CADR, CORR CADR, or direct differences changes 1/2/3 hard predictions across ten folds for G1/G2/G3; score permutation changes 1/3/3. CORR weighted CADR message is about 0.4% of input norm and hard predictions show little dependence on the CADR path. All 30 pairwise RNG comparisons matched over 10,757 shared epochs.
+- Conclusion: **NO-GO as evidence of reliable diagnostic improvement**. G3 raises Probability-AUC versus E62-E2 but lowers ACC, Hard-AUC and SEN; G1 provides no overall gain from the CORR fusion start of 0.999. Results are exploratory under one seed, overlapping folds, `val=test`, pre-CV preprocessing and a transductive graph.
+- Read-only E62-E2 source/config/manifest/fold-metric SHA values were checked before training; manifest records the exact hashes. Results: `/model/spromptgl/experiment/experiment63_corr_gate_init_refinement`; report `results/report.md`; manifest `manifest.json`. No OOF was run. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 64 — CORR Adaptive Fusion Gate Initialization Sensitivity
+
+- Status: COMPLETE_AUDITED; 30/30 trained and 30/30 independently audited.
+- Base: E62-E2 configuration on E61-E2 source commit `31ced6bdd279654154b90dc2ece056d8e435df2b`; all groups branched from the same ten SHA-verified E61 epoch-10 warmups used by E62-E2. E62-E2 and E63-G1 best checkpoints, E61-E2, and 53.3 results are read-only references.
+- Sigmoid-space gate initialization in `[PHENO, ANAT, FUNC, CORR]` order: E64-G1 edge `[.50,.50,.50,.50]`, fusion `[.001,.001,.001,.995]`; E64-G2 edge `[.50,.50,.50,.50]`, fusion `[.001,.001,.001,.992]`; E64-G3 edge `[.50,.50,.50,.50]`, fusion `[.001,.001,.001,.993]`. Only the CORR fusion gate initial value differs between groups.
+- E64-G1: ACC 91.4995±2.7851%, Hard-AUC 91.2645±2.7442%, Probability-AUC 93.5413±2.4086%, SPE 94.1998±4.3526%, SEN 88.3293±3.5640%.
+- E64-G2: ACC 91.2696±3.3458%, Hard-AUC 90.9995±3.3631%, Probability-AUC 93.5018±3.2356%, SPE 94.6392±3.5168%, SEN 87.3598±4.3134%.
+- E64-G3: ACC 91.4995±3.0130%, Hard-AUC 91.2543±2.9998%, Probability-AUC 93.5647±2.9441%, SPE 94.4172±4.2557%, SEN 88.0915±4.1228%.
+- E64-G1 vs E62-E2 historical ACC -0.345 pp (1/5/4); full paired metrics and checkpoint interventions are in the report.
+- E64-G2 vs E62-E2 historical ACC -0.575 pp (0/6/4); full paired metrics and checkpoint interventions are in the report.
+- E64-G3 vs E62-E2 historical ACC -0.345 pp (1/5/4); full paired metrics and checkpoint interventions are in the report.
+- Relative to E62-E2, E64-G1/G2/G3 Hard-AUC changes are -0.418/-0.683/-0.428 pp, Probability-AUC +0.340/+0.301/+0.364 pp, SEN -1.256/-2.226/-1.494 pp, and SPE +0.421/+0.860/+0.638 pp. Probability-AUC paired intervals include zero for all three. The groups do not improve the complete metric profile or surpass the historical 53.3 base on ACC, Hard-AUC, and Probability-AUC.
+- Mean final CORR fusion gates are G1 0.99589, G2 0.99355, G3 0.99430; non-CORR gates stay near 0.00093–0.00097. CORR weighted CADR message is about 0.40% of input norm; direct differences dominate its signed-GCN message norm. Removing all CADR/CORR/direct contributions changes 0/1/3 hard predictions for G1/G2/G3; score permutation changes 0/2/3. All 30 paired RNG comparisons matched over 11,055 shared epochs.
+- Conclusion: no reliable diagnostic gain from the 0.992–0.995 CORR initialization range. G3 has the highest Probability-AUC and G1/G3 tie for ACC, but SEN remains below E62-E2. Interpret as single-seed initialization sensitivity, not an architectural improvement.
+- E62-E2 and E63-G1 read-only source/config/manifest/fold-metric hashes were checked before training; manifest records the exact hashes. Results: `/model/spromptgl/experiment/experiment64_corr_fusion_gate_sensitivity`; report `results/report.md`; manifest `manifest.json`. No OOF was run. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 65 — E62-E2 Weight-Decay Sensitivity
+
+- Status: COMPLETE_AUDITED; 30/30 trained and 30/30 independently audited.
+- Base: E62-E2 on the E61/E53.3 source chain, pinned to `31ced6bdd279654154b90dc2ece056d8e435df2b`; E61/E62 checkpoints are read-only references. Each group replays its own 10-epoch warmup from the same SHA-verified untrained fold anchor because the changed WD must apply from epoch 1.
+- Only optimizer WD changes from E62-E2. G1 CADR AdamW WD=0.1, GFR/CAM=0.11; G2 CADR AdamW WD=0.001, GFR/CAM=0.11; G3 GFR Adam WD=0.2, CAM=0.11, CADR AdamW=0.01. All gates remain E62-E2 values: edge `[.5,.5,.5,.5]`, adaptive fusion `[.001,.001,.001,.99]` in `[PHENO, ANAT, FUNC, CORR]` order.
+- E65-G1: ACC 91.5008±3.0987%, Hard-AUC 91.2651±3.1456%, Probability-AUC 93.5200±2.8186%, SPE 94.4265±3.2394%, SEN 88.1037±4.6438%.
+- E65-G2: ACC 91.7294±2.9950%, Hard-AUC 91.4778±2.9886%, Probability-AUC 93.5832±2.8210%, SPE 94.8520±3.3815%, SEN 88.1037±3.5966%.
+- E65-G3: ACC 91.4995±3.0565%, Hard-AUC 91.2651±3.0828%, Probability-AUC 93.6804±2.7211%, SPE 94.4265±3.3763%, SEN 88.1037±4.2350%.
+- E65-G1 vs E62-E2 historical ACC -0.344 pp (1/5/4); full paired metrics and checkpoint interventions are in the report.
+- E65-G2 vs E62-E2 historical ACC -0.115 pp (1/7/2); full paired metrics and checkpoint interventions are in the report.
+- E65-G3 vs E62-E2 historical ACC -0.345 pp (1/5/4); full paired metrics and checkpoint interventions are in the report.
+- All group warmups replayed the same ten-epoch random-operation trace as the E61 warmup reference (300/300 epoch traces). The three groups matched on all 10,386 pairwise common continuation epoch RNG snapshots. Training runner SHA: `20fe73063d650b6b5109a48edbd52b5f3e81021ffd6a6ba968c69c6b4db4751d`; report/finalizer SHA: `30f0e2dbcc1fda2bb07e192ba33a51ad8b62a1a40797edca6fdea17602e8a666`; each task/checkpoint stores its own training SHA.
+- E65-G2 vs E62-E2 ACC -0.115 pp (1/7/2), SEN -1.482 pp; higher SPE does not offset that ASD sensitivity decrease.
+- E65-G1/G2/G3 ten-fold means and SDs are listed above. Paired differences versus E62-E2 are recorded in `results/paired_comparisons.csv`. Group warmup, continuation, and checkpoint SHAs plus RNG comparisons are in `/model/spromptgl/experiment/experiment65_wd_sensitivity/manifest.json`; checkpoint readback and intervention results are in `results/checkpoint_audit.csv`.
+- E62-E2, E61-E2, and 53.3 are read-only references. Historical `val=test`, pre-CV preprocessing, and the transductive graph remain; this is exploratory, not unbiased external validation.
+- Results: `/model/spromptgl/experiment/experiment65_wd_sensitivity`; report `results/report.md`; manifest `manifest.json`.
+
+## Experiment 66 — E62-E2 Multi-seed Robustness
+
+- Status: COMPLETE_AUDITED; 50/50 trained and 50/50 independently audited.
+- Base: audited E62-E2, with E61/E53.3 source lineage `31ced6bdd279654154b90dc2ece056d8e435df2b`. Five groups use requested training RNG seeds 1, 2, 3, 2020 and 2026; E62-E2 gates, optimization, losses, folds, pair cache and checkpoint protocol remain fixed.
+- Every fold/seed independently replayed the ten-epoch warmup from the same SHA-verified anchor parameters. Requested seed offsets the E61 per-fold construction seed; common parameter hashes match within fold, while initial RNG hashes are distinct and reproducible. CADR relation-model initialization and pair cache remain fixed. No per-epoch reseeding or E62 best-checkpoint fine-tuning was used.
+- E66-S1 (seed=1): ACC 91.8443±2.6508%, Hard-AUC 91.5625±2.6336%, Probability-AUC 93.4891±2.7033%, SPE 95.2775±3.4660%, SEN 87.8476±3.3975%; ACC change vs E62-E2 -0.000 pp (1/8/1).
+- E66-S2 (seed=2): ACC 91.7294±2.8596%, Hard-AUC 91.5643±2.8384%, Probability-AUC 93.2326±3.3309%, SPE 93.5615±4.6416%, SEN 89.5671±4.3208%; ACC change vs E62-E2 -0.115 pp (1/7/2).
+- E66-S3 (seed=3): ACC 91.7294±2.9950%, Hard-AUC 91.5439±2.9605%, Probability-AUC 93.0725±3.0079%, SPE 93.9963±4.0691%, SEN 89.0915±3.5263%; ACC change vs E62-E2 -0.115 pp (0/9/1).
+- E66-S2020 (seed=2020): ACC 91.3845±3.0154%, Hard-AUC 91.1347±3.0081%, Probability-AUC 93.3587±3.3137%, SPE 94.4218±3.5259%, SEN 87.8476±3.5683%; ACC change vs E62-E2 -0.460 pp (1/5/4).
+- E66-S2026 (seed=2026): ACC 91.7294±2.7174%, Hard-AUC 91.5518±2.6926%, Probability-AUC 93.1173±2.9231%, SPE 93.7743±4.5082%, SEN 89.3293±4.0216%; ACC change vs E62-E2 -0.115 pp (2/5/3).
+- Manifest records source/config/reference/checkpoint SHA, per-fold initial parameters/RNG, warmup state, split/pair identity and continuation traces. Source SHA `78f11d711234874e87783a6789adff2ab9c86e7635f82dffb14a03db93dfa66f`, config SHA `dccb65032ba1cb74abb876218bd211f836fb04acbd2c078352c6ae7f7a32a7ab`.
+- Historical `val=test`, pre-CV preprocessing, and the transductive graph remain; this is exploratory robustness evidence, not unbiased external validation.
+- Results: `/model/spromptgl/experiment/experiment66_e62_multiseed`; report `results/report.md`; manifest `manifest.json`.
+
+## Experiment 70 — GCDSI
+
+- 状态：`COMPLETE_AUDITED`；30/30正式折完成，30/30最佳checkpoint独立读回通过；10/10初始化与共享warmup来源审计通过。
+- 结论：**NO-GO**；当前最佳组为 E70-G2（ACC 91.499±2.878%）。真实BrainPrompt文本相对匿名Token的ΔACC为+0.575 pp，W/T/L 5/5/0。
+- 53.3第三组基座 ACC/Hard-AUC/Prob-AUC/SEN/SPE：92.074/91.865/93.668/89.091/94.639%。
+- 三组 ACC/Hard-AUC/Prob-AUC/SEN/SPE（% mean±population SD）：
+  - E70-G1: 91.385±2.971 / 91.137±2.945 / 93.117±2.810 / 87.848±3.199 / 94.426±3.645%.
+  - E70-G2: 91.499±2.878 / 91.316±2.860 / 93.537±2.943 / 88.848±3.138 / 93.784±3.425%.
+  - E70-G3: 90.810±3.005 / 90.653±2.910 / 93.417±2.805 / 88.823±3.930 / 92.484±5.596%.
+- 配对ACC相对基座：E70-G1 ΔACC -0.690 pp (0/6/4 W/T/L)；E70-G2 ΔACC -0.575 pp (0/5/5 W/T/L)；E70-G3 ΔACC -1.264 pp (0/3/7 W/T/L)。
+- GCDSI门控残差、注意力、W_f梯度及固定checkpoint干预结果见实验报告；报告包含站点、年龄、FD与影像质量特征关联诊断。
+- 路径：`/model/spromptgl/experiment/experiment70_gcdsi/results/report.md`；清单：`/model/spromptgl/experiment/experiment70_gcdsi/manifest.json`。
+- 局限与下一步：历史`val=test`、CV前RFE/标准化和871节点transductive图限制泛化解释；按冻结判据不追加搜索，后续仅在结论允许时开展多seed、严格验证和组件消融。
+<!-- EXPERIMENT70_GCDSI_2026-11-03 -->
+
+## Experiment 67 — E62-E2 Direct Scale and Gate LR Sensitivity
+
+- Status: COMPLETE_AUDITED; 40/40 trained and 40/40 independently audited.
+- Base: E62-E2 at `ed46fc671ebc45188caafd0546222a32381d477f`, using exact E61 epoch-10 warmups from `31ced6bdd279654154b90dc2ece056d8e435df2b`; reference checkpoints and metrics are read-only.
+- E67-G1: ACC 91.7294±2.9950%, Hard-AUC 91.5253±2.9787%, Probability-AUC 93.3984±2.8284%, SPE 94.2091±3.9922%, SEN 88.8415±3.8630%.
+- E67-G2: ACC 91.6144±3.0498%, Hard-AUC 91.4617±3.0029%, Probability-AUC 93.2295±3.1259%, SPE 93.3441±4.9921%, SEN 89.5793±4.1317%.
+- E67-G3: ACC 91.4995±3.1835%, Hard-AUC 91.3686±3.0978%, Probability-AUC 93.4743±2.8226%, SPE 92.9140±5.0564%, SEN 89.8232±3.0597%.
+- E67-G4: ACC 91.6144±2.8713%, Hard-AUC 91.3763±2.8325%, Probability-AUC 93.4416±2.8200%, SPE 94.4172±4.1480%, SEN 88.3354±3.3561%.
+- E67-G1 vs E62-E2 historical ACC -0.115 pp (1/7/2); paired details and mechanism diagnostics are in the report.
+- E67-G2 vs E62-E2 historical ACC -0.230 pp (2/4/4); paired details and mechanism diagnostics are in the report.
+- E67-G3 vs E62-E2 historical ACC -0.345 pp (1/5/4); paired details and mechanism diagnostics are in the report.
+- E67-G4 vs E62-E2 historical ACC -0.230 pp (1/6/3); paired details and mechanism diagnostics are in the report.
+- Group changes: G1/G2 direct_scale=0.04/0.08; G3 adaptive_gate_logits LR=0.005 with all other CADR parameters at 0.001; G4 CORR fusion gate initialization=0.95. All other settings follow E62-E2.
+- None exceeds the E62-E2 mean ACC or Hard-AUC. G3 has the highest Probability-AUC (93.4743%) and SEN (89.8232%) among the new groups but lower ACC, Hard-AUC and SPE than E62-E2; all paired Probability-AUC intervals include zero.
+- Mean final CORR fusion gates G1–G4: 0.99193/0.99199/0.99577/0.95807. Weighted CORR CADR message/input ratios: 0.7846%/1.5109%/0.4028%/0.3946% versus E62-E2 0.4049%. All-CADR/CORR/direct ablations changed 2/4/2/0 hard predictions; larger message magnitude did not translate to a consistent classification gain.
+- RNG audit: all 60 same-fold group comparisons pass exactly across 21,347 shared-epoch snapshots. Conclusion: NO-GO for claiming a reliable diagnostic improvement; treat this as initialization/training sensitivity under one seed and overlapping folds.
+- Results: `/model/spromptgl/experiment/experiment67_e62_direct_scale_gate_lr`; report `results/report.md`; manifest `manifest.json`. All 10 E61 epoch-10 warmups were SHA-verified; no OOF was run. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 68 — E62-E2 Bounded Direct Fusion Gate
+
+- Status: COMPLETE_AUDITED; 10/10 trained and 10/10 independently audited.
+- Base: E62-E2, source commit `ed46fc671ebc45188caafd0546222a32381d477f`; the single E68 group branched from the ten SHA-verified E61 epoch-10 warmups. E62-E2 and 53.3 results are read-only references.
+- E68-G1: ACC 91.4995±3.2655%, Hard-AUC 91.3155±3.2627%, Probability-AUC 93.5695±3.1557%, SPE 93.7835±4.0275%, SEN 88.8476±4.1651%.
+- E68-G1 vs E62-E2 historical ACC -0.345 pp (1/6/3); paired details and gate/intervention evidence are in the report.
+- RNG audit against read-only E62-E2: exact `rng_before`, `rng_after_train`, and `rng_after_eval` matches in all 3,463 shared fold-epochs; zero mismatches.
+- CORR fusion gate reached its upper bound in all folds and FUNC reached its lower bound in all folds; disabling all CADR, CORR CADR, or direct difference changed one hard prediction total per intervention across ten folds. The weighted CORR CADR norm was 0.410% of input on average, dominated by direct difference. Verdict: NO-GO as a performance improvement; bounded parameterization did not avoid final boundary saturation.
+- Results: `/model/spromptgl/experiment/experiment68_e62_bounded_fusion_gate`; report `results/report.md`; manifest `manifest.json`. E61 epoch-10 warmups were SHA-verified and reused; no OOF was run. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 71 — GCDER Graph-Conditioned Dual-Disease Evidence Retrieval
+
+- 状态：`COMPLETE_AUDITED`；三组30/30折完成，失败0；30/30最佳checkpoint独立读回与指标复算PASS；10/10原模型初始化与E59共享warmup PASS；fold 1两步连续训练/断点恢复模型、优化器、RNG和预测逐位一致。
+- 唯一基座：`CADR_WD_0p01_GFR_WD_0p11`（53.3第三组）。已核对10折manifest、任务、CSV、checkpoint SHA和历史审计；不曾把历史best参数作为训练起点。53.3 CADR关系缓存10 JSON+10 NPZ在`/data`与`/model`之间20/20 SHA一致并直接复用。E59 CAM位置Hook只捕获同次CAM前向输出并保留梯度；E70只读核对warmup/prompt来源，未读其最佳模型参数。
+- G1 GCDER-BRAINPROMPT-2：ACC/Hard-AUC/Prob-AUC/SEN-ASD/SPE-TD = 89.0857±4.4665 / 88.8736±4.5315 / 92.3851±3.7013 / 86.1098±6.2718 / 91.6374±4.6040%。
+- G2 GCDER-SPROMPTGL-8：88.9760±6.1759 / 88.8934±6.0034 / 91.9330±4.6396 / 87.6341±5.9510 / 90.1526±9.0195%。
+- G3 GCDER-ANONYMOUS-2：88.6272±3.2401 / 88.4731±3.2260 / 91.7517±2.9519 / 86.5854±4.2213 / 90.3608±4.4704%。均为十折population SD；冻结基座对应值为92.0742±2.8427 / 91.8653±2.8348 / 93.6684±3.2619 / 89.0915±3.5263 / 94.6392±3.5168%。
+- 配对ACC相对基座：G1 -2.9885 pp (0/2/8胜平负)，G2 -3.0982 pp (0/5/5)，G3 -3.4470 pp (0/1/9)。Hard-AUC配对差：G1 -2.9918 pp (1/1/8)，G2 -2.9720 pp (2/3/5)，G3 -3.3923 pp (1/0/9)。Probability-AUC配对差：G1 -1.2833 pp (2/0/8)，G2 -1.7354 pp (2/0/8)，G3 -1.9168 pp (0/0/10)。所有10折逐折差值保存在paired_comparisons.csv。
+- G1相对G2：ACC +0.1097 pp (3/2/5)，Hard-AUC -0.0198 pp (4/0/6)，Probability-AUC +0.4521 pp (5/0/5)。G1相对匿名G3：ACC +0.4585 pp (5/3/2)，Hard-AUC +0.4005 pp (6/0/4)，Probability-AUC +0.6335 pp (7/0/3)；真实文本有小幅相对匿名优势，但两组均明显低于基座。
+- 机制诊断（全图节点，26,130 patient-fold行）：G1/G2/G3平均|A_ASD-A_TD|为0.1819/0.2526/0.2068；平均|Delta-s|为9.8738/13.1502/12.8099；平均|beta*Delta-s|为0.6409/0.9855/0.9273；beta平均绝对值为0.0594/0.0666/0.0660。GCDER在各外层测试折改变预测约6.78%/9.99%/8.50%。注意力、疾病证据差和决策修正均非恒定塌缩。
+- GFR条件项参与了训练与推理：GFR投影相对初始更新范数均值G1/G2/G3为0.520/0.633/0.524；固定checkpoint将GFR条件输入置零后，测试患者平均注意力改变量0.133/0.128/0.145、margin改变量0.460/1.546/0.570，预测翻转约6.55%/9.65%/5.63%。这是固定checkpoint敏感性检查，不是重训消融。各组文本投影、GFR投影、K/V、共享Score、beta和CAM/GFR回传梯度快照均有限且非零。
+- 预注册判定：**NO-GO**。三组没有超过基座，真实文本相较匿名虽略有改善，未满足对基座收益条件。不开新组、不按这些折追加调参。后续若继续该方向，应先提出独立机制改动和新验证设计；当前结果不支持MICCAI 2027性能或创新性主张。
+- 限制：延续历史`val=test`选checkpoint、外层CV前RFE/标准化和871节点transductive图；结果为同协议探索性比较，不能视作无偏外部测试。PHENO含人口学/站点信息；ANAT/FUNC为质量相关特征，不解释为病灶或真实神经时序。站点与质量特征相关性仅是描述性检查。
+- 路径：`/model/spromptgl/experiment/experiment71_gcder/`；报告`results/report.md`；逐折结果`results/fold_metrics.csv`；逐折配对`results/paired_comparisons.csv`；全图机制记录`results/mechanism.csv`；独立审计`results/checkpoint_audit.csv`；状态`manifest.json`。由于主路径创建目录时报OSSFS `Input/output error`，实验落在`/model`回退路径。最终保护清单1678项SHA一致；根模型源码、原始输入、53.3/E59/E70和历史实验均未被修改。
+<!-- EXPERIMENT71_GCDER_2026-11-03 -->
+
+## Experiment 70.1 — DCC-GCDSI
+
+- 状态：`COMPLETE_AUDITED`；30/30正式折完成，30/30最佳checkpoint独立读回通过；初始化和warmup parity 10/10通过。
+- 结论：**NO-GO**；最佳组 E70.1-G2，ACC 91.844±3.023%；基座ACC 92.074±2.843%。
+- 三组ACC / Hard-AUC / Probability-AUC / SEN / SPE（% mean±population SD）：
+  - E70.1-G1: 91.501±3.012 / 91.387±2.933 / 93.395±3.279 / 90.073±3.356 / 92.701±4.973.
+  - E70.1-G2: 91.844±3.023 / 91.682±2.993 / 93.743±2.986 / 89.585±3.462 / 93.779±4.047.
+  - E70.1-G3: 91.499±2.878 / 91.296±2.820 / 93.727±2.704 / 88.823±3.938 / 93.770±4.989.
+- 配对ΔACC相对53.3基座：E70.1-G1 -0.573 pp (0/6/4 W/T/L); E70.1-G2 -0.230 pp (1/6/3 W/T/L); E70.1-G3 -0.575 pp (0/5/5 W/T/L)。
+- 真实文本相对匿名Bank：G1-G3 ΔACC +0.001 pp，W/T/L 2/6/2；统计仅为单seed探索性描述。
+- 10/10折初始化、warmup、数学性质和active repeat/resume预检通过；逐患者逐模态残差上界与图条件敏感性见报告。
+- 报告：`/model/spromptgl/experiment/experiment70_1_dcc_gcdsi/results/report.md`；原数据和模型源码只读。保留历史val=test、CV前预处理和871节点transductive局限；下一步应使用多seed、严格嵌套/外部验证并预注册组件分析。
+<!-- EXPERIMENT70_1_DCC_GCDSI_2026-11-03 -->
+
+## Experiment 69 — E2E Soft Edge Selection
+
+- Status: COMPLETE_AUDITED; 20/20 trained and 20/20 independently audited.
+- Base: E62-E2 at `ed46fc671ebc45188caafd0546222a32381d477f`; both groups branched from SHA-verified E61 epoch-10 warmups at `31ced6bdd279654154b90dc2ece056d8e435df2b`. Historical references are read-only.
+- E69-CONTROL: ACC 91.8443±2.9346%, Hard-AUC 91.6821±2.8919%, Probability-AUC 93.2010±3.0942%, SPE 93.7789±4.2653%, SEN 89.5854±3.4710%.
+- E69-SOFTEDGE: ACC 91.6144±3.0928%, Hard-AUC 91.3901±3.0857%, Probability-AUC 93.5741±2.8694%, SPE 94.4265±3.7570%, SEN 88.3537±3.9618%.
+- E69-CONTROL vs E62-E2 historical ACC +0.000 pp (0/10/0); full paired metrics and edge mechanism evidence are in the report.
+- E69-SOFTEDGE vs E62-E2 historical ACC -0.230 pp (0/8/2); full paired metrics and edge mechanism evidence are in the report.
+- Control versus soft-edge RNG snapshots: 3614/3614 exact shared epoch states across all folds (fold-level shared epochs: 297–414).
+- Results: `/model/spromptgl/experiment/experiment69_e2e_soft_edge`; report `results/report.md`; manifest `manifest.json`. Only E69-SOFTEDGE changes the edge threshold masks. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 69.1 — E62-E2 Zero Non-CORR Fusion Gate
+
+- Status: `COMPLETE_AUDITED`; 10/10 training folds completed and 10/10 best checkpoints independently read back successfully; no failed tasks; peak concurrency 10.
+- Base: E62-E2 read-only runner SHA `c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc`, E61 commit `31ced6bdd279654154b90dc2ece056d8e435df2b`; all ten E61 epoch-10 warmups were SHA-verified and reused. E62-E2 best checkpoints were not used as training starts.
+- Requested sigmoid-space adaptive fusion gates: `[0, 0, 0, 0.99]` in `[PHENO, ANAT, FUNC, CORR]` order; effective trainable initialization: `[1e-8, 1e-8, 1e-8, 0.99]`. Exact sigmoid zero would require an infinite logit and remove the gate gradient, so the finite epsilon is recorded explicitly.
+- E69.1-G1 results (% mean±population SD): ACC `91.4995±3.1418`, Hard-AUC `91.2862±3.1164`, Probability-AUC `93.6782±2.9572`, SPE-TD `93.9870±4.5327`, SEN-ASD `88.5854±4.0507`.
+- Relative to read-only E62-E2: ACC `-0.345` pp (1/5/4 W/T/L), Hard-AUC `-0.396` pp (1/4/5), Probability-AUC `+0.477` pp (7/1/2), SPE `+0.208` pp (3/6/1), SEN `-1.000` pp (1/5/4); all descriptive paired 95% intervals include zero. Relative to 53.3: ACC `-0.575` pp and Hard-AUC `-0.579` pp.
+- Mechanism: final non-CORR adaptive gates remain approximately `1.037e-8`, while CORR averages `0.9918`; final edge gates average PHENO/ANAT/FUNC/CORR `0.5000/0.5000/0.5000/0.5487`. CADR/input contribution averages approximately `0/0/0/0.393%` for PHENO/ANAT/FUNC/CORR. This confirms that the requested initialization effectively removes non-CORR disease-graph messages while retaining the CORR path.
+- Fixed checkpoint interventions: all-CADR-off, CORR-off and direct-off each changed two hard predictions across ten folds with zero mean ACC change; probability changes were small. The result is **NO-GO as an improvement over E62-E2**. It supports the narrower mechanism diagnosis that this endpoint is already CORR-dominated and non-CORR disease-graph routes do not provide measurable added classification value under this protocol.
+- Limitations: single seed, overlapping outer folds, historical `val=test` checkpoint selection, pre-CV preprocessing and 871-node transductive graph; this is exploratory evidence, not unbiased external generalization.
+- Results: `/model/spromptgl/experiment/experiment69_1_zero_noncor_fusion_gate`; report `results/report.md`; manifest `manifest.json`; fold metrics `results/fold_metrics.csv`; gate diagnostics `results/gate_diagnostics.csv`; independent audit `results/checkpoint_audit.csv`.
+
+## Experiment 72 — MGDSS 多粒度疾病语义监督
+
+- 状态：`COMPLETE_AUDITED`；6组×10折共60/60训练完成，失败0；60/60最佳checkpoint独立读回、原分类路径复算及SHA审计PASS。10/10初始化parity、10/10 E59 warmup parity及P1-P20预检通过；fold1连续训练/重复训练/断点恢复通过。
+- 唯一基座为Experiment 53.3第三组`CADR_WD_0p01_GFR_WD_0p11`。保持CADR-GFR→CAM→原144维OutputLayer不变，辅助损失仅读同次CAM `[871,4,36]` 输出，推理不使用辅助头。正式任务未用测试标签计算辅助损失。
+- 六组指标均为百分比、10折mean±population SD，顺序为ACC / Hard-AUC / Probability-AUC / SEN-ASD / SPE-TD：G1 `91.6144±3.0928 / 91.5115±3.0295 / 93.8176±2.9709 / 90.3171±2.8515 / 92.7058±4.4823`；G2 `91.2709±2.9237 / 91.0439±2.9745 / 93.1593±3.2785 / 88.0915±4.7030 / 93.9963±3.5967`；G3 `91.3845±2.8809 / 91.1449±2.8447 / 93.4602±3.2230 / 88.0854±3.8476 / 94.2044±4.4368`。
+- G4 `91.8443±3.0667 / 91.7219±2.9656 / 93.5581±2.9999 / 90.3171±2.8515 / 93.1267±5.1258`；G5 `91.9579±3.0034 / 91.8010±2.9768 / 93.3402±2.9864 / 89.8232±3.9435 / 93.7789±4.4814`；G6 `91.9592±2.8684 / 91.7403±2.8413 / 93.4802±2.8486 / 88.8415±3.5416 / 94.6392±3.8838`。BA、ASD-F1及逐折混淆矩阵在`summary.csv`和`fold_metrics.csv`。
+- 对53.3基座ACC配对Δ及W/T/L：G1 `-0.4598 pp (0/6/4)`；G2 `-0.8033 (0/3/7)`；G3 `-0.6897 (0/4/6)`；G4 `-0.2299 (1/6/3)`；G5 `-0.1162 (1/7/2)`；G6 `-0.1149 (1/7/2)`。13组注册配对比较和全部逐折Δ均在`paired_comparisons.csv`。
+- 关键成对结果：G1-G5 `-0.3435 pp (0/7/3)`、G2-G6 `-0.6883 (0/4/6)`，没有多粒度收益；G1-G3 `+0.2299 (3/6/1)`、G2-G4 `-0.5734 (0/5/5)`；G1-G2 `+0.3435 (5/3/2)`、G3-G4 `-0.4598 (0/7/3)`、G5-G6 `-0.0013 (3/4/3)`。
+- 文本来自BrainPrompt官方两条ABIDE描述及SPromptGL原始8条描述（保留`Nromal`），统一使用已核SHA的冻结CLIP RN50。两类Bank原始余弦：BrainPrompt `0.9847826`，SPromptGL `0.9070364`；共享CPU float64文本张成基几何误差<`1.2e-16`。BrainPrompt tau=1原型几何使任一类别理论Softmax概率仅可在`0.4565–0.5435`范围；该温度未作事后调整。E59已经测试BrainPrompt-style及SABER-style全局监督，两者ACC均91.8443%，故G5/G6是控制变量再验证，不是首次提出疾病类别监督。
+- BrainPrompt原型CE与SABER式损失在tau=1的损失差为0，最大梯度差`1.73e-18`；本轮实际比较相同原型分类损失的tau=1和tau=0.1。初始辅助/CAM分类梯度比校准为`0.10000000`（60/60）；六组平均alpha为G1/G2/G3/G4/G5/G6=`1.02675/0.09905/0.41151/0.03650/0.60358/0.05855`。CAM总辅助梯度余弦均值依次`+0.3861/+0.4270/+0.4043/+0.4470/+0.2991/+0.3345`，每组负余弦0/10，未见负向冲突折。
+- 细粒度训练正确率中CORR位置最高；G1-G4依次为`95.8/93.7/94.0/88.9%`。OOF CORR疾病相似度正确率为`88.7/88.5/88.9/86.2%`；这些CAM位置已跨模态交互，不能解释为独立原始模态证据。描述性global margin与site/age/sex/ANAT质量/FUNC质量运动指标平均绝对Spearman范围为`0.028–0.034/0.022–0.029/0.017–0.058/0.011–0.024/0.055–0.090`，最大单特征关联为G4 `func_mean_fd r=-0.202`。
+- 预注册判定：**NO-GO**。没有组达到相对基座ACC至少+0.5 pp且至少6折胜的性能门；G1/G5和G2/G6均不支持细粒度增益。医学文本是否优于匿名/普通额外标签监督未由本实验识别。保留历史`val=test`选checkpoint、CV前RFE/标准化及871节点transductive图限制。
+- 结果目录：`/model/spromptgl/experiment/experiment72_mgdss/`；正式报告`results/report.md`；折指标、摘要、配对比较、机制分析、审计分别见`results/fold_metrics.csv`、`results/summary.csv`、`results/paired_comparisons.csv`、`results/mechanism.csv`、`results/audit_status.json`。因`/data/.../experiment/`出现OSS I/O错误，本轮使用`/model`独立回退目录。根源码、数据及1739项受保护历史文件SHA审计均PASS，正式训练config/runner/模型辅助代码未变。
+<!-- EXPERIMENT72_MGDSS_2026-11-03 -->
+
+## Experiment 69.2 — E62-E2 CORR Fusion Gate Near One
+
+- Status: COMPLETE_AUDITED; 10/10 trained and 10/10 independently audited.
+- Base: E62-E2, read-only source SHA `c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc`; the single group branched from ten SHA-verified E61 epoch-10 warmups. E62-E2, 53.3 and E69.1 results are read-only.
+- Requested adaptive gates: PHENO/ANAT/FUNC=0, CORR=1; finite trainable sigmoid initialization: 1e-8 and 0.999999. All edge gates remain 0.5.
+- E69.2-G1: ACC 91.7294±2.6684%, Hard-AUC 91.6207±2.6471%, Probability-AUC 93.2334±3.2043%, SPE 93.1499±3.6942%, SEN 90.0915±3.4644%.
+- E69.2-G1 vs E62-E2 historical ACC -0.115 pp (1/7/2); vs E69.1 ACC +0.230 pp (3/5/2).
+- Results: `/model/spromptgl/experiment/experiment69_2_corr_one_fusion_gate`; report `results/report.md`; manifest `manifest.json`. E61 epoch-10 warmups were SHA-verified and reused; no OOF was run. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 69.3 - Selected Test Rows Added to Matching Fold Training
+
+- Status: COMPLETE_AUDITED; 10/10 trained and 10/10 independently audited.
+- Base: E62-E2; unchanged edge gates `[0.5, 0.5, 0.5, 0.5]` and adaptive gates `[0.001, 0.001, 0.001, 0.99]`. Each fold branched from its SHA-verified E61 epoch-10 warmup.
+- Intentional overlap: fold 2 adds rows 377, 407, 540, 611, 681, 779, 784; fold 3 adds rows 388, 413, 607, 674, 697, 778, 781; fold 8 adds rows 430, 459, 547, 723, 756, 819. The listed rows remain in their fold's test set, so affected-fold metrics are contaminated and cannot be interpreted as held-out generalization.
+- E69.3-G1: ACC 93.4535±1.6359%, Hard-AUC 93.2902±1.6281%, Probability-AUC 94.7398±1.8648%, SPE 95.5134±3.0813%, SEN 91.0671±2.9947%.
+- E69.3-G1 vs E62-E2 aggregate ACC +1.609 pp (3/7/0); this comparison is descriptive only because of the train/test overlap.
+- RNG: 3730/3730 common epoch triplets match the E62-E2 SHA trace; the seven untouched folds also reproduce all seven metrics exactly (max absolute difference 0).
+- Affected-fold ACC changes versus E62-E2: fold 2 +5.747 pp; fold 3 +5.747 pp; fold 8 +4.598 pp. These gains are expected to be contaminated by training on the same held-out labels.
+- Results: `/model/spromptgl/experiment/experiment69_3_test_samples_in_training`; report `results/report.md`; manifest `manifest.json`. The original ten-fold split and all E62-E2 settings were retained; local pair generation did not consume the main RNG. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 69.3-G2 - Two Selected Rows Added to Fold 2 Training
+
+- Status: COMPLETE_AUDITED; 10/10 trained and 10/10 independently audited.
+- Base: E62-E2; unchanged edge gates `[0.5, 0.5, 0.5, 0.5]` and adaptive gates `[0.001, 0.001, 0.001, 0.99]`. Each fold branched from its SHA-verified E61 epoch-10 warmup.
+- Intentional overlap (2 rows): fold 2: 377, 407. These rows remain in their fold's test set, so the affected-fold metrics are contaminated and cannot be interpreted as held-out generalization.
+- E69.3-G2: ACC 92.0742±2.7482%, Hard-AUC 91.8995±2.7186%, Probability-AUC 93.3759±2.9908%, SPE 94.2137±3.9815%, SEN 89.5854±3.4710%.
+- E69.3-G2 vs E62-E2 aggregate ACC +0.230 pp (1/9/0); this comparison is descriptive only because of the train/test overlap.
+- RNG: 3750/3750 common epoch triplets match the E62-E2 SHA trace; the 9 untouched folds also reproduce all seven metrics exactly (max absolute difference 0).
+- Affected-fold ACC changes versus E62-E2: fold 2 +2.299 pp. These changes reflect supervised exposure to the same held-out labels.
+- Results: `/model/spromptgl/experiment/experiment69_3_g2_two_rows`; report `results/report.md`; manifest `manifest.json`. The original ten-fold split and all E62-E2 settings were retained; local pair generation did not consume the main RNG. Historical `val=test`, pre-CV preprocessing, and transductive graph remain.
+
+## Experiment 72.1 — E69.3-G2 MGDSS Diagnostic
+
+- Status: `COMPLETE_AUDITED`; 60/60 group-fold tasks completed, 0 failures, 60/60 independent checkpoint reads passed. E69.3-G2 initialization, E61 epoch-10 warmup, optimizer/gate state and split parity passed 10/10 folds. Exact common-epoch RNG trace parity: 21,498/21,498. Protected source/data/history SHA audit: PASS, 1,855 files, no changes.
+- Base: immutable E69.3-G2 commit `41dbcb45a0273673857051d8e821b8c3315eef00`; reused E61 `forward_e2_state` and E69.3 `apply_fold_specific_training_additions`. Fold 2 adds 1-based rows 377 and 407 to training while retaining them in test. Their labels entered base classification, semantic loss, alpha calibration and test-ACC checkpoint selection. This is a label-exposure diagnostic, not a generalization estimate.
+- Results (mean±population SD, %; columns ACC / Hard-AUC / Prob-AUC / SEN / SPE): G1 `91.6144±3.0928 / 91.3449±3.1326 / 93.5796±3.1493 / 87.6159±4.4998 / 95.0740±3.0461`; G2 `91.8456±2.8422 / 91.6549±2.8624 / 93.7021±2.7258 / 89.0915±4.0005 / 94.2183±3.2023`; G3 `91.9592±3.0034 / 91.8252±2.9378 / 93.5612±2.9438 / 90.3110±3.9653 / 93.3395±5.2721`; G4 `91.9592±2.8219 / 91.6807±2.8693 / 93.9136±2.8305 / 88.0793±4.0074 / 95.2821±2.8803`; G5 `91.8443±2.5491 / 91.6574±2.5272 / 93.8600±2.5634 / 89.3232±3.7249 / 93.9917±4.0891`; G6 `92.0755±2.5988 / 91.9633±2.5482 / 93.4338±3.3954 / 90.5732±3.1031 / 93.3534±4.1622`.
+- ACC paired Δ vs E69.3-G2 and W/T/L: G1 `-0.4598 pp (1/5/4)`; G2 `-0.2286 (0/8/2)`; G3 `-0.1149 (2/5/3)`; G4 `-0.1149 (2/5/3)`; G5 `-0.2299 (1/6/3)`; G6 `+0.0013 (2/6/2)`. On the nine folds without index overlap, group mean ΔACC was G1 `-0.2554`, G2 `-0.2540`, G3 `0.0000`, G4 `-0.2554`, G5 `-0.2554`, G6 `-0.1263` pp; no consistent gain.
+- Key comparisons: G1 vs G5 `-0.2299 pp (3/3/4)` and G2 vs G6 `-0.2299 (1/6/3)`, with no evidence for multi-grain benefit. G1 vs G3 `-0.3448 (1/5/4)`; G2 vs G4 `-0.1136 (3/3/4)`. Temperature contrasts G1 vs G2 `-0.2312 (2/5/3)`, G3 vs G4 `0.0000 (1/8/1)`, G5 vs G6 `-0.2312 (2/4/4)`. Text prototype cosines were BrainPrompt-2 `0.9847826` and SPromptGL-8 `0.9070364`.
+- Fold-2 exposed rows: row 377 true ASD and row 407 true TD; both were correctly predicted by E69.3-G2 and all six groups. E69.3-G2 probabilities were P(ASD)=0.5771 for row 377 and P(TD)=0.7726 for row 407. E72.1 group probabilities, full and row-excluded fold-2 metrics, changed margins, class weights and pair SHA are in `results/fold2_exposure.csv` and `results/fold2_metrics.csv`; row exclusion remains post-hoc and leaky.
+- Initial auxiliary/CAM gradient ratio calibrated to `0.100000` in every group; mean best-epoch ratios ranged `0.0723–0.2187`. No negative total CAM/classification gradient cosine appeared in 60 group-folds. CORR had the strongest fine-grain similarity accuracy (91.0–94.2% train; 86.2–90.6% OOF diagnostic), while PHENO/ANAT/FUNC were lower. Best adaptive CORR gates remained about `0.9916–0.9920`; weighted CADR CORR message norms were nonzero, but E69.3's prior CADR-off intervention left hard predictions unchanged, so numerical contribution does not establish diagnostic benefit. Site/age/sex/quality correlations are descriptive; strongest observed association was `func_mean_fd` in G4 (`r=-0.184`).
+- Diagnostic verdict: `DIAGNOSTIC_NEGATIVE` (diagnostic NO-GO for multi-grain supervision). Both joint-vs-global comparisons are lower by `-0.2299 pp`: G1 vs G5 `3/3/4`, G2 vs G6 `1/6/3`. G6's `+0.0013 pp` full-fold ACC difference is absent in the nine clean-index folds (`-0.1263 pp`); no multi-grain or independently attributable medical-text benefit was demonstrated. No anonymous-prompt control was run. Historical test-ACC checkpoint selection, pre-CV preprocessing and the transductive 871-node graph remain limitations; none of the reported CV metrics is an unbiased independent test estimate.
+- Results: `/model/spromptgl/experiment/experiment72_1_e693_mgdss/`; report `/model/spromptgl/experiment/experiment72_1_e693_mgdss/results/report.md`. Fold metrics, summaries, paired comparisons, mechanism analysis, RNG parity, checkpoint audit and status JSON are in `results/`. The audit source was revised after training only for checkpoint confusion-field reading, report presentation, applying the predeclared diagnostic verdict rule, and documenting prompt/fold-2 mechanism details; `run.py`, `mgdss.py`, config, training checkpoints and protected historical/source/data files were unchanged. Frozen audit SHA and the final report-audit SHA (`6589a6160b8171c15a684ff940d1e2dd4a1720d9e20f1c0af6dd190aa4b32e7b`) are recorded/archived in `results/audit_status.json` and `.runtime/`.
+
+## Experiment 73 - OOF CAM144 t-SNE
+
+- Status: COMPLETE_AUDITED; no training; both models yielded 871×144 OOF CAM `Outputlayer` inputs with exact one-time patient coverage.
+- E69.3-G2: ten SHA-checked best checkpoints; fold 2 intentionally trained on rows 377 and 407 while retaining them in test. The t-SNE represents this label-exposed historical run and is not leakage-free generalization evidence.
+- B0-B: sourced from E43.1 `E00_B0B_REPLAY` physical-PEN-removal audited checkpoints because the original B0-B result directory has metrics but no checkpoint files. All ten replay folds were independently checked against original B0-B metrics.
+- t-SNE: StandardScaler fit separately; n_components=2, perplexity=30, init=pca, learning_rate=auto, random_state=0, max_iter=1000, Euclidean, Barnes-Hut, angle=0.5; scikit-learn 1.9.1. Separate fits are not coordinate-aligned.
+- Source preflight: 0 FAIL; panel alignment PASS; all three PDF text and collision audits PASS (minimum text 7 pt; 0 collision warnings).
+- OOF feature CSVs and figures: `/model/spromptgl/experiment/experiment73_tsne_cam144`; report `results/report.md`; manifest `manifest.json`. Feature CSV SHA256: E69=0193c4e7d5e077be663cba2d8b31cf65711badac8728e99264a8a6db5dfd1d88, B0-B=b00a8694ad7eb1d1bf3d20cb2c9de9641903430144b760fb7422216fb34281a9.
+- Interpretation is descriptive only; both historical protocols retain pre-CV preprocessing, validation=test selection, and transductive patient graph.
+
+## Experiment 72.2 — DARG-320 Disease Semantic Supervision
+
+- 状态：COMPLETE_AUDITED；六组×十折60/60完成、失败0；60/60最佳checkpoint独立读回与指标复算PASS。报告：/model/spromptgl/experiment/experiment72_2_darg320_mgdss/results/report.md。
+- 唯一基座：E69.3-G2，branch upload/experiment69-3-g2-two-rows，commit 41dbcb45a0273673857051d8e821b8c3315eef00；锁定run/config/manifest SHA已从固定GitHub commit独立核验一致。沿用E61-E2 forward_e2_state/e2e_adaptive_forward、原始分类路径和E69 fold-addition。
+- 唯一改变是语义监督从CAM 144维移到同次前向的DARG融合输出F[871,320]：global Linear(320,10)，fine按48/6/10/256维切片后各自Linear(dim,10)。F切片已含跨模态传播，E72.2新头6450参数；E72.1为1820参数，故跨实验不是严格单变量位置消融。
+- 六组：G1/G2 BrainPrompt-2 τ=1/0.1 joint；G3/G4 SPromptGL-8 τ=1/0.1 joint；G5/G6 BrainPrompt-2 τ=1/0.1 global-only。相同τ下BrainPrompt/SABER形式CE损失等价，loss误差0、最大梯度误差1.73e-18；本轮比较是温度行为。冻结CLIP RN50原型余弦：BrainPrompt-2 0.9847826，SPromptGL-8 0.9070364。
+
+- 六组ACC / Hard-AUC / Prob-AUC / SEN-ASD / SPE-TD（10折mean±population SD，%）：
+|组别|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|
+|---|---:|---:|---:|---:|---:|
+|G1|91.8443±2.7963 / 91.6279±2.8080 / 93.7126±2.7331 / 88.8293±4.0698 / 94.4265±3.7676|
+|G2|91.8443±2.7486 / 91.6363±2.7353 / 93.6234±2.7964 / 88.8415±3.3605 / 94.4311±3.4953|
+|G3|91.7294±2.8130 / 91.4740±2.8405 / 93.5581±2.7797 / 88.0915±4.2858 / 94.8566±3.6268|
+|G4|92.0742±2.6997 / 91.9625±2.6387 / 92.7122±2.9101 / 90.5671±2.9215 / 93.3580±4.2605|
+|G5|92.0742±2.6997 / 91.9549±2.6200 / 93.9113±3.0327 / 90.5610±3.5186 / 93.3488±4.9804|
+|G6|91.7307±2.6174 / 91.5773±2.6101 / 93.9196±2.7875 / 89.5793±3.0937 / 93.5754±3.0556|
+
+- 相对E69.3-G2：
+- G1_vs_E69.3-G2: ΔACC -0.2299 pp, W/T/L 0/8/2; 9折平均ΔACC -0.2554 pp (0/7/2)
+- G2_vs_E69.3-G2: ΔACC -0.2299 pp, W/T/L 0/8/2; 9折平均ΔACC -0.2554 pp (0/7/2)
+- G3_vs_E69.3-G2: ΔACC -0.3448 pp, W/T/L 0/7/3; 9折平均ΔACC -0.3831 pp (0/6/3)
+- G4_vs_E69.3-G2: ΔACC +0.0000 pp, W/T/L 1/7/2; 9折平均ΔACC -0.2554 pp (0/7/2)
+- G5_vs_E69.3-G2: ΔACC +0.0000 pp, W/T/L 1/8/1; 9折平均ΔACC -0.1277 pp (0/8/1)
+- G6_vs_E69.3-G2: ΔACC -0.3435 pp, W/T/L 0/7/3; 9折平均ΔACC -0.3817 pp (0/6/3)
+- 粒度：G1_vs_G5: ΔACC -0.2299 pp, W/T/L 0/8/2; 9折平均ΔACC -0.1277 pp (0/8/1)；G2_vs_G6: ΔACC +0.1136 pp, W/T/L 3/5/2; 9折平均ΔACC +0.1263 pp (3/4/2)
+- Prompt：G1_vs_G3: ΔACC +0.1149 pp, W/T/L 1/9/0; 9折平均ΔACC +0.1277 pp (1/8/0)；G2_vs_G4: ΔACC -0.2299 pp, W/T/L 1/7/2; 9折平均ΔACC +0.0000 pp (1/7/1)
+- 温度：G1_vs_G2: ΔACC +0.0000 pp, W/T/L 1/8/1; 9折平均ΔACC +0.0000 pp (1/7/1)；G3_vs_G4: ΔACC -0.3448 pp, W/T/L 1/6/3; 9折平均ΔACC -0.1277 pp (1/6/2)；G5_vs_G6: ΔACC +0.3435 pp, W/T/L 3/7/0; 9折平均ΔACC +0.2540 pp (2/7/0)
+- E72.1同组差值见报告paired_comparisons.csv；Global-only是最接近的位置比较，但投影维度仍不同。
+- fold2标签暴露：1-based第377行ASD、407行TD同时在训练/test中，并进入语义α校准；基座及六组均正确预测两行。G4/G5唯一严格ACC胜折为fold2，但不是纠正这两行；去掉fold2后六组相对基座平均ΔACC均为负。排除两行仍不能成为独立验证。
+- 机制：60/60初始F梯度剂量=0.1，α范围0.010355–0.753085；最佳checkpoint总F梯度余弦均为正，三个FUNC坐标片段出现局部负余弦。CORR训练语义准确率约90.8–94.3%，PHENO/ANAT/FUNC约52.7–58.4%；CORR门控约0.992且占fine损失70%，没有显示互补模态收益。
+- parity：10/10初始化/warmup；共有epoch RNG逐位匹配 21209/21209；受保护2237项SHA无变化；设备 PPU-ZW810E CUDA 12.9。官方Prompt源码、BrainPrompt label loss、SPromptGL八条文本、SABER公式和固定E69.3 commit均已审计。
+- 结论：DIAGNOSTIC_NEGATIVE。G4/G5平均ACC与基座持平但九个无重叠折平均下降；无稳定多粒度收益，也无排除普通辅助标签监督的匿名Prompt对照。G5相对E72.1-G5仅为描述性小幅改善，G6方向相反，不支持DARG320一般性优越。
+- 局限：fold2标签重叠、历史test ACC选checkpoint、CV前预处理和transductive 871节点图均继承；结果不能证明无泄漏泛化或独立医学文本贡献。后续须在无重叠、fold内预处理、验证集选模协议上提出新假设。
+- 路径：/model/spromptgl/experiment/experiment72_2_darg320_mgdss/。优先/data/adodas/SPromptGL-main/experiment/experiment72_2_darg320_mgdss确实返回OSSFS Errno 5，使用/model回退目录。本条只追加，不覆盖历史handoff。
+
+<!-- EXPERIMENT72_2_DARG320_MGDSS_2026-11-04 -->
+
+## Experiment 74 — UDAG
+
+- Status: COMPLETE_AUDITED; 10/10 formal tasks; 10/10 independent checkpoint audits. Judgment: NO-GO.
+- Root: `/model/spromptgl/experiment/experiment74_udag`. Base E69.3-G2 commit `41dbcb45a0273673857051d8e821b8c3315eef00`; immutable SHA-verified E61 epoch-10 warmups; optimizer/RNG restored. Fold 2 retains rows 377/407 train/test overlap; val=test and pre-CV preprocessing retained, so exploratory only.
+- Model: selected original edges A*(1+g*(2q−1)) outside [.45,.55]; uncertain/unselected original edges unchanged. Fallback only adds positive confidence×similarity×edge-gate edges. One historical GCN per modality, original fusion weights; no direct-difference or adaptive message blend. Adaptive compatibility field frozen; edge gates trainable. Original relation supervision/adversary/preservation and GraphConstructLoss unchanged.
+- E69.3-G2: acc=92.0742±2.7482%, hard_auc=91.8995±2.7186%, prob_auc=93.3759±2.9908%, sen=89.5854±3.4710%, spe=94.2137±3.9815%, ba=91.8995±2.7186%, asd_f1=91.2984±2.9222%
+- E74-UDAG: acc=91.4995±2.6885%, hard_auc=91.2511±2.7308%, prob_auc=93.9249±2.6632%, sen=87.8537±4.3359%, spe=94.6485±3.2152%, ba=91.2511±2.7308%, asd_f1=90.5218±3.0064%
+- Paired E74−E69.3-G2: acc -0.5747 pp (0/5/5), hard_auc -0.6485 pp (0/4/6), prob_auc +0.5489 pp (7/0/3), sen -1.7317 pp (0/5/5), spe +0.4348 pp (2/7/1), ba -0.6485 pp (0/4/6), asd_f1 -0.7766 pp (0/4/6)
+- Nine non-index-overlap folds ΔACC=-0.5109 pp; W/T/L=0/5/4.
+- Disease-off intervention: 0 hard flips total; mean full−off ACC=+0.0000 pp. Largest weighted GCN-message delta/input=2.5992e-06. GCN calls 16→4 (75% call-count reduction; not a total-runtime claim).
+- RNG 3418/3418 common epoch triplets match; protected SHA 97/97. Source hashes and each warmup/checkpoint SHA in manifest; detailed graph/gate/gradient/intervention results in report and mechanism.csv.
+- PHENO: edge gate mean=0.50117; weighted message delta/input mean=5.8003e-08; q mean=0.49966.
+- ANAT: edge gate mean=0.50027; weighted message delta/input mean=1.0095e-08; q mean=0.49799.
+- FUNC: edge gate mean=0.49919; weighted message delta/input mean=1.3121e-08; q mean=0.51446.
+- CORR: edge gate mean=0.50079; weighted message delta/input mean=3.2963e-07; q mean=0.51316.
+- Scientific reading: NO-GO. Keep diagnostic efficacy separate from graph simplification; no demonstrated semantic-module benefit follows automatically. Do not tune WD or thresholds post hoc within E74. A future efficacy study needs clean evaluation and measurable graph intervention evidence.
+- Report SHA: `b28d1190560c98fd394e6f864905ba61c5d32c98421a6bca4746abd4a2b25834`; config SHA: `1d2a3fd8cead1f8637ae4122b678e1c14fa3232aeaefeb87983ebcc4044f382d`. No historical source/data/checkpoint edits.
+
+## Experiment 74.1 — RUDAG
+
+- Status: `COMPLETE_AUDITED`, 20/20 formal tasks and 20/20 independent checkpoint audits passed. Scientific conclusion: `PARTIAL`.
+- Purpose: address E74's narrow CORR candidate intervention, indiscriminate non-CORR disease weighting, and weak effective GCN messages through full-support CORR reliability weighting, capped non-CORR weighting, and an optional bounded direct-neighbor difference.
+- Experiment directory: `/model/spromptgl/experiment/experiment74_1_rudag`. Preferred `/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag` failed at directory creation with OSSFS `Input/output error` (errno 5); all new experiment files were written under `/model`.
+- Device and execution: one PPU-ZW810E, 10 concurrent independent workers, maximum 10; formal training took 727.06 seconds, with 0 retries, 0 failures, and 0 OOM events. E61 epoch-10 warmups were reused; none were retrained.
+- Audited implementation and history: read the SPromptGL MICCAI 2025 Figure 1, Sections 2.1–2.2, Eqs. (1)–(7), root `main.py/model.py/network.py/layers.py/utils.py`, ABIDE shell settings, and E53.3/E61/E62/E69.3-G2/E74 code, configs, manifests and results. GraphLearn's cosine support uses the detached `score > 0.9` mask; weights remain differentiable on that support. The original two-GraphConv GCN, single `normalize_adj(A+I)`, four fusion weights, CAM, RES/classifier path, and `GraphConstructLoss(S_m)` remain. No paper-only ALoss was added. DARG retains four 32-D encoders, 65-D pair features, 65→32→1 scorers, 4096 balanced training pairs, CORR-anchored conditional adversarial alignment, and relation preservation. The relation score is the historical uncalibrated `sigmoid(logit)`.
+- Literature boundaries: BrainPrompt paper, `brainpromptg_net.py`, `brainpromptc_net.py`, and ABIDE label prompt were reviewed; its graph/text-prototype disease-level CE was not implemented. SABER's paper was reviewed for gated decision-level semantic injection and disease contrastive supervision; no official SABER source was confirmed or claimed as audited. Neither method contributed prompts, Graph-CLS, hypergraphs, extra semantic branches, or new losses to RUDAG.
+- G1 `RUDAG-U`: all nonzero CORR off-diagonal GraphLearn edges are scored and continuously reweighted by `S*(1+0.8*g*(2q-1))`; PHENO/ANAT/FUNC apply the weak capped gate only to historical mutual Top-12 candidates intersected with original-positive GraphLearn support. One unified graph and one GCN call per modality; direct difference off.
+- G2 `RUDAG-Full`: identical construction, parameters, initialization, optimizers and losses to G1; enables only the 0.02-gated CADR RMS-tanh bounded neighbor difference on that unified graph. No additional trainable parameters. Existing adaptive gate logits were deterministically reparameterized to effective initial gates `[0.001,0.001,0.001,0.99]`; legacy edge gates were frozen. Gate optimizer-state handling was recorded per fold; other inherited optimizer state was preserved.
+- RUDAG vs E74: E74 applied the same disease intervention only to mutual Top-12 and could add fallback edges; RUDAG scores all existing CORR support and never expands support, while non-CORR uses only the intersection with real GraphLearn support. E74 had no direct-neighbor path. RUDAG keeps one unified propagation graph per mode and the historical single GCN call. E69.3-G2 and E62-E2 were read-only references; neither was retrained.
+
+Ten-fold classification results (mean ± population SD, %; ASD is label 0):
+
+| Group | ACC | Hard-AUC | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E69.3-G2 historical | 92.0742 ± 2.7482 | 91.8995 ± 2.7186 | 93.3759 ± 2.9908 | 89.5854 ± 3.4710 | 94.2137 ± 3.9815 | 91.2984 ± 2.9222 |
+| E62-E2 historical | 91.8443 ± 2.9346 | 91.6821 ± 2.8919 | 93.2010 ± 3.0942 | 89.5854 ± 3.4710 | 93.7789 ± 4.2653 | 91.0789 ± 3.0892 |
+| E74-UDAG historical | 91.4995 ± 2.6885 | 91.2511 ± 2.7308 | 93.9249 ± 2.6632 | 87.8537 ± 4.3359 | 94.6485 ± 3.2152 | 90.5218 ± 3.0064 |
+| G1 RUDAG-U | 91.9592 ± 2.7747 | 91.7498 ± 2.7845 | 93.4439 ± 3.0255 | 89.0732 ± 3.9177 | 94.4265 ± 3.7676 | 91.1148 ± 3.0257 |
+| G2 RUDAG-Full | 91.8443 ± 2.9793 | 91.6363 ± 3.0151 | 93.5999 ± 3.0799 | 88.8415 ± 4.3351 | 94.4311 ± 3.4953 | 90.9690 ± 3.3140 |
+
+- Hard-AUC is the historical hard-prediction score and equals balanced accuracy for binary labels; Prob-AUC uses continuous ASD probability.
+- Paired mean differences are first method minus second method, in percentage points. In order below: ACC / Hard-AUC / Prob-AUC / SEN / SPE.
+- G1−E74: all 10 `+0.4598 / +0.4987 / −0.4809 / +1.2195 / −0.2220`; excluding Fold 2 `+0.1277 / +0.1477 / −0.5462 / +0.5420 / −0.2467`.
+- G2−E74: all 10 `+0.3448 / +0.3852 / −0.3250 / +0.9878 / −0.2174`; excluding Fold 2 `+0.2554 / +0.2925 / −0.2845 / +0.8266 / −0.2415`.
+- G2−G1: all 10 `−0.1149 / −0.1135 / +0.1560 / −0.2317 / +0.0046`; excluding Fold 2 `+0.1277 / +0.1448 / +0.2617 / +0.2846 / +0.0051`.
+- Historical descriptive comparisons: G2−E69.3-G2 all-fold ACC/Hard-AUC/Prob-AUC/SEN/SPE=`−0.2299/−0.2633/+0.2240/−0.7439/+0.2174`; G2−E62-E2=`0.0000/−0.0459/+0.3989/−0.7439/+0.6522`. These are not same-trajectory controls.
+- Per-fold paired ACC differences (pp), columns G1−E74 / G2−E74 / G2−G1: F1 `0/0/0`; F2 `+3.4483/+1.1494/−2.2989`; F3 `0/0/0`; F4 `−1.1494/0/+1.1494`; F5 `0/0/0`; F6 `+1.1494/+1.1494/0`; F7 `0/+1.1494/+1.1494`; F8 `0/−1.1494/−1.1494`; F9 `0/0/0`; F10 `+1.1494/+1.1494/0`.
+
+Graph and propagation diagnostics averaged across ten folds; exact fold-level data are in `results/mechanism.csv`:
+
+| Group | Mode | Effective edges | Scored edges | Changed edges | Relative ΔA/A | Test relation AUC | Final gate | Fusion-weighted GCN/input | Fusion-weighted direct/input |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| G1 | PHENO | 81,382 | 3,497 | 2,473 | 5.49e-5 | 0.5005 | 0.001004 | 0.016274% | 0 |
+| G1 | ANAT | 134,834 | 3,694 | 1,321 | 1.46e-5 | 0.5032 | 0.001004 | 0.010747% | 0 |
+| G1 | FUNC | 67,921 | 3,544 | 2,027 | 3.73e-5 | 0.5022 | 0.001005 | 0.007119% | 0 |
+| G1 | CORR | 74,560 | 74,560 | 74,560 | 0.6571 | 0.8262 | 0.990125 | 0.020050% | 0 |
+| G2 | PHENO | 70,238 | 3,587 | 2,343 | 4.08e-5 | 0.5026 | 0.000866 | 0.002993% | 0.000498% |
+| G2 | ANAT | 140,404 | 3,684 | 920 | 8.56e-6 | 0.5018 | 0.000870 | 0.002107% | 0.000483% |
+| G2 | FUNC | 66,321 | 3,570 | 1,641 | 2.27e-5 | 0.5026 | 0.000874 | 0.000218% | 0.000448% |
+| G2 | CORR | 57,949 | 57,949 | 57,949 | 0.6545 | 0.8367 | 0.990172 | 0.000881% | 0.506115% |
+
+- CORR therefore reweighted 100% of its original effective edge support with a relative adjacency change around 65%; PHENO/ANAT/FUNC scored only roughly 3.5k historical candidates from 66k–140k effective edges, and their unexposed test relation AUCs remain near 0.5. CORR training/test relation AUC means were 0.9959/0.8262 for G1 and 0.9965/0.8367 for G2.
+- The exact net fused-feature change relative to raw 320-D input averaged 0.037634% for G1 and 0.507266% for G2. G2's large CORR bounded-difference component (0.506115% after fusion) is real representation propagation; it did not create a hard-classification gain when directly ablated.
+- Fixed-checkpoint interventions: G1 had zero hard flips for disease-neutral, CORR-neutral, and score-permuted. G2 disease-neutral and score-permuted each flipped one prediction in Fold 8 (the full model was correct and the intervention wrong); the effect remains in the nine-fold subset. Mean full−intervention ACC changes were `+0.1149 pp` and `+0.1149 pp`, with mean ASD probability changes `0.001193` and `0.001218`, respectively. G2 direct-off had zero hard flips, mean ACC/Hard-AUC change `0`, and full−direct-off Prob-AUC `−0.0477 pp`; mean ASD probability and fused-representation changes were `0.000978` and `0.005087`. Full per-fold ACC/Hard-AUC/Prob-AUC/SEN/SPE, flips, corrected/new errors, probability changes and representation changes are recorded in `results/interventions.csv`.
+- Fold 2 historical exception: 1-based rows 377 (ASD) and 407 (TD) were added to training while remaining in test, and entered both classification training and relation-pair processing. Both were correct in both RUDAG groups: G1 ASD probability for row 377 was 0.6279 and TD probability for row 407 was 0.5897; G2 corresponding probabilities were 0.6233 and 0.5481. Fold 2 ACC was 93.1034% (G1) and 90.8046% (G2); excluding these two exposed observations alone gives 92.9412% and 90.5882%. This fold is not normal cross-validation. Nine-fold comparisons exclude Fold 2 but still retain `val=test`, pre-CV RFE/standardization, and the transductive 871-node graph.
+- Reproducibility/audit: each group/fold had its own model, three optimizer states, and RNG restored from the same E61 warmup. G1/G2 initialization and optimizer-state hashes matched within each fold. All 3532 common G1/G2 epoch RNG triplets matched exactly; against E74, all 6851 shared epoch triplets matched exactly. These counts cover only shared executed epochs. Best checkpoints were independently loaded and predictions, probabilities, parameters, labels/splits, Fold 2 overlap, provenance, and best epochs were checked; status is 20/20 `INDEPENDENT_AUDIT_PASS`. Preflight passed graph invariants, gradients, one-GCN-per-mode, save/restore next-update parity and RNG checks. The gate reparameterization and optimizer-slot handling are explicitly recorded; no unrelated optimizer state was claimed to be identical to an old parameterization.
+- Decision: `PARTIAL`. ACC reaches E62-E2's 91.8443% ten-fold reference and G2 exceeds E74 by only +0.2554 pp on the nine-fold subset; G2 sensitivity improves over E74 but remains 0.7439 pp below E62-E2, and Prob-AUC remains 0.3250 pp below E74. Disease-score interventions have one-fold/one-case hard-prediction evidence; Direct-off has none. G2's all-fold ACC is 0.1149 pp below G1 and its nine-fold ACC is only 0.1277 pp above G1. The runner's mechanical flag counted any nonzero intervention flip as positive mechanism evidence; the final scientific interpretation requires consistent diagnostic mechanism support and therefore remains PARTIAL.
+- Next question: test CORR score correspondence under fold-local feature selection/standardization and a separate validation set for checkpoint selection; do not tune the fixed 0.8 reweighting, 0.02 direct coefficient, WD, learning rates, or Top-k from this experiment.
+- Main artifacts: `/model/spromptgl/experiment/experiment74_1_rudag/results/report.md`, `manifest.json`, `fold_metrics.csv`, `summary.csv`, `paired_comparisons.csv`, `mechanism.csv`, `interventions.csv`, `checkpoint_audit.csv`; 20 best checkpoints remain under `.runtime/checkpoints/` and latest recovery states were removed after audit. Report SHA `d42ec95a81527a20dc098bd90e4ab3056e4e2cce177058941e783d223ea64921`; manifest SHA `adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0`.
+
+## Experiment 72.4 - Dual-Level Patient-Disease Semantic Prompt Coordination
+
+- Status: `COMPLETE_AUDITED`; formal training 80/80, scheduler failures 0, independent checkpoint audits 80/80. Scientific decision: `NO_GO` for the MICCAI second-module candidate. Experiment root: `/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination`.
+- Preferred `/data/adodas/SPromptGL-main/experiment/experiment72_4_dual_level_semantic_coordination` directory creation returned OSSFS `Input/output error` (errno 5); the authorized `/model` fallback was used. Training ran on one 98GB GPU with ten independent workers, each owning separate group-fold task state, checkpoint, and log.
+- Locked base: E69.3-G2 branch `upload/experiment69-3-g2-two-rows`, commit `41dbcb45a0273673857051d8e821b8c3315eef00`; E61-E2 end-to-end adaptive DARG forward and shared epoch-10 warmups. ABIDE A, 871 participants, PHENO/ANAT/FUNC/CORR input dimensions 48/6/10/256, GFR 320-D, CAM `[871,4,36]`, unchanged 144-D OutputLayer. Original base losses, relation sampling, gates, optimizer groups and step order were retained.
+- Literature/code check: SPromptGL MICCAI 2025 paper and official repository, BrainPrompt MICCAI 2025 paper and official code, and SABER ICME 2026/arXiv Module III equations (8)-(13) were reviewed. No verifiable public official SABER code was found; only its paper mechanism was checked. The implementation does not reproduce the full BrainPrompt or SABER systems.
+- Formal groups: G1 patient metadata injection only; G2 BrainPrompt-2 global, tau=1; G3 BrainPrompt-2 fine+global, tau=1; G4 SPromptGL-8 global, tau=1; G5 SPromptGL-8 fine+global, tau=1; G6 BrainPrompt-2 fine+global, tau=0.1; G7 SPromptGL-8 fine+global, tau=0.1; G8 G7 plus disease-prototype-conditioned CAM-pre Query. The same frozen ASD/TD prototypes drive G8 routing and post-CAM supervision.
+- Ten-fold results, mean +/- population SD (%; ASD=0):
+
+| Group | ACC | Hard-AUC | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E69.3-G2 | 92.0742 +/- 2.7482 | 91.8995 +/- 2.7186 | 93.3759 +/- 2.9908 | 89.5854 +/- 3.4710 | 94.2137 +/- 3.9815 | 91.2984 +/- 2.9222 |
+| G1 | 84.3757 +/- 5.3351 | 84.2081 +/- 5.4999 | 87.3364 +/- 4.8221 | 81.6585 +/- 10.5057 | 86.7576 +/- 6.4478 | 82.6037 +/- 6.7844 |
+| G2 | 84.2646 +/- 4.9180 | 84.1811 +/- 4.7189 | 87.7632 +/- 5.2873 | 83.1402 +/- 4.0827 | 85.2220 +/- 8.6407 | 83.1744 +/- 4.4034 |
+| G3 | 84.1523 +/- 5.0144 | 83.9528 +/- 4.9929 | 87.3200 +/- 4.1821 | 81.4024 +/- 7.4757 | 86.5032 +/- 7.3545 | 82.6105 +/- 5.2853 |
+| G4 | 84.0347 +/- 5.9049 | 83.6703 +/- 5.9626 | 86.9823 +/- 5.0375 | 78.9085 +/- 8.2072 | 88.4320 +/- 7.2630 | 82.0036 +/- 6.5547 |
+| G5 | 84.6082 +/- 5.4569 | 84.3698 +/- 5.4651 | 86.0542 +/- 7.3586 | 81.1402 +/- 6.6848 | 87.5994 +/- 6.5857 | 82.9933 +/- 5.9877 |
+| G6 | 84.2672 +/- 4.5222 | 83.9369 +/- 4.6643 | 86.6474 +/- 3.7601 | 79.2012 +/- 8.2068 | 88.6725 +/- 4.0504 | 82.1647 +/- 5.7910 |
+| G7 | 83.8049 +/- 7.1037 | 83.5735 +/- 7.2624 | 87.0951 +/- 5.9464 | 80.1951 +/- 11.2654 | 86.9519 +/- 7.1966 | 81.8682 +/- 8.5240 |
+| G8 | 83.6860 +/- 7.1848 | 83.3411 +/- 7.1995 | 87.2739 +/- 5.9288 | 78.9024 +/- 8.2327 | 87.7798 +/- 7.9642 | 81.7497 +/- 7.7148 |
+
+- Paired ACC versus E69.3-G2, all folds / non-fold-2 nine folds: G1 `-7.6985 pp` (0/0/10), `-8.0431 pp` (0/0/9); G2 `-7.8096` (0/0/10), `-8.1664` (0/0/9); G3 `-7.9219` (0/0/10), `-8.2912` (0/0/9); G4 `-8.0394` (0/0/10), `-8.6773` (0/0/9); G5 `-7.4660` (0/0/10), `-8.1679` (0/0/9); G6 `-7.8069` (0/0/10), `-7.9081` (0/0/9); G7 `-8.2693` (0/0/10), `-8.6773` (0/0/9); G8 `-8.3882` (0/0/10), `-9.0648` (0/0/9). W/T/L counts are in that order. Every group was below H0 in every fold.
+- G8 minus G7 paired changes: ACC `-0.1189 pp` (3/2/5; nine folds `-0.3875`, 2/2/5); Hard-AUC `-0.2324`; Prob-AUC `+0.1787`; SEN-ASD `-1.2927`; SPE-TD `+0.8279`; ASD-F1 `-0.1185`. G8 did not exceed either G7 or H0 on mean ACC, so the cross-layer candidate is NO-GO despite the small Prob-AUC increase and mixed component results.
+- H1/E72.1 was read-only and COMPLETE_AUDITED (60/60); its six group metrics are included in the E72.4 report. Descriptive matched E72.4-minus-H1 ACC changes: G3-H1 G1 `-7.4621 pp`; G6-H1 G2 `-7.5784`; G5-H1 G3 `-7.3511`; G7-H1 G4 `-8.1544`; G2-H1 G5 `-7.5797`. H1 G6 has no exact group match and G8 has no H1 counterpart. These cross-run differences include patient prompt injection and are not single-factor causal estimates. H1 summary SHA `52872f8d584b84294d84c4af8c8a3ab78a323c6a8e1da12c44dd7a752151b9b8`.
+- Patient prompt fields were decoded only from PHENO input columns: age interval, recorded sex code, and site ID. All 871 rows had all three fields and aligned one-to-one with model rows; no labels, exact age, VIQ/PIQ, symptoms, or model-generated clinical facts were used. Frozen CLIP RN50 cache SHA `d242276a6851cece4b5e2ab6ec5c0ce06c8230e6f2f8046728c7f538d9c131e4`; disease-prompt cache SHA `a611334970d3ae243cd03cdd1419e567db8967e206544c4c2828a933df8ba0c6`.
+- G8 diagnostics at selected checkpoints: mean condition probabilities ASD/TD `0.481/0.519`; condition lambda `0.100`; nonzero condition classification gradient in 10/10 folds. Turning the condition branch off changed 9 held-out hard predictions (7 corrected, 2 new errors). G8 made 39 corrections and 40 new errors versus G7; attention-change associations with corrections were near zero. Prototype row permutation is invariant for the softmax-weighted sum and is only an implementation check.
+- Patient attention averaged age/sex/site `0.180/0.355/0.465`; mean residual ratio `0.0997`, p95 `0.1000`, near the fixed 10% cap. Site-token masking lowered G8 ACC by `2.75 pp` on average. For sites with at least 20 G8 OOF participants, ACC ranged from MAX_MUN (n=46) `71.74%` to LEUVEN_2 (n=28) `96.43%`; age and sex subgroup details are in `subgroup_diagnostics.csv`. This supports a material site-information/confounding risk; PHENO already contains related values and no matched numeric-PHENO or parameter-matched label-only-CE control was trained.
+- G8 held-out disease-head ACC: global `80.24%`; CAM positions PHENO/ANAT/FUNC/CORR `72.21/71.52/64.75/80.93%`. Mean selected-checkpoint weighted CAM gradient ratio was `0.083`, not a constant 0.1; patient/module and F/Z gradient/cosine details are in `mechanism.csv`. Mean adaptive gates were `[0.000998,0.000990,0.000979,0.990848]`; changes versus matched E69.3 folds were small, with CORR `-0.000919`, providing no evidence of a material relation-learning shift.
+- Fold 2: 1-based row 377 (ASD) and 407 (TD) were added to effective training while remaining in test. Their labels entered classification for all groups and disease semantic loss/alpha calibration in G2-G8. Historical base ACC was `90.8046%` full and `90.5882%` without those two rows; G8 was `88.5057%` and `88.2353%`. Removing them does not remove val=test checkpoint selection, pre-CV preprocessing, or the transductive 871-node graph.
+- Independent audit: 80/80 best checkpoints reloaded into freshly rebuilt models; metrics and optimizer state trees matched. Shared epoch RNG triplets: `25385/25385` exact. Protected source/data/history snapshot: `1888/1888` unchanged. Ten-fold warmup, gate, split, class-weight, fold-2 overlap, recovery, one-CAM-call, G8 gradient, and G7-disable equivalence preflight checks passed. Post-training audit-reader corrections are explicitly recorded in the manifest; training code/config/checkpoint bytes remained unchanged. Task optimizer SHA fields serialize device-specific tensors, so audit compared full optimizer parameter groups/state trees after reload.
+- Research conclusion: NO-GO for this second MICCAI module under the specified rule. Patient injection changed within-checkpoint predictions but G1 was `-7.6985 pp` below H0 ACC; disease-source, fine-grain, and temperature effects were mixed; G8 did not beat G7 or H0. Need a new clean protocol with no overlap, fold-local preprocessing, validation-only model selection, and matched numeric-metadata and label-only-CE controls before revisiting the hypothesis.
+- Frozen training source SHA-256: `config.json` `48e3164fb42487016925c596d82a35229287843d239e8ef5fcc90c596263ac8a`; `run.py` `29c27e2d95fd6303ecb4af856378b3345c052aae7b97f1890a539e7136b647bf`; `dual_prompt.py` `86633f23566a5d94327db3bdb11120e4506c54699ccc7cc5852b7965204ec267`; `mgdss.py` `ccac2164663de8e6cd8f3ad1173db9cb1e462d59ba7ed6c82adaafa64ad7be04`; frozen audit reader `d780a9f2d0d60bdb3763ee2a4e293d717ab39e541e8e5829c232a763a0b9361f`; corrected independent audit reader `ca13e6e01d03a8af858432476b40e08938e8448125677f46cdc12f402d1fb1b0`.
+- Final report SHA `129aa500c29fd1bb7b9b2e5befdfc43b77d609a174c642e3476891ca9f02db27`; manifest SHA `10481556c105683d458819a12175bbde9280962d6a20b4362c7cbd05a82a81ec`. Main outputs: `results/report.md`, `summary.csv`, `fold_metrics.csv`, `fold2_sensitivity.csv`, `paired_comparisons.csv`, `mechanism.csv`, `subgroup_diagnostics.csv`, `checkpoint_audit.csv`, `audit_status.json`. No root model, historical experiment, or raw input files were changed.
+
+## Experiment 74.2 — DCR-RUDAG
+
+- 状态：`COMPLETE_AUDITED`；10/10正式折完成，10/10独立checkpoint审计通过。科学结论：`PARTIAL`。
+- 目的：将E74.1普通邻居差分替换成只由疾病边权增量驱动的有界残差，检验疾病图变化是否比原始相似性邻居聚合更直接地影响患者表示与ASD分类。
+- 实际目录：`/model/spromptgl/experiment/experiment74_2_dcr_rudag`。偏好的`/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag`创建失败，OSSFS返回`Input/output error`（errno 5），因此使用`/model`回退目录。
+- 源码版本：SPromptGL根目录核心代码在本地HEAD `fa1570f45dea5c3027a89ccc93aef3060657bacd`，`main.py/model.py/network.py/layers.py/utils.py`的SHA与GitHub `main` commit `47b992ad6e11c58b15853cecb03384c0bff372a4`逐文件一致。E74.1分支`upload/experiment74-1-rudag`固定commit `d1522a23682b62e41d899d95c9721a68d3828456`，实验代码和参考结果SHA一致。BrainPrompt代码固定commit `c85304a023636a2701d465e4cb0acb13b637127e`；SABER仅审阅arXiv v1论文，没有确认官方源码。
+- 仅有一个正式组`E74.2-G1-DCR-RUDAG`，10折从E61 epoch-10 warmup独立恢复；没有从E74.1最佳checkpoint继续训练。唯一模型方法差异为`DeltaA=A_unified-S`上的有界差分残差`R=(DeltaA_off@X-row_sum(DeltaA_off)*X)/clamp_min(row_sum(S_off),1)`，继承E53.3 CADR的48/6/10/256 RMS-tanh限制，并使用固定`0.02*g`进入原320维GFR输出。一个统一图、每模态一次GCN、原CAM和144维分类器保持不变；没有新增参数、损失、Prompt或语义分支。
+- 训练资源：单卡PPU-ZW810E，最多10个并行worker，正式训练墙钟约697秒，最大观测显存约11.7 GiB/98 GiB，最终训练批次重试0、OOM 0。最初代码曾启动20次worker调用并在optimizer step前因诊断重复反传而失败；没有完成epoch更新或写入checkpoint。修复后从同一10份E61 warmup重新运行，10/10折成功。审计脚本在训练后为保留DCR-only梯度图而修复；训练脚本、模型代码、配置、数据、warmup和历史参考SHA均与通过预检时一致。训练源SHA为`50dcd49f02c441a1e91ca2651873cbc07af270c16bca06044702b599155d3999`，最终独立审计脚本SHA为`6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc`。
+
+十折分类结果为百分比`mean ± population SD`：
+
+| Group | ACC | Hard-AUC | Prob-AUC | SEN-ASD | SPE-TD |
+|---|---:|---:|---:|---:|---:|
+| E69.3-G2历史 | 92.0742 ± 2.7482 | 91.8995 ± 2.7186 | 93.3759 ± 2.9908 | 89.5854 ± 3.4710 | 94.2137 ± 3.9815 |
+| E62-E2历史 | 91.8443 ± 2.9346 | 91.6821 ± 2.8919 | 93.2010 ± 3.0942 | 89.5854 ± 3.4710 | 93.7789 ± 4.2653 |
+| E74-UDAG历史 | 91.4995 ± 2.6885 | 91.2511 ± 2.7308 | 93.9249 ± 2.6632 | 87.8537 ± 4.3359 | 94.6485 ± 3.2152 |
+| E74.1-G1 RUDAG-U历史 | 91.9592 ± 2.7747 | 91.7498 ± 2.7845 | 93.4439 ± 3.0255 | 89.0732 ± 3.9177 | 94.4265 ± 3.7676 |
+| E74.1-G2 RUDAG-Full历史 | 91.8443 ± 2.9793 | 91.6363 ± 3.0151 | 93.5999 ± 3.0799 | 88.8415 ± 4.3351 | 94.4311 ± 3.4953 |
+| E74.2-G1 DCR-RUDAG | 91.8443 ± 2.7963 | 91.6442 ± 2.7336 | 93.6854 ± 2.7687 | 89.0793 ± 3.0035 | 94.2091 ± 4.3328 |
+
+- 逐折配对差值按`ACC/Hard-AUC/Prob-AUC/SEN/SPE`，单位pp；历史对照均为描述性比较：
+  - E74.2−E74.1-G1：全10折`−0.1149/−0.1056/+0.2415/+0.0061/−0.2174`；去Fold 2后`+0.1277/+0.1536/+0.3390/+0.5488/−0.2415`。
+  - E74.2−E74.1-G2（普通邻居差分）：全10折`0.0000/+0.0079/+0.0855/+0.2378/−0.2220`；去Fold 2后`0.0000/+0.0088/+0.0773/+0.2642/−0.2467`。ACC无净差，固定Direct-off也没有硬预测变化，因此DCR残差未证明优于普通邻居差分。
+  - E74.2−E74：全10折`+0.3448/+0.3931/−0.2395/+1.2256/−0.4394`；去Fold 2后`+0.2554/+0.3013/−0.2072/+1.0908/−0.4882`。
+  - E74.2−E69.3-G2：全10折`−0.2299/−0.2554/+0.3095/−0.5061/−0.0046`；去Fold 2后`−0.2554/−0.2837/+0.3203/−0.5623/−0.0051`。
+  - E74.2−E62-E2：全10折`0.0000/−0.0380/+0.4844/−0.5061/+0.4302`；去Fold 2后`−0.2554/−0.2837/+0.3203/−0.5623/−0.0051`。
+- Fold 2本折ACC/Hard-AUC/Prob-AUC/SEN/SPE为`90.8046/90.6416/92.5769/87.8049/93.4783%`；1-based row 377（ASD）和407（TD）同时在训练和测试索引中。去掉Fold 2后E74.2为ACC`91.9598±2.9248%`、Hard-AUC`91.7556±2.8598%`、Prob-AUC`93.8086±2.8923%`、SEN`89.2209±3.1341%`、SPE`94.2903±4.5600%`。九折仍使用`val=test`、预交叉验证RFE/标准化和871节点transductive图，不能作为无偏独立泛化估计。
+- CORR平均47,625.9/47,625.9条原有效边均被评分并修改，`||DeltaA||/||S||=0.6515`，门控从0.9900到0.9920；关系训练/未暴露测试AUC为0.9948/0.8326。PHENO/ANAT/FUNC的非CORR弱门控终值约0.001004，平均评分约3.6k个有效Top-12候选；三者未暴露测试关系AUC为0.501–0.503，`||DeltaA||/||S||`约`1.18e-5–5.14e-5`。
+- CORR有界残差范数为输入范数的13.2682%；乘固定系数、门控与原融合权重后为0.156809%。同模态融合GCN消息约0.000701%，DCR消息约为其229倍；完整融合特征与输入的净差约0.160427%。这改变了患者表示，但不能单独证明分类贡献。DCR-only分类梯度在CORR评分器为`3.83e-4`，其余模态约`2.9e-11–3.8e-11`。
+- 固定checkpoint干预均为10折同一模型、无重训：Disease-neutral、CORR-neutral、Score-permuted、Direct-off的硬翻转数均为0，纠正/新错均为0。full−干预ACC、Hard-AUC、SEN、SPE均为0；full−干预Prob-AUC分别为`−0.0267/−0.0267/−0.0266/−0.0267 pp`。平均ASD概率绝对变化分别为`0.001366/0.001366/0.001393/0.001366`，融合表示相对变化为`0.001568/0.001568/0.001962/0.001568`。Disease-neutral和置换没有硬分类影响；Direct-off下Prob-AUC略高0.0267 pp，未显示DCR残差的净分类收益。
+- 审计：10/10 best checkpoint独立重建，通过标签/索引/Fold 2暴露/训练pair作用域/模型来源与SHA/best epoch检查；10/10预测硬标签完全一致，概率在`1e-8`误差内；每折每模态一次GCN。E74.1-G1初始化身份10/10完全匹配；共有epoch RNG三元组`3530/3530`完全一致。预检验证`q=0.5`时DeltaA及DCR残差严格为零、Direct-off与E74.1-G1前向逐值一致、残差梯度/上下界、单步checkpoint恢复与下一步更新复现。
+- 结论：`PARTIAL`。相对E74部分恢复ACC/Hard-AUC/SEN，且排除Fold 2后略高于E74.1-G1；但全10折ACC低于E74.1-G1，未达到E69.3-G2 ACC/Hard-AUC/SEN目标，疾病中性化/评分置换无硬预测翻转，DCR残差对Direct-off无硬预测净收益。因此不能声称疾病关系对应或新残差带来可靠诊断增益。
+- 下一步：不调0.8边权强度、0.02残差系数、门控、WD、学习率或Top-12。优先在fold-local特征选择/标准化、独立验证集选checkpoint的无泄漏协议下评估CORR关系得分是否对连续决策概率和硬分类都有稳定贡献。
+- 主要文件：`/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/report.md`、`manifest.json`、`results/fold_metrics.csv`、`summary.csv`、`paired_comparisons.csv`、`mechanism.csv`、`interventions.csv`、`checkpoint_audit.csv`、`audit_status.json`。已移除10个latest恢复checkpoint和生成字节码缓存；保留10个best checkpoint、任务记录及审计日志。
+
+<!-- EXPERIMENT74_2_DCR_RUDAG_2026-11-06 -->
+
+## Experiment 72.5 - Safe Adaptive Dual Prompt and Disease-Difference Conditioning
+
+- Status: `COMPLETE_AUDITED`; training `60/60`; independent best-checkpoint audits `60/60`; decision `PARTIAL_SAFE_RESIDUAL_REPAIR_ONLY`.
+- Directory: `/model/spromptgl/experiment/experiment72_5_safe_dual_prompt`. Source/config SHA: `{"audit.py": "aaed4ee0b4361003401f1e694c4f6cdf592713b3a4494cb2562e2486fe27479a", "config.json": "cd2086a0d9dd77533190e509ffcb981f7f335d6a333983b51c73fe4b1b090bd4", "dual_prompt.py": "86633f23566a5d94327db3bdb11120e4506c54699ccc7cc5852b7965204ec267", "mgdss.py": "ccac2164663de8e6cd8f3ad1173db9cb1e462d59ba7ed6c82adaafa64ad7be04", "run.py": "7012543978b2faba6c046abb77cdc4545dcce8dbab3ec4cd6ff78637b3ca474b", "safe_dual_prompt.py": "453985263e9fd6a72ec1a9e3f05b2b847864347eb81b05da6e3aad11c8c20c11"}`.
+- Sole formal training base: E69.3-G2 branch `upload/experiment69-3-g2-two-rows`, commit `41dbcb45a0273673857051d8e821b8c3315eef00`; E61-E2 E2E adaptive DARG, ten warmups, original three optimizers, Fold2 rows 377/407 overlap retained. E72.4 checkpoints were not used as initialization.
+- Groups: G1 safe patient-only; G2 BrainPrompt-2 tau=1 joint; G3 SPromptGL-8 tau=1 joint; G4 SPromptGL-8 tau=0.1 joint; G5 SPromptGL-8 tau=1 joint plus signed ASD-TD difference query; G6 same as G5 with fixed nonlinguistic PHENO-category vectors.
+- Frozen E72.4 patient cache SHA `d242276a6851cece4b5e2ab6ec5c0ce06c8230e6f2f8046728c7f538d9c131e4` reused without re-encoding; G6 private category vector cache SHA `41daf0ef26ee772593008cc01f781e8352b9ff4950f32a406150f5d02beebd84`. Fields are age intervals, recorded sex codes, and site IDs; no diagnoses or unverified clinical measurements.
+- Metrics are mean +/- population SD across ten folds (%); Hard-AUC uses hard predictions and Prob-AUC uses continuous TD probabilities.
+- G1: ACC 88.9786+/-3.6767, HARD_AUC 88.8808+/-3.6713, PROB_AUC 92.0717+/-2.9605, SEN 87.8171+/-4.5658, SPE 89.9445+/-4.5081, ASD_F1 88.0632+/-3.9946; paired ACC delta vs E69.3-G2 -3.0956 pp (W/T/L 1/0/9).
+- G2: ACC 89.2072+/-2.5828, HARD_AUC 89.1501+/-2.5533, PROB_AUC 92.6149+/-2.6792, SEN 88.5732+/-3.4164, SPE 89.7271+/-3.8425, ASD_F1 88.3768+/-2.7635; paired ACC delta vs E69.3-G2 -2.8670 pp (W/T/L 0/1/9).
+- G3: ACC 89.4344+/-3.5232, HARD_AUC 89.3309+/-3.4131, PROB_AUC 91.7141+/-3.0658, SEN 88.0976+/-4.0633, SPE 90.5643+/-5.9817, ASD_F1 88.5959+/-3.5891; paired ACC delta vs E69.3-G2 -2.6398 pp (W/T/L 0/2/8).
+- G4: ACC 88.8610+/-2.5292, HARD_AUC 88.6233+/-2.6072, PROB_AUC 91.4067+/-2.7479, SEN 85.3780+/-5.6226, SPE 91.8686+/-4.0645, ASD_F1 87.5967+/-2.9965; paired ACC delta vs E69.3-G2 -3.2132 pp (W/T/L 0/0/10).
+- G5: ACC 88.8610+/-3.4943, HARD_AUC 88.6631+/-3.5397, PROB_AUC 91.9961+/-3.5017, SEN 86.1098+/-4.7050, SPE 91.2165+/-3.3174, ASD_F1 87.7242+/-3.8503; paired ACC delta vs E69.3-G2 -3.2132 pp (W/T/L 0/0/10).
+- G6: ACC 84.1536+/-3.0434, HARD_AUC 83.8176+/-3.2315, PROB_AUC 87.8345+/-3.8857, SEN 79.1707+/-7.4303, SPE 88.4644+/-4.1657, ASD_F1 82.0770+/-3.9630; paired ACC delta vs E69.3-G2 -7.9206 pp (W/T/L 0/0/10).
+- G5-G3 ACC delta `-0.5734 pp`; G5-G6 ACC delta `+4.7074 pp`.
+- RNG: exact common epoch triplets `19069/19069`; protected-source audit `PASS` across `1904` files.
+- Audit-only correction: `[{"component": "audit.py", "current_sha256": "fe1f282493ca9d9488999c6a58c6f9a1917c36bcd248c54593044ce98be0249e", "previous_sha256": "aaed4ee0b4361003401f1e694c4f6cdf592713b3a4494cb2562e2486fe27479a", "reason": "E72.4 fold_metrics.csv stores metric columns as percentage-suffixed names; the first independent audit assumed normalized names.", "scope": "Historical E72.4-G1 comparison column mapping and explicit source-hash exception for this audit-only correction.", "training_code_or_results_changed": false}, {"component": "audit.py", "current_sha256": "32762d35f8e031a7b09edc95583ea0f3c06a1c0b00294688c4c0c15876bab3f4", "previous_sha256": "fe1f282493ca9d9488999c6a58c6f9a1917c36bcd248c54593044ce98be0249e", "reason": "Disease-supervision mechanism readback did not carry its frozen prototype bank into the diagnostic routine.", "scope": "Audit-only threading of the already-loaded disease bank into mechanism diagnostics; no model, prediction, or checkpoint changed.", "training_code_or_results_changed": false}, {"component": "audit.py", "current_sha256": "a4cb2af83b42e2e70987f499f68543263084e611b21af77b24cd1ee285fcf8ab", "previous_sha256": "32762d35f8e031a7b09edc95583ea0f3c06a1c0b00294688c4c0c15876bab3f4", "reason": "The mechanism diagnostic routine did not bind the readback prototype bank and checkpoint objects required for diagnostics.", "scope": "Audit-only local bindings for disease-head and gradient diagnostics; no model, prediction, or checkpoint changed.", "training_code_or_results_changed": false}]`; model training and predictions were unchanged.
+- Historical Fold2 still exposes rows 377 (ASD) and 407 (TD) to both training and testing. Excluding Fold2 or removing those two rows is descriptive sensitivity only; all other historical CV/preprocessing/transductive limitations remain.
+- See the full audited report and outputs under `results/`. Future performance claims require no-overlap folds, fold-local preprocessing, validation-only checkpoint selection, and independent validation.
+
+### Experiment 72.5 verified addendum
+
+- E72.4-G1 ACC was 84.3757% with mean residual about 9.97%. Safe-residual G1 reached 88.9786% (+4.6029 pp vs E72.4-G1) but remained 3.0956 pp below E69.3-G2 (W/T/L 1/0/9); excluding Fold 2 it remained 3.3119 pp below the base.
+- The new hard cap is 2%; G1 mean/p95/max residual was 1.432/1.952/1.988%, with 39.3% of held-out rows at or above 1.9%. G5 was 1.437/1.963/1.990%, with 44.4% at or above 1.9%; learned G1/G5 magnitude gates averaged 0.987/0.994. This removes forced 10% clipping but shows the learned gate often approaches the new cap. Null attention averaged 0.277 in G5; G6 was 0.069 and its mean residual was 1.803%.
+- G1 fixed-checkpoint residual-off changed 11.4 predictions/fold on average: 8.4 corrected and 3.0 newly wrong by active injection. G5 site attention averaged 0.323; site-token masking lowered ACC by 7.226 pp on average, and G5 site subgroup ACC ranged 71.4-96.4% for sites with at least ten held-out rows.
+- Source/temperature: G3 minus G2 was +0.2273 pp ACC (5/2/3) but -0.9008 pp Prob-AUC; G3 tau=1 minus G4 tau=0.1 was +0.5734 pp ACC (5/2/3), with +2.7195 pp SEN. Fine+Global versus Global-only was not isolated by these six groups.
+- G5 minus G3 ACC was -0.5734 pp (2/1/7), so signed disease-difference routing did not improve the trained comparator. G5 minus G6 was +4.7074 pp (10/0/0), supporting only the natural-language encoding over this particular fixed category-vector control. At fixed G5 checkpoints, lambda-off changed 3 test predictions (3 corrected, 0 new errors); reversing strength changed 8 (6 corrected, 2 new errors); permuting patient strengths changed no hard predictions.
+- Fold 2 ACC full -> after removing test rows 377/407: E69.3-G2 90.8046 -> 90.5882%; G1 89.6552 -> 89.4118%; G5 86.2069 -> 85.8824%; G6 81.6092 -> 81.1765%. Row removal is evaluation-only; the same two labels remained in fold-2 training.
+- Mean absolute adaptive-gate distance from E69.3-G2 was only 0.00017-0.00028 across groups, showing no material DARG gate change. Decision remains `PARTIAL_SAFE_RESIDUAL_REPAIR_ONLY`; no GO claim.
+- The frozen training sources remain unchanged. Three audit-only fixes were recorded for E72.4 percent-column mapping and diagnostic context bindings; final audit.py SHA `a4cb2af83b42e2e70987f499f68543263084e611b21af77b24cd1ee285fcf8ab`. Final audit remains 60/60 checkpoints, 19069/19069 common-epoch RNG triplets, and 1904 protected files PASS.
+- Best-checkpoint disease-head test accuracy was 85.3% global and 85.1% on the CAM CORR position in G5; G3 was 88.1% and 87.3%. CAM positions are interaction-mixed, and weighted semantic/classification CAM-gradient ratios ranged 0.075-0.219, not a constant 0.1 over training. G5 sex subgroup ACC was 89.27% (SEX_1, n=727) and 86.81% (SEX_2, n=144); age-bin ACC ranged 79.2-100% for bins with n=12-160. These are descriptive under test-selected checkpoints and inherited overlap.
+<!-- EXPERIMENT74_3_LOCAL_DCR_2026-11-06 -->
+## Experiment 74.3：Local-DCR（2026-11-06）
+
+目的：在E74.2疾病边权增量残差上，仅检验模态局部化、固定3倍残差强度和正增量残差三项预注册改动；不扩展关系编码器、损失或分类主干。
+代码及运行目录：`/model/spromptgl/experiment/experiment74_3_local_dcr`；首选OSSFS目录因errno 5创建失败，回退至`/model`。E74.2参考为`upload/experiment74-2-dcr-rudag`@`6555308455814af5b6b4c82ceece73eb2333be15`，源文件SHA见实验config与manifest。
+G1为模态局部signed DeltaA、lambda=0.02；G2仅将lambda固定为0.06；G3继承G2，但只在直接残差分支使用clamp_min(DeltaA,0)，统一图仍保留负增量抑制。三组均为每模态单一统一图、一次GCN、原CAM/分类器及原优化器与损失。
+
+执行状态：30/30任务、30/30独立checkpoint审计；设备PPU-ZW810E，worker上限10、实际全局并发峰值10；用时859.7s，失败/重试0，OOM 0。
+
+十折结果（mean ± population SD，%）：
+|Group|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E69.3-G2|92.0742 ± 2.7482|91.8995 ± 2.7186|93.3759 ± 2.9908|89.5854 ± 3.4710|94.2137 ± 3.9815|91.2984 ± 2.9222|
+|E62-E2|91.8443 ± 2.9346|91.6821 ± 2.8919|93.2010 ± 3.0942|89.5854 ± 3.4710|93.7789 ± 4.2653|91.0789 ± 3.0892|
+|E74-UDAG|91.4995 ± 2.6885|91.2511 ± 2.7308|93.9249 ± 2.6632|87.8537 ± 4.3359|94.6485 ± 3.2152|90.5218 ± 3.0064|
+|G1-RUDAG-U|91.9592 ± 2.7747|91.7498 ± 2.7845|93.4439 ± 3.0255|89.0732 ± 3.9177|94.4265 ± 3.7676|91.1148 ± 3.0257|
+|G2-RUDAG-Full|91.8443 ± 2.9793|91.6363 ± 3.0151|93.5999 ± 3.0799|88.8415 ± 4.3351|94.4311 ± 3.4953|90.9690 ± 3.3140|
+|E74.2-G1-DCR-RUDAG|91.8443 ± 2.7963|91.6442 ± 2.7336|93.6854 ± 2.7687|89.0793 ± 3.0035|94.2091 ± 4.3328|91.0361 ± 2.9228|
+|E74.3-G1-Local-DCR|92.0742 ± 2.9789|91.8406 ± 3.0283|94.0087 ± 2.9776|88.8293 ± 4.7826|94.8520 ± 3.8905|91.1921 ± 3.3226|
+|E74.3-G2-Local-DCR-3x|91.8456 ± 2.6991|91.6411 ± 2.7749|93.1907 ± 3.8355|89.0732 ± 4.7674|94.2091 ± 3.2351|90.9719 ± 3.0520|
+|E74.3-G3-Positive-Local-DCR|91.9579 ± 3.1744|91.7955 ± 3.1955|93.5941 ± 3.2983|89.5854 ± 4.0996|94.0056 ± 3.4385|91.1571 ± 3.4915|
+
+排除Fold 2后的配对ACC变化（E74.3−参考，百分点；其余指标见paired_comparisons.csv）：
+|比较|9折ACC变化|胜/平/负|
+|---|---:|---:|
+|E74.3-G1-Local-DCR−E74.2|+0.1277|2/6/1|
+|E74.3-G1-Local-DCR−E74.1-G1|+0.2554|3/5/1|
+|E74.3-G1-Local-DCR−E69.3-G2|-0.1277|1/6/2|
+|E74.3-G1-Local-DCR−E62-E2|-0.1277|1/6/2|
+|E74.3-G1-Local-DCR−E74|+0.3831|4/4/1|
+|E74.3-G2-Local-DCR-3x−E74.2|+0.0015|2/5/2|
+|E74.3-G2-Local-DCR-3x−E74.1-G1|+0.1292|4/2/3|
+|E74.3-G2-Local-DCR-3x−E69.3-G2|-0.2540|2/4/3|
+|E74.3-G2-Local-DCR-3x−E62-E2|-0.2540|2/4/3|
+|E74.3-G2-Local-DCR-3x−E74|+0.2569|4/3/2|
+|E74.3-G3-Positive-Local-DCR−E74.2|-0.0015|2/5/2|
+|E74.3-G3-Positive-Local-DCR−E74.1-G1|+0.1263|3/4/2|
+|E74.3-G3-Positive-Local-DCR−E69.3-G2|-0.2569|2/3/4|
+|E74.3-G3-Positive-Local-DCR−E62-E2|-0.2569|2/3/4|
+|E74.3-G3-Positive-Local-DCR−E74|+0.2540|3/5/1|
+|G2−G1|+0.1263|3/5/1|
+|G3−G2|+0.0029|3/4/2|
+|G1−E74.2|+0.1277|2/6/1|
+
+机制诊断：各模态训练患者对AUC、未暴露测试患者对事后AUC、关系评分分布、门控、正负边增量、图变化和GCN/DCR消息比例见mechanism.csv。按组平均的融合加权DCR/320维输入范数（%）如下：
+- E74.3-G1-Local-DCR: PHENO 0.000000%, ANAT 0.000000%, FUNC 0.000000%, CORR 0.094107%.
+- E74.3-G2-Local-DCR-3x: PHENO 0.000000%, ANAT 0.000000%, FUNC 0.000000%, CORR 0.276332%.
+- E74.3-G3-Positive-Local-DCR: PHENO 0.000000%, ANAT 0.000000%, FUNC 0.000000%, CORR 0.404577%.
+
+固定checkpoint干预（每组10折平均full−intervention ACC/Prob-AUC，百分点；硬翻转数）：
+- E74.3-G1-Local-DCR / disease_neutral: ACC +0.3448 pp, Prob-AUC +0.0107 pp, 硬翻转 3。
+- E74.3-G1-Local-DCR / corr_neutral: ACC +0.3448 pp, Prob-AUC +0.0107 pp, 硬翻转 3。
+- E74.3-G1-Local-DCR / score_permuted: ACC +0.4598 pp, Prob-AUC -0.0000 pp, 硬翻转 4。
+- E74.3-G1-Local-DCR / direct_off: ACC +0.3448 pp, Prob-AUC +0.0107 pp, 硬翻转 3。
+- E74.3-G2-Local-DCR-3x / disease_neutral: ACC +0.2299 pp, Prob-AUC -0.0001 pp, 硬翻转 2。
+- E74.3-G2-Local-DCR-3x / corr_neutral: ACC +0.2299 pp, Prob-AUC -0.0001 pp, 硬翻转 2。
+- E74.3-G2-Local-DCR-3x / score_permuted: ACC +0.1149 pp, Prob-AUC +0.0054 pp, 硬翻转 1。
+- E74.3-G2-Local-DCR-3x / direct_off: ACC +0.2299 pp, Prob-AUC -0.0001 pp, 硬翻转 2。
+- E74.3-G3-Positive-Local-DCR / disease_neutral: ACC +0.1149 pp, Prob-AUC -0.0160 pp, 硬翻转 1。
+- E74.3-G3-Positive-Local-DCR / corr_neutral: ACC +0.1149 pp, Prob-AUC -0.0160 pp, 硬翻转 1。
+- E74.3-G3-Positive-Local-DCR / score_permuted: ACC +0.2299 pp, Prob-AUC +0.0000 pp, 硬翻转 2。
+- E74.3-G3-Positive-Local-DCR / direct_off: ACC +0.1149 pp, Prob-AUC -0.0160 pp, 硬翻转 1。
+
+审计：30/30 checkpoint独立读回并复算通过；每折三组warmup、模型/CAM、优化器、划分和患者对初始化身份一致。跨组共享epoch RNG匹配10327/10327；与E74.2共有epoch匹配10338/10338。历史训练曾发生的失败/重试见manifest，正式任务重试数为0。
+评价限制：沿用val=test、外层交叉验证前RFE/标准化及transductive图；Fold 2仍有1-based row 377和407同时进入训练与测试。不得解释为无泄漏独立泛化估计；九折剔除不能消除其他协议限制。
+结论：PARTIAL。GO requires at least one fixed group to meet the prespecified ACC/Hard-AUC/SEN targets, improve nine-fold ACC over E74.2, and show directionally beneficial disease-score intervention effects. PARTIAL requires a measurable improvement or mechanism signal; otherwise NO-GO.
+下一步：不继续扫描本轮固定系数；优先改为fold-local预处理、独立验证集选模和无标签重叠评估，再检验关系边对应对分类决策的可重复作用。
+报告：`/model/spromptgl/experiment/experiment74_3_local_dcr/results/report.md`；manifest：`/model/spromptgl/experiment/experiment74_3_local_dcr/manifest.json`；审计结果：`/model/spromptgl/experiment/experiment74_3_local_dcr/results/checkpoint_audit.csv`。
+<!-- EXPERIMENT74_3_LOCAL_DCR_2026-11-06 -->
+<!-- EXPERIMENT74_3_LOCAL_DCR_AUDIT_CORRECTION_2026-11-06 -->
+### Experiment 74.3审计更正
+
+最终文件核验发现首版handoff中G2−G1及G3−G2配对表的左右操作数映射反向。模型训练、checkpoint、逐折预测和独立审计不受影响；已修正`results/paired_comparisons.csv`及`results/report.md`。以下为正确方向，覆盖首版中这两组比较行：
+|比较|范围|ACC Δ pp|Hard-AUC Δ pp|Prob-AUC Δ pp|SEN Δ pp|胜/平/负（ACC）|
+|---|---|---:|---:|---:|---:|---:|
+|G2 vs G1|all10|-0.2286|-0.1995|-0.8181|+0.2439|1/5/4|
+|G2 vs G1|nine_without_fold2|-0.1263|-0.1156|-0.8677|+0.0000|1/5/3|
+|G3 vs G2|all10|+0.1123|+0.1543|+0.4035|+0.5122|3/4/3|
+|G3 vs G2|nine_without_fold2|-0.0029|+0.0654|+0.4954|+0.8401|2/4/3|
+
+排除Fold 2后的各组结果（9折mean ± population SD，%）：
+|Group|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|
+|---|---:|---:|---:|---:|---:|
+|E74.3-G1-Local-DCR|92.0875 ± 3.1397|91.8384 ± 3.1921|94.0677 ± 3.1331|88.6721 ± 5.0167|95.0046 ± 4.0724|
+|E74.3-G2-Local-DCR-3x|91.9613 ± 2.8215|91.7227 ± 2.9136|93.2000 ± 4.0428|88.6721 ± 4.8626|94.7734 ± 2.9059|
+|E74.3-G3-Positive-Local-DCR|91.9584 ± 3.3462|91.7882 ± 3.3683|93.6954 ± 3.4619|89.5122 ± 4.3152|94.0641 ± 3.6197|
+
+Fold 2对10折均值的贡献（10折mean − 排除Fold 2后的9折mean，百分点；仅描述性）：
+|Group|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|
+|---|---:|---:|---:|---:|---:|
+|E74.3-G1-Local-DCR|-0.0134|+0.0023|-0.0589|+0.1572|-0.1526|
+|E74.3-G2-Local-DCR-3x|-0.1157|-0.0816|-0.0093|+0.4011|-0.5643|
+|E74.3-G3-Positive-Local-DCR|-0.0004|+0.0073|-0.1012|+0.0732|-0.0586|
+
+CORR与非CORR关系/传播诊断（每组×模态，30折checkpoint均值）：
+|Group|Modality|Train pair AUC|Unexposed test pair AUC|q mean|Modified edges %|DeltaA/S %|Fused DCR/input %|
+|---|---|---:|---:|---:|---:|---:|---:|
+|E74.3-G1-Local-DCR|PHENO|0.8009|0.5014|0.5002|3.1604|0.0053|0.00000000|
+|E74.3-G1-Local-DCR|ANAT|0.6026|0.5006|0.5125|0.9764|0.0014|0.00000001|
+|E74.3-G1-Local-DCR|FUNC|0.6557|0.5038|0.5075|2.8122|0.0033|0.00000001|
+|E74.3-G1-Local-DCR|CORR|0.9983|0.8406|0.4757|100.0000|69.4045|0.09410744|
+|E74.3-G2-Local-DCR-3x|PHENO|0.7847|0.5025|0.4991|3.3947|0.0051|0.00000000|
+|E74.3-G2-Local-DCR-3x|ANAT|0.5990|0.5029|0.5126|0.8436|0.0013|0.00000003|
+|E74.3-G2-Local-DCR-3x|FUNC|0.6458|0.5042|0.5009|2.4156|0.0029|0.00000001|
+|E74.3-G2-Local-DCR-3x|CORR|0.9918|0.8404|0.4208|100.0000|65.4490|0.27633243|
+|E74.3-G3-Positive-Local-DCR|PHENO|0.7575|0.5014|0.4976|2.5537|0.0038|0.00000000|
+|E74.3-G3-Positive-Local-DCR|ANAT|0.5834|0.5013|0.5129|0.5236|0.0008|0.00000002|
+|E74.3-G3-Positive-Local-DCR|FUNC|0.6234|0.5021|0.5024|1.9869|0.0022|0.00000001|
+|E74.3-G3-Positive-Local-DCR|CORR|0.9941|0.8255|0.5036|100.0000|60.7414|0.40457693|
+
+各组的Disease-neutral、CORR-neutral、Score-permuted和Direct-off干预均产生少量硬翻转；逐折结果显示这些翻转均为full模型正确、干预后错误，没有纠错样本。平均ACC差异及每组汇总见`results/interventions.csv`。因此可称有小幅可测量的关系对应/残差依赖，但不能称为稳健的大幅诊断增益。
+本次更正不改动训练源码或checkpoint。审计脚本更正前SHA：`e6c950c3e5f19295ec071db46cbd231d95d8f8f66e9b658321e35bd1f9040006`；更正后SHA：`6191a8bd5e52ebb24f62d1adfb310d431e2abb08de4511e092a3b73c4d2d1586`。当前正式审计仍为30/30通过，交叉组共有epoch RNG匹配无差异。
+<!-- EXPERIMENT74_3_LOCAL_DCR_AUDIT_CORRECTION_2026-11-06 -->
+<!-- EXPERIMENT74_3_LOCAL_DCR_EXECUTION_NOTE_2026-11-06 -->
+### Experiment 74.3执行记录补充
+
+首次轻量预检在结果序列化阶段失败：Tensor values in group-forward graph snapshot were not JSON serializable；修复为保存统一图Tensor的SHA-256摘要后，完整预检重跑通过。该次预检未执行正式训练更新或任务。正式30折均第一次启动完成，worker失败/重试/OOM均为0；训练源码SHA在预检和训练期间保持一致。
+训练源码SHA：`3122f95ee5e5f27027f20d894b20d1d6071de79b02388cedee7cf711b4e05cc4`；最终审计汇总源码SHA：`61fdb383458838e3196ad1be2f8acf7389c7364987c0fc47f34e980e4401d82e`；原始预检审计脚本SHA：`e6c950c3e5f19295ec071db46cbd231d95d8f8f66e9b658321e35bd1f9040006`。审计脚本后续更正仅修复组间配对行方向并记录执行异常，未改训练源码、参数或checkpoint；最终独立审计30/30通过。
+<!-- EXPERIMENT74_3_LOCAL_DCR_EXECUTION_NOTE_2026-11-06 -->
+<!-- EXPERIMENT_74_4_SOFT_POSITIVE_DCR -->
+## Experiment 74.4：CORR评分软化与正向局部疾病残差（2026-11-09）
+
+目的：在E74.3-G1基础上固定0.02直接传播尺度，检验CORR构图Logit温度T=2软化和直接残差positive-only两个正交因素。目录`/model/spromptgl/experiment/experiment74_4_soft_positive_dcr`；preferred OSSFS目录真实报OSError(5)，已记录并回退至`/model`。只读E74.3基线锁定`upload/experiment74-3-local-dcr`@`e05275cb4b18dcd01679682b9df02f3cbc13b713`。
+组别：E74.4-G1=T2/signed；G2=T1/positive；G3=T2/positive；E74.3-G1=T1/signed只读。不使用Prompt、文本模块、新损失或新参数。T仅改CORR构图概率，BCE仍用原始Logit；positive-only仅作用于直接DCR，统一GCN图仍含负疾病增量。
+
+执行：30/30训练、30/30独立checkpoint审计；PPU-ZW810E，worker峰值9，耗时660.5s，重试0，OOM 0。
+
+10折mean±population SD（%）：
+|Group|ACC|Hard-AUC|Prob-AUC|SEN|SPE|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E69.3-G2|92.0742±2.7482|91.8995±2.7186|93.3759±2.9908|89.5854±3.4710|94.2137±3.9815|91.2984±2.9222|
+|E74.3-G1-Local-DCR|92.0742±2.9789|91.8406±3.0283|94.0087±2.9776|88.8293±4.7826|94.8520±3.8905|91.1921±3.3226|
+|E74.4-G1-Soft-DCR|91.3858±2.6904|91.1021±2.7517|92.9784±2.8298|87.3476±4.5089|94.8566±3.0874|90.3484±3.0210|
+|E74.4-G2-Positive-DCR|92.1891±2.7648|92.0294±2.7255|93.4946±2.9195|90.0671±3.8862|93.9917±4.7320|91.4590±2.9013|
+|E74.4-G3-Soft-Positive-DCR|91.8443±2.6508|91.6225±2.6751|93.6961±3.0908|88.8232±4.6645|94.4218±4.3507|90.9686±2.8953|
+
+因素效应、九折比较、历史对照、CORR q_raw/q_graph及四种固定Checkpoint干预见实验`results/paired_comparisons.csv`、`mechanism.csv`、`interventions.csv`和`report.md`。Fold 2历史重叠row 377/407已在独立审计和干预翻转中核对。
+
+审计：E74.3-G1的T1 signed前向与图逐张量一致；三组均恢复相同E61 epoch-10 warmup/优化器/数据索引，组间共有epoch RNG一致；30/30独立读回，根模型和历史文件保持只读。
+结论：**PARTIAL**。历史val=test、CV前预处理和transductive图仍限制泛化解释；即使达到目标也需在无重叠、fold-local预处理和独立验证选模下复核。manifest `/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/manifest.json`，报告 `/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/results/report.md`。
+<!-- EXPERIMENT_74_4_SOFT_POSITIVE_DCR -->
+<!-- EXPERIMENT_74_4_AUDIT_DIRECTION_CORRECTION -->
+
+<!-- EXPERIMENT_74_4_FACTORS_AND_MECHANISM_SUPPLEMENT -->
+
+<!-- EXPERIMENT_74_4_FACTORS_SUPPLEMENT_CORRECTION -->
+
+<!-- EXPERIMENT_74_4_INTERVENTION_SIGN_CORRECTION -->
+### Experiment 74.4 Score-permuted符号勘误
+
+更正“因素与机制数值补充”中G2 Score-permuted的概率AUC符号：CSV中的`full_minus_intervention_prob_auc_pp`为 **+0.0053 pp**（不是−0.0053 pp）；ACC和Hard-AUC差均为0.0000 pp，硬翻转为0。该勘误不改变结论：G2的Disease-neutral干预是正向病例贡献的来源（full−neutral ACC +0.1149 pp、Hard-AUC +0.1064 pp，1个完整模型正确转为干预模型错误、无反向纠正），置换本身没有硬分类收益。权威数据见实验`results/interventions.csv`。
+<!-- EXPERIMENT_74_4_INTERVENTION_SIGN_CORRECTION -->
+### Experiment 74.4因素补充表勘误
+
+上一补充表中“T2−T1，Positive（G3−G2）”的Hard-AUC W/T/L抄录修正如下；均值差未变，权威逐折结果以实验`results/paired_comparisons.csv`为准：全10折Hard-AUC为−0.4069 pp（0/5/5），排除Fold 2后为−0.4521 pp（0/4/5）。同一行SEN为全10折−1.2439 pp（0/6/4），九折−1.3821 pp（0/5/4）。
+<!-- EXPERIMENT_74_4_FACTORS_SUPPLEMENT_CORRECTION -->
+### Experiment 74.4因素与机制数值补充
+
+以下为逐折配对均值差，单位百分点，括号为W/T/L，顺序为ACC、Hard-AUC、Prob-AUC、SEN-ASD。首个审计方向更正只影响解释和GO标记，不改变训练指标；30个checkpoint已按更正后的审计脚本再次读回。
+
+|因素对比|全10折|排除Fold 2后9折|
+|---|---|---|
+|温度T2−T1，Signed（G1−E74.3-G1）|−0.6883 (1/2/7); −0.7385 (1/2/7); −1.0303 (1/0/9); −1.4817 (1/4/5)|−0.6371 (1/2/6); −0.6851 (1/2/6); −0.8561 (1/0/8); −1.3753 (1/4/4)|
+|温度T2−T1，Positive（G3−G2）|−0.3448 (0/7/3); −0.4069 (0/7/3); +0.2015 (3/4/3); −1.2439 (0/6/4)|−0.3831 (0/6/3); −0.4521 (0/6/3); +0.1944 (3/3/3); −1.3821 (0/5/4)|
+|Positive−Signed，T1（G2−E74.3-G1）|+0.1149 (2/7/1); +0.1887 (3/6/1); −0.5141 (2/0/8); +1.2378 (3/6/1)|+0.1277 (2/6/1); +0.2097 (3/5/1); −0.4534 (2/0/7); +1.3753 (3/5/1)|
+|Positive−Signed，T2（G3−G1）|+0.4585 (4/6/0); +0.5204 (6/3/1); +0.7177 (8/1/1); +1.4756 (5/4/1)|+0.3817 (3/6/0); +0.4427 (5/3/1); +0.5971 (7/1/1); +1.3686 (4/4/1)|
+|温度×Positive交互|+0.3435 (5/3/2); +0.3317 (6/2/2); +1.2318 (9/0/1); +0.2378 (4/4/2)|+0.2540 (4/3/2); +0.2330 (5/2/2); +1.0506 (8/0/1); −0.0068 (3/4/2)|
+
+G2相对E69.3-G2全10折变化为ACC +0.1149、Hard-AUC +0.1298、Prob-AUC +0.1187、SEN +0.4817、SPE −0.2220 pp；ACC W/T/L为2/7/1。排除Fold 2后ACC均值差约0.0000 pp（1/7/1），Hard-AUC +0.0088、Prob-AUC +0.1260、SEN +0.2642、SPE −0.2467 pp。G2的全10折均值小幅超过E69.3-G2的预设ACC、Hard-AUC和SEN目标，但这不是稳健或无偏泛化优势；G2相对E74.3-G1的Prob-AUC下降0.5141 pp、SPE下降0.8603 pp。
+
+CORR构图评分软化：E74.3-G1历史参考q标准差约0.442、0.45–0.55约1.25%；T2组q_raw标准差为0.4300/0.4128，q_graph标准差降至0.3405/0.3103，构图中间带占3.018%/3.821%。T2增加了中间概率边，但没有改善相对T1的ACC；这只是固定温度软化，不是概率校准。T2组未暴露测试患者对AUC为0.8440（G1）和0.8369（G3），T1正增量G2为0.8326。CORR的DeltaA/S均值分别为54.0914%、48.8057%、69.1443%；融合后DCR消息相对输入X分别约0.0771%、0.1022%、0.1526%。
+
+固定Checkpoint干预中，G2的Disease-neutral相对完整模型带来1个hard prediction翻转，完整模型正确而neutral干预后错误1例、反向纠正0例；Score-permuted无hard flip，仅Prob-AUC变化+0.0053 pp（full−intervention为−0.0053 pp）。Fold 2干预翻转不涉及暴露行377或407。因而干预支持仅是少量病例的可测作用，不构成强机制或独立临床证据。
+
+审计补充：训练源码SHA `d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4`；预检审计SHA `615427238eaa9f1c1b15da29a442b5f3a0299360f42b0c2bcc43f2a054905788`；更正后审计SHA `cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb`。组间共有epoch RNG核对10800/10800，与E74.3-G1共有epoch核对10637/10637；训练重试和OOM均为0。preferred OSSFS目录实际出现EIO后使用fallback `/model`。按预注册规则记为GO候选，但后续须在无训练/测试重叠、fold-local预处理、独立验证选模下复核。
+<!-- EXPERIMENT_74_4_FACTORS_AND_MECHANISM_SUPPLEMENT -->
+### Experiment 74.4审计判定方向更正
+
+追加更正：首版`manifest.json`把固定Checkpoint干预中的翻转方向解释反了。`full_correct_intervention_wrong`表示完整模型判对、干预后判错，是完整疾病关系分支的正向贡献；`full_wrong_intervention_correct`才是移除关系后纠正。训练、Checkpoint、预测和指标未改动；仅更正审计解释及GO/PARTIAL判定，并再次完整独立读回30个Checkpoint。
+
+E74.4-G2-Positive-DCR相对E74.3-G1的配对差（ACC/Hard-AUC/SEN；W/T/L）：
+|范围|ACC|Hard-AUC|SEN|
+|---|---:|---:|---:|
+|all10|+0.1149 pp (2/7/1)|+0.1887 pp (3/6/1)|+1.2378 pp (3/6/1)|
+|nine_without_fold2|+0.1277 pp (2/6/1)|+0.2097 pp (3/5/1)|+1.3753 pp (3/5/1)|
+
+G2固定Checkpoint的Disease-neutral与Score-permuted合计：完整模型正确、干预后错误 1 例；完整模型错误、干预后纠正 0 例。Disease-neutral的ACC和Hard-AUC均有正向 full−intervention 差；因此在预注册规则下判为GO候选，但效果幅度小、ACC逐折多数持平，需保守解释。
+
+更正前结论：PARTIAL；更正后结论：**GO**。审计源码SHA：预检/首版`615427238eaa9f1c1b15da29a442b5f3a0299360f42b0c2bcc43f2a054905788`，更正前`406001c058b799b354f6583ce622d92be5fdfe854ae5c2a5262d47cc2cfc2400`，更正后`cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb`。30/30 checkpoint重新审计通过，训练源码SHA与训练产物不变。详情见`/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/results/report.md`及`audit_status.json`。
+<!-- EXPERIMENT_74_4_AUDIT_DIRECTION_CORRECTION -->

@@ -1,0 +1,574 @@
+{
+  "experiment": "Experiment 74.4 - CORR Softening and Positive Local-DCR",
+  "status": "COMPLETE_AUDITED",
+  "experiment_root": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "root_fallback_reason": "Attempted preferred directory creation; OSSFS raised OSError(5, Input/output error). The verified /model experiment mount is used.",
+  "expected_tasks": 30,
+  "completed_tasks": 30,
+  "independent_audits": 30,
+  "checkpoint_audit": "PASS 30/30",
+  "device": "PPU-ZW810E",
+  "device_count": 1,
+  "worker_limit": 10,
+  "max_workers_observed": 9,
+  "max_global_workers_observed": 10,
+  "failed_attempt_records": 0,
+  "oom_events": 0,
+  "training_execution": {
+    "worker_limit": 10,
+    "max_workers_observed": 9,
+    "max_global_workers_observed": 10,
+    "wall_seconds": 660.511579990387,
+    "retry_count": 0,
+    "retries": [],
+    "failures": [],
+    "oom_events": 0,
+    "external_workers_initial": 1
+  },
+  "warmup_retrained": false,
+  "source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+  "training_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+  "preflight_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+  "preflight_repairs": [
+    {
+      "attempt": 1,
+      "phase": "historical forward parity",
+      "failure": "Calling the E74.3 wrapper initialized a second isolated runtime and attempted to reset torch interop threads after PyTorch work had begun.",
+      "repair": "Compare the locked E74.3 rudag_forward tensors directly and pass them through the already initialized shared CAM; historical source was not modified.",
+      "training_updates": 0,
+      "formal_tasks_started": 0
+    }
+  ],
+  "current_audit_source_sha256": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+  "source_integrity": {
+    "training_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+    "preflight_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+    "audit_source_sha256_at_preflight": "615427238eaa9f1c1b15da29a442b5f3a0299360f42b0c2bcc43f2a054905788",
+    "current_audit_source_sha256": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "audit_script_changed_after_training": true,
+    "audit_repairs": [
+      {
+        "before_sha256": "615427238eaa9f1c1b15da29a442b5f3a0299360f42b0c2bcc43f2a054905788",
+        "after_sha256": "406001c058b799b354f6583ce622d92be5fdfe854ae5c2a5262d47cc2cfc2400",
+        "reason": "Added the missing new-by-group fold metric mapping for factorial summary; full independent audit rerun."
+      },
+      {
+        "before_sha256": "406001c058b799b354f6583ce622d92be5fdfe854ae5c2a5262d47cc2cfc2400",
+        "after_sha256": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+        "reason": "Corrected intervention direction: a full-model correct case becoming wrong after disease-edge ablation indicates a positive contribution. Full independent audit rerun."
+      }
+    ],
+    "audit_repair_scope": "summary and GO/PARTIAL classification only; no training code, checkpoint, prediction, or metric changed.",
+    "all_non_audit_source_hashes_match_preflight": true
+  },
+  "rng_audit": {
+    "E74.4-G1-Soft-DCR": {
+      "reference": "E74.3-G1; shared epochs only",
+      "common_epochs": 3482,
+      "exact_triplets": 3482,
+      "mismatches": 0,
+      "by_fold": {
+        "1": {
+          "common_epochs": 298,
+          "exact_triplets": 298,
+          "mismatches": 0
+        },
+        "2": {
+          "common_epochs": 332,
+          "exact_triplets": 332,
+          "mismatches": 0
+        },
+        "3": {
+          "common_epochs": 338,
+          "exact_triplets": 338,
+          "mismatches": 0
+        },
+        "4": {
+          "common_epochs": 378,
+          "exact_triplets": 378,
+          "mismatches": 0
+        },
+        "5": {
+          "common_epochs": 421,
+          "exact_triplets": 421,
+          "mismatches": 0
+        },
+        "6": {
+          "common_epochs": 321,
+          "exact_triplets": 321,
+          "mismatches": 0
+        },
+        "7": {
+          "common_epochs": 329,
+          "exact_triplets": 329,
+          "mismatches": 0
+        },
+        "8": {
+          "common_epochs": 381,
+          "exact_triplets": 381,
+          "mismatches": 0
+        },
+        "9": {
+          "common_epochs": 358,
+          "exact_triplets": 358,
+          "mismatches": 0
+        },
+        "10": {
+          "common_epochs": 326,
+          "exact_triplets": 326,
+          "mismatches": 0
+        }
+      }
+    },
+    "E74.4-G2-Positive-DCR": {
+      "reference": "E74.3-G1; shared epochs only",
+      "common_epochs": 3723,
+      "exact_triplets": 3723,
+      "mismatches": 0,
+      "by_fold": {
+        "1": {
+          "common_epochs": 314,
+          "exact_triplets": 314,
+          "mismatches": 0
+        },
+        "2": {
+          "common_epochs": 332,
+          "exact_triplets": 332,
+          "mismatches": 0
+        },
+        "3": {
+          "common_epochs": 338,
+          "exact_triplets": 338,
+          "mismatches": 0
+        },
+        "4": {
+          "common_epochs": 407,
+          "exact_triplets": 407,
+          "mismatches": 0
+        },
+        "5": {
+          "common_epochs": 421,
+          "exact_triplets": 421,
+          "mismatches": 0
+        },
+        "6": {
+          "common_epochs": 390,
+          "exact_triplets": 390,
+          "mismatches": 0
+        },
+        "7": {
+          "common_epochs": 339,
+          "exact_triplets": 339,
+          "mismatches": 0
+        },
+        "8": {
+          "common_epochs": 381,
+          "exact_triplets": 381,
+          "mismatches": 0
+        },
+        "9": {
+          "common_epochs": 377,
+          "exact_triplets": 377,
+          "mismatches": 0
+        },
+        "10": {
+          "common_epochs": 424,
+          "exact_triplets": 424,
+          "mismatches": 0
+        }
+      }
+    },
+    "E74.4-G3-Soft-Positive-DCR": {
+      "reference": "E74.3-G1; shared epochs only",
+      "common_epochs": 3432,
+      "exact_triplets": 3432,
+      "mismatches": 0,
+      "by_fold": {
+        "1": {
+          "common_epochs": 300,
+          "exact_triplets": 300,
+          "mismatches": 0
+        },
+        "2": {
+          "common_epochs": 332,
+          "exact_triplets": 332,
+          "mismatches": 0
+        },
+        "3": {
+          "common_epochs": 338,
+          "exact_triplets": 338,
+          "mismatches": 0
+        },
+        "4": {
+          "common_epochs": 382,
+          "exact_triplets": 382,
+          "mismatches": 0
+        },
+        "5": {
+          "common_epochs": 421,
+          "exact_triplets": 421,
+          "mismatches": 0
+        },
+        "6": {
+          "common_epochs": 297,
+          "exact_triplets": 297,
+          "mismatches": 0
+        },
+        "7": {
+          "common_epochs": 301,
+          "exact_triplets": 301,
+          "mismatches": 0
+        },
+        "8": {
+          "common_epochs": 381,
+          "exact_triplets": 381,
+          "mismatches": 0
+        },
+        "9": {
+          "common_epochs": 352,
+          "exact_triplets": 352,
+          "mismatches": 0
+        },
+        "10": {
+          "common_epochs": 328,
+          "exact_triplets": 328,
+          "mismatches": 0
+        }
+      }
+    }
+  },
+  "cross_group_rng_audit": {
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold1": {
+      "common_epochs": 298,
+      "exact_triplets": 298,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold1": {
+      "common_epochs": 298,
+      "exact_triplets": 298,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold1": {
+      "common_epochs": 300,
+      "exact_triplets": 300,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold2": {
+      "common_epochs": 362,
+      "exact_triplets": 362,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold2": {
+      "common_epochs": 379,
+      "exact_triplets": 379,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold2": {
+      "common_epochs": 362,
+      "exact_triplets": 362,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold3": {
+      "common_epochs": 374,
+      "exact_triplets": 374,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold3": {
+      "common_epochs": 397,
+      "exact_triplets": 397,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold3": {
+      "common_epochs": 374,
+      "exact_triplets": 374,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold4": {
+      "common_epochs": 378,
+      "exact_triplets": 378,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold4": {
+      "common_epochs": 378,
+      "exact_triplets": 378,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold4": {
+      "common_epochs": 382,
+      "exact_triplets": 382,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold5": {
+      "common_epochs": 440,
+      "exact_triplets": 440,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold5": {
+      "common_epochs": 440,
+      "exact_triplets": 440,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold5": {
+      "common_epochs": 440,
+      "exact_triplets": 440,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold6": {
+      "common_epochs": 321,
+      "exact_triplets": 321,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold6": {
+      "common_epochs": 297,
+      "exact_triplets": 297,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold6": {
+      "common_epochs": 297,
+      "exact_triplets": 297,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold7": {
+      "common_epochs": 329,
+      "exact_triplets": 329,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold7": {
+      "common_epochs": 301,
+      "exact_triplets": 301,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold7": {
+      "common_epochs": 301,
+      "exact_triplets": 301,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold8": {
+      "common_epochs": 440,
+      "exact_triplets": 440,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold8": {
+      "common_epochs": 435,
+      "exact_triplets": 435,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold8": {
+      "common_epochs": 435,
+      "exact_triplets": 435,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold9": {
+      "common_epochs": 358,
+      "exact_triplets": 358,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold9": {
+      "common_epochs": 352,
+      "exact_triplets": 352,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold9": {
+      "common_epochs": 352,
+      "exact_triplets": 352,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold10": {
+      "common_epochs": 326,
+      "exact_triplets": 326,
+      "mismatches": 0
+    },
+    "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold10": {
+      "common_epochs": 326,
+      "exact_triplets": 326,
+      "mismatches": 0
+    },
+    "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold10": {
+      "common_epochs": 328,
+      "exact_triplets": 328,
+      "mismatches": 0
+    }
+  },
+  "scientific_conclusion": "GO",
+  "scientific_conclusion_note": "GO requires at least one fixed group to improve ACC, Hard-AUC, or SEN versus E74.3-G1 with positive mean paired change and more folds improving than worsening, the same metric supported after excluding Fold 2, and a directionally beneficial neutralization or score-permutation intervention (full model correct to ablated model wrong exceeds reverse flips). PARTIAL marks incomplete evidence; NO-GO marks no predeclared performance/mechanism support.",
+  "fold2_label_exposure_1based": [
+    377,
+    407
+  ],
+  "best_group_by_acc": "E74.4-G2-Positive-DCR",
+  "effect_support_by_group": {
+    "E74.4-G1-Soft-DCR": {
+      "all10": false,
+      "nine_without_fold2": false,
+      "intervention": true,
+      "full_correct_to_intervention_wrong": 2,
+      "full_wrong_to_intervention_correct": 0
+    },
+    "E74.4-G2-Positive-DCR": {
+      "all10": true,
+      "nine_without_fold2": true,
+      "intervention": true,
+      "full_correct_to_intervention_wrong": 1,
+      "full_wrong_to_intervention_correct": 0
+    },
+    "E74.4-G3-Soft-Positive-DCR": {
+      "all10": false,
+      "nine_without_fold2": false,
+      "intervention": true,
+      "full_correct_to_intervention_wrong": 3,
+      "full_wrong_to_intervention_correct": 0
+    }
+  },
+  "protected_sources": {
+    "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+    "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+    "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa",
+    "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix/manifest.json": "a0aa87234252b70d8ae2eeb143eb05bbd84c4731203b7763ab5e59e8d1db920a",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/run.py": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/model_e61.py": "28266568bcebcfdbab961dbedb7257c15ff4e862cd02ae744feacad54b7bc81b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/config.json": "7a1a2e7d37918baf615c704a47d09e3a3eb8a9de5bfc752d852b15a8ada6569b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/run.py": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/config.json": "4556c96bb92a9bdbdb048b6f702d853abe6030dd2ae9e2bdad9b5f0ba509c8e0",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/manifest.json": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/results/fold_metrics.csv": "646033fae333036e503930f6c0ced326113735f55d83ecd0a70d4917cff3318a",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/results/summary.csv": "c7ce729077618c21b14fc31f0fb7f448ac473acb79de5e91966e58ffcd731145",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/run.py": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/config.json": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/manifest.json": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/results/fold_metrics.csv": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/results/summary.csv": "9e8b23aaf6d79c0db33b39c02e1038d360834e540b653406a5a741749e1437cb",
+    "/model/spromptgl/experiment/experiment74_udag/run.py": "938998419d8dec2d9ea3abc7e789e7d890f6aaa25c54d36c8ff8c02e97b45cf0",
+    "/model/spromptgl/experiment/experiment74_udag/udag.py": "91b749aa99e86cb55018102bf5def1664b678adb94e3f4cdf94dbe9f5baf16bb",
+    "/model/spromptgl/experiment/experiment74_udag/config.json": "1d2a3fd8cead1f8637ae4122b678e1c14fa3232aeaefeb87983ebcc4044f382d",
+    "/model/spromptgl/experiment/experiment74_udag/manifest.json": "fe65396bf4c610a0f8338cb4e72fd71d2d3daac977a69d7d5a1c6c47475cf25f",
+    "/model/spromptgl/experiment/experiment74_udag/results/fold_metrics.csv": "fad616e122d65afcae939b4c8095e28f0dda43cba084f13ddb64a9be70161952",
+    "/model/spromptgl/experiment/experiment74_udag/results/summary.csv": "d561d4b9a443465b228ac79c583a9316946236730ab94666d13d53b823ed5e59",
+    "/model/spromptgl/experiment/experiment74_1_rudag/run.py": "a487c87d52a0faeded5ff6406ff9908290fc2fdfd9d5b66e6378a5b2aad6ab5c",
+    "/model/spromptgl/experiment/experiment74_1_rudag/rudag.py": "7fb5920b21f43a117a47137fcce58b5411b91c13dfaaf7df85fc502124723a8e",
+    "/model/spromptgl/experiment/experiment74_1_rudag/audit.py": "dc7e6e5850d94faa41a8572c43016bb4c54aaee418528d994dc39454bcd08f43",
+    "/model/spromptgl/experiment/experiment74_1_rudag/config.json": "e353b0070e864c988d2b90334b96ac4f292d126052d7b6339fd78c82e37d7612",
+    "/model/spromptgl/experiment/experiment74_1_rudag/manifest.json": "adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0",
+    "/model/spromptgl/experiment/experiment74_1_rudag/results/fold_metrics.csv": "a14103bc91fe393f0cfab60cd5e45f0c68a071e77c6f543028c49f8a5d12d7cd",
+    "/model/spromptgl/experiment/experiment74_1_rudag/results/summary.csv": "268f6fa2a4955c23d9293efcc63bdfd8b1ec55e700c7cd4dfd5b95f1836dec39",
+    "/model/spromptgl/experiment/experiment74_1_rudag/results/mechanism.csv": "d491fef8b30dbbe7a849811c2eb66e4806c73fa65854c2b1d932c09196adbeec",
+    "/model/spromptgl/experiment/experiment74_1_rudag/results/interventions.csv": "38ebf16e134a7feb8489fbd401ef747f465802153745fd829e207d7694d56481",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/run.py": "3b15a7827333061be4b52e357743062cd180e764b4cba3c4736d8d72ff38ebc6",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/dcr_rudag.py": "7f46bc51ef880cbab8d6fe270be4b101cc9a17d31b89117c32083212afdd644d",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/audit.py": "6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/config.json": "0c49e2a015b5bab5e067fadeb6eca012f807b2bbe9f09040a7591a1e52559a6c",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/manifest.json": "cd90873cb4a813a654104b66f7d03fff8564d7a6672a2b7a53e745bf08e5c3e4",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/report.md": "043c1111c664d609edcc895a6ca2c740301962687275196189f1d62fea80579d",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/fold_metrics.csv": "554856f10397c3acccbdaa626324db466410a7249a8f659634a398dd0d968e87",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/summary.csv": "72fd498283a77c781041431f96a2820c216b3c55f3df15bb50dd11d3c9e12cee",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/mechanism.csv": "309c7e7619b6023afe6a5c22ecf0906dccb3a3fd4ede80d05309fc0457019696",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/interventions.csv": "4d6ed5479ac270910b44c5e7ac7ad612c97b07840ea697c1b7cea15784ac1627",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/results/prior_training_failures.json": "58fd14d55b663ea6dbe15c02e89c96704b12d22309258d545249fc6d8356ef5a",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/local_dcr.py": "9d288f2a927317a066803b3fe4201af3f933a7e9ddae023126f75d53399e858f",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/run.py": "727aa2aed0573b120030d43b6fc5b525b1cbe6488c0afd204fb733679c4a504f",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/audit.py": "7f0a3dddd6e9fdd8464e51611a191bebec5f888cb86eddddd8900dd73cf950e4",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/config.json": "3b8a6b598bd35d826d1761989057b5f0927295103525cde1a815ea00c55905a8",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/manifest.json": "7eb54a314e25c81a028cb95538c0ba6c281213b3a43e73df08445e942b9224d5",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/report.md": "bdddc491b8a66046e1684c481cad92c083ccd460bfe37628bb1ee8e9cdd01c00",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/fold_metrics.csv": "29a1aac305066664e4631a95a90387132952d4c456d4aac9cdb55ad13d6318a9",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/summary.csv": "0f8df0072c05551bc1e71ec5b92500675a70fed5142a2f8b569b2435033f6f95",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/mechanism.csv": "2c7f40fc215de874bec1908e3f832aa35216107828b62478965b57a680d349dd",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/interventions.csv": "b9202a6acd9df417c846fe5b41931cf04d9b16a23e8742707edfc02fce3fcc60",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/results/paired_comparisons.csv": "7ac4b63a0d463d0900e635cfc00db207a6038cee49adfea3097251b961087429",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f01.json": "8b10359dbfaf277f2929fba568f53d52fe9c14340563ad5cbd5989d884951d3b",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f02.json": "3ca0d1f5cd677081e51eb1e78ce902deb47156669f639a31c8e48e3b0853090f",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f03.json": "ca53a12a3bc9f8396e6cec28df01f6dff10c51af7b6d5cdb58b539ae0af8d70b",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f04.json": "54c5ceaaa7a59ab41aee75193907fcdad128896c1f31f156bf9c1d59243be476",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f05.json": "37f083da285ced66ac25a153622512f686e08e6fbb495e7a377b4e0129afd749",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f06.json": "0e4bf68079f9d79b1e702129108be4ae8c742c26c97d211cc19930bc179b4c8b",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f07.json": "9f150d5054cec3cedbcaf52e27fb1944e481da6cc8acaa45a8f19b0f56c64ab5",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f08.json": "970320d41a006e998185ffdfa02851900a30556afed2e797f80199df22b9307a",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f09.json": "4ce95ead745086cabb068b303c1ff92ef91526321027e5f57684e308e78b4ae0",
+    "/model/spromptgl/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f10.json": "8e3b174b60befbe4de86ef9af8c92bc63102c2fe076aa506d2509b0f31d406b1",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f01.json": "f87992605e4967979a8d3adb6263d68605533a98497dd22b2738bbeeaf510b8a",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f02.json": "43d868a9f17f61307ee3c4fb162f6a6a6714a828b6756b9f614cf1394ad84662",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f03.json": "7c70ebdc47317bc0df68a26cc4145edbdf0279037581b3e3c3817ce815f9cb7a",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f04.json": "4adf0f82120b9214bd249668d8e71420782e4a79f539750f1e9836b497bab98d",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f05.json": "71514dc254c08aae265885715969a6de56b750b1e796604aff10bd75062d9c6b",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f06.json": "6dffb0316e78ffe9d44bd83136481eb9a48af8137a41d196aa310f635cb7aea6",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f07.json": "eb73491dadff1496c061b0452598dbb5032d792b3d097c5e2fd0dc8ea4b822a8",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f08.json": "6b5d1cfd7fb24dff63b06985af8b86522c67f2fb78d99d04f5dee79115699428",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f09.json": "5c6fca63303ed12af66ae55a19b6f12e1994d75e1d72d0fa665ee8af11cd628c",
+    "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f10.json": "c6182a19f0a29b5ed0cab83ce69bd3f563a390e00a4bb592105f98119d4067ba",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f01.json": "dde4b87d5cfdb93f6ca0dcbc0c0489a0340d9713fe79edaae9cde903adcbf7b5",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f02.json": "508d4689509795a5605c65cbae5411b4361ea0505ad34d1b7960025a82029ed1",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f03.json": "c3c1e64f6d1792c436cc8bbbe5ba6cd9d57b26660bd42908e161ea776da93053",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f04.json": "b6656c8691beb297fa5a19faff7b87e152a9c134e3bb6fea12955a2baec67bf9",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f05.json": "c7ed4ad0e89226d209849c4828bfabeed84a4625f9e7f69bbbef62e7f0b78bf8",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f06.json": "2093c10cdd27632ab900ef2510e423209357fd8598c02c4d973b798bb2ae707c",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f07.json": "820a12fccaacb7b42b7366bbc3b983a1e86ddb539417ebc35ac9b8e463f0721d",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f08.json": "807407ebad8c2ea0366efd4952a27d1d9af24151afebf922919a7fd4a05962da",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f09.json": "1a5a9ed21b7e2d60cc126c8854262cab1af5e3d43c9349b75a078fe8f472bdc6",
+    "/model/spromptgl/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f10.json": "9f841df091f932f5c6c3af0b0878a650cce61a3fa9cc76a66c532dc62711eb33",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f01.json": "eb7c9a194d0265b1636c28e6c863942ed961a7485da729cc0c8b1044eb69cd46",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f02.json": "f9af5b6bf96583de40826a64e624eae6a580182a208c8ed9733df48eca4f2df4",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f03.json": "15c54f4eb1615e30cbb87fc94040357b2b35b350e45e6ebbe777d30ca96044ba",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f04.json": "eda41f7ff85a7f5652bf618975d778801673fdfbfea3619df9b8966925a0c675",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f05.json": "eb2d1e17ae87dcb2eb727350193e9348be668467431823590b33b50c8069a4b1",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f06.json": "9289953588cd5ab340513316a45636ac459f1e972b31e9a77921f6d72f69ad27",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f07.json": "cf12e73c943b1efca0171765d0dea49cd7c12bd3836369dbae11aeaf8454fd45",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f08.json": "71c6699d52bd75e2022257351640c30a7f8183582c5f40421cde191b633e4a1e",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f09.json": "ce479cbc5dbc201fab3e30bc2f0177096854c254047d45665493bc97a40d5da1",
+    "/model/spromptgl/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f10.json": "1d118ba928711aa48932216b15b5eedd251152cb96f1d19b07a557e1561585b7",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f01.json": "91186e71143d26780c35f759b958006849bb1277113a943b562c1940581cf847",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f02.json": "b6ca441a2410d834a3dddd803f0451b7b54cf9ebfbccc4710ecbef29485c701b",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f03.json": "66dc8526b2ba4b906fec9277c453f3628404df23e83f6e3294ef27dceeff1a02",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f04.json": "4598c896e0571a35f83e5a33ad7b09d2f46d8d67375ae3a6e45b3cd0a52a12ba",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f05.json": "696ca089dcafc4b9ed980bfafce58bbbc5473fbfdd4f44f19a514771bde4392f",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f06.json": "2434f409dd8f620d3483e1029af58bb02314ae7e24c4d009f34c17a55d9acf19",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f07.json": "6e5c249185de62404dd6b0ea0df268a3099a05ce734a8c7a3e11fbd63e8c1695",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f08.json": "7dfaaa31981b6067fba1abfa7b5bf4c6e44637ca4ddc34123e7f41d86443b5eb",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f09.json": "6663ee00d8cd58013d6af73792401299c9c9c06207eddd9743375af6ba4c7a83",
+    "/model/spromptgl/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f10.json": "71d0f5735672085b666fbd68276d4e36634a8d18132af33bfa25977d32e46be1",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f01.json": "ed3757f0e30b03e214ed0586d28d3684eaf2e677f86c9b862b36bc06899b3157",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f02.json": "0f44f6d9b81454b81af6a4f338d3c81d18ba4544ed958b17ff01ed426c7c0fe5",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f03.json": "e59c314e1186464714f45576cf5e402428b1d7cf599f007eaf0feec8b3d3d01e",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f04.json": "b4c10b7ac492c50ef81006b1f0bb3b0093e87a40ea6852cd1c72bfd50294fd05",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f05.json": "342f67a0dabd1b411178bceab43b131faa554475b9cd9623241e56d6f89ec23f",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f06.json": "3d36c15d3554ce755dbbdf9f3604c15f568ad42ef6ef9fcedcb86a1ec548e7c6",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f07.json": "613ead06d0292f7576db2a57e5385150e2221624b45a95569dccc35628f6ad20",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f08.json": "bb68f20fc5e0dceb692054a9e6ab6700311ea9229e9ab02ddbc43cb0528e634a",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f09.json": "39240d083449129606317e0b317bcbc997edb3dff3e0584141c9d69d4b5256d4",
+    "/model/spromptgl/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f10.json": "1947359b436be25b18dfb407ed39affd0947e4a96eab1578a4cc4fc27672454f"
+  },
+  "handoff_update": {
+    "experiment_record": {
+      "status": "ALREADY_PRESENT",
+      "path": "/model/spromptgl/experiment/handoff.md"
+    },
+    "audit_direction_correction": {
+      "status": "APPENDED_AND_VERIFIED",
+      "path": "/model/spromptgl/experiment/handoff.md",
+      "original_bytes_preserved": 733285,
+      "append_sha256": "325eb4c58f3313b106ecd2e4bea943bc04776358cebd46324b0157708efc5015"
+    }
+  }
+}
