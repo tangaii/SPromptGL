@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "experiment_status": "COMPLETE_AUDITED",
+  "decision": "PARTIAL_SAFE_RESIDUAL_REPAIR_ONLY",
+  "independent_checkpoint_audits_passed": 60,
+  "independent_checkpoint_audits_total": 60,
+  "audit_failures": [],
+  "rng_exact_triplets": 19069,
+  "rng_compared_triplets": 19069,
+  "rng_status": "PASS",
+  "protected_source_audit": {
+    "status": "PASS",
+    "protected_file_count": 1904,
+    "changed": [],
+    "missing": [],
+    "added": []
+  },
+  "metrics_are_generalization_estimates": false,
+  "fold2_exposure": {
+    "rows_1based": [
+      377,
+      407
+    ],
+    "diagnoses": [
+      "ASD",
+      "TD"
+    ],
+    "classification_used": true,
+    "disease_supervision_used_for_G2-G6": true
+  },
+  "patient_text_cache_sha256": "d242276a6851cece4b5e2ab6ec5c0ce06c8230e6f2f8046728c7f538d9c131e4",
+  "nonlinguistic_token_cache_sha256": "41daf0ef26ee772593008cc01f781e8352b9ff4950f32a406150f5d02beebd84",
+  "disease_prompt_cache_sha256": "a611334970d3ae243cd03cdd1419e567db8967e206544c4c2828a933df8ba0c6",
+  "source_sha256": {
+    "config.json": "cd2086a0d9dd77533190e509ffcb981f7f335d6a333983b51c73fe4b1b090bd4",
+    "run.py": "7012543978b2faba6c046abb77cdc4545dcce8dbab3ec4cd6ff78637b3ca474b",
+    "mgdss.py": "ccac2164663de8e6cd8f3ad1173db9cb1e462d59ba7ed6c82adaafa64ad7be04",
+    "dual_prompt.py": "86633f23566a5d94327db3bdb11120e4506c54699ccc7cc5852b7965204ec267",
+    "safe_dual_prompt.py": "453985263e9fd6a72ec1a9e3f05b2b847864347eb81b05da6e3aad11c8c20c11",
+    "audit.py": "aaed4ee0b4361003401f1e694c4f6cdf592713b3a4494cb2562e2486fe27479a"
+  },
+  "audit_source_sha256": "a4cb2af83b42e2e70987f499f68543263084e611b21af77b24cd1ee285fcf8ab",
+  "audit_corrections": [
+    {
+      "component": "audit.py",
+      "previous_sha256": "aaed4ee0b4361003401f1e694c4f6cdf592713b3a4494cb2562e2486fe27479a",
+      "current_sha256": "fe1f282493ca9d9488999c6a58c6f9a1917c36bcd248c54593044ce98be0249e",
+      "reason": "E72.4 fold_metrics.csv stores metric columns as percentage-suffixed names; the first independent audit assumed normalized names.",
+      "scope": "Historical E72.4-G1 comparison column mapping and explicit source-hash exception for this audit-only correction.",
+      "training_code_or_results_changed": false
+    },
+    {
+      "component": "audit.py",
+      "previous_sha256": "fe1f282493ca9d9488999c6a58c6f9a1917c36bcd248c54593044ce98be0249e",
+      "current_sha256": "32762d35f8e031a7b09edc95583ea0f3c06a1c0b00294688c4c0c15876bab3f4",
+      "reason": "Disease-supervision mechanism readback did not carry its frozen prototype bank into the diagnostic routine.",
+      "scope": "Audit-only threading of the already-loaded disease bank into mechanism diagnostics; no model, prediction, or checkpoint changed.",
+      "training_code_or_results_changed": false
+    },
+    {
+      "component": "audit.py",
+      "previous_sha256": "32762d35f8e031a7b09edc95583ea0f3c06a1c0b00294688c4c0c15876bab3f4",
+      "current_sha256": "a4cb2af83b42e2e70987f499f68543263084e611b21af77b24cd1ee285fcf8ab",
+      "reason": "The mechanism diagnostic routine did not bind the readback prototype bank and checkpoint objects required for diagnostics.",
+      "scope": "Audit-only local bindings for disease-head and gradient diagnostics; no model, prediction, or checkpoint changed.",
+      "training_code_or_results_changed": false
+    }
+  ],
+  "created_utc": "2026-11-06T12:32:38Z",
+  "report_sha256": "2dc03f4443eace4c9a76136609b5cc48c354df083300d3516d4b890c3fe43009",
+  "manifest_sha256": "e207191273d99a40bcac78e1799c671b67e237982fd6c30c3f31b60a8ec27945",
+  "handoff_sha256": "c1f335daec70305f8e5ea7971bcd364c100cd63f0e54bf3f7065fb7c300cec71",
+  "post_audit_report_addendum": true
+}
