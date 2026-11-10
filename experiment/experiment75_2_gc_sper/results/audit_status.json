@@ -1,0 +1,130 @@
+{
+  "status": "PASS",
+  "expected_checkpoints": 30,
+  "independently_audited": 30,
+  "checkpoint_metric_replay": "30/30 hard predictions exact; probability max error <=1e-8",
+  "probability_replay_max_abs_error": 0.0,
+  "warmup_initialization_checks": "10/10 through E74.4 prepare(fold)",
+  "prototype_label_exclusion": "30/30 exact eligible train nodes; test labels unused",
+  "fold2_excluded_from_new_prototypes": true,
+  "all_rng_replay_interventions_unchanged": true,
+  "source_sha256": "a5f4b57e5ba16bf4fc8509c04d092f0670488ee0b872a795cec129d44246264a",
+  "scientific_conclusion": "NO-GO",
+  "g2_acc_delta_vs_base_pp": -0.6896551724137934,
+  "g2_acc_wins_vs_base": 0,
+  "g2_module_off_hard_flips": 0,
+  "audit_completed_utc": "2026-11-09T16:18:25Z",
+  "shared_rng_audit": {
+    "status": "PASS",
+    "common_fold_epoch_observations": 3470,
+    "e74_4_rng_equal_hashes": 31230,
+    "e74_4_rng_hashes_compared": 31230,
+    "new_group_equal_hashes": 10410,
+    "new_group_hashes_compared": 10410,
+    "warmup_to_first_epoch_pass_folds": 10,
+    "mismatch_count": 0,
+    "mismatches": [],
+    "folds": {
+      "1": {
+        "common_epochs": 309,
+        "base_equal_hashes": 2781,
+        "base_hashes_compared": 2781,
+        "warmup_to_first_epoch_pass": true
+      },
+      "2": {
+        "common_epochs": 338,
+        "base_equal_hashes": 3042,
+        "base_hashes_compared": 3042,
+        "warmup_to_first_epoch_pass": true
+      },
+      "3": {
+        "common_epochs": 335,
+        "base_equal_hashes": 3015,
+        "base_hashes_compared": 3015,
+        "warmup_to_first_epoch_pass": true
+      },
+      "4": {
+        "common_epochs": 339,
+        "base_equal_hashes": 3051,
+        "base_hashes_compared": 3051,
+        "warmup_to_first_epoch_pass": true
+      },
+      "5": {
+        "common_epochs": 388,
+        "base_equal_hashes": 3492,
+        "base_hashes_compared": 3492,
+        "warmup_to_first_epoch_pass": true
+      },
+      "6": {
+        "common_epochs": 355,
+        "base_equal_hashes": 3195,
+        "base_hashes_compared": 3195,
+        "warmup_to_first_epoch_pass": true
+      },
+      "7": {
+        "common_epochs": 322,
+        "base_equal_hashes": 2898,
+        "base_hashes_compared": 2898,
+        "warmup_to_first_epoch_pass": true
+      },
+      "8": {
+        "common_epochs": 366,
+        "base_equal_hashes": 3294,
+        "base_hashes_compared": 3294,
+        "warmup_to_first_epoch_pass": true
+      },
+      "9": {
+        "common_epochs": 334,
+        "base_equal_hashes": 3006,
+        "base_hashes_compared": 3006,
+        "warmup_to_first_epoch_pass": true
+      },
+      "10": {
+        "common_epochs": 384,
+        "base_equal_hashes": 3456,
+        "base_hashes_compared": 3456,
+        "warmup_to_first_epoch_pass": true
+      }
+    },
+    "compared_fields": [
+      "before_train",
+      "after_train",
+      "after_eval"
+    ],
+    "baseline_task_source": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks",
+    "created_utc": "2026-11-09T16:28:29Z"
+  },
+  "training_attempt_history": {
+    "worker_limit": 10,
+    "max_workers_observed": 10,
+    "accepted_run_wall_seconds_including_recovery": 2116.933433532715,
+    "initial_pool_wall_seconds_before_recovery": 2091.9631791114807,
+    "recovery_wall_seconds": 24.97025442123413,
+    "discarded_rng_contaminated_attempt_wall_seconds": 1189.0786881446838,
+    "all_attempts_training_wall_seconds": 3306.0121216773987,
+    "peak_worker_count": 10,
+    "recovery_worker_count": 2,
+    "oom_events": 0,
+    "recovered_tasks": [
+      "G2-GC-SPER fold 1",
+      "G3-Anonymous fold 2"
+    ],
+    "failures": [
+      {
+        "attempt": 1,
+        "type": "RNG audit failure",
+        "reason": "module initialization changed active CUDA RNG because fork_rng saved CPU only; this entire run was excluded from final results",
+        "tasks_completed_but_disqualified": 30
+      },
+      {
+        "attempt": 2,
+        "type": "BrokenProcessPool",
+        "reason": "worker terminated abruptly; cause unconfirmed",
+        "tasks_completed_before_recovery": 28,
+        "tasks_resumed_from_latest": 2
+      }
+    ],
+    "oom_events_observed": 0,
+    "automatic_retries": 0
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "experiment": "Experiment 75.2 - Graph-Conditioned Semantic-Prototypical Evidence Reasoning",
+  "root": "/model/spromptgl/experiment/experiment75_2_gc_sper",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_2_gc_sper",
+  "root_fallback_reason": "The same OSSFS preferred mount has recorded OSError(5, Input/output error) during E74.4 and E75.1 directory creation; this run uses the verified /model mount.",
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "status_required": "COMPLETE_AUDITED",
+    "tasks_required": 30,
+    "audits_required": 30,
+    "manifest_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+    "group_task_prefix": "E74.4-G2-Positive-DCR",
+    "fold2_overlap_1based": [377, 407]
+  },
+  "references": {
+    "e75_1_path": "/model/spromptgl/experiment/experiment75_1_sa_dcer",
+    "e60_path": "/model/spromptgl/experiment/experiment60_dss_pen",
+    "repo_path": "/data/adodas/SPromptGL-main",
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "spromptgl_original_repo": "https://github.com/wanxixi11/SPromptGL",
+    "brainprompt_repo": "https://github.com/AngusMonroe/BrainPrompt",
+    "hp2l_paper": "https://doi.org/10.1016/j.media.2026.104063"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "modality_order": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "modality_dims": [48, 6, 10, 256],
+    "feature_dim": 320,
+    "cam_feature_dim": 144,
+    "latent_token_shape": [16, 9],
+    "labels": {"ASD": 0, "TD": 1},
+    "seed": 0,
+    "folds": 10,
+    "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "validation_equals_test": true,
+    "fold2_label_exposure_1based": [377, 407]
+  },
+  "training": {
+    "initial_state": "independent E61 epoch-10 warmup restored through E74.4 prepare(fold); never E74.4 best checkpoint fine-tuning",
+    "max_epochs": 450,
+    "start_epoch_zero_based": 10,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; first best retained",
+    "workers_max": 10,
+    "expected_tasks": 30,
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "gc_sper": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.001}
+    },
+    "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "auxiliary": {"lambda_proto": 0.01, "lambda_align": 0.01},
+    "no_per_epoch_reseed": true,
+    "prototype_update": "one-epoch-lagged; refresh from already captured raw CAM features after evaluation"
+  },
+  "method": {
+    "groups": ["G1-Proto", "G2-GC-SPER", "G3-Anonymous"],
+    "semantic_prompts": "original frozen SPromptGL-8 CLIP RN50 embeddings; first 4 TD, last 4 ASD",
+    "semantic_projection_dim": 128,
+    "semantic_temperature": 0.2,
+    "prototype_temperature": 0.5,
+    "prototype_partitions": 5,
+    "alpha": "0.5*sigmoid(alpha_raw), initialized 0.20",
+    "gamma": "0.25*sigmoid(gamma_raw), initialized 0.10",
+    "graph_context": "DARG F320 -> learned 128-D context; class-specific FiLM scale/shift",
+    "prototype_confidence": "r_sep=sigmoid(4*(1-cos(P_ASD,P_TD)-0.3)); r_conf=0.5+0.5*abs(p_proto_ASD-p_proto_TD); G2/G3 r_agree=0.5+0.5*exp(-abs(p_sem_ASD-p_proto_ASD)/0.3)",
+    "feature_refinement": "RMS(T)*tanh(RMS(T)*(Normalize(p_joint_ASD*P_ASD+p_joint_TD*P_TD)-Normalize(T))/RMS(T)); T'=T+gamma*r*D_bounded",
+    "prototype_source": "only eligible outer-fold training nodes; deterministic 5-way class-stratified cross-fit excludes each training subject's partition; test uses full eligible training prototype",
+    "fold2_auxiliary_exclusion_1based": [377, 407],
+    "anonymous_control": "apply fixed per-fold 128-D orthogonal QR transform after semantic projection; preserve projected 8x8 Gram to max abs error <1e-5",
+    "groups": {
+      "G1-Proto": {"semantic": false, "alpha_effective": 0.0, "alignment_loss": false, "prototype_loss": true},
+      "G2-GC-SPER": {"semantic": true, "alpha_initial": 0.2, "alignment_loss": true, "prototype_loss": true},
+      "G3-Anonymous": {"semantic": "orthogonally rotated G2 embeddings", "alpha_initial": 0.2, "alignment_loss": true, "prototype_loss": true}
+    },
+    "output_boundary": "single E74.4 CAM forward; capture F320 at CAM input; replace only 144-D argument at Outputlayer pre-hook; single Outputlayer forward"
+  }
+}

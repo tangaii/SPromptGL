@@ -1,0 +1,680 @@
+{
+  "experiment": "Experiment 75.2 - Graph-Conditioned Semantic-Prototypical Evidence Reasoning",
+  "status": "COMPLETE_AUDITED",
+  "experiment_root": "/model/spromptgl/experiment/experiment75_2_gc_sper",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_2_gc_sper",
+  "root_fallback_reason": "The same OSSFS preferred mount has recorded OSError(5, Input/output error) during E74.4 and E75.1 directory creation; this run uses the verified /model mount.",
+  "config": {
+    "experiment": "Experiment 75.2 - Graph-Conditioned Semantic-Prototypical Evidence Reasoning",
+    "root": "/model/spromptgl/experiment/experiment75_2_gc_sper",
+    "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_2_gc_sper",
+    "root_fallback_reason": "The same OSSFS preferred mount has recorded OSError(5, Input/output error) during E74.4 and E75.1 directory creation; this run uses the verified /model mount.",
+    "base": {
+      "name": "E74.4-G2-Positive-DCR",
+      "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+      "status_required": "COMPLETE_AUDITED",
+      "tasks_required": 30,
+      "audits_required": 30,
+      "manifest_source_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+      "group_task_prefix": "E74.4-G2-Positive-DCR",
+      "fold2_overlap_1based": [
+        377,
+        407
+      ]
+    },
+    "references": {
+      "e75_1_path": "/model/spromptgl/experiment/experiment75_1_sa_dcer",
+      "e60_path": "/model/spromptgl/experiment/experiment60_dss_pen",
+      "repo_path": "/data/adodas/SPromptGL-main",
+      "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+      "spromptgl_original_repo": "https://github.com/wanxixi11/SPromptGL",
+      "brainprompt_repo": "https://github.com/AngusMonroe/BrainPrompt",
+      "hp2l_paper": "https://doi.org/10.1016/j.media.2026.104063"
+    },
+    "data": {
+      "dataset": "ABIDE A",
+      "subjects": 871,
+      "modality_order": [
+        "PHENO",
+        "ANAT",
+        "FUNC",
+        "CORR"
+      ],
+      "modality_dims": [
+        48,
+        6,
+        10,
+        256
+      ],
+      "feature_dim": 320,
+      "cam_feature_dim": 144,
+      "latent_token_shape": [
+        16,
+        9
+      ],
+      "labels": {
+        "ASD": 0,
+        "TD": 1
+      },
+      "seed": 0,
+      "folds": 10,
+      "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+      "validation_equals_test": true,
+      "fold2_label_exposure_1based": [
+        377,
+        407
+      ]
+    },
+    "training": {
+      "initial_state": "independent E61 epoch-10 warmup restored through E74.4 prepare(fold); never E74.4 best checkpoint fine-tuning",
+      "max_epochs": 450,
+      "start_epoch_zero_based": 10,
+      "early_stop_wait_gt": 200,
+      "checkpoint_selection": "strict test-fold ACC improvement; first best retained",
+      "workers_max": 10,
+      "expected_tasks": 30,
+      "optimizers": {
+        "gfr": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "cam": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "darg": {
+          "class": "AdamW",
+          "lr": 0.001,
+          "weight_decay": 0.01
+        },
+        "gc_sper": {
+          "class": "AdamW",
+          "lr": 0.001,
+          "weight_decay": 0.001
+        }
+      },
+      "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+      "auxiliary": {
+        "lambda_proto": 0.01,
+        "lambda_align": 0.01
+      },
+      "no_per_epoch_reseed": true,
+      "prototype_update": "one-epoch-lagged; refresh from already captured raw CAM features after evaluation"
+    },
+    "method": {
+      "groups": {
+        "G1-Proto": {
+          "semantic": false,
+          "alpha_effective": 0.0,
+          "alignment_loss": false,
+          "prototype_loss": true
+        },
+        "G2-GC-SPER": {
+          "semantic": true,
+          "alpha_initial": 0.2,
+          "alignment_loss": true,
+          "prototype_loss": true
+        },
+        "G3-Anonymous": {
+          "semantic": "orthogonally rotated G2 embeddings",
+          "alpha_initial": 0.2,
+          "alignment_loss": true,
+          "prototype_loss": true
+        }
+      },
+      "semantic_prompts": "original frozen SPromptGL-8 CLIP RN50 embeddings; first 4 TD, last 4 ASD",
+      "semantic_projection_dim": 128,
+      "semantic_temperature": 0.2,
+      "prototype_temperature": 0.5,
+      "prototype_partitions": 5,
+      "alpha": "0.5*sigmoid(alpha_raw), initialized 0.20",
+      "gamma": "0.25*sigmoid(gamma_raw), initialized 0.10",
+      "graph_context": "DARG F320 -> learned 128-D context; class-specific FiLM scale/shift",
+      "prototype_confidence": "r_sep=sigmoid(4*(1-cos(P_ASD,P_TD)-0.3)); r_conf=0.5+0.5*abs(p_proto_ASD-p_proto_TD); G2/G3 r_agree=0.5+0.5*exp(-abs(p_sem_ASD-p_proto_ASD)/0.3)",
+      "feature_refinement": "RMS(T)*tanh(RMS(T)*(Normalize(p_joint_ASD*P_ASD+p_joint_TD*P_TD)-Normalize(T))/RMS(T)); T'=T+gamma*r*D_bounded",
+      "prototype_source": "only eligible outer-fold training nodes; deterministic 5-way class-stratified cross-fit excludes each training subject's partition; test uses full eligible training prototype",
+      "fold2_auxiliary_exclusion_1based": [
+        377,
+        407
+      ],
+      "anonymous_control": "apply fixed per-fold 128-D orthogonal QR transform after semantic projection; preserve projected 8x8 Gram to max abs error <1e-5",
+      "output_boundary": "single E74.4 CAM forward; capture F320 at CAM input; replace only 144-D argument at Outputlayer pre-hook; single Outputlayer forward"
+    }
+  },
+  "source_inventory": {
+    "config.json": "76eabf49ad8504e24a8aaa78e3f291d58415cf61118c80eab0fcdb49232ea8ca",
+    "gc_sper.py": "395a4bd96dbe80d5d169fe4204a8c749f28760990a88b48244261fac77801b39",
+    "run.py": "12d5202d43f14a51a42a5582d98b66f8d983e2652386c1a8e8613329248e5d75",
+    "audit.py": "a6474a84c531da8a4b4e6f90587277723d1f953b44331eef0911574ac8057931",
+    "e74_4_manifest_sha256": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "e74_4_source_manifest_sha256": "55467c0ba56c92988cc9d12122c7b0855aa4db6e97927847327f078ec3af444f",
+    "e74_4_audit_status_sha256": "ffad67d097e359df2a3838c6cdb56fb5f42d1f6798d7e023a0d09d31935f89ef",
+    "e74_4_fold_metrics_sha256": "01f4090373a0f8888a1cb21254571cb31dd7a8b6c1a65d6341efb98e7d22da35",
+    "e74_4_checkpoint_audit_sha256": "9c052fe02271e1f631e9828e1edd0693a12c5d112a34665cfac69efd0f486a64",
+    "e60_text_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "e75.1/sa_dcer.py": "4384a6d46ee5df076b86acc03e9f2067f79877574e3366d4745c5723fe8b9c8a",
+    "e75.1/run.py": "fb816dc982ddee4896cb02f573b0e0944bbe1c3d0b37045c0213fe67b56d7282",
+    "e75.1/audit.py": "caff898bd4e6e0eadcfd31b586de83bc0314951b80b937687850b5326aea483b",
+    "e75.1/config.json": "82305870ea56dc69541d5f8c8eaedfa258a1716e1e5a2dd33ff4e4edada3a97a",
+    "e75.1/manifest.json": "31a1be31d1a2f55ddff76c3f242c26aebcd001cfda1839387ca244812c65a3b2",
+    "e75.1/results/report.md": "62187795b990064757798c4839b7bacadc37ad135be7e9d77610085430bac4f6",
+    "e75.1/results/summary.csv": "d396d63cfa88fbd2659613386c36086cf601c1092cd88d33af4ada3f58211cc0",
+    "e75.1/results/paired_comparisons.csv": "478458f32fbf697a78810ddbc3247c2894697d8cb5ef2fb99b4b114eb683bcc5",
+    "e75.1/results/mechanism.csv": "e5fd9bf17346f0faf4b2ae3e2f43dd15e70cc6ee4fdd17eb2f11d21b55520b7f",
+    "e75.1/results/interventions.csv": "696c3cac6a129493e39de0f115a0c5a77e2905ce741509b2e4c362e88be7cb57",
+    "e75.1/results/audit_status.json": "3474366de0d444a902016d17c623e36c57a190defd1eeb9be929292a11b57f5d"
+  },
+  "source_sha256": "a5f4b57e5ba16bf4fc8509c04d092f0670488ee0b872a795cec129d44246264a",
+  "expected_tasks": 30,
+  "completed_tasks": 30,
+  "independent_audits": 30,
+  "preflight": {
+    "status": "PASS",
+    "device": "PPU-ZW810E",
+    "device_count": 1,
+    "gpu_memory_free_bytes_at_preflight": 102039658096,
+    "gpu_memory_total_bytes": 103079215104,
+    "base_status": "COMPLETE_AUDITED",
+    "base_completed": 30,
+    "base_audited": 30,
+    "e75_1_status": "COMPLETE_AUDITED",
+    "e75_1_completed": 30,
+    "e75_1_audited": 30,
+    "text_cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "warmup_identity_checks": [
+      {
+        "fold": 1,
+        "warmup_sha256": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+        "rng_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+        "checkpoint_sha256": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e",
+        "train_pair_sha256": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22"
+      },
+      {
+        "fold": 2,
+        "warmup_sha256": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+        "rng_sha": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+        "checkpoint_sha256": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a",
+        "train_pair_sha256": "c5ceb5c322490afe4c411751db8579ce4c960d5d7062d3c5c12640f56fbaf43c"
+      },
+      {
+        "fold": 3,
+        "warmup_sha256": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+        "rng_sha": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+        "checkpoint_sha256": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218",
+        "train_pair_sha256": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02"
+      },
+      {
+        "fold": 4,
+        "warmup_sha256": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+        "rng_sha": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+        "checkpoint_sha256": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3",
+        "train_pair_sha256": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa"
+      },
+      {
+        "fold": 5,
+        "warmup_sha256": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+        "rng_sha": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+        "checkpoint_sha256": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d",
+        "train_pair_sha256": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd"
+      },
+      {
+        "fold": 6,
+        "warmup_sha256": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+        "rng_sha": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+        "checkpoint_sha256": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0",
+        "train_pair_sha256": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7"
+      },
+      {
+        "fold": 7,
+        "warmup_sha256": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+        "rng_sha": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+        "checkpoint_sha256": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b",
+        "train_pair_sha256": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044"
+      },
+      {
+        "fold": 8,
+        "warmup_sha256": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+        "rng_sha": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "checkpoint_sha256": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5",
+        "train_pair_sha256": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c"
+      },
+      {
+        "fold": 9,
+        "warmup_sha256": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+        "rng_sha": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+        "checkpoint_sha256": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829",
+        "train_pair_sha256": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6"
+      },
+      {
+        "fold": 10,
+        "warmup_sha256": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+        "rng_sha": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+        "checkpoint_sha256": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3",
+        "train_pair_sha256": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28"
+      }
+    ],
+    "same_fold_trainable_init_checks": [
+      {
+        "fold": 1,
+        "module_parameter_sha256": "ff71866d1194e7f0b6b72304bc0a2d7ef5287151f890d1da7d1fec4d22f249a4",
+        "projection_sha256": "ff71866d1194e7f0b6b72304bc0a2d7ef5287151f890d1da7d1fec4d22f249a4",
+        "anonymous_gram_max_abs_error": 4.76837158203125e-07,
+        "prototype_source_sha256": "a15c20503f4e409a989292007e26a58de3af03501a3f0d5e046572126bfeaa9c",
+        "prototype_bank_sha256": "95fca3f295c3623903ae3626c2db4e438cdcae729509f62962dcba65cd925ea5",
+        "prototype_source_count": 783,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 2,
+        "module_parameter_sha256": "919fd3f1485693b8ef1cbf3f25904951ba587b1026fda92d547f106d31de2047",
+        "projection_sha256": "919fd3f1485693b8ef1cbf3f25904951ba587b1026fda92d547f106d31de2047",
+        "anonymous_gram_max_abs_error": 4.76837158203125e-07,
+        "prototype_source_sha256": "46972c06fdf2a450a4b95b2ebf11a7588fda06f8d3682953198583d1a5add9bd",
+        "prototype_bank_sha256": "0e377cecb46d0591c62c019913c42379208e5bd0b6758efd04ba81635cc20467",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 3,
+        "module_parameter_sha256": "93947ddb37eff2aac70b2da6cb4ac677c76cf166a970b8d309f0df85f70812f4",
+        "projection_sha256": "93947ddb37eff2aac70b2da6cb4ac677c76cf166a970b8d309f0df85f70812f4",
+        "anonymous_gram_max_abs_error": 8.344650268554688e-07,
+        "prototype_source_sha256": "5176113195319918977a0e39d3ccfbb32a047ea70ae0ae2d61a270a3c9307e05",
+        "prototype_bank_sha256": "aab8a5baa9150853c1c60cbeb0f097c7496dbd340ab8855fe3bb79ad7bdaf08c",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 4,
+        "module_parameter_sha256": "19b92cf0371816a5638c2753790a117b30d7792a2db1785ca63718185fb6e22f",
+        "projection_sha256": "19b92cf0371816a5638c2753790a117b30d7792a2db1785ca63718185fb6e22f",
+        "anonymous_gram_max_abs_error": 7.152557373046875e-07,
+        "prototype_source_sha256": "2e2c783804345595b5053f2aac3584966f0a6780116382e3e32d2d10d85ab0da",
+        "prototype_bank_sha256": "f45bb33c0141635cad75ebd8cedbb45a16aecc7d600230e87c989dc8fd22a73e",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 5,
+        "module_parameter_sha256": "ce2455568a5da8e376357dfd9dbc884b8a686ab68d9058bf6f488af7ed145678",
+        "projection_sha256": "ce2455568a5da8e376357dfd9dbc884b8a686ab68d9058bf6f488af7ed145678",
+        "anonymous_gram_max_abs_error": 7.748603820800781e-07,
+        "prototype_source_sha256": "b1b7861a8215362466488d0f8054752c49f7ba494b06bda28cfb480126da805a",
+        "prototype_bank_sha256": "24dd60eaf95cf98de1dd8df28bde589677def78d3694b5b576e6025eb54898e7",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 6,
+        "module_parameter_sha256": "90de40e64ebad9056d9f62029529e7f3effa82142515ae6d9cd8bfc0266febd9",
+        "projection_sha256": "90de40e64ebad9056d9f62029529e7f3effa82142515ae6d9cd8bfc0266febd9",
+        "anonymous_gram_max_abs_error": 4.76837158203125e-07,
+        "prototype_source_sha256": "47bda318e1c104439c8966d262360365d54228f885e9e259f7f9a879373b2309",
+        "prototype_bank_sha256": "b170fc82e9ea3424e08e91240ee0b13b73f08ec22526341be3111aa2c49efd24",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 7,
+        "module_parameter_sha256": "063caae36af668d2b1d34b8b236b2c2f7c5a9829d29ae808c6c6c91b6134a6ac",
+        "projection_sha256": "063caae36af668d2b1d34b8b236b2c2f7c5a9829d29ae808c6c6c91b6134a6ac",
+        "anonymous_gram_max_abs_error": 4.76837158203125e-07,
+        "prototype_source_sha256": "f6762f132035f425797ce26274ad90e932db124878f68024d743d64edd1763d1",
+        "prototype_bank_sha256": "79f4c03078724822cfc2ee26c4fbe23e8992ec14c70ee150b82b347d57fd44cb",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 8,
+        "module_parameter_sha256": "9d7db121291a4c501bdb199c3a7d5ed1b233d2b6963e3732514aa5f68d30fe55",
+        "projection_sha256": "9d7db121291a4c501bdb199c3a7d5ed1b233d2b6963e3732514aa5f68d30fe55",
+        "anonymous_gram_max_abs_error": 5.364418029785156e-07,
+        "prototype_source_sha256": "f6279d5537665bb5a443f8d084e2fc5fb1165457f310cf364db9f9faf594a314",
+        "prototype_bank_sha256": "b5f024152056cf271f5852409743ead0714275f0e23ec2c9e329a02fc7a6f1c1",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 9,
+        "module_parameter_sha256": "216a9d2f9c5a1c04fab45d7764494659ea92d229d56ca199a9769efba632b07d",
+        "projection_sha256": "216a9d2f9c5a1c04fab45d7764494659ea92d229d56ca199a9769efba632b07d",
+        "anonymous_gram_max_abs_error": 4.76837158203125e-07,
+        "prototype_source_sha256": "7773ab9cd9788b3274a0289c0bdd080b1489aaa3e0b4922e42cc74f9edf90c6f",
+        "prototype_bank_sha256": "9f6b6b549b0e0d0516e33ccabe0e4ef4db0fdc317019296d9732e492033ad558",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      },
+      {
+        "fold": 10,
+        "module_parameter_sha256": "720b4c38c055d72ffbd09bb5d0be154ddce256460421bcec16ca33a597c91ccc",
+        "projection_sha256": "720b4c38c055d72ffbd09bb5d0be154ddce256460421bcec16ca33a597c91ccc",
+        "anonymous_gram_max_abs_error": 3.5762786865234375e-07,
+        "prototype_source_sha256": "7890f8e460ba317d96f9a45b7639c82f7db529d3decf438da5478450cd6dbed1",
+        "prototype_bank_sha256": "9236d66b3f154a4560e54ac8ce8706e2135f3aac51b3eb8e449e6c114a9e02b2",
+        "prototype_source_count": 784,
+        "module_off_exact": true,
+        "main_rng_unchanged": true
+      }
+    ],
+    "single_step_replay": {
+      "base_max_abs_diff": 0.0,
+      "module_max_abs_diff": 0.0,
+      "optimizer_max_abs_diff": 0.0,
+      "output_max_abs_diff": 0.0,
+      "rng_equal": true,
+      "loss_first": -0.37781456112861633,
+      "loss_second": -0.37781456112861633,
+      "loss_abs_diff": 0.0,
+      "passed": true,
+      "gradient_norms": {
+        "context": 0.003249121829867363,
+        "film": 0.00010656376980477944,
+        "key": 0.0004628275637514889,
+        "alpha": 4.1990930732538345e-09,
+        "gamma": 1.4515819202642888e-05
+      }
+    },
+    "training_start_epoch_zero_based": 10,
+    "groups": [
+      "G1-Proto",
+      "G2-GC-SPER",
+      "G3-Anonymous"
+    ],
+    "expected_tasks": 30
+  },
+  "training_failures": [
+    {
+      "attempt": 1,
+      "type": "RNG audit failure",
+      "reason": "module initialization changed active CUDA RNG because fork_rng saved CPU only; this entire run was excluded from final results",
+      "tasks_completed_but_disqualified": 30
+    },
+    {
+      "attempt": 2,
+      "type": "BrokenProcessPool",
+      "reason": "worker terminated abruptly; cause unconfirmed",
+      "tasks_completed_before_recovery": 28,
+      "tasks_resumed_from_latest": 2
+    }
+  ],
+  "training_retries": [],
+  "oom_events": 0,
+  "training_start_utc": "2026-11-09T16:16:17Z",
+  "worker_limit": 2,
+  "training_execution": {
+    "worker_limit": 10,
+    "max_workers_observed": 10,
+    "accepted_run_wall_seconds_including_recovery": 2116.933433532715,
+    "initial_pool_wall_seconds_before_recovery": 2091.9631791114807,
+    "recovery_wall_seconds": 24.97025442123413,
+    "discarded_rng_contaminated_attempt_wall_seconds": 1189.0786881446838,
+    "all_attempts_training_wall_seconds": 3306.0121216773987,
+    "peak_worker_count": 10,
+    "recovery_worker_count": 2,
+    "oom_events": 0,
+    "recovered_tasks": [
+      "G2-GC-SPER fold 1",
+      "G3-Anonymous fold 2"
+    ],
+    "failures": [
+      {
+        "attempt": 1,
+        "type": "RNG audit failure",
+        "reason": "module initialization changed active CUDA RNG because fork_rng saved CPU only; this entire run was excluded from final results",
+        "tasks_completed_but_disqualified": 30
+      },
+      {
+        "attempt": 2,
+        "type": "BrokenProcessPool",
+        "reason": "worker terminated abruptly; cause unconfirmed",
+        "tasks_completed_before_recovery": 28,
+        "tasks_resumed_from_latest": 2
+      }
+    ],
+    "oom_events_observed": 0,
+    "automatic_retries": 0
+  },
+  "training_end_utc": "2026-11-09T16:16:42Z",
+  "checkpoint_audit": "PASS 30/30; exact prediction and metric replay",
+  "audit_status": {
+    "status": "PASS",
+    "expected_checkpoints": 30,
+    "independently_audited": 30,
+    "checkpoint_metric_replay": "30/30 hard predictions exact; probability max error <=1e-8",
+    "probability_replay_max_abs_error": 0.0,
+    "warmup_initialization_checks": "10/10 through E74.4 prepare(fold)",
+    "prototype_label_exclusion": "30/30 exact eligible train nodes; test labels unused",
+    "fold2_excluded_from_new_prototypes": true,
+    "all_rng_replay_interventions_unchanged": true,
+    "source_sha256": "a5f4b57e5ba16bf4fc8509c04d092f0670488ee0b872a795cec129d44246264a",
+    "scientific_conclusion": "NO-GO",
+    "g2_acc_delta_vs_base_pp": -0.6896551724137934,
+    "g2_acc_wins_vs_base": 0,
+    "g2_module_off_hard_flips": 0,
+    "audit_completed_utc": "2026-11-09T16:18:25Z",
+    "shared_rng_audit": {
+      "status": "PASS",
+      "common_fold_epoch_observations": 3470,
+      "e74_4_rng_equal_hashes": 31230,
+      "e74_4_rng_hashes_compared": 31230,
+      "new_group_equal_hashes": 10410,
+      "new_group_hashes_compared": 10410,
+      "warmup_to_first_epoch_pass_folds": 10,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "folds": {
+        "1": {
+          "common_epochs": 309,
+          "base_equal_hashes": 2781,
+          "base_hashes_compared": 2781,
+          "warmup_to_first_epoch_pass": true
+        },
+        "2": {
+          "common_epochs": 338,
+          "base_equal_hashes": 3042,
+          "base_hashes_compared": 3042,
+          "warmup_to_first_epoch_pass": true
+        },
+        "3": {
+          "common_epochs": 335,
+          "base_equal_hashes": 3015,
+          "base_hashes_compared": 3015,
+          "warmup_to_first_epoch_pass": true
+        },
+        "4": {
+          "common_epochs": 339,
+          "base_equal_hashes": 3051,
+          "base_hashes_compared": 3051,
+          "warmup_to_first_epoch_pass": true
+        },
+        "5": {
+          "common_epochs": 388,
+          "base_equal_hashes": 3492,
+          "base_hashes_compared": 3492,
+          "warmup_to_first_epoch_pass": true
+        },
+        "6": {
+          "common_epochs": 355,
+          "base_equal_hashes": 3195,
+          "base_hashes_compared": 3195,
+          "warmup_to_first_epoch_pass": true
+        },
+        "7": {
+          "common_epochs": 322,
+          "base_equal_hashes": 2898,
+          "base_hashes_compared": 2898,
+          "warmup_to_first_epoch_pass": true
+        },
+        "8": {
+          "common_epochs": 366,
+          "base_equal_hashes": 3294,
+          "base_hashes_compared": 3294,
+          "warmup_to_first_epoch_pass": true
+        },
+        "9": {
+          "common_epochs": 334,
+          "base_equal_hashes": 3006,
+          "base_hashes_compared": 3006,
+          "warmup_to_first_epoch_pass": true
+        },
+        "10": {
+          "common_epochs": 384,
+          "base_equal_hashes": 3456,
+          "base_hashes_compared": 3456,
+          "warmup_to_first_epoch_pass": true
+        }
+      },
+      "compared_fields": [
+        "before_train",
+        "after_train",
+        "after_eval"
+      ],
+      "baseline_task_source": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks",
+      "created_utc": "2026-11-09T16:28:29Z"
+    },
+    "training_attempt_history": {
+      "worker_limit": 10,
+      "max_workers_observed": 10,
+      "accepted_run_wall_seconds_including_recovery": 2116.933433532715,
+      "initial_pool_wall_seconds_before_recovery": 2091.9631791114807,
+      "recovery_wall_seconds": 24.97025442123413,
+      "discarded_rng_contaminated_attempt_wall_seconds": 1189.0786881446838,
+      "all_attempts_training_wall_seconds": 3306.0121216773987,
+      "peak_worker_count": 10,
+      "recovery_worker_count": 2,
+      "oom_events": 0,
+      "recovered_tasks": [
+        "G2-GC-SPER fold 1",
+        "G3-Anonymous fold 2"
+      ],
+      "failures": [
+        {
+          "attempt": 1,
+          "type": "RNG audit failure",
+          "reason": "module initialization changed active CUDA RNG because fork_rng saved CPU only; this entire run was excluded from final results",
+          "tasks_completed_but_disqualified": 30
+        },
+        {
+          "attempt": 2,
+          "type": "BrokenProcessPool",
+          "reason": "worker terminated abruptly; cause unconfirmed",
+          "tasks_completed_before_recovery": 28,
+          "tasks_resumed_from_latest": 2
+        }
+      ],
+      "oom_events_observed": 0,
+      "automatic_retries": 0
+    }
+  },
+  "scientific_conclusion": "NO-GO",
+  "paired_effects": {
+    "g2_acc_delta_vs_base_pp": -0.6896551724137934,
+    "g2_acc_wins_vs_base": 0,
+    "g2_minus_g1_acc_pp": -0.2298850574712641,
+    "g2_minus_g3_acc_pp": -0.2298850574712641,
+    "g2_module_off_flips": 0
+  },
+  "rng_audit": {
+    "status": "PASS",
+    "common_fold_epoch_observations": 3470,
+    "e74_4_rng_equal_hashes": 31230,
+    "e74_4_rng_hashes_compared": 31230,
+    "new_group_equal_hashes": 10410,
+    "new_group_hashes_compared": 10410,
+    "warmup_to_first_epoch_pass_folds": 10,
+    "mismatch_count": 0,
+    "mismatches": [],
+    "folds": {
+      "1": {
+        "common_epochs": 309,
+        "base_equal_hashes": 2781,
+        "base_hashes_compared": 2781,
+        "warmup_to_first_epoch_pass": true
+      },
+      "2": {
+        "common_epochs": 338,
+        "base_equal_hashes": 3042,
+        "base_hashes_compared": 3042,
+        "warmup_to_first_epoch_pass": true
+      },
+      "3": {
+        "common_epochs": 335,
+        "base_equal_hashes": 3015,
+        "base_hashes_compared": 3015,
+        "warmup_to_first_epoch_pass": true
+      },
+      "4": {
+        "common_epochs": 339,
+        "base_equal_hashes": 3051,
+        "base_hashes_compared": 3051,
+        "warmup_to_first_epoch_pass": true
+      },
+      "5": {
+        "common_epochs": 388,
+        "base_equal_hashes": 3492,
+        "base_hashes_compared": 3492,
+        "warmup_to_first_epoch_pass": true
+      },
+      "6": {
+        "common_epochs": 355,
+        "base_equal_hashes": 3195,
+        "base_hashes_compared": 3195,
+        "warmup_to_first_epoch_pass": true
+      },
+      "7": {
+        "common_epochs": 322,
+        "base_equal_hashes": 2898,
+        "base_hashes_compared": 2898,
+        "warmup_to_first_epoch_pass": true
+      },
+      "8": {
+        "common_epochs": 366,
+        "base_equal_hashes": 3294,
+        "base_hashes_compared": 3294,
+        "warmup_to_first_epoch_pass": true
+      },
+      "9": {
+        "common_epochs": 334,
+        "base_equal_hashes": 3006,
+        "base_hashes_compared": 3006,
+        "warmup_to_first_epoch_pass": true
+      },
+      "10": {
+        "common_epochs": 384,
+        "base_equal_hashes": 3456,
+        "base_hashes_compared": 3456,
+        "warmup_to_first_epoch_pass": true
+      }
+    },
+    "compared_fields": [
+      "before_train",
+      "after_train",
+      "after_eval"
+    ],
+    "baseline_task_source": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks",
+    "created_utc": "2026-11-09T16:28:29Z"
+  },
+  "prototype_geometry_audit": {
+    "checkpoint_banks_read": 30,
+    "all_30": true,
+    "definition": "per-token 1-cosine between the saved ASD and TD class prototype vectors; four tokens averaged per modality"
+  },
+  "handoff_update": {
+    "status": "APPENDED_AND_VERIFIED",
+    "path": "/model/spromptgl/experiment/handoff.md",
+    "append_sha256": "e0f7fc7461c33b9c4bec59f0c94352b7b10d51bae7704c085fd1ab4e61bdb451",
+    "original_bytes_preserved": 755369,
+    "appended_bytes": 11780
+  }
+}
