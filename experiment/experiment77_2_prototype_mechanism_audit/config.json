@@ -1,0 +1,65 @@
+{
+  "experiment": "Experiment 77.2 - PIM-Audit",
+  "seed": 0,
+  "analysis_rng_seed": 77200,
+  "folds": 10,
+  "device": "cuda:0",
+  "inputs": {
+    "e771": "/data/adodas/SPromptGL-main/experiment/experiment77_1_sc_perm",
+    "e74": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E77.1-G2",
+    "base_group": "E74.4-G2-Positive-DCR",
+    "expected_e771_base_mean_percent": {
+      "acc": 91.95924764890282,
+      "hard_auc": 91.79567812098102,
+      "prob_auc": 93.86600031587734,
+      "sen": 89.81707317073172,
+      "spe": 93.77428307123034
+    },
+    "expected_e74_base_mean_percent": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917
+    }
+  },
+  "probe": {
+    "name": "CPU StandardScaler + LogisticRegression",
+    "C": 1.0,
+    "solver": "lbfgs",
+    "max_iter": 1000,
+    "random_state": 0,
+    "settings": ["P0_CORR256", "P1_CORR256_plus_evidence", "P2_CAM144", "P3_CAM144_plus_evidence", "P4_margin_only", "P4_margin_plus_evidence"],
+    "evidence_columns": ["typical_feature_diff", "hard_evidence_diff", "semantic_conditioned_evidence_diff"],
+    "training_prototype_queries": "E77.1 compute_evidence leave-one-subject-out centers; no self contribution",
+    "overlap_policy": "train indices minus explicit test indices"
+  },
+  "cross_fold_randomization": {
+    "replicates": 2000,
+    "seed": 77200,
+    "matching": "within-fold candidate IDs matched on true label; random-set size equals observed direction count per fold"
+  },
+  "uncertainty_bins": {
+    "count": 5,
+    "boundaries": "quintiles of absolute E74.4-G2 training logit margin, fit within each fold"
+  },
+  "relu_diagnostics": {
+    "contrast_formula": "sim - competing_typical / 1.35 - 0.05",
+    "gate_temperature": 0.2,
+    "hard_evidence_cap": 0.5,
+    "near_zero_epsilon": 0.000001,
+    "gradient_zero_epsilon": 0.00000001,
+    "softplus_counterfactual_beta": 5.0,
+    "softplus_counterfactual": "0.5*tanh(2*softplus(contrast,beta=5))*sigmoid(contrast/0.2)*valid; fixed [0,0.5] evidence cap, no fitted scale"
+  },
+  "restrictions": {
+    "no_training_or_optimizer_step": true,
+    "no_model_or_memory_updates": true,
+    "no_prompt_changes": true,
+    "preserve_historical_val_equals_test_selection": true,
+    "preserve_pre_cv_rfe": true,
+    "preserve_transductive_full_graph": true,
+    "preserve_fold2_overlap": [377, 407]
+  }
+}
