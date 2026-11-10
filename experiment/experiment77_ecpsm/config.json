@@ -1,0 +1,104 @@
+{
+  "experiment": "Experiment 77 - Error-Calibrated Prototype-Semantic Memory",
+  "seed": 0,
+  "root": "/model/spromptgl/experiment/experiment77_ecpsm",
+  "base": {
+    "experiment_root": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E74.4-G2-Positive-DCR",
+    "runner_sha256": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "model_file": "soft_positive_dcr.py",
+    "model_sha256": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "config_sha256": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "manifest_sha256": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "start_epoch_zero_based": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+    "optimizer": {
+      "opt_base": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "opt_cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "opt_added": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "scheduler": "none; fixed learning rates inherited from E74.4-G2",
+    "batching": "single full-graph forward/update per epoch"
+  },
+  "data": {
+    "subjects": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "darg_dims": [48, 6, 10, 256],
+    "darg_total_dim": 320,
+    "cam_input_dim": 144,
+    "cam_attention_dim": 16,
+    "classifier_hidden_dim": 36,
+    "labels": {"ASD": 0, "TD": 1},
+    "positive_class": "ASD",
+    "folds": 10,
+    "split": "inherited E74.4-G2 effective train/test indices, StratifiedKFold(10, shuffle=True, random_state=10)",
+    "validation_equals_test": true,
+    "fold2_train_test_overlap_1based": [377, 407],
+    "memory_allowed_ids": "effective training indices minus explicit test indices"
+  },
+  "method": {
+    "insertion": "pre-hook on the inherited PLNNoPEN Outputlayer input; retain the original Outputlayer and classifier",
+    "cam_order": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "latent_layout": [4, 4, 9],
+    "latent_blocks_are_anatomical_rois": false,
+    "groups": {
+      "E77-G1": "class prototype memory and text-conditioned diagnosis; FP/FN memory disabled",
+      "E77-G2": "same as G1; activate stable direction-specific FP/FN memory after 10 E77 training epochs"
+    },
+    "prototype": {
+      "class_per_class_per_modality": 4,
+      "hard_per_direction_per_modality_max": 2,
+      "top_k": 2,
+      "retrieval_temperature": 0.2,
+      "ema_momentum": 0.9,
+      "kmeans_iterations": 25,
+      "query_self_exclusion": "subtract each training subject's own normalized EMA feature from its assigned cluster sum and count before retrieval"
+    },
+    "hard_memory": {
+      "warmup_ecpsm_epochs": 10,
+      "stable_prediction_window": 3,
+      "stable_error_votes": 2,
+      "fp_definition": "training TD label 1 with at least 2 of last 3 eval-mode predictions ASD label 0",
+      "fn_definition": "training ASD label 0 with at least 2 of last 3 eval-mode predictions TD label 1",
+      "near_boundary": "count separately; do not mix into true FP/FN banks",
+      "test_ids_excluded": true
+    },
+    "semantic": {
+      "encoder": "frozen OpenAI CLIP RN50 embeddings from audited E60 cache",
+      "cache_path": "/model/spromptgl/experiment/experiment60_dss_pen/.runtime/text_embeddings.pt",
+      "cache_sha256": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+      "prompt_order": [
+        "Nromal brain volume",
+        "Uniform cortical thickness",
+        "Symmetrical brain structure",
+        "Normal ventricular morphology",
+        "Altered brain volume",
+        "Abnormal functional connectivity",
+        "White matter integrity issues",
+        "Different activation patterns"
+      ],
+      "prompt_mapping": "first four form TD text anchor; last four form ASD text anchor; internal bank order ASD, TD",
+      "text_anchor_projection_dim": 9,
+      "condition_projection": "Linear(81,9), shared across modes and classes; condition=[retrieved class prototype, class-difference prototype, text anchor]",
+      "semantic_temperature": 0.2
+    },
+    "fusion": {
+      "evidence": "ASD prompt evidence + 0.1*FN similarity versus TD prompt evidence + 0.1*FP similarity",
+      "bounded_residual": "0.05*tanh(Linear_91_to_36([CAM context, ASD-TD prototype difference, two prompt-conditioned block summaries, signed evidence]))",
+      "output_dim": 144,
+      "new_loss": "none"
+    },
+    "new_parameter_optimizer": "append one AdamW parameter group (lr=0.001, weight_decay=0.01) to inherited opt_added after its original groups"
+  },
+  "randomness": {
+    "base_rng": "restore per-fold E61 epoch-10 RNG from audited warmup; no per-epoch reseeding",
+    "new_module_seed_base": 770000,
+    "new_module_seed_policy": "base plus fold; initialized once inside torch.random.fork_rng; same seed for G1/G2",
+    "prototype_formation": "deterministic farthest-first/Lloyd clustering with no random generator",
+    "checkpoint_rng": ["python", "numpy", "torch_cpu", "torch_cuda"]
+  },
+  "execution": {"worker_limit": 10, "workers": 8, "device": "single PPU-ZW810E"}
+}

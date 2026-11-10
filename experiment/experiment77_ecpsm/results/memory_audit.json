@@ -1,0 +1,6089 @@
+{
+  "preflight_leave_one_out_test": {
+    "status": "PASS",
+    "shared_cluster_subjects": 2,
+    "self_vector_removed": true
+  },
+  "folds": [
+    {
+      "group": "E77-G1",
+      "fold": 1,
+      "selected_epoch_1based": 163,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            114,
+            86,
+            62,
+            100
+          ],
+          "retrieval_counts": [
+            171536,
+            124851,
+            93032,
+            145375
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7766706347465515,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            4,
+            80,
+            152,
+            185
+          ],
+          "retrieval_counts": [
+            124293,
+            130086,
+            117227,
+            163188
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7084630727767944,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            86,
+            47,
+            90,
+            139
+          ],
+          "retrieval_counts": [
+            113314,
+            139929,
+            118523,
+            163028
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.02984543703496456,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            122,
+            66,
+            119,
+            114
+          ],
+          "retrieval_counts": [
+            117238,
+            122448,
+            142889,
+            152219
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.06857158243656158,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            111,
+            107,
+            75,
+            69
+          ],
+          "retrieval_counts": [
+            99874,
+            145600,
+            167869,
+            121451
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.11035887897014618,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            128,
+            66,
+            95,
+            132
+          ],
+          "retrieval_counts": [
+            147855,
+            106040,
+            124218,
+            156681
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.18073371052742004,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            120,
+            195,
+            27,
+            20
+          ],
+          "retrieval_counts": [
+            133374,
+            122925,
+            133309,
+            145186
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.32840633392333984,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            172,
+            14,
+            33,
+            202
+          ],
+          "retrieval_counts": [
+            136689,
+            110204,
+            143664,
+            144237
+          ],
+          "query_count": 534794,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.31910476088523865,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 153
+      },
+      "initial_memory": {
+        "logp_sha256": "49ae50159ced3f9dc0241c03a7eca8155d5d613d96b4306e86f548207f36bda2",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 783,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 783,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 2,
+      "selected_epoch_1based": 119,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            113,
+            79,
+            85,
+            85
+          ],
+          "retrieval_counts": [
+            137482,
+            65203,
+            53065,
+            125748
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8594458103179932,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            178,
+            74,
+            128,
+            42
+          ],
+          "retrieval_counts": [
+            131258,
+            122258,
+            85698,
+            42284
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.792144775390625,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            79,
+            117,
+            79,
+            87
+          ],
+          "retrieval_counts": [
+            109663,
+            101263,
+            72802,
+            97770
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.06959154456853867,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            107,
+            120,
+            115,
+            80
+          ],
+          "retrieval_counts": [
+            77760,
+            86166,
+            99404,
+            118168
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.13067542016506195,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            124,
+            107,
+            42,
+            89
+          ],
+          "retrieval_counts": [
+            65237,
+            110212,
+            87094,
+            118955
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.18261276185512543,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            139,
+            85,
+            102,
+            96
+          ],
+          "retrieval_counts": [
+            113825,
+            65618,
+            96051,
+            106004
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.18820685148239136,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            93,
+            211,
+            34,
+            24
+          ],
+          "retrieval_counts": [
+            95779,
+            65263,
+            107208,
+            113248
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.2346893548965454,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            21,
+            184,
+            62,
+            155
+          ],
+          "retrieval_counts": [
+            102962,
+            75570,
+            102451,
+            100515
+          ],
+          "query_count": 381498,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.44508618116378784,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 109
+      },
+      "initial_memory": {
+        "logp_sha256": "016bedb377a954abfb6912ac553b7b5c32ee79aacb0dcfd0af7fff72e0cbe316",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 2
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 2
+    },
+    {
+      "group": "E77-G1",
+      "fold": 3,
+      "selected_epoch_1based": 184,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            65,
+            104,
+            80,
+            113
+          ],
+          "retrieval_counts": [
+            127016,
+            84327,
+            204178,
+            192437
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8129240870475769,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            96,
+            103,
+            49,
+            174
+          ],
+          "retrieval_counts": [
+            137661,
+            152060,
+            121109,
+            197128
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7212346792221069,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            23,
+            225,
+            52,
+            62
+          ],
+          "retrieval_counts": [
+            129096,
+            172246,
+            151796,
+            154820
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.14942830801010132,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            110,
+            89,
+            117,
+            106
+          ],
+          "retrieval_counts": [
+            133033,
+            146058,
+            172093,
+            156774
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4626106917858124,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            113,
+            67,
+            101,
+            81
+          ],
+          "retrieval_counts": [
+            102819,
+            135241,
+            165409,
+            204489
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.09144321084022522,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            34,
+            68,
+            197,
+            123
+          ],
+          "retrieval_counts": [
+            162658,
+            113851,
+            146051,
+            185398
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.019361278042197227,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            243,
+            21,
+            19,
+            79
+          ],
+          "retrieval_counts": [
+            139375,
+            138786,
+            167919,
+            161878
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1488644778728485,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            273,
+            11,
+            20,
+            118
+          ],
+          "retrieval_counts": [
+            171637,
+            116643,
+            142964,
+            176714
+          ],
+          "query_count": 607958,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.20044037699699402,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 174
+      },
+      "initial_memory": {
+        "logp_sha256": "bd8e35e63b06a24f948c559ce9a377d3e0319d7f62678753d758523ca480a442",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 4,
+      "selected_epoch_1based": 141,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            156,
+            4,
+            84,
+            119
+          ],
+          "retrieval_counts": [
+            125216,
+            68599,
+            111967,
+            152364
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5177459716796875,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            194,
+            80,
+            30,
+            117
+          ],
+          "retrieval_counts": [
+            119392,
+            55192,
+            139557,
+            144005
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.674728274345398,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            87,
+            55,
+            82,
+            139
+          ],
+          "retrieval_counts": [
+            112098,
+            94440,
+            136139,
+            115469
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.10731613636016846,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            128,
+            94,
+            100,
+            99
+          ],
+          "retrieval_counts": [
+            114898,
+            109268,
+            118243,
+            115737
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.025079041719436646,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            117,
+            124,
+            54,
+            68
+          ],
+          "retrieval_counts": [
+            87462,
+            132593,
+            126870,
+            111221
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.09831756353378296,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            144,
+            61,
+            86,
+            130
+          ],
+          "retrieval_counts": [
+            133043,
+            81243,
+            121981,
+            121879
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.11207842826843262,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            69,
+            257,
+            16,
+            21
+          ],
+          "retrieval_counts": [
+            103399,
+            106771,
+            124851,
+            123125
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1078350767493248,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            12,
+            109,
+            278,
+            22
+          ],
+          "retrieval_counts": [
+            117681,
+            126052,
+            86148,
+            128265
+          ],
+          "query_count": 458146,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.07900743186473846,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 131
+      },
+      "initial_memory": {
+        "logp_sha256": "182cc9b0b40f264206bbe623b398e2ad4da06ab533c21c0607b28016833956a5",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 5,
+      "selected_epoch_1based": 321,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            62,
+            158,
+            125,
+            18
+          ],
+          "retrieval_counts": [
+            368719,
+            167810,
+            223181,
+            325556
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.49936601519584656,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            58,
+            125,
+            47,
+            191
+          ],
+          "retrieval_counts": [
+            333800,
+            270363,
+            279082,
+            202021
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.46774768829345703,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            218,
+            24,
+            72,
+            49
+          ],
+          "retrieval_counts": [
+            271533,
+            241967,
+            292879,
+            278887
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.45769843459129333,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            150,
+            109,
+            71,
+            91
+          ],
+          "retrieval_counts": [
+            282229,
+            242008,
+            310314,
+            250715
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5105754733085632,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            78,
+            82,
+            85,
+            118
+          ],
+          "retrieval_counts": [
+            320911,
+            261236,
+            333612,
+            169507
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4521588683128357,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            153,
+            109,
+            67,
+            92
+          ],
+          "retrieval_counts": [
+            278653,
+            320913,
+            177837,
+            307863
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.056657832115888596,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            190,
+            141,
+            22,
+            10
+          ],
+          "retrieval_counts": [
+            229103,
+            246938,
+            286170,
+            323055
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.24357080459594727,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            4,
+            162,
+            214,
+            41
+          ],
+          "retrieval_counts": [
+            261347,
+            270891,
+            259713,
+            293315
+          ],
+          "query_count": 1085266,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.2616349458694458,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 311
+      },
+      "initial_memory": {
+        "logp_sha256": "e92271307ca31c7ddc926ee61682d239c6ebcda8f37150611e506771dbf7ef7e",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 6,
+      "selected_epoch_1based": 160,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            121,
+            121,
+            53,
+            68
+          ],
+          "retrieval_counts": [
+            113853,
+            159001,
+            147196,
+            104292
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6992937922477722,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            156,
+            114,
+            33,
+            118
+          ],
+          "retrieval_counts": [
+            149477,
+            67925,
+            139852,
+            167088
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6880277395248413,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            78,
+            115,
+            137,
+            33
+          ],
+          "retrieval_counts": [
+            120076,
+            142731,
+            122329,
+            139206
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.0032331969123333693,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            92,
+            122,
+            76,
+            131
+          ],
+          "retrieval_counts": [
+            121421,
+            138684,
+            146490,
+            117747
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.15394234657287598,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            65,
+            66,
+            119,
+            113
+          ],
+          "retrieval_counts": [
+            139394,
+            134896,
+            104378,
+            145674
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.03231704235076904,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            75,
+            66,
+            150,
+            130
+          ],
+          "retrieval_counts": [
+            153295,
+            89720,
+            142924,
+            138403
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.10723571479320526,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            24,
+            74,
+            240,
+            25
+          ],
+          "retrieval_counts": [
+            157504,
+            113243,
+            102522,
+            151073
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.14919593930244446,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            27,
+            18,
+            79,
+            297
+          ],
+          "retrieval_counts": [
+            156763,
+            129703,
+            109338,
+            128538
+          ],
+          "query_count": 524342,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.20272819697856903,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 150
+      },
+      "initial_memory": {
+        "logp_sha256": "e48e89c653157a8cc11bab84ef8ec5d7b2b3801af8fb1fc4c63bf77a596e1938",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 7,
+      "selected_epoch_1based": 149,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            91,
+            2,
+            136,
+            134
+          ],
+          "retrieval_counts": [
+            144651,
+            35926,
+            133312,
+            172129
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.031500350683927536,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            190,
+            3,
+            79,
+            149
+          ],
+          "retrieval_counts": [
+            146896,
+            54581,
+            172904,
+            111637
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.3129592835903168,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            82,
+            47,
+            169,
+            65
+          ],
+          "retrieval_counts": [
+            118261,
+            94546,
+            140353,
+            132858
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.011943479999899864,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            87,
+            70,
+            159,
+            105
+          ],
+          "retrieval_counts": [
+            133199,
+            96800,
+            127733,
+            128286
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.09702949225902557,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            120,
+            49,
+            112,
+            82
+          ],
+          "retrieval_counts": [
+            86014,
+            119783,
+            141281,
+            138940
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.07849428802728653,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            155,
+            59,
+            83,
+            124
+          ],
+          "retrieval_counts": [
+            146455,
+            115202,
+            87694,
+            136667
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.12754008173942566,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            227,
+            24,
+            24,
+            88
+          ],
+          "retrieval_counts": [
+            105325,
+            122963,
+            141339,
+            116391
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.26430898904800415,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            118,
+            9,
+            29,
+            265
+          ],
+          "retrieval_counts": [
+            120353,
+            118595,
+            154078,
+            92992
+          ],
+          "query_count": 486018,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1808016300201416,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 139
+      },
+      "initial_memory": {
+        "logp_sha256": "c0bfce0111d71d4f46ec54586d594e831676c78868f476c8f3b1463cf74dc3d3",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 8,
+      "selected_epoch_1based": 190,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            100,
+            49,
+            99,
+            115
+          ],
+          "retrieval_counts": [
+            181246,
+            118312,
+            108357,
+            220947
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8330153226852417,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            41,
+            122,
+            92,
+            166
+          ],
+          "retrieval_counts": [
+            210360,
+            67710,
+            148528,
+            202264
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8047816753387451,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            79,
+            73,
+            43,
+            168
+          ],
+          "retrieval_counts": [
+            172840,
+            177524,
+            123901,
+            154597
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.2207440584897995,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            111,
+            69,
+            149,
+            92
+          ],
+          "retrieval_counts": [
+            185824,
+            98614,
+            175270,
+            169154
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1729479283094406,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            70,
+            100,
+            113,
+            80
+          ],
+          "retrieval_counts": [
+            160160,
+            167176,
+            107118,
+            194408
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.14324133098125458,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            68,
+            97,
+            66,
+            190
+          ],
+          "retrieval_counts": [
+            124781,
+            157084,
+            174362,
+            172635
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.03509683534502983,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            22,
+            16,
+            249,
+            76
+          ],
+          "retrieval_counts": [
+            188351,
+            170201,
+            129938,
+            140372
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.09031499922275543,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            13,
+            128,
+            233,
+            47
+          ],
+          "retrieval_counts": [
+            165950,
+            130472,
+            147923,
+            184517
+          ],
+          "query_count": 628862,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.425334632396698,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 180
+      },
+      "initial_memory": {
+        "logp_sha256": "b415a33ef621b141ee6b97eb01a8e99b0863557318b8241bce48c6aabbf294f5",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 9,
+      "selected_epoch_1based": 228,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            76,
+            102,
+            91,
+            94
+          ],
+          "retrieval_counts": [
+            179983,
+            289007,
+            158331,
+            133933
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7396242022514343,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            66,
+            141,
+            42,
+            172
+          ],
+          "retrieval_counts": [
+            296738,
+            78002,
+            225517,
+            160997
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7293925285339355,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            36,
+            69,
+            124,
+            134
+          ],
+          "retrieval_counts": [
+            156071,
+            239343,
+            170115,
+            195725
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7286111116409302,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            76,
+            95,
+            103,
+            147
+          ],
+          "retrieval_counts": [
+            128561,
+            239582,
+            143935,
+            249176
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7248066663742065,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            89,
+            113,
+            123,
+            38
+          ],
+          "retrieval_counts": [
+            125621,
+            229265,
+            209158,
+            197210
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.06732819974422455,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            24,
+            170,
+            53,
+            174
+          ],
+          "retrieval_counts": [
+            215322,
+            212251,
+            127306,
+            206375
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.029706597328186035,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            11,
+            11,
+            83,
+            258
+          ],
+          "retrieval_counts": [
+            221457,
+            203336,
+            160966,
+            175495
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.14226822555065155,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            261,
+            130,
+            9,
+            21
+          ],
+          "retrieval_counts": [
+            198219,
+            174372,
+            196899,
+            191764
+          ],
+          "query_count": 761254,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.16281691193580627,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 218
+      },
+      "initial_memory": {
+        "logp_sha256": "23f2d8c8bdbfc19b7a5e60d3838c734b055f77933727aac4116130923a25e9e0",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G1",
+      "fold": 10,
+      "selected_epoch_1based": 284,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            140,
+            32,
+            116,
+            75
+          ],
+          "retrieval_counts": [
+            145813,
+            267807,
+            228919,
+            313819
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6183995008468628,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            29,
+            155,
+            62,
+            175
+          ],
+          "retrieval_counts": [
+            254208,
+            244943,
+            311962,
+            145245
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5365915894508362,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            164,
+            26,
+            110,
+            63
+          ],
+          "retrieval_counts": [
+            267978,
+            178758,
+            260740,
+            248882
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.46644461154937744,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            140,
+            60,
+            60,
+            161
+          ],
+          "retrieval_counts": [
+            246145,
+            246182,
+            275532,
+            188499
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4795491695404053,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            112,
+            80,
+            105,
+            66
+          ],
+          "retrieval_counts": [
+            160695,
+            198466,
+            296862,
+            300335
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.27718573808670044,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            26,
+            193,
+            159,
+            43
+          ],
+          "retrieval_counts": [
+            228206,
+            270446,
+            286726,
+            170980
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.2205987423658371,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            65,
+            13,
+            269,
+            16
+          ],
+          "retrieval_counts": [
+            212871,
+            268864,
+            214769,
+            259854
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1903986632823944,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            8,
+            10,
+            95,
+            308
+          ],
+          "retrieval_counts": [
+            223508,
+            211520,
+            264967,
+            256363
+          ],
+          "query_count": 956358,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.20065650343894958,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 0,
+          "active_prototypes": 0,
+          "occupancy": [
+            0,
+            0
+          ],
+          "retrieval_counts": [
+            0,
+            0
+          ],
+          "query_count": 0,
+          "retrieval_coverage": 0.0,
+          "mean_pairwise_cosine": null
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 0,
+        "stable_fn_epoch_observations": 0,
+        "near_fp_epoch_observations": 0,
+        "near_fn_epoch_observations": 0,
+        "hard_diagnostics_epochs": 274
+      },
+      "initial_memory": {
+        "logp_sha256": "7d826749773216aa9f772a1160b241244ec613af24ca8a328e5205ee59402882",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 1,
+      "selected_epoch_1based": 294,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            64,
+            87,
+            128,
+            83
+          ],
+          "retrieval_counts": [
+            307876,
+            216032,
+            150148,
+            315400
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5799351334571838,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            89,
+            76,
+            130,
+            126
+          ],
+          "retrieval_counts": [
+            209300,
+            274329,
+            211158,
+            294669
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5333722829818726,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            180,
+            22,
+            30,
+            130
+          ],
+          "retrieval_counts": [
+            232739,
+            232246,
+            224279,
+            300192
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4929535388946533,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            63,
+            142,
+            74,
+            142
+          ],
+          "retrieval_counts": [
+            238774,
+            265046,
+            231991,
+            253645
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.44202089309692383,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            119,
+            80,
+            94,
+            69
+          ],
+          "retrieval_counts": [
+            166190,
+            306877,
+            324327,
+            192062
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.17654937505722046,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            166,
+            74,
+            124,
+            57
+          ],
+          "retrieval_counts": [
+            300717,
+            174543,
+            273983,
+            240213
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.038937292993068695,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            48,
+            172,
+            11,
+            131
+          ],
+          "retrieval_counts": [
+            239568,
+            214351,
+            261757,
+            273780
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.41534721851348877,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            183,
+            3,
+            19,
+            216
+          ],
+          "retrieval_counts": [
+            269689,
+            208550,
+            249747,
+            261470
+          ],
+          "query_count": 989456,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.19953987002372742,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 10,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            4
+          ],
+          "retrieval_counts": [
+            470334,
+            463142
+          ],
+          "query_count": 933476,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.775614321231842
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 10,
+          "active_prototypes": 2,
+          "occupancy": [
+            9,
+            1
+          ],
+          "retrieval_counts": [
+            472070,
+            461546
+          ],
+          "query_count": 933616,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.6086935997009277
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 10,
+          "active_prototypes": 2,
+          "occupancy": [
+            9,
+            1
+          ],
+          "retrieval_counts": [
+            475530,
+            475550
+          ],
+          "query_count": 951080,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.7895532250404358
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 10,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            7
+          ],
+          "retrieval_counts": [
+            465070,
+            445898
+          ],
+          "query_count": 910968,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.27262404561042786
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            5
+          ],
+          "retrieval_counts": [
+            475534,
+            472070
+          ],
+          "query_count": 947604,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.220781147480011
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            11
+          ],
+          "retrieval_counts": [
+            475552,
+            470316
+          ],
+          "query_count": 945868,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5626795291900635
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            5
+          ],
+          "retrieval_counts": [
+            473818,
+            472016
+          ],
+          "query_count": 945834,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.6080082654953003
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            9,
+            6
+          ],
+          "retrieval_counts": [
+            465076,
+            447648
+          ],
+          "query_count": 912724,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7646075487136841
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 11195,
+        "stable_fn_epoch_observations": 8978,
+        "near_fp_epoch_observations": 10936,
+        "near_fn_epoch_observations": 9033,
+        "hard_diagnostics_epochs": 284
+      },
+      "initial_memory": {
+        "logp_sha256": "49ae50159ced3f9dc0241c03a7eca8155d5d613d96b4306e86f548207f36bda2",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 783,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 783,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 2,
+      "selected_epoch_1based": 300,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            108,
+            98,
+            78,
+            78
+          ],
+          "retrieval_counts": [
+            378863,
+            139147,
+            247493,
+            244857
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6470304727554321,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            55,
+            40,
+            153,
+            174
+          ],
+          "retrieval_counts": [
+            358579,
+            282132,
+            236247,
+            133402
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.536971926689148,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            173,
+            38,
+            41,
+            110
+          ],
+          "retrieval_counts": [
+            294256,
+            267387,
+            209267,
+            239450
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5815762877464294,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            110,
+            115,
+            50,
+            147
+          ],
+          "retrieval_counts": [
+            178201,
+            272257,
+            272210,
+            287692
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5762484073638916,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            79,
+            145,
+            88,
+            50
+          ],
+          "retrieval_counts": [
+            153649,
+            316237,
+            288967,
+            251507
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.08600018918514252,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            147,
+            66,
+            64,
+            145
+          ],
+          "retrieval_counts": [
+            314103,
+            159534,
+            254300,
+            282423
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.04544325917959213,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            110,
+            219,
+            22,
+            11
+          ],
+          "retrieval_counts": [
+            288201,
+            190916,
+            243201,
+            288042
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.32241401076316833,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            8,
+            231,
+            28,
+            155
+          ],
+          "retrieval_counts": [
+            253527,
+            210337,
+            282039,
+            264457
+          ],
+          "query_count": 1010360,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.2992737293243408,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            1,
+            4
+          ],
+          "retrieval_counts": [
+            475486,
+            477102
+          ],
+          "query_count": 952588,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.10611258447170258
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            1
+          ],
+          "retrieval_counts": [
+            482532,
+            475466
+          ],
+          "query_count": 957998,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.062487877905368805
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            2,
+            3
+          ],
+          "retrieval_counts": [
+            485982,
+            482498
+          ],
+          "query_count": 968480,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.41318365931510925
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            2
+          ],
+          "retrieval_counts": [
+            473818,
+            454576
+          ],
+          "query_count": 928394,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6719391345977783
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            6
+          ],
+          "retrieval_counts": [
+            486006,
+            484212
+          ],
+          "query_count": 970218,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.1133757159113884
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            10
+          ],
+          "retrieval_counts": [
+            486018,
+            482522
+          ],
+          "query_count": 968540,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.1396462768316269
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            7
+          ],
+          "retrieval_counts": [
+            484260,
+            486016
+          ],
+          "query_count": 970276,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.6218940615653992
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            6
+          ],
+          "retrieval_counts": [
+            480784,
+            449356
+          ],
+          "query_count": 930140,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7064517736434937
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 11110,
+        "stable_fn_epoch_observations": 9993,
+        "near_fp_epoch_observations": 9620,
+        "near_fn_epoch_observations": 6845,
+        "hard_diagnostics_epochs": 290
+      },
+      "initial_memory": {
+        "logp_sha256": "016bedb377a954abfb6912ac553b7b5c32ee79aacb0dcfd0af7fff72e0cbe316",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 2
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 2
+    },
+    {
+      "group": "E77-G2",
+      "fold": 3,
+      "selected_epoch_1based": 170,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            70,
+            95,
+            117,
+            80
+          ],
+          "retrieval_counts": [
+            120765,
+            72786,
+            212323,
+            151566
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8088711500167847,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            90,
+            126,
+            57,
+            149
+          ],
+          "retrieval_counts": [
+            137785,
+            129930,
+            101629,
+            188096
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7622814178466797,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            79,
+            41,
+            30,
+            212
+          ],
+          "retrieval_counts": [
+            113991,
+            154647,
+            143666,
+            145136
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.22601521015167236,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            141,
+            69,
+            131,
+            81
+          ],
+          "retrieval_counts": [
+            118906,
+            131784,
+            157562,
+            149188
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.2795686721801758,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            106,
+            66,
+            96,
+            94
+          ],
+          "retrieval_counts": [
+            96914,
+            126704,
+            148186,
+            185636
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.09176954627037048,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            61,
+            73,
+            65,
+            223
+          ],
+          "retrieval_counts": [
+            155028,
+            107518,
+            128702,
+            166192
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.023440372198820114,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 362,
+          "active_prototypes": 4,
+          "occupancy": [
+            198,
+            32,
+            19,
+            113
+          ],
+          "retrieval_counts": [
+            122534,
+            134272,
+            155531,
+            145103
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.24255351722240448,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 422,
+          "active_prototypes": 4,
+          "occupancy": [
+            223,
+            13,
+            38,
+            148
+          ],
+          "retrieval_counts": [
+            155933,
+            104088,
+            142363,
+            155056
+          ],
+          "query_count": 557440,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.27688464522361755,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            1
+          ],
+          "retrieval_counts": [
+            259558,
+            259492
+          ],
+          "query_count": 519050,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.28290432691574097
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            2,
+            3
+          ],
+          "retrieval_counts": [
+            259558,
+            254324
+          ],
+          "query_count": 513882,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.44662946462631226
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            2
+          ],
+          "retrieval_counts": [
+            259548,
+            259558
+          ],
+          "query_count": 519106,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.10376366227865219
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 5,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            2
+          ],
+          "retrieval_counts": [
+            252584,
+            245598
+          ],
+          "query_count": 498182,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.4902547597885132
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            15
+          ],
+          "retrieval_counts": [
+            259542,
+            259558
+          ],
+          "query_count": 519100,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5844185948371887
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            10
+          ],
+          "retrieval_counts": [
+            259554,
+            257806
+          ],
+          "query_count": 517360,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.2769813537597656
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            12,
+            8
+          ],
+          "retrieval_counts": [
+            259550,
+            259554
+          ],
+          "query_count": 519104,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.6926553249359131
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            12
+          ],
+          "retrieval_counts": [
+            249096,
+            249054
+          ],
+          "query_count": 498150,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.24531540274620056
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 8962,
+        "stable_fn_epoch_observations": 8044,
+        "near_fp_epoch_observations": 9712,
+        "near_fn_epoch_observations": 7201,
+        "hard_diagnostics_epochs": 160
+      },
+      "initial_memory": {
+        "logp_sha256": "bd8e35e63b06a24f948c559ce9a377d3e0319d7f62678753d758523ca480a442",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 4,
+      "selected_epoch_1based": 236,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            117,
+            63,
+            56,
+            127
+          ],
+          "retrieval_counts": [
+            196056,
+            162311,
+            144678,
+            284339
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7130547761917114,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            165,
+            136,
+            32,
+            88
+          ],
+          "retrieval_counts": [
+            204278,
+            98914,
+            220254,
+            263938
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7199933528900146,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            162,
+            61,
+            24,
+            116
+          ],
+          "retrieval_counts": [
+            211464,
+            176016,
+            187469,
+            212435
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6322647929191589,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            102,
+            67,
+            82,
+            170
+          ],
+          "retrieval_counts": [
+            197090,
+            164980,
+            230560,
+            194754
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.733292281627655,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            115,
+            97,
+            115,
+            36
+          ],
+          "retrieval_counts": [
+            131817,
+            234237,
+            220879,
+            200451
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.15715420246124268,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            68,
+            51,
+            168,
+            134
+          ],
+          "retrieval_counts": [
+            240268,
+            131057,
+            224440,
+            191619
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.026551436632871628,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            76,
+            257,
+            20,
+            10
+          ],
+          "retrieval_counts": [
+            175950,
+            175109,
+            221379,
+            214946
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.12875835597515106,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            11,
+            135,
+            249,
+            26
+          ],
+          "retrieval_counts": [
+            191562,
+            220849,
+            163380,
+            211593
+          ],
+          "query_count": 787384,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.33500000834465027,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            1,
+            5
+          ],
+          "retrieval_counts": [
+            372768,
+            372576
+          ],
+          "query_count": 745344,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7050142288208008
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            3
+          ],
+          "retrieval_counts": [
+            372770,
+            369292
+          ],
+          "query_count": 742062,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6851898431777954
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            2
+          ],
+          "retrieval_counts": [
+            374516,
+            369290
+          ],
+          "query_count": 743806,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.0004970334121026099
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            1
+          ],
+          "retrieval_counts": [
+            362320,
+            365780
+          ],
+          "query_count": 728100,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.4309716522693634
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            7
+          ],
+          "retrieval_counts": [
+            374494,
+            374512
+          ],
+          "query_count": 749006,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5514876842498779
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            7
+          ],
+          "retrieval_counts": [
+            372782,
+            374520
+          ],
+          "query_count": 747302,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6871854066848755
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            6
+          ],
+          "retrieval_counts": [
+            372786,
+            374522
+          ],
+          "query_count": 747308,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5409547090530396
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            7
+          ],
+          "retrieval_counts": [
+            371020,
+            358822
+          ],
+          "query_count": 729842,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.45561516284942627
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 10329,
+        "stable_fn_epoch_observations": 10289,
+        "near_fp_epoch_observations": 10664,
+        "near_fn_epoch_observations": 7226,
+        "hard_diagnostics_epochs": 226
+      },
+      "initial_memory": {
+        "logp_sha256": "182cc9b0b40f264206bbe623b398e2ad4da06ab533c21c0607b28016833956a5",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 5,
+      "selected_epoch_1based": 212,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            110,
+            78,
+            71,
+            104
+          ],
+          "retrieval_counts": [
+            171922,
+            112028,
+            197022,
+            222796
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6744138598442078,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            85,
+            169,
+            43,
+            124
+          ],
+          "retrieval_counts": [
+            205255,
+            176594,
+            184277,
+            137642
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6331315040588379,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            165,
+            25,
+            126,
+            47
+          ],
+          "retrieval_counts": [
+            157945,
+            150867,
+            183312,
+            211644
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6079221367835999,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            85,
+            27,
+            161,
+            148
+          ],
+          "retrieval_counts": [
+            213769,
+            167817,
+            154941,
+            167241
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6058067083358765,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            85,
+            18,
+            150,
+            110
+          ],
+          "retrieval_counts": [
+            189759,
+            177995,
+            220050,
+            115964
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.12657469511032104,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            55,
+            45,
+            65,
+            256
+          ],
+          "retrieval_counts": [
+            188114,
+            168052,
+            118275,
+            229327
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.03235385939478874,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            227,
+            107,
+            11,
+            18
+          ],
+          "retrieval_counts": [
+            150442,
+            152559,
+            183704,
+            217063
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.029909145087003708,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            8,
+            12,
+            293,
+            108
+          ],
+          "retrieval_counts": [
+            182881,
+            168525,
+            156960,
+            195402
+          ],
+          "query_count": 703768,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.16666029393672943,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 3,
+          "active_prototypes": 2,
+          "occupancy": [
+            1,
+            2
+          ],
+          "retrieval_counts": [
+            330886,
+            330954
+          ],
+          "query_count": 661840,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.058767739683389664
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 3,
+          "active_prototypes": 1,
+          "occupancy": [
+            3,
+            0
+          ],
+          "retrieval_counts": [
+            332720,
+            320494
+          ],
+          "query_count": 653214,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": null
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 3,
+          "active_prototypes": 2,
+          "occupancy": [
+            2,
+            1
+          ],
+          "retrieval_counts": [
+            330974,
+            330966
+          ],
+          "query_count": 661940,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.2528478801250458
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 3,
+          "active_prototypes": 1,
+          "occupancy": [
+            3,
+            0
+          ],
+          "retrieval_counts": [
+            330972,
+            313538
+          ],
+          "query_count": 644510,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": null
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            9
+          ],
+          "retrieval_counts": [
+            332706,
+            329234
+          ],
+          "query_count": 661940,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.08791691064834595
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            10
+          ],
+          "retrieval_counts": [
+            332714,
+            327478
+          ],
+          "query_count": 660192,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5491201281547546
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            7
+          ],
+          "retrieval_counts": [
+            332714,
+            329232
+          ],
+          "query_count": 661946,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.24136897921562195
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 15,
+          "active_prototypes": 2,
+          "occupancy": [
+            9,
+            6
+          ],
+          "retrieval_counts": [
+            325700,
+            322250
+          ],
+          "query_count": 647950,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.24996371567249298
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 13855,
+        "stable_fn_epoch_observations": 11294,
+        "near_fp_epoch_observations": 10960,
+        "near_fn_epoch_observations": 9686,
+        "hard_diagnostics_epochs": 202
+      },
+      "initial_memory": {
+        "logp_sha256": "e92271307ca31c7ddc926ee61682d239c6ebcda8f37150611e506771dbf7ef7e",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 6,
+      "selected_epoch_1based": 133,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            121,
+            31,
+            130,
+            81
+          ],
+          "retrieval_counts": [
+            96336,
+            95316,
+            145115,
+            91765
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7393736243247986,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            159,
+            60,
+            43,
+            159
+          ],
+          "retrieval_counts": [
+            131099,
+            52040,
+            106746,
+            138647
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7646109461784363,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            91,
+            106,
+            80,
+            86
+          ],
+          "retrieval_counts": [
+            96461,
+            120759,
+            91079,
+            120233
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.04471670836210251,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            83,
+            116,
+            83,
+            139
+          ],
+          "retrieval_counts": [
+            98978,
+            117034,
+            117544,
+            94976
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.04515674337744713,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            70,
+            113,
+            125,
+            55
+          ],
+          "retrieval_counts": [
+            112318,
+            110755,
+            92597,
+            112862
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.09814608097076416,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            139,
+            78,
+            96,
+            108
+          ],
+          "retrieval_counts": [
+            122972,
+            77933,
+            113233,
+            114394
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.073367178440094,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            36,
+            117,
+            135,
+            75
+          ],
+          "retrieval_counts": [
+            137674,
+            84828,
+            80068,
+            125962
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5891433358192444,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            127,
+            31,
+            74,
+            189
+          ],
+          "retrieval_counts": [
+            105153,
+            94508,
+            108823,
+            120048
+          ],
+          "query_count": 428532,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5776925683021545,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            3,
+            17
+          ],
+          "retrieval_counts": [
+            195104,
+            195104
+          ],
+          "query_count": 390208,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6439111828804016
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            13
+          ],
+          "retrieval_counts": [
+            195104,
+            193360
+          ],
+          "query_count": 388464,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.1851556897163391
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            12
+          ],
+          "retrieval_counts": [
+            195092,
+            195104
+          ],
+          "query_count": 390196,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.752052366733551
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 20,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            15
+          ],
+          "retrieval_counts": [
+            193362,
+            186390
+          ],
+          "query_count": 379752,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.2088850736618042
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 39,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            32
+          ],
+          "retrieval_counts": [
+            189870,
+            188134
+          ],
+          "query_count": 378004,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7236246466636658
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 39,
+          "active_prototypes": 2,
+          "occupancy": [
+            21,
+            18
+          ],
+          "retrieval_counts": [
+            191616,
+            186384
+          ],
+          "query_count": 378000,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5314533114433289
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 39,
+          "active_prototypes": 2,
+          "occupancy": [
+            28,
+            11
+          ],
+          "retrieval_counts": [
+            191608,
+            188136
+          ],
+          "query_count": 379744,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.8434575200080872
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 39,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            29
+          ],
+          "retrieval_counts": [
+            189860,
+            184644
+          ],
+          "query_count": 374504,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.271934449672699
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 13359,
+        "stable_fn_epoch_observations": 10456,
+        "near_fp_epoch_observations": 12613,
+        "near_fn_epoch_observations": 12306,
+        "hard_diagnostics_epochs": 123
+      },
+      "initial_memory": {
+        "logp_sha256": "e48e89c653157a8cc11bab84ef8ec5d7b2b3801af8fb1fc4c63bf77a596e1938",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 7,
+      "selected_epoch_1based": 127,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            75,
+            98,
+            69,
+            121
+          ],
+          "retrieval_counts": [
+            122937,
+            59275,
+            117150,
+            108266
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.8777558207511902,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            179,
+            16,
+            119,
+            107
+          ],
+          "retrieval_counts": [
+            110320,
+            54935,
+            150158,
+            92215
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7963218688964844,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            112,
+            58,
+            117,
+            76
+          ],
+          "retrieval_counts": [
+            102342,
+            78052,
+            113117,
+            114117
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.09882812947034836,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            133,
+            88,
+            92,
+            108
+          ],
+          "retrieval_counts": [
+            109789,
+            82010,
+            99872,
+            115957
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.0882398709654808,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            119,
+            60,
+            67,
+            117
+          ],
+          "retrieval_counts": [
+            74717,
+            105273,
+            113885,
+            113753
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.13989299535751343,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            101,
+            82,
+            82,
+            156
+          ],
+          "retrieval_counts": [
+            119505,
+            100863,
+            76097,
+            111163
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.16028280556201935,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            153,
+            33,
+            59,
+            118
+          ],
+          "retrieval_counts": [
+            87813,
+            107066,
+            121447,
+            91302
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.42278164625167847,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            159,
+            21,
+            61,
+            180
+          ],
+          "retrieval_counts": [
+            106536,
+            90994,
+            125451,
+            84647
+          ],
+          "query_count": 407628,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4721360206604004,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            12,
+            1
+          ],
+          "retrieval_counts": [
+            184644,
+            184618
+          ],
+          "query_count": 369262,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.015523010864853859
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            7
+          ],
+          "retrieval_counts": [
+            184652,
+            184642
+          ],
+          "query_count": 369294,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.116461381316185
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            7
+          ],
+          "retrieval_counts": [
+            182908,
+            184648
+          ],
+          "query_count": 367556,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.7616443634033203
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            7
+          ],
+          "retrieval_counts": [
+            182894,
+            182898
+          ],
+          "query_count": 365792,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6683922410011292
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 24,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            14
+          ],
+          "retrieval_counts": [
+            184640,
+            181166
+          ],
+          "query_count": 365806,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7976107597351074
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 24,
+          "active_prototypes": 2,
+          "occupancy": [
+            15,
+            9
+          ],
+          "retrieval_counts": [
+            184642,
+            181166
+          ],
+          "query_count": 365808,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5468164682388306
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 24,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            14
+          ],
+          "retrieval_counts": [
+            184642,
+            181166
+          ],
+          "query_count": 365808,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.7457885146141052
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 24,
+          "active_prototypes": 2,
+          "occupancy": [
+            14,
+            10
+          ],
+          "retrieval_counts": [
+            182888,
+            177664
+          ],
+          "query_count": 360552,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.1390399932861328
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 8792,
+        "stable_fn_epoch_observations": 7640,
+        "near_fp_epoch_observations": 8828,
+        "near_fn_epoch_observations": 7006,
+        "hard_diagnostics_epochs": 117
+      },
+      "initial_memory": {
+        "logp_sha256": "c0bfce0111d71d4f46ec54586d594e831676c78868f476c8f3b1463cf74dc3d3",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 8,
+      "selected_epoch_1based": 274,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            190,
+            21,
+            55,
+            97
+          ],
+          "retrieval_counts": [
+            228983,
+            195603,
+            203409,
+            291781
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5140283703804016,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            46,
+            186,
+            70,
+            119
+          ],
+          "retrieval_counts": [
+            297771,
+            112400,
+            245013,
+            264592
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4216528534889221,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            46,
+            38,
+            77,
+            202
+          ],
+          "retrieval_counts": [
+            267591,
+            250143,
+            172354,
+            229688
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.603624165058136,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            182,
+            95,
+            70,
+            74
+          ],
+          "retrieval_counts": [
+            219765,
+            204355,
+            273821,
+            221835
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.5232968330383301,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            76,
+            78,
+            134,
+            75
+          ],
+          "retrieval_counts": [
+            205560,
+            278230,
+            158175,
+            277811
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1533299684524536,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            68,
+            67,
+            170,
+            116
+          ],
+          "retrieval_counts": [
+            178845,
+            245787,
+            227729,
+            267415
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.03555985540151596,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            19,
+            14,
+            221,
+            109
+          ],
+          "retrieval_counts": [
+            276940,
+            260946,
+            193113,
+            188777
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.16484732925891876,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            6,
+            141,
+            255,
+            19
+          ],
+          "retrieval_counts": [
+            229721,
+            215510,
+            212064,
+            262481
+          ],
+          "query_count": 919776,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.4965900182723999,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            2,
+            4
+          ],
+          "retrieval_counts": [
+            426722,
+            409316
+          ],
+          "query_count": 836038,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.29686450958251953
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            1
+          ],
+          "retrieval_counts": [
+            424986,
+            405820
+          ],
+          "query_count": 830806,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6883344650268555
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            2
+          ],
+          "retrieval_counts": [
+            428466,
+            402350
+          ],
+          "query_count": 830816,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.09082737565040588
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 6,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            2
+          ],
+          "retrieval_counts": [
+            424972,
+            412812
+          ],
+          "query_count": 837784,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5104554891586304
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 11,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            7
+          ],
+          "retrieval_counts": [
+            440710,
+            433750
+          ],
+          "query_count": 874460,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.021013464778661728
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 11,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            3
+          ],
+          "retrieval_counts": [
+            440716,
+            431994
+          ],
+          "query_count": 872710,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.3662925064563751
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 11,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            6
+          ],
+          "retrieval_counts": [
+            435486,
+            435496
+          ],
+          "query_count": 870982,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5918304324150085
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 11,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            4
+          ],
+          "retrieval_counts": [
+            437180,
+            424994
+          ],
+          "query_count": 862174,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.7475454807281494
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 17454,
+        "stable_fn_epoch_observations": 16330,
+        "near_fp_epoch_observations": 16280,
+        "near_fn_epoch_observations": 13498,
+        "hard_diagnostics_epochs": 264
+      },
+      "initial_memory": {
+        "logp_sha256": "b415a33ef621b141ee6b97eb01a8e99b0863557318b8241bce48c6aabbf294f5",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 9,
+      "selected_epoch_1based": 183,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            96,
+            111,
+            108,
+            48
+          ],
+          "retrieval_counts": [
+            117321,
+            167523,
+            199832,
+            118056
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6833683252334595,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            78,
+            194,
+            14,
+            135
+          ],
+          "retrieval_counts": [
+            240116,
+            102994,
+            179540,
+            80082
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6006269454956055,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            24,
+            47,
+            153,
+            139
+          ],
+          "retrieval_counts": [
+            112438,
+            190649,
+            169681,
+            129964
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6282488107681274,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            143,
+            111,
+            45,
+            122
+          ],
+          "retrieval_counts": [
+            104806,
+            204880,
+            146643,
+            146403
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.6135705709457397,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            98,
+            113,
+            89,
+            63
+          ],
+          "retrieval_counts": [
+            105886,
+            167134,
+            163052,
+            166660
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.15775448083877563,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            63,
+            184,
+            70,
+            104
+          ],
+          "retrieval_counts": [
+            183532,
+            158214,
+            107900,
+            153086
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.08604996651411057,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            21,
+            20,
+            69,
+            253
+          ],
+          "retrieval_counts": [
+            178958,
+            157104,
+            135968,
+            130702
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.23683640360832214,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            292,
+            101,
+            12,
+            16
+          ],
+          "retrieval_counts": [
+            148034,
+            119338,
+            169996,
+            165364
+          ],
+          "query_count": 602732,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.24350003898143768,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 7,
+          "active_prototypes": 2,
+          "occupancy": [
+            1,
+            6
+          ],
+          "retrieval_counts": [
+            282198,
+            280448
+          ],
+          "query_count": 562646,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.6315332651138306
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 7,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            3
+          ],
+          "retrieval_counts": [
+            282204,
+            282204
+          ],
+          "query_count": 564408,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.792299211025238
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 7,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            3
+          ],
+          "retrieval_counts": [
+            280462,
+            282200
+          ],
+          "query_count": 562662,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.7311267256736755
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 7,
+          "active_prototypes": 2,
+          "occupancy": [
+            6,
+            1
+          ],
+          "retrieval_counts": [
+            278720,
+            273478
+          ],
+          "query_count": 552198,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.685135543346405
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            10,
+            4
+          ],
+          "retrieval_counts": [
+            282200,
+            280456
+          ],
+          "query_count": 562656,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.008328752592206001
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            12,
+            2
+          ],
+          "retrieval_counts": [
+            282200,
+            282196
+          ],
+          "query_count": 564396,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.2808126211166382
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            6
+          ],
+          "retrieval_counts": [
+            280460,
+            282202
+          ],
+          "query_count": 562662,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.5021069645881653
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 14,
+          "active_prototypes": 2,
+          "occupancy": [
+            7,
+            7
+          ],
+          "retrieval_counts": [
+            278712,
+            273418
+          ],
+          "query_count": 552130,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5863900780677795
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 11944,
+        "stable_fn_epoch_observations": 8801,
+        "near_fp_epoch_observations": 9338,
+        "near_fn_epoch_observations": 9168,
+        "hard_diagnostics_epochs": 173
+      },
+      "initial_memory": {
+        "logp_sha256": "23f2d8c8bdbfc19b7a5e60d3838c734b055f77933727aac4116130923a25e9e0",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    },
+    {
+      "group": "E77-G2",
+      "fold": 10,
+      "selected_epoch_1based": 144,
+      "class": {
+        "0:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            101,
+            105,
+            121,
+            36
+          ],
+          "retrieval_counts": [
+            84637,
+            138200,
+            124463,
+            119556
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7761849761009216,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "0:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            136,
+            152,
+            65,
+            68
+          ],
+          "retrieval_counts": [
+            161891,
+            118563,
+            124254,
+            62148
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.7072826623916626,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            77,
+            44,
+            157,
+            85
+          ],
+          "retrieval_counts": [
+            106950,
+            114977,
+            140809,
+            104120
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.18640053272247314,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "1:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            136,
+            144,
+            68,
+            73
+          ],
+          "retrieval_counts": [
+            103027,
+            131352,
+            120696,
+            111781
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.08051504194736481,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            123,
+            58,
+            124,
+            58
+          ],
+          "retrieval_counts": [
+            96937,
+            101903,
+            141397,
+            126619
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.07910381257534027,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "2:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            83,
+            52,
+            209,
+            77
+          ],
+          "retrieval_counts": [
+            137841,
+            100264,
+            135825,
+            92926
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": -0.09411245584487915,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:ASD": {
+          "valid_subjects": 363,
+          "active_prototypes": 4,
+          "occupancy": [
+            26,
+            26,
+            275,
+            36
+          ],
+          "retrieval_counts": [
+            110867,
+            131415,
+            115473,
+            109101
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.1547698676586151,
+          "collapse_rate_cos_gt_0_98": 0.0
+        },
+        "3:TD": {
+          "valid_subjects": 421,
+          "active_prototypes": 4,
+          "occupancy": [
+            14,
+            76,
+            18,
+            313
+          ],
+          "retrieval_counts": [
+            117079,
+            96896,
+            123620,
+            129261
+          ],
+          "query_count": 466856,
+          "coverage_rate": 1.0,
+          "mean_pairwise_cosine": 0.13450783491134644,
+          "collapse_rate_cos_gt_0_98": 0.0
+        }
+      },
+      "hard": {
+        "FP_TD_to_ASD:0": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            1,
+            12
+          ],
+          "retrieval_counts": [
+            214210,
+            214262
+          ],
+          "query_count": 428472,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.9405823349952698
+        },
+        "FP_TD_to_ASD:1": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            5
+          ],
+          "retrieval_counts": [
+            214262,
+            214266
+          ],
+          "query_count": 428528,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.19039052724838257
+        },
+        "FP_TD_to_ASD:2": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            5,
+            8
+          ],
+          "retrieval_counts": [
+            214266,
+            212522
+          ],
+          "query_count": 426788,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.7767650485038757
+        },
+        "FP_TD_to_ASD:3": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            12,
+            1
+          ],
+          "retrieval_counts": [
+            212520,
+            210756
+          ],
+          "query_count": 423276,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.137479767203331
+        },
+        "FN_ASD_to_TD:0": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            2,
+            11
+          ],
+          "retrieval_counts": [
+            214238,
+            214266
+          ],
+          "query_count": 428504,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.16689074039459229
+        },
+        "FN_ASD_to_TD:1": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            4,
+            9
+          ],
+          "retrieval_counts": [
+            214266,
+            212520
+          ],
+          "query_count": 426786,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.3827592134475708
+        },
+        "FN_ASD_to_TD:2": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            8,
+            5
+          ],
+          "retrieval_counts": [
+            214260,
+            214266
+          ],
+          "query_count": 428526,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": -0.8131465315818787
+        },
+        "FN_ASD_to_TD:3": {
+          "true_error_subjects": 13,
+          "active_prototypes": 2,
+          "occupancy": [
+            9,
+            4
+          ],
+          "retrieval_counts": [
+            207298,
+            212512
+          ],
+          "query_count": 419810,
+          "retrieval_coverage": 1.0,
+          "mean_pairwise_cosine": 0.5964709520339966
+        }
+      },
+      "error_observations": {
+        "stable_fp_epoch_observations": 8510,
+        "stable_fn_epoch_observations": 7760,
+        "near_fp_epoch_observations": 8860,
+        "near_fn_epoch_observations": 6005,
+        "hard_diagnostics_epochs": 134
+      },
+      "initial_memory": {
+        "logp_sha256": "7d826749773216aa9f772a1160b241244ec613af24ca8a328e5205ee59402882",
+        "class_memory_initialized": true,
+        "allowed_memory_ids": 784,
+        "explicit_test_overlap_excluded": 0
+      },
+      "task_allowed_memory_ids": 784,
+      "test_ids_excluded_from_memory": 0
+    }
+  ]
+}
