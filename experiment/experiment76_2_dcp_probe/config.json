@@ -1,0 +1,48 @@
+{
+  "experiment": "Experiment 76.2 - DCP-Probe: Disease-Contrastive Prototype Diagnostic",
+  "seed": 0,
+  "dataset": "ABIDE A",
+  "n_subjects": 871,
+  "labels": {"ASD": 0, "TD": 1},
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "branch": "upload/experiment74-4-soft-positive-dcr",
+    "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "groups": ["E74.4-G2-Positive-DCR"],
+    "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+    "fold2_overlap_1based": [377, 407]
+  },
+  "references": {
+    "e76": "/model/spromptgl/experiment/experiment76_dcmp",
+    "e76_commit": "51f73675cec8ffae5033382c306aa4532d48537c",
+    "e761": "/data/adodas/SPromptGL-main/experiment/experiment76_1_dcmpr",
+    "e761_commit": "6d8bf04f01752adf7efa09df619fe0cce4689d4e",
+    "e724_patient_decoder": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/dual_prompt.py"
+  },
+  "persistence": {
+    "temporal_status": "TEMPORAL_PERSISTENCE_NOT_IDENTIFIABLE unless multiple distinct same-fold states are SHA-verified",
+    "perturbation_scales_rms": [0.01, 0.02],
+    "perturbations_per_scale": 5,
+    "reliable_probability_min": 0.70,
+    "hard_wrong_probability_min": 0.60,
+    "stable_predictions_min_of_10": 9,
+    "hard_min_count_for_reliable_prototype": 3,
+    "medoid_reference": true,
+    "bootstrap_replicates": 200,
+    "pair_permutations": 5
+  },
+  "diagnosis": {
+    "outer_folds": 10,
+    "outer_random_state": 10,
+    "inner_folds": 5,
+    "inner_shuffle": true,
+    "inner_random_state": 10,
+    "train_evidence_crossfit_folds": 3,
+    "linear_model": "StandardScaler + LogisticRegression(C=1.0,max_iter=2000,random_state=0)",
+    "nonlinear_model": "StandardScaler + SVC(RBF,C=1,gamma=scale,probability=false)",
+    "conditions": ["B0_CAM_only_Linear", "B0_NL_CAM_only_RBF_SVM", "B1_CAM_Reliable", "B2_CAM_Reliable_Hard_Paired", "B3_Shuffled_Pair_Control"]
+  },
+  "outputs": ["fold_metrics.csv", "paired_comparisons.csv", "prototype_diagnostics.csv", "audit_status.json", "report.md"],
+  "limits": ["Frozen encoder saw outer-training subjects; nested validation is conditional on fixed embeddings, not end-to-end OOF.", "Historical val=test checkpoint selection, pre-CV preprocessing, transductive graph, and Fold 2 train/test overlap remain.", "No DARG/CAM training is performed."]
+}
