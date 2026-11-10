@@ -1,0 +1,44 @@
+{
+  "status": "SOURCE_REVIEW_COMPLETE_WITH_HP2L_FULL_TEXT_ACCESS_LIMITATION",
+  "spromptgl": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "official": "https://github.com/wanxixi11/SPromptGL",
+    "review": [
+      "GFR projected cosine graph with detached threshold mask; self-loop and adjacency normalization; two-layer GCN message passing of concatenated modalities",
+      "CAM variable-length modality attention and encoder/feedforward cross-modal interaction",
+      "Original PEN maps two sets of four CLIP embeddings to9 dimensions, weights4x4 local latent chunks and residual combination before OutputLayer",
+      "Original simple2 minimizes classification plus average graph regularization; returned ALoss is logged but not added to that objective",
+      "Actual E74.4 PLNNoPEN has CAM/InputLayer/Encoder/FeedForward/Outputlayer without the PEN MLP/pooling/local reweighting path",
+      "Historical E74.4 forward/optimizer/selection preserved through exact imported runtime"
+    ],
+    "root_sources_untouched": true
+  },
+  "brainprompt": {
+    "official": "https://github.com/AngusMonroe/BrainPrompt",
+    "paper": "https://papers.miccai.org/miccai-2025/paper/2260_paper.pdf",
+    "scope": "Paper methods and official classifier source; normalized disease-conditioned feature alignment, graph/prompt setting; repository landing timeout, raw source available"
+  },
+  "saber": {
+    "paper": "https://arxiv.org/html/2607.01901v1",
+    "scope": "Full HTML methods: semantic retrieval, patient-conditional gating and learning objective; no new hypergraph imported"
+  },
+  "pgp_sam": {
+    "paper": "https://arxiv.org/html/2501.06692v1",
+    "scope": "Full HTML methods: learned intra/inter-class prototype retrieval and prompt segmentation, a different task"
+  },
+  "hp2l": {
+    "paper": "https://doi.org/10.1016/j.media.2026.104063",
+    "preview": "https://www.sciencedirect.com/science/article/pii/S1361841526001313",
+    "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42013614/",
+    "scope": "Abstract and publisher introduction/method/discussion previews; full text403, not fully read",
+    "difference": "Hierarchical 23-disorder diagnosis and prototype-refined prompts, versus binary cross-disease paired raw-CORR boundary evidence"
+  },
+  "history": {
+    "E744": "real relocated run.py/soft_positive_dcr.py/audit.py/config/manifest/metrics/tasks/checkpoints; complete E61-E69-E741 RNG lineage and same-SHA archived E51/E43 dependencies",
+    "E77": "CAM multi-prototype feature residual, below base",
+    "E771": "persistent FP/FN and class-score correction, medical texts8 and CLIP cache verified, prior discarded CUDA RNG contamination lesson incorporated by fork_rng for all devices",
+    "E772": "CAM conditional evidence probe AUC decline and high truncation; not proof that ReLU was main failure"
+  },
+  "inference_boundary": "None of these external works is evidence that DS-CBPM succeeds; actual formal controlled results determine the conclusion",
+  "frozen_training_source": "8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624"
+}

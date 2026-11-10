@@ -1,0 +1,120 @@
+{
+  "failures": [
+    {
+      "fold": 3,
+      "attempt": 1,
+      "exit_code": -15
+    },
+    {
+      "fold": 5,
+      "attempt": 1,
+      "exit_code": -15
+    },
+    {
+      "fold": 8,
+      "attempt": 1,
+      "exit_code": -15
+    }
+  ],
+  "attempts": {
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "4": 1,
+    "5": 2,
+    "6": 1,
+    "7": 1,
+    "8": 2,
+    "9": 1,
+    "10": 1
+  },
+  "active": [],
+  "pending": [],
+  "worker_limit": 8,
+  "training_status": "COMPLETE_30_OF_30",
+  "controlled_restarts": [
+    {
+      "action": "CONTROLLED_WORKER_CONTEXT_RESTART",
+      "reason": "Persistent high per-epoch overhead; no algorithm/source/config changes",
+      "group": "E77.3-G2",
+      "fold": 3,
+      "old_pid": 3609339,
+      "latest_completed_epoch": 90,
+      "latest_sha256": "efb01733ddcb42272b7021455176eb641388342ffbfa4bb3df70841525cc1e3f",
+      "source_sha": "8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624",
+      "rng_cpu_sha256": "09bcffb9e0c1d47922f0e1d10bc8dfd18a7965df161d11b1737a74dbdfc56e63",
+      "trace_epochs": 80,
+      "old_log_sha256": "79b2e0ff81decc7881602664f0e13ee39c872b9f0024e08c97f089db7f658939",
+      "kept_log_epochs": 80,
+      "replayed_tail_lines": 7,
+      "preserved_replayed_tail": "/model/spromptgl/experiment/experiment77_3_ds_cbpm/runtime/fold03_controlled_restart_replayed_tail.jsonl",
+      "recovery": "Same frozen runner restores full base/module/optimizers/memory and Python/NumPy/CPU/CUDA RNG before next epoch"
+    },
+    {
+      "action": "CONTROLLED_WORKER_CONTEXT_RESTART",
+      "reason": "Fold3 context restart restored speed with7 replayed epochs bitwise identical; same symptom here",
+      "group": "E77.3-G2",
+      "fold": 5,
+      "old_pid": 3609341,
+      "latest_completed_epoch": 80,
+      "latest_sha256": "0dc1e7fd392c6ca8a1ea0c52d0059a45142765743e9a28bdbd6fc449a0245a35",
+      "source_sha": "8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624",
+      "trace_epochs": 70,
+      "old_log_sha256": "0e7cfc62c3c788a9cccd45a5b842fb29571314120da154a548c850c511e1609a",
+      "kept_log_epochs": 70,
+      "replayed_tail_lines": 3,
+      "preserved_replayed_tail": "/model/spromptgl/experiment/experiment77_3_ds_cbpm/runtime/fold05_controlled_restart_replayed_tail.jsonl",
+      "recovery": "Full model/optimizer/memory and Python/NumPy/CPU/CUDA RNG restored by same frozen runner"
+    },
+    {
+      "action": "CONTROLLED_WORKER_CONTEXT_RESTART",
+      "reason": "Fold3 context restart restored speed with7 replayed epochs bitwise identical; same symptom here",
+      "group": "E77.3-G2",
+      "fold": 8,
+      "old_pid": 3609344,
+      "latest_completed_epoch": 90,
+      "latest_sha256": "0ebaede680fbdf9c18feba93bff63e50985031540f4ce2f9b5c7d54a5760ae9d",
+      "source_sha": "8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624",
+      "trace_epochs": 80,
+      "old_log_sha256": "7e27f1d9003fe31abe06f1154f16978e38845c25ccb9e83584bcc3781d24d748",
+      "kept_log_epochs": 80,
+      "replayed_tail_lines": 0,
+      "preserved_replayed_tail": "/model/spromptgl/experiment/experiment77_3_ds_cbpm/runtime/fold08_controlled_restart_replayed_tail.jsonl",
+      "recovery": "Full model/optimizer/memory and Python/NumPy/CPU/CUDA RNG restored by same frozen runner"
+    }
+  ],
+  "controlled_restart_parity": [
+    {
+      "fold": 3,
+      "saved_tail_epochs": 7,
+      "replayed_epochs_checked": 7,
+      "status": "PASS",
+      "log_fields_exact": true
+    },
+    {
+      "fold": 5,
+      "saved_tail_epochs": 3,
+      "replayed_epochs_checked": 3,
+      "status": "PASS",
+      "log_fields_exact": true
+    },
+    {
+      "fold": 8,
+      "saved_tail_epochs": 0,
+      "replayed_epochs_checked": 0,
+      "status": "PASS",
+      "log_fields_exact": true
+    }
+  ],
+  "post_training_aggregation_issue": {
+    "scope": "Aggregation supervisor only; all30 tasks and readbacks already complete",
+    "cause": "Supervisor imported finalize while auditor was under construction, retaining the stub even after the file was completed",
+    "old_function_source": "def finalize():\n    raise NotImplementedError('Independent readback implementation follows before formal completion')\n",
+    "old_function_source_sha256": "608ebd5fa0f4884317f5836e6fb696be75eaec499ce3da84533b9a4e542efa37",
+    "old_entire_audit_file_sha256": "Not captured; do not infer it",
+    "completed_audit_file_sha256": "0b6ee731ef76d5637747e221f7eebff2c8d195b09cb196c19d6d70176b912715",
+    "correction": "Fresh run.py --audit imports completed independent auditor; no retraining or method modification",
+    "frozen_training_sha_unchanged": "8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624"
+  },
+  "formal_runner_elapsed_seconds_approx": 3102.8893411159515
+}

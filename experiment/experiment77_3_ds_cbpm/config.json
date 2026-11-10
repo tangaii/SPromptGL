@@ -1,0 +1,168 @@
+{
+  "experiment": "Experiment 77.3 — DS-CBPM",
+  "status": "FROZEN_FOR_FORMAL_PREFLIGHT",
+  "root": "/model/spromptgl/experiment/experiment77_3_ds_cbpm",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment77_3_ds_cbpm",
+  "fallback": {
+    "errno": 5,
+    "operation": "mkdir preferred experiment directory",
+    "reason": "Input/output error"
+  },
+  "base": {
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E74.4-G2-Positive-DCR",
+    "read_only": true,
+    "restore_best_for_training": false
+  },
+  "training_requirements": {
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E74.4-G2-Positive-DCR",
+    "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "start_epoch_zero_based": 10,
+    "selection": "strict historical test-fold ACC improvement",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "optimizer": {
+      "base": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "cam": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "added": {
+        "class": "AdamW",
+        "lr": 0.001,
+        "weight_decay": 0.01
+      }
+    },
+    "scheduler": "none",
+    "batching": "one full-graph update per epoch",
+    "seed": 0,
+    "folds": 10,
+    "formal_tasks": 30,
+    "new_memory_warmup_epochs": 15,
+    "public_rng_reseed_each_epoch": false
+  },
+  "groups": {
+    "E77.3-G1": {
+      "dual_view": true,
+      "confusion_pairs": false,
+      "text": "medical"
+    },
+    "E77.3-G2": {
+      "dual_view": true,
+      "confusion_pairs": true,
+      "text": "medical"
+    },
+    "E77.3-G3": {
+      "dual_view": true,
+      "confusion_pairs": true,
+      "text": "anonymous_equal_structure"
+    }
+  },
+  "method_requirements": {
+    "prototypes_per_class_per_modality": 4,
+    "views": {
+      "cam": [
+        871,
+        144
+      ],
+      "raw_corr": [
+        871,
+        256
+      ]
+    },
+    "same_members_for_both_views": true,
+    "hard_error_votes": 2,
+    "hard_error_window": 3,
+    "hard_branch_active_after_new_epochs": 15,
+    "pairs_per_hard_patient_max": 2,
+    "evidence_positive_class": "ASD_label_0",
+    "pair_value_orientation": "ASD_CORR_minus_TD_CORR",
+    "memory_ids": "effective_train_ids minus explicit_test_ids",
+    "exclude_query_self_from_both_pair_endpoints": true
+  },
+  "numerical_configuration": {
+    "status": "SINGLE_FIXED_CANDIDATE",
+    "parameters_source": "method",
+    "scale_audit": "results/preflight.json",
+    "test_guided_tuning": false
+  },
+  "medical_prompts_reference": [
+    "Resting-state functional connectivity in typically developing individuals varies across people and developmental ages.",
+    "Sensorimotor and attention network connectivity in typical development exhibits distributed individual variability.",
+    "Default-mode and frontoparietal network connectivity in typically developing individuals does not follow a single fixed individual pattern.",
+    "Measured functional connectivity can vary with head motion, acquisition quality and scanning site without indicating a specific diagnosis.",
+    "Autism-related resting-state functional connectivity differences are heterogeneous across individuals, without a universal connection-level abnormality.",
+    "In autism, atypical functional connectivity can converge at sensorimotor and attention-related brain regions and networks.",
+    "Autism-associated connectivity deviations can involve interactions between default-mode and frontoparietal control networks, with substantial individual variation.",
+    "Autism-related functional connectivity findings require cautious interpretation because age, motion and acquisition site can influence measured signals."
+  ],
+  "prompt_class_order": "TD first four, ASD last four; internal labels ASD=0 TD=1",
+  "text_encoder_reference": {
+    "name": "OpenAI CLIP RN50",
+    "weights_path": "/tmp/e58_models/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "encoder_code_root": "/data/adodas/SPromptGL-main",
+    "freeze": true,
+    "cache": "runtime/text_embeddings.pt",
+    "class_order": [
+      "ASD",
+      "TD"
+    ]
+  },
+  "text_cache_created": true,
+  "user_stop_condition": "If base core files or RNG inheritance chain missing, stop formal training and do not infer reconstruction",
+  "protocol_requirements": [
+    "val=test ACC checkpoint selection",
+    "pre-CV RFE",
+    "full-graph transductive",
+    "original folds",
+    "Fold2 original overlap 377/407 unchanged; excluded from all new memories and auxiliary supervision"
+  ],
+  "literature_access": {
+    "SPromptGL": "full PDF and official network code read",
+    "BrainPrompt": "official classifier source read; repository landing timed out",
+    "SABER": "full HTML methods read",
+    "PGP-SAM": "full HTML methods read",
+    "HP2L": "publisher 403; PubMed abstract only; full text not audited"
+  },
+  "implementation_status": "Implemented; correctness preflight required before formal tasks",
+  "method": {
+    "k": 4,
+    "cluster_iterations": 15,
+    "feature_temperature": 0.2,
+    "boundary_temperature": 0.2,
+    "semantic_strength": 0.5,
+    "projection_dim": 32,
+    "top_typical": 2,
+    "top_pairs": 8,
+    "capacity_per_direction": 128,
+    "expiry": 20,
+    "warmup": 15,
+    "max_partners": 2,
+    "min_votes": 2,
+    "window": 3,
+    "max_opposite_reuse": 8,
+    "correction_bound": 0.8,
+    "class_loss_weight": 0.05,
+    "ranking_loss_weight": 0.02,
+    "ranking_margin": 0.15
+  },
+  "anonymous_prompts": [
+    "A sample assigned to category alpha, description one.",
+    "A sample assigned to category alpha, description two.",
+    "A sample assigned to category alpha, description three.",
+    "A sample assigned to category alpha, description four.",
+    "A sample assigned to category beta, description one.",
+    "A sample assigned to category beta, description two.",
+    "A sample assigned to category beta, description three.",
+    "A sample assigned to category beta, description four."
+  ],
+  "anonymous_class_order": "TD alpha first four; ASD beta last four, matching medical order"
+}
