@@ -1,0 +1,81 @@
+{
+  "label_encoding": {"ASD": 0, "TD": 1},
+  "text_sources": {
+    "P1": "SPromptGL network.py attr_words, exact source order and spelling; first 4 TD, last 4 ASD.",
+    "P2": "Official BrainPrompt data/prompts/label_prompts/abide_label.txt; source order TC then ASD; TC maps to TD.",
+    "P3-P6": "Pre-registered candidate text from Experiment 75.4 user specification; no clinical expert validation claimed.",
+    "C3": "Pre-registered unrelated ordinary English sentences without disease, brain, imaging, or neurodevelopment terms."
+  },
+  "banks": {
+    "P1-SPromptGL-8": [
+      {"class": "TD", "text": "Nromal brain volume"},
+      {"class": "TD", "text": "Uniform cortical thickness"},
+      {"class": "TD", "text": "Symmetrical brain structure"},
+      {"class": "TD", "text": "Normal ventricular morphology"},
+      {"class": "ASD", "text": "Altered brain volume"},
+      {"class": "ASD", "text": "Abnormal functional connectivity"},
+      {"class": "ASD", "text": "White matter integrity issues"},
+      {"class": "ASD", "text": "Different activation patterns"}
+    ],
+    "P2-BrainPrompt-2": [
+      {"class": "TD", "text": "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."},
+      {"class": "ASD", "text": "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."}
+    ],
+    "P3-Class-Definition-8": [
+      {"class": "TD", "text": "Typical development: a control participant without an autism spectrum disorder diagnosis."},
+      {"class": "TD", "text": "A neurotypical control subject in an autism brain imaging study."},
+      {"class": "TD", "text": "A typically developing participant in a brain disease classification dataset."},
+      {"class": "TD", "text": "A participant belonging to the typical control group."},
+      {"class": "ASD", "text": "Autism spectrum disorder: a participant with an ASD diagnosis."},
+      {"class": "ASD", "text": "An autistic participant in a brain imaging study."},
+      {"class": "ASD", "text": "A participant diagnosed with autism spectrum disorder in a neurodevelopmental study."},
+      {"class": "ASD", "text": "A participant belonging to the autism spectrum disorder group."}
+    ],
+    "P4-Modality-Aware-8": [
+      {"class": "TD", "text": "Typical-development variation in demographic and phenotypic measurements."},
+      {"class": "TD", "text": "Typical-control patterns in structural brain morphometry measurements."},
+      {"class": "TD", "text": "Typical-control patterns in functional MRI-derived measurements."},
+      {"class": "TD", "text": "Typical-control resting-state functional connectivity characteristics."},
+      {"class": "ASD", "text": "Autism-associated differences in developmental and phenotypic measurements."},
+      {"class": "ASD", "text": "Heterogeneous structural brain morphometry differences associated with autism."},
+      {"class": "ASD", "text": "Variation in functional MRI-derived measurements associated with autism."},
+      {"class": "ASD", "text": "Atypical resting-state functional connectivity associated with autism."}
+    ],
+    "P5-Functional-Network-8": [
+      {"class": "TD", "text": "Control-reference functional connectivity within the default mode network."},
+      {"class": "TD", "text": "Control-reference functional connectivity involving attention networks."},
+      {"class": "TD", "text": "Control-reference connectivity involving sensorimotor networks."},
+      {"class": "TD", "text": "Control-reference connectivity between default mode and frontoparietal networks."},
+      {"class": "ASD", "text": "Atypical default mode network connectivity reported in autism."},
+      {"class": "ASD", "text": "Altered attention network connectivity reported in autism."},
+      {"class": "ASD", "text": "Heterogeneous sensorimotor network connectivity reported in autism."},
+      {"class": "ASD", "text": "Altered connectivity between default mode and frontoparietal networks in autism."}
+    ],
+    "P6-Heterogeneity-Aware-8": [
+      {"class": "TD", "text": "Neurotypical participants exhibit individual variation in resting-state functional connectivity."},
+      {"class": "TD", "text": "Typical controls can show both higher and lower connectivity across individual networks."},
+      {"class": "TD", "text": "Neurotypical brain connectivity does not follow one universal individual pattern."},
+      {"class": "TD", "text": "Control-group connectivity varies with age, acquisition site, and individual differences."},
+      {"class": "ASD", "text": "Autistic individuals may show both increased and decreased resting-state functional connectivity."},
+      {"class": "ASD", "text": "Autism-associated connectivity differences vary across individuals and brain networks."},
+      {"class": "ASD", "text": "No single functional connectivity alteration characterizes every autistic individual."},
+      {"class": "ASD", "text": "Autism-related functional connectivity differences can be network-specific and heterogeneous."}
+    ],
+    "C3-Unrelated-English-8": [
+      {"class": "PSEUDO_A", "text": "The weather was clear during a quiet afternoon."},
+      {"class": "PSEUDO_A", "text": "A person bought fresh fruit at the neighborhood market."},
+      {"class": "PSEUDO_A", "text": "The wooden table stood beside an open window."},
+      {"class": "PSEUDO_A", "text": "Several travelers waited for a train at the station."},
+      {"class": "PSEUDO_B", "text": "A blue notebook rested beside a cup of tea."},
+      {"class": "PSEUDO_B", "text": "The garden path was covered with fallen leaves."},
+      {"class": "PSEUDO_B", "text": "A musician practiced a melody in the evening."},
+      {"class": "PSEUDO_B", "text": "The library opens its doors early on weekdays."}
+    ]
+  },
+  "controls": {
+    "C1-Wrong-Class-Semantics": {"banks": ["P1-SPromptGL-8", "P4-Modality-Aware-8", "P5-Functional-Network-8"], "operation": "swap ASD and TD group labels; preserve raw text vectors"},
+    "C2-Anonymous-Gram-Matched": {"banks": ["P1-SPromptGL-8", "P5-Functional-Network-8"], "operation": "project text vectors to 128D first, then apply a fixed orthogonal matrix; audit maximum Gram error < 1e-5"},
+    "C3-Unrelated-Random-8": {"bank": "C3-Unrelated-English-8", "random_unit_vector_seeds": [75451, 75452, 75453]}
+  },
+  "interpretation_boundary": "Sixteen CAM tokens are latent feature slots, not labeled anatomical ROIs. P4-P6 are preregistered candidate descriptions without clinical expert validation."
+}

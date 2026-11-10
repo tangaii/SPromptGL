@@ -1,0 +1,73 @@
+{
+  "experiment": "Experiment 75.4 — DPUSA: Disease Prompt Utility and Semantic Specificity Audit",
+  "status": "PREFLIGHT_PENDING",
+  "root": "/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit",
+  "root_fallback_reason": null,
+  "seed": 0,
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "expected_status": "COMPLETE_AUDITED",
+    "expected_tasks": 30,
+    "expected_audits": 30,
+    "manifest_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4",
+    "checkpoint_pattern": ".runtime/checkpoints/E74.4-G2-Positive-DCR_f{fold:02d}.best.pt"
+  },
+  "references": {
+    "e751": "/model/spromptgl/experiment/experiment75_1_sa_dcer",
+    "e752": "/model/spromptgl/experiment/experiment75_2_gc_sper",
+    "e60": "/model/spromptgl/experiment/experiment60_dss_pen",
+    "brainprompt_source": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/official_source_audit"
+  },
+  "data": {
+    "n": 871,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dimensions": [48, 6, 10, 256],
+    "darg_dimension": 320,
+    "cam_dimension": 144,
+    "tokens": 16,
+    "token_dimension": 9,
+    "folds": 10,
+    "fold_protocol": "Reuse E74.4-G2 test indices and best checkpoints unchanged; new probes train only on outer-training nodes excluding any train/test overlap."
+  },
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50",
+    "weights_path": "/tmp/e58_models/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "cache_path": "/model/spromptgl/experiment/experiment60_dss_pen/.runtime/text_embeddings.pt",
+    "cache_source": "/model/spromptgl/experiment/experiment60_dss_pen/text_features.py",
+    "output_dimension": 1024,
+    "preprocess": "Use E60 audited tokenizer/encoder implementation; cache existing P1/P2 vectors; encode only new candidate and unrelated sentences once."
+  },
+  "analysis": {
+    "inner_cv_folds": 5,
+    "shared_inner_split_seed_base": 754000,
+    "inner_cv_split_policy": "For each outer fold, every S0/S1/S2/S3, M0/M1/M2, B1/B2, and prompt/control probe reuses StratifiedKFold(shuffle=True, random_state=shared_inner_split_seed_base+fold).",
+    "logistic_C_candidates": [0.01, 0.1, 1.0],
+    "selection_metric": "mean inner-validation log-loss; ties choose smaller C",
+    "threshold": 0.5,
+    "B1_fixed_projection_dim": 128,
+    "B1_projection_seed_base": 754100,
+    "B2_semantic_temperature": 1.0,
+    "B2_fixed_text_projection_seed_base": 754200,
+    "B2_token_alignment_seed_base": 754300,
+    "B2_optimizer": "Adam, lr=0.03, 40 full-batch steps, deterministic CPU, same initialization per fold and prompt bank",
+    "bootstrap_resamples": 200,
+    "bootstrap_seed_base": 754400,
+    "random_embedding_seeds": [75451, 75452, 75453],
+    "anonymous_orthogonal_seed_base": 754500,
+    "sign_flip": "exact two-sided paired fold sign-flip enumeration (2^10 for ten folds); exploratory because CV folds share training data",
+    "bootstrap_ci_resamples": 10000,
+    "bootstrap_ci_seed": 754600,
+    "holm_families": ["primary incremental log-loss", "primary incremental Brier", "primary incremental probability AUC", "prompt-specificity comparisons"]
+  },
+  "protocol_limitations": [
+    "Historical Fold 2 has train/test label overlap for 1-based rows 377 (ASD) and 407 (TD). These rows are removed from all new probe training and hyperparameter selection.",
+    "E74.4 checkpoint selection used val=test; source preprocessing occurred before outer CV; the 871-node graph is transductive.",
+    "Results are paired exploratory diagnostics on frozen historical models, not an unbiased independent-generalization estimate."
+  ],
+  "analysis_only": true,
+  "backbone_training": false
+}
