@@ -1,0 +1,31 @@
+{
+  "attempts": [
+    {
+      "root": "/data/adodas/SPromptGL-main/experiment/experiment75_4_1_baseline_preserved_prompt",
+      "phase": "formal_probe_fit",
+      "failure": "OSError errno 5 while closing compressed model archive for fold 6 on OSSFS",
+      "completed_fold_archives_before_failure": [1, 2, 3, 4, 5],
+      "prediction_tables_committed": false,
+      "included_in_final_statistics": false,
+      "recovery": "Restart all folds from audited frozen feature caches in the stable /model fallback directory."
+    },
+    {
+      "root": "/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt",
+      "phase": "summary_generation",
+      "failure": "ValueError: too many values to unpack in paired-summary target iteration after all 370 probe models had completed",
+      "recovery": "Corrected the summary loop; resumed from the persisted 10-fold progress without refitting."
+    },
+    {
+      "root": "/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt",
+      "phase": "token_importance_bootstrap",
+      "failure": "IndexError: NumPy advanced-index arrays did not broadcast while bootstrapping Token ranking after all probe models had completed",
+      "recovery": "Indexed the sampled subject axis before the Token and Prompt axes; resumed analysis from persisted model states."
+    },
+    {
+      "root": "/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt",
+      "phase": "initial_independent_audit",
+      "failure": "AUDIT_FAILED: 190 small B2/ITEM replay differences under an overly strict 2e-10 probability tolerance, plus a cap check applied to raw rather than final clipped correction",
+      "recovery": "Set audit CPU threads to the deterministic training value, verify hard predictions explicitly, use 1e-7 probability tolerance, and audit the actual lambda-scaled clipped correction."
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "Experiment 75.4.1 — BP-PUR",
+  "status": "IMPLEMENTATION_PREPARED",
+  "root": "/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment75_4_1_baseline_preserved_prompt",
+  "root_fallback_reason": "The preferred OSSFS path raised OSError errno 5 while closing fold 6 model archive during the first formal attempt. That attempt had no committed prediction table; its incomplete fold archives are retained under .runtime/failed_ossfs_attempt and are excluded from formal results. The complete frozen-feature probe run is restarted in this stable fallback directory.",
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "manifest_sha256": "d3a60ecdfd0158be1eecb066d451e0246a417f69e17c4975fe022075a37ac9c4"
+  },
+  "e754_path": "/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit",
+  "protocol": {
+    "folds": 10,
+    "seed": 0,
+    "fold_source": "E75.4 frozen features with verified E74.4 test indices",
+    "fold2_exposed_zero_based": [376, 406],
+    "fold2_exposed_one_based": [377, 407],
+    "exclude_fold2_exposed_from_new_probe_training": true,
+    "no_backbone_training": true
+  },
+  "analysis": {
+    "inner_folds": 5,
+    "inner_seed_base": 7541000,
+    "regularization_candidates": [0.01, 0.1, 1.0],
+    "lambda_candidates": [0.0, 0.05, 0.1, 0.2, 0.5, 1.0],
+    "lambda_min_mean_logloss_improvement": 0.002,
+    "lambda_min_inner_fold_wins": 4,
+    "residual_cap_log_odds": 2.0,
+    "formal_steps": 40,
+    "learning_rate": 0.03,
+    "pilot_steps": [40, 120],
+    "pilot_120_min_validation_logloss_improvement": 0.002,
+    "pilot_groups": ["NO_TEXT", "P1-SPromptGL-8", "P2-BrainPrompt-2", "P5-Functional-Network-8", "C3-Unrelated-English-8", "RND-Unit-75451"],
+    "b1_projection_seed_base": 7544100,
+    "b2_projection_seed_base": 7544200,
+    "no_text_seed_base": 7544300,
+    "anonymous_seed_base": 7544400,
+    "b2_init_seed_base": 7544500,
+    "item_init_seed_base": 7544600,
+    "random_unit_seeds": [75451, 75452, 75453],
+    "token_oof_c": 0.1,
+    "token_importance_seed_base": 7544700,
+    "token_bootstraps": 200,
+    "bootstrap_seed": 7544800,
+    "sign_flip_resamples": 100000,
+    "formal_modes": ["B1", "B2"],
+    "item_preserving_groups": ["P1-SPromptGL-8", "P2-BrainPrompt-2", "P5-Functional-Network-8", "C3-Unrelated-English-8", "RND-Unit-75451"]
+  },
+  "prompt_sources": {
+    "source": "Reused byte-identical E75.4 prompt cache and prompt_banks.json; no new text encoding",
+    "clip_encoder": "OpenAI CLIP RN50",
+    "clip_weight_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "banks": ["P1-SPromptGL-8", "P2-BrainPrompt-2", "P3-Class-Definition-8", "P4-Modality-Aware-8", "P5-Functional-Network-8", "P6-Heterogeneity-Aware-8", "C3-Unrelated-English-8", "RND-Unit-75451", "RND-Unit-75452", "RND-Unit-75453", "P1-SPromptGL-Anonymous-Gram-Matched", "P5-Functional-Network-Anonymous-Gram-Matched", "P1-SPromptGL-WrongClass", "P4-Modality-Aware-WrongClass", "P5-Functional-Network-WrongClass"]
+  },
+  "limitations": [
+    "Historical E74.4 model selection used test folds as validation and preprocessing preceded outer CV; graph inference is transductive.",
+    "Fold 2 retains the historical train/test overlap for rows 377 and 407 in the base model, while both are excluded from new probe fitting and selection.",
+    "The frozen base was trained using outer-training labels, so inner-fold base scores are not independent OOF base scores; lambda selection remains optimistically biased.",
+    "Sixteen CAM tokens are latent feature slots, not anatomical ROIs; residual probes only assess constrained predictive utility on frozen representations."
+  ]
+}
