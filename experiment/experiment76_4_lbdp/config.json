@@ -1,0 +1,52 @@
+{
+  "experiment": "Experiment 76.4 - LBDP: Local Boundary-aware Disease Prototypes",
+  "seed": 0,
+  "dataset": "ABIDE A",
+  "n_subjects": 871,
+  "labels": {"ASD": 0, "TD": 1},
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "branch": "upload/experiment74-4-soft-positive-dcr",
+    "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup"
+  },
+  "references": {
+    "e762_path": "/data/adodas/SPromptGL-main/experiment/experiment76_2_dcp_probe",
+    "e762_branch": "upload/experiment76-2-dcp-probe",
+    "e762_commit": "ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2",
+    "e763_path": "/data/adodas/SPromptGL-main/experiment/experiment76_3_nonlinear_prototype_probe",
+    "e763_branch": "upload/experiment76-3-nonlinear-prototype-probe",
+    "e763_commit": "f7df986671b1e11b8fb23c7a350584753f756ba7"
+  },
+  "roles": {
+    "reliable_probability_min": 0.70,
+    "wrong_probability_min": 0.60,
+    "stability_min": 0.90,
+    "boundary_probability": [0.50, 0.70],
+    "hard_min_count": 3,
+    "local_top_k": 3,
+    "local_temperature": 0.10
+  },
+  "evaluation": {
+    "outer_folds": 10,
+    "outer_random_state": 10,
+    "inner_folds": 5,
+    "inner_random_state": 10,
+    "train_evidence_crossfit_folds": 3,
+    "train_evidence_random_state_base": 76300,
+    "pair_permutations": 5,
+    "pair_permutation_seed_base": 764000,
+    "calibrator": "scipy L-BFGS-B residual logistic calibration",
+    "l2": 0.01,
+    "max_iterations": 2000,
+    "calibration_features": "standardized base log-odds plus 12 evidence slots",
+    "conditions": ["M0_original_mlp", "M1_base_score_calibration", "M2_global_hard_prototype", "M3_local_boundary_prototype", "M4_shuffled_local_pair"]
+  },
+  "protocol_limits": [
+    "E74.4 best checkpoint was selected with val=test",
+    "pre-CV preprocessing and transductive graph are inherited",
+    "Fold 2 historical train/test rows 377 and 407 are excluded from new support and calibration pools",
+    "E74.4 checkpoint was trained using its outer-train cohort; train-side base prediction errors are not independent errors"
+  ]
+}

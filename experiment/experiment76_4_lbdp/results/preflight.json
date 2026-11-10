@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "references": {
+    "e74_audit": "PASS_30_CHECKPOINTS",
+    "e762_audit": "PASS",
+    "e763_audit": "PASS",
+    "e744_commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "e762_commit": "ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2",
+    "e763_commit": "f7df986671b1e11b8fb23c7a350584753f756ba7"
+  },
+  "source_sha256": "5679fec36f91b401016d2db162a1f2d4961dd63732f6575b98130b426aa3bd9f",
+  "folds": 10,
+  "frozen_best_checkpoint_extractions": 10,
+  "E74.4_outputlayer_input": "[871,144]",
+  "optimizer_updates": false,
+  "base_prediction_cache_reproduced": true,
+  "stability_cache": "E76.2 audited frozen perturbation stability",
+  "fold2_overlap_excluded_from_new_support": [
+    377,
+    407
+  ],
+  "inner_cv": "5-fold stratified random_state=10",
+  "training_evidence": "3-fold crossfit random_state=76300+fold",
+  "calibrator": "residual logistic L-BFGS-B, L2=0.01",
+  "M4_pair_permutations": 5,
+  "site_source_sha256": {
+    "feature_sha": "f1507eeb6e4baf1e6fe49f80c1c53bb3d603edf70ed65e6167b1675ca926ac28",
+    "mapping_sha": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "device_by_fold": [
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0"
+  ]
+}
