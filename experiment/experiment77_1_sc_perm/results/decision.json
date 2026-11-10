@@ -1,0 +1,27 @@
+{
+  "decision": "NO-GO",
+  "rule": {
+    "minimum_g2_acc_gain_pp": 0.0,
+    "max_sen_drop_pp": 1.0,
+    "max_spe_drop_pp": 1.0,
+    "minimum_semantic_score_delta": 0.0001,
+    "minimum_semantic_margin_delta": 0.0001,
+    "minimum_hard_margin_delta": 0.0001,
+    "performance_rule": "G2 ACC, Hard-AUC, and Prob-AUC must each be no worse than E74.4-G2; SEN and SPE may decline by at most 1 pp",
+    "mechanism_rule": "G2 semantic swap must change class evidence and true-class log-probability margin; G2 must exceed G3 Hard-AUC and hard-off must measurably change the true-class margin",
+    "frozen_before_formal_training": true
+  },
+  "g2_delta_vs_base_pp": {
+    "acc": -0.22985235109717905,
+    "hard_auc": -0.23372187901897234,
+    "prob_auc": 0.371400315877338,
+    "sen": -0.250026829268279,
+    "spe": -0.21741692876965146
+  },
+  "g2_minus_g3_hard_auc_pp": 0.4652563119063302,
+  "semantic_intervention_mean_abs_true_margin_delta": 0.6792115062475205,
+  "hard_off_intervention_mean_abs_true_margin_delta": 0.053953691758215426,
+  "performance_gate": false,
+  "semantic_gate": true,
+  "hard_memory_gate": true
+}
