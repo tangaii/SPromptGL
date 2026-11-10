@@ -1,0 +1,45 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "audit": "PASS",
+  "audited_historical_base_checkpoints": 10,
+  "audited_new_checkpoints": 20,
+  "audited_checkpoint_total": 30,
+  "base_checkpoint_sha_and_warmup_identity": "PASS 10/10",
+  "independent_prediction_recompute": "PASS 30/30",
+  "shared_rng_common_epoch_records": 7286,
+  "shared_rng_exact_triplets": 7286,
+  "shared_rng_mismatches": 0,
+  "restore_replay": [
+    {
+      "status": "PASS",
+      "group": "G1-SCPR-Full",
+      "fold": 1,
+      "next_epoch": 437,
+      "rng_after_train": "df5f394c5d779bd1dcee8627fe0fc5dc326aaf37e81a2a12118caf879eb967d5",
+      "rng_after_eval": "df5f394c5d779bd1dcee8627fe0fc5dc326aaf37e81a2a12118caf879eb967d5",
+      "output_loss": -1.2916151285171509,
+      "output_probability_sha256": "e58e77c828f310556d3225097f9f00328e84272f408686679e5a713c52e2b19d"
+    },
+    {
+      "status": "PASS",
+      "group": "G2-SCPR-Anonymous",
+      "fold": 1,
+      "next_epoch": 318,
+      "rng_after_train": "35d10fee38e0fe50caf521cc14ca60d379f31af6d6bd2052019b0ea1aac44e9f",
+      "rng_after_eval": "35d10fee38e0fe50caf521cc14ca60d379f31af6d6bd2052019b0ea1aac44e9f",
+      "output_loss": -1.6043719053268433,
+      "output_probability_sha256": "08d7b2047e6f90e5e6da66ec2f6c2954e532aa5d485bf69ba18a75e903b4992c"
+    }
+  ],
+  "memory_scope": "PASS",
+  "A_B_support": "PASS",
+  "gradient_path": "PASS 20/20",
+  "G1_G2_parameter_match": "PASS 10/10",
+  "prompt_geometry": "PASS",
+  "outputlayer_cam144": "PASS",
+  "residual_off": "READ_ONLY_INTERVENTION",
+  "final_config_status": "COMPLETE_AUDITED",
+  "config_update": "status-field-only; training SHA retained in manifest",
+  "code_and_historical_source_hashes": "PASS",
+  "scientific_conclusion": "NO_GO_SCPR_END_TO_END"
+}

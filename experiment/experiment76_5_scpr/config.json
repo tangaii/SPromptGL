@@ -1,0 +1,62 @@
+{
+  "experiment": "Experiment 76.5 - Semantic-Conditioned Prototype Residual Learning",
+  "status": "COMPLETE_AUDITED",
+  "experiment_root": "/model/spromptgl/experiment/experiment76_5_scpr",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_5_scpr",
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "selection": "E61 epoch-10 warmup; each fold restored independently",
+    "group": "E74.4-G2-Positive-DCR",
+    "seed": 0,
+    "folds": 10,
+    "protocol": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10); historical val=test retained"
+  },
+  "training": {
+    "groups": ["G1-SCPR-Full", "G2-SCPR-Anonymous"],
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+    "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "loss": "L_base - L_cls + L_cls_SCPR + 0.02*L_proto + 0.02*L_res + 0.01*L_keep",
+    "keep_confidence": 0.8,
+    "new_optimizer": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01},
+    "base_optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "workers_max": 10,
+    "no_per_epoch_reseed": true
+  },
+  "scpr": {
+    "slot_order": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "slot_dim": 36,
+    "roles": ["reliable", "boundary", "hard_confusion"],
+    "reliable_weight": "correct * clamp((p_y-0.5)/0.5,0,1)",
+    "boundary_weight": "4*p_y*(1-p_y)",
+    "minimum_hard_support": 3,
+    "top_k": 8,
+    "hard_top_k": 3,
+    "temperature": 0.2,
+    "per_site_cap": 2,
+    "memory_ema": 0.9,
+    "train_support": "fixed class-stratified A/B split; A queries use B supports and vice versa",
+    "rho": "0.2*sigmoid(theta), initialized to 0.02",
+    "delta": "1.5*tanh(alpha)*gate*tanh(d/0.25); alpha initialized to 0",
+    "gate_bias": -3.0,
+    "dropout": 0,
+    "prompts_asd_td": [
+      "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+      "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+    ],
+    "prompt_source": "BrainPrompt c85304a:data/prompts/label_prompts/abide_label.txt",
+    "anonymous_control": "fixed signed coordinate permutation; independent local generator; preserve pairwise geometry"
+  },
+  "evaluation_limits": [
+    "Historical val=test checkpoint selection retained.",
+    "Historical preprocessing before outer CV and transductive graph retained.",
+    "Fold 2 contains historical train/test row overlap at 377 and 407.",
+    "Results are protocol-matched exploratory comparisons, not unbiased independent generalization estimates."
+  ]
+}
