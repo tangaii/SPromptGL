@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "reference_checks": {
+    "e74_checkpoint_audit": "PASS",
+    "e762_audit": "PASS",
+    "e762_commit": "ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2",
+    "e762_cache_sha256": "85df80a3ba2802aac06b6c42d1ed2bcc6446f82040f33dc4bbde383bdd80b3d0"
+  },
+  "source_sha256": "109048d664b595043892db699983ecec8a532f72d67ae42af198be4c7c744c06",
+  "historical_b0nl_exact_fold_metrics": true,
+  "inner_oof_scheme": "5-fold random_state 10; training evidence crossfit 3-fold random_state 76300+fold",
+  "svc": {
+    "kernel": "rbf",
+    "C": 1.0,
+    "gamma": "scale",
+    "probability": false,
+    "classes": [
+      0,
+      1
+    ],
+    "asd_score": "-decision_function"
+  },
+  "fold2_exposed_rows_excluded_1based": [
+    377,
+    407
+  ],
+  "training_or_optimizer_update": false
+}

@@ -1,0 +1,36 @@
+{
+  "experiment": "Experiment 76.3 - Nonlinear Prototype Incremental Utility Probe",
+  "seed": 0,
+  "dataset": "ABIDE A",
+  "n_subjects": 871,
+  "labels": {"ASD": 0, "TD": 1},
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "branch": "upload/experiment74-4-soft-positive-dcr",
+    "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr"
+  },
+  "e762": {
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment76_2_dcp_probe",
+    "branch": "upload/experiment76-2-dcp-probe",
+    "commit": "ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2",
+    "prediction_cache": ".runtime/cache/oof_predictions.npz"
+  },
+  "design": {
+    "outer_folds": 10,
+    "outer_random_state": 10,
+    "inner_folds": 5,
+    "inner_random_state": 10,
+    "train_evidence_crossfit_folds": 3,
+    "train_evidence_random_state_base": 76300,
+    "svc": {"kernel": "rbf", "C": 1.0, "gamma": "scale", "probability": false},
+    "groups": ["B0_NL_CAM_only_RBF_SVM_Historical", "B4_CAM_Reliable_RBF_SVM", "B5_CAM_Reliable_Hard_Paired_RBF_SVM"],
+    "fold2_overlap_rows_excluded_1based": [377, 407]
+  },
+  "evaluation": {
+    "prob_auc_score": "negative SVC decision_function; larger means ASD=0",
+    "probability_metrics": false,
+    "fold_unit": "outer fold",
+    "confidence_interval": "descriptive paired t interval across outer folds"
+  }
+}
