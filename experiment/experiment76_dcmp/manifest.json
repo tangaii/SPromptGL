@@ -1,0 +1,59 @@
+{
+  "experiment": "Experiment 76 - DCMP Disease-Confusion Memory Prompting",
+  "status": "COMPLETE_AUDITED",
+  "expected_tasks": 40,
+  "completed_tasks": 40,
+  "independent_audits": 40,
+  "workers": 8,
+  "memory_plan": {
+    "free_bytes": 103097708528,
+    "total_bytes": 103079215104,
+    "preflight_peak_bytes": 828835840,
+    "estimated_worker_bytes": 1243253760,
+    "memory_worker_cap": 66
+  },
+  "device": "PPU-ZW810E",
+  "source_sha256": "2f16ea3faad8cc39864346859f686ab1a99ebaae2ac98fef1acbef2f784996e9",
+  "config_sha256": "c1f9ebfde0a29a9bce0819c8723cd6b546d7d4c63c293c7f180d154d88a561a4",
+  "started_at": "2026-11-09T17:07:24Z",
+  "failed_tasks": [],
+  "last_completed": {
+    "group": "G4",
+    "fold": 10,
+    "sha256": "2c1ec89523d26cd15fb67c26bac11f21db43fb9d4836d54ae833543e5feee90b"
+  },
+  "wall_seconds": 4187.465759277344,
+  "training_failures": [],
+  "ended_at": "2026-11-09T18:17:12Z",
+  "checkpoint_audit": "PASS 40/40",
+  "audit_status": "PASS",
+  "scientific_conclusion": "NO-GO",
+  "rng_audit": {
+    "common_epochs": 14915,
+    "exact_triplets": 14915,
+    "mismatches": 0,
+    "group_common_epochs": 22022,
+    "group_exact_triplets": 22022,
+    "group_mismatches": 0
+  },
+  "audit_duration_seconds": 117.37525868415833,
+  "results": "/model/spromptgl/experiment/experiment76_dcmp/results",
+  "final_report_sha256": "9601b32f98a3cec76c99ced3464d9e7a5ff530ed729da9d9970c7d945a436ee6",
+  "audit_status_sha256": "93a96b8aa3229407eb976ab09694126c7fa7cf2b8b60b529032914a11cb6eec5",
+  "execution_provenance": {
+    "preferred_path": "/data/adodas/SPromptGL-main/experiment/experiment76_dcmp",
+    "preferred_path_failure": "OSError(5, Input/output error) while writing manifest.json; the controller stopped after two tasks completed.",
+    "fallback_path": "/model/spromptgl/experiment/experiment76_dcmp",
+    "migration_validation": {
+      "source_inventory_sha_matches_preflight": true,
+      "completed_tasks_migrated": 2,
+      "completed_checkpoint_sha_matches": 2,
+      "latest_snapshots_migrated": 9
+    },
+    "worker_adjustment": "2 workers to 8, resumed from complete latest state; no OOM",
+    "pre_dispatch_failure": "Initial worker text-bank type error occurred before model restoration or optimizer updates; fixed before final training",
+    "orphan_atomic_temp_files_removed_after_training": 23,
+    "report_literature_correction_after_audit": "HP2L article description updated from DOI-only/unavailable wording using the verified publisher DOI page; no metric or checkpoint changed",
+    "audit_status_metadata_correction": "Replaced the base-comparison ACC field that disagreed with fold_metrics.csv using exact matched fold deltas; training code, checkpoint replay, fold_metrics.csv, paired_comparisons.csv, RNG audit, and decision remain unchanged"
+  }
+}

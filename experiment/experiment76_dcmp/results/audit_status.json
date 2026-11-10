@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "audited_checkpoints": 40,
+  "expected_checkpoints": 40,
+  "failed_checkpoints": 0,
+  "all_metrics_recomputed": true,
+  "all_hard_predictions_exact": true,
+  "all_probabilities_within_1e-7": true,
+  "all_optimizers_restored": true,
+  "prototype_test_isolation_pass": true,
+  "fold2_overlap_excluded_from_memory": true,
+  "base_rng_parity": {
+    "common_epochs": 14915,
+    "exact_triplets": 14915,
+    "mismatches": 0,
+    "group_common_epochs": 22022,
+    "group_exact_triplets": 22022,
+    "group_mismatches": 0
+  },
+  "decision": "NO-GO",
+  "performance_vs_e744_g2": {
+    "G1": {
+      "delta_acc_mean_pp": 0.0,
+      "fold_delta_pp": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.149425, 0.0, -1.149425, 0.0]
+    },
+    "G2": {
+      "delta_acc_mean_pp": -0.688349,
+      "fold_delta_pp": [-1.136364, -1.149425, -1.149425, 0.0, -1.149425, 0.0, 0.0, 0.0, -2.298851, 0.0]
+    },
+    "G3": {
+      "delta_acc_mean_pp": -0.458464,
+      "fold_delta_pp": [-1.136364, -1.149425, 0.0, -1.149425, 0.0, 0.0, 0.0, 0.0, -1.149425, 0.0]
+    },
+    "G4": {
+      "delta_acc_mean_pp": -0.229885,
+      "fold_delta_pp": [0.0, -1.149425, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.149425, 0.0]
+    }
+  },
+  "ninefold_acc_mean": {
+    "G1": 0.9221525600835947,
+    "G2": 0.9157813769882736,
+    "G3": 0.9183356554046208,
+    "G4": 0.9208754208754208,
+    "E74.4-G2-Positive-DCR": 0.9221525600835947
+  },
+  "mechanism_net_corrections": {
+    "G2_vs_G1": -6,
+    "G3_vs_G2": 2,
+    "G3_vs_G4": -2
+  },
+  "fold2_exposed_rows_affected": {
+    "377": false,
+    "407": false
+  },
+  "duration_seconds": 117.37341713905334,
+  "source_sha256": "2f16ea3faad8cc39864346859f686ab1a99ebaae2ac98fef1acbef2f784996e9",
+  "training_source_unchanged": true,
+  "post_audit_metadata_correction": "Replaced the serialized base-comparison field, which did not agree with the independently audited fold_metrics.csv, with fold-paired ACC deltas computed from fold_metrics.csv. Checkpoints, training sources, per-fold metrics, paired_comparisons.csv, RNG audit, and NO-GO decision are unchanged."
+}

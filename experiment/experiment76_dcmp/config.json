@@ -1,0 +1,109 @@
+{
+  "experiment": "Experiment 76 - DCMP Disease-Confusion Memory Prompting",
+  "status": "IMPLEMENTATION_PREFLIGHT_PENDING",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_dcmp",
+  "root_fallback_reason": null,
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "branch": "upload/experiment74-4-soft-positive-dcr",
+    "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E74.4-G2-Positive-DCR",
+    "initialization": "E61 epoch-10 warmup independently restored for each fold; E74.4 best checkpoints are read-only evaluation references, never initial weights",
+    "direct_delta": "positive-only direct DCR, scale=0.02; unified graph unchanged",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "n": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dimensions": [48, 6, 10, 256],
+    "cam_latent_shape": [871, 4, 36],
+    "classifier_feature_shape": [871, 144],
+    "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+    "fold2_train_test_overlap_1based": [377, 407],
+    "new_memory_excludes_all_outer_test_indices": true,
+    "transductive_base_graph": true
+  },
+  "references": {
+    "e744_g2": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "e75_dcer_v2": "/model/spromptgl/experiment/experiment75_dcer_v2",
+    "e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "e53": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e724_text_cache": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/text/text_embeddings.pt",
+    "e724_patient_cache": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/patient_text_embeddings.pt",
+    "e724_patient_decoder": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/dual_prompt.py",
+    "e724_label_prompts": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/official_source_audit/abide_label.txt"
+  },
+  "groups": {
+    "G1": {"name": "E76-G1-Class-Prototype-Prompt", "typical": true, "confusion": false, "background": false, "anonymous_text": false},
+    "G2": {"name": "E76-G2-Confusion-Memory-Prompt", "typical": true, "confusion": true, "background": false, "anonymous_text": false},
+    "G3": {"name": "E76-G3-Full-DCMP", "typical": true, "confusion": true, "background": true, "anonymous_text": false},
+    "G4": {"name": "E76-G4-Anonymous-Semantic-Control", "typical": true, "confusion": true, "background": true, "anonymous_text": true}
+  },
+  "memory": {
+    "typical_prototypes_per_class": 2,
+    "confusion_prototypes_per_direction": 2,
+    "confusion_fraction_per_class": 0.2,
+    "probe_folds": 5,
+    "probe": "cross-fitted LogisticRegression on initial warmup CAM144; deterministic stratified folds",
+    "cluster_algorithm": "deterministic KMeans with fold-private random_state and fixed n_init=10",
+    "ema": 0.9,
+    "background_min_per_class_per_site": 3,
+    "background_semantics": "candidate non-disease site offset, class-balanced within site minus class-balanced global mean",
+    "fold2_overlap_rows_excluded_from_all_new_memory_and_risk_targets": [377, 407],
+    "leave_one_out": "subtract querying training subject's current feature from its assigned prototype sum/count"
+  },
+  "prompt": {
+    "source": "official BrainPrompt ABIDE label prompts from audited E72.4 cache",
+    "encoder": "frozen OpenAI CLIP RN50",
+    "dimension": 1024,
+    "class_order": ["ASD", "TD"],
+    "cache_once": true,
+    "not_full_BrainPrompt_reproduction": true
+  },
+  "module": {
+    "input_dim": 144,
+    "prototype_key_dim": 32,
+    "query": "CAM144 plus learned projection of both frozen BrainPrompt class embeddings; class routing does not use labels",
+    "evidence": ["ASD typical", "TD typical", "ASD-to-TD hard", "TD-to-ASD hard", "site offset"],
+    "residual_max_ratio": 0.05,
+    "initial_gate_bias": -4.5,
+    "risk_loss_weight": 0.02,
+    "risk_target": "cross-fitted training-only probe hard-margin indicator",
+    "optimizer": {"class": "AdamW", "lr": 0.0003, "weight_decay": 0.001},
+    "same_module_shape_and_initialization_across_groups": true
+  },
+  "optimization": {
+    "seed": 0,
+    "warmup_epoch": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "historical strict test ACC increase",
+    "base_step_order": ["GFR Adam", "CAM Adam", "CADR AdamW"],
+    "new_step_order": "DCMP AdamW after the three original optimizers",
+    "base_learning_rates_and_weight_decay": "identical E74.4-G2",
+    "risk_loss_weight": 0.02
+  },
+  "protocol_limits": [
+    "val=test checkpoint selection retained",
+    "pre-CV RFE and standardization retained",
+    "871-node transductive base graph retained",
+    "Fold 2 historical rows 377 ASD and 407 TD remain in base training and test; excluded from new labeled memory and risk supervision",
+    "metrics are mechanism-paired historical-protocol results, not unbiased generalization estimates"
+  ],
+  "runtime": {"device": "single PPU-ZW810E", "max_workers": 10, "expected_tasks": 40},
+  "preflight_repairs": [
+    {"attempt": 1, "phase": "text cache setup", "failure": "text_banks referenced torch without importing it; failure occurred before model restoration and before any training update.", "repair": "Added a local torch import in the cache loader.", "formal_tasks_started": 0},
+    {"attempt": 2, "phase": "patient cache validation", "failure": "The code expected patient_count/text_dim at the cache root, but the audited E72.4 file stores these in tensor shape and metadata.", "repair": "Validated [871,3,1024], the frozen RN50 metadata, contiguous row IDs, and the cached embedding SHA.", "formal_tasks_started": 0},
+    {"attempt": 3, "phase": "fold-index conversion", "failure": "E74.4 stores train/test indices as CUDA tensors, which cannot be passed directly to NumPy.", "repair": "Added a single explicit CPU index conversion helper for prototype, checkpoint, and audit paths.", "formal_tasks_started": 0},
+    {"attempt": 4, "phase": "preflight metadata", "failure": "The fold prototype-support summary used torch without importing it in that function.", "repair": "Added a local torch import to the cross-fitted probe and memory builder.", "formal_tasks_started": 0},
+    {"attempt": 5, "phase": "prototype device placement", "failure": "Warmup CAM144 and fold labels were on CUDA, but the memory builder intentionally returns its immutable template on CPU.", "repair": "Moved the built template to the active fold device before batched leave-one-out checks and formal dispatch.", "formal_tasks_started": 0},
+    {"attempt": 6, "phase": "one-step recovery replay", "failure": "Strict bitwise equality was too strong for device floating-point gradients: only a module parameter differed by 7.45e-9 and Adam first moment by 1.14e-13; logits, loss, base model/optimizers, memory, and RNG were exact.", "repair": "Use a fixed-order prototype reduction and require DCMP module/optimizer replay within atol=1e-8, rtol=1e-7 while retaining exact base, logits, loss, memory, and RNG checks.", "formal_tasks_started": 0},
+    {"attempt": 7, "phase": "training scheduler entry", "failure": "run_training referenced torch for device metadata without importing it; no worker was dispatched.", "repair": "Added a local torch import and will re-run the source-locked preflight.", "formal_tasks_started": 0}
+  ],
+  "execution_attempts": [
+    {"attempt": 1, "status": "FAILED_BEFORE_TRAINING", "tasks_failed": 40, "optimizer_updates": 0, "checkpoints_written": 0, "failure": "Worker treated a list-valued frozen text bank as a mapping with a tensor key.", "repair": "Load the cached embedding list directly as a tensor; all failed workers stopped before fold restoration or model forward."}
+  ]
+}
