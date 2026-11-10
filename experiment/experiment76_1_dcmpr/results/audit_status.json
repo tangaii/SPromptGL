@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "audited_checkpoints": 30,
+  "expected_checkpoints": 30,
+  "failed_checkpoints": 0,
+  "all_metrics_recomputed": true,
+  "all_hard_predictions_exact": true,
+  "all_probabilities_within_1e-7": true,
+  "all_optimizers_restored": true,
+  "prototype_test_isolation_pass": true,
+  "fold2_overlap_excluded_from_memory": true,
+  "base_rng_parity": {
+    "common_epochs": 10950,
+    "exact_triplets": 10950,
+    "mismatches": 0,
+    "group_common_epochs": 10774,
+    "group_exact_triplets": 10774,
+    "group_mismatches": 0
+  },
+  "decision": "NO-GO",
+  "performance_vs_e744_g2": {
+    "G1": {
+      "delta_acc": -0.011494252873563204
+    },
+    "G2": {
+      "delta_acc": -0.011494252873563204
+    },
+    "G3": {
+      "delta_acc": -0.011494252873563204
+    }
+  },
+  "ninefold_acc_mean": {
+    "G1": 0.9195982816672471,
+    "G2": 0.9208899338209684,
+    "G3": 0.9195982816672471,
+    "E74.4-G2-Positive-DCR": 0.9221525600835947
+  },
+  "mechanism_net_corrections": {
+    "G2_vs_G1": 0,
+    "G2_vs_G3": 0,
+    "correction_off": -1
+  },
+  "fold2_exposed_rows_affected": {
+    "377": false,
+    "407": false
+  },
+  "duration_seconds": 57.76816964149475,
+  "source_sha256": "3d1845f4cea6526b9a93b71b7b2d65f720f6b6b92d1602d7262751a823e91822",
+  "audit_source_sha256": "a314e7867d5756e8d8d2ee4e828ebc969c9ea644b5422a0daca42bc67e7c1498",
+  "audit_script_repair": {
+    "scope": "audit_only",
+    "reason": "Removed a duplicate test-index selection from the role-attention diagnostic; the full attention tensor had already been restricted to test rows.",
+    "before_sha256": "31034b490ec81cc9fab17f1ff3daa9cef326113bb7c88dd2a6b11fe519dd2419",
+    "after_sha256": "0d97b921eeee01f7b4411e7179b2655e6595834c65d578fca46ff1192c6e2f8d",
+    "training_source_sha256": "3d1845f4cea6526b9a93b71b7b2d65f720f6b6b92d1602d7262751a823e91822",
+    "changed_source_keys": [
+      "e761_audit"
+    ],
+    "training_code_and_locked_inputs_unchanged": true,
+    "models_retrained": false
+  },
+  "training_source_unchanged": true
+}

@@ -1,0 +1,120 @@
+{
+  "experiment": "Experiment 76.1 - DCMP-R Refined Disease-Confusion Memory Prompting",
+  "status": "IMPLEMENTATION_PREFLIGHT_PENDING",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_1_dcmpr",
+  "root_fallback_reason": null,
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "branch": "upload/experiment74-4-soft-positive-dcr",
+    "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "path": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "group": "E74.4-G2-Positive-DCR",
+    "initialization": "E61 epoch-10 warmup independently restored for each fold; E74.4 best checkpoints are read-only evaluation references, never initial weights",
+    "direct_delta": "positive-only direct DCR, scale=0.02; unified graph unchanged",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "n": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dimensions": [48, 6, 10, 256],
+    "cam_latent_shape": [871, 4, 36],
+    "classifier_feature_shape": [871, 144],
+    "folds": {"class": "StratifiedKFold", "n_splits": 10, "shuffle": true, "random_state": 10},
+    "fold2_train_test_overlap_1based": [377, 407],
+    "new_memory_excludes_all_outer_test_indices": true,
+    "transductive_base_graph": true
+  },
+  "references": {
+    "e744_g2": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+    "e76_historical": "/model/spromptgl/experiment/experiment76_dcmp",
+    "e76_source_lock": {"branch": "upload/experiment76-dcmp", "commit": "51f73675cec8ffae5033382c306aa4532d48537c"},
+    "e75_dcer_v2": "/model/spromptgl/experiment/experiment75_dcer_v2",
+    "e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "e53": "/model/spromptgl/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e724_text_cache": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/text/text_embeddings.pt",
+    "e724_patient_cache": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/patient_text_embeddings.pt",
+    "e724_patient_decoder": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/dual_prompt.py",
+    "e724_label_prompts": "/model/spromptgl/experiment/experiment72_4_dual_level_semantic_coordination/.runtime/official_source_audit/abide_label.txt"
+  },
+  "groups": {
+    "G1": {"name": "E76.1-G1-Calibrated-Typical", "typical": true, "confusion": false, "background": false, "anonymous_text": false},
+    "G2": {"name": "E76.1-G2-Error-Aware-DCMP-R", "typical": true, "confusion": true, "background": false, "anonymous_text": false},
+    "G3": {"name": "E76.1-G3-Anonymous-Semantic-Control", "typical": true, "confusion": true, "background": false, "anonymous_text": true}
+  },
+  "memory": {
+    "typical_prototypes_per_class": 2,
+    "confusion_prototypes_per_direction": 2,
+    "confusion_fraction_per_class": 0.2,
+    "probe_folds": 5,
+    "probe": "five-fold cross-fitted LogisticRegression on initial warmup CAM144; actual OOF errors only, capped at 20% of true class, highest wrong-class confidence first",
+    "cluster_algorithm": "deterministic KMeans with fold-private random_state and fixed n_init=10",
+    "ema": 0.9,
+    "fold2_overlap_rows_excluded_from_all_new_memory_and_risk_targets": [377, 407],
+    "leave_one_out": "subtract querying training subject's current feature from its assigned prototype sum/count"
+  },
+  "prompt": {
+    "source": "official BrainPrompt ABIDE label prompts from audited E72.4 cache",
+    "encoder": "frozen OpenAI CLIP RN50",
+    "dimension": 1024,
+    "class_order": ["ASD", "TD"],
+    "cache_once": true,
+    "not_full_BrainPrompt_reproduction": true
+  },
+  "module": {
+    "input_dim": 144,
+    "prototype_key_dim": 32,
+    "query": "normalized W_h(CAM144)+0.1*W_t(class-specific BrainPrompt text); temperature 0.10; two-stage balanced class/role retrieval",
+    "evidence": ["ASD typical", "TD typical", "ASD-to-TD actual OOF errors", "TD-to-ASD actual OOF errors"],
+    "residual_max_ratio": 0.05,
+    "bounded_direction": "tanh(composer)/sqrt(144) has norm <= 1; multiply by rho=0.05*sigmoid(g), no post-hoc samplewise clipping",
+    "initial_gate_bias": -4.5,
+    "support_feature_to_gate": "cosine matching strength plus log1p(support)/log1p(871), avoiding raw-count Sigmoid saturation",
+    "role_confidence": "four role-local attentions remain separate; learned confidence combines role evidence, class differences, typical-hard conflicts, support and validity",
+    "hard_margin_weight": 0.02,
+    "easy_preserve_weight": 0.01,
+    "hard_margin": 0.20,
+    "risk_target": "cross-fitted training-only actual errors; shared warmup encoder is not strict end-to-end OOF",
+    "optimizer": {"class": "AdamW", "lr": 0.0003, "weight_decay": 0.001},
+    "same_module_shape_and_initialization_across_groups": true
+  },
+  "optimization": {
+    "seed": 0,
+    "warmup_epoch": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "historical strict test ACC increase",
+    "base_step_order": ["GFR Adam", "CAM Adam", "CADR AdamW"],
+    "new_step_order": "DCMP AdamW after the three original optimizers",
+    "base_learning_rates_and_weight_decay": "identical E74.4-G2",
+    "hard_margin_weight": 0.02,
+    "easy_preserve_weight": 0.01,
+    "hard_margin": 0.20,
+    "recluster_every_epochs": 20,
+    "prototype_temperature": 0.10
+  },
+  "protocol_limits": [
+    "val=test checkpoint selection retained",
+    "pre-CV RFE and standardization retained",
+    "871-node transductive base graph retained",
+    "Fold 2 historical rows 377 ASD and 407 TD remain in base training and test; excluded from new labeled memory and risk supervision",
+    "metrics are mechanism-paired historical-protocol results, not unbiased generalization estimates"
+  ],
+  "runtime": {"device": "single PPU-ZW810E", "max_workers": 10, "expected_tasks": 30},
+  "preflight_repairs": [
+    {"attempt": 1, "phase": "text cache setup", "failure": "text_banks referenced torch without importing it; failure occurred before model restoration and before any training update.", "repair": "Added a local torch import in the cache loader.", "formal_tasks_started": 0},
+    {"attempt": 2, "phase": "patient cache validation", "failure": "The code expected patient_count/text_dim at the cache root, but the audited E72.4 file stores these in tensor shape and metadata.", "repair": "Validated [871,3,1024], the frozen RN50 metadata, contiguous row IDs, and the cached embedding SHA.", "formal_tasks_started": 0},
+    {"attempt": 3, "phase": "fold-index conversion", "failure": "E74.4 stores train/test indices as CUDA tensors, which cannot be passed directly to NumPy.", "repair": "Added a single explicit CPU index conversion helper for prototype, checkpoint, and audit paths.", "formal_tasks_started": 0},
+    {"attempt": 4, "phase": "preflight metadata", "failure": "The fold prototype-support summary used torch without importing it in that function.", "repair": "Added a local torch import to the cross-fitted probe and memory builder.", "formal_tasks_started": 0},
+    {"attempt": 5, "phase": "prototype device placement", "failure": "Warmup CAM144 and fold labels were on CUDA, but the memory builder intentionally returns its immutable template on CPU.", "repair": "Moved the built template to the active fold device before batched leave-one-out checks and formal dispatch.", "formal_tasks_started": 0},
+    {"attempt": 6, "phase": "one-step recovery replay", "failure": "Strict bitwise equality was too strong for device floating-point gradients: only a module parameter differed by 7.45e-9 and Adam first moment by 1.14e-13; logits, loss, base model/optimizers, memory, and RNG were exact.", "repair": "Use a fixed-order prototype reduction and require DCMP module/optimizer replay within atol=1e-8, rtol=1e-7 while retaining exact base, logits, loss, memory, and RNG checks.", "formal_tasks_started": 0},
+    {"attempt": 7, "phase": "training scheduler entry", "failure": "run_training referenced torch for device metadata without importing it; no worker was dispatched.", "repair": "Added a local torch import and will re-run the source-locked preflight.", "formal_tasks_started": 0},
+    {"attempt": 8, "phase": "classification-gradient preflight", "failure": "Raw prototype support counts in the correction gate reached several hundred and saturated the sigmoid, giving zero classification gradient to DCMP-R.", "repair": "Normalized role support with log1p(support)/log1p(871), kept matching strength on the cosine scale, and initialized the rho output projection to zero with a -4.5 bias so the correction starts near zero without gate saturation.", "formal_tasks_started": 0},
+    {"attempt": 9, "phase": "mechanism audit during formal run", "failure": "Early mechanism logs showed the dynamic safety clip could pin residuals to the full 5% limit, weakening the registered learned amplitude gate. The run was stopped after 3/30 task files completed; none are accepted as formal results.", "repair": "Bounded each tanh direction by sqrt(144) and removed post-hoc per-sample clipping; added a preflight test requiring a 10x+ residual response when the gate is opened versus closed. Checkpoints and task states from the stopped run were quarantined under .runtime/aborted_attempts and are excluded from formal counts.", "formal_tasks_started": 30, "accepted_tasks": 0}
+  ],
+  "execution_attempts": [
+    {"attempt": 1, "status": "PREFLIGHT_FAILED_BEFORE_FORMAL_TRAINING", "tasks_failed": 0, "optimizer_updates": 0, "checkpoints_written": 0, "failure": "Classification gradients did not reach DCMP-R because raw memory support counts saturated its gate.", "repair": "Normalized support statistics and reinitialized the correction gate."},
+    {"attempt": 2, "status": "STOPPED_FOR_MECHANISM_FIX", "tasks_started": 30, "task_files_completed": 3, "accepted_tasks": 0, "oom": 0, "failure": "A fixed 5% norm clip made some learned correction magnitudes stick to the safety bound.", "repair": "Removed post-hoc clipping and bounded the tanh direction analytically; incomplete artifacts were quarantined under .runtime/aborted_attempts."}
+  ]
+}

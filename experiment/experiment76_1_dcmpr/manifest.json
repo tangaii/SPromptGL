@@ -1,0 +1,54 @@
+{
+  "experiment": "Experiment 76.1 - DCMP-R Refined Disease-Confusion Memory Prompting",
+  "status": "COMPLETE_AUDITED",
+  "expected_tasks": 30,
+  "completed_tasks": 30,
+  "independent_audits": 30,
+  "workers": 10,
+  "memory_plan": {
+    "free_bytes": 103097708528,
+    "total_bytes": 103079215104,
+    "preflight_peak_bytes": 792253952,
+    "estimated_worker_bytes": 1188380928,
+    "memory_worker_cap": 69
+  },
+  "device": "PPU-ZW810E",
+  "source_sha256": "3d1845f4cea6526b9a93b71b7b2d65f720f6b6b92d1602d7262751a823e91822",
+  "config_sha256": "a9af63bc686f7d2141791f0aabb03acc7679353a4b1e7f4fad7c19b28c1252c1",
+  "started_at": "2026-11-10T02:46:29Z",
+  "failed_tasks": [],
+  "last_completed": {
+    "group": "G1",
+    "fold": 3,
+    "sha256": "094e3dfe80ffc99cf994c9a453ccee66bdafd0a136090a9dc41090fbfa10df59"
+  },
+  "wall_seconds": 1104.7066621780396,
+  "training_failures": [],
+  "ended_at": "2026-11-10T03:05:00Z",
+  "checkpoint_audit": "PASS 30/30",
+  "audit_status": "PASS",
+  "scientific_conclusion": "NO-GO",
+  "rng_audit": {
+    "common_epochs": 10950,
+    "exact_triplets": 10950,
+    "mismatches": 0,
+    "group_common_epochs": 10774,
+    "group_exact_triplets": 10774,
+    "group_mismatches": 0
+  },
+  "audit_script_sha256": "0d97b921eeee01f7b4411e7179b2655e6595834c65d578fca46ff1192c6e2f8d",
+  "audit_script_repair": {
+    "scope": "audit_only",
+    "reason": "Removed a duplicate test-index selection from the role-attention diagnostic; the full attention tensor had already been restricted to test rows.",
+    "before_sha256": "31034b490ec81cc9fab17f1ff3daa9cef326113bb7c88dd2a6b11fe519dd2419",
+    "after_sha256": "0d97b921eeee01f7b4411e7179b2655e6595834c65d578fca46ff1192c6e2f8d",
+    "training_source_sha256": "3d1845f4cea6526b9a93b71b7b2d65f720f6b6b92d1602d7262751a823e91822",
+    "changed_source_keys": [
+      "e761_audit"
+    ],
+    "training_code_and_locked_inputs_unchanged": true,
+    "models_retrained": false
+  },
+  "audit_duration_seconds": 57.96515440940857,
+  "results": "/data/adodas/SPromptGL-main/experiment/experiment76_1_dcmpr/results"
+}
