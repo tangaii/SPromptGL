@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "source_sha": "d9320539bfebda0f8334946a7c3803d9935bdacdc9a85698a06911ee86402fde",
+  "source_map": {
+    "run.py": "2c7eafea11540c16e9e9b8935906dc44a63891dc46d42f0976e6d1ecd289eb01",
+    "qcrl_pm.py": "31b2be85aa1de2197b3b979d3731bc295cc3d4ee46bc0bb0d080fac297979630",
+    "memory.py": "2dbfbffdd8b9c48287185e02f57873343b16f29d7f692ddf83ce7c183aefd37d",
+    "path_adapter.py": "4c7612d78cfee89a720469dfa4d52d8c309784c19a95f69c5c42301968a58f6b",
+    "config.json": "e94716184af820761c68fc902d7eecbe29d542a3216c9a55f2273b2e008b5f88",
+    "runtime/text_embeddings.pt": "1ba488e49e01a61e87285970c7c7021f5a131d216d9c08491d8ef3f2494ccf1f"
+  },
+  "protected_files": 635,
+  "initialization_folds": 10,
+  "public_single_step_exact": true,
+  "base_output_exact": true,
+  "base_optimizer_exact": true,
+  "public_rng_exact": true,
+  "public_new_gradient_strictly_zero": true,
+  "query_support_isolation": {
+    "query_count": 262,
+    "support_count": 521,
+    "pairs": 3,
+    "identity_isolation": true,
+    "test_exclusion": true,
+    "pair_orientation": true,
+    "prototype_members": true
+  },
+  "query_labels_only_losses": true,
+  "test_labels_excluded": true,
+  "signed_direction": true,
+  "no_endpoint_self_supervision": true,
+  "empty_memory_safe": true,
+  "persistent_ema_and_expiry": true,
+  "warmup_g1_g2_one_step_exact": true,
+  "all_folds_warmup_parity_deferred_to_formal": true,
+  "worker_memory_isolated": true,
+  "checkpoint_readback_exact": true,
+  "next_step_replay_exact": true,
+  "classification_gradients": {
+    "pair_key_qcls": 0.011686785146594048,
+    "query_key_qcls": 0.0162613857537508,
+    "corr_value_qcls": 0.008346854709088802,
+    "cam_relation_qcls": 0.008037848398089409,
+    "pair_difference_qcls": 0.0012261953670531511,
+    "text_projection_qcls": 0.0026005383115261793,
+    "confusion_gate_qcls": 0.000300207466352731,
+    "qrelation_corr": 0.3717755675315857,
+    "qrelation_key": 0.4885166585445404
+  },
+  "numerical_losses": {
+    "qcls": 0.6914882659912109,
+    "typical": 0.6869915723800659,
+    "qrelation": 0.693302571773529,
+    "protect": 0.0,
+    "total_new": 0.7605029344558716,
+    "query_weight_min": 0.0021356255747377872,
+    "query_weight_max": 0.006781266536563635
+  },
+  "coefficients_frozen_without_test_tuning": true,
+  "wall_seconds": 89.71512079238892
+}

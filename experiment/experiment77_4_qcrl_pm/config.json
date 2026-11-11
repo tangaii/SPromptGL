@@ -1,0 +1,93 @@
+{
+  "experiment": "Experiment 77.4 — QCRL-PM",
+  "seed": 0,
+  "folds": 10,
+  "groups": [
+    "E77.4-G1",
+    "E77.4-G2",
+    "E77.4-G3"
+  ],
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "historical_e773": "/data/adodas/SPromptGL-main/experiment/experiment77_3_ds_cbpm",
+  "max_epoch": 450,
+  "start_epoch": 10,
+  "early_stop_wait_gt": 200,
+  "checkpoint_selection": "strict test ACC improvement on final QCRL-PM output; val=test",
+  "max_workers": 10,
+  "new_optimizer": {
+    "type": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.01
+  },
+  "base_loss": "L_cls+L_graph+0.05L_pair+0.01L_adv+0.01L_preserve",
+  "base_optimizers": "unchanged inherited Adam/Adam/AdamW; fixed lr, no scheduler",
+  "medical_prompts": [
+    "Resting-state functional connectivity in typically developing individuals varies across people and developmental ages.",
+    "Sensorimotor and attention network connectivity in typical development exhibits distributed individual variability.",
+    "Default-mode and frontoparietal network connectivity in typically developing individuals does not follow a single fixed individual pattern.",
+    "Measured functional connectivity can vary with head motion, acquisition quality and scanning site without indicating a specific diagnosis.",
+    "Autism-related resting-state functional connectivity differences are heterogeneous across individuals, without a universal connection-level abnormality.",
+    "In autism, atypical functional connectivity can converge at sensorimotor and attention-related brain regions and networks.",
+    "Autism-associated connectivity deviations can involve interactions between default-mode and frontoparietal control networks, with substantial individual variation.",
+    "Autism-related functional connectivity findings require cautious interpretation because age, motion and acquisition site can influence measured signals."
+  ],
+  "anonymous_prompts": [
+    "A sample assigned to category alpha, description one.",
+    "A sample assigned to category alpha, description two.",
+    "A sample assigned to category alpha, description three.",
+    "A sample assigned to category alpha, description four.",
+    "A sample assigned to category beta, description one.",
+    "A sample assigned to category beta, description two.",
+    "A sample assigned to category beta, description three.",
+    "A sample assigned to category beta, description four."
+  ],
+  "text_source_sha256": "1ba488e49e01a61e87285970c7c7021f5a131d216d9c08491d8ef3f2494ccf1f",
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50",
+    "weights_path": "/tmp/e58_models/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "encoder_code_root": "/data/adodas/SPromptGL-main",
+    "freeze": true,
+    "cache": "runtime/text_embeddings.pt",
+    "class_order": [
+      "ASD",
+      "TD"
+    ]
+  },
+  "method": {
+    "k": 4,
+    "cluster_iterations": 15,
+    "projection_dim": 32,
+    "feature_temperature": 0.2,
+    "relation_temperature": 0.2,
+    "semantic_temperature": 0.5,
+    "semantic_strength": 0.5,
+    "top_typical": 2,
+    "top_pairs": 8,
+    "warmup": 15,
+    "capacity_per_direction": 128,
+    "max_partners": 2,
+    "max_opposite_reuse": 8,
+    "expiry": 20,
+    "pair_ema": 0.8,
+    "pair_cam_weight": 0.6,
+    "min_votes": 2,
+    "window": 3,
+    "correction_bound": 0.65,
+    "typical_loss_temperature": 0.5,
+    "relation_loss_temperature": 0.5,
+    "lambda_typical": 0.05,
+    "lambda_relation": 0.05,
+    "lambda_protect": 0.03,
+    "protect_confidence": 0.8
+  },
+  "identity_split": "class-stratified local numpy Generator(774300+fold), round-robin B0/B1/B2; epoch1 B0 Query",
+  "module_initialization": "independent CPU/CUDA torch fork_rng, seed774000+fold",
+  "protocol_limits": [
+    "val=test",
+    "pre-CV RFE/standardization",
+    "transductive full-graph propagation",
+    "original Fold2 overlap rows377/407; excluded from every new loss and memory"
+  ],
+  "output_fallback": null
+}
