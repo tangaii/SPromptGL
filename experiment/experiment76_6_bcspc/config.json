@@ -1,0 +1,89 @@
+{
+  "experiment": "Experiment 76.6 - Boundary-Consistent Semantic Prototype Correction",
+  "status": "IMPLEMENTATION",
+  "root": "/model/spromptgl/experiment/experiment76_6_bcspc",
+  "base": {
+    "name": "E74.4-G2-Positive-DCR",
+    "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "warmup": "E61-E2 epoch-10",
+    "seed": 0,
+    "folds": 10,
+    "fold_split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "validation_equals_test": true,
+    "fold2_overlap_1based": [377, 407]
+  },
+  "training": {
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; retain first epoch at ties",
+    "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "base_optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "branch_optimizer": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01},
+    "branch_loss": "L_corr + 0.03*L_boundary + 0.10*L_keep + 0.02*L_delta + 0.05*L_budget",
+    "branch_losses": {
+      "boundary": 0.03,
+      "keep": 0.10,
+      "delta": 0.02,
+      "budget": 0.05,
+      "boundary_margin": 0.15,
+      "mean_gate_budget": 0.25
+    },
+    "shared_base_trajectory": true,
+    "branch_backbone_gradient": "detached CAM144 and detached base score; branch loss cannot update base model"
+  },
+  "method": {
+    "name": "BCSPC",
+    "components": ["BCPM", "SPCA", "SCRM"],
+    "groups": ["G1-BCSPC-Full", "G2-BCSPC-NoBoundary"],
+    "group_difference": "G2 fills the boundary prototype slot from the same class reliable pool; structure and parameter count are unchanged",
+    "labels": {"ASD": 0, "TD": 1},
+    "cam_dim": 144,
+    "source_slots": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "slot_dim": 36,
+    "reliable_top_k": 8,
+    "boundary_top_k": 8,
+    "retrieval_temperature": 0.2,
+    "confusion_temperature": 0.1,
+    "max_support_per_site": 2,
+    "reliable_weight": "1[pred=y]*clamp((p_y-0.5)/0.5,0,1)",
+    "boundary_weight": "sigmoid((sim_other-sim_same)/0.10)*(0.5+0.5*(1-p_y))",
+    "reliable_boundary_attention": "softmax([Q.K_rel,Q.K_boundary]/sqrt(36)); values are actual patient-prototype cosine similarities",
+    "modality_gate": "softmax over PHENO/ANAT/FUNC/CORR evidence",
+    "residual": "0.8*tanh(alpha)*sigmoid(GateMLP(features)-2)*sigmoid((1.5-abs(s_base))/0.5)*coverage*tanh(d/0.20)",
+    "alpha_initial": 0.0,
+    "residual_absolute_bound": 0.8,
+    "ema": {"previous": 0.9, "current": 0.1},
+    "cross_support": "fixed class-stratified sorted-ID alternating A/B; train queries search opposite half; test queries search all legal outer-train memory",
+    "memory_exclusion": "outer test IDs and fold-2 overlapping rows are excluded from branch queries, support, and memory"
+  },
+  "semantics": {
+    "brainprompt_source": "AngusMonroe/BrainPrompt c85304a:data/prompts/label_prompts/abide_label.txt",
+    "brainprompt_order": ["ASD", "TD"],
+    "spromptgl_source": "network.py attr_words and E72 frozen RN50 original prompt embedding cache; verified to match source order",
+    "historical_cam_observation": "E74.4-G2 restores E51/E53 PLNNoPEN without prompt_text_features; the original eight embeddings are used only by BCSPC and the historical base is not modified",
+    "spromptgl_prompt_groups": {"ASD": "original prompts 4-7 (altered/abnormal wording)", "TD": "original prompts 0-3 (normal wording)"},
+    "encoder": "frozen CLIP RN50; one-time audited cached embeddings",
+    "semantic_projection": "shared Linear(2048,16)-GELU-Linear(16,144), then separate reliable and boundary key projections"
+  },
+  "audit": {
+    "compatible_recovery_source_sha256": [
+      "fab6a33f00860cf4c95e244d9194ff490b5c0156b1dac166b7001b0e54c5737f",
+      "d783b7fc11ad0b4d58ed59f7f4513ec4fe4bf4726ffec80c84db088cc7326c89"
+    ],
+    "rng_triplets_must_match_historical_base": true,
+    "base_model_and_optimizer_updates_must_match": true,
+    "initial_delta_must_equal_zero": true,
+    "branch_to_base_gradient_must_equal_zero": true,
+    "historical_protocol_limitations": [
+      "checkpoint selection retains val=test",
+      "pre-CV feature selection and standardization are retained",
+      "population graph propagation is transductive",
+      "fold 2 historical base training/test overlap rows 377 and 407"
+    ]
+  },
+  "resources": {"device_count": 1, "worker_limit": 1, "cpu_threads_per_worker": 1}
+}
