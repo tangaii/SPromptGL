@@ -1,0 +1,124 @@
+{
+  "experiment": "Experiment 78.1 - SH-DCPSS",
+  "name_zh": "异质性保持的疾病子原型引导语义选择",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_1_sh_dcpss",
+  "output": "/model/spromptgl/experiment/experiment78_1_sh_dcpss",
+  "fallback_reason": "Preferred OSSFS mkdir/write failed with errno 5 Input/output error; this /model directory is the sole active output.",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch_zero_based": 10,
+  "early_stop_wait_gt": 200,
+  "selection": "strict test-fold ACC improvement, preserving E74.4 history",
+  "groups": [
+    "E78.1-G1-SPromptGL-K1",
+    "E78.1-G2-SPromptGL-K3",
+    "E78.1-G3-Anonymous-K3"
+  ],
+  "group_specs": {
+    "E78.1-G1-SPromptGL-K1": {"prompt_source": "spromptgl", "k": 1},
+    "E78.1-G2-SPromptGL-K3": {"prompt_source": "spromptgl", "k": 3},
+    "E78.1-G3-Anonymous-K3": {"prompt_source": "anonymous", "k": 3}
+  },
+  "prompts": {
+    "spromptgl_text": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "spromptgl_classes": [1, 1, 1, 1, 0, 0, 0, 0],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four."
+    ],
+    "anonymous_classes": [1, 1, 1, 1, 0, 0, 0, 0],
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "prompt_order": "First four prompts are TD/NC (label 1); last four are ASD (label 0)."
+  },
+  "method": {
+    "cam_dim": 144,
+    "semantic_dim": 16,
+    "heterogeneity_dim": 32,
+    "prompt_subspace_rank": 16,
+    "trainable_parameters_per_group": 9425,
+    "site_offset_shrinkage": "n/(n+10)",
+    "anchor_init": "deterministic farthest-first plus 20 deterministic Lloyd updates on train-fold site-robust within-class warmup residuals projected through W_het; anchors initialize assignment only",
+    "dynamic_assignment_temperature": 0.25,
+    "prototype_routing_temperature": 0.25,
+    "prompt_temperature": 0.5,
+    "prototype_query_leave_one_out": true,
+    "site_support_weight": "within-class inverse-square-root site-size, normalized to mean one",
+    "site_condition_min_n": 20,
+    "minimum_dynamic_prototype_cosine_distance": 0.05,
+    "heterogeneity_loss_internal_weights": {"variance": 0.35, "separation": 0.25, "utilization": 0.20, "compactness": 0.20},
+    "feature_fusion": {"lambda_init": 0.1, "lambda_max": 0.25, "normalized_residual": "unit-L2 residual scaled to the patient CAM144 L2 norm"}
+  },
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "lambda_sem": 0.02,
+    "lambda_het": 0.02,
+    "lambda_site": 0.01,
+    "optimizer_order": ["opt_base", "opt_cam", "opt_added", "new_opt"],
+    "no_new_dropout": true,
+    "max_workers": 10,
+    "default_workers": 4,
+    "checkpoint_interval_epochs": 10
+  },
+  "protocol": {
+    "val_equals_test": true,
+    "transductive_full_patient_graph": true,
+    "preprocessing_and_rfe_before_outer_cv": true,
+    "fold2_overlap_1based": [377, 407],
+    "overlap_rows_keep_historical_base_classification_path": true,
+    "overlap_rows_excluded_from_new_support_and_auxiliary_supervision": true,
+    "overlap_rows_feature_residual_closed_during_training": true,
+    "test_labels_not_used_by_new_inference": true,
+    "rng_reseed_each_epoch": false,
+    "public_rng_training_operations": "unchanged from E74.4; new initialization uses private fork_rng; added forward has no random operation"
+  },
+  "historical_references": {
+    "E74.4_core": {
+      "run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+      "soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+      "config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+      "manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+      "audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb"
+    },
+    "root_model": {
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+      "modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+    }
+  },
+  "E78_history": {
+    "path": "/model/spromptgl/experiment/experiment78_dcpss",
+    "G2_metrics": {"acc": 92.0742, "hard_auc": 91.8460, "prob_auc": 93.4304, "sen": 88.8354, "spe": 94.8566, "asd_f1": 91.2057},
+    "prototype_mean_cosine_similarity": 0.9844,
+    "prototype_collapse_fraction_cosine_gt_0_98": 0.767,
+    "prototype_assignment_entropy": 1.0915,
+    "site_cramers_v_mean": 0.6703,
+    "subprototype_prompt_tv": 0.00749,
+    "anonymous_G5_acc": 92.0742,
+    "medical_minus_anonymous_prob_auc_pp": -0.2088,
+    "darg_total_loss_gradient_norm": 1.88e-8
+  }
+}

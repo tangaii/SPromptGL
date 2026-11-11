@@ -1,0 +1,32 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "trained_tasks": 30,
+  "independent_checkpoint_audits": 30,
+  "expected_tasks": 30,
+  "audit_errors": [],
+  "source_sha256": "b19b074b2f805d1910fa4d33572ec4100a0063d86e118770f2b93c83ab6c51ef",
+  "base_off_parity_passed": 10,
+  "preflight_recovery": {
+    "fold": 1,
+    "group": "E78.1-G2-SPromptGL-K3",
+    "status": "PASS",
+    "second_update_loss_exact": true,
+    "second_update_metrics_exact": true,
+    "model_optimizer_and_rng_exact": true,
+    "rng_after_train": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577",
+    "rng_after_eval": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577"
+  },
+  "rng_common_trace_mismatches": 0,
+  "root_and_historical_sources_unchanged": true,
+  "data_identity_limit": "processed CSV has no SUB_ID column; verified exact 871-row feature/label order against historical load_data, plus per-row SITE_ID/AGE_AT_SCAN one-hot alignment",
+  "audit_recovery": {
+    "training_source_sha256": "b19b074b2f805d1910fa4d33572ec4100a0063d86e118770f2b93c83ab6c51ef",
+    "frozen_audit_source_sha256": "bd95ddfc9b9fe08226a75a7b2f215f5056717d7fa35f70a4a4d80a493ed578f6",
+    "audit_only_recovery_source_sha256": "c4dd0d2c7cf987e2518b6605b0164751785225f3667c3d1e095a8be64fd2ab8c",
+    "audit_only_changes": [
+      "Initialize route_prop as a list before collecting per-class routing proportions.",
+      "Append an E78.1 completion update when the earlier failed audit already appended a handoff marker."
+    ],
+    "training_checkpoints_modified": false
+  }
+}
