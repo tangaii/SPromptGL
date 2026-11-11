@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "script_sha256": "c5284f2847d33f968af9d99ebbf6cd232f83dd507b5fcdd33ec600dc92e51399",
+  "dataset_sha256": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+  "source_sha256": "8c52ac8019e1c703bacf239a69d6979a740d1940f70fdf66212d56fd07c3ccb1",
+  "formal_checkpoints_modified": 0,
+  "formal_training_or_selection_changed": false,
+  "prompt_prototype_rows": 740,
+  "prototype_covariate_rows": 20,
+  "recovery_replay": {
+    "status": "PASS",
+    "group": "E78-G2-SPromptGL-K3",
+    "fold": 1,
+    "restored_latest_epoch": 321,
+    "restored_wait": 201,
+    "base_optimizer_keys": [
+      "cam",
+      "model",
+      "opt_added",
+      "opt_base",
+      "opt_cam"
+    ],
+    "module_state_keys": [
+      "alpha",
+      "patient_projection.weight",
+      "text_classes",
+      "text_embeddings",
+      "text_projection.weight"
+    ],
+    "new_optimizer_state_present": true,
+    "two_step_model_optimizer_rng_replay": true
+  },
+  "files": {
+    "prompt_prototype_diagnostics.csv": "d4169f1373775efd8548f733fb8d1766726854c12fbd694f7059dd9e1106ff99",
+    "prototype_covariate_diagnostics.csv": "1523738b01d2c85771bb3a1282e9bb134cdb0656022018e03b9359d38c5efd81",
+    "latest_recovery_replay.json": "7176f4f54bce15805d55a15bd4103c9cde444da6f2a570dee979235b9f11c5c6"
+  }
+}

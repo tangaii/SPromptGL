@@ -1,0 +1,97 @@
+{
+  "experiment": "Experiment 78 — DCPSS",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_dcpss",
+  "output": "/model/spromptgl/experiment/experiment78_dcpss",
+  "fallback_reason": "Preferred OSSFS mkdir/write returned errno 5 Input/output error; fallback is the sole active output.",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch": 10,
+  "early_stop_wait_gt": 200,
+  "groups": [
+    "E78-G1-SPromptGL-K1",
+    "E78-G2-SPromptGL-K3",
+    "E78-G3-BrainPrompt-K1",
+    "E78-G4-BrainPrompt-K3",
+    "E78-G5-Anonymous-K3"
+  ],
+  "group_specs": {
+    "E78-G1-SPromptGL-K1": {"prompt_source": "spromptgl", "k": 1},
+    "E78-G2-SPromptGL-K3": {"prompt_source": "spromptgl", "k": 3},
+    "E78-G3-BrainPrompt-K1": {"prompt_source": "brainprompt", "k": 1},
+    "E78-G4-BrainPrompt-K3": {"prompt_source": "brainprompt", "k": 3},
+    "E78-G5-Anonymous-K3": {"prompt_source": "anonymous", "k": 3}
+  },
+  "text_cache_sha256": "1c68b7147660f2d5986a6522fe8d2bc05351ae304de053ad79d9d60d4d47fae5",
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "lambda_sem": 0.05,
+    "lambda_gain": 0.02,
+    "tau_p": 0.2,
+    "tau_s": 0.5,
+    "gamma_max": 0.5,
+    "gamma_init": 0.1,
+    "projection_dim": 32
+  },
+  "prompts": {
+    "spromptgl_text": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "spromptgl_classes": [1, 1, 1, 1, 0, 0, 0, 0],
+    "brainprompt_text": [
+      "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+      "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+    ],
+    "brainprompt_classes": [1, 0],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four."
+    ],
+    "anonymous_classes": [1, 1, 1, 1, 0, 0, 0, 0],
+    "brainprompt_mapping": "Official abide_label.txt order TC then ASD; explicit model labels ASD=0 and TD/TC=1, hence [1,0]."
+  },
+  "method": {
+    "cam_dim": 144,
+    "slot_dim": 36,
+    "clusters": [1, 3, 1, 3, 3],
+    "cluster_rule": "Warmup CAM principal-component-1 within-class stable sorting into balanced quantile bins; assignments fixed; current CAM patient projections re-aggregated differentiably each epoch.",
+    "prototype_leave_one_out": "Per query, subtract only the query's projected feature and count from its own support cluster; test queries are never support members.",
+    "evidence": "Per-class prompt softmax of direct patient-text cosine plus same-vs-opposite projected prototype cosine difference.",
+    "residual": "gamma=0.5*tanh(alpha), initial gamma=0.1; signed evidence tanh; apply +/- delta/2 to base log probabilities then log_softmax.",
+    "parameter_count_expected": 37377
+  },
+  "protocol": {
+    "val_equals_test": true,
+    "transductive_full_graph": true,
+    "fold2_overlap_1based": [377, 407],
+    "exclude_all_explicit_test_ids_from_new_support_and_supervision": true,
+    "historical_base_classification_on_fold2_overlap_unchanged": true,
+    "original_preprocessing_and_rfe_unchanged": true,
+    "original_optimizer_order": ["opt_base", "opt_cam", "opt_added"],
+    "new_optimizer_after_original_optimizers": true
+  },
+  "base_sha256": {
+    "run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb"
+  }
+}
