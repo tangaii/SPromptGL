@@ -1,0 +1,63 @@
+{
+  "experiment": "76.7 CJE-BCSPC",
+  "status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment76_7_cje_bcspc",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_7_cje_bcspc",
+  "preferred_root_failure": "OSSFS errno=5 during directory creation; local path passed atomic save/readback probe",
+  "base": "E74.4-G2-Positive-DCR",
+  "historical_read_only": ["E74.4-G2", "E76.5", "E76.6"],
+  "groups": [
+    "G1-CJE-BCSPC-Full-E2E",
+    "G2-CJE-BCSPC-StopGrad"
+  ],
+  "folds": 10,
+  "seed": 0,
+  "initialization": "each fold starts from E61 epoch-10 full model, three optimizers, split, 4096 relation pairs, and Python/NumPy/CPU/CUDA RNG",
+  "training": {
+    "epoch_11_to_20": "branch warmup with no backbone branch gradient",
+    "epoch_21_onward": "G1 final-minus-base classification gradient increment, beta ramp to 0.3 over 20 epochs, groupwise caps; G2 remains stop-gradient",
+    "base_early_stop": "uncorrected test ACC, historical wait > 200 and maximum 450 epochs",
+    "method_checkpoint": "corrected test ACC strictly improves; retain earliest tie",
+    "base_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "branch_loss": "WeightedNLL(final) + 0.03*L_boundary + 0.10*L_protect + 0.02*L_residual",
+    "branch_optimizer": "AdamW lr=0.0005 weight_decay=0.01",
+    "groupwise_increment_caps": {
+      "GFR_and_DARG": 0.10,
+      "CAM_and_OutputLayer": 0.20
+    }
+  },
+  "method": {
+    "prototype_memory": "E76.6 reliable and cross-class boundary roles, four CAM144 source slots, A/B support split, self-exclusion, top-8, temperature 0.20, station cap 2 with audited fallback, EMA 0.9/0.1",
+    "candidate_selection": "previous-eval EMA query/support memory; candidate indices nondifferentiable",
+    "differentiable_values": "current within-step CAM144 query and support features; only legal training support labels",
+    "residual": "(abs(stopgrad(s_base))+0.5)*tanh(f_phi(z)); final linear weight/bias initialized to zero",
+    "semantics": "cached frozen CLIP RN50: BrainPrompt ASD/TD prompts plus original SPromptGL eight prompts, used only in the added branch",
+    "fold2_overlap": "zero-based rows 376 and 406 / one-based subjects 377 and 407 excluded from new-branch loss and memory",
+    "independent_group_backbones": true,
+    "formal_group_count": 2
+  },
+  "evaluation_limitations": [
+    "historical val=test checkpoint selection retained",
+    "pre-CV RFE and standardization retained",
+    "transductive patient graph retained",
+    "fold-2 overlap remains in historical backbone protocol"
+  ],
+  "audit_revision": {
+    "kind": "audit-only",
+    "training_source_sha256": "621b1fffa311f8d2137293095dccfc051c758cb117e7e6d2a7d35c925e0160b9",
+    "preflight_audit_sha256": "4aaaf793c63a1dbd27aa08207710960533802cc9890e63087dd528e2010c934d",
+    "final_audit_sha256": "11f59e585f20f54a1849b85f49e329ceb0eb1048396779b15906785acfaa1cd4",
+    "reason": "Compatible with historical E76.6 CSV fields; accepts G1 early-stop RNG traces over common epochs; records CUDA branch replay within 2e-6 absolute tolerance. Training source, config, checkpoints and predictions unchanged."
+  },
+  "final_result": {
+    "method_verdict": "NO_GO_CJE_BCSPC",
+    "best_checkpoints_independently_recalculated": "20/20",
+    "g1_minus_base_acc_pp": -0.11494252873563204,
+    "g1_minus_g2_acc_pp": -0.11494252873563204,
+    "g1_minus_base_net_error_to_correct_minus_correct_to_error_fold_observations": -1,
+    "worker_count": 5,
+    "aggregate_worker_hours": 10.210461016164885,
+    "peak_gpu_gib_single_worker": 1.560251235961914
+  },
+  "no_posthoc_tuning": true
+}

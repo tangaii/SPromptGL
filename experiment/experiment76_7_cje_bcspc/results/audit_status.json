@@ -1,0 +1,173 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "method_verdict": "NO_GO_CJE_BCSPC",
+  "checkpoint_recalculations": 20,
+  "checkpoint_total": 20,
+  "g1_rng_matches_history": true,
+  "g2_rng_matches_history": true,
+  "g2_base_params_and_optimizers_match_history": true,
+  "source_sha256": "0aaceab50c4806fdf3e7225a9e9a7dcfbf89fd47308f8196a1e589b825332fae",
+  "preflight_sha256": "0aaceab50c4806fdf3e7225a9e9a7dcfbf89fd47308f8196a1e589b825332fae",
+  "groups": [
+    "G1-CJE-BCSPC-Full-E2E",
+    "G2-CJE-BCSPC-StopGrad"
+  ],
+  "folds": 10,
+  "metrics_mean_sd_percent": {
+    "E74.4-G2-Positive-DCR": {
+      "acc": [
+        92.18913270637408,
+        2.764753837331298
+      ],
+      "hard_auc": [
+        92.02937377315493,
+        2.725518991290973
+      ],
+      "prob_auc": [
+        93.4946018817265,
+        2.9194766563522543
+      ],
+      "sen": [
+        90.0670731707317,
+        3.8861560064980885
+      ],
+      "spe": [
+        93.99167437557817,
+        4.732001153307991
+      ],
+      "asd_f1": [
+        91.4590359495831,
+        2.9012624215973304
+      ]
+    },
+    "E76.6-G1-BCSPC-Full": {
+      "acc": [
+        92.18913270637408,
+        2.764753837331298
+      ],
+      "hard_auc": [
+        92.02937377315493,
+        2.725518991290973
+      ],
+      "prob_auc": [
+        93.48396358385416,
+        2.912704028321701
+      ],
+      "sen": [
+        90.0670731707317,
+        3.8861560064980885
+      ],
+      "spe": [
+        93.99167437557817,
+        4.732001153307991
+      ],
+      "asd_f1": [
+        91.4590359495831,
+        2.9012624215973304
+      ]
+    },
+    "G1-CJE-BCSPC-Full-E2E": {
+      "acc": [
+        92.07419017763844,
+        2.842719429436268
+      ],
+      "hard_auc": [
+        91.86460707114009,
+        2.861766599388356
+      ],
+      "prob_auc": [
+        93.75637395365628,
+        2.746039611549902
+      ],
+      "sen": [
+        89.08536585365854,
+        3.717912490862111
+      ],
+      "spe": [
+        94.64384828862164,
+        3.235283855454817
+      ],
+      "asd_f1": [
+        91.23140766402982,
+        3.12420019954631
+      ]
+    },
+    "G2-CJE-BCSPC-StopGrad": {
+      "acc": [
+        92.18913270637408,
+        2.764753837331298
+      ],
+      "hard_auc": [
+        92.02937377315493,
+        2.725518991290973
+      ],
+      "prob_auc": [
+        93.67004918661583,
+        2.7923274631952806
+      ],
+      "sen": [
+        90.0670731707317,
+        3.8861560064980885
+      ],
+      "spe": [
+        93.99167437557817,
+        4.732001153307991
+      ],
+      "asd_f1": [
+        91.4590359495831,
+        2.9012624215973304
+      ]
+    }
+  },
+  "g1_minus_base_acc_pp": -0.11494252873563204,
+  "g1_minus_g2_acc_pp": -0.11494252873563204,
+  "g1_minus_base_hard_auc_pp": -0.16476670201484467,
+  "g1_minus_base_prob_auc_pp": 0.26177207192978336,
+  "g1_minus_base_net_corrections": -1,
+  "g1_new_backbone_gradient_observed": true,
+  "latest_checkpoint_replay": [
+    {
+      "group": "G1-CJE-BCSPC-Full-E2E",
+      "fold": 1,
+      "next_epoch_index": 450,
+      "base_optimizer_replay_exact": true,
+      "branch_optimizer_replay_within_tolerance": true,
+      "branch_replay_max_abs_error": 1.4379620552062988e-06,
+      "branch_optimizer_replay_max_abs_error": 0.0,
+      "branch_replay_atol": 2e-06,
+      "rng_replay_exact": true,
+      "loss_replay_atol": 1e-07,
+      "loss_replay_error": 0.0
+    },
+    {
+      "group": "G2-CJE-BCSPC-StopGrad",
+      "fold": 1,
+      "next_epoch_index": 324,
+      "base_optimizer_replay_exact": true,
+      "branch_optimizer_replay_within_tolerance": true,
+      "branch_replay_max_abs_error": 1.817941665649414e-06,
+      "branch_optimizer_replay_max_abs_error": 0.0,
+      "branch_replay_atol": 2e-06,
+      "rng_replay_exact": true,
+      "loss_replay_atol": 1e-07,
+      "loss_replay_error": 0.0
+    }
+  ],
+  "audit_checks": {
+    "history_base_identity": true,
+    "E61_initialization_identity": true,
+    "historical_rng_all_common_epochs": true,
+    "G2_historical_best_base_state_exact": true,
+    "all_20_best_predictions_recalculated": true,
+    "stored_probabilities_recalculated": true,
+    "legal_train_only_memory": true,
+    "fold2_overlap_excluded_from_new_branch": true,
+    "support_A_B_disjoint": true,
+    "test_labels_not_in_new_memory": true,
+    "four_mode_cam_hook_shape": true,
+    "zero_delta_preflight_pass": true,
+    "prompt_cache_and_order_preflight_pass": true,
+    "G1_G2_parameter_count_matched": true,
+    "residual_off_boundary_off_swap_reliable_only_interventions": true
+  }
+}
