@@ -1,0 +1,40 @@
+{
+  "experiment": "Experiment 76.8 CGD-BCSPC",
+  "status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment76_8_cgd_bcspc",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_8_cgd_bcspc",
+  "preferred_root_probe": {
+    "status": "FAILED_EIO",
+    "errno": 5,
+    "operation": "mkdir/write/fsync/atomic-rename/readback",
+    "fallback": "/model/spromptgl/experiment/experiment76_8_cgd_bcspc"
+  },
+  "groups": [
+    "G1-Conflict-Safe-E2E",
+    "G2-Discriminative-BCSPC"
+  ],
+  "folds": 10,
+  "seed": 0,
+  "formal_tasks_total": 20,
+  "formal_tasks_complete": 20,
+  "workers": 5,
+  "started_utc": "2026-11-11T11:25:02.300019+00:00",
+  "training_source_sha256": "8c5a64c450f6d3cf63cee58ad7c7f0574e859cab35667dd3213266580d45d3a6",
+  "preflight_source_sha256": "8c5a64c450f6d3cf63cee58ad7c7f0574e859cab35667dd3213266580d45d3a6",
+  "base": "E74.4-G2-Positive-DCR",
+  "history_reference": "E76.7 COMPLETE_AUDITED 20/20",
+  "peak_gpu_bytes_preflight": 840032768,
+  "resource_plan": {
+    "requested_workers": 5,
+    "selected_workers": 5,
+    "estimated_memory_workers": 106,
+    "single_gpu": true
+  },
+  "no_posthoc_tuning": true,
+  "ended_utc": "2026-11-11T12:10:41.093703+00:00",
+  "wall_seconds": 1436.2726738452911,
+  "method_verdict": "NO_GO_CGD_BCSPC",
+  "audited_checkpoints": 20,
+  "final_report": "results/report.md",
+  "audit_source_sha256": "867984f1ef269319d2827e41a4ed61fac3ad5747b38e84a60980e98dcdadbb08"
+}
