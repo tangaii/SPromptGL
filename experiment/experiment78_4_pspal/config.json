@@ -1,0 +1,179 @@
+{
+  "experiment": "Experiment 78.4 - PSP-AL",
+  "name_zh": "医学语义先验引导的真实患者联合疾病原型聚合学习",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_4_pspal",
+  "output": "/model/spromptgl/experiment/experiment78_4_pspal",
+  "fallback_reason": "Preferred OSSFS mkdir returned errno 5 Input/output error; /model is the sole active output.",
+  "text_geometry_sha256": "95ee91b416d8784ea5aa1e7788042f2e1694c97d84a8fd3a15773f695bb095a3",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch_zero_based": 10,
+  "early_stop_wait_gt": 200,
+  "selection": "strict test-fold ACC improvement, preserving E74.4 history",
+  "groups": [
+    "E78.4-G1-SPromptGL-K1-Restricted",
+    "E78.4-G2-SPromptGL-K1-Direct",
+    "E78.4-G3-SPromptGL-K2-Restricted",
+    "E78.4-G4-SPromptGL-K2-Direct",
+    "E78.4-G5-Anonymous-K1-Restricted",
+    "E78.4-G6-Anonymous-K1-Direct"
+  ],
+  "group_specs": {
+    "E78.4-G1-SPromptGL-K1-Restricted": {
+      "prompt_source": "spromptgl",
+      "k_max": 1,
+      "classification_mode": "restricted_residual"
+    },
+    "E78.4-G2-SPromptGL-K1-Direct": {
+      "prompt_source": "spromptgl",
+      "k_max": 1,
+      "classification_mode": "direct"
+    },
+    "E78.4-G3-SPromptGL-K2-Restricted": {
+      "prompt_source": "spromptgl",
+      "k_max": 2,
+      "classification_mode": "restricted_residual"
+    },
+    "E78.4-G4-SPromptGL-K2-Direct": {
+      "prompt_source": "spromptgl",
+      "k_max": 2,
+      "classification_mode": "direct"
+    },
+    "E78.4-G5-Anonymous-K1-Restricted": {
+      "prompt_source": "anonymous",
+      "k_max": 1,
+      "classification_mode": "restricted_residual"
+    },
+    "E78.4-G6-Anonymous-K1-Direct": {
+      "prompt_source": "anonymous",
+      "k_max": 1,
+      "classification_mode": "direct"
+    }
+  },
+  "prompts": {
+    "spromptgl_text": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "spromptgl_classes": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four."
+    ],
+    "anonymous_classes": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "prompt_order": "First four prompts are TD/NC (label 1); last four prompts are ASD (label 0)."
+  },
+  "method": {
+    "cam_dim": 144,
+    "prototype_dim": 32,
+    "attention_heads": 4,
+    "progressive_iterations": 3,
+    "pool_temperature": 0.25,
+    "restricted_residual_temperature": 0.5,
+    "restricted_lambda_init": 0.1,
+    "restricted_lambda_max": 0.5,
+    "direct_logit_scale": 10.0,
+    "same_two_candidate_parameterization": true,
+    "attention_batch_first": true,
+    "attention_dropout": 0.0,
+    "trainable_parameters_per_group": 18979,
+    "no_loo": true,
+    "no_static_category_mean": true,
+    "no_four_modality_split": true
+  },
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "optimizer_order": [
+      "opt_base",
+      "opt_cam",
+      "opt_added",
+      "new_opt"
+    ],
+    "no_new_dropout": true,
+    "checkpoint_interval_epochs": 10,
+    "max_workers": 10,
+    "default_workers": 10
+  },
+  "protocol": {
+    "val_equals_test": true,
+    "transductive_full_patient_graph": true,
+    "preprocessing_and_rfe_before_outer_cv": true,
+    "fold2_overlap_1based": [
+      377,
+      407
+    ],
+    "overlap_rows_excluded_from_new_support_and_final_classification": true,
+    "overlap_rows_keep_historical_base_loss_path": true,
+    "test_labels_not_used_by_new_module": true,
+    "rng_reseed_each_epoch": false,
+    "new_attention_has_no_random_ops": true,
+    "best_selection": "strict ACC on the historical test fold, matching E74.4 protocol"
+  },
+  "historical_references": {
+    "base_source_sha256": {
+      "run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+      "soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+      "config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+      "manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+      "audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb"
+    },
+    "github_reference_commit": "d3e78fb1337d67d0be6ec899d914f5270b7740eb",
+    "e78_1_path": "/model/spromptgl/experiment/experiment78_1_sh_dcpss",
+    "e78_2_path": "/model/spromptgl/experiment/experiment78_2_draps",
+    "e78_1_source_sha256": "b19b074b2f805d1910fa4d33572ec4100a0063d86e118770f2b93c83ab6c51ef",
+    "e78_2_source_sha256": "afb561aec7b798b189195b17226f22a489a3033c0a4c7a354895a2f1854085ab",
+    "e74_4_g2_reference_metrics": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917,
+      "asd_f1": 91.459
+    },
+    "e78_1_g1_reference_metrics": {
+      "acc": 92.1891,
+      "hard_auc": 92.048,
+      "prob_auc": 93.8609
+    }
+  }
+}

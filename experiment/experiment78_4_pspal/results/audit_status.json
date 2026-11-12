@@ -1,0 +1,68 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "trained_tasks": 60,
+  "independent_checkpoint_audits": 60,
+  "expected_tasks": 60,
+  "audit_errors": [],
+  "source_sha256": "75b6985eb54a73854059b5581481d642aaba68b1eae922da05217b1c30493241",
+  "base_off_parity_passed": 10,
+  "rng_common_epochs_checked": 21826,
+  "rng_mismatches": 0,
+  "root_and_historical_sources_unchanged": true,
+  "unit_tests": {
+    "k1_restricted_residual_finite": true,
+    "k1_restricted_residual_shape": true,
+    "k1_restricted_residual_attention_axis": true,
+    "k1_direct_finite": true,
+    "k1_direct_shape": true,
+    "k1_direct_attention_axis": true,
+    "k2_restricted_residual_finite": true,
+    "k2_restricted_residual_shape": true,
+    "k2_restricted_residual_attention_axis": true,
+    "k2_direct_finite": true,
+    "k2_direct_shape": true,
+    "k2_direct_attention_axis": true,
+    "k2_prototype_token_permutation_invariant": true,
+    "support_order_invariant": true,
+    "logmeanexp_count_normalized": true,
+    "test_label_invariant": true,
+    "all_finite": true
+  },
+  "report_recovery": {
+    "status": "PASS",
+    "reason": "audit report type coercion only; no training/checkpoint changes",
+    "posthoc_result_enrichment": [
+      "self_match_diagnostic",
+      "G3_vs_E78.1_G1_paired_comparison"
+    ]
+  },
+  "handoff_update": {
+    "status": "APPENDED",
+    "path": "/model/spromptgl/experiment/handoff.md"
+  },
+  "scientific_conclusion": {
+    "status": "NO-GO",
+    "medical_semantic_value": "MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED",
+    "k2_effective_capacity": "NOT_SUPPORTED_COLLAPSED",
+    "best_medical_group": "E78.4-G3-SPromptGL-K2-Restricted",
+    "base_gain": "NOT_SUPPORTED"
+  },
+  "self_match_diagnostic": {
+    "mechanism_csv_fields": [
+      "train_self_attention_mean",
+      "train_self_attention_max",
+      "train_self_attention_p95",
+      "train_self_attention_fraction_gt_1pct",
+      "train_test_accuracy_gap"
+    ],
+    "loo": "NOT_USED",
+    "posthoc_diagnostic": "PASS"
+  },
+  "result_row_counts": {
+    "fold_metrics.csv": 60,
+    "paired_comparisons.csv": 168,
+    "mechanism.csv": 60,
+    "interventions.csv": 260,
+    "checkpoint_audit.csv": 60
+  }
+}
