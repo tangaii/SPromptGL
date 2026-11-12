@@ -1,0 +1,559 @@
+{
+  "status": "PASS",
+  "source_sha256": "4f50f745ad1a2d7d4111d2c7d26a1d8f96937a7be55c5a9c39c75c67b362eb85",
+  "source_files": {
+    "/model/spromptgl/experiment/experiment79_deml/config.json": "b38ad0afb24aeb734877d6772ff9ddb47ef4c7e12bce336e21bf128899909a31",
+    "/model/spromptgl/experiment/experiment79_deml/run.py": "bfc34fb216f37a9d0e6a2026e4047a939de07d6edae92fe6b4bd9bdcbcad5db1",
+    "/model/spromptgl/experiment/experiment79_deml/deml.py": "f043e4c26cb113ac17291301413608a206f1027cb0c7ea094aaa5cf32c77df1d",
+    "/model/spromptgl/experiment/experiment79_deml/memory_bank.py": "fb7f98d558dae84be0d474f8668e4a2c4c7c456c2a4823443b49debf7b68a0d8",
+    "/model/spromptgl/experiment/experiment79_deml/path_adapter.py": "9aae92dde5553ea584382191835904941b5e7b9aad0e23e583e10357694c4b3c",
+    "/model/spromptgl/experiment/experiment79_deml/audit.py": "9abe5dc057bf948d86bd931d6985ae557dc60d8845e70511057df92083992a2f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/audit_status.json": "ffad67d097e359df2a3838c6cdb56fb5f42d1f6798d7e023a0d09d31935f89ef",
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f01.best.pt": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f02.best.pt": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f03.best.pt": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f04.best.pt": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f05.best.pt": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f06.best.pt": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f07.best.pt": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f08.best.pt": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f09.best.pt": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f10.best.pt": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f01.json": "1b7ea0cc93569c3d3892aa4bd9143e714a83094a4b995bf9db07c9e2963bd32f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f02.json": "d7e3a9d384df5882787d09e33baa153f5935ec7677dfa9373d5dc5c4eb7dc57b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f03.json": "08145807d7f0fc042cc3d25a9b425cc4ebd708e5f7bbbf78199d125177cf5c3f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f04.json": "1641aaed13e0373531c2f31d0b38bd6cdd4d0c0d641e2a15c139d45743f2bf60",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f05.json": "457240a8acc22ecb6ae04491da452e3f8afe48b0f847800492d2d13a3d2fb8e7",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f06.json": "497a5bbe0a1d386024ec5055040a57287b7f83bb9f43517afeb7ebaade678d42",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f07.json": "e204974ecf91c32109a6ba8ba4c74834dd98631081b1954db82a68c6c852124b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f08.json": "73fc4acb8dc42b9c1f701648377a5063ee60ee3a08882c60ae69c6d9817e9b89",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f09.json": "c836fd30a17792c4af76b174e7f923e7710f944fe14c06a059625b9e55ea0153",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f10.json": "37d4127ebfabdda96ef7940abf9618265922e2adb3a6c864c71b94569d706110"
+  },
+  "device": "PPU-ZW810E",
+  "base_audit": {
+    "status": "PASS",
+    "audited_checkpoints": 30,
+    "expected_checkpoints": 30,
+    "prediction_reproduction": "30/30 exact hard predictions; probabilities atol=1e-8",
+    "rng_audit": {
+      "E74.4-G1-Soft-DCR": {
+        "reference": "E74.3-G1; shared epochs only",
+        "common_epochs": 3482,
+        "exact_triplets": 3482,
+        "mismatches": 0,
+        "by_fold": {
+          "1": {
+            "common_epochs": 298,
+            "exact_triplets": 298,
+            "mismatches": 0
+          },
+          "2": {
+            "common_epochs": 332,
+            "exact_triplets": 332,
+            "mismatches": 0
+          },
+          "3": {
+            "common_epochs": 338,
+            "exact_triplets": 338,
+            "mismatches": 0
+          },
+          "4": {
+            "common_epochs": 378,
+            "exact_triplets": 378,
+            "mismatches": 0
+          },
+          "5": {
+            "common_epochs": 421,
+            "exact_triplets": 421,
+            "mismatches": 0
+          },
+          "6": {
+            "common_epochs": 321,
+            "exact_triplets": 321,
+            "mismatches": 0
+          },
+          "7": {
+            "common_epochs": 329,
+            "exact_triplets": 329,
+            "mismatches": 0
+          },
+          "8": {
+            "common_epochs": 381,
+            "exact_triplets": 381,
+            "mismatches": 0
+          },
+          "9": {
+            "common_epochs": 358,
+            "exact_triplets": 358,
+            "mismatches": 0
+          },
+          "10": {
+            "common_epochs": 326,
+            "exact_triplets": 326,
+            "mismatches": 0
+          }
+        }
+      },
+      "E74.4-G2-Positive-DCR": {
+        "reference": "E74.3-G1; shared epochs only",
+        "common_epochs": 3723,
+        "exact_triplets": 3723,
+        "mismatches": 0,
+        "by_fold": {
+          "1": {
+            "common_epochs": 314,
+            "exact_triplets": 314,
+            "mismatches": 0
+          },
+          "2": {
+            "common_epochs": 332,
+            "exact_triplets": 332,
+            "mismatches": 0
+          },
+          "3": {
+            "common_epochs": 338,
+            "exact_triplets": 338,
+            "mismatches": 0
+          },
+          "4": {
+            "common_epochs": 407,
+            "exact_triplets": 407,
+            "mismatches": 0
+          },
+          "5": {
+            "common_epochs": 421,
+            "exact_triplets": 421,
+            "mismatches": 0
+          },
+          "6": {
+            "common_epochs": 390,
+            "exact_triplets": 390,
+            "mismatches": 0
+          },
+          "7": {
+            "common_epochs": 339,
+            "exact_triplets": 339,
+            "mismatches": 0
+          },
+          "8": {
+            "common_epochs": 381,
+            "exact_triplets": 381,
+            "mismatches": 0
+          },
+          "9": {
+            "common_epochs": 377,
+            "exact_triplets": 377,
+            "mismatches": 0
+          },
+          "10": {
+            "common_epochs": 424,
+            "exact_triplets": 424,
+            "mismatches": 0
+          }
+        }
+      },
+      "E74.4-G3-Soft-Positive-DCR": {
+        "reference": "E74.3-G1; shared epochs only",
+        "common_epochs": 3432,
+        "exact_triplets": 3432,
+        "mismatches": 0,
+        "by_fold": {
+          "1": {
+            "common_epochs": 300,
+            "exact_triplets": 300,
+            "mismatches": 0
+          },
+          "2": {
+            "common_epochs": 332,
+            "exact_triplets": 332,
+            "mismatches": 0
+          },
+          "3": {
+            "common_epochs": 338,
+            "exact_triplets": 338,
+            "mismatches": 0
+          },
+          "4": {
+            "common_epochs": 382,
+            "exact_triplets": 382,
+            "mismatches": 0
+          },
+          "5": {
+            "common_epochs": 421,
+            "exact_triplets": 421,
+            "mismatches": 0
+          },
+          "6": {
+            "common_epochs": 297,
+            "exact_triplets": 297,
+            "mismatches": 0
+          },
+          "7": {
+            "common_epochs": 301,
+            "exact_triplets": 301,
+            "mismatches": 0
+          },
+          "8": {
+            "common_epochs": 381,
+            "exact_triplets": 381,
+            "mismatches": 0
+          },
+          "9": {
+            "common_epochs": 352,
+            "exact_triplets": 352,
+            "mismatches": 0
+          },
+          "10": {
+            "common_epochs": 328,
+            "exact_triplets": 328,
+            "mismatches": 0
+          }
+        }
+      }
+    },
+    "cross_group_rng_audit": {
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold1": {
+        "common_epochs": 298,
+        "exact_triplets": 298,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold1": {
+        "common_epochs": 298,
+        "exact_triplets": 298,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold1": {
+        "common_epochs": 300,
+        "exact_triplets": 300,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold2": {
+        "common_epochs": 362,
+        "exact_triplets": 362,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold2": {
+        "common_epochs": 379,
+        "exact_triplets": 379,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold2": {
+        "common_epochs": 362,
+        "exact_triplets": 362,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold3": {
+        "common_epochs": 374,
+        "exact_triplets": 374,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold3": {
+        "common_epochs": 397,
+        "exact_triplets": 397,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold3": {
+        "common_epochs": 374,
+        "exact_triplets": 374,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold4": {
+        "common_epochs": 378,
+        "exact_triplets": 378,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold4": {
+        "common_epochs": 378,
+        "exact_triplets": 378,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold4": {
+        "common_epochs": 382,
+        "exact_triplets": 382,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold5": {
+        "common_epochs": 440,
+        "exact_triplets": 440,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold5": {
+        "common_epochs": 440,
+        "exact_triplets": 440,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold5": {
+        "common_epochs": 440,
+        "exact_triplets": 440,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold6": {
+        "common_epochs": 321,
+        "exact_triplets": 321,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold6": {
+        "common_epochs": 297,
+        "exact_triplets": 297,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold6": {
+        "common_epochs": 297,
+        "exact_triplets": 297,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold7": {
+        "common_epochs": 329,
+        "exact_triplets": 329,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold7": {
+        "common_epochs": 301,
+        "exact_triplets": 301,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold7": {
+        "common_epochs": 301,
+        "exact_triplets": 301,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold8": {
+        "common_epochs": 440,
+        "exact_triplets": 440,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold8": {
+        "common_epochs": 435,
+        "exact_triplets": 435,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold8": {
+        "common_epochs": 435,
+        "exact_triplets": 435,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold9": {
+        "common_epochs": 358,
+        "exact_triplets": 358,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold9": {
+        "common_epochs": 352,
+        "exact_triplets": 352,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold9": {
+        "common_epochs": 352,
+        "exact_triplets": 352,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G2-Positive-DCR|fold10": {
+        "common_epochs": 326,
+        "exact_triplets": 326,
+        "mismatches": 0
+      },
+      "E74.4-G1-Soft-DCR|E74.4-G3-Soft-Positive-DCR|fold10": {
+        "common_epochs": 326,
+        "exact_triplets": 326,
+        "mismatches": 0
+      },
+      "E74.4-G2-Positive-DCR|E74.4-G3-Soft-Positive-DCR|fold10": {
+        "common_epochs": 328,
+        "exact_triplets": 328,
+        "mismatches": 0
+      }
+    },
+    "fold2_overlap": [
+      377,
+      407
+    ],
+    "best_group_by_acc": "E74.4-G2-Positive-DCR",
+    "scientific_conclusion": "GO",
+    "effect_support_by_group": {
+      "E74.4-G1-Soft-DCR": {
+        "all10": false,
+        "nine_without_fold2": false,
+        "intervention": true,
+        "full_correct_to_intervention_wrong": 2,
+        "full_wrong_to_intervention_correct": 0
+      },
+      "E74.4-G2-Positive-DCR": {
+        "all10": true,
+        "nine_without_fold2": true,
+        "intervention": true,
+        "full_correct_to_intervention_wrong": 1,
+        "full_wrong_to_intervention_correct": 0
+      },
+      "E74.4-G3-Soft-Positive-DCR": {
+        "all10": false,
+        "nine_without_fold2": false,
+        "intervention": true,
+        "full_correct_to_intervention_wrong": 3,
+        "full_wrong_to_intervention_correct": 0
+      }
+    },
+    "handoff_update": {
+      "experiment_record": {
+        "status": "ALREADY_PRESENT",
+        "path": "/model/spromptgl/experiment/handoff.md"
+      },
+      "audit_direction_correction": {
+        "status": "APPENDED_AND_VERIFIED",
+        "path": "/model/spromptgl/experiment/handoff.md",
+        "original_bytes_preserved": 733285,
+        "append_sha256": "325eb4c58f3313b106ecd2e4bea943bc04776358cebd46324b0157708efc5015"
+      }
+    }
+  },
+  "inherited": [
+    {
+      "fold": 1,
+      "warmup_sha256": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+      "warmup_rng_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+      "split_sha": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+      "pair_sha": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22",
+      "pairs": 4096,
+      "eligible_count": 783,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e"
+    },
+    {
+      "fold": 2,
+      "warmup_sha256": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+      "warmup_rng_sha": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+      "split_sha": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+      "pair_sha": "c5ceb5c322490afe4c411751db8579ce4c960d5d7062d3c5c12640f56fbaf43c",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [
+        377,
+        407
+      ],
+      "base_checkpoint_sha256": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a"
+    },
+    {
+      "fold": 3,
+      "warmup_sha256": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+      "warmup_rng_sha": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+      "split_sha": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+      "pair_sha": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218"
+    },
+    {
+      "fold": 4,
+      "warmup_sha256": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+      "warmup_rng_sha": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+      "split_sha": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+      "pair_sha": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3"
+    },
+    {
+      "fold": 5,
+      "warmup_sha256": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+      "warmup_rng_sha": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+      "split_sha": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+      "pair_sha": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d"
+    },
+    {
+      "fold": 6,
+      "warmup_sha256": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+      "warmup_rng_sha": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+      "split_sha": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+      "pair_sha": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0"
+    },
+    {
+      "fold": 7,
+      "warmup_sha256": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+      "warmup_rng_sha": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+      "split_sha": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+      "pair_sha": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b"
+    },
+    {
+      "fold": 8,
+      "warmup_sha256": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+      "warmup_rng_sha": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+      "split_sha": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+      "pair_sha": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5"
+    },
+    {
+      "fold": 9,
+      "warmup_sha256": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+      "warmup_rng_sha": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+      "split_sha": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+      "pair_sha": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829"
+    },
+    {
+      "fold": 10,
+      "warmup_sha256": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+      "warmup_rng_sha": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+      "split_sha": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38",
+      "pair_sha": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28",
+      "pairs": 4096,
+      "eligible_count": 784,
+      "overlap_1based": [],
+      "base_checkpoint_sha256": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3"
+    }
+  ],
+  "cam_shape": [
+    871,
+    144
+  ],
+  "empty_memory_exact": true,
+  "g1_g2_param_count_equal": true,
+  "base_one_step_parity": true,
+  "no_prompt_or_oof_teacher": true,
+  "fold2_exclude_zero_based": [
+    376,
+    406
+  ],
+  "timestamp": 1794475825.3583176
+}
