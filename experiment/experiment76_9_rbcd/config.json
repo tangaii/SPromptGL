@@ -1,0 +1,104 @@
+{
+  "experiment": "Experiment 76.9 Risk-aware Boundary-Conditioned Disease Correction (RBCD)",
+  "root": "/model/spromptgl/experiment/experiment76_9_rbcd",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_9_rbcd",
+  "preferred_root_probe": {
+    "status": "FAILED_EIO",
+    "errno": 5,
+    "operation": "mkdir/write/fsync/atomic-rename/readback",
+    "fallback": "/model/spromptgl/experiment/experiment76_9_rbcd"
+  },
+  "groups": [
+    "G1-RBCD-StopGrad",
+    "G2-RBCD-Protected-E2E"
+  ],
+  "base": "E74.4-G2-Positive-DCR",
+  "history_reference": "E76.8 COMPLETE_AUDITED read-only; E74.4-G2 COMPLETE_AUDITED",
+  "seed": 0,
+  "folds": 10,
+  "training": {
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "phase_A_epochs": [
+      11,
+      20
+    ],
+    "phase_B_start": 21,
+    "beta": "0 through epoch20; linear to 0.3 at epoch40",
+    "gradient_increment": "grad(L_cls_final_weighted-L_cls_base_weighted_eligible)",
+    "outputlayer_new_gradient": "strictly zero",
+    "conflict_projection": "if dot<0 and ||g_base||^2>eps: g_new-dot/||g_base||^2*g_base",
+    "projection_order": "project, beta, groupwise norm cap, add to g_base",
+    "caps": {
+      "GFR": 0.1,
+      "DARG": 0.1,
+      "CAM_without_OutputLayer": 0.2,
+      "OutputLayer": 0.0
+    },
+    "base_optimizers": {
+      "GFR": "Adam lr=0.0038 wd=0.11",
+      "CAM": "Adam lr=0.0038 wd=0.11",
+      "DARG": "AdamW lr=0.001 wd=0.01"
+    },
+    "branch_optimizer": "AdamW lr=0.0005 wd=0.01",
+    "base_loss": "L_cls+L_graph+0.05L_pair+0.01L_adv+0.01L_preserve",
+    "branch_loss": "L_cls_final+0.20L_risk+0.10L_direction+0.10L_keep+0.02L_residual"
+  },
+  "oof": {
+    "outer_inner_splits": 5,
+    "stratified_shuffle": true,
+    "random_state": "1000+outer_fold",
+    "teacher_epochs": 250,
+    "teacher_selection": "fixed final epoch; no inner-val model selection",
+    "teacher_initialization": "raw shared anchor/DARG construction; E61 epoch-10 warmup forbidden",
+    "test_labels_accessed": false,
+    "cache": "one read-only OOF cache per outer fold"
+  },
+  "prototype": {
+    "cam_shape": [
+      871,
+      144
+    ],
+    "slots": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "CORR"
+    ],
+    "top_k": 8,
+    "temperature": 0.2,
+    "site_cap": 2,
+    "ema": [
+      0.9,
+      0.1
+    ],
+    "roles": [
+      "reliable_disease_direction",
+      "boundary_confusion_risk"
+    ],
+    "support": "legal A/B split, self exclusion, fold2 rows377/407 exclusion",
+    "prompt": "frozen CLIP RN50 original eight plus BrainPrompt two"
+  },
+  "rbcd": {
+    "risk_mlp": "Linear(D_risk,16)->GELU->Linear(16,1)",
+    "risk_target": "OOF risk_soft=1-p_oof[y]; risk_hard=argmax(p_oof)!=y",
+    "opposition": "sigmoid(-stopgrad(s_base)*d_rel/0.20)",
+    "disease_direction": "tanh(d_rel/0.20)",
+    "delta": "(abs(stopgrad(s_base))+0.5)*r*opposition*tanh(a)*disease_direction",
+    "correction_head": "zero-initialized final layer"
+  },
+  "sources": {
+    "e74_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "e76_7_path": "/model/spromptgl/experiment/experiment76_7_cje_bcspc",
+    "e76_8_path": "/model/spromptgl/experiment/experiment76_8_cgd_bcspc",
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf"
+  },
+  "protocol_limitations": [
+    "val=test ACC selection",
+    "pre-CV RFE/standardization",
+    "transductive graph",
+    "fold2 historical overlap remains in base",
+    "OOF isolates added supervision but does not repair historical preprocessing"
+  ],
+  "no_posthoc_tuning": true
+}

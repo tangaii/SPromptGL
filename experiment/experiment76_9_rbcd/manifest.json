@@ -1,0 +1,44 @@
+{
+  "experiment": "Experiment 76.9 Risk-aware Boundary-Conditioned Disease Correction (RBCD)",
+  "status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment76_9_rbcd",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment76_9_rbcd",
+  "preferred_root_probe": {
+    "status": "FAILED_EIO",
+    "errno": 5,
+    "operation": "mkdir/write/fsync/atomic-rename/readback",
+    "fallback": "/model/spromptgl/experiment/experiment76_9_rbcd"
+  },
+  "groups": [
+    "G1-RBCD-StopGrad",
+    "G2-RBCD-Protected-E2E"
+  ],
+  "folds": 10,
+  "seed": 0,
+  "formal_tasks_total": 20,
+  "formal_tasks_complete": 20,
+  "workers": 5,
+  "started_utc": "2026-11-11T15:24:29.833325+00:00",
+  "training_source_sha256": "50803946794cfb18f58a6d99a85dcc02db075f46c12c29f1dfb146c5e27406d1",
+  "preflight_source_sha256": "50803946794cfb18f58a6d99a85dcc02db075f46c12c29f1dfb146c5e27406d1",
+  "base": "E74.4-G2-Positive-DCR",
+  "history_reference": "E76.8 COMPLETE_AUDITED",
+  "oof_status": "COMPLETE_10_FOLDS",
+  "peak_gpu_bytes_preflight": 434796544,
+  "resource_plan": {
+    "requested_workers": 5,
+    "selected_workers": 5,
+    "estimated_memory_workers": 205,
+    "single_gpu": true
+  },
+  "no_posthoc_tuning": true,
+  "ended_utc": "2026-11-11T15:45:56.000417+00:00",
+  "wall_seconds": 1286.1672189235687,
+  "audit_status": "COMPLETE_AUDITED",
+  "scientific_verdict": "RISK_DETECTION_WITHOUT_CORRECTION",
+  "audit_source_sha256": "6d8242e77fc6af62b3e203979805d2426bf9eaba5847ecedbe3accfc3628b7a2",
+  "audit_source_diff_after_training": true,
+  "audit_completed_utc": "2026-11-11T16:11:24.826198+00:00",
+  "checkpoint_recalculations": 20,
+  "latest_recovery_replays": 20
+}
