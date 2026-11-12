@@ -1,0 +1,51 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "trained_tasks": 40,
+  "independent_checkpoint_audits": 40,
+  "expected_tasks": 40,
+  "audit_errors": [],
+  "source_sha256": "afb561aec7b798b189195b17226f22a489a3033c0a4c7a354895a2f1854085ab",
+  "base_off_parity_passed": 10,
+  "preflight_recovery": {
+    "fold": 1,
+    "group": "E78.2-G2-SPromptGL-K3",
+    "status": "PASS",
+    "second_update_loss_exact": true,
+    "second_update_metrics_exact": true,
+    "model_optimizer_and_rng_exact": true,
+    "rng_after_train": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577",
+    "rng_after_eval": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577"
+  },
+  "rng_common_trace_mismatches": 0,
+  "root_and_historical_sources_unchanged": true,
+  "unit_tests": {
+    "effective_sample_size_manual": true,
+    "k3_finite": true,
+    "gate_in_range": true,
+    "test_query_not_loo": true,
+    "candidate_index_permutation_invariant": true,
+    "candidate_index_permutation_max_error": 1.7881393432617188e-07,
+    "candidate_index_permutation_fused_max_error": 2.384185791015625e-07,
+    "asymmetric_k3_k5_forward": true,
+    "training_query_exact_loo": true,
+    "loo_shape": true,
+    "all_low_reliability_global_center_fallback": true,
+    "low_support_no_nan": true,
+    "test_label_invariant": true,
+    "all_finite": true
+  },
+  "handoff_update": {
+    "status": "ALREADY_PRESENT",
+    "path": "/model/spromptgl/experiment/handoff.md"
+  },
+  "recovery_audit": {
+    "path": "/model/spromptgl/experiment/experiment78_2_draps/audit_recovery.py",
+    "sha256": "c1b44348df3f8f83376a24ef3e341df49770072696882f69a0b0b77d2db7df42",
+    "status": "PASS",
+    "training_source_unchanged": true
+  },
+  "handoff_update_posthoc": "APPENDED_CORRECTION",
+  "rng_common_epochs_checked": 14307,
+  "rng_exact_epochs": 14307,
+  "rng_mismatches": 0
+}

@@ -1,0 +1,13 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "original_audit": "audit.py",
+  "original_audit_failure": "TypeError: CUDA tensor passed to numpy during mechanism aggregation",
+  "recovery_audit": "audit_recovery.py",
+  "recovery_audit_sha256": "c1b44348df3f8f83376a24ef3e341df49770072696882f69a0b0b77d2db7df42",
+  "training_source_sha256": "afb561aec7b798b189195b17226f22a489a3033c0a4c7a354895a2f1854085ab",
+  "training_source_unchanged": true,
+  "retrained": false,
+  "independent_checkpoint_audits": "40/40",
+  "audit_errors": [],
+  "note": "Recovery auditor only converts diagnostic tensors with detach().cpu().numpy(); run.py/draps.py/config.json/audit.py and all checkpoints were not changed."
+}
