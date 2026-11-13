@@ -1,0 +1,158 @@
+{
+  "experiment": "Experiment 78.5 - BSP-AL",
+  "name_zh": "基座保持的选择性语义原型聚合学习",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_5_bspal",
+  "output": "/model/spromptgl/experiment/experiment78_5_bspal",
+  "fallback_reason": "Preferred OSSFS mkdir returned errno 5 Input/output error; /model is the sole active output.",
+  "text_geometry_sha256": "95ee91b416d8784ea5aa1e7788042f2e1694c97d84a8fd3a15773f695bb095a3",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch_zero_based": 10,
+  "early_stop_wait_gt": 200,
+  "selection": "strict test-fold ACC improvement, preserving E74.4 history",
+  "groups": [
+    "E78.5-G1-BasePreserved-K1-Medical",
+    "E78.5-G2-Selective-K1-Medical",
+    "E78.5-G3-Selective-K1-Anonymous"
+  ],
+  "group_specs": {
+    "E78.5-G1-BasePreserved-K1-Medical": {
+      "prompt_source": "spromptgl",
+      "selective": false,
+      "description": "E78.4 K=1 mechanism with baseline-preserving differential loss"
+    },
+    "E78.5-G2-Selective-K1-Medical": {
+      "prompt_source": "spromptgl",
+      "selective": true,
+      "description": "selective patient attention and prompt-conditioned aggregation"
+    },
+    "E78.5-G3-Selective-K1-Anonymous": {
+      "prompt_source": "anonymous",
+      "selective": true,
+      "description": "same selective module with E78.1 anonymous prompts"
+    }
+  },
+  "prompts": {
+    "spromptgl_text": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "spromptgl_classes": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four."
+    ],
+    "anonymous_classes": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "prompt_order": "First four prompts are TD/NC (label 1); last four prompts are ASD (label 0)."
+  },
+  "method": {
+    "cam_dim": 144,
+    "prototype_dim": 32,
+    "attention_heads": 4,
+    "progressive_iterations": 3,
+    "prompt_temperature": 0.5,
+    "attention_tau_init": 0.1,
+    "attention_tau_min": 0.05,
+    "attention_tau_max": 0.5,
+    "prompt_beta_init": 0.1,
+    "prompt_beta_max": 0.5,
+    "restricted_residual_temperature": 0.5,
+    "restricted_lambda_init": 0.1,
+    "restricted_lambda_max": 0.5,
+    "eta": 0.2,
+    "baseline_loss_support": "sorted(train_indices\\test_indices)",
+    "no_loo": true,
+    "full_cam144": true,
+    "text_geometry_shared": true,
+    "attention_dropout": 0.0,
+    "g1_legacy_e784_logic": true,
+    "g2_g3_selective_feature_split": true
+  },
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "optimizer_order": [
+      "opt_base",
+      "opt_cam",
+      "opt_added",
+      "new_opt"
+    ],
+    "no_new_dropout": true,
+    "checkpoint_interval_epochs": 10,
+    "max_workers": 10,
+    "default_workers": 10
+  },
+  "protocol": {
+    "val_equals_test": true,
+    "transductive_full_patient_graph": true,
+    "preprocessing_and_rfe_before_outer_cv": true,
+    "fold2_overlap_1based": [
+      377,
+      407
+    ],
+    "overlap_rows_excluded_from_new_support_and_differential_loss": true,
+    "overlap_rows_keep_historical_base_loss_path": true,
+    "test_labels_not_used_by_new_module": true,
+    "rng_reseed_each_epoch": false,
+    "best_selection": "strict ACC on historical test fold"
+  },
+  "historical_references": {
+    "github_reference_commit": "d3e78fb1337d67d0be6ec899d914f5270b7740eb",
+    "e78_4_path": "/model/spromptgl/experiment/experiment78_4_pspal",
+    "e78_4_source_sha256": "75b6985eb54a73854059b5581481d642aaba68b1eae922da05217b1c30493241",
+    "e78_1_path": "/model/spromptgl/experiment/experiment78_1_sh_dcpss",
+    "e78_2_path": "/model/spromptgl/experiment/experiment78_2_draps",
+    "e74_4_g2_reference_metrics": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917,
+      "asd_f1": 91.459
+    },
+    "e78_1_g1_reference_metrics": {
+      "acc": 92.1891,
+      "hard_auc": 92.048,
+      "prob_auc": 93.8609
+    }
+  }
+}
