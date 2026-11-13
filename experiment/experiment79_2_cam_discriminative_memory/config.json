@@ -1,0 +1,118 @@
+{
+  "experiment": "Experiment 79.2 - Discriminative Memory Learning in CAM Feature Space",
+  "status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment79_2_cam_discriminative_memory",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment79_2_cam_discriminative_memory",
+  "root_fallback_reason": "OSSFS errno 5 during atomic directory probe; verified /model mount is used.",
+  "seed": 0,
+  "base_group": "E74.4-G2-Positive-DCR",
+  "groups": [
+    "E79.2-G1-LDCM",
+    "E79.2-G2-DDEM",
+    "E79.2-G3-DDM"
+  ],
+  "folds": 10,
+  "formal_tasks": 30,
+  "subjects": 871,
+  "cam_dim": 144,
+  "memory_dim": 64,
+  "top_k": 8,
+  "memory_refresh_interval": 5,
+  "first_refresh_epoch": 11,
+  "temperature": 0.2,
+  "delta_relative_cap": 0.075,
+  "g1": {
+    "name": "Local Disease-Contrast Memory",
+    "max_pairs": 64,
+    "patient_max_pairs": 2,
+    "local_support_k": 12,
+    "min_support_per_class": 2
+  },
+  "g2": {
+    "name": "Discriminative Evidence Memory",
+    "max_per_class": 48,
+    "evidence_dims": 12,
+    "alphas": [
+      0.5,
+      1.0
+    ],
+    "refresh_interval": 5
+  },
+  "g3": {
+    "name": "Disease Distribution Memory",
+    "components_per_class": 3,
+    "kmeans_iterations": 5,
+    "variance_shrinkage": 0.5,
+    "variance_floor": 1e-05
+  },
+  "memory_optimizer": {
+    "name": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "memory_loss": {
+    "correct_preserve": 0.2,
+    "delta_reg": 0.02,
+    "base_error_weight": 2.0,
+    "base_correct_weight": 1.0
+  },
+  "protocol": {
+    "dataset": "ABIDE A",
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "fold2_exclude_zero_based": [
+      376,
+      406
+    ],
+    "validation_equals_test": true,
+    "transductive_patient_graph": true,
+    "text_prompt": false,
+    "pen": false,
+    "oof_teacher": false,
+    "base_gradients_from_memory": false,
+    "seed_reinitialization_per_epoch": false,
+    "historical_base_anchored": true,
+    "memory_source": "detached CAM144 from one shared BaseEval per fold",
+    "memory_refresh": "read old memory, train/evaluate branches, then build next version"
+  },
+  "references": {
+    "base_experiment": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "e79": "/model/spromptgl/experiment/experiment79_deml",
+    "e79_1": "/model/spromptgl/experiment/experiment79_1_drem",
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "sam2_paper": "https://arxiv.org/abs/2408.00714",
+    "sam2_code": "https://github.com/facebookresearch/sam2"
+  },
+  "training": {
+    "start_epoch": 10,
+    "max_epoch_exclusive": 450,
+    "early_stop_wait_gt": 200,
+    "worker_limit": 10,
+    "shared_base_per_fold": 1,
+    "new_module_dropout": false,
+    "optimizer_config_inherited": true,
+    "max_workers_observed": 10,
+    "device": "PPU-ZW810E",
+    "gpu_memory_mib": 98304,
+    "formal_completion": "30/30"
+  },
+  "audit": {
+    "method_selected_best_expected": 30,
+    "base_anchored_best_expected": 30,
+    "latest_expected": 10,
+    "required_latest_recovery": true,
+    "required_rng_parity": true,
+    "required_empty_memory_identity": true,
+    "required_test_memory_exclusion": true,
+    "required_fold2_exclusion": true,
+    "status": "PASS",
+    "best_audited": 60,
+    "latest_audited": 10,
+    "rng_mismatch_folds": 0
+  },
+  "scientific_verdict": "NO_GO_CAM_MEMORY",
+  "scientific_subfinding": "PROBABILITY_ONLY_NOT_ESTABLISHED"
+}
