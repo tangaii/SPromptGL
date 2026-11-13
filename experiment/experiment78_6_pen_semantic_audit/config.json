@@ -1,0 +1,53 @@
+{
+  "experiment": "E78.6 PEN-SVA",
+  "purpose": "Frozen source, mathematics, checkpoint identity, feature and semantic negative-control audit of original SPromptGL PEN",
+  "seed": 0,
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_6_pen_semantic_audit",
+  "active_output": "/model/spromptgl/experiment/experiment78_6_pen_semantic_audit",
+  "ossfs_primary_status": "EIO_errno5",
+  "protocol": {
+    "dataset": "ABIDE A",
+    "patients": 871,
+    "folds": 10,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "training": false,
+    "fixed_checkpoint_interventions": true,
+    "rebuild_if_missing": false,
+    "historical_selection_limitations": ["val=test", "test-fold ACC checkpoint selection", "CV-before-preprocessing/RFE", "transductive patient graph"]
+  },
+  "original_pen": {
+    "source": "network.py",
+    "prompts": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "class_order": "TD/NC first four; ASD last four; output labels ASD=0, TD=1",
+    "mlp": "4096->128->9 with ReLU after both Linear layers",
+    "spgs": "class-axis softmax followed by max",
+    "res": "AvgPool-derived global feature and Vsim-weighted residual",
+    "cam_shape": [871, 4, 36],
+    "flattened_pen_shape": [871, 4, 4, 9]
+  },
+  "interventions": {
+    "A0": "FULL_PEN",
+    "A1": "RES_ONLY",
+    "A2": "PEN_OFF",
+    "A3": "CLASS_VECTOR_SWAP after text MLP",
+    "A4": "ANONYMOUS_TEXT from E78.1 frozen RN50 cache",
+    "A5": "WRONG_SEMANTIC_TEXT fixed class-mismatched replacement",
+    "A6": "NUMERIC_TEXT_CONTROL fixed private-RNG geometry control",
+    "A7": "NEUTRAL_SPGS equal class similarities",
+    "execution_status": "NOT_VERIFIED without readable original-PEN best state_dict"
+  },
+  "historical_references": {
+    "E32": "/tmp/spromptgl-e785-upload/experiment/experiment32_disease_contrastive_evidence_routing",
+    "E43_3": "/tmp/spromptgl-e785-upload/experiment/experiment43_3_paper_gfr_ablation_reproduction",
+    "E60": "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen"
+  }
+}
