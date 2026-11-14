@@ -1,0 +1,59 @@
+{
+  "experiment": "Experiment 79.3 - Competitive Disease Evidence Memory",
+  "status": "COMPLETE_AUDITED",
+  "scientific_verdict": "NO_GO_COMPETITIVE_MEMORY",
+  "root": "/model/spromptgl/experiment/experiment79_3_competitive_evidence_memory",
+  "preferred_root_probe": "FAILED: OSError(5) Input/output error on OSSFS; fallback used",
+  "base": "E74.4-G2-Positive-DCR",
+  "groups": ["E79.3-G1-CLDCM", "E79.3-G2-CPDEM"],
+  "seed": 0,
+  "formal_folds": 20,
+  "best_checkpoints_audited": 40,
+  "latest_checkpoints_audited": 10,
+  "rng_mismatch_folds": 0,
+  "preflight": "PASS",
+  "independent_audit": "PASS",
+  "training_source_snapshot_sha256": "5edd46183737459673e3a431bcced298876cf1de4e375553978558b0dc3b7610",
+  "source_sha256": {
+    "config.json": "ebf4adffcc57a9f34b40a344a47c6691eeaae452e630e504ba3fac9682753cfa",
+    "run.py": "6fa7a97dd26f0b8f05a53606c0f1c769f29171d4bffb8216ea49c7a96591e378",
+    "memory_common.py": "defab325ae013a93d60c98d0c9428d81ce629f05d868d4a4a7fbada61d2beab7",
+    "contrast_memory.py": "455817877f8c357ec6f913d47c83c6ec7cdd54f7d79757ce149976c14105d517",
+    "evidence_memory.py": "49ea93c08a5e64f47e6c9db4890750a11343ab51a4bec4bf919feb43364ec01b",
+    "audit.py": "9dbee30bb914c7fbd4ad10e05e062be232e83f00e17cfdd38337e182307ecb11",
+    "analyze.py": "ebcc3c429b7d5c99b430bcc80aad75061b79f23ff4316de20d5592e375fdcb18",
+    "path_adapter.py": "9aae92dde5553ea584382191835904941b5e7b9aad0e23e583e10357694c4b3c"
+  },
+  "locked_root_source_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "protocol": {
+    "cam_input": "CAM144",
+    "memory_refresh_interval": 5,
+    "first_refresh_epoch": 11,
+    "memory_dim": 64,
+    "top_k": 8,
+    "temperature": 0.2,
+    "delta_cap": 0.075,
+    "gate_bias": -1.5,
+    "prompt": false,
+    "pen": false,
+    "oof_teacher": false,
+    "base_gradients_from_memory": false,
+    "fold2_exclude_zero_based": [376, 406]
+  },
+  "artifacts": {
+    "preflight": "results/preflight.json",
+    "audit": "results/audit_status.json",
+    "summary": "results/summary.csv",
+    "paired": "results/paired_comparisons.csv",
+    "correction": "results/correction_analysis.csv",
+    "mechanism": "results/mechanism.csv",
+    "interventions": "results/intervention_analysis.csv",
+    "report": "results/report.md"
+  }
+}
