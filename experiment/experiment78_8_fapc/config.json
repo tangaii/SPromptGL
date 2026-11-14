@@ -1,0 +1,114 @@
+{
+  "experiment": "Experiment 78.8 - FAPC",
+  "run_revision": "corrected-neutral-anonymous-and-main-gradient-v2",
+  "name_zh": "冻结语义锚点的疾病原型校准Prompt学习",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_8_fapc",
+  "output": "/model/spromptgl/experiment/experiment78_8_fapc",
+  "fallback_reason": "Preferred OSSFS output was not used; /model is the single active output directory.",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch_zero_based": 10,
+  "early_stop_wait_gt": 200,
+  "selection": "strict test-fold ACC improvement, preserving E74.4 history",
+  "groups": [
+    "E78.8-G1-VisualOnly",
+    "E78.8-G2-FrozenAnchor-Medical",
+    "E78.8-G3-FrozenAnchor-Anonymous"
+  ],
+  "group_specs": {
+    "E78.8-G1-VisualOnly": {"prompt_source": "none", "mode": "visual", "description": "Signed visual disease prototype auxiliary supervision without text."},
+    "E78.8-G2-FrozenAnchor-Medical": {"prompt_source": "medical", "mode": "text", "description": "Frozen common CLIP-anchor space with disease prototype calibration and signed semantic supervision."},
+    "E78.8-G3-FrozenAnchor-Anonymous": {"prompt_source": "anonymous", "mode": "text", "description": "Identical FAPC network and loss with fixed label-only anonymous texts."}
+  },
+  "prompts": {
+    "medical_text": [
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns",
+      "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+    ],
+    "medical_classes": [0,0,0,0,0,1,1,1,1,1],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category alpha, description five.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four.",
+      "A sample assigned to category beta, description five."
+    ],
+    "anonymous_classes": [0,0,0,0,0,1,1,1,1,1],
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "prompt_order": "ASD first five, TD last five; BrainPrompt sentences retain published spelling and TC-to-TD mapping.",
+    "anonymous_text_definition": "Five unique label-only alpha templates for ASD and five unique label-only beta templates for TD; no brain, disease, anatomy, or connectivity terms. Frozen before formal training."
+  },
+  "text_encoder": {
+    "name": "OpenAI CLIP RN50",
+    "weights_path": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "clip_source_root": "/data/adodas/SPromptGL-main/CLIP/clip"
+  },
+  "method": {
+    "cam_dim": 144,
+    "patient_dim": 32,
+    "prompt_count_per_class": 5,
+    "semantic_temperature": 0.25,
+    "semantic_logit_scale": 10.0,
+    "calibration_beta_init": 0.1,
+    "calibration_beta_max": 0.2,
+    "semantic_loss_weight": 0.1,
+    "semantic_keep_weight": 0.01,
+    "gradient_aux_norm_max_ratio": 0.2,
+    "gradient_eps": 1e-12,
+    "no_loo": true,
+    "full_cam144": true,
+    "final_prediction": "original_DARG_logp",
+    "fixed_common_text_row_space": true,
+    "text_anchor_dim": 32,
+    "no_text_projection_parameter": true,
+    "no_new_dropout": true
+  },
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "optimizer_order": ["opt_base", "opt_cam", "opt_added", "new_opt"],
+    "checkpoint_interval_epochs": 10,
+    "max_workers": 10,
+    "default_workers": 10
+  },
+  "protocol": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "modality_dims": [48, 6, 10, 256],
+    "feature_dim": 320,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "val_equals_test": true,
+    "transductive_full_patient_graph": true,
+    "preprocessing_and_rfe_before_outer_cv": true,
+    "fold2_overlap_1based": [377, 407],
+    "overlap_rows_excluded_from_new_support": true,
+    "test_labels_not_used_by_new_module": true,
+    "rng_reseed_each_epoch": false,
+    "best_selection": "strict ACC on historical test fold"
+  },
+  "historical_references": {
+    "github_reference_commit": "d3e78fb1337d67d0be6ec899d914f5270b7740eb",
+    "e74_4_g2": {"acc": 92.1891, "hard_auc": 92.0294, "prob_auc": 93.4946, "sen": 90.0671, "spe": 93.9917, "asd_f1": 91.4590},
+    "e78_7_g1": {"acc": 91.8443, "hard_auc": 91.8087, "prob_auc": 93.8382, "sen": 91.3232, "spe": 92.2942, "asd_f1": 91.2307}
+  }
+}
