@@ -1,0 +1,200 @@
+{
+  "experiment": "Experiment 78.7 - BDP-PL",
+  "name_zh": "双向疾病原型引导Prompt学习",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "base_path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "warmup_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup",
+  "preferred_output": "/data/adodas/SPromptGL-main/experiment/experiment78_7_bdpprompt",
+  "output": "/model/spromptgl/experiment/experiment78_7_bdpprompt",
+  "fallback_reason": "Preferred OSSFS mkdir returned errno 5 Input/output error; /model is sole active output.",
+  "seed": 0,
+  "folds": 10,
+  "max_epoch": 450,
+  "start_epoch_zero_based": 10,
+  "early_stop_wait_gt": 200,
+  "selection": "strict test-fold ACC improvement, preserving E74.4 history",
+  "groups": [
+    "E78.7-G1-InverseCalibration-Medical",
+    "E78.7-G2-PPALSoftAggregation-Medical",
+    "E78.7-G3-Bidirectional-Medical",
+    "E78.7-G4-Bidirectional-Anonymous"
+  ],
+  "group_specs": {
+    "E78.7-G1-InverseCalibration-Medical": {
+      "prompt_source": "medical",
+      "enable_a": true,
+      "enable_b": false,
+      "description": "Disease prototype inverse calibration of ten medical prompts; no PPAL patient aggregation."
+    },
+    "E78.7-G2-PPALSoftAggregation-Medical": {
+      "prompt_source": "medical",
+      "enable_a": false,
+      "enable_b": true,
+      "description": "PPAL-style DARG probability weighted patient evidence with uncalibrated medical prompts."
+    },
+    "E78.7-G3-Bidirectional-Medical": {
+      "prompt_source": "medical",
+      "enable_a": true,
+      "enable_b": true,
+      "description": "Full bidirectional prototype-to-prompt calibration and prompt-to-patient aggregation."
+    },
+    "E78.7-G4-Bidirectional-Anonymous": {
+      "prompt_source": "anonymous",
+      "enable_a": true,
+      "enable_b": true,
+      "description": "Same bidirectional network and loss with fixed label-only anonymous prompts."
+    }
+  },
+  "prompts": {
+    "medical_text": [
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns",
+      "A brain network of a ASD subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD.",
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "A brain network of a TC subject. The entire population is categorized into two groups: typical controls (TC) and individuals diagnosed with ASD."
+    ],
+    "medical_classes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "anonymous_text": [
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category alpha, description two.",
+      "A sample assigned to category alpha, description three.",
+      "A sample assigned to category alpha, description four.",
+      "A sample assigned to category alpha, description one.",
+      "A sample assigned to category beta, description one.",
+      "A sample assigned to category beta, description two.",
+      "A sample assigned to category beta, description three.",
+      "A sample assigned to category beta, description four.",
+      "A sample assigned to category beta, description one."
+    ],
+    "anonymous_classes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "prompt_order": "ASD first five, TD last five; BrainPrompt sentences retain published spelling and TC-to-TD mapping."
+  },
+  "method": {
+    "cam_dim": 144,
+    "patient_dim": 32,
+    "prompt_count_per_class": 5,
+    "attention_heads": 4,
+    "progressive_iterations": 3,
+    "attention_tau": 0.1,
+    "attention_tau_fixed": true,
+    "calibration_beta_init": 0.1,
+    "calibration_beta_max": 0.2,
+    "aggregation_gamma_init": 0.1,
+    "aggregation_gamma_max": 0.2,
+    "semantic_temperature": 0.25,
+    "semantic_logit_scale": 10.0,
+    "semantic_loss_weight": 0.1,
+    "semantic_keep_weight": 0.01,
+    "semantic_keep_enabled_only_for_direction_a": true,
+    "teacher_probability_stop_gradient": true,
+    "no_loo": true,
+    "full_cam144": true,
+    "final_prediction": "original_DARG_logp",
+    "no_direct_prototype_classifier": true,
+    "no_new_dropout": true
+  },
+  "training": {
+    "new_optimizer": "AdamW",
+    "new_lr": 0.0005,
+    "new_weight_decay": 0.01,
+    "optimizer_order": [
+      "opt_base",
+      "opt_cam",
+      "opt_added",
+      "new_opt"
+    ],
+    "checkpoint_interval_epochs": 10,
+    "max_workers": 10,
+    "default_workers": 10
+  },
+  "protocol": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "modalities": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "CORR"
+    ],
+    "modality_dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "feature_dim": 320,
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "val_equals_test": true,
+    "transductive_full_patient_graph": true,
+    "preprocessing_and_rfe_before_outer_cv": true,
+    "fold2_overlap_1based": [
+      377,
+      407
+    ],
+    "overlap_rows_excluded_from_new_support": true,
+    "test_labels_not_used_by_new_module": true,
+    "rng_reseed_each_epoch": false,
+    "best_selection": "strict ACC on historical test fold"
+  },
+  "historical_references": {
+    "github_reference_commit": "d3e78fb1337d67d0be6ec899d914f5270b7740eb",
+    "e74_4_g2": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917,
+      "asd_f1": 91.459
+    },
+    "e78_1_g1": {
+      "acc": 92.1891,
+      "hard_auc": 92.048,
+      "prob_auc": 93.8609
+    },
+    "e78_4_g3": {
+      "acc": 91.3845,
+      "hard_auc": 91.1684,
+      "prob_auc": 93.4184
+    },
+    "e78_5_g2": {
+      "acc": 92.0742,
+      "hard_auc": 91.9072,
+      "prob_auc": 93.4286
+    },
+    "e78_6_conclusion": "COMPUTATION_ACTIVE; EXPLICIT_CLASS_DIRECTION_NOT_PRESERVED_BY_SPGS; MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED"
+  }
+}
