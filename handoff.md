@@ -1394,7 +1394,22 @@ C：20固定组，U00 P0/U01 E9；U02–05严格复现T05/T11/T10/T04；U06–13
 
 五条主要认识：1. signed contrast来源仅训练诊断标签，不能提升为临床真值；2. 正确文本必须超过数值/中性/随机/错解剖，最高ACC不够；3. 图幅度需固定checkpoint消融与数值图共同审查，非Shapley；4. E9正交潜在方向不保证独立增量；5. val=test、全局RFE/标准化、transductive和共享fold限制泛化及显著性。详细实测量与反事实见report。
 
-工程阻塞：RuntimeError('Task failed; formal run stopped: M07_seed1; best_acc=0.954545454545 wait=201\nTraceback (most recent call last):\n  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1292, in <module>\n    if __name__==\'__main__\':main()\n                            ^^^^^^\n  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1277, in main\n    i=sys.argv.index(\'--worker\');worker(sys.argv[i+1],int(sys.argv[i+2]));return\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 405, in worker\n    diagnostic=diagnostics(a,config,seed,fold,out,tracker);diagnostic[\'task_signature\']=sig\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 824, in diagnostics\n    strength_histogram=json.dumps(torch.histc(strength[te].float(),bins=10,min=0,max=.2).cpu().tolist()),\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: _histc_cuda with floating point input does not have a deterministic implementation, but you set \'torch.use_deterministic_algorithms(True)\'. You can turn off determinism just for this operation, or you can use the \'warn_only=True\' option, if that\'s acceptable for your application. You can also file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation.\n')；没有完成的正式fold不作结论。
+工程阻塞：RuntimeError('Task failed; formal run stopped: M07_seed1; best_acc=0.954545454545 wait=201
+Traceback (most recent call last):
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1292, in <module>
+    if __name__==\'__main__\':main()
+                            ^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 1277, in main
+    i=sys.argv.index(\'--worker\');worker(sys.argv[i+1],int(sys.argv[i+2]));return
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 405, in worker
+    diagnostic=diagnostics(a,config,seed,fold,out,tracker);diagnostic[\'task_signature\']=sig
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/run.py", line 824, in diagnostics
+    strength_histogram=json.dumps(torch.histc(strength[te].float(),bins=10,min=0,max=.2).cpu().tolist()),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: _histc_cuda with floating point input does not have a deterministic implementation, but you set \'torch.use_deterministic_algorithms(True)\'. You can turn off determinism just for this operation, or you can use the \'warn_only=True\' option, if that\'s acceptable for your application. You can also file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation.
+')；没有完成的正式fold不作结论。
 
 后续唯一问题：训练内选模与独立站点下真实医学先验能否超过同容量数值/中性；不自动调词、调参或建立实验23。root CORE与实验1–21只读，根handoff完整原前缀逐字保留；未commit/push。
 
@@ -6229,3 +6244,1013 @@ Artifacts: results/report.md, summary.csv, fold_metrics.csv, paired_comparisons.
 - 原型与机制审计：G1 类原型槽位 320/320 有效并被检索，平均覆盖 1.0000，最大类内坍缩率（cos>0.98）为 0。G2 记忆涵盖折内训练患者合计 88 个 FP（TD→ASD）和 179 个 FN（ASD→TD）；FP/FN 有效槽位分别 78/80、80/80，40/40 个方向×模态×折 bank 均有检索。稳定 FP/FN 记录分别为 115,510/99,585 个 epoch observations；单独标记 near-FP/near-FN 分别 107,811/87,974，均为重复 epoch 观察数、不是独立患者数。关闭困难证据与交换 ASD/TD 语义的推理诊断均未改变硬预测；关闭类原型检索平均硬预测变化率 0.0011（全体测试样本仅 1 次翻转）。因此原型库可访问且未塌缩，但困难证据和真实语义未显示硬决策贡献，G2 的微小组间变化不能归因于 FP/FN 或医学语义机制。
 - 限制：保留基座 `val=test` checkpoint 选择、外层交叉验证前历史 RFE、transductive 全图传播及 Fold-2 已知训练/测试重叠（1-based ID 377、407）；不修改历史拆分，但两位重叠受试者被排除在记忆库之外。全图传递仍可能使训练表示间接受测试节点特征影响，故不能声称消除了跨折信息流。单 seed 结果不证明跨 seed 稳定或独立临床泛化。E77 两组主要指标未优于基座，且 SEN 下降；登记 `NO-GO`，不自动启动额外搜索或训练。
 - 收尾记录：首次 finalize 仅因报告汇总代码 `NameError` 失败，修复后基于同一批 checkpoint 重新独立审计，无重训；最终 `results/report.md` 和 `manifest.json` 均为 NO-GO，manifest 确认保护源码/数据/历史实验哈希未变。重要产物：`results/fold_metrics.csv`、`paired_comparisons.csv`、`checkpoint_audit.csv`、`interventions.csv`、`memory_audit.json`、`preflight.json`、`manifest.json`。建议先重新设计机制并针对有活动 PEN 的明确基座做小规模机制预检；当前结果不应作为已替换 PEN 或临床泛化收益的证据。
+
+## Experiment 76.1 — DCMP-R
+
+- 状态：`COMPLETE_AUDITED`，30/30训练任务完成、30/30独立Checkpoint复算通过；预注册结论 `NO-GO`。目录：`/data/adodas/SPromptGL-main/experiment/experiment76_1_dcmpr/`。
+- 依据核查：对照SPromptGL MICCAI 2025的GFR/CAM/OutputLayer实际路径、BrainPrompt官方ABIDE疾病文本、CoW的错误驱动困难样本思想、PGP-SAM的类别原型条件化机制，并检查HP²L的原型Prompt相关性。BrainPrompt官方ABIDE文本中TD/TC先于ASD，实验映射为ASD=0、TD=1；疾病语义使用已审计的冻结CLIP RN50缓存，不代表复现BrainPrompt原语言模型。HP²L研究层级疾病分类，本实验假设聚焦双向混淆记忆与患者自适应纠错。
+- 正式训练基座为E74.4-G2-Positive-DCR，逐折恢复E61 epoch-10 warmup及完整原始模型、优化器、RNG、训练索引与患者对。DARG、统一Positive-DCR图、原损失、CAM和144维OutputLayer输入结构保留；DCMP-R仅插入CAM144与原OutputLayer之间，CAM每次仅调用一次。没有从任何历史最佳Checkpoint微调。
+- 三组设计：G1启用类别平衡典型ASD/TD原型和真实BrainPrompt疾病文本；G2在G1上增加两个方向的真实5折OOF LogisticRegression probe误判困难记忆；G3与G2结构相同，只用范数和类别余弦关系匹配的匿名文本向量。三组统一采用角色内余弦温度0.10、EMA 0.9、每20 epoch在固定合法训练池内确定性重聚类、5%最大CAM144残差、hard-margin 0.02及easy-preserve 0.01辅助损失。probe OOF仅针对probe；warmup编码器已见外层训练数据，故不能描述为深度模型严格OOF。
+- 记忆库只纳入当前外层训练集且排除外层测试ID。Fold 2额外将历史重叠的1-based row 377/407从新增记忆及新增监督中排除；各折记忆隔离检查通过。每折平均probe OOF错误316.6例，困难原型每折支持156例（两个方向总和）；probe错误与warmup分类器错误平均Jaccard为0.3334，说明probe困难集合并不等同于warmup分类器错误集合。
+
+| 组别 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| G1 | 91.9592±2.8219 | 91.7901±2.8294 | 93.6198±3.1466 | 89.5793±4.5762 | 94.0009±4.3852 | 91.1605±3.0837 |
+| G2 | 91.9606±2.5243 | 91.7955±2.5262 | 93.6858±2.5728 | 89.5854±3.4710 | 94.0056±3.3042 | 91.1683±2.7454 |
+| G3 | 91.9592±2.8219 | 91.7715±2.8154 | 93.5736±2.9566 | 89.3293±3.7140 | 94.2137±3.8661 | 91.1484±3.0461 |
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+
+- 相对E74.4-G2，G2的十折配对变化（百分点；W/T/L）：ACC `-0.2286`（2/4/4），Hard-AUC `-0.2339`（2/3/5），Prob-AUC `+0.1912`（6/1/3），SEN `-0.4817`（1/5/4），SPE `+0.0139`（2/5/3），ASD-F1 `-0.2907`（2/3/5）。排除Fold 2后G2为92.0890±2.6297 ACC、91.9237±2.6318 Hard-AUC、93.7972±2.6890 Prob-AUC、89.7832±3.6049 SEN、94.0641±3.4780 SPE、91.2981±2.8647 ASD-F1；相对基座九折配对变化依次为`-0.1263/-0.1244/+0.1830/-0.2642/+0.0154/-0.1721` pp，未显示基座恢复。
+- 关键内部对照：G2−G1十折ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1为`+0.0013/+0.0054/+0.0660/+0.0061/+0.0046/+0.0078` pp，ACC W/T/L为2/6/2；G2−G3分别为`+0.0013/+0.0240/+0.1122/+0.2561/-0.2081/+0.0199` pp，ACC W/T/L也为2/6/2。差异很小且跨折不一致，不能支持困难记忆或真实疾病语义具有独立性能收益。
+- 机制结果：G2测试残差比例均值2.2597%、跨折平均P95为2.8356%、最大4.2399%，低于5%上限，说明残差不再被统一拉到裁剪边界。关闭G2纠错残差0次硬翻转；关闭困难记忆0次硬翻转，平均ASD概率绝对变化0.00123；关闭真实文本条件0次硬翻转，平均绝对变化约0.000088。三组总共只有一次纠错关闭翻转，发生在G1且为原正确变错误；G2困难记忆没有净纠正。Fold 2的row 377/407均未受固定Checkpoint干预翻转。G2四角色平均Role-Confidence约`[0.2324,0.1870,0.3550,0.2256]`，但角色权重及原型可访问性没有转化成硬决策收益。
+- 预检及审计：10/10基座/warmup初始化与Zero-injection parity通过；训练历史源SHA `3d1845f4cea6526b9a93b71b7d2b65f720f6b6b92d1602d7262751a823e91822`，配置SHA `a9af63bc686f7d2141791f0aabb03acc7679353a4b1e7f4fad7c19b28c1252c1`。E74.4-G2共有epoch RNG三元组`10950/10950`精确匹配，组间共有epoch`10774/10774`匹配；指标、硬预测和概率均从磁盘Checkpoint独立复算一致，测试患者不在记忆库，原始模型及锁定历史输入哈希未变。
+- 审计收尾中发现审计统计对已筛出的test attention重复套用全局索引，产生CUDA越界断言；仅修复`audit.py`，未改训练代码、配置、权重或结果，也未重训。审计修复SHA：`31034b490ec81cc9fab17f1ff3daa9cef326113bb7c88dd2a6b11fe519dd2419` → `0d97b921eeee01f7b4411e7179b2655e6595834c65d578fca46ff1192c6e2f8d`；修复后完整30/30审计通过。正式训练10 worker、单卡PPU-ZW810E，训练耗时1104.7秒，审计约58秒；无训练失败、OOM或重试。
+- 历史限制仍包括`val=test`选最佳epoch、CV前RFE/标准化、transductive患者图及Fold 2基座训练/测试标签重叠，因此结果仅是历史协议下的机制配对，不是无泄漏泛化验证。总评 `NO-GO`：虽然残差幅度机制不再贴顶，但混淆记忆对硬决策没有净纠正、真实文本不优于匿名控制，三组ACC与Hard-AUC仍低于基座。结果文件：`results/report.md`、`summary.csv`、`fold_metrics.csv`、`paired_comparisons.csv`、`mechanism.csv`、`interventions.csv`、`checkpoint_audit.csv`、`audit_status.json`、`audit_repair.json`、`manifest.json`。下一步应先重审纠错证据到OutputLayer的有效梯度/边界，再进行严格独立验证；不建议扩组或按当前测试集调参。
+## Experiment 76.2 — DCP-Probe
+
+- 状态：`COMPLETE_AUDITED`；H1=`NOT_SUPPORTED`，H2=`NO-GO: STOP_CURRENT_PROTOTYPE_MEMORY_DIRECTION`。目录：`/data/adodas/SPromptGL-main/experiment/experiment76_2_dcp_probe/`。10折冻结诊断约58.95秒；未训练DARG/GFR/CAM、未更新参数/优化器、未改历史Checkpoint。
+- 依据核查：复核SPromptGL的CAM144→OutputLayer真实接口、CoW错误驱动困难样本思想、PGP-SAM类内/类间原型诊断。PGP-SAM使用可学习Embedding原型；本实验的归一化患者均值和medoid不是其实现。E74.4-G2是唯一特征基座；E76/E76.1仅作历史背景。历史E74.4-G2 test-selected ACC为92.1891±2.7648%，不与内层OOF读出直接比较。
+- 每折从审计通过的E74.4-G2最佳Checkpoint提取CAM144 `[871,144]`，原OutputLayer仅调用一次；同时比对同折E61 warmup、best、final-latest三个不同SHA的真实快照。所有折模型/CAM权重SHA未变；零扰动概率严格一致，Checkpoint概率复算最大绝对误差`1.1921e-7`。10次1%/2%患者RMS扰动只重跑OutputLayer，代表局部分类器稳定性，不代表跨epoch持续误判。
+- 原型和诊断支持为`outer_train - outer_test`。Fold 2基座仍有1-based row 377/407历史重叠，但排除在新增原型及读出支持外。内层V患者不入对应原型库；读出训练原型证据另用3折cross-fitting防止自匹配，标准化只在诊断训练支持拟合。测试标签只在规则冻结后用于评分。基座`val=test`选模、CV前RFE/标准化、transductive图和Fold 2重叠偏差仍在。
+- 预注册置信度及至少9/10局部扰动同向角色共计：R_ASD 3334、R_TD 4052、H_ASD→TD 128、H_TD→ASD 50。每折只有warmup、best、final-latest三个不同状态；178个稳定误判候选中79个在全部快照保持相同错误方向，不能称作连续持续误判。困难方向支持不足时保留缺失掩码。可靠原型对未参与建库训练病例的same-class minus other-class余弦差在10/10折为正，均值0.8616；但19个可用困难方向差异全部偏向相反类，联合类方向一致条件为0/10。配对方向bootstrap相对完整向量余弦均值0.9742（向量可重复但方向语义错误）。站点匹配最近邻类差均值0.5080，不能排除站点混杂。
+
+| 内层OOF诊断方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 CAM-only Linear | 96.2494±0.7561 | 96.2112±0.7361 | 98.4720±0.2909 | 95.6986±0.6684 | 96.7237±1.0968 | 95.9394±0.8063 |
+| B0-NL CAM-only RBF-SVM | 97.2571±0.5750 | 97.2156±0.5566 | 99.1698±0.2213 | 96.6634±0.7365 | 97.7678±1.0150 | 97.0268±0.6128 |
+| B1 CAM + Reliable | 96.2494±0.7689 | 96.2111±0.7516 | 98.4826±0.2877 | 95.6986±0.7017 | 96.7237±1.0763 | 95.9391±0.8214 |
+| B2 CAM + Reliable/Hard Paired | 96.4408±0.6111 | 96.3931±0.6072 | 98.5296±0.2717 | 95.7538±0.6904 | 97.0323±0.7676 | 96.1388±0.6595 |
+| B3 Shuffled Pair Control | 96.2979±0.6723 | 96.2555±0.6597 | 98.4892±0.3049 | 95.6876±0.6475 | 96.8235±0.9212 | 95.9883±0.7212 |
+
+- 十折配对B2−B0的ACC/Hard-AUC/Prob-AUC为`+0.191/+0.182/+0.058 pp`，ACC W/T/L `6/2/2`，主要差值的描述性95%区间跨0。B2−B1 ACC `+0.191 pp`（7/1/2），Prob-AUC `+0.047 pp`。B2−B3为`+0.143/+0.138/+0.040 pp`（ACC 9/0/1，区间为正）。但B2相对CAM-only RBF读出低`0.816/0.823/0.640 pp`，ACC/Hard/Prob均10/10折负向。去Fold 2后B2−B0/B1/B3的ACC分别`+0.255/+0.255/+0.156 pp`，仍比RBF低0.709 pp；没有显示超出非线性CAM144的额外疾病信息。
+- B2−B0按外层折重复计数：wrong→correct 35、correct→wrong 20、净+15；稳定误判子集仅纠正1、新增错误4、净−3。B2−B1稳定误判净−3；B2对5次伪配对平均净−0.6。B2−B0-NL全体净−64、稳定困难子集净−14。因同一患者可出现在多个外层训练诊断中，这些是折级重复计数，不是唯一患者人数。
+- 独立审计`PASS`：10/10最佳Checkpoint身份及SHA核对，50/50方法×折指标复算，240/240机制行复算；10/10支持集排除外层测试ID，Fold 2 row 377/407明确排除；模型参数未更新。预注册结论H1 `NOT_SUPPORTED`、H2 `NO-GO: STOP_CURRENT_PROTOTYPE_MEMORY_DIRECTION`，不建议开展E76.3端到端训练。结果只适用于冻结表示诊断，历史checkpoint选择/预处理/transductive及Fold 2偏差仍在。
+- 产物：`/data/adodas/SPromptGL-main/experiment/experiment76_2_dcp_probe/results/report.md`及同目录`fold_metrics.csv`、`paired_comparisons.csv`、`prototype_diagnostics.csv`、`mechanism.csv`、`audit_status.json`、`manifest.json`。源清单SHA256 `386e9761ba8196971646ee2e7d4a1b800f58db4b38efc7da205efaada9d7b8cf`；probe.py `b96bac562837b274405e9dba3eb9c23f56ed605d2b5283d30dacefcde9386127`，audit.py `7e3dc682c7bc0114d5ab136819715050521206b48ec1d8e615f553fb36821ddc`，config.json `33d54169e7a17bf7693a1a07fb1594b7597cea4e2af1cfa51a8b6edff60c9b93`。
+- 角色计数是10个外层fold的支持样本计数之和，同一受试者可能在不同fold重复出现，不能解释为唯一受试者数。
+<!-- EXPERIMENT75_4_DPUSA_2026-11-10 -->
+
+## Experiment 75.4 — DPUSA
+
+- 目的：检验原始及候选疾病Prompt能否在冻结E74.4-G2特征上提供超出基座校准分数与同容量无文本信号的预测效用；未重训DARG/CAM。正式目录：`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit`。
+- 基座：E74.4-G2-Positive-DCR；历史30/30训练和独立审计通过。冻结回放10/10通过，RN50 `afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762`，Prompt编码与特征SHA见`manifest.json`。
+- Prompt：P1原始SPromptGL-8、P2官方BrainPrompt-2、P3类别定义、P4模态描述、P5功能网络描述、P6异质性描述；控制为P1/P5投影后Gram匹配匿名向量、C1错配类别、C3无关英文句及3个随机单位向量实例。
+- 全部结果为冻结特征上的外层十折探索性诊断。Fold 2中377/407行从所有新增探针训练/调参中排除；历史`val=test`、CV前预处理和871节点transductive图仍限制独立泛化解释。
+- 冻结特征审计：PASS 10/10；Prompt/探针预测独立复算：PASS all prediction groups independently recomputed；匿名Gram最大误差：1.78e-15。
+- 冻结表示监督基准：S0历史输出、M0基座log-odds内层校准、S1十六个单Token探针、S2完整H144和S3 DARG F320均包含在`summary.csv`。Fold 2新增探针排除了暴露行。
+- B2（训练集受限9→128对齐）各Prompt M2汇总：
+|Prompt/control|ACC|Hard-AUC|Prob-AUC|SEN|SPE|ASD-F1|Log-loss|Brier|
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+|P1-SPromptGL-8|89.4357±3.0805|89.3044±3.0683|93.0695±2.7550|87.6098±3.6372|90.9991±3.8850|88.4969±3.2124|0.3804±0.1289|0.0879±0.0256|
+|P2-BrainPrompt-2|90.3527±2.4848|90.2331±2.4781|92.9716±2.9753|88.5976±2.9401|91.8686±3.0195|89.4843±2.6631|0.3724±0.1271|0.0882±0.0249|
+|P3-Class-Definition-8|88.7448±3.2521|88.6475±3.2570|92.8455±2.3776|87.3598±3.8777|89.9352±3.7837|87.7951±3.4355|0.3816±0.1074|0.0923±0.0240|
+|P4-Modality-Aware-8|89.7766±3.1967|89.6221±3.1831|92.7417±2.6505|87.5976±3.6782|91.6466±3.9245|88.8210±3.4211|0.3956±0.1279|0.0902±0.0252|
+|P5-Functional-Network-8|89.0909±2.7389|89.0024±2.7441|92.6969±2.6080|87.8476±3.4064|90.1573±3.2378|88.1757±2.9201|0.3822±0.1145|0.0907±0.0230|
+|P6-Heterogeneity-Aware-8|89.2019±3.2694|89.1011±3.2446|92.6828±2.4850|87.8415±3.4243|90.3608±4.1556|88.3026±3.4391|0.3923±0.1179|0.0909±0.0241|
+|P1-SPromptGL-Anonymous-Gram-Matched|89.5481±3.0698|89.4279±3.0408|92.8280±2.6268|87.8476±3.5851|91.0083±4.1831|88.6336±3.2497|0.3897±0.1161|0.0901±0.0236|
+|P5-Functional-Network-Anonymous-Gram-Matched|89.4344±3.1258|89.3611±3.1047|92.9105±2.4014|88.3476±3.5008|90.3747±3.9818|88.5757±3.3234|0.3872±0.1184|0.0905±0.0237|
+|C3-Unrelated-English-8|89.0922±3.3037|88.9799±3.3100|92.9947±2.3466|87.6037±3.9887|90.3562±3.9632|88.1596±3.4500|0.3831±0.1193|0.0895±0.0250|
+|RND-Unit-75451|89.3195±3.2199|89.1871±3.2086|92.7536±2.5967|87.3659±3.8548|91.0083±3.9558|88.3514±3.4372|0.3835±0.1224|0.0902±0.0257|
+|RND-Unit-75452|88.7474±2.7145|88.6414±2.6607|92.4510±2.4173|87.3476±3.2328|89.9352±4.2353|87.8107±2.7900|0.3971±0.1109|0.0934±0.0237|
+|RND-Unit-75453|89.3195±2.7315|89.2368±2.7067|92.7741±2.7502|88.1037±3.2490|90.3700±3.6426|88.4381±2.8546|0.3987±0.1261|0.0931±0.0241|
+- B2 Prompt相对M0/M1的折级平均增量；括号为W/T/L：
+|Prompt|M2−M0 log-loss gain|M2−M0 Prob-AUC pp|M2−M1 log-loss gain|M2−M1 Prob-AUC pp|
+|---|---:|---:|---:|---:|
+|P1-SPromptGL-8|-0.03362 (4/0/6)|-0.42506 (3/0/7)|-0.01088 (4/0/6)|0.10997 (6/0/4)|
+|P2-BrainPrompt-2|-0.02561 (1/0/9)|-0.52299 (1/0/9)|-0.00286 (7/0/3)|0.01204 (6/0/4)|
+|P3-Class-Definition-8|-0.03486 (3/0/7)|-0.64909 (2/0/8)|-0.01211 (5/0/5)|-0.11406 (4/0/6)|
+|P4-Modality-Aware-8|-0.04879 (2/0/8)|-0.75290 (1/0/9)|-0.02604 (2/0/8)|-0.21787 (3/0/7)|
+|P5-Functional-Network-8|-0.03539 (1/0/9)|-0.79771 (2/0/8)|-0.01265 (4/0/6)|-0.26267 (5/1/4)|
+|P6-Heterogeneity-Aware-8|-0.04551 (1/0/9)|-0.81176 (1/0/9)|-0.02276 (3/0/7)|-0.27673 (3/0/7)|
+- 排除Fold 2后的九折描述性B2增量；括号为W/T/L：
+|Prompt|M2−M0 log-loss gain|M2−M0 Prob-AUC pp|M2−M1 log-loss gain|M2−M1 Prob-AUC pp|
+|---|---:|---:|---:|---:|
+|P1-SPromptGL-8|-0.02799 (4/0/5)|-0.40749 (3/0/6)|-0.01116 (4/0/5)|0.09273 (5/0/4)|
+|P2-BrainPrompt-2|-0.02212 (1/0/8)|-0.49273 (1/0/8)|-0.00529 (6/0/3)|0.00749 (5/0/4)|
+|P3-Class-Definition-8|-0.02740 (3/0/6)|-0.55626 (2/0/7)|-0.01057 (5/0/4)|-0.05604 (4/0/5)|
+|P4-Modality-Aware-8|-0.04157 (2/0/7)|-0.67160 (1/0/8)|-0.02474 (2/0/7)|-0.17138 (3/0/6)|
+|P5-Functional-Network-8|-0.03512 (1/0/8)|-0.70371 (2/0/7)|-0.01829 (3/0/6)|-0.20349 (5/1/3)|
+|P6-Heterogeneity-Aware-8|-0.04230 (1/0/8)|-0.82537 (1/0/8)|-0.02547 (2/0/7)|-0.32515 (2/0/7)|
+- 语义几何（CLIP原始1024维）：
+P1-SPromptGL-8: intra-ASD=0.8049269050016212, intra-TD=0.7601535930042967, inter-class=0.758950663809137, centroid cosine=0.9070363699951143
+P2-BrainPrompt-2: intra-ASD=None, intra-TD=None, inter-class=0.9847825654411677, centroid cosine=0.9847825654411678
+P3-Class-Definition-8: intra-ASD=0.8833923251852379, intra-TD=0.8375854652200386, inter-class=0.8477585333745579, centroid cosine=0.9470026277023676
+P4-Modality-Aware-8: intra-ASD=0.8508631547314888, intra-TD=0.7621044743680035, inter-class=0.7662276139456323, centroid cosine=0.8969965829207311
+P5-Functional-Network-8: intra-ASD=0.8939136128022828, intra-TD=0.9063339408537355, inter-class=0.8506249751332444, centroid cosine=0.9195139412171568
+P6-Heterogeneity-Aware-8: intra-ASD=0.9044899589776754, intra-TD=0.8344731155074219, inter-class=0.8411334007002133, centroid cosine=0.9328006831942626
+- 错误类别语义C1（固定分类器与重新拟合分开）：
+P1-SPromptGL-WrongClass / B1-fixed / B1-Prompt: ACC=89.5520±2.7903%, Prob-AUC=92.9901±2.1953%
+P1-SPromptGL-WrongClass / B1-fixed / M2-B1-BasePlusPrompt: ACC=89.7806±2.3855%, Prob-AUC=93.2663±2.2543%
+P1-SPromptGL-WrongClass / B2-trained-alignment / B2-Prompt: ACC=89.3182±2.9204%, Prob-AUC=93.2828±2.8243%
+P1-SPromptGL-WrongClass / B2-trained-alignment / M2-B2-BasePlusPrompt: ACC=89.5468±2.5017%, Prob-AUC=92.9282±2.4958%
+P1-SPromptGL-WrongClass / C1-B2-fixed-head / C1-B2-WrongClass-FixedHead: ACC=26.1925±15.1121%, Prob-AUC=13.3526±12.7791%
+P1-SPromptGL-WrongClass / C1-fixed-head / C1-WrongClass-FixedHead: ACC=27.8971±13.8846%, Prob-AUC=6.8344±2.0801%
+P1-SPromptGL-WrongClass / C1-refit-head / C1-WrongClass-RefitHead: ACC=89.5520±2.7903%, Prob-AUC=92.9901±2.1953%
+P4-Modality-Aware-WrongClass / B1-fixed / B1-Prompt: ACC=89.5481±3.6225%, Prob-AUC=92.9318±2.7542%
+P4-Modality-Aware-WrongClass / B1-fixed / M2-B1-BasePlusPrompt: ACC=89.4357±2.8580%, Prob-AUC=93.0655±2.8939%
+P4-Modality-Aware-WrongClass / B2-trained-alignment / B2-Prompt: ACC=89.0896±3.1875%, Prob-AUC=92.7270±3.0931%
+P4-Modality-Aware-WrongClass / B2-trained-alignment / M2-B2-BasePlusPrompt: ACC=88.9760±3.2652%, Prob-AUC=93.3073±2.4385%
+P4-Modality-Aware-WrongClass / C1-B2-fixed-head / C1-B2-WrongClass-FixedHead: ACC=25.0483±13.8312%, Prob-AUC=16.4742±16.8847%
+P4-Modality-Aware-WrongClass / C1-fixed-head / C1-WrongClass-FixedHead: ACC=22.8383±11.9265%, Prob-AUC=11.6054±13.0659%
+P4-Modality-Aware-WrongClass / C1-refit-head / C1-WrongClass-RefitHead: ACC=89.5481±3.6225%, Prob-AUC=92.9318±2.7542%
+P5-Functional-Network-WrongClass / B1-fixed / B1-Prompt: ACC=88.5123±3.8565%, Prob-AUC=93.1447±2.7768%
+P5-Functional-Network-WrongClass / B1-fixed / M2-B1-BasePlusPrompt: ACC=89.3169±2.9661%, Prob-AUC=93.1552±2.7601%
+P5-Functional-Network-WrongClass / B2-trained-alignment / B2-Prompt: ACC=89.5468±3.3188%, Prob-AUC=92.6838±2.6302%
+P5-Functional-Network-WrongClass / B2-trained-alignment / M2-B2-BasePlusPrompt: ACC=89.7793±3.0672%, Prob-AUC=92.7541±2.5447%
+P5-Functional-Network-WrongClass / C1-B2-fixed-head / C1-B2-WrongClass-FixedHead: ACC=31.7150±18.3968%, Prob-AUC=12.2443±12.8789%
+P5-Functional-Network-WrongClass / C1-fixed-head / C1-WrongClass-FixedHead: ACC=18.6129±12.9788%, Prob-AUC=6.8553±2.7768%
+P5-Functional-Network-WrongClass / C1-refit-head / C1-WrongClass-RefitHead: ACC=88.5123±3.8565%, Prob-AUC=93.1447±2.7768%
+- Token选择稳定性（训练集bootstrap）与监督Token Top-4重叠：
+P1-SPromptGL-8: train-bootstrap Top-4 Jaccard=0.5524; supervised Top-4 overlap=1.100/4
+P2-BrainPrompt-2: train-bootstrap Top-4 Jaccard=0.8400; supervised Top-4 overlap=1.000/4
+P3-Class-Definition-8: train-bootstrap Top-4 Jaccard=0.5969; supervised Top-4 overlap=0.900/4
+P4-Modality-Aware-8: train-bootstrap Top-4 Jaccard=0.5677; supervised Top-4 overlap=1.000/4
+P5-Functional-Network-8: train-bootstrap Top-4 Jaccard=0.6480; supervised Top-4 overlap=0.900/4
+P6-Heterogeneity-Aware-8: train-bootstrap Top-4 Jaccard=0.6231; supervised Top-4 overlap=0.900/4
+- 16个单Token探针中监督重要性排名前四：
+Token 8 (slot 2): Prob-AUC=88.683±3.977%, supervised Top-4 in 0.70 folds
+Token 10 (slot 2): Prob-AUC=86.340±3.012%, supervised Top-4 in 0.80 folds
+Token 6 (slot 1): Prob-AUC=91.357±2.711%, supervised Top-4 in 0.40 folds
+Token 11 (slot 2): Prob-AUC=82.098±9.295%, supervised Top-4 in 0.60 folds
+- 科研分类：**NO_DETECTABLE_PROMPT_BENEFIT**。十折/九折、B1/B2及负对照详见`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit/results/report.md`、`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit/results/summary.csv`、`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit/results/incremental_utility.csv`、`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit/results/paired_comparisons.csv`及`/data/adodas/SPromptGL-main/experiment/experiment75_4_prompt_utility_audit/results/token_diagnostics.csv`。
+- 限制：B1随机投影空间与CLIP/CAM原空间不对齐；B2受限对齐会利用训练标签；P2每类1条文本；P4-P6未经专家验证；CORR索引无可审核的网络/ROI映射。结果不能单独证明疾病语义机制成立。
+- 下一步：只有当B2真实医学Prompt相对类别定义、匿名/随机文本和M1无文本容量匹配对照表现出稳定增量，且Token选择在训练重采样中稳定时，才值得将疾病Prompt保留为第二模块候选；否则优先采用无文本证据探针或停止语义分支。
+
+<!-- EXPERIMENT75_4_DPUSA_2026-11-10 -->
+
+## Experiment 77.1 — SC-PERM（语义条件化原型证据与持续误诊记忆）
+
+- 状态：`COMPLETE_AUDITED`；结论`NO-GO`。G1/G2/G3各10/10折，共30/30正式训练；30/30最佳checkpoint独立读回复算。目录：`/data/adodas/SPromptGL-main/experiment/experiment77_1_sc_perm/`；9个worker、单GPU，无OSSFS EIO。
+- 机制：语义参与CAM病例原型Top-2检索和类别证据；持续FP/FN训练患者池保留错误方向，以典型证据约束困难反例证据，最后通过有界类别margin修正基座双类log-probabilities。相对E77从弱特征残差改为决策边界证据。E74.4-G2的DARG `[871,320]`、CAM分类输入 `[871,144]`（PHENO/ANAT/FUNC/CORR，36维学习块）、36维hidden和原OutputLayer主体保留；潜在块不作解剖ROI解释。
+- 基座来源：`/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/`，E74.4-G2 Positive-DCR；逐折恢复E61 epoch-10模型、optimizer、训练索引及Python/NumPy/Torch CPU/CUDA RNG；seed=0。runner SHA `cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd`，历史fold metrics SHA `01f4090373a0f8888a1cb21254571cb31dd7a8b6c1a65d6341efb98e7d22da35`。关闭模块的一步parity 10/10、G2/G3 warmup parity 10/10、断点恢复replay及隔离新增RNG均通过；无逐epoch重设seed。
+- 分组：G1原始SPromptGL-8文本+困难记忆；G2医学候选8文本+同结构困难记忆；G3医学文本+典型原型、无困难记忆。冻结RN50权重SHA `afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762`，文本cache SHA `4ee8ad50d69d7d3a40b21933cec69a37be50f2d580cd5a17a4b8d07dd42725d7`。医学prompt为：
+  1. TD: “Resting-state functional connectivity in typically developing individuals varies across people and developmental ages.”
+  2. TD: “Sensorimotor and attention network connectivity in typical development exhibits distributed individual variability.”
+  3. TD: “Default-mode and frontoparietal network connectivity in typically developing individuals does not follow a single fixed individual pattern.”
+  4. 共享中性: “Measured functional connectivity can vary with head motion, acquisition quality and scanning site without indicating a specific diagnosis.”
+  5. ASD: “Autism-related resting-state functional connectivity differences are heterogeneous across individuals, without a universal connection-level abnormality.”
+  6. ASD: “In autism, atypical functional connectivity can converge at sensorimotor and attention-related brain regions and networks.”
+  7. ASD: “Autism-associated connectivity deviations can involve interactions between default-mode and frontoparietal control networks, with substantial individual variation.”
+  8. 共享中性: “Autism-related functional connectivity findings require cautious interpretation because age, motion and acquisition site can influence measured signals.”
+- 文献核查依据为ASD FC异质性/网络趋同研究 DOI `10.1038/s44220-026-00656-y` 和运动混杂研究 Power et al. 2012；第4、8条是共享测量语境，八条候选均未经过临床专家签审。PHENO为个体上下文，ANAT/FUNC为测量质量语境，CORR是主要FC语境。其余SPromptGL、BrainPrompt、SABER、PGP-SAM、Concentrate on Weakness、HP²L审计及边界见实验报告。
+- 结果均值±总体SD（%）：
+
+| 组别 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD |
+|---|---:|---:|---:|---:|---:|
+| E74.4-G2 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 |
+| E77-G2历史 | 91.8443±2.8431 | 91.6549±2.8558 | 93.4297±3.3335 | 89.0915±3.8646 | 94.2183±3.4735 |
+| E77.1-G1 | 91.9579±3.0034 | 91.8431±2.9327 | 93.7538±2.8006 | 90.5549±3.5322 | 93.1314±5.0212 |
+| E77.1-G2 | 91.9592±2.7267 | 91.7957±2.6486 | 93.8660±2.6681 | 89.8171±3.0738 | 93.7743±4.7048 |
+| E77.1-G3 | 91.6144±2.8249 | 91.3304±2.8753 | 93.5651±2.6252 | 87.5915±4.3254 | 95.0694±3.2059 |
+
+- G2−E74.4-G2差值按ACC/Hard/Prob/SEN/SPE为`-0.2299/-0.2337/+0.3714/-0.2500/-0.2174`pp；G2−E77-G2为`+0.1149/+0.1408/+0.4363/+0.7256/-0.4440`pp。G2−G1为`+0.0013/-0.0474/+0.1122/-0.7378/+0.6429`pp，未见医学文本训练收益；G2−G3为`+0.3448/+0.4653/+0.3009/+2.2256/-1.2951`pp，困难记忆对G3有正差，但仍低于基座ACC/Hard。排除Fold-2的9折G2描述值为`92.0875/91.9092/93.9503/89.7696/94.0487%`，不是新CV结果。
+- 固定权重诊断：G2 hard-off共1个折级硬预测翻转（mean |ΔP(ASD)| `0.00494`，mean |Δtrue logp margin| `0.05395`）；prototype-off 4次；语义交换33次（margin变化`0.67921`，intervention均值ACC `88.8597%`）；医学prompt换回原始prompt 7次。语义确实影响推理，但G1/G2几乎无训练指标差异；困难记忆有方向性证据及对G3的组间增量，固定权重即时作用较小。G2典型ASD/TD证据均值`0.8790/0.9390`，困难ASD/TD证据`0.0501/0.0700`，修正margin `-0.0416`。每折32/32典型类原型有效，全部slot均有检索；G1/G2每折32/32困难原型有效且均有使用，G3为0/32（按设计禁用）。典型库相似度>0.98比例G1/G3为0、G2最高2.08%（最大pair cosine 0.9831）；困难库G1/G2无pair超过0.98。G2每折稳定FP患者记录333-420（均值362.0），FN 256-363（均值310.3）；所选epoch当前真实FP/FN跨十折fold-context合计133/97，near-FP/near-FN另计20/64。稳定记录与误诊计数均按折计、不是全局唯一人数。G2类库各prototype最小/最大使用率为0.098/0.409，困难库0.066/0.419。详情见`memory_audit.json`和`evidence_diagnostics.json`。
+- 两处训练后审计修复限于audit：pre-update forward快照过期年龄边界和NumPy int64重叠ID CSV序列化；修复后30/30 checkpoint PASS，无模型/训练配置/数据/optimizer/checkpoint修改或重训。保护源码及历史文件SHA不变。审计修复SHA见`results/audit_repair.json`、`manifest.json`；完整逐折、恢复、证据和干预产物在`results/`。
+- 限制：保留`val=test`选模、外层CV前RFE、transductive全图和Fold-2训练/测试重叠ID 377、407；重叠ID仅从新增记忆与辅助loss中排除，全图仍可能向训练表征传递测试节点信息。单seed与该历史协议不能证明跨seed稳定性或独立临床泛化。
+- 最终结论 **NO-GO**：三个新组ACC与Hard-AUC均未超过基座，G2概率AUC提升不足以抵消硬分类指标下降。停止自动E77.2和广泛搜索；继续前应先处理独立评估和语义文本相对匹配对照的增量证据。
+
+<!-- EXPERIMENT77_1_SCPERM_2026-11-10 -->
+
+## Experiment 76.3 — Nonlinear Prototype Incremental Utility Probe
+
+- 状态：`COMPLETE_AUDITED`；结论：`INCONCLUSIVE`。目录：`/data/adodas/SPromptGL-main/experiment/experiment76_3_nonlinear_prototype_probe/`。运行十个外层fold的冻结特征诊断；B4/B5加历史B0-NL共30个fold-method指标全部独立复算。最终正式诊断运行31.76秒，独立审计27.39秒；没有DARG、CAM或OutputLayer参数更新，也没有重训历史实验。
+- 目的：检验E76.2中线性原型增益能否超越CAM144上的RBF-SVM。固定基座为E74.4-G2 Positive-DCR最佳Checkpoint。历史B0-NL（CAM144 + StandardScaler + RBF-SVC）来自E76.2已审计OOF缓存，没有重跑。B4采用E76.2-B1原样可靠原型证据，B5采用E76.2-B2原样可靠/困难配对证据；两者只把读出器统一替换为`StandardScaler + SVC(rbf, C=1, gamma=scale, probability=false)`。SVM类别顺序`[0,1]`经过校验，ASD连续分数使用`-decision_function`，仅用于ROC-AUC，不当作概率。
+- 数据及隔离：复用E76.2固定十折与五折内层OOF；训练端原型证据用`random_state=76300+fold`的三折交叉拟合，避免训练患者自匹配；标准化只在相应内层训练支持集拟合。每折一次冻结E74.4-G2前向捕获CAM144，OutputLayer恰好调用一次。Fold 2的一基行号377和407从新增诊断支持集排除；外层测试患者未进入原型支持集。冻结CAM编码器已用外层训练患者监督训练，因此本结果是冻结编码器条件下的读出层OOF，不是独立深度模型泛化评估。
+- 十折均值±总体SD（%）：
+
+| 方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| B0-NL 历史CAM-only RBF-SVM | 97.2571±0.5750 | 97.2156±0.5566 | 99.1698±0.2213 | 96.6634±0.7365 | 97.7678±1.0150 | 97.0268±0.6128 |
+| B4 CAM+可靠原型 RBF-SVM | 97.2954±0.5594 | 97.2512±0.5399 | 99.1782±0.2175 | 96.6634±0.6605 | 97.8391±0.9767 | 97.0671±0.5965 |
+| B5 CAM+可靠/困难配对原型 RBF-SVM | 97.3975±0.5972 | 97.3521±0.5796 | 99.1903±0.2114 | 96.7463±0.5779 | 97.9579±0.9216 | 97.1771±0.6388 |
+
+- 主要配对差（百分点；依次为ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）：B4−B0-NL为`+0.038/+0.036/+0.008/+0.000/+0.071/+0.040`；B5−B0-NL为`+0.140/+0.136/+0.020/+0.083/+0.190/+0.150`；B5−B4为`+0.102/+0.101/+0.012/+0.083/+0.119/+0.110`。B5−B0-NL六项W/T/L分别为`5/4/1, 5/3/2, 7/0/3, 3/4/3, 4/6/0, 5/3/2`；B5−B4分别为`4/6/0, 4/4/2, 6/1/3, 2/6/2, 4/6/0, 4/4/2`。三项主比较的所有描述性95%配对区间均跨零（详见`results/paired_comparisons.csv`）。排除Fold 2后B0/B4/B5 ACC分别为`97.1791/97.2217/97.3350%`，B5−B0为`+0.156pp`、B5−B4为`+0.113pp`；该敏感性分析仍受其他历史评估限制。
+- 纠错诊断按外层fold预测出现次数汇总（同一患者可在不同外层诊断重复，不是唯一患者数）。B5对B0-NL：全部患者错误→正确16、正确→错误5、净`+11`；稳定误判子集2→4、净`−2`；稳定正确子集12→0、净`+12`。B5对B4：全部13→5、净`+8`；稳定误判子集2→4、净`−2`；稳定正确子集9→0、净`+9`。因此总体小增益没有转化成稳定误判患者净纠正证据。
+- 解释与结论：B4、B5的点估计略高于CAM-only RBF-SVM，B5也略高于B4；幅度小、区间跨零，且稳定误判患者净纠正为负，故判`INCONCLUSIVE`，不能宣称原型已提供稳健非线性增量价值。增加原型特征会改变标准化后的分布和`gamma=scale`对应的有效RBF核参数，这些差值代表完整特征配置变化，不能单独归因为新的疾病信息。暂不建议开展新的端到端原型训练；若继续该方向，应先采用容量/有效核尺度匹配的对照和更独立的评估设计。
+- 审计：独立审计`PASS`；10/10检查点重新读回并冻结，30/30方法-fold指标和预测/连续分数复算一致，历史B0-NL从E76.2缓存重算吻合；五折验证分区、三折训练证据cross-fit、外层测试支持交集0/10、Fold 2暴露行排除均通过。预检、报告及结果文件哈希与manifest一致。源码SHA `109048d664b595043892db699983ecec8a532f72d67ae42af198be4c7c744c06`；E76.2参考commit `ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2`，E74.4-G2参考commit `711d87f4ccc9e11124bce62751fcd3dbb97fdbdf`。
+- 限制：历史Checkpoint曾按`val=test`选择，外层CV前执行RFE/标准化，并使用transductive图；Fold 2历史存在377/407训练测试重叠（本新增诊断已排除其支持资格）。E76.3内层OOF只交叉拟合读出层，不能与E74.4-G2的外层测试ACC直接对比，也不能解释为临床独立泛化性能。
+
+<!-- EXPERIMENT76_3_NONLINEAR_PROTOTYPE_PROBE_2026-11-10 -->
+
+## Experiment 76.4 — LBDP局部混淆边界原型验证
+
+- 状态：`COMPLETE_AUDITED`，研究结论：`NO-GO_LOCAL_PROTOTYPE_CORRECTION`。目录：`/data/adodas/SPromptGL-main/experiment/experiment76_4_lbdp/`。共10折，只读取E74.4-G2最佳Checkpoint并冻结DARG/CAM/OutputLayer；未进行端到端训练或更新历史Checkpoint。诊断运行130.88秒，独立审计80.49秒，总计约211.37秒。训练设备不适用；原型和轻量校正使用CPU，冻结特征提取按E74.4运行环境执行。
+- 源码依据：E74.4-G2参考commit `711d87f4ccc9e11124bce62751fcd3dbb97fdbdf`；E76.2 `ba1994e0012d9a23073aa9cb4d3a0288bb18c7d2`；E76.3 `f7df986671b1e11b8fb23c7a350584753f756ba7`。E76.4源码SHA `5679fec36f91b401016d2db162a1f2d4961dd63732f6575b98130b426aa3bd9f`。CoW按分割支持预测错误构造hard prototypes；PGP-SAM使用可学习类内/类间原型辅助分割prompt。本实验只借鉴困难样本及局部关系思路，不是患者分类复现，也不把CAM144原型解释为独立临床知识。
+- 方法：M0为E74.4-G2原分类器；M1为仅基于原始分数的残差校准；M2为E76.2全局可靠/困难原型；M3为逐个真实误判病例匹配同病正确边界参照（不足时回退可靠患者）和异病可靠参照，构成局部三元关系，并用CAM144余弦Top-3、温度0.10检索；M4在真实困难方向内置换局部参照映射，做五次私有置换集成。M1–M4使用相同的12维证据接口和固定L2残差logistic校正器。M2/M3困难病例集合一致。Fold 2的1-based行377、407从新增建库与校正器拟合中排除。
+- 两表均为十折均值±总体SD（%），Hard-AUC为历史硬预测口径/BA；内层结果仅为冻结编码器条件下的读出诊断，不能代表独立外层泛化：
+
+| 范围/方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| 内层 M0 原始MLP | 96.9001±0.8541 | 96.7965±0.9266 | 99.1741±0.2209 | 95.3969±2.2061 | 98.1961±1.0291 | 96.5980±0.9757 |
+| 内层 M1 分数校准 | 97.3082±0.5838 | 97.2503±0.5905 | 99.1312±0.2307 | 96.4712±0.9118 | 98.0293±0.7516 | 97.0728±0.6338 |
+| 内层 M2 全局原型 | 97.3465±0.5290 | 97.2915±0.5303 | 99.0378±0.2270 | 96.5537±0.7108 | 98.0294±0.6639 | 97.1160±0.5732 |
+| 内层 M3 局部边界原型 | 97.3082±0.4963 | 97.2559±0.4916 | 99.0480±0.2264 | 96.5537±0.6889 | 97.9581±0.7453 | 97.0761±0.5342 |
+| 内层 M4 打乱局部配对 | 97.3593±0.5236 | 97.3033±0.5236 | 99.0453±0.2334 | 96.5536±0.7003 | 98.0531±0.6786 | 97.1296±0.5664 |
+| 外层 M0 原始MLP | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| 外层 M1 分数校准 | 90.9248±3.5846 | 90.8125±3.5251 | 93.4946±2.9195 | 89.3354±3.3306 | 92.2895±4.8463 | 90.1591±3.7250 |
+| 外层 M2 全局原型 | 90.8098±3.1345 | 90.7107±3.0896 | 93.6750±2.6482 | 89.3354±3.3306 | 92.0860±4.2885 | 90.0257±3.3140 |
+| 外层 M3 局部边界原型 | 90.5799±3.3705 | 90.4956±3.3133 | 93.4898±2.8122 | 89.3354±3.3306 | 91.6559±4.6493 | 89.8121±3.5268 |
+| 外层 M4 打乱局部配对 | 90.8098±3.1345 | 90.7107±3.0896 | 93.6121±2.6956 | 89.3354±3.3306 | 92.0860±4.2885 | 90.0257±3.3140 |
+
+- 外层主要配对差（M3−对照，pp；六指标顺序ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）：相对M0为`−1.609/−1.534/−0.005/−0.732/−2.336/−1.647`；相对M1为`−0.345/−0.317/−0.005/0.000/−0.634/−0.347`；相对M2为`−0.230/−0.215/−0.185/0.000/−0.430/−0.214`；相对M4为`−0.230/−0.215/−0.122/0.000/−0.430/−0.214`。M3−M0的ACC W/T/L为`0/3/7`，95%描述性配对区间`[−2.574,−0.644]pp`；排除Fold 2后ACC差为`−1.788pp`。完整指标配对区间及九折结果见实验`results/paired_comparisons.csv`。
+- 真实外层预测纠错按折内出现次数统计（不是跨折去重患者）：M3相对M0有2个错误变正确、16个正确变错误，净纠正`−14`；ASD→TD错误从40变43，TD→ASD从28变39。M3相对M2为0→2、净`−2`；相对M4亦为0→2、净`−2`。M3对M1为1→4、净`−3`。因此局部配对没有超过全局原型、校准或伪配对，也未纠正原始分类器错误。
+- 边界证据：外层同一原始预测方向内，M2/M3条件AUC在ASD→TD分别为`0.5007/0.4370`（10折），TD→ASD为`0.5098/0.4281`（9个可评估折）；均不支持局部原型比全局原型更能区分真实困难患者与预测正确的异类患者。内层两个方向表现不一致，不能构成稳健证据。局部hard→same参照同站点比例均值0.180，hard→other参照为0.595；站点匹配和既有表征偏差仍限制解释。M4未显示真实配对关系优势。
+- 敏感性：去掉Fold 2后，M0/M1/M2/M3/M4 ACC为`92.2153/90.8104/90.6827/90.4273/90.6827%`。Fold 2删去377、407后各组ACC均为`91.7647%`；这只处理新增支持资格和单折描述，不消除历史泄漏。
+- 审计：`PASS`。10/10检查点身份和原始预测验证；CAM144重提取与已审计缓存精确匹配；OutputLayer每次提取恰好一次；权重前后SHA一致；100/100内层及外层指标独立重算；训练证据cross-fit及内层隔离通过；10/10外层原型支持与测试索引交集为0；M2/M3困难角色定义10/10一致；M4五次置换保留困难角色；Fold 2两名已知重叠患者从新增拟合排除。修正过报告中纠错行聚合范围后，已用最终源码重跑并复审，报告中的M3-vs-M0计数为2/16/−14。
+- 评价限制：E74.4-G2历史上按`val=test`选择Checkpoint，预处理在外层CV前完成，采用transductive图；Fold 2原始训练/测试索引包含行377、407。新增支路排除了两人，但不能消除历史图或表示暴露。训练困难患者来自模型对其已参与训练患者的历史错误，不能称为无泄漏的外部错误。
+- 判断：Q1未支持局部边界优于全局困难原型；Q2失败，M3对原始分类器造成净负纠错且整体指标下降；Q3没有真实局部配对优于打乱配对的稳定优势。结论`NO-GO_LOCAL_PROTOTYPE_CORRECTION`，目前不建议开展E76.5端到端训练。结果和代码位于`/data/adodas/SPromptGL-main/experiment/experiment76_4_lbdp/`。
+
+<!-- EXPERIMENT76_4_LBDP_2026-11-10 -->
+
+## Experiment 77.2 — PIM-Audit（原型独立信息与失效机制审计）
+
+- 状态：`COMPLETE_READ_ONLY`；最终决策 **`NO_GO_PROTOTYPE`**。本次只冻结加载和统计，没有重训、微调、重初始化或优化器步骤，也未改变 Prompt、prototype memory、checkpoint。
+- 输入：E77.1-G2 十折最佳 checkpoint，来自`/data/adodas/SPromptGL-main/experiment/experiment77_1_sc_perm/checkpoints/`；基座 E74.4-G2 十折最佳 checkpoint，来自`/model/spromptgl/experiment/experiment74_4_soft_positive_dcr/`。输入 checkpoint、实验源码/结果和所列数据 SHA 在审计前后相同；完整清单见实验`manifest.json`。
+- 实际目录：`/data/adodas/SPromptGL-main/experiment/experiment77_2_prototype_mechanism_audit/`。无 OSSFS I/O 故障。主要产物：`audit.py`、`config.json`、`results/report.md`、`results/summary.csv`、`results/probe.csv`、`results/details.json`、`manifest.json`。
+- 代码核查确认 E77.1 使用`PLNNoPEN`，没有活动 PEN。raw CORR 为`[871,256]`；CAM 分类头输入为`[871,144]`，CORR 来源潜在块为`h[:,108:144]`即`[871,36]`。两者具有患者/模态来源对应关系，但不是可逆映射，也不代表解剖 ROI。硬证据实际按语义条件化 Top-2 检索、`contrast=sim-competing_typical/1.35-0.05`、`sigmoid(contrast/0.2)`门控、`0.5*tanh(2*ReLU(contrast))`计算，模态加权求和后按类别截断至`[0,0.5]`，再修正基座 log-probability。
+- 历史错误池保存患者 ID、首次/最近稳定池 admission epoch、稳定更新频次、当前窗口 votes、confidence、novelty 与 prototype assignment；保存的 epoch 诊断是聚合量，没有逐 epoch 患者成员列表或完整预测轨迹。因此跨度/频次不是连续错误时长，也无法无损重建每名患者完整历史。
+- Q1：当前十折池折内记录数为 FP 577、FN 639（非全局去重数），全局唯一 FP/FN ID 为169/198；其中 70/577 FP、161/639 FN 在该折最佳 checkpoint 下仍错误。稳定池 admission 跨度中位数为 FP 41、FN 5 epoch，更新频次中位数为18/4。跨折同方向 Jaccard 为 FP 0.3128、FN 0.3329；按标签、每折允许训练候选集及对应记忆集合大小进行2000次随机匹配后，均值为0.0549/0.0726，观测/随机为5.69x/4.58x，45/45折对的经验上尾`p<0.05`。这是大量重叠训练样本下的描述性重现，不是独立外部复现。关闭困难证据时，测试折净纠错1比0，真实类别 margin 平均变化`+0.04396`；训练记忆患者净纠错为2比4，纠错贡献弱且不稳定。
+- Q2：单次固定 CPU L2 Logistic 探针（每折只用允许训练 ID，训练特征 leave-one-subject-out，C=1、训练集拟合标准化）已运行。P1−P0（CORR256）平均配对 ΔBA`+3.248pp`、ΔAUC`+0.019pp`、Δlog-loss`+1.67120`；P3−P2（CAM144）ΔBA`+0.959pp`、ΔAUC`−0.665pp`、Δlog-loss`+0.00629`，BA/AUC 获益折数6/10、2/10；P4 raw-margin probe ΔBA`+0.471pp`、ΔAUC`−0.389pp`。故记录为`NO_CONDITIONAL_INCREMENT`：没有稳定证据说明原型证据超过完整 CAM；CORR增广主要改变低容量探针阈值/分类表现，不构成独立新信息证明。
+- Q3：在测试折有效患者—模态困难原型检索中，FP/FN 的 contrast`<=0`比例及精确零贡献比例为54.7%/63.6%；训练允许查询为56.9%/66.3%。测试 CORR 模态零贡献率 FP/FN为77.4%/94.6%；测试 FN目标硬分数被0.5上限裁剪为3.7%，FP为0。方向性局部梯度零比例为54.7%/63.6%，但正值困难排序损失患者中对比路径零梯度为13.6%，不足以认定 ReLU 是主要失效原因。固定权重 Softplus(beta=5)使测试硬证据覆盖从98.4%升至100%，平均真实类别 margin仅`+0.00822`，硬预测纠错/损害均0；不代表训练后性能。
+- 历史 checkpoint 冻结评估均值（ACC/Hard-AUC/Prob-AUC/SEN/SPE，%）：E74.4-G2`92.1891/92.0294/93.4946/90.0671/93.9917`；E77.1-G2`91.9592/91.7957/93.8660/89.8171/93.7743`。差值 E77.1−E74.4 为`−0.2299/−0.2337/+0.3714/−0.2500/−0.2174pp`。逐折指标、探针、零拟合分数、各方向与模态 ReLU 统计及排除 Fold-2 九折描述性值均见`results/`。
+- 审计保护：20/20 checkpoint 只读读回；每折复核 DARG/CAM 参数、记忆状态及公共 RNG 摘要不变，CAM hook 恰好调用一次；10/10 E74.4 身份和折映射吻合；显式 test ID 不在记忆/探针训练允许 ID 中，Fold-2 中的重叠 ID 377/407不进入新增记忆资格；特征均有限值。历史源码、数据和历史实验 hash 未变化。
+- 评估限制继续保留：Fold-2 历史训练/测试索引重叠；历史按`val=test`选 checkpoint；RFE 在外层 CV 前完成；DARG 使用 transductive 全图传播。因而结果不是无偏独立泛化证据；排除 Fold-2 数值仅为描述性敏感性分析。
+- 结论：H1 的历史困难患者集合在折间有描述性重复（PASS），但这不代表独立复现或稳定纠错；H2 没有 CAM 之外的稳定条件增量（FAIL）；H3 的 ReLU 截断真实存在，但排序损失总体仍有梯度、Softplus 固定替换作用微弱（FAIL）。按`NO_GO_PROTOTYPE`停止继续叠加原型/Prompt；不建议自动启动新的原型训练。若后续研究困难病例，应先用独立评估验证其临床价值，不应把历史折间重复直接当作可泛化记忆。
+
+<!-- EXPERIMENT77_2_PIM_AUDIT_2026-11-10 -->
+
+## 文件迁移记录 — Experiment 74.4
+
+- 已成功将`experiment74_4_soft_positive_dcr`从`/model/spromptgl/experiment/`移动至`/data/adodas/SPromptGL-main/experiment/`。
+- 本次仅确认该目录迁移成功；其他目录迁移因目标OSSFS写入`Input/output error`中止，未在此记录为已迁移。
+
+<!-- EXPERIMENT74_4_DIRECTORY_MIGRATION_2026-11-10 -->
+
+## Experiment 75.4.1 — BP-PUR（基座保持的疾病Prompt增量效用再验证）
+
+- 目的：在不重训E74.4-G2 DARG/CAM、不改变原始分类器的条件下，验证SPromptGL-8及BrainPrompt-2、类别定义、模态描述、功能网络、异质性Prompt能否通过受限残差增加预测效用。实际目录为`/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt/`；首选`/data/adodas/...` OSSFS在Fold 6归档时errno 5，完整结果改在稳定路径重跑。E74.4实际基座目录已按用户迁移路径读取：`/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/`。
+- 来源核验：E74.4-G2状态为30/30训练且30/30审计。E75.4分支`upload/experiment75-4-prompt-utility-audit`的`probe.py`、`run.py` Git blob SHA分别为`2fb2f10788b3117ad4ffa10afe044fc9f862162b`和`9b54e2f82adb5bf347bb758aacb4b6ff992a5b89`，与本地一致。复用E75.4冻结特征及RN50缓存，无基座重训。
+- E75.4根因：M0 Logistic校准平均斜率1.453、截距0.372，导致log-odds阈值平均由0移至-0.230，Prob-AUC排序保持而准确率下降；混淆矩阵由TN/FP/FN/TP 440/28/40/363变为432/36/43/360，12例正确转错、1例错误转正确，7折下降、3折持平。E75.4 B2把标准化基座分数作为17维可训练头的一项，未固定其系数为1；同类4条Prompt又被均值压缩。训练/测试基座分数明显过拟合分离（训练ACC/AUC/Log-loss 96.90%/99.17%/0.1205，测试92.19%/93.49%/0.3107）。
+- B2训练步数诊断：40/120步内层验证Log-loss为0.114385/0.114794，120步没有改善预注册的0.002阈值；不能将旧40步结果简单归因为训练不足。Item-Preserving可改善部分Log-loss，但随机Item控制表现相当。
+- E75.4.1只新增固定系数基座Log-odds上的限幅残差：`s_new=s_base+lambda*r`；lambda由训练内5折Log-loss在0至1候选中选择。R0身份逐患者精确恢复。正式10折每组指标、B1/B2、控制组及排除Fold 2的九折描述性结果见`/model/spromptgl/experiment/experiment75_4_1_baseline_preserved_prompt/results/report.md`与`summary.csv`。
+- B2十折核心结果（ACC/Hard-AUC/Prob-AUC/SEN/SPE，%）：基座92.1891/92.0294/93.4946/90.0671/93.9917；无文本90.3501/90.2759/93.4735/89.3354/91.2165；P1 90.2364/90.1114/93.6654/88.5854/91.6374；P2 90.0052/89.8875/93.4788/88.3415/91.4340；P3 90.0065/89.9430/93.3673/89.0854/90.8000；P4 89.8929/89.8186/93.4416/88.8415/90.7960；P5 90.1202/90.0420/93.4793/89.0854/90.9991；P6 90.2351/90.1000/93.4102/88.3354/91.8643。真实Prompt皆低于基座ACC；P5匿名B2为90.6962%，超过P5真实文本。三组固定随机单位向量表现与真实Prompt接近。
+- B2相对基座的ΔACC（10折/去Fold 2九折，pp）：P1 -1.953/-1.787，P2 -2.184/-2.043，P3 -2.183/-2.297，P4 -2.296/-2.296，P5 -2.069/-1.916，P6 -1.954/-2.043。所有370个残差模型都按内层规则选出非零lambda，但在外折ACC均不如基座；这显示内层拟合收益未迁移。R0与Prompt指标不应混为Prompt功效。
+- 新OOF Token重要性前四为token 12、14、13、15，分别来自CORR潜在特征槽，Log-loss改善0.5639、0.5578、0.5509、0.5492；E75.4旧系数范数最高token为10、8、6、11，排序不同，说明系数L2范数不适合作为Token判别重要性。真实Prompt Top-4与监督OOF Top-4重叠1.0至1.3个，机会水平1.0；未形成稳定的文本特异性证据选择。
+- 匿名正交匹配Gram误差<1e-5。真实P1相对匿名P1的ACC差+0.460pp（5/3/2，Holm p=0.3594）；真实P5相对匿名P5为-0.576pp（3/3/4，Holm p=0.3750）。Wrong-Class重新训练后与正确类完全一致，模型能够学习反向符号，故该控制不是严格的语义破坏对照。
+- 审计通过：10/10基座身份复算、370/370残差探针重放、912条汇总行独立复算、匿名Gram、RNG不变、限幅和Fold 2新增训练排除均PASS；没有修改历史源文件。Fold 2基座仍有377/407训练测试标签重叠；历史`val=test`选模、CV前预处理、transductive图也继续限制独立泛化解释。排除Fold 2仍为描述性分析。
+- 运行：CPU单进程，未使用GPU、未重训基座，无OOM。首末折归档间隔为60分54秒，这是正式探针拟合用时下限；首折首个归档前用时未留存。两次独立审计耗时53.84秒和50.20秒且均通过。记录了一次首选OSSFS EIO及summary/bootstrap/audit工程修复，修复未改变拟合结果。
+- 科研结论：`NO_ADDITIONAL_PROMPT_UTILITY`。当前冻结CAM Token上的通用疾病Prompt残差没有超过原始基座、无文本和负对照；建议暂停通用疾病Prompt路线，先解决基座训练内分数偏乐观及语义空间与潜在特征不对齐问题，并以独立站点评估支持后续主张。
+
+
+## Experiment 77.3 — DS-CBPM：疾病语义引导的混淆边界原型记忆
+
+- 状态：`COMPLETE_AUDITED`；研究判定：**NO-GO**；G1/G2/G3各10/10，共30/30正式端到端训练和独立最佳checkpoint审计完成。唯一有效实验目录：`/model/spromptgl/experiment/experiment77_3_ds_cbpm`，完整方法/逐折结果/机制/限制见`results/report.md`、`fold_metrics.csv`、`paired_differences.csv`、`mechanism.csv`、`interventions.csv`和`manifest.json`。
+- 动机：E77–E77.2的类别中心与FP/FN相似度缺少稳定CAM条件增量。新模块以异病混淆双方的差异取代单纯误诊中心相似度，学习额外可利用的有方向证据；不声称创造原始新信息。
+- 技术：每模态每类4个确定性CAM144原型，以同一成员对齐rawCORR256中心；CAM分4×36槽位，CORR严格对应基座CSV的64:320特征列。双视图同时leave-one-out，测试患者不参与构建，256维不解释为解剖ROI。
+- 配对：原分类头最近3次eval至少2次错误形成稳定FP/FN，新增15 epoch warmup后启用；每方向历史容量128、20 epoch过期，每困难患者最多2个可靠异病最近邻，混合CAM/CORR相似度匹配，对侧复用≤8。保存CAM上下文Key、双方rawCORR、ASD−TD差异Value、方向、相似度、错误频次/年龄/持续长度及可靠性。每查询排除含自身任一端点的配对。
+- 方向与融合：局部证据用tanh归一化的query-ASD与query-TD投影CORR余弦差，正负方向均保留；FP/FN来源不规定修正符号。患者条件门控综合典型/边界证据与基础不确定度，有界margin修正±0.8。没有大型Transformer或新主干。
+- 医学Prompt：沿用E77.1已审计8条医学文本和冻结CLIP RN50；候选特异语义影响原型/配对检索、差异维度及可靠性。G3使用8条预先固定alpha/beta匿名文本，同编码、维度、参数和完整训练流程。语义交换只能说明敏感性，不能证明医学知识有效。
+- 唯一基座仍是迁移后的`/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr`，E74.4-G2 Positive-DCR实际使用`PLNNoPEN`，本轮在DARG-CAM上附加模块，没有替换活动PEN。run.py SHA `cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd`；soft_positive_dcr.py SHA `3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718`；manifest SHA `4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840`。全部历史保护SHA见清单。
+- 路径适配：E51/E43旧链接已断裂，找到E72原始封存快照，10个锚点与源码逐个匹配原SHA。仅在新目录适配器内调整运行期路径全局量，没有改历史文件、创建链接或推测恢复。10/10历史最佳模型前向、预测/概率完全复现。
+- 完整继承：逐折E61 epoch10模型、所有原优化器状态、Python/NumPy/CPU/CUDA RNG、原4096训练患者对及顺序完全继承。新增参数使用独立CPU/CUDA fork初始化，三组同折相同非文本初值，公共随机流不受新模块影响。G1/G2共同15 epoch更新、类别记忆、优化器及预测10/10完全相同；公共RNG与可用E74.4逐epochdigest一致，三组共同轨迹一致。
+- 配置：seed0、原10折、最大总450 epoch、wait>200、原ACC严格最优选模、固定lr且无scheduler；原Adam lr0.0038/wd0.11，DARG及追加新组AdamW lr0.001/wd0.01。保留原全图传播与全部原损失；新增典型证据0.05、配对排序0.02，只有一套预先固定配置。G1为医学双视图典型；G2完整DS-CBPM；G3完整匿名。未重训历史基座或增加第四组。
+- 预检：模块关闭单步forward/backward/优化器更新与基座一致；CAM/CORR数据对齐、双视图成员、方向符号、合法训练成员、两侧自检索排除、非零分类/排序梯度、独立读取和严格恢复均PASS。独立checkpoint30/30标签、概率与全部指标精确复现，latest完整恢复状态也读回；模型/记忆/配对/文本/RNG/SHA均审计。保护629个历史/根源码/数据/产物SHA未变。
+- 数据边界：新增成员严格effective_train−explicit_test，Fold-2的一基行377/407从新记忆、配对和辅助监督排除；其原始基座训练/评估处理不改。协议保留val=test选模、CV前RFE、transductive全图、原折与重叠，不是无偏泛化。
+- 十折均值±population SD（%）：
+
+| 组别 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E77.1-G2 | 91.9592±2.7267 | 91.7957±2.6486 | 93.8660±2.6681 | 89.8171±3.0738 | 93.7743±4.7048 | 91.2240±2.8072 |
+| E77.3-G1 | 91.7294±2.9054 | 91.6020±2.8962 | 93.8456±3.0574 | 89.8415±3.7067 | 93.3626±3.6535 | 90.9664±3.1472 |
+| E77.3-G2 | 91.8443±2.8892 | 91.6521±2.8720 | 93.7487±3.5201 | 89.3171±4.6385 | 93.9870±5.0191 | 91.0355±3.0565 |
+| E77.3-G3 | 91.8443±2.5491 | 91.6255±2.5492 | 93.7275±3.2089 | 88.8293±3.9209 | 94.4218±3.8972 | 90.9823±2.7493 |
+
+- 平均配对差（pp，依次ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）：
+
+  - E77.3-G1 minus E74.4-G2：`-0.4598/-0.4273/+0.3510/-0.2256/-0.6290/-0.4926`。
+  - E77.3-G2 minus E74.4-G2：`-0.3448/-0.3773/+0.2541/-0.7500/-0.0046/-0.4235`。
+  - E77.3-G3 minus E74.4-G2：`-0.3448/-0.4038/+0.2329/-1.2378/+0.4302/-0.4768`。
+  - E77.3-G2 minus E77.3-G1：`+0.1149/+0.0500/-0.0970/-0.5244/+0.6244/+0.0691`。
+  - E77.3-G2 minus E77.3-G3：`+0.0000/+0.0265/+0.0212/+0.4878/-0.4348/+0.0532`。
+  - E77.3-G2 minus E77.1-G2：`-0.1149/-0.1436/-0.1173/-0.5000/+0.2128/-0.1885`。
+
+- 逐折ACC配对差（pp，完整六指标见paired_differences.csv）：
+
+| Fold | G1−Base | G2−Base | G3−Base | G2−G1 | G2−G3 | G2−E77.1-G2 |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +0.0000 |
+| 2 | -1.1494 | -1.1494 | -1.1494 | +0.0000 | +0.0000 | +0.0000 |
+| 3 | -1.1494 | +0.0000 | +0.0000 | +1.1494 | +0.0000 | +0.0000 |
+| 4 | -1.1494 | -2.2989 | -2.2989 | -1.1494 | +0.0000 | -2.2989 |
+| 5 | -2.2989 | -1.1494 | -1.1494 | +1.1494 | +0.0000 | +0.0000 |
+| 6 | +0.0000 | +1.1494 | +0.0000 | +1.1494 | +1.1494 | +1.1494 |
+| 7 | +1.1494 | +0.0000 | +0.0000 | -1.1494 | +0.0000 | +0.0000 |
+| 8 | +0.0000 | +0.0000 | +1.1494 | +0.0000 | -1.1494 | -1.1494 |
+| 9 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +1.1494 |
+| 10 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +0.0000 | +0.0000 |
+
+- 双视图机制：G2每折ASD/TD有效中心均值16.00/16.00，聚类覆盖1.0000，类内cos>0.98坍缩率0.022917；同成员对齐100%。关闭CORR差异证据，测试mean|Δmargin|0.3375078。原始CORR仍作为检索上下文，故此为差异分数干预。
+- 混淆机制：G2最佳状态每折独立配对均值359.60，稳定FP/FN均值42.10/49.30；实际测试查询覆盖1.0000，边界证据mean绝对值0.6864498、非零证据类别方向准确率0.8565。固定checkpoint配对关闭→完整：测试纠正9、误翻转0；训练纠正27、误翻转4。按折累计，跨折可能重复。
+- G2固定干预raw_corr_off：mean|ΔP(ASD)|0.0540460，mean|Δmargin|0.3375078，硬预测变化61，ΔACC/Hard/Prob/SEN/SPE为-6.3205/-6.4833/-2.9951/-8.4939/-4.4727pp。
+- G2固定干预boundary_off：mean|ΔP(ASD)|0.0152083，mean|Δmargin|0.1019760，硬预测变化9，ΔACC/Hard/Prob/SEN/SPE为-1.0345/-1.0691/-0.0004/-1.5000/-0.6383pp。
+- G2固定干预anonymous_substitution：mean|ΔP(ASD)|0.0064302，mean|Δmargin|0.0449385，硬预测变化4，ΔACC/Hard/Prob/SEN/SPE为-0.4598/-0.4441/+0.0263/-0.2500/-0.6383pp。
+- G2固定干预semantic_swap：mean|ΔP(ASD)|0.0110603，mean|Δmargin|0.0745692，硬预测变化5，ΔACC/Hard/Prob/SEN/SPE为-0.5747/-0.5691/+0.1169/-0.5000/-0.6383pp。
+- G2固定干预semantic_off：mean|ΔP(ASD)|0.0050227，mean|Δmargin|0.0367894，硬预测变化3，ΔACC/Hard/Prob/SEN/SPE为-0.3448/-0.3378/+0.0424/-0.2500/-0.4255pp。
+- 语义训练对照G2−G3 ACC/Hard为+0.0000/+0.0265pp。结合完整表判断医学语义；相当或不一致时不宣称独立医学收益。各槽位实际贡献和CORR主导程度见mechanism.csv，不把质量指标解释为ASD病理。
+- 九折描述性（排除Fold-2）ACC/Hard/Prob/SEN/SPE： E74.4-G2 `92.2153/92.0481/93.6142/90.0474/94.0487%`； E77.3-G1 `91.8321/91.6940/93.9631/89.7967/93.5913%`； E77.3-G2 `91.9598/91.7496/93.8612/89.2141/94.2851%`； E77.3-G3 `91.9598/91.7202/93.9201/88.6721/94.7682%`；
+- 运行：首选/data新实验目录创建遭OSSFS EIO/errno5，训练前回退至唯一/model输出；基座保持/data搬迁后路径。worker恢复状态见execution.json。固定方法后未按测试结果改方法、Prompt、阈值或损失，无额外诊断训练/超参搜索。HP²L只取得摘要及出版商预览，完整正文403，未冒称全文精读。
+- 最终 **NO-GO**：按基座硬分类性能、G2−G1配对增量、G2−G3医学语义对照和真实纠错共同判断；不能仅凭Prob-AUC或语义交换变化宣称成功。本轮限于历史单seed固定协议，未达到独立临床泛化或MICCAI2027发表验证标准。下一步优先独立评估与临床条件增量证据；若NO-GO，停止自动追加同类原型训练。
+
+<!-- EXPERIMENT76_5_SCPR_2026-11-10 -->
+
+## Experiment 76.5 — SCPR 疾病语义条件化混淆原型残差学习
+
+### 动机与既有实验结论
+
+- E76/E76.1–76.4显示，典型/困难原型组合不稳定；代理模型错误不代表E74.4真实错误；E76.3的RBF-SVM高分属于内层诊断，不是外层泛化证据；E76.4局部原型校正在历史外层ACC由92.1891%降至90.5799%，只纠正2例、误伤16例、净纠错−14，局部匹配也未胜过全局原型或打乱配对。
+- E76.5针对少量高置信误判、强制同病局部参照、CAM144全局余弦掩盖来源槽位差异、无条件分数校正四个缺陷，设计连续可靠/边界/困难记忆、患者双类别检索、4×36 CAM来源槽位权重和零初始化受限残差。
+- 原始SPromptGL已经在PLN/PEN中实现原始8条Prompt引导、局部语义加权及RES；本实验保留该机制，不重复实现或冒称创新。BrainPrompt与HP²L已涉及疾病语义/原型，故不声称“首次Prompt+Prototype”。E76.5的实验性增量主张限于患者图后CAM来源槽位上的连续混淆证据、双疾病竞争与端到端受限决策残差；真实疾病文本是否有额外价值单独用匿名几何匹配语义对照检验。
+
+### 实现和基座继承
+
+- 首先审查了SPromptGL论文/代码、BrainPrompt官方ABIDE标签Prompt、HP²L论文，以及E74.4-G2和E76–E76.4实现与审计。BrainPrompt RN50文本编码器冻结，ASD=0、TD/TC=1；真实两条文本向量只编码/缓存一次。G2只用独立生成器下固定坐标签名置换匿名类别向量，保留向量长度及相互内积。
+- 唯一基座为E74.4-G2-Positive-DCR。10折都从对应E61 epoch-10 warmup恢复原GFR/DARG/CAM/OutputLayer和三个历史优化器；不从E74.4最佳模型微调。E74.4移址兼容仅写在E76.5适配器，定位实际模块/目录并SHA锁定；历史源码、checkpoint和原配置未改。CAM144由原OutputLayer输入hook捕获，保持原DARG、PEN、分类头与损失连接。
+- 新增DSCM在4×36槽位保存训练患者的连续可靠、边界、困难记忆；每轮复用原eval前向的CAM144及原始概率，以0.9/0.1 EMA更新，不增加DARG/CAM前向。训练查询采用固定类别分层A/B交叉支持，历史Fold 2中与测试重叠的患者不进入SCPR记忆。双疾病语义条件原型、模态可靠性网络和CPRG门控由新增AdamW(lr=0.0005, wd=0.01)优化；ρ=0.2 sigmoid(theta)，初始0.02；α初始0，gate bias −3，δ=1.5 tanh(α) gate tanh(d/0.25)。保持原损失系数并按配置添加L_proto/L_res/L_keep；最大450 epoch、wait>200早停、seed=0和历史fold/Checkpoint协议。
+- 正式组仅G1 SCPR-Full与G2 SCPR-Anonymous，各10折。新增模块各22,106参数，结构/参数量匹配。输出放在`/model/spromptgl/experiment/experiment76_5_scpr`：`run.py`、`scpr.py`、`audit.py`、配置/manifest、逐折checkpoint和results。`/data/.../experiment76_5_scpr`因OSSFS写入EIO不可用，按预案使用`/model`路径。
+- 初始调度曾与3个外部worker短暂重叠为13个进程；在完整保存点中断并以7个本实验worker恢复，之后全局最多10个，无OOM。进程恢复均载入模型、三个基座优化器、新优化器、SCPR记忆、early-stop与Python/NumPy/CPU/CUDA RNG；恢复重放审核通过。
+
+### 正式结果（10折 mean ± population SD）
+
+|方法|ACC|Hard-AUC/BA|Prob-AUC|SEN-ASD|SPE-TD|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E74.4-G2历史基座|92.1891±2.7648|92.0294±2.7255|93.4946±2.9195|90.0671±3.8862|93.9917±4.7320|91.4590±2.9013|
+|E76.5-G1 SCPR-Full|91.8443±2.9346|91.6171±2.9010|93.6464±3.3361|88.8171±4.2523|94.4172±4.9607|90.9952±3.1249|
+|E76.5-G2 SCPR-Anonymous|91.8443±2.9346|91.5649±2.9867|93.4778±2.8801|87.8476±4.7742|95.2821±3.5809|90.8667±3.2781|
+
+G1−基座的核心指标配对差值（pp；W/T/L）：ACC −0.345 (0/8/2)，Hard-AUC −0.412 (0/6/4)，Prob-AUC +0.152 (7/0/3)，SEN −1.250 (0/6/4)，SPE +0.426 (3/6/1)，ASD-F1 −0.464 (0/6/4)。描述性配对95%区间分别为[−0.900,0.210]、[−0.986,0.161]、[−0.447,0.750]、[−2.515,0.015]、[−0.537,1.388]、[−1.098,0.171]。G2−基座差值按相同指标顺序为−0.345、−0.465、−0.017、−2.220、+1.290、−0.592 pp；G1−G2为+0.000、+0.052、+0.169、+0.970、−0.865、+0.128 pp。详细W/T/L、区间、9折排除Fold 2敏感性和NLL/Brier/ECE见`results/paired_comparisons.csv`与`report.md`。
+
+### 审计与机制
+
+- 最终状态 **COMPLETE_AUDITED**，科研判定 **NO_GO_SCPR_END_TO_END**。独立审计复算历史基座及新组30/30 checkpoint预测；E74.4 checkpoint/warmup/关系对及只读历史来源SHA核对通过。共享epoch RNG摘要7,286/7,286完全一致、0 mismatch；G1/G2 Fold 1 latest状态恢复重放输出与随机状态相同。10/10折初始化身份、A/B隔离、记忆标签范围、OutputLayer/CAM144、G1/G2参数匹配均通过；20/20折新增梯度路径审计通过。gate-off仅为同一G1最佳checkpoint只读推理干预。
+- G1相对历史基座错误→正确5、正确→错误8、净纠错−3；G1-Full相对同一训练后checkpoint的Residual-Off则7→0、净+7，ACC +0.805pp。后者说明该已训练残差分支在推理时有直接作用，不等于相对E74.4基座的总收益。
+- 两组候选原型覆盖率均100%，每折两类困难记忆均达到至少3例并启用；hard支持约10–13人/类。站点超额回退0%，检索跨站点支持约87%。G1门控均值0.913、平均|δ|0.146；G2分别0.855、0.109，非恒零，但G1门控高且分布窄。模态权重G1 (PHENO, ANAT, FUNC, CORR)=(0.0755,0.0791,0.0658,0.7796)，G2=(0.0821,0.0809,0.0699,0.7671)，显示模型明显偏向CORR来源槽位；这只是CAM槽位权重，不可解释为具体脑区标志物。CORR的平均e_ASD−e_TD为G1 +0.0279、G2 +0.0112，其余槽位均为负。ρ仍约0.02，接近初始化，表明文本语义注入没有明显学强。
+- G1与匿名组ACC相同；G1−G2在9折ACC为−0.255pp。故没有证据证明真实疾病Prompt优于匿名类别语义。G1 NLL/Brier/ECE也较基座恶化。排除Fold 2后G1−基座ACC为−0.383pp，不是单折驱动的正收益。
+- 历史验证协议仍包含val=test选模、外层CV前RFE/标准化及transductive图，且Fold 2有历史train/test行重叠；结果仅为协议匹配探索性比较，不能当作无偏独立泛化估计。
+
+### 决策
+
+E76.5不满足GO：G1 ACC、Hard-AUC、SEN和F1均低于基座，整体错误净纠正为负，文本语义不胜匿名向量；虽然残差支路对训练后模型的只读gate-off比较净纠正7例，但不足以抵消联合训练结果。标记 **NO_GO_SCPR_END_TO_END**，不为本轮事后调参或追加同类正式训练。若未来继续，需预先定义独立评估协议并验证非CORR偏置、校准及文本语义增量。
+
+详见：[E76.5报告](/model/spromptgl/experiment/experiment76_5_scpr/results/report.md)、[独立审计状态](/model/spromptgl/experiment/experiment76_5_scpr/results/audit_status.json)、[manifest](/model/spromptgl/experiment/experiment76_5_scpr/manifest.json)。
+
+<!-- EXPERIMENT77_3_DSCBPM_2026-11-10 -->
+
+
+执行与审计补记：
+
+- Fold-3/5/8因持续运行开销进行3次受控进程恢复，分别从总epoch90/80/90的完整latest状态继续；模型、优化器、记忆和Python/NumPy/CPU/CUDA RNG全部恢复。Fold-3和5分别7和3个重放epoch的损失、梯度、证据、记忆与RNG日志逐项完全相同；Fold-8无已写日志尾部需要重放。训练源码SHA始终为`8f05ef69f94e27cdcb5c99d44580faab7b6ea735edf107501c172fdcf607b624`。原始尾部及恢复点SHA保存在runtime，详情见results/execution.json、controlled_restart_parity.json。
+- 调度器曾缓存尚在构建中的最终汇总占位入口，30折训练结束后仅汇总阶段退出；已以新进程执行run.py --audit完成独立汇总，没有额外训练。
+- 首版汇总把E74.4 CSV的0–1比例与其他表的百分数混用。修复仅在历史结果读取边界乘100，并用独立给定的六项历史均值/总体SD核验。审计源SHA从`0b6ee731ef76d5637747e221f7eebff2c8d195b09cb196c19d6d70176b912715`变为`e57a69611b47cfd1a5c06fcac8812b5192df77e1eae802cdf32d36de56342bdf`；30个正式最佳checkpoint SHA均未改变，30/30重新独立读回通过。错误汇总与本次错误追加段已封存在runtime/audit_reference_unit_repair/；历史handoff原有字节内容不变，仅更正本次尚未交付的E77.3段。
+
+机制解释补充：G2固定checkpoint的配对分支净纠正9例，而独立训练G2−G1仅ACC +0.1149pp、Hard-AUC +0.0500pp，SEN −0.5244pp。G2内部修正前头ACC均值为85.1789%，这是共同训练后的自身基础头，不是历史E74.4的92.1891%。因此即时移除分支的损失也反映共同适应，不能等同于相对历史基座的新增诊断收益。G2与G3 ACC完全相同；医学向量影响推理，不证明其医学知识有独立收益。最终保持NO-GO，不自动追加实验。
+
+## Experiment 77.4 — QCRL-PM：正式训练与独立审计结论
+
+2026-11-10T14:06:09.156057+00:00
+
+STATUS：COMPLETE_AUDITED_WITH_EPOCH_LOG_LIMITATION；30/30正式训练，30/30独立最佳checkpoint读回，30/30 latest完整恢复。最终：**NO-GO**。
+
+动机：E77–E77.3相似度原型增量不足、端点排序捷径与基座共同适应；本次改为独立第三患者Query监督和公共基座保护。QCRL-PM：四模态CAM每类每模态4中心 + 一次独立raw CORR全局4中心/类；三路类别分层交替Support/Query，查询不进当前记忆。稳定FP/FN各128患者、每困难患者最多2配对、对侧复用8、20epoch过期、EMA=.8、统一ASD−TD差异；Top8第三患者条件化关系检索，32维共享映射，无端点自监督。冻结RN50的8条医学Prompt逐概念参与Query×差异注意力、候选选择和可靠性；G3等结构匿名文本。基础DARG-CAM独立按原损失和原优化器训练，新增输入detach、独立AdamW(.001,.01)，Lnew=CE+.05典型+.05第三关系+.03保护，margin bound=.65。
+
+唯一基座：`/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr`；run SHA `cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd`；soft_positive SHA `3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718`。E77.3本次实际路径`/data/adodas/SPromptGL-main/experiment/experiment77_3_ds_cbpm`。635项受保护历史SHA核对前后不变，只读路径适配在新目录内。
+
+10/10完整E61 epoch10模型/优化器/Python/NumPy/Torch CPU/CUDA RNG/训练患者对/原配置继承通过。G1/G2共同15新增epoch在10折参数/优化器/原型/RNG parity通过；三组共同epoch公共轨迹一致，新增公共梯度严格0。所有有历史参考的RNG和可读稀疏loss匹配，保留best/latest完整公共模型+优化器点匹配。未声称历史未保存的逐epoch参数SHA或超出历史停止范围的比较。
+
+G1：查询隔离典型原型、医学文本；G2：完整持久FP/FN第三患者混淆关系；G3：等容量匿名文本。seed0，原10折/max450/wait>200/val=test严格最终ACC提升选模。
+
+| 组 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+| --- | --- | --- | --- | --- | --- | --- |
+| E74.4-G2-Positive-DCR | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E77.3-G2 | 91.8443±2.8892 | 91.6521±2.8720 | 93.7487±3.5201 | 89.3171±4.6385 | 93.9870±5.0191 | 91.0355±3.0565 |
+| E77.4-G1 | 91.8443±2.6004 | 91.7079±2.5318 | 93.3988±2.7965 | 90.0671±3.3693 | 93.3488±4.6998 | 91.1249±2.6740 |
+| E77.4-G2 | 92.0742±2.7959 | 91.9362±2.7507 | 93.4940±2.8968 | 90.3110±3.2747 | 93.5615±4.3575 | 91.3706±2.9125 |
+| E77.4-G3 | 92.1891±2.4614 | 92.0659±2.4570 | 93.3077±3.2003 | 90.5610±3.5186 | 93.5708±3.6218 | 91.4828±2.6681 |
+
+| 比较 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+| --- | --- | --- | --- | --- | --- | --- |
+| E77.4-G2 minus E74.4-G2-Positive-DCR | -0.1149 | -0.0931 | -0.0006 | +0.2439 | -0.4302 | -0.0884 |
+| E77.4-G2 minus E77.4-G1 | +0.2299 | +0.2283 | +0.0952 | +0.2439 | +0.2128 | +0.2457 |
+| E77.4-G2 minus E77.4-G3 | -0.1149 | -0.1296 | +0.1863 | -0.2500 | -0.0093 | -0.1122 |
+| E77.4-G2 minus E77.3-G2 | +0.2299 | +0.2842 | -0.2546 | +0.9939 | -0.4255 | +0.3351 |
+
+G2同一最佳checkpoint基础头→最终头：纠正7人次，错误翻转0人次，净+7。不同组或历史方法的最佳epoch可能不同，不能把全部最佳值差异归因为即时修正。
+
+医学组未同时优于匿名组的ACC与Hard-AUC，医学语义缺乏独立诊断收益的充分证据；文本交换引起概率变化仅证明模型依赖该条件。
+
+逐折六指标、G1/G2/G3对基座与E77.3及G2对G1/G3的配对差异见results/paired_comparisons.csv；完整报告含30折指标、九折排除Fold2结果和同epoch基础头。原型从成员独立重建完全一致；配对身份/方向/年龄/频次/EMA当前状态、测试排除核验通过。关系证据、梯度、训练Query纠错/损害和固定checkpoint五项干预见mechanism.csv/interventions.csv；不把端点符号正确或文本交换变化当成医学增益证明。
+
+训练中断从完整latest恢复，尾部可读记录严格重放核对；Fold2一次JSONL解析失败已保留原始片段并清理非法行，未改算法。JSONL缺26个机制epoch、非法片段10条，报告按可读记录统计，不伪造缺失值；公共完整trace和checkpoint不受此日志缺行限制。无OSSFS EIO，无目录回退。未修改历史协议，Fold2重叠377/407只在新增所有监督/记忆中排除；val=test/RFE前置/transductive与单seed偏差仍在。
+
+完整G2未同时满足相对历史基座ACC/Hard-AUC正向改善及相对G1的ACC增量，当前固定协议不支持将其作为已成功的第二创新模块。停止当前原型记忆路线的自动扩展，不启动E77.5/E77.6或温度、数量、Prompt、门控搜索。
+
+训练冻结SHA `d9320539bfebda0f8334946a7c3803d9935bdacdc9a85698a06911ee86402fde`；文本缓存SHA `1ba488e49e01a61e87285970c7c7021f5a131d216d9c08491d8ef3f2494ccf1f`。产物：`/data/adodas/SPromptGL-main/experiment/experiment77_4_qcrl_pm`；报告`/data/adodas/SPromptGL-main/experiment/experiment77_4_qcrl_pm/results/report.md`；manifest/checkpoint_audit/protected_after记录全部关键SHA。不自动启动E77.5/E77.6，不追加原型数量/温度/Prompt/门控搜索。
+
+### E77.4 最终机制核对补记
+
+G2第三Query关系loss前20活动epoch均值0.573199、后20为0.306605，接近理论下限比例0；测试第三患者关系方向准确率均值88.1727%，不再是端点自比较。固定checkpoint关闭配对ACC -0.6883pp、硬预测变化6例，说明关系确有即时作用，但独立G2−G1仅+0.2299pp，G2仍低于历史基座。医学概念注意力熵2.07943411（ln8≈2.07944）、跨Query平均SD 0.00028205，实际选择接近均匀；结合匿名G3更高ACC，医学知识独立收益未成立。匿名G3 Fold3选择到自然基座曲线较弱的epoch294（基础73.5632%、最终89.6552%），不代表新增分支改变了公共轨迹。最终审计代码SHA `380033d57479a0d6ba5c52cb580d726507eb8795e4bd3695987e8c7d4ae88177`；仅报告格式/解释修订后再次完成30/30独立读回，训练冻结源与全部checkpoint SHA未变。
+
+## Experiment 76.6 — BCSPC 边界一致性疾病语义原型选择性纠错
+
+STATUS：**COMPLETE_AUDITED**；科研结论：**NO_GO_BCSPC**。10折、G1/G2各10个正式最佳checkpoint，共20/20独立复算通过。训练使用1个worker和10条共享E74.4-G2主干轨迹；估算有效训练wall time约1.03小时，独立审计约37秒。
+
+### 动机与实现
+
+- E76.2–76.3显示普通可靠/困难原型只有不稳定的内层读出增益；E76.4局部三元组残差降低外层ACC并造成净误纠正；E76.5整体低于基座，且其SCPR分类损失会反向改变主干，使残差效果和主干变化混杂。E76.6改用跨类别邻近度定义边界样本，并以stop-gradient的CAM144与原始分数训练新增支路，隔离主干梯度。
+- BCPM在CAM144的4×36来源槽位上维护训练患者级可靠和边界记忆，以同病/异病邻近差和基座置信度生成连续边界权重；评估侧同时检索ASD/TD、每角色Top-8，固定A/B交叉支持排除训练患者自检索，站点单站最多2人并做显式回退审计。记忆只用原eval前向的CAM144做0.9/0.1 EMA，不增加完整DARG/CAM前向。
+- SPCA用冻结RN50缓存的BrainPrompt官方ASD/TD文本及从原`network.py`解析并SHA核验的8条SPromptGL文本embedding，独立可靠/边界语义Key参与患者条件化竞争注意力。SCRM将门控、原始margin、覆盖率和双疾病差证据组成小幅残差；alpha从0初始化，残差上限0.8。新增分支使用独立AdamW(lr=0.0005, wd=0.01)，固定损失与边界margin=0.15、均值gate预算=0.25。
+- G1为BCSPC-Full；G2为BCSPC-NoBoundary，唯一差异是G2边界槽位以同类可靠池填充，网络结构与参数量相同（每支43,830参数）。两组均在线训练，主干仍从各折E61 epoch-10状态按E74.4-G2原loss、三个优化器、早停与Checkpoint规则继续训练；这是主干保护式在线插件训练，不是全参数共同反传。
+- 重要基座观察：实际恢复的E74.4-G2 CAM类为`PLNNoPEN`，没有原始prompt buffer。E76.6没有改动或声称运行了历史PEN；8条经过核验的原始文本embedding仅进入E76.6新增语义支路。BrainPrompt及原始文本向量类别顺序固定为ASD=0、TD=1。
+
+### 正式10折结果（mean ± population SD，百分比）
+
+| 方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.6-G1 BCSPC-Full | 92.1891±2.7648 | 92.0294±2.7255 | 93.4840±2.9127 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.6-G2 BCSPC-NoBoundary | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+
+G1−基座六项差值依次为`0, 0, −0.0106, 0, 0, 0 pp`；G2−基座均为`0 pp`；G1−G2与G1−基座相同。除Prob-AUC外每项均10/10 ties（W/T/L=0/10/0）；Prob-AUC的G1差异为0/8/2，描述性95%配对CI为[−0.0267,+0.0054] pp，排除Fold 2后−0.0118 pp。G2−基座全部10/10 ties。各指标完整逐折差值、配对区间及W/T/L见`results/paired_comparisons.csv`。
+
+### 机制、审计与结论
+
+- G1相对历史基座预测变化：错误→正确0、正确→错误0、净纠正0；ASD→TD/TD→ASD纠正均为0，原基座正确预测保持率100%。这只是预测完全相同，并非新增纠错收益。G1-Full、同Checkpoint Residual-Off、Boundary-Off、Semantic-Swap的硬预测均无差异，四项比较净纠正和ACC变化均为0。
+- G1平均gate=0.1216、平均绝对残差=0.00653（最大0.03870，显著低于0.8上限）；可靠/边界注意力均值=0.4998/0.5002。可靠与边界原型注意力没有学出有意义的角色偏好。真实疾病语义交换不改变任何硬预测，Prob-AUC仅有微小变化；本实验没有独立匿名语义训练组，因此不能声称疾病Prompt贡献已被证实，也不能由小幅概率变化证明医学知识有效。
+- 四个CAM来源槽位平均权重PHENO/ANAT/FUNC/CORR=`0.0654/0.0540/0.0484/0.8323`，明显集中在CORR；这属于跨模态交互后的来源槽位权重，不能解释成疾病脑区生物标志物。原型覆盖率为100%，每个角色/类别/槽位均获得Top-8支持；审计未发现无效混淆候选或站点配额违规。动态EMA、A/B无自检索、外层测试标签隔离及新增模块有效梯度均通过；Fold 2历史重叠行377/407没有进入新增训练/支持记忆。
+- E74.4-G2的10折最佳主干参数、三个优化器状态、最佳epoch和早停轮次均复现一致；共有epoch的`rng_before/rng_after_train/rng_after_eval`摘要3917/3917完全一致。初始残差严格为0，单步主干参数/优化器更新与隔离对照一致；20个最佳checkpoint独立读回复算通过。
+- 训练worker有效wall time估算1.03小时（Fold 2–10任务wall time合计3415.55秒，Fold 1完整训练日志跨度286秒；Fold 1最终任务文件只记录恢复收尾的0.34秒），单独审计约37秒。为修正纠错CSV汇总字段和结果报告元数据，训练结束后只改过`audit.py`，未改训练代码、配置或任何checkpoint；预检审计SHA=`8a46b50822d330b8e65ff2c3bcc850de3166b4279d8a02b96f14a4280ba286fe`，最终独立审计SHA=`919ee84da8abe467228bade11a344f142227dee9e51950b209b59316bb1a6e73`，manifest明确记录此auditor-only变化。训练源码组合身份SHA=`29fbdfad9bf598be1f2aa3d297ef4e6cc6cff2633a4bc0786143b11974b3de37`。
+- 结果仍保留历史`val=test`选模、CV前预处理与transductive图协议；Fold 2还有历史训练/测试重叠行。故这些是匹配历史协议的探索性对比，不是无偏独立泛化估计。
+
+BCSPC边界组没有超过普通可靠原型对照，也没有改变历史基座的硬预测；残差强度很小，注意力角色权重近乎均分，模态权重又高度偏向CORR。因此当前BCSPC不值得按此形式继续作为MICCAI 2027第二创新模块；停止同一方案的自动扩展，不做事后调参。若未来重启，应先制定独立评估协议及能够区分边界证据、一般原型效应和文本语义增量的预注册检验。
+
+产物：[E76.6报告](/model/spromptgl/experiment/experiment76_6_bcspc/results/report.md)、[独立审计状态](/model/spromptgl/experiment/experiment76_6_bcspc/results/audit_status.json)、[完整逐折指标](/model/spromptgl/experiment/experiment76_6_bcspc/results/fold_metrics.csv)、[配对比较](/model/spromptgl/experiment/experiment76_6_bcspc/results/paired_comparisons.csv)。
+
+<!-- EXPERIMENT76_7_CJE_BCSPC_2026-11-11 -->
+
+## Experiment 76.7 — CJE-BCSPC 受控端到端疾病语义原型纠错
+
+- **状态**：`COMPLETE_AUDITED`；科研判定：`NO_GO_CJE_BCSPC`。正式目录为`/model/spromptgl/experiment/experiment76_7_cje_bcspc/`；首选`/data/adodas/...`因OSSFS errno=5不可用，已完成本地目录原子读写探针并回退。G1/G2各10折均完成，20/20最佳checkpoint从磁盘独立加载、预测和指标复算通过。
+- **研究动机**：E76.5新增分类信号改变主干且净纠错为负；E76.6完全隔离新增分支，残差近零且没有纠错。E76.7保留E76.6可靠/边界原型、A/B交叉支持、Top-8、EMA=0.9/0.1、站点上限2、Fold-2重叠排除和冻结CLIP RN50文本缓存，专门测试可微分原型证据与受控端到端梯度是否有额外价值。
+- **G1/G2结构**：两组均为E74.4-G2的`PLNNoPEN`、原DARG/CAM144和原OutputLayer上附加同参数量BCSPC。当前CAM支持特征参与实时原型相似度、softmax池化和ASD/TD双疾病竞争；历史EMA仅负责合法候选索引。保留原8条SPromptGL和BrainPrompt ASD/TD文本，可靠/边界独立语义投影与四槽位融合。残差固定为`delta=(abs(stopgrad(s_base))+0.5)*tanh(f_phi(z))`，最后层零初始化；新增损失为`L_cls_final+0.03L_boundary+0.10L_protect+0.02L_residual`。
+- **训练控制**：每折从E61 epoch-10完整模型、三个原优化器、4096关系对、原fold/RNG恢复。epoch 11–20为detach分支预热；epoch 21起G1使用`grad(L_cls_final)-grad(L_cls_base)`，beta线性升至0.3，并按GFR/DARG 10%、CAM/OutputLayer 20%相对基座梯度限幅；G2始终StopGrad且主干只接收`L_base`。20/20任务账本为`COMPLETE`，共5个并发worker，显存峰值约1.56 GiB（单任务记录峰值），任务wall time合计约10.21小时。
+- **十折结果（mean ± population SD，%）**：
+
+| 方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.6-G1历史参考 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4840±2.9127 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.7-G1 Full-E2E | 92.0742±2.8427 | 91.8646±2.8618 | 93.7564±2.7460 | 89.0854±3.7179 | 94.6438±3.2353 | 91.2314±3.1242 |
+| E76.7-G2 StopGrad | 92.1891±2.7648 | 92.0294±2.7255 | 93.6700±2.7923 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+
+- **配对比较**：G1−基座 ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1=`-0.1149/-0.1648/+0.2618/-0.9817/+0.6522/-0.2276 pp`；ACC W/T/L=`0/9/1`，排除Fold-2为`-0.1277 pp`。G2−基座 ACC/Hard/SEN/SPE/ASD-F1均`0`，Prob-AUC`+0.1754 pp`。G1−G2 ACC/Hard/Prob=`-0.1149/-0.1648/+0.0863 pp`，因此受控端到端没有优于StopGrad。完整W/T/L、描述性95%配对区间和9折结果见`results/paired_comparisons.csv`。
+- **患者纠错**：以下为10折测试记录的折内计数，跨折可包含同一受试者，不能当作独立患者总人数。G1相对历史基座错误→正确6次、正确→错误7次，净纠错`-1`；ASD错误纠正2次、TD错误纠正4次，ASD→TD共2次、TD→ASD共4次，13次预测改变，原正确预测保持`796/803`。G2相对基座无预测改变；G1相对G2同样为6次纠正/7次误伤/净−1。G1同checkpoint Residual-Off平均改变概率约0.0247，硬预测变化2次；Boundary-Off变化0次，Reliable-only变化1次，Semantic-Swap变化0次（均为推理干预，不是重训对照）。
+- **端到端证据**：预检确认`L_cls_final`可达BCSPC、CAM、GFR、DARG和OutputLayer；阶段A无新增主干梯度，G2单步主干/优化器/RNG与历史等价。G1最佳epoch梯度快照显示新增梯度确实进入GFR、DARG scorer/gate、CAM及OutputLayer，但DARG scorer新增/基座范数约`0.56%`、DARG gate约`16.2%`（绝对梯度极小），不能把“有路径”解释为强主干更新。G1 latest重放主干/RNG精确，新增模块最大浮点差`1.44e-6`，在预注册审计容差`2e-6`内。
+- **原型、语义和模态机制**：G1可靠/边界证据方向准确率约`0.862/0.670`，角色符号一致率约`0.772`；G2约`0.857/0.680`和`0.804`，边界证据未显示稳定独立增量。G1可靠/边界注意力约`0.567/0.433`（四槽位均值，跨角色约0.50附近），语义交换不产生测试硬预测变化，未证明疾病Prompt独立价值；本轮没有匿名Prompt正式训练组。四槽位G1平均权重PHENO/ANAT/FUNC/CORR=`0.1929/0.2168/0.1866/0.4036`，G2=`0.1999/0.2202/0.1906/0.3893`；CORR占比最大但这是CAM跨模态交互后来源槽位权重，不能作脑区或因果模态解释。
+- **审计与限制**：历史E74.4-G2身份、E61 warmup、4096关系对、原三优化器、CAM144 hook、Prompt缓存和Fold-2行377/407新增分支排除均通过；G2主干/RNG等价通过。保留历史`val=test`选模、CV前RFE/标准化、transductive图及Fold-2历史重叠，因此不是无偏独立泛化证据。训练结束后仅修订`audit.py`以兼容历史CSV、正确处理G1早停RNG覆盖和记录GPU浮点重放容差；训练代码、配置、权重和预测未改。最终审计SHA=`11f59e585f20f54a1849b85f49e329ceb0eb1048396779b15906785acfaa1cd4`，最终状态SHA=`13fe9520794337d17e961a6843d05392507e39536df629186a5b3207f038d1b8`，当前source lock=`0aaceab50c4806fdf3e7225a9e9a7dcfbf89fd47308f8196a1e589b825332fae`。
+- **结论**：第一，E76.7确实实现了可微分原型到CAM/GFR/DARG的受控端到端路径，而不是简单删除`detach()`；第二，G1相对G2没有更有效，ACC/Hard-AUC反而低`0.1149/0.1648 pp`；第三，G1没有超过E74.4-G2且净纠错为负。因此判定`NO_GO_CJE_BCSPC`，不适合作为MICCAI 2027第二创新模块继续沿当前形式扩展；也不能据此宣称疾病Prompt有独立医学预测价值。
+
+产物：[E76.7报告](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/report.md)、[审计状态](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/audit_status.json)、[逐折指标](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/fold_metrics.csv)、[配对比较](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/paired_comparisons.csv)、[机制分析](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/mechanism.csv)、[纠错分析](/model/spromptgl/experiment/experiment76_7_cje_bcspc/results/correction_analysis.csv)。
+
+<!-- EXPERIMENT78_DCPSS_2026-11-11 -->
+
+## Experiment 78 — DCPSS：疾病对比原型引导的语义选择
+
+- **状态**：`COMPLETE_AUDITED`；科研判断：`NO-GO`。五组×十折正式任务 50/50 完成，best/latest checkpoint 均保存；独立重跑 `run.py --audit` 后 50/50 checkpoint 读回、预测和指标复算通过。唯一输出目录为`/model/spromptgl/experiment/experiment78_dcpss/`。首选`/data/adodas/SPromptGL-main/experiment/experiment78_dcpss`真实写入探针遇 OSSFS `EIO/errno 5`，故仅使用`/model`回退，没有在两处并行写入。
+- **唯一基座身份**：迁移后的`/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/`，E74.4-G2-Positive-DCR：DARG + Positive-DCR + GFR + CAM `PLNNoPEN` + 原分类器；没有恢复原始`PLN`的PEN。CAM分类器输入为`[871,144]`，四个36维跨模态槽位；OutputLayer返回log-softmax。E74.4 `run.py`、`soft_positive_dcr.py`、`config.json`、`manifest.json`、`audit.py` SHA256依次为`cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd`、`3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718`、`a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a`、`4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840`、`cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb`；当前复核一致。历史模型、数据与E74.4文件未改。
+- **文献与源码范围**：核查本地SPromptGL MICCAI 2025论文全文（Fig.1、Section 2.1–2.2、Eq.(1)–(7)、实验与消融）、BrainPrompt MICCAI 2025论文及官方疾病Prompt文件；只读核验`tangaii/SPromptGL`本项目代码与`wanxixi11/SPromptGL`、`AngusMonroe/BrainPrompt`参考代码。HP²L仅取得公开摘要、Highlights及方法预览，全文请求403；没有声称完成全文审计。服务器审查覆盖根模型/ABIDE启动脚本、E61恢复、E74.4训练与审计、E76.5/.6、E77.3/.4及历史handoff。细节和链接在`results/source_review.md`。
+- **方法/协议**：G1原始SPromptGL八条文本 K=1；G2同八条 K=3；G3官方BrainPrompt疾病级TC/ASD两条 K=1，类别映射`[1,0]`；G4同文本 K=3；G5预先冻结的匿名八条 K=3。五组均使用冻结CLIP RN50、完整1024维文本缓存和相同37,377个新增可训练参数。DCPSS在当前CAM144投影上可微聚合原型，K=3成员只依据每折E61 epoch-10合法训练患者warmup表征确定并固定；每epoch按当前CAM重算均值。训练查询按患者ID对所属支持簇执行Leave-One-Out，显式测试ID不进入原型或新增监督。Prompt证据为患者-文本cosine加同类/异类原型对比，类内患者条件softmax选择；有界语义margin加入原OutputLayer log-probability。保留原损失、原三优化器及其顺序、seed 0、原十折、最大450 epoch、`wait>200`、严格ACC提升选模；新增AdamW `lr=0.0005, wd=0.01`，`lambda_sem=0.05`、`lambda_gain=0.02`。没有E77式错误记忆或重检索器。
+- **训练与审计**：10/10折基座关闭parity通过，覆盖输出、损失、参数/优化器更新和RNG；新增参数私有RNG初始化且跨组同折一致。正式训练留存18,753条公共RNG轨迹；所有有E74.4历史轨迹可匹配的epoch逐项核对，超出历史记录范围的epoch不声称有历史逐epoch证据。有效梯度到达DARG、CAM、患者投影、文本投影及残差幅度；DARG范数很小但非零（`1.8761e-08`），不据此夸大其更新幅度。完整best/latest状态和新旧优化器均保存，两步中断恢复重放PASS。独立审计验证支持集、固定簇分配、LOO、测试标签隔离、checkpoint选择规则、逐值指标与预测、源码/基座身份；audit status为PASS。Fold 2的历史重叠行377/407保留在原基座流程，但从新增支持及新增监督排除。
+- **十折均值±总体SD（百分比；列序ACC / Hard-AUC(=BA) / Probability-AUC / SEN-ASD / SPE-TD / ASD-F1）**：
+
+| 组别 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E78-G1 SPromptGL K=1 | 91.7294±2.8596 | 91.5750±2.8852 | 93.6206±3.2306 | 89.5793±4.4307 | 93.5708±3.8637 | 90.9259±3.1302 |
+| E78-G2 SPromptGL K=3 | 92.0742±2.7959 | 91.8460±2.8229 | 93.4304±3.3151 | 88.8354±3.7320 | 94.8566±3.0874 | 91.2057±3.0606 |
+| E78-G3 BrainPrompt K=1 | 91.8443±3.1095 | 91.7031±3.1297 | 93.4222±2.7374 | 89.8354±4.0406 | 93.5708±3.3566 | 91.0705±3.3940 |
+| E78-G4 BrainPrompt K=3 | 91.8443±2.4968 | 91.6784±2.4959 | 93.2293±2.7541 | 89.5732±3.6777 | 93.7835±3.6749 | 91.0498±2.7187 |
+| E78-G5匿名 K=3 | 92.0742±3.0229 | 91.8569±3.0584 | 93.6392±2.9729 | 89.0793±4.7593 | 94.6346±4.0197 | 91.2213±3.3284 |
+
+- **预设配对差（pp，均值；G2−G1 / G4−G3 / G2−G5，依次ACC、Hard-AUC、Prob-AUC）**：`+0.3448/+0.2710/−0.1902`；`0.0000/−0.0247/−0.1929`；`0.0000/−0.0109/−0.2088`。排除Fold 2的九折结果、W/T/L及六项逐折差异见`results/paired_comparisons.csv`与`paired_summary.csv`。G2是E78最高ACC组之一（与匿名G5相同），但相对E74.4-G2为ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1=`−0.1149/−0.1834/−0.0642/−1.2317/+0.8649/−0.2533 pp`。G2测试折Prompt类内熵均值1.000152（最大`ln(4)=1.386294`）；同时需结合患者权重标准差与原型条件变化判断选择性，完整权重、簇、距离、协变量、梯度和干预记录见`mechanism.csv`、`prompt_prototype_diagnostics.csv`、`prototype_covariate_diagnostics.csv`、`interventions.csv`。
+- **限制与判断**：保留历史`val=test`选模、外层CV前标准化/RFE、transductive全患者图及Fold 2两行训练/测试重叠，故不是严格无泄漏的独立泛化估计。BrainPrompt组只是其原始疾病文本迁移对照，不是完整BrainPrompt复现；单seed结果不能支持临床泛化。G2没有同时超过历史基座的ACC、Hard-AUC和Probability-AUC，且与匿名G5几乎持平，疾病语义独立收益未成立；K=3相对K=1的提升仅有限且指标方向不一致。判定`NO-GO`，不自动启动E78.1或事后调参。
+- **产物**：[正式报告](/model/spromptgl/experiment/experiment78_dcpss/results/report.md)、[独立审计状态](/model/spromptgl/experiment/experiment78_dcpss/results/audit_status.json)、[逐折六指标](/model/spromptgl/experiment/experiment78_dcpss/results/fold_metrics.csv)、[配对比较](/model/spromptgl/experiment/experiment78_dcpss/results/paired_comparisons.csv)、[机制诊断](/model/spromptgl/experiment/experiment78_dcpss/results/mechanism.csv)、[冻结配置](/model/spromptgl/experiment/experiment78_dcpss/config.json)、[源码与来源说明](/model/spromptgl/experiment/experiment78_dcpss/results/source_review.md)。
+
+<!-- EXPERIMENT76_8_CGD_BCSPC_2026-11-11 -->
+
+## Experiment 76.8 — CGD-BCSPC
+
+- **状态与资源**：`COMPLETE_AUDITED`；科研判定：`NO_GO_CGD_BCSPC`。正式目录为`/model/spromptgl/experiment/experiment76_8_cgd_bcspc/`；首选`/data/adodas/SPromptGL-main/experiment/experiment76_8_cgd_bcspc/`的OSSFS写入/同步探针返回EIO/errno 5，故采用`/model`回退。G1/G2各10折共20个正式任务全部完成，使用5个worker，训练wall time为1436.27秒，任务记录峰值显存为1065323008 bytes。训练source SHA=`8c5a64c450f6d3cf63cee58ad7c7f0574e859cab35667dd3213266580d45d3a6`；审计器在训练完成后仅为修正独立审计状态复本和患者级向量汇总而修改，audit-only SHA=`867984f1ef269319d2827e41a4ed61fac3ad5747b38e84a60980e98dcdadbb08`，未修改训练代码、配置、模型权重或预测。
+- **研究动机**：E76.7-G1的端到端新增分类梯度与原DARG/CAM梯度存在显著负向冲突，ACC和Hard-AUC相对E74.4-G2分别下降约0.115和0.165个百分点；E76.7的边界原型还可能重复可靠原型信息，残差也可主要依赖原始margin。E76.8只训练两个新增正式组，分别检验非对称冲突消解，以及判别性边界独有证据与疾病证据约束残差。
+- **G1实现**：完整继承E74.4-G2的PLNNoPEN、DARG、Positive-DCR、CAM144、原OutputLayer、原三优化器、4096关系对、E61 epoch-10恢复、原fold/RNG、原损失和早停。对每个原optimizer param group计算`g_base=grad(L_base)`与E76.7合法定义的`g_new=grad(L_cls_final-L_cls_base_eligible)`；当`<g_base,g_new><0`时只将`g_new`投影为`g_new-<g_base,g_new>/||g_base||²*g_base`，不改`g_base`，随后按E76.7 beta时间表乘beta、执行原GFR/DARG 10%和CAM/OutputLayer 20%范数上限，最后与基座梯度相加。稳定float64标量累计、None梯度语义和混合None组均通过数值预检。
+- **G2实现**：继承G1的全部训练和投影机制。保留ASD/TD可靠与边界Top-8、EMA 0.9/0.1、A/B互斥支持、站点上限2和实时CAM Value；定义`U_bnd=P_bnd-dot(P_bnd,P_rel)P_rel`后不再单位归一化，使用`d_rel=sim_ASD_rel-sim_TD_rel`、`d_unique=sim_ASD_U-sim_TD_U`和`d_slot=d_rel+eta*d_unique`，其中`eta=mean(boundary_attention)*sqrt(reliability_ASD*reliability_TD)*min(coverage)`。四槽位门控输入仍为`[d_rel,d_unique,d_slot]`。残差固定为`delta=(abs(stopgrad(s_base))+0.5)*tanh(a*tanh(d/0.20))`，最终层零初始化，因此初始delta严格为零且有效疾病证据为零时delta为零；没有新增Prompt、原型库、损失搜索或随机Dropout。
+- **十折结果（mean ± population SD，百分比）**：
+
+| 方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.7-G1历史参考 | 92.0742±2.8427 | 91.8646±2.8618 | 93.7564±2.7460 | 89.0854±3.7179 | 94.6438±3.2353 | 91.2314±3.1242 |
+| E76.8-G1 Conflict-Safe-E2E | 92.0742±2.7482 | 91.9656±2.6826 | 93.6538±2.8990 | 90.5732±3.3075 | 93.3580±4.5681 | 91.3989±2.8583 |
+| E76.8-G2 Discriminative-BCSPC | 92.0742±2.6503 | 91.8725±2.6410 | 93.3301±2.8091 | 89.3232±3.8890 | 94.4218±4.1374 | 91.2634±2.8635 |
+
+- **正式配对比较**：G1−E76.7-G1的ACC为`0.0000 pp`（W/T/L 1/8/1，排除Fold 2为0.0000），Hard-AUC`+0.1010 pp`，Prob-AUC`−0.1026 pp`；G2−G1的ACC为`0.0000 pp`（2/6/2，排除Fold 2`+0.1277`），Hard-AUC`−0.0931 pp`，Prob-AUC`−0.3237 pp`；G2−E74.4-G2为ACC`−0.1149 pp`、Hard-AUC`−0.1569 pp`、Prob-AUC`−0.1645 pp`，排除Fold 2的ACC差为`0.0000 pp`。完整逐折差值、描述性95%配对区间、W/T/L和六项指标见`results/paired_comparisons.csv`。
+- **梯度保护结果**：冲突确实在训练中出现，且optimizer param group投影后的负内积比例为0。G1原始负余弦/投影去除比例分别为：GFR负内积率64.73%、去除18.08%；CAM 67.87%、47.05%；DARG scorer 17.53%、2.77%；DARG gate 26.54%、3.98%；OutputLayer 81.03%、35.58%。G2对应为GFR 66.32%、17.09%；CAM 68.02%、42.14%；DARG scorer 15.65%、2.67%；DARG gate 15.63%、2.06%；OutputLayer 94.84%、36.72%。新增梯度真实到达GFR、DARG scorer/gate/encoder、CAM和OutputLayer，但投影消除方向冲突没有转化为更高ACC；G1相对E76.7-G1没有性能改善。
+- **原型与纠错结果**：G2独有边界向量平均范数约`0.1732`，不是数值恒零，但独有证据疾病方向正确率仅约`10.22%`，且类内站点解释方差约`0.413`，提示不能排除站点/混杂来源。G2残差平均绝对幅度约`0.7483`，弱证据样本平均绝对残差约`0.1355`；`delta`与融合证据符号一致率为100%，但原模型错误样本中残差朝真实类别比例仅约21.60%，原模型正确样本中为90.05%。同Checkpoint Residual-Off使G1/G2分别净纠错`+1/+2`，但完整G1相对基座净纠错`−1`、G2相对基座净纠错`−1`；G2相对G1错误→正确8次、正确→错误8次、净纠错0，硬预测没有净收益。G2 Unique-Evidence-Off没有引起硬预测变化，说明独有证据没有实际改变最终分类决策。
+- **干预与模态/Prompt**：G2 Boundary-Off平均ACC约92.0742%，Semantic-Swap约92.0742%，Reliable-only约91.9592%；Semantic-Swap硬预测变化为0，不能证明疾病Prompt有独立医学贡献，本轮也没有匿名语义正式训练组。G2四槽位平均权重PHENO/ANAT/FUNC/CORR约`0.2366/0.2284/0.2169/0.3181`，CORR最高但这些是CAM跨模态交互后的来源槽位，不是独立脑区或因果生物标志物；支持覆盖率为1，未发现非法支持、站点配额违规或混淆候选错误。
+- **审计与复现**：预检确认E61 warmup、E74.4-G2来源、三原始优化器、4096关系对、CAM144接口、G1/G2同初始化、零残差和数学投影；G1关闭投影时与E76.7单步梯度/更新/RNG逐值一致。20/20最佳Checkpoint独立加载、预测和六项指标复算通过；G1/G2共有epoch RNG均匹配历史，20/20 latest下一步重放的base optimizer、branch optimizer、梯度、loss和RNG均通过。新增支持只使用合法训练患者，训练查询不自检索，A/B互斥，测试标签不进记忆，Fold 2行377/407不进新增分支。结果保留历史`val=test`选模、CV前RFE/标准化、transductive图和Fold 2历史重叠限制。
+- **结论**：CGD投影在数学和实现层面消除了记录到的负内积，但没有减少E76.7的ACC退化；G2的边界独有证据虽非零，却方向不可靠、与站点差异存在关联，且没有提供可靠原型之外的额外硬判别收益。判定`NO_GO_CGD_BCSPC`，不把G2−G1收益归因于单独正交化，也不建议按当前形式继续作为MICCAI 2027第二创新模块扩展；后续如重启，应先预注册独立评估、站点混杂检验和可区分边界/可靠原型/Prompt增量的正式消融。
+- **产物**：[正式报告](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/report.md)、[审计状态](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/audit_status.json)、[逐折指标](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/fold_metrics.csv)、[配对比较](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/paired_comparisons.csv)、[机制分析](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/mechanism.csv)、[纠错分析](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/correction_analysis.csv)、[逐epoch曲线](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/results/train_curve.csv)、[冻结配置](/model/spromptgl/experiment/experiment76_8_cgd_bcspc/config.json)。
+## Experiment 78.1: SH-DCPSS
+
+- 状态：`FAILED`；正式任务 0/30，独立Checkpoint审计 30/30。
+- 唯一基座：E74.4-G2-Positive-DCR；实验目录：`/model/spromptgl/experiment/experiment78_1_sh_dcpss`。
+- 报告：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/report.md`；折指标：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/fold_metrics.csv`；配对比较：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/paired_comparisons.csv`；机制：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/mechanism.csv`。
+- E78.1-G1-SPromptGL-K1：acc nan±nan%, hard_auc nan±nan%, prob_auc nan±nan%, sen nan±nan%, spe nan±nan%, asd_f1 nan±nan%。
+- E78.1-G2-SPromptGL-K3：acc nan±nan%, hard_auc nan±nan%, prob_auc nan±nan%, sen nan±nan%, spe nan±nan%, asd_f1 nan±nan%。
+- E78.1-G3-Anonymous-K3：acc nan±nan%, hard_auc nan±nan%, prob_auc nan±nan%, sen nan±nan%, spe nan±nan%, asd_f1 nan±nan%。
+- RNG公共轨迹不匹配数：0；10折base-off parity：10/10。
+- 科研结论及医学文本独立收益判断见结果报告；本研究保留历史测试选模协议，GO仅是后续研究候选。
+### E78.1 Audit Completion Update
+
+- 状态：`COMPLETE_AUDITED`；正式任务 30/30，独立Checkpoint审计 30/30。
+- 唯一基座：E74.4-G2-Positive-DCR；实验目录：`/model/spromptgl/experiment/experiment78_1_sh_dcpss`。
+- 报告：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/report.md`；折指标：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/fold_metrics.csv`；配对比较：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/paired_comparisons.csv`；机制：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/mechanism.csv`。
+- E78.1-G1-SPromptGL-K1：acc 92.1891±2.8121%, hard_auc 92.0480±2.7367%, prob_auc 93.8609±2.6635%, sen 90.3171±2.8515%, spe 93.7789±4.5987%, asd_f1 91.4991±2.8997%。
+- E78.1-G2-SPromptGL-K3：acc 91.6144±2.9619%, hard_auc 91.4531±2.9713%, prob_auc 93.5111±3.3327%, sen 89.3354±4.4613%, spe 93.5708±4.3208%, asd_f1 90.7977±3.2084%。
+- E78.1-G3-Anonymous-K3：acc 91.8443±2.8431%, hard_auc 91.6526±2.8439%, prob_auc 93.4836±2.7962%, sen 89.0915±3.8646%, spe 94.2137±3.7472%, asd_f1 91.0104±3.0602%。
+- RNG公共轨迹不匹配数：0；10折base-off parity：10/10。
+- E78.1-G2-SPromptGL-K3 - E78.1-G1-SPromptGL-K1 ACC差 -0.5747pp，W/T/L 1/3/6。
+- E78.1-G2-SPromptGL-K3 - E78.1-G3-Anonymous-K3 ACC差 -0.2299pp，W/T/L 1/6/3。
+- E78.1-G2-SPromptGL-K3 - E78-G2 ACC差 -0.4598pp，W/T/L 2/2/6。
+- E78.1-G2-SPromptGL-K3 - E74.4-G2 ACC差 -0.5747pp，W/T/L 1/4/5。
+- G2原型坍塌比例均值 0.0000；站点Cramér's V均值 0.4440；子原型Prompt TV均值 0.06667。
+- 科研结论及医学文本独立收益判断见结果报告；本研究保留历史测试选模协议，GO仅是后续研究候选。
+
+### E78.1 Handoff Correction and Final Findings
+
+- 上一段首次审计的 `FAILED / 0/30 / NaN` 是审计汇总器错误，不是训练任务失败：原始 `audit.py` 将 `route_prop` 建成字典后调用 `.append()`，在所有 30 个独立 Checkpoint 读回完成后，机制汇总因此中断。该临时记录保留以满足追加式历史要求；本节的 `COMPLETE_AUDITED` 与最终报告、CSV 是权威结果。
+- 冻结训练/配置/原始审计源码哈希 `b19b074b2f805d1910fa4d33572ec4100a0063d86e118770f2b93c83ab6c51ef` 未改变。隔离恢复器仅修正该统计容器和重复 handoff 标记处理，恢复器哈希 `c4dd0d2c7cf987e2518b6605b0164751785225f3667c3d1e095a8be64fd2ab8c`；未重训、未修改 30 个 best/latest Checkpoint。10/10 base-off parity、30/30独立 Checkpoint 审计、30/30状态与指标/预测读回通过；可比较的10,723项公共RNG轨迹全部匹配，未覆盖历史日志的 epoch 不作逐 epoch 一致声明。
+- G2−G1、G2−G3、G2−E78-G2、G2−E74.4-G2 六指标差值（pp，列序 ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）分别为 `-0.5747/-0.5949/-0.3498/-0.9817/-0.2081/-0.7014`、`-0.2299/-0.1995/+0.0275/+0.2439/-0.6429/-0.2127`、`-0.4598/-0.3929/+0.0807/+0.5000/-1.2858/-0.4080`、`-0.5747/-0.5763/+0.0165/-0.7317/-0.4209/-0.6613`。G1−E74.4 为 `0.0000/+0.0186/+0.3663/+0.2500/-0.2128/+0.0401`；G3−E74.4 为 `-0.3448/-0.3768/-0.0110/-0.9756/+0.2220/-0.4486`。完整逐折 W/T/L、Fold 2 排除分析与置信区间见 `results/paired_comparisons.csv`。
+- 机制结果：G2同类原型 cosine>0.98 比例 `0.0000`、平均 cosine distance `0.4646`、最低有效子原型支持 `7.57`；站点 Cramér's V `0.4440`（E78约 `0.6703`），年龄组关联 `0.2457`；子原型条件 Prompt TV `0.06667`（E78约 `0.00749`），患者权重 SD `0.04029`。结构性 H1–H3 指标改善，但站点关联未消失；G2医学组未胜过匿名 G3，且未超过 E74.4 基座 ACC/Hard-AUC，因此医学语义独立收益不成立，研究判定 `NO-GO`。
+- 冲突标签/站点与现有历史协议限制、特征融合梯度和固定 Checkpoint 干预详见最终报告。报告：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/report.md`；恢复审计记录：`/model/spromptgl/experiment/experiment78_1_sh_dcpss/results/audit_recovery.json`。
+
+<!-- EXPERIMENT76_9_RBCD_2026-11-12 -->
+
+## Experiment 76.9 — RBCD：风险感知的边界条件化疾病纠错
+
+- **状态与科研判定**：`COMPLETE_AUDITED`；最终判定 `RISK_DETECTION_WITHOUT_CORRECTION`。E76.9只训练G1 `RBCD-StopGrad`和G2 `RBCD-Protected-E2E`，正式20/20折完成，使用5个worker，训练wall time 1286.17 s；任务记录最大单worker显存1521.5 MiB。首选目录`/data/adodas/SPromptGL-main/experiment/experiment76_9_rbcd`的mkdir/写入/fsync/原子重命名/读回探针遇OSSFS `EIO errno=5`，故全部产物使用回退目录`/model/spromptgl/experiment/experiment76_9_rbcd`。
+- **研究目的与E76.8失败承接**：E76.8显示边界独有疾病方向正确率约10.2%、站点关联明显，且残差在原误判患者中朝正确疾病方向仅约21.6%；E76.9把边界原型限定为混淆风险证据，把可靠原型限定为疾病方向证据，并新增OOF风险估计、反向证据门控和定向残差，检验能否识别高风险患者并真正纠错。
+- **OOF风险监督**：每个外层fold取合法`eligible_train_ids`，用`StratifiedKFold(n_splits=5, shuffle=True, random_state=1000+outer_fold)`；每个内层教师只用4/5内层训练患者，固定250轮，从原始shared anchor/DARG/CAM构造开始，未加载E61 epoch-10 warmup，不用内层留出标签选epoch或调参。分类、DARG关系对、对抗/保持损失、类别权重和监督索引均限于内层训练集合；留出患者只在固定最终epoch得到一次概率。10/10缓存覆盖恰好一次，未使用外层测试标签；Fold 2 zero-based索引376、406（历史行377、407）未进入新增监督。OOF错误率按fold约2.93–13.78%。
+- **方法结构**：唯一基座为E74.4-G2 Positive-DCR的DARG→CAM144→原OutputLayer，使用`PLNNoPEN`，没有重新引入原始PEN。保留E76.8的四个36维来源槽位、ASD/TD可靠和边界原型、A/B交叉支持、Top-8、站点上限2、EMA 0.9/0.1、合法训练患者支持和冻结BrainPrompt RN50/原8条SPromptGL疾病文本。
+- **RRE/BCD/DRC**：风险向量只含推理时可得的原分类概率、margin/熵、可靠/边界差异、可靠度/覆盖率、分歧、原分类与可靠疾病证据冲突、边界竞争、语义注意力和四槽位权重，不输入标签、错误状态或完整CAM144。`risk_logit=RiskMLP(z_risk)`，`L_risk=BCEWithLogits(risk_logit,risk_soft)`；边界证据只进入风险与分歧特征，不作为直接正向疾病分数。`opposition=sigmoid(-stopgrad(s_base)*d_rel/0.20)`，`disease_direction=tanh(d_rel/0.20)`，`delta=(abs(stopgrad(s_base))+0.5)*r*opposition*tanh(a)*disease_direction`，残差头最后一层零初始化；新增损失为`L_cls_final+0.20L_risk+0.10L_direction+0.10L_keep+0.02L_residual`，困难样本权重为`1+2*risk_hard`。
+- **G1/G2差异**：G1所有RBCD输入与主干`detach`，原基座只受`L_base`更新，RBCD独立AdamW `lr=0.0005, wd=0.01`。G2在epoch21起只把`grad(L_cls_final_weighted-L_cls_base_weighted)`受控回传GFR、DARG和CAM（beta在epoch21–40线性到0.3，GFR/DARG cap10%、CAM cap20%）；原OutputLayer保留基础梯度但新增梯度严格为0。原三个优化器、更新顺序、seed=0、E61 epoch-10 warmup、4096关系对、早停和Base/Method双Ledger保持不变。
+- **六项指标（10折 mean ± population SD，%）**：
+
+| 方法 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.8-G1历史参考 | 92.0742±2.7482 | 91.9656±2.6826 | 93.6538±2.8990 | 90.5732±3.3075 | 93.3580±4.5681 | 91.3989±2.8583 |
+| E76.8-G2历史参考 | 92.0742±2.6503 | 91.8725±2.6410 | 93.3301±2.8091 | 89.3232±3.8890 | 94.4218±4.1374 | 91.2634±2.8635 |
+| E76.9-G1 RBCD-StopGrad | 92.1891±2.7648 | 92.0294±2.7255 | 93.4627±2.9423 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E76.9-G2 Protected-E2E | 91.4995±2.5368 | 91.2559±2.5065 | 93.6905±2.6673 | 88.0854±3.5077 | 94.4265±4.0007 | 90.5752±2.7188 |
+
+- **配对结果（pp，均值；W/T/L；排除Fold 2）**：A `G1−E74.4-G2`为ACC `0.0000`（0/10/0；9折0.0000）、Hard-AUC `0.0000`、Prob-AUC `−0.0319`（1/4/5；9折−0.0236）、SEN/SPE/ASD-F1均0。B `G2−G1`为ACC `−0.6897`（0/4/6；9折−0.6386）、Hard-AUC `−0.7735`（0/3/7；9折−0.7239）、Prob-AUC `+0.2278`（7/0/3；9折+0.1942）、SEN `−1.9817`、SPE `+0.4348`、ASD-F1 `−0.8839`。C `G2−E74.4-G2`与B相同；结果不是Fold 2单独驱动。
+- **风险与纠错机制**：测试风险AUROC/AUPRC均值为G1 `0.5915/0.1416`、G2 `0.6402/0.1701`；但r≥0.5高风险层在测试折没有样本，风险概率整体偏低。G1相对基座错误→正确0、正确→错误0、净纠错0；G2相对基座错误→正确1、正确→错误0、净纠错+1。G2相对G1出现4个新纠正、10个新误伤，净变化−6；逐患者身份在`g2_vs_g1_transitions.csv`。
+- **可靠疾病方向与残差**：原模型错误患者中，可靠疾病证据方向正确率G1 `0.1383`、G2 `0.2327`；残差朝真实疾病方向比例同为G1 `0.1383`、G2 `0.2327`。原模型正确患者可靠方向正确率G1 `0.9165`、G2 `0.8998`。G1平均绝对残差约0.01650，G2约0.01419，残差与原margin比约G1 0.0121、G2 0.0210；方向虽与`d_rel`符号一致，但反向证据在真正误判患者上不可靠。
+- **Residual-Off**：G1当前主干与历史基座一致，Residual-Off为ACC/Hard-AUC/Prob-AUC `92.1891/92.0294/93.4946`；G2当前主干Residual-Off为`91.3845/91.1309/93.6801`，完整残差只恢复到`91.4995/91.2559/93.6905`，仍低于基座ACC `0.6897` pp。G2的主要损失来自受控端到端主干变化，而不是残差本身。
+- **Prompt、模态和站点**：Semantic-Swap与No-Semantic-Key均无测试硬预测变化；Semantic-Swap平均概率绝对变化约G1 `5.1×10^-9`、G2 `5.6×10^-9`，没有独立疾病Prompt硬诊断增量证据。四槽位平均权重PHENO/ANAT/FUNC/CORR为G1 `0.2147/0.2450/0.2113/0.3290`、G2 `0.2191/0.2485/0.2220/0.3105`；这些是跨模态来源槽位权重，不能解释为医学脑区因果。支持检索fallback、站点配额违规和无效混淆候选均为0；站点风险关联只作审计描述，没有用于训练或选模。
+- **独立审计**：20/20最佳Checkpoint独立加载、重放预测、六指标和纠错统计；20/20latest恢复重放；OOF作用域10/10；A/B互斥、自排除、合法支持和Fold 2排除20/20；G1新增主干梯度为0；G2新增梯度到GFR/DARG/CAM且OutputLayer新增梯度为0。审计期间只修订了`audit.py`字段读取，不改训练代码、配置、权重或预测；`audit_status.json`记录训练source SHA与audit-only SHA差异。
+- **最终判断**：E76.9回答了三个问题：风险网络能提供中等但偏弱的误判风险区分；可靠疾病原型没有在真正误判患者上提供足够正确的反向证据，因此没有产生实质硬纠错；G2保护式端到端虽有有效梯度路径，却损害主干分类能力。当前不继续把RBCD作为MICCAI 2027第二创新模块候选，不做事后扩充Prompt、原型或残差权重；如未来重启，应先预注册严格独立模型选择、fold-local预处理和专门区分可靠原型/边界风险/文本语义增量的评估。
+
+产物：`/model/spromptgl/experiment/experiment76_9_rbcd/`；报告、逐折指标、配对比较、机制、纠错与干预、患者翻转和G2相对G1翻转文件均位于`results/`。
+## Experiment 78.2: DRAPS
+
+- 状态：`FAILED`；正式任务 0/40，独立Checkpoint审计 40/40。
+- 正式目录：`/model/spromptgl/experiment/experiment78_2_draps`；报告：`/model/spromptgl/experiment/experiment78_2_draps/results/report.md`；源 SHA：`afb561aec7b798b189195b17226f22a489a3033c0a4c7a354895a2f1854085ab`。
+- 10折 base-off parity：10/10；公共 RNG 轨迹不匹配：0。
+- E78.2-G1-SPromptGL-K1：ACC nan±nan%，Hard-AUC nan%，Prob-AUC nan%，SEN nan%，SPE nan%，ASD-F1 nan%。
+- E78.2-G2-SPromptGL-K3：ACC nan±nan%，Hard-AUC nan%，Prob-AUC nan%，SEN nan%，SPE nan%，ASD-F1 nan%。
+- E78.2-G3-SPromptGL-K5：ACC nan±nan%，Hard-AUC nan%，Prob-AUC nan%，SEN nan%，SPE nan%，ASD-F1 nan%。
+- E78.2-G4-Anonymous-K5：ACC nan±nan%，Hard-AUC nan%，Prob-AUC nan%，SEN nan%，SPE nan%，ASD-F1 nan%。
+- 每类有效 K、N_eff、可靠性和医学文本干预详见机制与干预 CSV；最终 GO/NO-GO 与限制见 report.md。
+
+### E78.2 Handoff Correction and Final Findings
+
+- 首次 `audit.py` 汇总在40个Checkpoint恢复后因CUDA诊断张量直接转NumPy而失败；该错误不属于训练或Checkpoint。恢复审计器 `audit_recovery.py` 仅修复 `detach().cpu().numpy()` 读取，未重训、未修改冻结训练源码或权重。
+- E78.2状态：`COMPLETE_AUDITED`；正式任务40/40，最佳/最新Checkpoint各40个，独立Checkpoint审计40/40；10/10 base-off parity；两步确定性恢复通过；公共RNG共核对14,307条共有epoch轨迹，14,307条逐值匹配，不匹配0；根目录和历史源码未修改。
+- 正式目录：`/model/spromptgl/experiment/experiment78_2_draps`；报告：`/model/spromptgl/experiment/experiment78_2_draps/results/report.md`；源SHA：`afb561aec7b798b189195b17226f22a489a3033c0a4c7a354895a2f1854085ab`。
+- E78.2-G1-SPromptGL-K1：acc 91.8443±2.8431%；hard_auc 91.6123±2.9122%；prob_auc 93.3081±2.9262%；sen 88.5854±4.7601%；spe 94.6392±3.3856%；asd_f1 90.9299±3.1708%。
+- E78.2-G2-SPromptGL-K3：acc 91.4995±3.0994%；hard_auc 91.3520±3.0968%；prob_auc 93.6223±2.9577%；sen 89.3415±4.2955%；spe 93.3626±4.2372%；asd_f1 90.6892±3.3452%。
+- E78.2-G3-SPromptGL-K5：acc 91.8443±2.7486%；hard_auc 91.6490±2.7280%；prob_auc 93.7594±2.5402%；sen 89.3110±4.3699%；spe 93.9870±4.8354%；asd_f1 91.0329±2.9346%。
+- E78.2-G4-Anonymous-K5：acc 91.5008±2.7843%；hard_auc 91.3730±2.7626%；prob_auc 93.6110±2.6477%；sen 89.5915±3.4414%；spe 93.1545±3.6839%；asd_f1 90.7198±2.9904%。
+- 主要ACC差（pp，W/T/L）：G2−G1 `-0.3448` (0/7/3)；G3−G2 `+0.3448` (4/5/1)；G3−G4 `+0.3435` (4/5/1)；G3−E74.4-G2 `-0.3448` (0/7/3)；G3−E78.1-G1 `-0.3448` (0/7/3)；G3−E78.1-G2 `+0.2299` (4/4/2)。六指标和Fold2排除结果在 `paired_comparisons.csv`。
+- 原型判别：G3训练LOO原型分类准确率均值约 96.93%；名义有效K为ASD/TD各5，但平均原型余弦相似度 0.9313、cos>0.98原型对比例 84.0%，因此K=5的可靠支持存在而互异容量未得到支持。
+- 门控：G3门控均值约 0.0562、跨患者标准差约 0.0063，范围受限于0–0.25；关闭特征残差平均硬翻转3例，关闭可靠性加权无硬翻转，说明门控/残差有可测但有限的推理影响。
+- 医学语义：G3训练指标略高于匿名G4，但固定Checkpoint替换匿名文本无硬标签翻转、平均概率变化很小，判为独立诊断贡献未稳定建立。
+- 科研判定：`NO-GO`；完整G3未超过E74.4-G2的ACC/Hard-AUC，且K=5出现原型几何回缩。
+- 结果文件：`results/fold_metrics.csv`、`paired_comparisons.csv`、`mechanism.csv`、`interventions.csv`、`checkpoint_audit.csv`、`audit_status.json`、`audit_recovery.json`、`report.md`。
+## Experiment 78.4: PSP-AL
+
+- 状态：`COMPLETE_AUDITED`；正式任务60/60，独立最佳Checkpoint审计60/60。
+- 正式目录：`/model/spromptgl/experiment/experiment78_4_pspal`；训练源SHA：`75b6985eb54a73854059b5581481d642aaba68b1eae922da05217b1c30493241`；preferred OSSFS errno=5，使用/model回退。
+- Base-off parity：10/10；公共RNG共有epoch核对：21826，不匹配：0。
+- E78.4-G1-SPromptGL-K1-Restricted：ACC 91.2709±2.7369%，Hard-AUC 91.0709%，Prob-AUC 93.4630%，SEN 88.3537%，SPE 93.7882%，ASD-F1 90.3663%。
+- E78.4-G2-SPromptGL-K1-Direct：ACC 89.8929±3.5980%，Hard-AUC 89.8463%，Prob-AUC 92.6626%，SEN 89.1098%，SPE 90.5828%，ASD-F1 89.1367%。
+- E78.4-G3-SPromptGL-K2-Restricted：ACC 91.3845±2.5912%，Hard-AUC 91.1684%，Prob-AUC 93.4184%，SEN 88.5671%，SPE 93.7697%，ASD-F1 90.5005%。
+- E78.4-G4-SPromptGL-K2-Direct：ACC 90.8098±3.8185%，Hard-AUC 90.7050%，Prob-AUC 93.0197%，SEN 89.1159%，SPE 92.2942%，ASD-F1 90.0100%。
+- E78.4-G5-Anonymous-K1-Restricted：ACC 91.6144±3.0062%，Hard-AUC 91.4454%，Prob-AUC 93.5682%，SEN 89.3293%，SPE 93.5615%，ASD-F1 90.8067%。
+- E78.4-G6-Anonymous-K1-Direct：ACC 89.8916±3.6716%，Hard-AUC 89.8246%，Prob-AUC 92.4629%，SEN 88.8537%，SPE 90.7956%，ASD-F1 89.0567%。
+- 最高医学组（按ACC）：`E78.4-G3-SPromptGL-K2-Restricted`。
+- K=1/K=2、受限残差/直接分类、医学/匿名Prompt、注意力与原型干预、Fold 2敏感性及限制详见E78.4 results/report.md。
+
+
+<!-- EXPERIMENT79_DEML_2026-11-13 -->
+
+## Experiment 79：DEML动态错误记忆学习
+
+- **状态/科研判定**：`COMPLETE_AUDITED`；`NO_GO_DEML`。E79在E74.4-G2唯一基座上完成G1 Historical Error Memory与G2 Corrective Error Memory，共20/20正式折；20/20 best独立重放、10/10 latest恢复通过。首选目录因OSSFS `EIO(errno=5)`不可用，正式产物位于`/model/spromptgl/experiment/experiment79_deml`。
+- **SAM 2借鉴边界**：审查SAM 2论文和官方Memory Encoder/Bank/Attention代码，只借鉴历史记忆写入、有限库和Cross-Attention抽象；没有移植视频帧传播、位置编码或SAM 2视觉模型。SPromptGL审查确认E74.4-G2为`PLNNoPEN`，CAM144为原OutputLayer输入；E79不含疾病Prompt/PEN/RBCD风险门控。
+- **DEML结构**：每个fold维护ASD→TD、TD→ASD两类合法训练错误记忆，容量64/类、Top-8、站点最多2条、`0.5H+0.3F+0.2R`淘汰、特征EMA `0.9/0.1`、连续正确10轮删除。查询患者预检索自排除，测试患者和Fold 2 zero-based 376/406不入库。错误事件只在原DARG eval预测后写入，下一Epoch才可读取。
+- **G1/G2**：G1屏蔽`correction_direction_144`；G2使用合法训练错误患者的`grad_h(z_true-z_wrong)`归一化方向。两组共享主干、记忆事件、参数量、损失、优化器和随机流。原DARG/CAM/OutputLayer不接收Memory新增梯度；空库严格回退CAM144。
+- **正式结果（%）**：E74.4-G2 `92.1891/92.0294/93.4946/90.0671/93.9917/91.4590`；G1 `91.9592/91.7398/93.4999/89.0671/94.4126/91.1333`；G2 `91.9592/91.7398/93.4949/89.0671/94.4126/91.1333`，列序ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1，均为10折mean。
+- **配对/纠错**：G1−基座ACC/Hard为`-0.2299/-0.2895pp`，G2−G1硬指标全为0，G2−基座与G1−基座相同；排除Fold 2后G1−基座ACC/Hard为`-0.2554/-0.3217pp`。两组同Checkpoint均错误→正确3、正确→错误1、净纠错+2（ASD纠正3、TD纠正0）；当前主干Memory-Off ACC `91.7294%`，记忆增强贡献`+0.2299pp`，但仍低历史基座。
+- **记忆轨迹**：两类记忆首次同时满容量epoch均值11.9；共享10-fold轨迹写入201,445、更新198,796、淘汰192,629、连续正确删除7,862；best最终占用合计ASD→TD 493、TD→ASD 489。G1/G2事件hash及容量轨迹一致。
+- **修正方向与机制**：原错误患者方向正确率加权G1 87.50%、G2 88.89%，margin增益0.1168/0.1200；但G2 Correction-Direction-Off/Permuted不改变硬纠错，证明修正方向没有独立硬收益。Memory-Off、Error-Type-Swap、Feature-Permuted、Recency-Off结果与干预表一致。
+- **RNG/审计**：预检CAM `(871,144)`、空库回退、一步主干更新、G1/G2参数量、Fold 2排除均PASS；best概率重放最大绝对差0，20/20 PASS；10/10 latest恢复PASS。审计后只修复读取/统计逻辑，未改变训练权重、预测或优化器。历史val=test、CV前预处理和transductive图仍限制泛化解释。
+- **文件**：权威报告`/model/spromptgl/experiment/experiment79_deml/results/report.md`，清单`/model/spromptgl/experiment/experiment79_deml/manifest.json`，六指标/配对/记忆/纠错/干预CSV及`audit_status.json`均在同一`results/`目录。
+- **候选判断**：动态错误记忆可产生有限同Checkpoint净纠错，但未超过E74.4-G2；G2局部修正方向未证实可迁移。当前不继续把DEML作为MICCAI 2027第二创新模块候选，不追加正式组或测试集调参。
+
+### E78.4 Handoff Correction
+
+- 医学语义独立贡献：`MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`。G1−G5 的 ACC 为 −0.3435 pp；G2−G6 为 +0.0013 pp（4/1/5），不足以支持医学文本超过匿名文本。固定 Checkpoint 替换匿名文本在受限残差组平均约0.3个硬翻转/折，未显示稳定有利收益。
+- K=2 的G3/G4同类双原型在独立审计中均为100% cos>0.98坍塌，第二原型关闭平均仅约0.1个硬翻转/折；因此不支持有效新增原型容量。
+- 最终科研判定保持 `NO-GO`；报告已补入不使用LOO的自匹配偏差诊断，结果与冻结训练/Checkpoint SHA不变。 G3相对E78.1-G1的ACC/Hard-AUC/Prob-AUC为−0.8046/−0.8796/−0.4425 pp（排除Fold 2 ACC−0.6386 pp）。
+## Experiment 78.5: BSP-AL
+
+- 状态：`COMPLETE_AUDITED`；正式任务30/30，独立Checkpoint审计30/30。
+- 正式目录：`/model/spromptgl/experiment/experiment78_5_bspal`；preferred OSSFS errno=5，使用/model回退；训练源SHA：`7cb7617a024049ca34dc1d3c8451bcc4342215cf3b31b99977af5cfd14fbda23`。
+- Base-off parity：10/10；公共RNG共有epoch：10890，不匹配：0。
+- 三组：G1基座保持K=1医学、G2选择性医学、G3同结构匿名Prompt；完整指标、原MLP/融合对比、注意力和Prompt机制见 `results/report.md`。
+- 最终科研判定：详见报告；已知历史val=test、测试ACC选模、CV前RFE、transductive图和Fold 2限制均保留。
+
+### E78.5 Handoff Correction and Final Findings
+
+- 六指标均值（ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1，%）：G1 `91.7294/91.5569/93.7116/89.1037/94.0102/90.8451`；G2 `92.0742/91.9072/93.4286/89.5915/94.2229/91.2818`；G3 `91.9592/91.8118/93.6259/89.8354/93.7882/91.1861`。
+- G1相对E78.4-G1 ACC/Hard-AUC/Prob-AUC 为 `+0.4585/+0.4860/+0.2486 pp`；G2相对G1为 `+0.3448/+0.3503/-0.2830 pp`；G2相对G3为 `+0.1149/+0.0954/-0.1973 pp`；G2相对E74.4-G2为 `-0.1149/-0.1222/-0.0660 pp`。
+- 同一最佳Checkpoint关闭残差后，融合ACC平均增量为 G1/G2/G3 `+0.1149/+0.2299/+0.2299 pp`；原始MLP路径没有出现E78.4式的明显退化。
+- G1注意力接近均匀（有效支持约362/420、熵约1.000）；G2选择性有效支持约72/97、熵约0.851/0.855；G3约60/81、熵约0.829/0.825。选择性聚合机制确实改变了注意力形态，但未带来超过E74.4的分类收益。
+- 医学语义独立贡献：`MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`。G2相对匿名G3 ACC仅 `+0.1149 pp`，Prob-AUC `-0.1973 pp`，Prompt权重仍接近均匀。
+- 30/30 best独立审计、10/10 base-off parity、两步恢复通过；公共RNG共有 epoch 10,890，不匹配0。最终科研判定：`NO-GO`，不启动E78.6。
+
+<!-- EXPERIMENT79_1_DREM_2026-11-13 -->
+
+## Experiment 79.1：DREM动态错误恢复记忆学习
+
+- **状态/科研判定**：`COMPLETE_AUDITED`；`NO_GO_DREM`。在E74.4-G2唯一基座上完成G1 Memory-Dependent Error Learning与G2 Recovery-Aware Error Memory，共20/20正式折；40/40 best（Method-Selected与Base-Anchored各20）及10/10 latest独立审计通过。
+- **目录与协议**：首选/data路径因OSSFS `EIO(errno=5)`回退至`/model/spromptgl/experiment/experiment79_1_drem`；seed=0、10折、单GPU、峰值10 worker。保留E74.4-G2 DARG/PLNNoPEN/CAM144/OutputLayer、val=test选模、历史CV前预处理、transductive图及Fold 2限制。
+- **设计**：借鉴SAM 2的历史记忆写入、有限Memory Bank与Cross-Attention抽象，不移植视频跟踪结构；每类错误分为Stable16、Recent16、Recovered32，真实错误后连续3轮正确且同头margin gain>0.05才形成有效Recovered记录。G1将恢复方向严格置零，G2使用类别中心漂移校正后的真实`h_correct-h_wrong`方向；Memory Value无bias、Key/Value绑定、查询自排除、测试患者不入库。
+- **结果（%）**：E74.4-G2为`92.1891/92.0294/93.4946/90.0671/93.9917/91.4590`；G1 Base-Anchored `91.4995/91.3655/93.5162/89.8171/92.9140/90.7672`；G2 Base-Anchored `91.4995/91.3655/93.4950/89.8171/92.9140/90.7672`；G1 Method-Selected `92.0742/91.9416/93.5160/90.3171/93.5661/91.3739`；G2 Method-Selected `92.0742/91.9416/93.5480/90.3171/93.5661/91.3739`。列序为ACC、Hard-AUC/BA、Prob-AUC、SEN-ASD、SPE-TD、ASD-F1。
+- **配对与纠错**：Base-Anchored G1/G2相对基座ACC均`-0.6897pp`，G2-G1硬ACC `0/10/0`；Method-Selected G1/G2相对基座ACC均`-0.1149pp`，G2-G1硬ACC `0/10/0`。Base-Anchored两组错误→正确0、正确→错误6、净纠错−6；Method-Selected G1错误→正确6、正确→错误0、净+6，G2错误→正确7、正确→错误0、净+7，但方法选模基座本身已低于历史基座；排除Fold 2的逐折结果在`paired_comparisons.csv`。
+- **记忆轨迹**：各折结束共享轨迹累计写入166,200、更新234,041、移动331,017、淘汰298,584；恢复候选41,267、确认24,427、拒绝16,840、失效22,852。Base-Anchored读取库中去重有效Recovered记录253条，真实恢复质量和最终容量见`memory_analysis.csv`与`recovery_analysis.csv`。
+- **机制审计**：Memory-Off、Key–Value Association Break、Error-Type-Swap、Recency-Off及G2 Recovery-Direction-Off/Permuted均完成同Checkpoint重放。Base-Anchored G1的Key–Value打乱不改变硬结果；G2仅有有限概率/硬变化；Recovery-Direction-Off/Permuted不改变G2硬纠错。G2恢复方向未显示独立可迁移价值。
+- **工程审计**：历史最佳Epoch处原DARG参数逐张量一致，CAM144 `(871,144)`，空记忆严格回退；G1/G2共享错误事件轨迹，Memory新增梯度不进入原DARG/GFR/CAM/OutputLayer；Fold 2 zero-based 376/406及测试患者排除通过。训练中曾修复恢复字段并将等价Memory读出改为批处理后从原子latest恢复，最终Checkpoint概率均可在当前审计源下精确重放；源修订记录见`manifest.json`。
+- **最终判断**：真实错误→正确事件可以被动态记录，且Recovery库不是伪填充，但在严格Base-Anchored比较中两组均损害硬分类，Method-Selected接近但未超过历史基座，G2未优于G1。因此当前不继续将DREM作为MICCAI 2027第二创新模块候选，不追加G3/G4或测试集调参。
+
+
+## Experiment 78.6 — PEN-SVA (2026-11-13)
+
+- 目的：审计原始SPromptGL疾病Prompt是否进入有效计算图、改变预测、保留疾病方向并提供医学语义增益；本轮冻结审计，不新增模型训练组。
+- 正式目录：`/model/spromptgl/experiment/experiment78_6_pen_semantic_audit`；首选/data目录因OSSFS errno=5回退到/model目录。
+- 原始PEN Checkpoint清点：E32/E28历史目录只保留源码、manifest和结果，未发现身份一致的原始seed=0十折best state_dict；E78.x权重未替代。真实Checkpoint级审计为`NOT_VERIFIED`，没有伪重建。
+- 源码证据：`network.py`确认8条原始Prompt、冻结RN50缓存、4096→128→9 MLP、两类余弦相似度、class-axis softmax、`torch.max`、AvgPool/RES和OutputLayer路径；SHA见`manifest.json`。
+- 数学结论：`max(softmax([s_ASD,s_TD]))=sigmoid(abs(s_ASD-s_TD))`，10000组数值单测通过；类别交换在合成前向中权重、PEN表示、logits和硬预测均不变。因此SPGS门控不保留显式类别方向，只保留匹配强度。
+- 正向控制：确定性分类器参数扰动和PEN中间特征扰动均产生非零logit变化，排除了“探针完全失效”的解释；这些不是患者Checkpoint结果。
+- 历史交叉核查：E32 B0/B1/B2报告分别为ACC 92.0742/91.2696/91.7294%，仅作独立训练参考；E43.3在另一协议下的PEN/GFR结果单独标注，不能替代原始PEN固定Checkpoint干预。
+- 科研判定：`COMPUTATION_ACTIVE_BUT_SEMANTIC_VALUE_NOT_ESTABLISHED`，并附`EXPLICIT_CLASS_DIRECTION_NOT_PRESERVED`与`INSUFFICIENT_VERIFIABLE_CHECKPOINTS`。Prompt参与计算的源码证据成立；医学Prompt优于无意义文本、A0–A7真实患者影响和PEN相对CAM-only的Checkpoint因果增益未能验证。
+- 核心文件：`audit.py`、`pen_probe.py`、`checkpoint_inventory.json`、`design.md`、`manifest.json`、`results/report.md`、`results/audit_status.json`。
+
+
+## Experiment 78.6 — PEN-SVA correction (2026-11-13)
+
+- 复核发现 E60 `E60_ORIGINAL_PEN` 历史登记有 10/10 个原始 SPromptGL PEN best，E60 `checkpoint_audit.csv` 全部 PASS；协议是 E53.3 CADR/GFR，不能与 E32 B2 混写。
+- 当前 E60 stage、`/data` 和 `/model` 注册位置没有可读对应 `.pt`（当前 SHA 匹配数 10/10），因此没有执行或伪造 A0–A7 患者级固定 Checkpoint 干预。
+- 源码与数学审计成立：Prompt 通过冻结 RN50、4096→128→9 MLP、SPGS 和 RES 进入计算；`max(softmax([s_ASD,s_TD]))=sigmoid(abs(s_ASD-s_TD))`，类别向量交换在合成真实形状前向中保持 PEN 表示、logits 和硬预测不变。
+- E32 B0/B1/B2 与 E60 ORIGINAL_PEN 只作为历史训练参考；医学/匿名/错误/数值文本的真实患者干预、真实文本 MLP 梯度和逐患者变化均为 `NOT_VERIFIED`。
+- 当前科研判定：`COMPUTATION_ACTIVE_BUT_SEMANTIC_VALUE_NOT_ESTABLISHED` + `EXPLICIT_CLASS_DIRECTION_NOT_PRESERVED_BY_SPGS` + `INSUFFICIENT_VERIFIABLE_CHECKPOINTS`；不启动 E78.7。报告：`/model/spromptgl/experiment/experiment78_6_pen_semantic_audit/results/report.md`。
+
+
+## Experiment 78.6 PEN-SVA — final audited correction (2026-11-13T07:42:13.743986+00:00)
+
+- **状态**：`COMPLETE_AUDITED`；E60 `E60_ORIGINAL_PEN` 冻结 best Checkpoint 10/10 通过 SHA/身份核验、A0 指标与概率读回、A0–A7 独立重放；没有最小参考重建，也没有使用 E78.x 权重。首选/data 因 OSSFS errno=5 回退，唯一正式目录为 `/model/spromptgl/experiment/experiment78_6_pen_semantic_audit`。
+- **Checkpoint身份**：E60 是 E53.3 CADR/GFR 协议；十个best文件复制到 `/tmp/e78_6_e60_cp_run1` 作为稳定只读输入，SHA与历史 `checkpoint_audit.csv` 10/10一致。E53.3形状构造锚点只用于实例化加载器，未作为训练权重。
+- **原始SPGS数学**：`max(softmax([s_ASD,s_TD]))=sigmoid(abs(s_ASD-s_TD))`，余弦范围下权重为 `[0.5,0.8807970779]`；数值单测最大误差0。类别向量交换在真实10/10折中权重、PEN特征、logits和预测逐值不变，确证 `EXPLICIT_CLASS_DIRECTION_NOT_PRESERVED_BY_SPGS`。
+- **真实A0–A7**：A0/A1/A2/A3/A4/A5/A6/A7均完成10折固定Checkpoint审计。A0 full PEN `91.2696/91.1160/93.1809/89.0915/93.1406/90.4495%`；A1 RES-only `91.2696/91.1160/93.1544/89.0915/93.1406/90.4495%`；A2 PEN-off `91.2696/91.1160/93.1703/89.0915/93.1406/90.4495%`；列序ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1。A3–A7完整表在 `results/report.md` 和 `interventions.csv`。
+- **中间机制**：SPGS weight均值约0.517、RES Vsim熵约2.196（接近`ln(9)`）、PEN相对残差约5.86%、输入/输出特征余弦约0.99998。文本替换A4/A5/A6平均ASD概率变化约`4–5×10^-5`，无硬翻转；全体A0–A7混淆计数均为TP359/FN44/FP32/TN436。
+- **梯度和正向控制**：文本MLP参数十折均非零，合法训练标签NLL梯度9/10折非零；修正审计器后完整CAM参数梯度10/10折非零。冻结CLIP无梯度；OutputLayer参数和PEN中间特征确定性微扰均产生非零logit响应。
+- **历史交叉核查**：E32 B0/B1/B2 ACC为92.0742/91.2696/91.7294%，E28 E0_P0为91.6911%，E43 E00_B0A为92.0742%；这些是不同训练协议的历史参考，未与E60固定干预混合。
+- **科研结论**：Prompt `COMPUTATION_ACTIVE`，预测依赖 `WEAK`；但医学/匿名/错误/数值文本没有硬分类增量，医学语义独立价值 `MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`。完整PEN相对PEN-off无硬增益，只带来约0.0106 pp的Probability-AUC差；最终标签为 `COMPUTATION_ACTIVE_BUT_SEMANTIC_VALUE_NOT_ESTABLISHED` + `EXPLICIT_CLASS_DIRECTION_NOT_PRESERVED_BY_SPGS` + `PEN_NET_HARD_GAIN_NOT_DETECTED`，不启动E78.7。
+- **文件**：最终报告 `/model/spromptgl/experiment/experiment78_6_pen_semantic_audit/results/report.md`；设计、清单、审计状态和逐患者结果均在同目录；本段追加保留前序临时状态记录。
+
+### E78.6 handoff clarification
+
+The immediately preceding `NOT_VERIFIED` entry is retained as historical provisional state from before the E60 files were stabilized. The final audited correction above supersedes it: the SHA-matched E60 ten-fold set was available, copied only to `/tmp/e78_6_e60_cp_run1`, and replayed successfully 10/10; no reconstruction was needed.
+
+<!-- EXPERIMENT79_2_CAM_DISCRIMINATIVE_MEMORY_2026-11-13 -->
+
+## Experiment 79.2：CAM144疾病判别记忆三路线
+
+- **状态/科研判定**：`COMPLETE_AUDITED`；`NO_GO_CAM_MEMORY`，子结论`PROBABILITY_ONLY_NOT_ESTABLISHED`。唯一基座为只读E74.4-G2 Positive-DCR；SAM 2仅借鉴有限Memory Bank、Cross-Attention和先读后写时序，不移植视频跟踪假设。
+- **正式规模**：seed=0、10折、G1 LDCM/G2 DDEM/G3 DDM，共30/30正式方法折；每折共享一条原DARG训练轨迹，三个新增分支各自独立优化。设备`PPU-ZW810E`，启动并记录最大10 worker，正式目录为`/model/spromptgl/experiment/experiment79_2_cam_discriminative_memory`（/data路径OSSFS errno=5回退）。
+- **三种记忆**：G1保存局部相近ASD/TD患者对及可靠判别方向（64对）；G2保存正确患者CAM144特征干预所得的最多12维关键证据、联合margin drop和可靠性（48 ASD+48 TD）；G3保存每类3个均值+收缩对角方差的局部分布成分。三组都只通过Memory Value生成144维增强，空记忆严格回退原CAM144。
+- **协议与隔离**：不使用Prompt、PEN、OOF教师、E79/E79.1错误记忆或分类后残差。新增分支读取detach CAM144，原DARG/GFR/CAM/OutputLayer只由历史`L_base`更新；Fold 2 zero-based 376/406不进入新增记忆；测试患者不参与记忆构建、更新、统计或检索。
+- **基座/RNG**：E61 warmup、历史参数/优化器、4096关系对和Python/NumPy/Torch CPU/CUDA RNG均从E74.4-G2恢复；10折共享RNG逐节点不匹配为0，历史最佳Epoch及原主干状态逐折一致。
+- **双Ledger**：Base-Anchored固定读取历史E74.4-G2最佳Epoch；Method-Selected沿用`val=test`严格提高ACC。三组两套Ledger的硬指标均复现历史基座；G3 Prob-AUC下降0.0106pp。
+- **六指标（%，列序ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）**：E74.4-G2 `92.1891/92.0294/93.4946/90.0671/93.9917/91.4590`；G1 `92.1891/92.0294/93.4946/90.0671/93.9917/91.4590`；G2同G1；G3 `92.1891/92.0294/93.4840/90.0671/93.9917/91.4590`。Base-Anchored和Method-Selected结果相同。
+- **纠错与机制**：三组相对同Checkpoint原DARG均错误→正确0、正确→错误0、净纠错0、硬翻转0；G1/G2/G3平均相对CAM增量约0.2343%/0.6055%/0.2193%，cap fraction均0。Memory-Off、Memory-Content-Permuted、G1 Pair-Direction-Permuted、G2 Evidence-Mask-Permuted、G3 Variance-Off均无硬翻转；G3方差关闭仅带来约−0.0053pp Prob-AUC变化。具体记忆内容没有显示独立硬诊断贡献。
+- **审计**：60/60最佳Checkpoint、10/10 latest独立加载和重放通过；CAM `(871,144)`、空记忆等价、查询自排除、测试/折2排除、Key-Value干预、六指标与纠错统计均复算通过。审计状态见`results/audit_status.json`，完整报告见`results/report.md`。
+- **结论**：局部疾病对照、关键判别证据和亚群分布记忆都未超过E74.4-G2；当前证据无法证明CAM144中存在被跨患者有效利用的额外记忆信息，也无法把失败唯一归因于记忆内容或融合器。暂不把E79.2继续作为MICCAI 2027第二创新模块，不追加G4/G5或测试集调参。历史`val=test`选模、CV前预处理、transductive图和Fold 2重叠仍限制泛化解释。
+
+## Experiment 78.7: BDP-PL
+
+- 状态：`COMPLETE_AUDITED`；正式任务40/40，独立Checkpoint审计40/40。
+- 正式目录：`/model/spromptgl/experiment/experiment78_7_bdpprompt`；preferred OSSFS errno=5，使用/model回退；训练源SHA：`87af7eafd9da6d5842648dfe7b9f5ee6e98bd6e4d727ef3d25baae0f2f66e66d`。
+- Base-off parity：10/10；公共RNG共有epoch：14648，不匹配：0。
+- 四组：G1方向A医学、G2方向B医学、G3双向医学、G4双向匿名；方向A校准、方向B软概率患者聚合、语义监督、机制干预和完整指标见 `results/report.md`。
+- 历史限制：val=test、测试ACC选模、CV前预处理/RFE、transductive图和Fold 2重叠仍保留，新分支未读取测试标签。
+
+## Experiment 78.7: BDP-PL result supplement
+
+- 目的：验证真实 ASD/TD 患者原型反向校准医学 Prompt、DARG 概率加权患者聚合和 A+B 双向协同；四组固定各 10 折，seed=0。
+- 目录：`/model/spromptgl/experiment/experiment78_7_bdpprompt`；preferred OSSFS errno=5，未在两处重复运行。唯一基座为服务器 E74.4-G2 Positive-DCR，训练源 SHA `87af7eafd9da6d5842648dfe7b9f5ee6e98bd6e4d727ef3d25baae0f2f66e66d`。
+- 论文/代码依据：SPromptGL GFR/CAM、BrainPrompt ABIDE 两条疾病级原文（CLIP RN50 适配）、PPAL 渐进 Prompt/患者聚合；E74.4 `soft_positive_dcr.py` 实际总损失完整保留，新增 `0.1 L_sem + 0.01 L_keep`。
+- 完成：40/40 正式任务，40/40 best 独立审计；10/10 base-off parity；两步恢复通过；公共 RNG 共核对 14648 个 epoch，不匹配 0；根源码和历史实验未修改。
+- 训练累计任务墙钟约 6.05 小时（10 worker 并发；实际控制器约 69 分钟），单任务峰值显存约 1.06 GiB。
+
+|组别|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E78.7-G1-InverseCalibration-Medical|91.8443 ± 3.0233|91.8087 ± 2.9799|93.8382 ± 2.9265|91.3232 ± 3.7191|92.2942 ± 4.5324|91.2307 ± 3.1663|
+|E78.7-G2-PPALSoftAggregation-Medical|91.8443 ± 3.1095|91.6605 ± 3.0752|93.7535 ± 3.1029|89.3293 ± 4.4636|93.9917 ± 4.8953|91.0467 ± 3.3117|
+|E78.7-G3-Bidirectional-Medical|91.3845 ± 3.2270|91.2054 ± 3.2175|93.4623 ± 2.9512|88.8354 ± 3.8959|93.5754 ± 4.0816|90.5303 ± 3.4962|
+|E78.7-G4-Bidirectional-Anonymous|91.6144 ± 3.0928|91.4849 ± 3.1264|93.6515 ± 3.2201|89.8293 ± 5.5086|93.1406 ± 5.0021|90.8292 ± 3.4054|
+
+- E74.4-G2：92.1891/92.0294/93.4946；E78.5-G2：92.0742/91.9072/93.4286。G1 相对基座 ACC -0.3448 pp、Hard-AUC -0.2207 pp、Prob-AUC +0.3436 pp；G2 相对基座 ACC -0.3448 pp、Hard-AUC -0.3689 pp、Prob-AUC +0.2589 pp；G3 相对基座 ACC -0.8046 pp、Hard-AUC -0.8240 pp、Prob-AUC -0.0323 pp。
+- G3 相对 G1/G2 均下降，G4 匿名 ACC 91.6144 高于 G3 医学 91.3845；医学文本独立增量未建立。去除 Fold 2 后 G1/G2/G3/G4 ACC 分别为 91.8320/91.9600/91.3210/91.8320%，G3 仍未改善。
+- 方向 A 的平均 Prompt 校准位移约 0.0047，方向 B 的有效患者支持约 325/263（G2）和 532/420（G3），相比 G1 均匀约 784 有明显选择性；但稀疏聚合未带来最终 DARG 诊断增益。
+- 固定 Checkpoint A/B 关闭、uniform_attention、匿名文本和类别交换均保持 DARG 最终硬预测不变；语义概率变化分别约 0.0134、0.0220、0.0227、0.4035，类别交换约 0.8343。说明语义分支计算活跃并保留类别方向，但最终辅助分支未改变 DARG 诊断决策。
+- 最终科研判定：`NO-GO_BIDIRECTIONAL_PROMPT`；`MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`。原因是 G3 不超过 E74.4-G2/G1/G2，且医学 Prompt 不优于匿名对照；结果仍受 val=test、测试 ACC 选模、CV 前预处理/RFE、transductive 图和 Fold 2 重叠限制。
+- 结果：`results/report.md`、`fold_metrics.csv`、`paired_comparisons.csv`、`mechanism.csv`、`interventions.csv`、`checkpoint_audit.csv`、`audit_status.json`；核心源码：`bdpprompt.py`、`run.py`、`audit.py`、`config.json`、`design.md`、`manifest.json`。
+## Experiment 78.8: FAPC
+
+- 状态：`PARTIAL`；正式任务30/30，独立Checkpoint审计30/30。
+- 正式目录：`/model/spromptgl/experiment/experiment78_8_fapc`；/model为单一正式输出；训练源SHA：`18fc53699e190599b3ce9a6289c3fe7695b696bde8ea68b9c14244908bf6f21d`。
+- Base-off parity：10/10；公共RNG共有epoch：8173，不匹配：0。
+- G1 Visual-only；G2 FrozenAnchor 医学；G3 FrozenAnchor 匿名。20条RN50文本经共同CPU-float64行空间SVD，Gram误差记录于 `results/preflight.json`；无可训练文本投影。
+- 单侧主任务优先梯度保护记录冲突、投影和20%范数上限；Fold 2新增支持排除零基索引376、406。
+- 六指标、G1/G2/G3配对差、固定锚点和去Fold 2分析见 `results/report.md`、`results/paired_comparisons.csv`、`results/mechanism.csv`。
+- 历史限制：val=test、测试ACC选模、CV前RFE/预处理、transductive图和单seed仍保留。
+
+## Experiment 79.3：CAM144疾病竞争证据记忆学习
+
+- **状态/科研判定**：`COMPLETE_AUDITED`；`NO_GO_COMPETITIVE_MEMORY`，子结论`MEMORY_DEPENDENCY_LIMITED_WITHOUT_STABLE_BASE_GAIN`。正式目录为`/model/spromptgl/experiment/experiment79_3_competitive_evidence_memory`；首选`/data`目录在mkdir/写入/fsync/原子探针阶段返回OSSFS `EIO(errno=5)`，因此使用可靠回退。
+- **研究目的**：在唯一E74.4-G2 DARG基座的CAM144表示上比较显式ASD/TD竞争的局部患者对照记忆（G1 CLDCM）与跨患者一致性判别证据记忆（G2 CPDEM），验证历史疾病证据是否能产生独立净纠错。
+- **审查依据**：SPromptGL论文/源码用于核对GFR、CAM和原OutputLayer；SAM 2只借鉴有限Memory Bank、Cross-Attention、先读后写顺序，不移植视频跟踪结构。79.2失败的同路读出、单患者证据和过保守门控均在79.3中重写。
+- **G1**：合法训练患者中最多64个相似异类ASD/TD对；保存两侧CAM144锚点、局部双类支持、分离度、AUC和可靠性。读取时分别产生ASD/TD Value并联合竞争，修正方向由两路记忆读出产生。
+- **G2**：最多48 ASD+48 TD正确训练患者；用CAM维度替换干预选择最多12维稳定正向margin证据，再以同类支持一致性和异类局部区分构造可靠性及疾病对照方向；按证据Mask检索两类Memory并竞争。
+- **协议/隔离**：seed=0、10折、20/20正式组折；每折只训练一条共享原DARG轨迹。新增分支只读detach CAM144，OutputLayer参数、DARG/GFR/CAM无新增梯度；无Prompt、PEN、OOF教师或分类后残差。刷新间隔5 epoch，第11 epoch后首次建立；Fold 2 zero-based 376/406和测试患者不进入新增记忆。
+- **基座/RNG审计**：E61 warmup、原优化器、关系对、训练/测试划分和Python/NumPy/Torch CPU/CUDA RNG恢复通过；RNG不匹配0；主干历史best身份和预测核对通过。40/40最佳Checkpoint和10/10 latest独立重放通过，空记忆回退、患者自排除、测试/折2排除、Value干预和指标复算通过。
+- **六指标（%）**：历史E74.4-G2为`92.1891/92.0294/93.4946/90.0671/93.9917/91.4590`。G1 Base-Anchored为`91.6144/91.4586/93.5477/89.5732/93.3441/90.8618`，G2 Base-Anchored为`91.9592/91.8166/93.5371/90.0671/93.5661/91.2252`；G1 Method-Selected为`91.8443/91.7433/93.3829/90.3415/93.1452/91.1274`，G2 Method-Selected为`92.1891/92.0294/93.5690/90.0671/93.9917/91.4590`（列序ACC/Hard-AUC/Prob-AUC/SEN/SPE/ASD-F1）。
+- **配对与折2敏感性**：Base-Anchored G1/G2 ACC相对基座为`-0.5747/-0.2299`pp，排除Fold 2为`-0.3831/-0.2554`pp；Method-Selected G1/G2为`-0.3448/0.0000`pp，排除Fold 2为`-0.1277/0.0000`pp。G2-G1 Base-Anchored ACC为`+0.3448`pp、排除Fold 2为`+0.1277`pp，但仍低于历史基座。
+- **纠错**：历史Base-Anchored G1错误→正确/正确→错误/净变化为`0/5/-5`，G2为`0/2/-2`；排除Fold 2分别为`0/3/-3`和`0/2/-2`。Method-Selected相对各自同epoch原始DARG为G1 `6/3/+3`、G2 `2/0/+2`，但不能替代历史基座比较。
+- **记忆与干预**：G1最佳记忆平均64对、可靠性约0.634；G2平均96条、可靠性约0.930、12维证据、联合margin下降约2.446。Base-Anchored Memory-Off硬变化G1/G2为5/2例；Pair-Association-Break为2例；G2 Evidence-Mask-Break和Cross-Patient-Reliability-Off均为0例。具体记忆内容改变少量概率，但没有稳定硬分类独立贡献。
+- **幅度**：Base-Anchored G1平均gate/相对增量/cap比例约`0.222/4.82%/43.4%`，G2约`0.194/6.03%/56.0%`；G2仍有较高增量触顶率，不能把特征变化解释为可靠疾病纠错。
+- **结论**：竞争式局部对照和跨患者判别证据都没有在历史DARG最佳Checkpoint上产生真实净纠错或超过基座。G2相对G1略优，但跨患者可靠性干预没有硬分类影响；当前证据不足以支持CAM144记忆已形成可迁移疾病证据，不追加G3/G4或测试集调参。完整报告在实验目录`results/report.md`。
+
+## Experiment 78.8 audit recovery
+
+- 最终状态：`COMPLETE_AUDITED`，30/30正式任务，30/30最佳Checkpoint独立重载复算通过；公共RNG核对8173个共有epoch，不匹配0。
+- 首次审计汇总的`run.unit`缺失仅影响机制表生成；独立Checkpoint恢复和指标复算均已通过。通过独立report-only脚本修复汇总，未修改冻结训练代码或Checkpoint。固定文本空间Gram误差float64=3.220e-15，float32读回误差=4.693e-08。
+- G1/G2/G3六指标和配对差见 `/model/spromptgl/experiment/experiment78_8_fapc/results/report.md`；G2相对基座未取得诊断增益，医学文本独立贡献以G2-G3配对结果判定，最终结论`NO_GO_FAPC`。
+
+## Experiment 78.8 — prior run invalidation and implementation correction
+
+Earlier E78.8 COMPLETE_AUDITED entries are superseded and must not be cited as a valid FAPC efficacy experiment. The first run used an invalid anonymous text bank; the corrected-text run still had a confirmed CAM144 hook error: it returned only g_aux_safe, omitting g_base. Both 30-task runs are preserved under runtime/superseded_initial_run and runtime/superseded_missing_main_gradient. A corrected g_base+g_aux_safe implementation will undergo independent full-parameter gradient composition and hook-active zero-auxiliary parity tests, then a fresh frozen 30-task run. No method weights or test-driven hyperparameters are changed.
+
+## Experiment 78.8 final corrected run e2f150dca3c6
+
+正式目录：/model/spromptgl/experiment/experiment78_8_fapc；单一/model回退。最终有效任务30/30，best独立审计30/30，latest身份30/30；10 worker，墙钟55.19分钟。此前两轮因匿名对照定义和Hook遗漏主梯度而作废，不纳入下列结果；完整保留在runtime/superseded_*。
+
+方法：G1 Visual-only；G2固定医学锚点；G3固定匿名锚点。全部逐折从E61 epoch-10恢复E74.4-G2，原三个优化器及完整L_DARG保留；0.1辅助分类+0.01固定锚点保持；CAM144单侧冲突投影/20%上限，实际Hook传回g_base+safe_aux。RN50共同20文本全行空间SVD，无可训练文本投影。
+
+|组别|ACC|Hard-AUC/BA|Prob-AUC|SEN-ASD|SPE-TD|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E78.8-G1-VisualOnly|92.0742 ± 2.7959|91.9337 ± 2.8149|93.6579 ± 2.7408|90.0793 ± 3.8474|93.7882 ± 3.4135|91.3220 ± 3.0255|
+|E78.8-G2-FrozenAnchor-Medical|91.7294 ± 2.4624|91.5324 ± 2.4361|93.3665 ± 2.7895|89.0732 ± 3.5845|93.9917 ± 4.0988|90.8992 ± 2.6252|
+|E78.8-G3-FrozenAnchor-Anonymous|91.9606 ± 2.5761|91.8701 ± 2.5191|93.6327 ± 2.5336|90.8171 ± 2.9689|92.9232 ± 4.2493|91.3054 ± 2.6358|
+
+G2−E74.4-G2：ACC -0.4598、Hard-AUC -0.4970、Prob-AUC -0.1281 pp；G2−E78.7-G1 ACC -0.1149 pp；G2−G1 ACC -0.3448 pp；G2−G3 ACC -0.2312 pp。去Fold 2 G2−基座ACC -0.2554 pp。
+
+固定锚点20/20未漂移；缓存SHA 00fac05f14694d740e9eb1313fd5ceb159d88fac476b8456f8261a04cee5d432；Gram误差4.663e-15。梯度冲突410/11327、投影410、缩放6875；生产Hook零辅助主梯度逐值恢复、独立全参数梯度合成与两步恢复通过。共有RNG 10872 epoch，不匹配0。
+
+最终判断：NO_GO_FAPC, MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED, GRADIENT_PROTECTION_ACTIVE_BUT_NO_GAIN, FROZEN_ANCHOR_EFFECT_UNSUPPORTED。固定文本干预只影响辅助语义分支，不应直接改变DARG最终预测。完整六指标、配对差/95%区间、去Fold 2与机制见results/report.md、fold_metrics.csv、paired_comparisons.csv、mechanism.csv、interventions.csv、audit_status.json；核心代码fapc.py、run.py、audit.py、make_text_cache.py。仍受val=test、CV前RFE、transductive图、历史重叠、单seed与不做LOO限制。
+
+## Experiment 78.9 LOO-FAPC in progress cbec59531ed5
+
+正式目录：`/model/spromptgl/experiment/experiment78_9_loo_fapc`；preferred OSSFS mkdir errno 5，回退/model。3组×10折，seed=0，仅修改训练查询为LOO原型；唯一基座E74.4-G2，从E61 epoch-10独立恢复。冻结训练SHA cbec59531ed579278495ef8ef4cc00d93a38014080d14beb098a9398b4514614；预检10/10 base-off、30/30 E78.8初始参数buffer、LOO公式/梯度隔离、主梯度完整Hook和两步恢复通过。30折以10 worker运行中，最终指标和科研结论待独立Checkpoint审计；不要将本条视作实验完成。
+
+## Experiment 78.9 LOO-FAPC final cbec59531ed5
+
+# Experiment 78.9 — LOO-FAPC final report
+
+STATUS: COMPLETE_AUDITED
+
+单一正式目录：`/model/spromptgl/experiment/experiment78_9_loo_fapc`。preferred OSSFS mkdir errno=5，回退/model。30/30正式训练，10 worker，墙钟98.92分钟；任务时间合计7.869小时；单任务allocated峰值1.088GiB。
+冻结训练源SHA `cbec59531ed579278495ef8ef4cc00d93a38014080d14beb098a9398b4514614`；E78.8最终有效修正版 `corrected-neutral-anonymous-and-main-gradient-v2`。固定文本缓存SHA `00fac05f14694d740e9eb1313fd5ceb159d88fac476b8456f8261a04cee5d432`。
+
+## 方法和来源
+
+唯一基座E74.4-G2，全部任务独立从E61 epoch-10参数、三个优化器和全部RNG恢复。复用服务器真实soft_positive_dcr.py完整损失；原始weighted NLL、图损失与pair/adv/preserve权重保持。仅将训练支持查询的辅助原型改成向量化(sum-self)/(count-1)；ASD/TD两个竞争方向共用同一去除自身的支持集。测试查询始终使用完整合法训练支持。患者查询路径及其他支持患者原型路径保留梯度，自身支持路径梯度抵消。
+患者投影、疾病方向映射、beta、固定RN50锚点、辅助权重0.1、保持权重0.01、温度0.25、尺度10、20%梯度上限和私有初始化seed788000+fold均与E78.8相同。正式预测仍为DARG MLP，没有语义残差分类。
+SPromptGL提供GFR/CAM及八条Prompt依据；BrainPrompt提供两条ABIDE疾病级原文，TC映射TD。冻结参考借鉴KgCoOp，单侧CAM144保护借鉴PCGrad，但不是其多任务优化器复现。四篇论文和官方源码已读取；BrainPrompt文本文件SHA ce6a7bb9755c26cd9643b6867bac5d1496e93bf9a0d7d8d90944dd3b119c431c，与缓存原文核对。
+来源：[SPromptGL论文](https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf)、[官方代码](https://github.com/wanxixi11/SPromptGL)；[BrainPrompt论文](https://papers.miccai.org/miccai-2025/paper/2260_paper.pdf)、[官方文本](https://github.com/AngusMonroe/BrainPrompt/blob/main/data/prompts/label_prompts/abide_label.txt)；[KgCoOp](https://arxiv.org/abs/2303.13283)、[代码](https://github.com/htyao89/KgCoOp)；[PCGrad](https://proceedings.neurips.cc/paper/2020/hash/3fe78a8acf5fda99de95303940a2420c-Abstract.html)、[代码](https://github.com/tianheyu927/PCGrad)。
+
+## 六指标
+
+均值 ± population SD，%；ASD=0，TD=1。Hard-AUC/BA和ASD概率ROC-AUC分别计算。
+
+|组别|ACC|Hard-AUC|Prob-AUC|SEN-ASD|SPE-TD|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|92.0742 ± 2.9342|91.8437 ± 2.9518|93.5288 ± 3.5513|88.8354 ± 4.0532|94.8520 ± 3.6503|91.2108 ± 3.1944|
+|E78.9-G2-Medical-LOO|91.9592 ± 2.7747|91.7692 ± 2.7701|93.4980 ± 2.8783|89.3293 ± 4.0216|94.2091 ± 4.1186|91.1474 ± 3.0078|
+|E78.9-G3-Anonymous-LOO|91.9579 ± 3.1744|91.7876 ± 3.2335|93.8010 ± 2.6528|89.3476 ± 5.2639|94.2276 ± 3.5720|91.1039 ± 3.6259|
+
+历史同协议参考（只读，不重训）：
+
+|组别|ACC|Hard-AUC|Prob-AUC|SEN|SPE|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E74.4-G2-Positive-DCR|92.1891 ± 2.7648|92.0294 ± 2.7255|93.4946 ± 2.9195|90.0671 ± 3.8862|93.9917 ± 4.7320|91.4590 ± 2.9013|
+|E78.8-G1-VisualOnly|92.0742 ± 2.7959|91.9337 ± 2.8149|93.6579 ± 2.7408|90.0793 ± 3.8474|93.7882 ± 3.4135|91.3220 ± 3.0255|
+|E78.8-G2-FrozenAnchor-Medical|91.7294 ± 2.4624|91.5324 ± 2.4361|93.3665 ± 2.7895|89.0732 ± 3.5845|93.9917 ± 4.0988|90.8992 ± 2.6252|
+|E78.8-G3-FrozenAnchor-Anonymous|91.9606 ± 2.5761|91.8701 ± 2.5191|93.6327 ± 2.5336|90.8171 ± 2.9689|92.9232 ± 4.2493|91.3054 ± 2.6358|
+
+## 配对比较
+
+差值为百分点，95%为十折配对差的描述性t区间。全部六指标逐折差与W/T/L见paired_comparisons.csv。
+
+|比较|ACC差[95%区间]|W/T/L|Hard-AUC差|Prob-AUC差|去Fold2 ACC差|
+|---|---:|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO - E78.8-G1-VisualOnly|-0.0000 [-0.7752,+0.7752]|3/5/2|-0.0900|-0.1291|-0.1277|
+|E78.9-G1-Visual-LOO - E74.4-G2-Positive-DCR|-0.1149 [-0.5817,+0.3518]|1/7/2|-0.1857|+0.0342|-0.1277|
+|E78.9-G2-Medical-LOO - E78.8-G2-FrozenAnchor-Medical|+0.2299 [-0.2902,+0.7499]|3/6/1|+0.2367|+0.1315|+0.2554|
+|E78.9-G2-Medical-LOO - E74.4-G2-Positive-DCR|-0.2299 [-0.8785,+0.4187]|1/7/2|-0.2602|+0.0034|+0.0000|
+|E78.9-G3-Anonymous-LOO - E78.8-G3-FrozenAnchor-Anonymous|-0.0026 [-0.9485,+0.9433]|3/4/3|-0.0826|+0.1682|-0.1306|
+|E78.9-G3-Anonymous-LOO - E74.4-G2-Positive-DCR|-0.2312 [-0.7493,+0.2869]|1/6/3|-0.2418|+0.3064|-0.2569|
+|E78.9-G2-Medical-LOO - E78.9-G1-Visual-LOO|-0.1149 [-0.9326,+0.7027]|1/7/2|-0.0745|-0.0308|+0.1277|
+|E78.9-G2-Medical-LOO - E78.9-G3-Anonymous-LOO|+0.0013 [-0.8644,+0.8671]|2/6/2|-0.0184|-0.3030|+0.2569|
+
+去Fold 2九折结果：
+
+|组别|ACC|Hard-AUC|Prob-AUC|SEN|SPE|ASD-F1|
+|---|---:|---:|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|92.0875 ± 3.0926|91.8417 ± 3.1114|93.5816 ± 3.7397|88.6789 ± 4.2436|95.0046 ± 3.8174|91.1944 ± 3.3668|
+|E78.9-G2-Medical-LOO|92.2153 ± 2.8105|92.0300 ± 2.8011|93.6652 ± 2.9876|89.7696 ± 4.0039|94.2903 ± 4.3338|91.4296 ± 3.0423|
+|E78.9-G3-Anonymous-LOO|91.9584 ± 3.3462|91.7794 ± 3.4083|93.8133 ± 2.7960|89.2480 ± 5.5397|94.3108 ± 3.7560|91.0757 ± 3.8210|
+
+## LOO、泛化差距与梯度机制
+
+|组别|LOO方向平均角度°|P95均值°|辅助训练ACC|辅助测试ACC|差距pp|冲突率|缩放率|安全梯度比|
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|0.07908|0.12066|96.0328|89.3156|6.7172|4.12%|100.00%|0.20000|
+|E78.9-G2-Medical-LOO|0.04632|0.07963|96.8237|89.2072|7.6165|2.21%|52.46%|0.18536|
+|E78.9-G3-Anonymous-LOO|0.05229|0.09405|96.0198|90.0078|6.0120|3.28%|30.59%|0.16641|
+
+与E78.8辅助分类差距比较：
+
+|组别|E78.8训练ACC|E78.9训练ACC|E78.8测试ACC|E78.9测试ACC|
+|---|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|95.4713|96.0328|87.8292|89.3156|
+|E78.9-G2-Medical-LOO|95.7262|96.8237|89.2072|89.2072|
+|E78.9-G3-Anonymous-LOO|96.7850|96.0198|89.8955|90.0078|
+
+在同一E78.9最佳Checkpoint上恢复包含自身的训练原型，仅用于量化LOO的即时作用：
+
+|组别|LOO训练辅助ACC|包含自身训练辅助ACC|辅助Logits MAE|辅助硬翻转总数|
+|---|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|96.0328|96.0456|0.0022775|1|
+|E78.9-G2-Medical-LOO|96.8237|96.8237|0.0001162|0|
+|E78.9-G3-Anonymous-LOO|96.0198|96.0198|0.0001107|0|
+
+合法支持共783–784人，单个患者在对应类均值中的直接权重为0.2370%–0.2762%。LOO方向角度在重新归一化后使用float64计算；自身支持特征梯度为零的结论来自分离路径自动微分测试，不能外推为上游传导图中不存在患者间信息。
+
+|组别|梯度余弦折均值|原始辅助/主梯度范数比|安全范数比|冲突epoch|投影epoch|缩放epoch|
+|---|---:|---:|---:|---:|---:|---:|
+|E78.9-G1-Visual-LOO|0.178050|1.311606|0.200000|158|158|3833|
+|E78.9-G2-Medical-LOO|0.390457|0.252897|0.185360|88|88|2087|
+|E78.9-G3-Anonymous-LOO|0.407126|0.207898|0.166411|123|123|1147|
+
+固定G2 Checkpoint干预：
+
+|干预|辅助ASD概率平均绝对变化|辅助硬翻转|最终DARG硬翻转|
+|---|---:|---:|---:|
+|no_calibration|0.119767|19|0|
+|anchor_only|0.119767|19|0|
+|anonymous_text|0.171311|41|0|
+|class_swap|0.438891|512|0|
+
+文本替换影响辅助分类，但最终DARG在冻结Checkpoint推理时不直接读取文本，因此零最终翻转是预期，不能据此否定训练期辅助梯度作用。医学内容价值以G2/G3独立训练为准。
+
+## 审计和科研判断
+
+30/30 best独立前向概率和六指标一致；30/30 latest全部模型/四优化器/RNG读回逐值一致。E74.4共有epoch 11041，不匹配 0；E78.8共有epoch 10699，不匹配 0。10/10 base-off parity，30/30私有初始化参数buffer匹配，LOO显式参考与自梯度抵消、完整Hook全参数合成、零辅助主梯度逐值恢复和两步恢复均通过。所有冻结输入按manifest复核。
+判定：`NO_GO_LOO_FAPC`; `LOO_EFFECT_NOT_SUPPORTED`; `MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`; `GRADIENT_PROTECTION_ACTIVE_BUT_NO_GAIN`。
+判定区分：LOO实现生效不等于诊断增益；辅助训练ACC降低不等于辅助测试泛化改善；若仅相对E78.8医学组有局部改善而未超过匿名/Visual-only/基座，仍不能宣称完整方案GO。
+
+## 已知限制
+
+单seed，保留val=test、测试ACC选Checkpoint、CV前预处理/RFE及全患者transductive图。Fold2历史重叠仅从新增支持/监督中排除，原历史路径未变。LOO排除的是投影后该患者自身的直接原型贡献；上游传导图仍可传播患者间信息，不能将此等同整体无泄漏。十折训练集重叠，描述性置信区间不是独立临床显著性结论。不自动开展E78.10。
+
+## 实现纠错记录
+
+预检发现CUDA index_add_聚合导致约1e-6的不确定累加误差，正式训练前改为固定支持顺序的分类归约。该修复未改变LOO公式、参数、初始化、损失或超参数。所有正式任务均使用最终冻结SHA。report_only.py是审计/汇总补充，不修改冻结训练源码或Checkpoint。
+
+## 结果解释
+
+医学LOO组相对E78.8医学组的ACC变化+0.2299pp；相对Visual-only -0.1149pp、匿名文本 +0.0013pp、DARG基座 -0.2299pp。相对基座Hard-AUC变化-0.2602pp，Prob-AUC变化+0.0034pp；去Fold2后的ACC差+0.0000pp。
+医学内容的独立增量需同时优于匹配匿名对照和Visual-only；相对低于基座的旧医学方案改善，不能单独构成诊断收益证据。梯度保护的触发统计只说明算法工作，本实验没有独立改变保护规则，不能据此证明20%上限最优。
+完整LOO-FAPC不满足预定GO方向性条件，建议停止通过当前疾病原型与Prompt辅助监督改善DARG的路线；本次不自动开展E78.10。
+
+## 复现入口
+
+`python run.py --train --workers 10` 使用冻结训练实现并跳过已完成且SHA匹配的任务；独立审计及报告使用 `python report_only.py`。冻结audit.py保留原字节，最终审计/汇总入口明确为report_only.py。身份清单见manifest.json，逐折独立重载见results/checkpoint_audit.csv，完整预检见results/preflight.json。
+
+
+## Final integrity supplement cbec59531ed5
+
+全部11560个正式训练epoch的梯度保护统计有限，安全辅助/主梯度范数比最大0.200000048（float32容差内不超过0.20）。六指标、CSV类型/空值/数量、混淆矩阵、best SHA、latest结束epoch均通过。E78.8全部30个历史best SHA仍与原task记录一致。
+
+E74.4真实run.py SHA `cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd`；soft_positive_dcr.py SHA `3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718`。E78.8最终有效源集合SHA `e2f150dca3c63cd377482a71b7bb126e326a8591cc5e70058641781337345441`。
+
+磁盘保存/加载后的两步恢复已逐值核对完整DARG log-probabilities、语义Logits/log-probabilities、模型、四优化器、RNG、损失和保护统计。独立审计入口SHA `6b11ef0acf636476181a2099a51af86d3bd354180345878d7d8788279329c1d1`。
+
+## Experiment 79.4 — CF-CPDEM（COMPLETE_AUDITED）
+
+科研判定：`NO_GO_CROSS_FITTED_EVIDENCE_MEMORY`。唯一基座E74.4-G2 Positive-DCR/DARG；seed=0，1个正式方法×10折，实际路径`/model/spromptgl/experiment/experiment79_4_crossfitted_evidence_memory`。
+E79.3-G2存在固定Masked Cosine无检索学习梯度、查询间接参与支持统计、可用性冒充可靠性和大幅饱和等问题。本次用A/B互斥交叉记忆（A读B、B读A），每Bank约75% Source/25%独立Support，Full供测试；候选/中性参考/支持/方向均在对应Bank合法训练患者内。Fold 2索引376/406及全部外层测试ID排除。原主干仍是历史transductive训练，此隔离不等于主干表征OOF。
+CAM144特征以α=0.5/1.0遮蔽选最多12维正贡献，联合margin下降；独立Support每类至少4人、AUC≥0.60、正分离，r_self×r_within×r_between×r_coverage形成可靠性。每类容量48，可减少；每5轮刷新、先读旧版后写新版。Mask条件化可训练Wq/Wk 144→64，固定预筛Top16、学习重排Top8；双疾病logmeanexp证据监督真实更新检索。Wv无bias编码证据和Support对照方向，修正方向仅来自Value；真实Attention可靠性Gate、7.5%平滑tanh限幅。原分类头冻结参数eval回传新增分支，原DARG/CAM/OutputLayer不接收新增梯度；不是完整主干端到端联合训练。
+正式10/10完成，10个fold worker、单PPU-ZW810E；最长worker4554.1秒（75.9分钟），整卡1秒采样峰值20439MiB，单worker Torch allocated峰值1055.2MiB；新增参数49,741，共3917训练epoch。
+
+| 方法 | ACC | Hard-AUC | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E74.4-G2 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+| E79.4 Base-Anchored | 92.0742±2.6000 | 91.9230±2.5676 | 93.4999±2.8973 | 90.0671±3.8862 | 93.7789±4.5987 | 91.3388±2.7215 |
+| E79.4 Method-Selected | 92.1891±2.7648 | 92.0480±2.7135 | 93.3828±2.8393 | 90.3171±3.4469 | 93.7789±4.5987 | 91.4875±2.8802 |
+
+Base-Anchored相对DARG ACC−0.1149pp，W/T/L=0/9/1，描述性95%区间[−0.3402,+0.1103]pp，去Fold 2为−0.1277pp。错误→正确0、正确→错误1、净−1，误伤1名TD。Method-Selected相对同Epoch主干纠正1名TD、误伤0、净+1；相对历史最佳纠正1名ASD、误伤1名TD，净0，ACC各折均持平，去Fold 2仍0。Method选模Fold 6/7改为377/135轮（历史339/148），不能把同Checkpoint+1说成超过历史基座。
+Base-Anchored A/B交叉训练证据ACC/Hard/Prob=95.8666/95.8448/98.8750%，测试为88.7435/88.8124/92.7362%。原DARG的68个错误中Memory正确3、仍错65；3个正确Memory支持最终均未纠正，另误伤1人。既有互补性不足，也有正确证据融合失败；不能唯一归因于内容或融合。L_evidence单独反传Wq/Wk梯度1.8944/1.6894，最终支持46.39%来自固定Top8之外，工程上检索确已学习。
+最佳Full Bank 95–96条，A/B均96条；Full候选960条接受959、拒绝1（十折记录合计，非独立患者）；平均独立Support AUC0.9734、原始可靠性0.7705，但没有外层分类增益。Mean Gate0.2305，平均增量6.7634%，51.10%接近上限（>7.425%），饱和仅部分缓解，未达到可靠稀疏修正目标。
+Memory-Off严格回退CAM与原BaseEval概率。Content-Permuted固定Key/TopK/Attention，仅置换Value，实际原始与Wv编码Value均非平凡改变，但20个最佳点均0硬翻转、0 Prob-AUC变化；Base-Anchored概率MAE仅0.00000773。Learnable-Matching-Off与Reliability-Off也均0硬翻转；Full Prob-AUC反低0.0105pp。现有证据不支持具体历史Value对应或可靠性加权的独立诊断收益。
+10/10 Base-Anchored+10/10 Method-Selected独立读回通过；10/10 Latest真实续训一步与从未重载的live参考在主干、新模块、四优化器、Memory、预测、损失和全部RNG摘要一致。3917/3917共同epoch三处RNG完全匹配，0不匹配；历史最佳参数/原三优化器和概率逐折一致。Mask/方向/可靠性由刷新时保存的材料独立重建通过。锁定历史输入及根源码SHA保持不变。训练后仅audit.py/analyze.py修正审计/汇总，训练源SHA及后处理SHA均保留于manifest/audit_status。
+较E79.3-G2锚定ACC+0.1149pp、净损害从2人降为1人，但Method ACC相同、Prob-AUC更低；工程修复没有形成新增诊断收益。保留val=test选模、CV前RFE/标准化、transductive图和Fold 2历史重叠，限制泛化解释。CAM证据不等同医学因果标志物。当前结果不支持作为MICCAI 2027第二创新模块继续推进；不自动追加E79.5。
+权威结果、逐折配对、纠错、机制与独立重放依据见`experiment79_4_crossfitted_evidence_memory/results/report.md`、各CSV和`audit_status.json`。
+
+## Experiment 81 — PRCL（COMPLETE_AUDITED）
+
+研究问题：在唯一基座E74.4-G2 Positive-DCR/DARG与PEN-free CAM不变的前提下，冻结疾病Prompt能否条件化患者内部CAM144潜在局部之间的关系选择和消息组合，并带来普通视觉关系与匿名文本条件无法解释的ASD诊断增益。SPromptGL原论文已包含GFR患者图消息传播及PEN/CAM局部–全局交互；E81新增范围仅为CAM144的16个潜在局部坐标之间的Prompt条件化局部–局部关系，不将坐标称为真实脑区、ROI或病理概念。
+
+源码/论文核查：SPromptGL MICCAI 2025 [论文](https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf)、[官方仓库](https://github.com/wanxixi11/SPromptGL)、[SABER仓库](https://github.com/tangaii/SPromptGL)；核查了2.1/2.2节、GFR、CAM InputLayer/Encoder/FeedForward/OutputLayer、PEN的SPGS/RES公式(5)/(6)、原始8条Prompt及冻结CLIP RN50。KD-Brain MICCAI 2026 [论文](https://papers.miccai.org/miccai-2026/0366-Paper0073.html)/[源码](https://github.com/LiuSy0731/KDBrain)，重点核查`Attention_AggregateLayer`的文本投影、gate和guided query；BrainHO [论文](https://papers.miccai.org/miccai-2026/0569-Paper2916.html)/[源码](https://github.com/Jingfeng-Tang/BrainHO)检查HierarchicalAttention、loss和Sparsemax；ItemizedCLIP CVPR 2026 [论文](https://openaccess.thecvf.com/content/CVPR2026/html/Lyu_Learning_complete_and_explainable_visual_representations_from_itemized_text_supervision_ItemizedCLIP_CVPR_2026_paper.html)/[源码](https://github.com/MLNeurosurg/ItemizedCLIP)检查条目条件表示。因ABIDE无逐患者Prompt发现标签，未引入逐文本监督/正交损失；首版未复制上述子网络。只读核查E20、E32、E75–E79、E78.9；E78.9医学Prompt与匿名文本几乎等效，故E81预注册G2/G3独立训练必要性比较。
+
+实现与固定方案：`z_cam[871,144]→[871,16,9]→共享9→32局部投影/位置编码→120无向局部对（240有向消息位置）→8个Query head及15邻居+Null竞争→正常/异常文本组消息组合→CAM144受限残差→原OutputLayer`。八个非语义head身份固定且互异；Query同时依赖患者局部和固定文本锚点。G1文本项为0，G2使用根`network.py`原始8条医学Prompt（保留“Nromal”原拼写），G3使用冻结匿名描述。RN50向量通过共享joint-SVD坐标压到32维，Gram最大误差2.55e-15。gamma上限0.5、初值0.2；患者相对残差上限10%、alpha目标初值0.05；残差损失系数0.001。保留历史weighted NLL和DARG全部损失/优化器顺序，新增AdamW 0.0005/0.01。无原始PEN、第二分类器、原型、记忆检索、语义logits或辅助标签损失。
+
+实验路径：首选`/data/adodas/SPromptGL-main/experiment/experiment81_prcl`因OSSFS创建目录EIO失败，唯一正式目录回退为`/model/spromptgl/experiment/experiment81_prcl`。seed=0，3组×10折，最多10 worker，PPU-ZW810E单GPU。成功调度30/30；成功dispatch墙钟640.5秒、折任务时间合计约1.405小时；含首次失败调度的总墙钟12.37分钟。每任务最多450 epoch、early-stop wait>200；G1/G2/G3执行epoch范围分别301–450、313–450、322–450。每worker Torch allocated峰值最高约1.313 GiB，采样到的整卡占用最高约19.3 GiB。
+
+正式结果（10折均值±population SD，%）：
+
+| 组别 | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| E81-G1-Visual-PRCL | 91.8443±2.7486 | 91.6760±2.7403 | 93.5254±2.9076 | 89.5732±4.1636 | 93.7789±4.3793 | 91.0565±2.9186 |
+| E81-G2-Medical-PRCL | 91.7294±2.8596 | 91.5090±2.8489 | 93.4620±2.8721 | 88.5915±3.7117 | 94.4265±3.7570 | 90.8523±3.0955 |
+| E81-G3-Anonymous-PRCL | 91.8443±2.9346 | 91.6069±2.9758 | 93.5316±3.0353 | 88.5793±4.6346 | 94.6346±3.7826 | 90.9401±3.2784 |
+| E74.4-G2-Positive-DCR历史基座 | 92.1891±2.7648 | 92.0294±2.7255 | 93.4946±2.9195 | 90.0671±3.8862 | 93.9917±4.7320 | 91.4590±2.9013 |
+
+逐折配对（百分点；ACC报告95%描述性配对区间，W/T/L按ACC；完整六指标逐折差、区间及W/T/L见`results/paired_comparisons.csv`）：G1−DARG ACC−0.3448 [−0.7420,+0.0524]，0/7/3；六指标差依次Hard/Prob/SEN/SPE/F1为−0.3533/+0.0308/−0.4939/−0.2128/−0.4025。G2−DARG −0.4598 [−1.1532,+0.2336]，1/5/4；−0.5204/−0.0326/−1.4756/+0.4348/−0.6068。G3−DARG −0.3448 [−1.0218,+0.3321]，1/6/3；−0.4224/+0.0370/−1.4878/+0.6429/−0.5189。G2−G1 −0.1149 [−0.5817,+0.3518]，1/7/2；−0.1671/−0.0634/−0.9817/+0.6475/−0.2042。G2−G3同为−0.1149 [−0.5817,+0.3518]、1/7/2；−0.0980/−0.0696/+0.0122/−0.2081/−0.0879。
+
+排除Fold 2后，九折ACC±SD：G1 91.9598±2.8742、G2 91.9598±2.9248、G3 91.9598±3.0717、DARG 92.2153±2.9131。G1/G2/G3相对DARG的ACC均为−0.2554pp；G2−G1及G2−G3均为0.0000pp。六指标九折结果见`results/report.md`，所有九折逐指标差在配对CSV。
+
+预检：10/10关闭PRCL时的原始forward、六项loss、梯度、三优化器一步更新和RNG完全一致；冻结文本内容/顺序、RN50权重SHA、医匿名Prompt组、初始参数跨组一致、Query/注意力替换响应、各PRCL/DARG/CAM分类梯度和文本无梯度均核验。冷启动新增参数使用仅播种CPU默认Generator的私有RNG，避免`torch.manual_seed`污染CUDA公共RNG。冻结E74.4 best特征的Fold 1外层训练患者内诊断：36D局部汇总ACC0.9592、36D局部对关系ACC0.9592、随机坐标关系ACC0.9439；真实槽内减跨槽余弦−0.008235，随机分组P50+0.004269。该快速单次内部分割提示既有CAM分组结构弱，关系表征未显示清晰的判别增益；未据此调参。
+
+关系机制（G2十折checkpoint均值）：注意力熵2.147，Null权重0.0347、Null拒绝率2.02%，最大邻居权重0.2809；跨Prompt关系分布平均余弦0.9959，显示Prompt间注意力接近。文本/视觉Query范数比0.3178，gamma最终0.2003；医学换匿名的Query L2总变化388.38、平均注意力L1变化0.00565，但概率MAE仅0.000153，硬预测翻转0。gamma=0概率MAE0.000298、翻转0；正常/异常组交换MAE0.000102、翻转0；组内Prompt及head联合置换输出完全不变。残差相对范数均值0.09264、P50 0.09502、P95 0.09719，10%上限触发率67.10%，alpha均值0.06952。24条槽内无向对（48有向位置）与96条跨槽无向对（192有向位置）质量分别3.481和11.964；校正总非Null质量及候选基率后的enrichment为槽内1.128、跨槽0.968，不能凭跨槽总质量较高宣称互补结构。
+
+冻结分类器干预（不是重训练消融）：G2 PRCL-off概率MAE0.01211/十折硬翻转合计5；均匀关系MAE0.00305、翻转2；Null-only MAE0.01209、翻转5；关闭残差回写MAE0.01211、翻转5。关系回写实际影响原OutputLayer，但幅度有限。医学Prompt替匿名对分类概率的影响极小且无硬预测翻转；G2独立训练也没有超过G1/G3，因此未显示医学内容不可替代的诊断增量。分类梯度范数记录于机制CSV，局部投影、Key、Value、Query、gamma、Null、融合、回写、CAM和DARG均有有限非零梯度。
+
+科研门控：Gate A视觉局部关系优于DARG：否；Gate B医学Prompt优于G1：否；Gate C医学Prompt优于匿名G3：否；Gate D完整G2优于DARG（并要求去Fold2仍有ACC/AUC支持）：否；Gate E冻结关系/Prompt干预可测量：是，但不是诊断收益。最终`COMPLETE_AUDITED`、`RELATION_VALUE_NOT_SUPPORTED`、`MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED`、`NO_GO_PRCL`。停止当前PRCL疾病Prompt路线，不自动启动E81.1/E82。
+
+独立审计：30/30 best重载概率、预测、六指标复算通过；30/30 latest模型/CAM、四个优化器、RNG和有限性检查通过；10/10 base-off parity；两步真实DARG+CAM+PRCL磁盘恢复在模型、四优化器、损失、logp/概率、关系注意力和RNG逐值一致；30组与E74.4共有epoch的rng_before/rng_after_train/rng_after_eval不匹配为0。Fold 2历史患者行377/407仍保留在原DARG训练路径，PRCL残差监督排除重叠行；val=test选Checkpoint、CV前预处理/RFE和transductive图均继承，十折CI仅描述性。首次30个worker曾在优化器step前因梯度日志读取错误退出，完成更新0、Checkpoint写入0；错误、修复和逐worker日志保留在实验manifest及`runtime/logs/`。训练后仅对独立`audit.py`做report-only修正（状态mapping/索引类型、历史混淆矩阵取值、槽内/跨槽enrichment分母）；冻结训练源SHA仍为`8432c183a9a387a0abe4d505425fa5f1944d762692a2fff6ea407ec0d30386e3`，原审计SHA`f294c7c2a4124106d3784842e29886400df4447ea53d6c7d038382c7d676f68b`，最终report-only审计SHA`eb729da53c8cf77daf2528fe2f068aa4c20e397541419a729693e8ecb00a240e`。历史根源码、数据、Checkpoint和E74.4训练代码未改。
+
+权威文件：实验设计`experiment81_prcl/design.md`；训练实现`prcl.py`、`run.py`、`path_adapter.py`；文本缓存构建`make_text_cache.py`，缓存内部SHA`5ad44242391967a33c1fce8bf51dcb09d7000ede3ce64df54efd7774e42fe0c3`；正式结果`results/report.md`、`fold_metrics.csv`、`paired_comparisons.csv`、`mechanism.csv`、`audit_status.json`、`preflight.json`；任务及best/latest Checkpoint均位于`/model/spromptgl/experiment/experiment81_prcl/runtime/`。

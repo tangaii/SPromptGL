@@ -1,0 +1,78 @@
+{
+  "experiment": "Experiment 81 - Prompt-guided Relational Composition Learning",
+  "status": "DESIGN_FROZEN",
+  "experiment_root": "/model/spromptgl/experiment/experiment81_prcl",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_prcl",
+  "root_fallback_reason": "OSSFS mkdir returned EIO; using /model/spromptgl/experiment/experiment81_prcl",
+  "seed": 0,
+  "folds": 10,
+  "groups": ["E81-G1-Visual-PRCL", "E81-G2-Medical-PRCL", "E81-G3-Anonymous-PRCL"],
+  "base": {
+    "experiment": "E74.4-G2 Positive-DCR (DARG)",
+    "warmup": "E61 epoch-10 full warmup, each fold restored independently",
+    "local_e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "local_e53": "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e51_snapshot": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa",
+    "anchor_snapshot": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "e74_4": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "historical_g2_group": "E74.4-G2-Positive-DCR",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_checkpoint": "strict test-fold ACC improvement; ties retain earlier epoch",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve + 0.001*L_res",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "prcl": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+    },
+    "pair_count": 4096,
+    "fold2_overlap_1based": [377, 407],
+    "validation_equals_test": true,
+    "pre_cv_rfe_standardization_and_transductive_graph_retained": true
+  },
+  "prcl": {
+    "input_dim": 144,
+    "token_shape": [16, 9],
+    "token_hidden": 32,
+    "query_heads": 8,
+    "undirected_pairs": 120,
+    "directed_message_positions": 240,
+    "null_candidate": true,
+    "gamma_initial": 0.2,
+    "gamma_max": 0.5,
+    "residual_cap": 0.1,
+    "residual_gate_initial_target": 0.05,
+    "residual_penalty_weight": 0.001,
+    "new_module_init_seed_base": 810000
+  },
+  "text": {
+    "encoder": "OpenAI CLIP RN50",
+    "weights": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "anonymous_texts": [
+      "Pattern A is present.",
+      "Pattern B is consistent.",
+      "Pattern C is balanced.",
+      "Pattern D is typical.",
+      "Pattern A is altered.",
+      "Pattern B is inconsistent.",
+      "Pattern C is unbalanced.",
+      "Pattern D is atypical."
+    ],
+    "projection": "Joint fixed SVD row-space of the eight original medical and eight anonymous normalized embeddings; zero-pad to 32 dimensions",
+    "cache": "runtime/text_embeddings.pt"
+  },
+  "resources": {"device_count": 1, "max_workers": 10, "threads_per_worker": 1},
+  "sources": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "spromptgl_official_code": "https://github.com/wanxixi11/SPromptGL",
+    "saber_code": "https://github.com/tangaii/SPromptGL",
+    "kdbrain_paper": "https://papers.miccai.org/miccai-2026/0366-Paper0073.html",
+    "kdbrain_code": "https://github.com/LiuSy0731/KDBrain",
+    "brainho_paper": "https://papers.miccai.org/miccai-2026/0569-Paper2916.html",
+    "brainho_code": "https://github.com/Jingfeng-Tang/BrainHO",
+    "itemizedclip_paper": "https://openaccess.thecvf.com/content/CVPR2026/html/Lyu_Learning_complete_and_explainable_visual_representations_from_itemized_text_supervision_CVPR_2026_paper.html",
+    "itemizedclip_code": "https://github.com/MLNeurosurg/ItemizedCLIP"
+  }
+}
