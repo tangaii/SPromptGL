@@ -1,0 +1,53 @@
+[
+  {
+    "status": "FAILED",
+    "audit_sha256": "8b1cdf8986f744ce1fd65a866858ee42a33e12f2d04f6721aef0d7e5bda4c93f",
+    "timestamp_utc": "2026-11-16T09:58:02Z",
+    "elapsed_seconds": 11.6,
+    "error": "KeyError('test_indices')",
+    "completed_best_audits_before_failure": 0,
+    "classification": "report_only_audit_failure; formal training artifacts unchanged",
+    "cause": "The E74.4 historical best Checkpoint format stores split identity, test predictions, and test probabilities, but omits a test_indices array."
+  },
+  {
+    "status": "FAILED",
+    "audit_sha256": "f3fe7771cb28a0d729e77a72eacf194661b304305c8e70a92e32b8fe395aad48",
+    "timestamp_utc": "2026-11-16T10:02:05Z",
+    "elapsed_seconds": 13.158766746520996,
+    "error": "AttributeError(\"module 'rudag_741_locked_runner_for_localdcr743' has no attribute 'rng_sha'\")",
+    "completed_best_audits_before_failure": 0,
+    "classification": "report_only_audit_failure; formal training artifacts unchanged"
+  },
+  {
+    "status": "PASS",
+    "audit_sha256": "4a4dffc19848657430cad8073b978bcc1c40cecbe18b9f4e6f946e378f5cba56",
+    "timestamp_utc": "2026-11-16T10:02:51Z",
+    "elapsed_seconds": 76.75825309753418,
+    "formal_tasks_complete": 40,
+    "best_checkpoint_independent_pass": 40,
+    "latest_state_integrity_pass": 40,
+    "classification": "40/40 Checkpoint and latest-state audits passed; report displayed the replay status incorrectly because it read the wrong manifest key.",
+    "report_only_issue": "two_step_restore_replay was read instead of two_step_recovery_replay; corrected before final audit rerun.",
+    "formal_training_artifacts_changed": false
+  },
+  {
+    "status": "PASS",
+    "audit_sha256": "75653730d8b3253a0b622147da7c7acf721a49151b6f56c526befc2a5bed9928",
+    "timestamp_utc": "2026-11-16T10:05:55Z",
+    "elapsed_seconds": 75.82654809951782,
+    "formal_tasks_complete": 40,
+    "best_checkpoint_independent_pass": 40,
+    "latest_state_integrity_pass": 40,
+    "classification": "report_only_audit; formal training artifacts unchanged"
+  },
+  {
+    "status": "PASS",
+    "audit_sha256": "c8796a8cb0cb78ce75d95d8e74875ac19422c8773bd871ac472fac5cf0c2dbe8",
+    "timestamp_utc": "2026-11-16T10:08:46Z",
+    "elapsed_seconds": 75.40126943588257,
+    "formal_tasks_complete": 40,
+    "best_checkpoint_independent_pass": 40,
+    "latest_state_integrity_pass": 40,
+    "classification": "report_only_audit; formal training artifacts unchanged"
+  }
+]

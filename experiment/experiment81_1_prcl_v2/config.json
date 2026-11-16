@@ -1,0 +1,111 @@
+{
+  "experiment": "Experiment 81.1 - Mechanism-Refined Prompt-guided Relational Composition Learning",
+  "status": "PREFLIGHT_PENDING",
+  "experiment_root": "/model/spromptgl/experiment/experiment81_1_prcl_v2",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_1_prcl_v2",
+  "root_fallback_reason": "The preferred /data experiment mount previously returned OSSFS errno 5 during directory creation; the single active experiment directory is under /model/spromptgl/experiment.",
+  "seed": 0,
+  "folds": 10,
+  "groups": [
+    "E81.1-G1-Visual-PRCL-v2",
+    "E81.1-G2-Medical-Add-PRCL-v2",
+    "E81.1-G3-Medical-Interaction-PRCL-v2",
+    "E81.1-G4-Gram-Matched-Control-PRCL-v2"
+  ],
+  "base": {
+    "experiment": "E74.4-G2 Positive-DCR (DARG)",
+    "warmup": "E61 epoch-10 full warmup restored independently for every group/fold task",
+    "local_e61": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "local_e53": "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix",
+    "e51_snapshot": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa",
+    "anchor_snapshot": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "e74_4": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "historical_group": "E74.4-G2-Positive-DCR",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; ties retain earlier epoch",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve + 0.001*L_res",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "prcl_v2": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+    },
+    "pair_count": 4096,
+    "fold2_overlap_1based": [377, 407],
+    "validation_equals_test": true,
+    "pre_cv_rfe_standardization_and_transductive_graph_retained": true
+  },
+  "prcl": {
+    "input_dim": 144,
+    "token_shape": [16, 9],
+    "token_hidden": 32,
+    "query_heads": 8,
+    "undirected_pairs": 120,
+    "directed_message_positions": 240,
+    "neighbors_per_local": 15,
+    "null_per_local": 1,
+    "gamma_initial": 0.2,
+    "gamma_max": 0.5,
+    "residual_cap": 0.1,
+    "residual_gate_initial_target": 0.02,
+    "residual_gate_max": 0.1,
+    "residual_penalty_weight": 0.001,
+    "e81_init_seed_base": 810000,
+    "rotation_seed": 811117,
+    "train_workers_max": 10,
+    "threads_per_worker": 1
+  },
+  "text": {
+    "source_cache": "/model/spromptgl/experiment/experiment81_prcl/runtime/text_embeddings.pt",
+    "encoder": "OpenAI CLIP RN50",
+    "weights": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "medical_prompts": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "projection": "Reuse frozen E81 common joint-SVD row-space anchors; rotate the eight medical anchors inside the effective 16-dimensional row space for G4, with zero-padded dimensions unchanged.",
+    "cache": "runtime/text_embeddings.pt",
+    "rotation_matrix": "runtime/control_rotation.pt"
+  },
+  "training": {
+    "expected_tasks": 40,
+    "schedule": "interleave four groups within fold order; every task restores matching E61 epoch-10 warmup",
+    "public_rng": "preserve historical call sequence; new module initialization and control rotation use private RNGs",
+    "optimizer_step_order": ["opt_base", "opt_cam", "opt_added", "opt_prcl_v2"],
+    "residual_regularizer_scope": "legal training patients only; exclude historical fold-2 train/test-overlap rows from the additional PRCL residual term"
+  },
+  "sources": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "spromptgl_official_code": "https://github.com/wanxixi11/SPromptGL",
+    "saber_code": "https://github.com/tangaii/SPromptGL",
+    "e744_branch": "https://github.com/tangaii/SPromptGL/tree/upload/experiment74-4-soft-positive-dcr",
+    "e81_branch": "https://github.com/tangaii/SPromptGL/tree/upload/experiment81-prcl",
+    "kdbrain_paper": "https://papers.miccai.org/miccai-2026/0366-Paper0073.html",
+    "kdbrain_code": "https://github.com/LiuSy0731/KDBrain",
+    "brainho_paper": "https://papers.miccai.org/miccai-2026/0569-Paper2916.html",
+    "brainho_code": "https://github.com/Jingfeng-Tang/BrainHO",
+    "itemizedclip_paper": "https://openaccess.thecvf.com/content/CVPR2026/html/Lyu_Learning_complete_and_explainable_visual_representations_from_itemized_text_supervision_CVPR_2026_paper.html",
+    "itemizedclip_code": "https://github.com/MLNeurosurg/ItemizedCLIP"
+  },
+  "history": {
+    "e81_root": "/model/spromptgl/experiment/experiment81_prcl",
+    "e81_group": "E81-G2-Medical-PRCL",
+    "e81_summary_metrics": {
+      "visual": {"acc": 91.8443, "hard_auc": 91.6760, "prob_auc": 93.5254, "sen": 89.5732, "spe": 93.7789, "asd_f1": 91.0565},
+      "medical": {"acc": 91.7294, "hard_auc": 91.5090, "prob_auc": 93.4620, "sen": 88.5915, "spe": 94.4265, "asd_f1": 90.8523},
+      "anonymous": {"acc": 91.8443, "hard_auc": 91.6069, "prob_auc": 93.5316, "sen": 88.5793, "spe": 94.6346, "asd_f1": 90.9401}
+    },
+    "darg_summary_metrics": {
+      "acc": 92.1891, "hard_auc": 92.0294, "prob_auc": 93.4946,
+      "sen": 90.0671, "spe": 93.9917, "asd_f1": 91.4590
+    }
+  }
+}
