@@ -1,0 +1,52 @@
+{
+  "experiment": "Experiment 81.2 - End-to-End Reliability-Gated Relational Correction",
+  "status": "IMPLEMENTATION_IN_PROGRESS",
+  "experiment_root": "/model/spromptgl/experiment/experiment81_2_e2e_relational_correction",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_2_e2e_relational_correction",
+  "root_fallback_reason": "OSSFS returned EIO while creating the preferred directory.",
+  "seed": 0,
+  "folds": 10,
+  "groups": ["E81.2-G1-Self-Local-E2E", "E81.2-G2-Cross-Local-E2E"],
+  "base": {
+    "experiment": "E74.4-G2 Positive-DCR (DARG)",
+    "warmup": "E61 epoch-10 full warmup, independently restored for each group and fold",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; ties retain earlier epoch",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "correction": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+    },
+    "pair_count": 4096,
+    "fold2_overlap_1based": [377, 407],
+    "loss": "0.75*L_final + 0.25*L_base + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve + 0.001*L_corr",
+    "validation_equals_test": true,
+    "pre_cv_preprocessing_and_transductive_graph_retained": true
+  },
+  "method": {
+    "input": "CAM144 before the original OutputLayer",
+    "tokens": [16, 9],
+    "hidden": 32,
+    "heads": 8,
+    "neighbors_per_local": 15,
+    "null_value": "zero",
+    "uncertainty_gate": "sigmoid((0.5-abs(logp_td-logp_asd).detach())/0.3)",
+    "correction_bound": 0.75,
+    "correction_loss_weight": 0.001,
+    "fold2_overlap_correction": "forced to zero during training for global rows 377 and 407",
+    "groups": {
+      "E81.2-G1-Self-Local-E2E": "all 15 candidate sources replaced by the receiving local token; shape preserved",
+      "E81.2-G2-Cross-Local-E2E": "use the other 15 real CAM latent local tokens"
+    }
+  },
+  "resources": {"workers_max": 10, "threads_per_worker": 1, "device": "single CUDA-compatible PPU"},
+  "sources": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "official_code": "https://github.com/wanxixi11/SPromptGL",
+    "project_code": "https://github.com/tangaii/SPromptGL/tree/upload/experiment74-4-soft-positive-dcr",
+    "e81": "https://github.com/tangaii/SPromptGL/tree/upload/experiment81-prcl",
+    "e81_1": "https://github.com/tangaii/SPromptGL/tree/upload/experiment81_1-prcl-v2"
+  }
+}
