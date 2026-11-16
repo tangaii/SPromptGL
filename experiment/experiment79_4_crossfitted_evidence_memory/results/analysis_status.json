@@ -1,0 +1,229 @@
+{
+  "status": "PASS",
+  "audit_status": "PASS",
+  "verdict": "NO_GO_CROSS_FITTED_EVIDENCE_MEMORY",
+  "base_anchored_acc_delta_pp": -0.11494252873563227,
+  "base_anchored_acc_delta_excluding_fold2_pp": -0.12771392081736918,
+  "base_anchored_net_correction": -1,
+  "content_permutation_has_observable_effect": false,
+  "summary_rows": 3,
+  "fold_rows": 30,
+  "paired_rows": 12,
+  "correction_rows": 20,
+  "memory_rows": 60,
+  "mechanism_rows": 20,
+  "intervention_rows": 80,
+  "resources": {
+    "device": "PPU-ZW810E",
+    "max_workers": 10,
+    "longest_worker_elapsed_seconds": 4554.1214344501495,
+    "max_worker_peak_allocated_mib": 1055.21630859375,
+    "sampled_device_peak_used_mib": 20439.0,
+    "device_total_mib": 98304.0,
+    "device_sample_count": 5144,
+    "epochs": 3917,
+    "memory_refreshes": 786,
+    "trainable_memory_parameters": 49741
+  },
+  "diagnostic_summary": {
+    "base_anchored": {
+      "memory_evidence_train_accuracy": 0.9586664646701593,
+      "memory_evidence_train_hard_auc": 0.9584476596518476,
+      "memory_evidence_train_prob_auc": 0.9887503515221774,
+      "memory_evidence_test_accuracy": 0.8874346911907196,
+      "memory_evidence_test_hard_auc": 0.8881244500349721,
+      "memory_evidence_test_prob_auc": 0.9273623677263598,
+      "wq_grad_norm": 0.05605503842234612,
+      "wk_grad_norm": 0.052937966957688334,
+      "wv_grad_norm": 0.0023868401709478348,
+      "gate_grad_norm": 0.001541768459173909,
+      "gate_mean": 0.23047825396060945,
+      "delta_ratio_mean": 0.06763360127806664,
+      "cap_fraction": 0.5110240310430527,
+      "memory_evidence_test_retrieval_rerank_fraction": 0.4638624934691745,
+      "base_wrong_memory_correct": 3,
+      "base_wrong_memory_wrong": 65,
+      "memory_correct_fusion_still_wrong": 3,
+      "memory_wrong_harm": 1,
+      "patient_weighted_strata": {
+        "training": {
+          "all": {
+            "n": 7839,
+            "gate_mean": 0.22637370025371012,
+            "delta_ratio_mean": 0.06703216958629916,
+            "near_cap_count": 3888,
+            "zero_count": 0
+          },
+          "base_correct": {
+            "n": 7596,
+            "gate_mean": 0.22621319191496017,
+            "delta_ratio_mean": 0.06696698340190561,
+            "near_cap_count": 3752,
+            "zero_count": 0
+          },
+          "base_wrong": {
+            "n": 243,
+            "gate_mean": 0.23139130002186623,
+            "delta_ratio_mean": 0.06906987746617922,
+            "near_cap_count": 136,
+            "zero_count": 0
+          },
+          "memory_conflict": {
+            "n": 151,
+            "gate_mean": 0.25683698067996674,
+            "delta_ratio_mean": 0.07186540869983617,
+            "near_cap_count": 99,
+            "zero_count": 0
+          },
+          "memory_agreement": {
+            "n": 7688,
+            "gate_mean": 0.22577538670977804,
+            "delta_ratio_mean": 0.06693724021616002,
+            "near_cap_count": 3789,
+            "zero_count": 0
+          }
+        },
+        "test": {
+          "all": {
+            "n": 871,
+            "gate_mean": 0.23046466477223845,
+            "delta_ratio_mean": 0.06762864445811982,
+            "near_cap_count": 445,
+            "zero_count": 0
+          },
+          "base_correct": {
+            "n": 803,
+            "gate_mean": 0.23092145978439493,
+            "delta_ratio_mean": 0.0675726836804732,
+            "near_cap_count": 409,
+            "zero_count": 0
+          },
+          "base_wrong": {
+            "n": 68,
+            "gate_mean": 0.22507044125129194,
+            "delta_ratio_mean": 0.06828949408715262,
+            "near_cap_count": 36,
+            "zero_count": 0
+          },
+          "memory_conflict": {
+            "n": 36,
+            "gate_mean": 0.26955337242947686,
+            "delta_ratio_mean": 0.07199067022237512,
+            "near_cap_count": 26,
+            "zero_count": 0
+          },
+          "memory_agreement": {
+            "n": 835,
+            "gate_mean": 0.2287793957723115,
+            "delta_ratio_mean": 0.06744058116110499,
+            "near_cap_count": 419,
+            "zero_count": 0
+          }
+        }
+      }
+    },
+    "method": {
+      "memory_evidence_train_accuracy": 0.9558603422211795,
+      "memory_evidence_train_hard_auc": 0.9556830234387121,
+      "memory_evidence_train_prob_auc": 0.9884238299907324,
+      "memory_evidence_test_accuracy": 0.8885841190814971,
+      "memory_evidence_test_hard_auc": 0.8888159393966744,
+      "memory_evidence_test_prob_auc": 0.9268836443221046,
+      "wq_grad_norm": 0.04825336448848248,
+      "wk_grad_norm": 0.04654626604169607,
+      "wv_grad_norm": 0.0024194633297156543,
+      "gate_grad_norm": 0.002069007952559332,
+      "gate_mean": 0.2296726495027542,
+      "delta_ratio_mean": 0.06683939546346665,
+      "cap_fraction": 0.46389759220182897,
+      "memory_evidence_test_retrieval_rerank_fraction": 0.4658739877220481,
+      "base_wrong_memory_correct": 2,
+      "base_wrong_memory_wrong": 67,
+      "memory_correct_fusion_still_wrong": 1,
+      "memory_wrong_harm": 0,
+      "patient_weighted_strata": {
+        "training": {
+          "all": {
+            "n": 7839,
+            "gate_mean": 0.22686970992756827,
+            "delta_ratio_mean": 0.06654292441232576,
+            "near_cap_count": 3665,
+            "zero_count": 0
+          },
+          "base_correct": {
+            "n": 7596,
+            "gate_mean": 0.22673839181386965,
+            "delta_ratio_mean": 0.06647760586900388,
+            "near_cap_count": 3545,
+            "zero_count": 0
+          },
+          "base_wrong": {
+            "n": 243,
+            "gate_mean": 0.23097485487843739,
+            "delta_ratio_mean": 0.0685847835009726,
+            "near_cap_count": 120,
+            "zero_count": 0
+          },
+          "memory_conflict": {
+            "n": 159,
+            "gate_mean": 0.2624412547304945,
+            "delta_ratio_mean": 0.0716883104599122,
+            "near_cap_count": 89,
+            "zero_count": 0
+          },
+          "memory_agreement": {
+            "n": 7680,
+            "gate_mean": 0.2261332861400054,
+            "delta_ratio_mean": 0.06643640055117431,
+            "near_cap_count": 3576,
+            "zero_count": 0
+          }
+        },
+        "test": {
+          "all": {
+            "n": 871,
+            "gate_mean": 0.22965998523339337,
+            "delta_ratio_mean": 0.06683535047568355,
+            "near_cap_count": 404,
+            "zero_count": 0
+          },
+          "base_correct": {
+            "n": 802,
+            "gate_mean": 0.23035293992172157,
+            "delta_ratio_mean": 0.06676460840644087,
+            "near_cap_count": 373,
+            "zero_count": 0
+          },
+          "base_wrong": {
+            "n": 69,
+            "gate_mean": 0.22160563823105633,
+            "delta_ratio_mean": 0.06765762700334839,
+            "near_cap_count": 31,
+            "zero_count": 0
+          },
+          "memory_conflict": {
+            "n": 32,
+            "gate_mean": 0.268975003156811,
+            "delta_ratio_mean": 0.07118382910266519,
+            "near_cap_count": 19,
+            "zero_count": 0
+          },
+          "memory_agreement": {
+            "n": 839,
+            "gate_mean": 0.22816047800596054,
+            "delta_ratio_mean": 0.0666694965777437,
+            "near_cap_count": 385,
+            "zero_count": 0
+          }
+        }
+      }
+    }
+  },
+  "verdict_basis": {
+    "priority": "Base-Anchored at the exact historical best checkpoints",
+    "no_acc_gain_over_history": true,
+    "no_positive_anchored_net_correction": true,
+    "no_classification_loss_from_value_permutation": true,
+    "note": "Memory-only test accuracy above chance is a mechanism observation; it does not override the prescribed NO-GO criteria. The isolated Method-Selected +1 correction is not a historical-base gain."
+  }
+}
