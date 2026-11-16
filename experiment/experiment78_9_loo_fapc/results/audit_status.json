@@ -1,0 +1,88 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "valid_run_revision": "e78_8_exact_init_with_vectorized_patient_loo_v1",
+  "expected_tasks": 30,
+  "trained_tasks": 30,
+  "independent_checkpoint_audits": 30,
+  "latest_states_checked": 30,
+  "training_workers": 10,
+  "training_wall_seconds": 5935.4344618320465,
+  "training_task_seconds_sum": 28328.809417247772,
+  "training_epochs": 11560,
+  "source_sha256": "cbec59531ed579278495ef8ef4cc00d93a38014080d14beb098a9398b4514614",
+  "report_only_source_sha256": "6b11ef0acf636476181a2099a51af86d3bd354180345878d7d8788279329c1d1",
+  "fixed_anchor_cache_sha256": "00fac05f14694d740e9eb1313fd5ceb159d88fac476b8456f8261a04cee5d432",
+  "anchors_unchanged": true,
+  "rng_common_epochs_vs_e74_4": 11041,
+  "rng_mismatches_vs_e74_4": 0,
+  "rng_common_epochs_vs_e78_8": 10699,
+  "rng_mismatches_vs_e78_8": 0,
+  "audit_errors": [],
+  "base_off_parity_passed": 10,
+  "scientific_conclusions": [
+    "NO_GO_LOO_FAPC",
+    "LOO_EFFECT_NOT_SUPPORTED",
+    "MEDICAL_SEMANTIC_VALUE_NOT_ESTABLISHED",
+    "GRADIENT_PROTECTION_ACTIVE_BUT_NO_GAIN"
+  ],
+  "auditor_self_tests": "PASS",
+  "serialized_checkpoint_two_step_replay": {
+    "status": "PASS",
+    "fold": 1,
+    "group": "E78.9-G2-Medical-LOO",
+    "serialized_probe_sha256": "9f0785cac747edd14d4bcf4df4c7b8e7b890a54f2820c611298220f0bbe9f6eb",
+    "models_four_optimizers_rng_losses_predictions_and_protection_exact": true,
+    "full_darg_and_semantic_probability_outputs_exact": true,
+    "original_best_latest_checkpoints_untouched": true
+  },
+  "root_data_and_historical_dependencies_unchanged": true,
+  "handoff_update": "APPENDED_OR_ALREADY_PRESENT",
+  "handoff_path": "/model/spromptgl/experiment/handoff.md",
+  "final_artifact_integrity": {
+    "status": "PASS",
+    "csv_schema_finite_and_counts": true,
+    "best_sha_and_latest_epochs_checked": 30,
+    "all_protection_epochs_checked": 11560,
+    "maximum_safe_auxiliary_gradient_ratio": 0.20000004768371582,
+    "all_model_and_loss_statistics_finite": true,
+    "e78_8_historical_best_sha_unchanged": 30,
+    "epoch_weighted_gradient_protection": {
+      "E78.9-G1-Visual-LOO": {
+        "epochs": 3833,
+        "conflict": 158,
+        "projected": 158,
+        "scaled": 3833,
+        "conflict_percent": 4.122097573702061,
+        "projected_percent": 4.122097573702061,
+        "scaled_percent": 100.0,
+        "epoch_weighted_mean_cosine": 0.17694033376644508,
+        "epoch_weighted_mean_raw_ratio": 1.3361462102588213,
+        "epoch_weighted_mean_safe_ratio": 0.2000000039443564
+      },
+      "E78.9-G2-Medical-LOO": {
+        "epochs": 3978,
+        "conflict": 88,
+        "projected": 88,
+        "scaled": 2087,
+        "conflict_percent": 2.212166918049271,
+        "projected_percent": 2.212166918049271,
+        "scaled_percent": 52.46354952237305,
+        "epoch_weighted_mean_cosine": 0.391137694310757,
+        "epoch_weighted_mean_raw_ratio": 0.25468960356261333,
+        "epoch_weighted_mean_safe_ratio": 0.18533373735526687
+      },
+      "E78.9-G3-Anonymous-LOO": {
+        "epochs": 3749,
+        "conflict": 123,
+        "projected": 123,
+        "scaled": 1147,
+        "conflict_percent": 3.2808748999733264,
+        "projected_percent": 3.2808748999733264,
+        "scaled_percent": 30.59482528674313,
+        "epoch_weighted_mean_cosine": 0.4050819282423745,
+        "epoch_weighted_mean_raw_ratio": 0.21006052453984067,
+        "epoch_weighted_mean_safe_ratio": 0.16667456243651235
+      }
+    }
+  }
+}
