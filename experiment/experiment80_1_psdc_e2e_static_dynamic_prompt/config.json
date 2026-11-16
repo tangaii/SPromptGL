@@ -1,0 +1,131 @@
+{
+  "experiment": "Experiment 80.1 — PSDC End-to-End Dynamic Complementary Learning",
+  "method": "PSDC-Medical Stage A-to-B feasibility run",
+  "experiment_root": "/model/spromptgl/experiment/experiment80_1_psdc_e2e_static_dynamic_prompt",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment80_1_psdc_e2e_static_dynamic_prompt",
+  "fallback_reason": "Preferred OSSFS probe raised OSError errno 5 during write/fsync/rename/readback; no further writes attempted there.",
+  "references": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "spromptgl_original_repo": "https://github.com/wanxixi11/SPromptGL",
+    "spromptgl_project_repo": "https://github.com/tangaii/SPromptGL",
+    "e74_branch": "https://github.com/tangaii/SPromptGL/tree/upload/experiment74-4-soft-positive-dcr/experiment/experiment74_4_soft_positive_dcr",
+    "e74_commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+    "e80_branch": "https://github.com/tangaii/SPromptGL/tree/upload/experiment80-psdc-dynamic-incremental-validation/experiment/experiment80_psdc_dynamic_incremental_validation",
+    "e80_commit": "b8c4a4c4553b93e47b133ade8edded9c93f3921d",
+    "brainstr_paper": "https://papers.miccai.org/miccai-2026/0124-Paper0931.html",
+    "brainstr_repo": "https://github.com/guoguiliang111/BrainSTR",
+    "brainacu_paper": "https://papers.miccai.org/miccai-2026/0117-Paper0936.html",
+    "brainacu_repo": "https://github.com/guoguiliang111/BrainACU",
+    "brainpromptplus_doi": "https://doi.org/10.1109/TMI.2026.3692958",
+    "brainpromptplus_repo": "https://github.com/AngusMonroe/BrainPromptPlus",
+    "smgd_paper": "https://proceedings.mlr.press/v306/shi26ag.html"
+  },
+  "sources": {
+    "repository_root": "/data/adodas/SPromptGL-main",
+    "e43_anchor_vendor_root": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest",
+    "e51_source_commit": "939fe7e05ec141582af6a26bc19713fda08fdba3",
+    "e51_source_archive_sha256": {
+      "config.json": "f3447e150bc67ab29860dc0ae4804c194d5607fcbbdeccc9066ae1600c6ba531",
+      "dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+      "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+    },
+    "e11_root": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery",
+    "e61_root": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "e74_root": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "e80_root": "/model/spromptgl/experiment/experiment80_psdc_dynamic_incremental_validation",
+    "bold_root": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/cpac/filt_noglobal/rois_ho",
+    "static_csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "phenotype_csv": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "roi_count": 111,
+    "static_dimensions": [48, 6, 10, 256],
+    "static_dimension_total": 320,
+    "labels": {"ASD": 0, "TD": 1},
+    "seed": 0,
+    "folds": 10,
+    "split": "StratifiedKFold(n_splits=10,shuffle=True,random_state=10)",
+    "fold2_historical_train_test_overlap_one_based": [377, 407],
+    "fold2_overlap_protocol": "retained as historical E74.4-G2; disclosed, not repaired",
+    "e80_unknown_roi_index_zero_based": 82,
+    "e80_unknown_connection_indices_zero_based": [195, 225, 232, 236],
+    "dynamic_connection_count": 252,
+    "tr_seconds_by_site_id": {
+      "CALTECH": 2.0, "CMU": 2.0, "KKI": 2.5, "LEUVEN_1": 1.656, "LEUVEN_2": 1.656,
+      "MAX_MUN": 3.0, "NYU": 2.0, "OHSU": 2.5, "OLIN": 1.5, "PITT": 1.5,
+      "SBL": 2.2, "SDSU": 2.0, "STANFORD": 2.0, "TRINITY": 2.0, "UCLA_1": 3.0,
+      "UCLA_2": 3.0, "UM_1": 2.0, "UM_2": 2.0, "USM": 2.0, "YALE": 2.0
+    },
+    "tr_source": "E80 checked ABIDE I site/subsite protocol mapping, revalidated against SITE_ID and CPAC BOLD filename prefix; no framewise timestamps available."
+  },
+  "windows": {
+    "target_seconds": 90,
+    "stride_fraction": 0.5,
+    "minimum_samples": 30,
+    "minimum_windows": 3,
+    "rule": "width=max(30,ceil(90/TR)); stride=max(1,floor(width/2)); starts=range(0,T-width+1,stride)",
+    "sampling_gap_limitation": "BOLD .1D row order is known; per-frame censor/delete timestamps are unavailable."
+  },
+  "groups": {
+    "G1": "Static-Surrogate + Anonymous Prompt",
+    "G2": "Real-Dynamic + Anonymous Prompt",
+    "G3": "PSDC-Medical"
+  },
+  "prompts": {
+    "medical": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "anonymous": [
+      "A familiar color distribution",
+      "A uniform surface pattern",
+      "A symmetric geometric arrangement",
+      "A regular enclosed form",
+      "A shifted overall magnitude",
+      "An irregular connected pattern",
+      "A continuous material texture",
+      "A different temporal sequence"
+    ],
+    "encoder": "Frozen original CLIP RN50 text encoder; cached once; vectors L2-normalized to a common unit norm.",
+    "dynamic_semantic_applicability": [0, 0, 0, 0, 0, 1.0, 0, 0.25],
+    "anonymous_slot_routing": "same fixed slot weights as G3; no labels used"
+  },
+  "model": {
+    "window_features": 252,
+    "token_dimension": 64,
+    "static_tokens": 8,
+    "temporal_encoder": "two-layer TCN, kernel 3, dilations 1 and 2, dropout 0.1; process exact valid lengths only",
+    "static_encoder": "shared 144-to-(8x64) latent tokenization of full CAM144",
+    "dynamic_encoder": "train-fold-scaled window mean and within-patient residual projections; shared across groups",
+    "fusion": "8 frozen text queries attend static tokens and valid TCN windows; per-slot patient-conditioned gate over [static,dynamic,dynamic-static]; fixed dynamic applicability; 64-to-144 bounded residual added to actual CAM144 input x",
+    "relative_residual_cap": 0.1,
+    "dynamic_off": "exact zero residual at the OutputLayer input"
+  },
+  "training": {
+    "expected_tasks": 30,
+    "max_workers": 8,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement, inherited val=test protocol",
+    "optimizer_base": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "optimizer_cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "optimizer_added_darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "optimizer_psdc": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01},
+    "loss": "L_cls_final + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve + 0.001*L_res",
+    "no_dynamic_only_ce": true,
+    "shared_rng": "restored from E61 epoch-10 warmup; PSCD initialization and train-time stochastic calls use a persistent isolated CPU/CUDA RNG stream",
+    "rng_trace_fields": ["rng_before", "rng_after_train", "rng_after_eval"]
+  },
+  "metrics": ["acc", "hard_auc", "prob_auc", "sen_asd", "spe_td", "asd_f1"],
+  "status": "FORMAL_READY"
+}

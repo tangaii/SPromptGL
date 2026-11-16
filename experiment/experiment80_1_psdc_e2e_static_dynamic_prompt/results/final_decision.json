@@ -1,0 +1,59 @@
+{
+  "audit": {
+    "best_latest_checkpoints": "PASS_30_OF_30",
+    "bitwise_latest_restore_and_replay": true,
+    "max_optimizer_state_drift": 0.0,
+    "max_parameter_drift": 0.0,
+    "overlapping_historical_rng_triplets": 9686,
+    "preflight": "PASS",
+    "rng_mismatches": 0,
+    "same_fold_initialization_across_groups": true,
+    "smoke": "PASS",
+    "tasks_independently_audited": 30
+  },
+  "core_findings": [
+    "G2−G1 pooled OOF ACC/BA/Prob-AUC differences are +0.23/+0.14/+1.27 percentage points; fold-level ACC/BA intervals cross zero.",
+    "G3−G2 pooled OOF ACC/BA rise +0.57/+0.62 pp while Prob-AUC falls 1.32 pp; the medical-prompt advantage is mixed.",
+    "G3−B0 pooled OOF ACC/BA/Prob-AUC are −3.90/−3.94/−3.81 pp; excluding Fold 2 does not change the direction.",
+    "B0→G3 changes include 20 wrong-to-right and 54 right-to-wrong cases, net −34; this is post-hoc independent-predictor complementarity, not fusion correction.",
+    "Dynamic-Off materially changes predictions, but the static-surrogate G1 also uses the added residual path. Temporal shuffling and medical-prompt permutation have small, inconsistent effects.",
+    "Dynamic residual magnitude tracks scan length, window count and FD; framewise censor/delete timestamps are unavailable."
+  ],
+  "data": {
+    "dynamic_cache_sha256": "c91fa0b190b607b14d36a22771fa903edd4342a7c28fdfae29ef34f8fc742f72",
+    "dynamic_connections": 252,
+    "dynamic_coverage": 1.0,
+    "max": 13,
+    "mean": 7.2560275545350175,
+    "roi_count": 111,
+    "static_fc_max_abs_rebuild_error": 3.9968028886505635e-15,
+    "subjects": 871,
+    "target_window_seconds": 90,
+    "windows_per_subject_min": 3
+  },
+  "experiment": "Experiment 80.1 — PSDC End-to-End Dynamic Complementary Learning",
+  "next_recommended_step": "Do not start Stage B. A future study should first obtain framewise censor/motion metadata and run a preregistered independent-site holdout replication.",
+  "scientific_decision": "NO_GO_PSDC_END_TO_END",
+  "scope": "First complete PSDC end-to-end validation; not a claim that the MICCAI 2027 innovation is established.",
+  "stage_b_recommended": false,
+  "status": "COMPLETE_AUDITED",
+  "training": {
+    "device": "PPU-ZW810E",
+    "device_count": 1,
+    "e801_parameters": 1215044,
+    "epochs_total": 10197,
+    "formal_dispatch_wall_seconds": 1487.1852741241455,
+    "groups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "max_concurrent_workers": 8,
+    "peak_single_worker_gpu_mib": 1160.978515625,
+    "preflight_to_analysis_wall_seconds": 3269.7028493881226,
+    "task_wall_seconds_max": 896.5557069778442,
+    "task_wall_seconds_mean": 393.60352095762886,
+    "task_wall_seconds_sum": 11808.105628728867,
+    "tasks": 30
+  }
+}
