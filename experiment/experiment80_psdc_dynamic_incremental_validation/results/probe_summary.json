@@ -1,0 +1,133 @@
+{
+  "common_oof_subject_count": 871,
+  "coverage": 1.0,
+  "device": "CPU (nested regularized logistic probes)",
+  "experiment": "Experiment 80 - PSDC-IVE: Static-Dynamic Incremental Evidence Validation",
+  "fold2_removed_from_new_training": [
+    376,
+    406
+  ],
+  "fold2_test_kept": true,
+  "folds_completed": 10,
+  "independent_audit_status": "PASS_INDEPENDENT_AUDIT",
+  "methods": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "DynamicOnly",
+    "A1_residualized",
+    "A2_residualized",
+    "A1_no_unknown_roi",
+    "A2_no_unknown_roi"
+  ],
+  "outer_split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+  "pooled_oof_deltas_pp": {
+    "A2-A0": {
+      "acc": -1.8369690011481197,
+      "asd_f1": -1.894431799694999,
+      "hard_auc": -1.812792941825208,
+      "prob_auc": -1.341965175712076,
+      "sen": -1.4888337468982513,
+      "spe": -2.1367521367521363
+    },
+    "A2-A1": {
+      "acc": -1.7221584385763435,
+      "asd_f1": -1.8265379698132023,
+      "hard_auc": -1.7231872070581744,
+      "prob_auc": -0.8780301584271797,
+      "sen": -1.7369727047146313,
+      "spe": -1.7094017094017175
+    },
+    "A2-A3": {
+      "acc": 0.0,
+      "asd_f1": 0.041556519141025205,
+      "hard_auc": 0.017231872070581744,
+      "prob_auc": 0.08377340883544093,
+      "sen": 0.24813895781637996,
+      "spe": -0.21367521367521647
+    }
+  },
+  "pooled_oof_metrics_percent": {
+    "A0": {
+      "acc": 86.10792192881746,
+      "asd_f1": 85.04326328800988,
+      "hard_auc": 86.05596912048526,
+      "prob_auc": 92.52985090454074,
+      "sen": 85.35980148883374,
+      "spe": 86.75213675213675
+    },
+    "A1": {
+      "acc": 85.99311136624569,
+      "asd_f1": 84.97536945812809,
+      "hard_auc": 85.96636338571822,
+      "prob_auc": 92.06591588725584,
+      "sen": 85.60794044665012,
+      "spe": 86.32478632478633
+    },
+    "A1_no_unknown_roi": {
+      "acc": 85.87830080367394,
+      "asd_f1": 84.83353884093712,
+      "hard_auc": 85.84229390681004,
+      "prob_auc": 92.05955334987593,
+      "sen": 85.35980148883374,
+      "spe": 86.32478632478633
+    },
+    "A1_residualized": {
+      "acc": 85.30424799081516,
+      "asd_f1": 84.0,
+      "hard_auc": 85.17025089605734,
+      "prob_auc": 91.90526181841318,
+      "sen": 83.37468982630273,
+      "spe": 86.96581196581197
+    },
+    "A2": {
+      "acc": 84.27095292766934,
+      "asd_f1": 83.14883148831488,
+      "hard_auc": 84.24317617866005,
+      "prob_auc": 91.18788572882866,
+      "sen": 83.87096774193549,
+      "spe": 84.61538461538461
+    },
+    "A2_no_unknown_roi": {
+      "acc": 84.95981630309988,
+      "asd_f1": 83.76703841387855,
+      "hard_auc": 84.88420181968569,
+      "prob_auc": 91.21121503255497,
+      "sen": 83.87096774193549,
+      "spe": 85.8974358974359
+    },
+    "A2_residualized": {
+      "acc": 84.27095292766934,
+      "asd_f1": 82.85356695869838,
+      "hard_auc": 84.12255307416598,
+      "prob_auc": 91.25787364000763,
+      "sen": 82.13399503722084,
+      "spe": 86.11111111111111
+    },
+    "A3": {
+      "acc": 84.27095292766934,
+      "asd_f1": 83.10727496917386,
+      "hard_auc": 84.22594430658947,
+      "prob_auc": 91.10411231999322,
+      "sen": 83.62282878411911,
+      "spe": 84.82905982905983
+    },
+    "DynamicOnly": {
+      "acc": 51.549942594718715,
+      "asd_f1": 48.41075794621027,
+      "hard_auc": 51.38199614006065,
+      "prob_auc": 51.78416152361562,
+      "sen": 49.13151364764268,
+      "spe": 53.63247863247863
+    }
+  },
+  "research_decision": "NO_GO_DYNAMIC_INCREMENTAL_EVIDENCE",
+  "seed": 0,
+  "status": "COMPLETE_AUDITED",
+  "subjects_dynamic_eligible": 871,
+  "subjects_total": 871,
+  "wall_seconds": 57.236,
+  "worker_count": 8,
+  "workers_max": 8
+}

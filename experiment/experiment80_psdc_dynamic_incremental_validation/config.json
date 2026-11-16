@@ -1,0 +1,176 @@
+{
+  "confound_sensitivity": {
+    "nuisance_fields": [
+      "site",
+      "tr_seconds",
+      "scan_duration_seconds",
+      "timepoints",
+      "window_count",
+      "func_mean_fd",
+      "func_dvars",
+      "func_perc_fd"
+    ],
+    "residualizer": "Ridge(alpha=1.0, fit_intercept=true), fitted on each inner/final training set only"
+  },
+  "data": {
+    "bold_root": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/cpac/filt_noglobal/rois_ho",
+    "csv_path": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "dataset": "ABIDE A",
+    "e11_root": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery",
+    "fold2_exposed_rows_one_based": [
+      377,
+      407
+    ],
+    "fold2_exposed_rows_zero_based": [
+      376,
+      406
+    ],
+    "folds": 10,
+    "inner_split": "StratifiedKFold(n_splits=5, shuffle=True, random_state=10)",
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "modalities": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "CORR"
+    ],
+    "modality_dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "outer_split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "phenotype_path": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv",
+    "static_features": 320,
+    "subjects": 871
+  },
+  "experiment": "Experiment 80 - PSDC-IVE: Static-Dynamic Incremental Evidence Validation",
+  "experiment_root": "/model/spromptgl/experiment/experiment80_psdc_dynamic_incremental_validation",
+  "fallback_reason": "Preferred OSSFS directory creation failed with OSError errno 5; verified /model location used after one probe.",
+  "handoff_status": "UPDATED_AND_READBACK_VERIFIED",
+  "method": "PSDC-IVE",
+  "methods": {
+    "A0": "Static320",
+    "A1": "Static320 + WindowMeanPCA32 + StaticCORRDuplicatePCA32",
+    "A1_no_unknown_roi": "A1 with the four E11 edges touching ROI 83 omitted from window-mean statistics",
+    "A1_residualized": "A1 with all input blocks residualized against site/TR/duration/window-count/FD/DVARS/percent-FD within each fit split",
+    "A2": "Static320 + WindowMeanPCA32 + RealDynamicPCA32",
+    "A2_no_unknown_roi": "A2 with the same four edges omitted from window-mean and dynamic statistics",
+    "A2_residualized": "A2 with the same training-only confound residualization",
+    "A3": "A2 structure; per-subject deterministic label-independent window permutation before adjacent-change statistic",
+    "DynamicOnly": "RealDynamicPCA32 diagnostic; not a GO criterion by itself"
+  },
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment80_psdc_dynamic_incremental_validation",
+  "probe": {
+    "C_candidates": [
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "class_weight": "balanced",
+    "max_iter": 5000,
+    "model": "sklearn LogisticRegression",
+    "pca_fit_scope": "nested inner training only for selection; outer training only for final fit",
+    "pca_requested_components": 32,
+    "pca_solver": "full",
+    "seed": 0,
+    "selection_metric": "mean inner-fold log loss",
+    "solver": "lbfgs",
+    "tie_rule": "choose smallest C among candidates within 1e-12 of the minimum mean log loss"
+  },
+  "references_reviewed": {
+    "BrainACU_paper": "https://papers.miccai.org/miccai-2026/0117-Paper0936.html",
+    "BrainACU_repo": "https://github.com/guoguiliang111/BrainACU",
+    "BrainPromptPlus_doi": "https://doi.org/10.1109/TMI.2026.3692958",
+    "BrainPromptPlus_repo": "https://github.com/AngusMonroe/BrainPromptPlus",
+    "BrainSTR_paper": "https://papers.miccai.org/miccai-2026/0124-Paper0931.html",
+    "BrainSTR_repo": "https://github.com/guoguiliang111/BrainSTR",
+    "SMGD_paper": "https://proceedings.mlr.press/v306/shi26ag.html",
+    "SPromptGL_original_repo": "https://github.com/wanxixi11/SPromptGL",
+    "SPromptGL_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "SPromptGL_project_repo": "https://github.com/tangaii/SPromptGL"
+  },
+  "research_decision": "NO_GO_DYNAMIC_INCREMENTAL_EVIDENCE",
+  "runtime": {
+    "blas_threads_per_worker": 1,
+    "darg_retraining": false,
+    "dynamic_cache": ".runtime/dynamic_cache/feature_cache.npz",
+    "max_workers": 8
+  },
+  "stage": "PSDC Stage A",
+  "static_fc": {
+    "mapping_csv": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_256_mapping.csv",
+    "max_absolute_error_tolerance": 1e-06,
+    "method": "E11 Nilearn 0.7.1-compatible demean, population SD standardization (epsilon guard), LedoitWolf covariance, covariance-to-correlation, Fisher-z, frozen E11 upper-triangle edge order",
+    "roi_labels_csv": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_111_labels.csv",
+    "row_mapping_csv": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/subject_row_mapping.csv",
+    "unknown_roi_edge_indices_zero_based": [
+      195,
+      225,
+      232,
+      236
+    ],
+    "unknown_roi_index_zero_based": 82
+  },
+  "status": "COMPLETE_AUDITED",
+  "tr_seconds_by_site_id": {
+    "CALTECH": 2.0,
+    "CMU": 2.0,
+    "KKI": 2.5,
+    "LEUVEN_1": 1.656,
+    "LEUVEN_2": 1.656,
+    "MAX_MUN": 3.0,
+    "NYU": 2.0,
+    "OHSU": 2.5,
+    "OLIN": 1.5,
+    "PITT": 1.5,
+    "SBL": 2.2,
+    "SDSU": 2.0,
+    "STANFORD": 2.0,
+    "TRINITY": 2.0,
+    "UCLA_1": 3.0,
+    "UCLA_2": 3.0,
+    "UM_1": 2.0,
+    "UM_2": 2.0,
+    "USM": 2.0,
+    "YALE": 2.0
+  },
+  "tr_source": "Official ABIDE I site Functional Scan Parameters PDFs, joined by validated SITE_ID and CPAC raw filename prefix/subsite. Subject-level TR was absent from the local phenotype table; protocol assignment is at the published site/subsite level.",
+  "tr_source_urls": {
+    "CALTECH": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Caltech/rest.pdf",
+    "CMU": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/CMU/rest.pdf",
+    "KKI": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/KKI/rest.pdf",
+    "LEUVEN_1": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Leuven-1/rest.pdf",
+    "LEUVEN_2": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Leuven-2/rest.pdf",
+    "MAX_MUN": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/MaxMun/rest.pdf",
+    "NYU": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/NYU/rest.pdf",
+    "OHSU": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/OHSU/rest.pdf",
+    "OLIN": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Olin/rest.pdf",
+    "PITT": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Pitt/rest.pdf",
+    "SBL": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/SBL/rest.pdf",
+    "SDSU": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/SDSU/rest.pdf",
+    "STANFORD": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Stanford/rest.pdf",
+    "TRINITY": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Trinity/rest.pdf",
+    "UCLA_1": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/UCLA1/rest.pdf",
+    "UCLA_2": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/UCLA2/rest.pdf",
+    "UM_1": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/UM1/rest.pdf",
+    "UM_2": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/UM2/rest.pdf",
+    "USM": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/USM/rest.pdf",
+    "YALE": "https://fcon_1000.projects.nitrc.org/indi/abide/scan_params/Yale/rest.pdf"
+  },
+  "windows": {
+    "allow_frame_unit_fallback": false,
+    "minimum_window_samples": 30,
+    "minimum_windows": 3,
+    "order_control_seed_base": 80017,
+    "require_uniform_sampling": true,
+    "statistical_ddof": 0,
+    "stride_fraction": 0.5,
+    "target_seconds": 60
+  }
+}
