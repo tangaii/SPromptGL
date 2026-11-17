@@ -1,0 +1,112 @@
+{
+  "experiment": "Experiment 80.2 — BP-CPSDC",
+  "method": "Baseline-Preserved Counterfactual Prompt-guided Static–Dynamic Complementary Learning",
+  "status": "IMPLEMENTED_PRETRAINING_PENDING",
+  "experiment_root": "/model/spromptgl/experiment/experiment80_2_bp_cpsdc",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment80_2_bp_cpsdc",
+  "root_fallback_reason": "Preferred OSSFS probe failed during write/fsync/atomic rename with OSError errno=5; all E80.2 writes use the verified /model mount.",
+  "references": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "spromptgl_original_repo": "https://github.com/wanxixi11/SPromptGL",
+    "spromptgl_project_repo": "https://github.com/tangaii/SPromptGL",
+    "e74_root": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "e80_root": "/model/spromptgl/experiment/experiment80_psdc_dynamic_incremental_validation",
+    "e80_1_root": "/model/spromptgl/experiment/experiment80_1_psdc_e2e_static_dynamic_prompt",
+    "e61_root": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+    "rezero": "https://proceedings.mlr.press/v161/bachlechner21a.html"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "roi_count": 111,
+    "static_dimensions": [48, 6, 10, 256],
+    "static_dimension_total": 320,
+    "dynamic_connection_count": 252,
+    "dynamic_unknown_roi_edge_indices_zero_based": [195, 225, 232, 236],
+    "labels": {"ASD": 0, "TD": 1},
+    "seed": 0,
+    "folds": 10,
+    "split": "StratifiedKFold(n_splits=10,shuffle=True,random_state=10)",
+    "fold2_historical_train_test_overlap_one_based": [377, 407],
+    "fold2_overlap_protocol": "retained from E74.4-G2 and disclosed",
+    "dynamic_cache": "/model/spromptgl/experiment/experiment80_1_psdc_e2e_static_dynamic_prompt/.runtime/dynamic_cache/windows90_fc252.npz",
+    "dynamic_qc_summary": "/model/spromptgl/experiment/experiment80_1_psdc_e2e_static_dynamic_prompt/results/dynamic_qc_summary.json",
+    "e11_root": "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery",
+    "static_csv": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+    "phenotype_csv": "/data/adodas/SPromptGL-main/dataset/ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv"
+  },
+  "windows": {
+    "target_seconds": 90,
+    "stride_fraction": 0.5,
+    "minimum_windows": 3,
+    "sequence_rule": "read-only reuse of E80.1 verified windows90_fc252.npz; no window search or test-based selection"
+  },
+  "prompts": {
+    "medical": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "anonymous": [
+      "A familiar color distribution",
+      "A uniform surface pattern",
+      "A symmetric geometric arrangement",
+      "A regular enclosed form",
+      "A shifted overall magnitude",
+      "An irregular connected pattern",
+      "A continuous material texture",
+      "A different temporal sequence"
+    ],
+    "encoder": "Frozen original CLIP RN50; prompt text is locked to E80.1",
+    "dynamic_slot_weights": [0, 0, 0, 0, 0, 1.0, 0, 0.25]
+  },
+  "model": {
+    "cam_input_dim": 144,
+    "dynamic_input_dim": 252,
+    "hidden": 64,
+    "tcn_kernel": 3,
+    "tcn_dilations": [1, 2],
+    "dropout": 0.0,
+    "shared_real_counterfactual_encoder": true,
+    "relative_residual_cap": 0.05,
+    "alpha_init": 0.0,
+    "gate": "patient-level sigmoid from detached CAM/confidence/dynamic-strength; final residual is multiplicatively dependent on counterfactual r",
+    "classifier": "manual eval-equivalent read-only OutputLayer computation with detached original parameters"
+  },
+  "training": {
+    "base": "E74.4-G2 Positive-DCR, from E61 epoch-10 full warmup",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; val=test inherited and disclosed",
+    "base_optimizers": {
+      "opt_base": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "opt_cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "opt_added": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "psdc_optimizer": {"class": "AdamW", "lr": 0.0003, "weight_decay": 0.01},
+    "loss_darg": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "loss_psdc": "L_cls_aug + 0.1*L_KD + 0.01*L_res",
+    "no_per_epoch_reseed": true,
+    "one_shared_darg_trajectory_per_fold": true,
+    "worker_limit": 8
+  },
+  "metrics": ["acc", "hard_auc", "prob_auc", "sen_asd", "spe_td", "asd_f1"],
+  "historical_b0": {
+    "acc": 0.921891,
+    "hard_auc": 0.920294,
+    "prob_auc": 0.934946,
+    "sen_asd": 0.900671,
+    "spe_td": 0.939917,
+    "asd_f1": 0.914590
+  },
+  "groups": {
+    "B0": "E74.4-G2 historical DARG",
+    "G1": "BP-CPSDC-Anonymous",
+    "G2": "BP-CPSDC-Medical"
+  }
+}
