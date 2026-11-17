@@ -1,0 +1,31 @@
+{
+  "experiment": "Experiment 82.2.1 BSCP — Bidirectional Spectral Counterfactual Prompt Correction",
+  "base_group": "E74.4-G2-Positive-DCR", "seed": 0, "folds": 10, "subjects": 871, "expected_tasks": 20,
+  "groups": {"G1": "BSCP-Anonymous", "G2": "BSCP-Medical"},
+  "max_epochs": 450, "start_epoch": 10, "early_stop_wait_gt": 200, "workers_max": 10,
+  "initialization_seed_base": 822100, "anonymous_seed": 822199,
+  "spectral_dimensions": 16, "token_dimension": 32, "temperature": 0.5, "epsilon": 1e-8,
+  "residual_limit": 0.08, "residual_loss_coefficient": 0.001, "action_loss_coefficient": 0.01,
+  "harm_loss_coefficient": 0.01, "alpha_corr": 0.5, "tau_teacher": 0.10, "hard_sample_weight": 1.5,
+  "historical_optimizers": {"opt_base": ["Adam",0.0038,0.11], "opt_cam": ["Adam",0.0038,0.11], "opt_added": ["AdamW",0.001,0.01]},
+  "bscp_optimizer": {"class":"AdamW", "lr":0.0005, "weight_decay":0.01},
+  "policy": "Linear(71,32), GELU, Linear(32,2); final weight/bias zero; no-op logit 0; scalars hhat,abs(hhat),w_sem,w_sp,w,loglambda,nu",
+  "selection": "test ACC strict increase; earliest tie; unchanged val=test",
+  "teacher_input_order": "per legal patient: original, plus directions 0..15, minus directions 0..15; 33 inputs",
+  "teacher": "current original head frozen deepcopy per epoch; eval; functional dropout-free head; all legal training patients",
+  "auxiliary_gradient_rule": "second deterministic BSCP forward on raw CAM.detach; both action and harm only update BSCP",
+  "semantic_off_rule": "keep patient spectral tokens/statistics; set w_sem=w_sp,w=w_sp,beta=0,context=0; policy keeps all 7 scalar slots with deterministic statistic defaults; q0 and attention have no path to output",
+  "action_order": ["enhance","suppress","unchanged"],
+  "action_neutral_rule": "P=(1/3,1/3,1/3), s=0; exact equivalence to correction_off",
+  "near_uniform_rule": "max absolute difference of each target probability from 1/3 <=0.02 (descriptive only)",
+  "gain_reporting_tolerance": 1e-6,
+  "cap_reporting_rule": "raw over cap: norm(raw_total)>=0.08*norm(z); near cap: norm(delta)/norm(z)>=0.0792 (99% of cap)",
+  "preprocessing": "historical pre-CV scaling/RFE, transductive graph; no protocol repairs",
+  "fold2_original_train_unchanged": true, "fold2_new_path_zero_1based": [377,407],
+  "save_latest_every_epochs": 10,
+  "scientific_rule": {
+    "GO": "G2 ACC>B0 with more fold wins than losses; BA>=B0; Prob-AUC delta>=-0.1pp; SEN>E82.2; correction_off removal net<0; G2>G1 ACC with more wins than losses; medical replacement mean abs probability>=0.001 and removal net<0; alignment-to-test delta Spearman>0",
+    "PARTIAL": "GO fails but G1 or G2 improves B0 ACC and correction_off removal net<0, or G2 improves BA/SEN with demonstrated correction benefit",
+    "NO_GO": "otherwise; stop route, no E82.2.2 or tuning"
+  }
+}
