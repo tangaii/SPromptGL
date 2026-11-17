@@ -1,0 +1,170 @@
+{
+  "experiment": "E81.6.1 — CPRL-RES",
+  "base": {
+    "group": "E74.4-G2-Positive-DCR",
+    "warmup": "E61 epoch-10 complete state",
+    "seed": 0,
+    "folds": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "test ACC strictly increases; ties retain earlier epoch"
+  },
+  "groups": [
+    "E81.6.1-G1-Medical-CPRL-10",
+    "E81.6.1-G2-Medical-CPRL-Unbounded",
+    "E81.6.1-G3-Scrambled-CPRL-10"
+  ],
+  "architecture": {
+    "tokens": 16,
+    "slot_shape": [
+      4,
+      4,
+      9
+    ],
+    "token_width": 9,
+    "hidden": 32,
+    "prompts": 8,
+    "text_width": 1024,
+    "real_neighbors": 15,
+    "null_candidates": 1,
+    "eta": 0.1,
+    "rho": 0.1,
+    "eps": 1e-12,
+    "lambda_sem": 1.0,
+    "private_cpu_salt_base": 816100,
+    "global_pool": "per-slot AvgPool1d(4,4)",
+    "query_visual": "LayerNorm(Wq*u)",
+    "query_semantic": "normalize(Wtext*normalize(normalize(T)-mean(normalize(T))))",
+    "text_bias": false,
+    "pairwise_key": "product, absolute difference",
+    "pairwise_value": "sender, product, signed difference",
+    "fusion": "Linear(64,32,bias=False) of separately averaged increments relative to visual baseline",
+    "output_projection_init": "zero; Linear(32,9,bias=False)",
+    "original_pen": false,
+    "new_classifier": false
+  },
+  "loss": {
+    "formula": "historical_out.total + .001*L_raw",
+    "lambda_res": 0.001,
+    "historical_pair": 0.05,
+    "historical_adv": 0.01,
+    "historical_preserve": 0.01,
+    "regularizer": "mean_legal_train((norm(raw_delta)/(norm(detach(z_cam))+1e-12))**2)",
+    "L_geo": false
+  },
+  "optimizers": {
+    "GFR": {
+      "name": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "CAM": {
+      "name": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "DARG": {
+      "name": "AdamW",
+      "lr": 0.001,
+      "weight_decay": 0.01
+    },
+    "CPRL_RES": {
+      "name": "AdamW",
+      "lr": 0.0005,
+      "weight_decay": 0.01
+    }
+  },
+  "fold2": {
+    "historical_overlap_1based": [
+      377,
+      407
+    ],
+    "blocked_new_residual_train_0based": [
+      376,
+      406
+    ],
+    "evaluation": "full model for every test patient"
+  },
+  "scheduling": {
+    "max_workers": 10,
+    "cpu_threads_per_worker": 1,
+    "safety_free_fraction": 0.7,
+    "peak_memory_factor": 2.0
+  },
+  "protocol_limitations": [
+    "test=validation checkpoint selection",
+    "global pre-CV preprocessing and RFE",
+    "transductive patient graph",
+    "Fold 2 inherited overlap",
+    "latent coordinate slices are not anatomical ROIs"
+  ],
+  "formal_hyperparameter_search": false,
+  "text": {
+    "encoder": "CLIP RN50 frozen",
+    "weights": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "cache": "prompt_features.pt",
+    "processing": "row L2 normalize; subtract common row center; row L2 normalize; no patient labels"
+  },
+  "diagnostics": {
+    "prompt_off": "zero all semantic relationship scores; exact visual attention/messages; all increments and raw_delta exactly zero",
+    "null": "force both attentions onto zero Null Value",
+    "unbounded": "G1 frozen best only; use delta=raw_delta once in inference; distribution shift diagnostic",
+    "journal": "atomic compact JSONL replacement and byte readback each epoch; latest contains complete rows",
+    "delete_prompt": "zero the semantic scores of exactly one of the eight conditions"
+  },
+  "group_settings": {
+    "E81.6.1-G1-Medical-CPRL-10": {
+      "residual": "bounded",
+      "grouping": "medical",
+      "normal_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "abnormal_indices": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "E81.6.1-G2-Medical-CPRL-Unbounded": {
+      "residual": "unbounded",
+      "grouping": "medical",
+      "normal_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "abnormal_indices": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "E81.6.1-G3-Scrambled-CPRL-10": {
+      "residual": "bounded",
+      "grouping": "scrambled",
+      "normal_indices": [
+        0,
+        1,
+        4,
+        5
+      ],
+      "abnormal_indices": [
+        2,
+        3,
+        6,
+        7
+      ]
+    }
+  },
+  "readonly_reference": {
+    "e816_directory": "/model/spromptgl/experiment/experiment81_6_prcl_res",
+    "e816_commit": "75e11ac262a3789aa3595748800f4aed1ae3cc7a"
+  }
+}
