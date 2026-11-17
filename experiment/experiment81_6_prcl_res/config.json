@@ -1,0 +1,113 @@
+{
+  "experiment": "E81.6 — PRCL-RES",
+  "base": {
+    "group": "E74.4-G2-Positive-DCR",
+    "warmup": "E61 epoch-10 complete state",
+    "seed": 0,
+    "folds": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "test ACC strictly increases; ties retain earlier epoch"
+  },
+  "groups": [
+    "E81.6-G1-Medical-Pairwise-PRCL-RES",
+    "E81.6-G2-Medical-Unary-PRCL-RES",
+    "E81.6-G3-Anonymous-Pairwise-PRCL-RES"
+  ],
+  "architecture": {
+    "tokens": 16,
+    "slot_shape": [
+      4,
+      4,
+      9
+    ],
+    "token_width": 9,
+    "hidden": 32,
+    "prompts": 8,
+    "text_width": 1024,
+    "real_neighbors": 15,
+    "null_candidates": 1,
+    "eta": 0.1,
+    "rho": 0.1,
+    "eps": 1e-12,
+    "private_cpu_salt_base": 816000,
+    "global_pool": "per-slot AvgPool1d(4,4)",
+    "query": "LayerNorm(Wq*u + sigmoid(gamma_logit)*Wt*normalize(text))",
+    "gamma_initial": 0.5,
+    "pairwise_key": "product, absolute difference",
+    "pairwise_value": "sender, product, signed difference",
+    "fusion_bias": false,
+    "competition_init": "zero",
+    "output_projection_init": "zero",
+    "original_pen": false,
+    "new_classifier": false
+  },
+  "loss": {
+    "formula": "historical_out.total + .001*L_res + .001*L_geo",
+    "lambda_res": 0.001,
+    "historical_pair": 0.05,
+    "historical_adv": 0.01,
+    "historical_preserve": 0.01,
+    "lambda_geo": 0.001
+  },
+  "optimizers": {
+    "GFR": {
+      "name": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "CAM": {
+      "name": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "DARG": {
+      "name": "AdamW",
+      "lr": 0.001,
+      "weight_decay": 0.01
+    },
+    "PRCL_RES": {
+      "name": "AdamW",
+      "lr": 0.0005,
+      "weight_decay": 0.01
+    }
+  },
+  "fold2": {
+    "historical_overlap_1based": [
+      377,
+      407
+    ],
+    "blocked_new_residual_train_0based": [
+      376,
+      406
+    ],
+    "evaluation": "full model for every test patient"
+  },
+  "scheduling": {
+    "max_workers": 10,
+    "cpu_threads_per_worker": 1,
+    "safety_free_fraction": 0.7,
+    "peak_memory_factor": 2.0
+  },
+  "protocol_limitations": [
+    "test=validation checkpoint selection",
+    "global pre-CV preprocessing and RFE",
+    "transductive patient graph",
+    "Fold 2 inherited overlap",
+    "latent coordinate slices are not anatomical ROIs"
+  ],
+  "formal_hyperparameter_search": false,
+  "text": {
+    "encoder": "CLIP RN50 frozen",
+    "weights": "/root/.cache/clip/RN50.pt",
+    "anonymous_salt": 8160000,
+    "anonymous_generation": "private CPU Gaussian, row L2 norms matched to RN50 medical embeddings",
+    "cache": "prompt_features.pt"
+  },
+  "diagnostics": {
+    "global_off": "uniform coordinate matching 1/9, keep all local and prompt computations",
+    "delete_prompt": "zero only that projected semantic Query contribution, retain its local Query and message channel",
+    "swap_prompt": "swap a specified prompt k with (k+4)%8",
+    "journal": "atomic full compact JSONL replacement and byte readback every epoch; full scalar rows also saved in latest"
+  }
+}
