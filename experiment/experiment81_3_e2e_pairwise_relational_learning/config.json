@@ -1,0 +1,64 @@
+{
+  "experiment": "Experiment 81.3 - End-to-End Gradient-Protected Pairwise Relational Learning",
+  "status": "IMPLEMENTATION_IN_PROGRESS",
+  "experiment_root": "/model/spromptgl/experiment/experiment81_3_e2e_pairwise_relational_learning",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_3_e2e_pairwise_relational_learning",
+  "root_fallback_reason": "OSSFS returned errno 5 while creating the preferred directory; the single formal directory is under /model/spromptgl/experiment.",
+  "seed": 0,
+  "folds": 10,
+  "groups": ["E81.3-G1-UnaryAttention-E2E", "E81.3-G2-PairwiseRelation-E2E"],
+  "base": {
+    "experiment": "E74.4-G2 Positive-DCR (DARG)",
+    "warmup": "E61 epoch-10 full warmup, independently restored for each group and fold",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; ties retain earlier epoch",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "relation": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+    },
+    "loss": "L_DARG + L_increment + 0.001*L_corr",
+    "darg_loss": "L_cls_base + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "pair_count": 4096,
+    "fold2_overlap_1based": [377, 407],
+    "validation_equals_test": true,
+    "pre_cv_preprocessing_and_transductive_graph_retained": true
+  },
+  "method": {
+    "input": "CAM144 captured immediately before the original OutputLayer",
+    "tokens": [16, 9],
+    "hidden": 32,
+    "heads": 8,
+    "neighbors_per_local": 15,
+    "null_candidates": 1,
+    "null_value": "zero",
+    "eta": 0.1,
+    "correction_bound": 1.0,
+    "gate": "Linear(36,32)->GELU->Linear(32,1)->Sigmoid; final bias=-1.0",
+    "margin_features": ["relation_summary_32", "signed_margin_detached", "abs_margin_detached", "mean_null_weight", "normalized_attention_entropy"],
+    "fold2_overlap_correction": "delta_margin forced to zero for global rows 377 and 407 during training; correction regularizer excludes them",
+    "groups": {
+      "E81.3-G1-UnaryAttention-E2E": "KeyInput=concat(u_q,tanh(u_q)); ValueInput=concat(u_q,tanh(u_q),u_q^2)",
+      "E81.3-G2-PairwiseRelation-E2E": "KeyInput=concat(u_p*u_q,u_q-u_p); ValueInput=concat(u_q,u_p*u_q,u_q-u_p)"
+    },
+    "shared": ["local encoder", "position", "query", "null", "readout", "gate", "correction head", "candidate map", "loss", "optimizer", "initialization"]
+  },
+  "training": {
+    "optimizer_step_order": ["opt_base", "opt_cam", "opt_added", "opt_relation"],
+    "public_rng": "historical public RNG stream unchanged; relation initialization uses private CPU fork_rng",
+    "no_per_epoch_reseed": true,
+    "workers_max": 10,
+    "threads_per_worker": 1,
+    "formal_tasks": 20
+  },
+  "sources": {
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "official_code": "https://github.com/wanxixi11/SPromptGL",
+    "project_code": "https://github.com/tangaii/SPromptGL",
+    "e81_2_commit": "https://github.com/tangaii/SPromptGL/commit/2bcdf94d3da402980e7e1ba4f7abf4a8036f051f",
+    "historical_base": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+    "e81_2_readonly": "/model/spromptgl/experiment/experiment81_2_e2e_relational_correction"
+  }
+}
