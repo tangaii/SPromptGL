@@ -1,0 +1,66 @@
+{
+  "experiment": "Experiment 82.1 PCDE-PS",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "expected_tasks": 30,
+  "groups": {
+    "G1": "PCDE-Anonymous",
+    "G2": "PCDE-Medical-NoGate",
+    "G3": "PCDE-Medical-Reliable"
+  },
+  "max_epochs": 450,
+  "start_epoch": 10,
+  "early_stop_wait_gt": 200,
+  "workers_max": 10,
+  "initialization_seed_base": 821000,
+  "anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "covariance": "unbiased n-1; pooled weighted by n_c",
+  "shrinkage": 0.1,
+  "residual_limit": 0.08,
+  "residual_loss_coefficient": 0.001,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "selection": "strict ACC improvement on test; retain earliest tie",
+  "preprocessing": "historical pre-CV scaling/RFE; transductive graph; val=test preserved",
+  "fold2_original_train_unchanged": true,
+  "fold2_pssec_zero_1based": [
+    377,
+    407
+  ],
+  "eigen_tie_rule": "gaps <= 1e-12 max absolute eigenvalue: coordinate-projector canonicalization; stable signed tie order; sign largest absolute coordinate positive",
+  "degenerate_rule": "trace <= epsilon: zero term; overall norm <= epsilon: complement total covariance fallback",
+  "normalization": "within-fold 16-component population variance plus epsilon",
+  "save_latest_every_epochs": 10,
+  "ema_old_weight": 0.95,
+  "evidence_loss_coefficient": 0.01,
+  "variance_rule": "unbiased n-1 for class and total all-training variance; shrink 0.9 class + 0.1 total; floor=max(1e-8,1e-4*EMA total variance) per component",
+  "conditioning_scale": 0.25,
+  "signed_evidence_bias": 0.2,
+  "llr_limit": 4,
+  "pcde_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  }
+}
