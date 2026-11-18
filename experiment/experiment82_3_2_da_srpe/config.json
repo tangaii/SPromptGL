@@ -1,0 +1,142 @@
+{
+  "experiment": "Experiment 82.3.2 DA-SRPE — Decision-Aligned Safe Residual Prompt Evidence Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "expected_tasks": 20,
+  "groups": {
+    "G1": "DA-SRPE-Anonymous",
+    "G2": "DA-SRPE-Medical"
+  },
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "selection": "Historical val=test. Strict test ACC improvement. Keep earliest tie.",
+  "preprocessing": "Historical pre-CV RFE and scaling, transductive graph, train/test arrays unchanged.",
+  "workers_max": 10,
+  "threads_per_worker": 1,
+  "initialization_seed_base": 822000,
+  "historical_anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "prompt_zero_based": {
+    "normal_like": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "abnormal_like": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_excluded_from_new_paths_rows_1based": [
+    377,
+    407
+  ],
+  "class_statistics": {
+    "variance_ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "estimation": "Initialize with byte-exact E82.3 fit on legal E61 epoch10 training rows; explicit post-evaluation EMA follows below."
+  },
+  "residual_limit": 0.08,
+  "residual_loss_coefficient": 0.001,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "preflight": {
+    "row_sum_absolute_tolerance": 2e-06,
+    "llr_no_discrimination": "Block if raw and bounded per-direction and direction-mean training ROC-AUC are all exactly chance within 1e-12, or any required evidence is nonfinite. No held-out labels used.",
+    "gradient_scale_scope": "Measure 0.001 × alignment KL, 0.001 × actual residual, and historical classification separately. Prompt and spectral classification gradients are exactly zero at gamma=0. Verify nonzero classification gradients again after one genuine joint update."
+  },
+  "decision": {
+    "asd_sensitivity_min_delta_pp_vs_darg": -0.5,
+    "prob_auc_min_delta_pp_vs_darg": -0.1,
+    "performance": "Per group, all audits pass, 10-fold paired ACC > 0 pp, BA >= 0 pp, SEN >= -0.5 pp, Prob-AUC >= -0.1 pp, and positive patient net corrections versus B0.",
+    "mechanism": "Per group, Residual-off on Best causes at least one net lost correct prediction and lower fold-mean ACC; test mean L1(w_sem,w_sp) and maximum absolute realized gate exceed the numerical identity tolerance.",
+    "medical_semantics": "Supporting evidence requires G2 vs G1 positive paired ACC and net correct patients, and replacing medical Query by anonymous in G2 gives lower paired ACC and negative net corrections.",
+    "identity_tolerance": 1e-06,
+    "go": "At least one group meets both performance and mechanism. Report the qualifying groups and whether independent medical Query evidence is established. Otherwise NO-GO."
+  },
+  "ema": {
+    "alpha": 0.1,
+    "compute": "CPU float64 legal CAM projection using the original spectrum cache, then observed first and uncentered second moments.",
+    "initialization": "Start with E82.3 mean and stable inference variance exactly. Derive raw second moment from E82.3 unbiased variance times (n-1)/n plus squared mean.",
+    "variance": "Clamp roundoff in second minus mean squared at zero and apply n/(n-1) by class before E82.3 stabilization. Inference uses float32.",
+    "order": "Train, four optimizer steps, evaluate once and select Best with prior EMA, freeze Best if selected, update EMA once using captured legal eval CAM, persist post-update Latest."
+  },
+  "direction_selection": {
+    "score": "E82.3 scores from pre-gate normalized coverage and bounded Gaussian LLR.",
+    "weights": "Normalize coverage times class-specific softplus of signed bounded LLR per class, then mix with softmax class scores."
+  },
+  "gradient_diagnostics": {
+    "scope": "Per epoch on the shared 6081-parameter branch Prompt tensors only (excluding spectral tensors), using two autograd.grad calls on the existing training graph before the normal backward.",
+    "long_term_summary": "Report all epochs and final quartile by fold. A negative cosine indicates opposing components on the shared Prompt parameters.",
+    "undefined": "Cosine and norm ratio are null when their denominator vanishes. In particular, gamma starts at exactly zero."
+  },
+  "alignment_loss_coefficient": 0.001,
+  "alignment_target": {
+    "rms_floor": 0.0001,
+    "clip_abs": 3.0,
+    "temperature": 1.0,
+    "description": "Existing true-class logp margin Jacobian at enhanced CAM144, projected onto the unenhanced patient spectral components. Stop gradient through contributions and through CAM on the auxiliary selector. Balance KL by class."
+  },
+  "patient_gate": {
+    "isolated_seed_base": 823200,
+    "input_dim": 162,
+    "hidden_dim": 16,
+    "activation": "GELU",
+    "affine_free_layer_norm_eps": 1e-05,
+    "gamma_initial": 0.0,
+    "input": "Normalized CAM144, 16 × (w_sem − w_sp), detached beta, mean null attention.",
+    "output": "tanh(gamma) × sigmoid(MLP(input)).",
+    "semantic_off": "Use w_sp in residual, substitute w_sp for w_sem and zero for beta and null gate inputs."
+  },
+  "checkpoint_and_workers": "Ten independent single-threaded worker processes, each sequentially running its fold G1 then G2 from separate fresh historical state. Latest commits every 10 epochs and at termination.",
+  "historical_read_only": {
+    "B0": "E74.4-G2",
+    "B1": "E82.3.1-G1",
+    "B2": "E82.3.1-G2"
+  },
+  "interventions": {
+    "T0": "full",
+    "T1": "fixed anonymous Query",
+    "T2": "semantic_off",
+    "T3": "residual_off",
+    "T4": "gate_off"
+  }
+}
