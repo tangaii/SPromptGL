@@ -1,0 +1,106 @@
+{
+  "experiment": "Experiment 81.6.2 — SA-PRCL",
+  "root": "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_6_2_semantic_anchored_prcl",
+  "root_fallback_reason": "Preferred OSSFS mkdir returned EIO/errno=5; all experiment outputs use the verified /model mount.",
+  "base": {
+    "group": "E74.4-G2-Positive-DCR",
+    "start": "Fresh per-fold E61 epoch-10 full warmup restored through the verified E74.4 prepare chain",
+    "seed": 0,
+    "folds": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "Current complete test ACC strictly increases; ties retain earlier epoch",
+    "validation_equals_test": true
+  },
+  "groups": [
+    "SA-PRCL-G1-Protected",
+    "Scrambled-SA-PRCL-G2-Protected",
+    "SA-PRCL-G3-Joint"
+  ],
+  "group_settings": {
+    "SA-PRCL-G1-Protected": {"grouping": "medical", "protected": true},
+    "Scrambled-SA-PRCL-G2-Protected": {"grouping": "scrambled", "protected": true},
+    "SA-PRCL-G3-Joint": {"grouping": "medical", "protected": false}
+  },
+  "architecture": {
+    "cam_width": 144,
+    "slots": [4, 4, 9],
+    "tokens": 16,
+    "token_width": 9,
+    "relation_width": 32,
+    "prompts": 8,
+    "text_width": 1024,
+    "semantic_width": 8,
+    "real_neighbors": 15,
+    "null_candidates": 1,
+    "semantic_scale": 1.0,
+    "eta_protected": 0.0,
+    "eta_joint": 0.1,
+    "rho": 0.1,
+    "eps": 1e-12,
+    "private_salt_base": 816200,
+    "output_projection_init": "zero; Linear(32,9,bias=False)",
+    "global_pool": "per-slot AvgPool1d(4,4)",
+    "fixed_basis": "CPU float64 thin SVD of row-normalized frozen RN50 text features; signed columns fixed by largest-magnitude U entry"
+  },
+  "text": {
+    "encoder": "Frozen OpenAI CLIP RN50",
+    "weights": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "prompts": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "trainable_text_projection": false,
+    "trainable_prompt_embeddings": false,
+    "cache": "prompt_features.pt"
+  },
+  "semantic_geometry": {
+    "gram_tolerance_float64": 1e-10,
+    "gram_tolerance_float32": 1e-5,
+    "norm_tolerance": 1e-5,
+    "numerical_rank_threshold": "max(shape)*float64_epsilon*s_max"
+  },
+  "grouping": {
+    "medical": {"normal": [0, 1, 2, 3], "abnormal": [4, 5, 6, 7]},
+    "scrambled": {"normal": [0, 1, 4, 5], "abnormal": [2, 3, 6, 7]}
+  },
+  "loss": {
+    "protected": "Historical DARG total on unmodified CAM144; then frozen functional OutputLayer branch ClsLoss + .001*L_raw",
+    "joint": "Historical DARG total on enhanced CAM144 + .001*L_raw",
+    "lambda_raw": 0.001,
+    "raw_penalty": "mean_legal_train((norm(raw_delta)/(norm(detach(CAM144))+eps))^2)",
+    "fold2_overlap_1based": [377, 407],
+    "fold2_blocked_new_residual_0based": [376, 406]
+  },
+  "optimizers": {
+    "GFR": {"name": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "CAM": {"name": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "DARG": {"name": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+    "SA_PRCL": {"name": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+  },
+  "scheduler": {"max_workers": 10, "cpu_threads_per_worker": 1, "first_worker_measured": true, "concurrency_from_live_free_gpu_memory": true},
+  "readonly_references": {
+    "e81_6_directory": "/model/spromptgl/experiment/experiment81_6_prcl_res",
+    "e81_6_commit": "75e11ac262a3789aa3595748800f4aed1ae3cc7a",
+    "e81_6_1_directory": "/model/spromptgl/experiment/experiment81_6_1_contrastive_prcl_res",
+    "e81_6_1_commit": "aabe8d5b146a59bfba7242fd93dce28a9eaf5164",
+    "kd_brain_commit": "180873a5dc2e6b5caf862528663f25e986b8f4f4",
+    "itemized_clip_commit": "1a8c13c9c5df722f9cc35dd251687cd1fd454e93"
+  },
+  "formal_hyperparameter_search": false,
+  "protocol_constraints": [
+    "No E81.6/E81.6.1 checkpoint initialization",
+    "No per-epoch reseeding",
+    "No new modality or prompt",
+    "Fold2 historical overlap retained; new branch blocked only for rows 376 and 406 during training",
+    "Test-fold ACC selection, global pre-CV preprocessing, transductive graph and test=validation are inherited limitations"
+  ]
+}
