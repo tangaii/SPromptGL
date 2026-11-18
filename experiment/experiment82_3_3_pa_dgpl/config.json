@@ -1,0 +1,145 @@
+{
+  "experiment": "Experiment 82.3.3 PA-DGPL — Patient-Adaptive Decision-Gain Prompt Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "expected_tasks": 20,
+  "groups": {
+    "G1": "PA-DGPL-Medical-SignedGate",
+    "G2": "PA-DGPL-Medical-DecisionGain"
+  },
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "selection": "Historical val=test. Strict test ACC improvement. Keep earliest tie.",
+  "preprocessing": "Historical pre-CV RFE and scaling, transductive graph, train/test arrays unchanged.",
+  "workers_max": 10,
+  "threads_per_worker": 1,
+  "initialization_seed_base": 822000,
+  "historical_anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "prompt_zero_based": {
+    "normal_like": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "abnormal_like": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_excluded_from_new_paths_rows_1based": [
+    377,
+    407
+  ],
+  "class_statistics": {
+    "variance_ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "estimation": "Initialize with byte-exact E82.3 fit on legal E61 epoch10 training rows; explicit post-evaluation EMA follows below."
+  },
+  "residual_limit": 0.08,
+  "residual_loss_coefficient": 0.001,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "ema": {
+    "alpha": 0.1,
+    "compute": "CPU float64 legal CAM projection using the original spectrum cache, then observed first and uncentered second moments.",
+    "initialization": "Start with E82.3 mean and stable inference variance exactly. Derive raw second moment from E82.3 unbiased variance times (n-1)/n plus squared mean.",
+    "variance": "Clamp roundoff in second minus mean squared at zero and apply n/(n-1) by class before E82.3 stabilization. Inference uses float32.",
+    "order": "Train, four optimizer steps, evaluate once and select Best with prior EMA, freeze Best if selected, update EMA once using captured legal eval CAM, persist post-update Latest."
+  },
+  "physical_gpu": 0,
+  "signed_gate": {
+    "seed_base": 823300,
+    "input": 162,
+    "hidden": 16,
+    "layer_norm_eps": 1e-05
+  },
+  "beta": {
+    "seed_base": 823400,
+    "input": 4,
+    "hidden": 8,
+    "logit_eps": 1e-05,
+    "max_logit_change": 1.0
+  },
+  "gain": {
+    "lambda_max": 0.001,
+    "rho": 0.5,
+    "grad_epsilon": 1e-12,
+    "difficulty_center": 2.0,
+    "difficulty_temperature": 1.0,
+    "difficulty_min": 0.1,
+    "difficulty_max": 1.0,
+    "softplus_temperature": 1.0
+  },
+  "preflight": {
+    "row_sum_atol": 2e-06,
+    "residual_bound_roundoff": 1e-06,
+    "independent_math_atol": 2e-06,
+    "independent_math_rtol": 2e-06
+  },
+  "decision": {
+    "sensitivity_delta_min_pp": -0.5,
+    "prob_auc_delta_min_pp": -0.1,
+    "performance": "Require all 10 folds audited, ACC higher than DARG, BA at least DARG, specified SEN/Prob-AUC floors and positive patient net correction.",
+    "mechanism": "Require all 10 folds audited, nonzero gate and actual residual, main gradients in all four new parameter groups, T1 loses at least one correct patient and fold-mean ACC, and positive pooled test true-class Margin change.",
+    "mechanism_partial": "When neither group qualifies for GO, require G2 Mechanism GO plus higher paired ACC and positive net patient correction versus G1. If neither group exceeds DARG ACC, NO-GO takes precedence.",
+    "go": "At least one group passes both Performance GO and Mechanism GO."
+  },
+  "historical_read_only": {
+    "DARG": "E74.4-G2-Positive-DCR",
+    "DA-SRPE": "E82.3.2-G2 Medical",
+    "E82.3.1-G1": "E82.3.1-G1",
+    "E82.3.1-G2": "E82.3.1-G2"
+  },
+  "interventions": {
+    "T0": "full",
+    "T1": "residual_off",
+    "T2": "gate_off",
+    "T3": "semantic_off",
+    "T4": "historical anonymous Query"
+  },
+  "parameter_groups": [
+    "prompt",
+    "spectral",
+    "beta",
+    "signed_gate"
+  ]
+}
