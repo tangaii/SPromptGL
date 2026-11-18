@@ -1,0 +1,154 @@
+{
+  "experiment": "Experiment 82.3.4 PS-DSFR — Prompt-guided Discriminative Spectral Feature Residual Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "selection": "Historical val=test. Strict test ACC improvement. Keep earliest tie.",
+  "preprocessing": "Historical pre-CV RFE and scaling, transductive graph, train/test arrays unchanged.",
+  "workers_max": 10,
+  "threads_per_worker": 1,
+  "initialization_seed_base": 822000,
+  "historical_anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_excluded_from_new_paths_rows_1based": [
+    377,
+    407
+  ],
+  "class_statistics": {
+    "variance_ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "estimation": "Initialize with byte-exact E82.3 fit on legal E61 epoch10 training rows; explicit post-evaluation EMA follows below."
+  },
+  "residual_limit": 0.08,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "ema": {
+    "alpha": 0.1,
+    "compute": "CPU float64 legal CAM projection using the original spectrum cache, then observed first and uncentered second moments.",
+    "initialization": "Start with E82.3 mean and stable inference variance exactly. Derive raw second moment from E82.3 unbiased variance times (n-1)/n plus squared mean.",
+    "variance": "Clamp roundoff in second minus mean squared at zero and apply n/(n-1) by class before E82.3 stabilization. Inference uses float32.",
+    "order": "Train, four optimizer steps, evaluate once and select Best with prior EMA, freeze Best if selected, update EMA once using captured legal eval CAM, persist post-update Latest."
+  },
+  "groups": {
+    "G1": "PS-DSFR-Medical",
+    "G2": "PS-DSFR-Anonymous"
+  },
+  "queries": {
+    "G1": "q_medical",
+    "G2": "q_anonymous"
+  },
+  "prompt_rows_0based": {
+    "ASD": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "TD": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "physical_gpu": 0,
+  "signed_gate": {
+    "seed_base": 823500,
+    "input": 178,
+    "hidden": 16,
+    "output": 16,
+    "layer_norm_eps": 1e-05
+  },
+  "parameter_groups": [
+    "prompt",
+    "spectral",
+    "signed_gate"
+  ],
+  "feature_math": {
+    "projection": "Exact E82.2 canonical U. h=z@U transports the residual. hh=(z-mu)@U/sqrt(lambda+eps) supplies the historical Gaussian and token features.",
+    "class_attention": "A_c is union coverage over four class prompts. N_c is their mean null mass. C_c=(1-N_c)*A_c/(sum(A_c)+eps).",
+    "discriminative_evidence": "S=C_ASD-C_TD. E_c=C_c*R*sigmoid(LLR*tanh(16*S)). D=E_ASD-E_TD. The bounded LLR is positive for ASD.",
+    "reliability": "R=0.5+0.5*tanh(16*w_sp) using inherited spectral MLP over [abs(hh),loglambda,nu]. Common multipliers cannot create class difference or amplify C_ASD-C_TD.",
+    "gate_and_residual": "g=tanh(Linear16(GELU(Linear16([LN(z),D,R,N_ASD,N_TD])))); final affine starts at zero. delta=smooth_limit((g*D*h)@U.T,z).",
+    "limit_regularization": "Historical tanh(x)/x with analytic zero limit; exact CAM norm correction below historical eps and a subnormal guard. Float64 norms, float32 feature output.",
+    "semantic_off": "Replace D with zeros and remove both class null inputs from gate. No residual survives."
+  },
+  "loss": {
+    "lambda_sem": 0.01,
+    "lambda_safe": 0.001,
+    "margin_center": 2.0,
+    "margin_temperature": 1.0,
+    "auxiliary_ratio_max": 0.5,
+    "gradient_eps": 1e-12,
+    "semantic": "Class-balanced NLL of the two normalized sums of class evidence, with eps pseudocounts. No separate inference head.",
+    "safety": "Legal-training mean of sigmoid(stopgrad(m_y)-2)*||delta||^2/(||z||^2+eps).",
+    "gradient_protection": "Auxiliary gradients update new parameters only. s=min(1,0.5*min_b ||g_cls,b||/(0.01||g_sem,b||+0.001||g_safe,b||+1e-12)); valid groups have nonzero weighted auxiliary norm. s=0 if none. DARG total gradient remains unrestricted."
+  },
+  "preflight": {
+    "row_sum_atol": 2e-06,
+    "residual_bound_roundoff": 2e-08,
+    "basis_orthogonality_max_abs": 1e-10,
+    "independent_formula_atol": 1e-07,
+    "independent_formula_rtol": 2e-06,
+    "numeric_packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0"
+    }
+  },
+  "decision": {
+    "darg_reference_pct": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917,
+      "asd_f1": 91.459
+    },
+    "prob_auc_min_delta_pp": -0.1,
+    "sen_min_delta_pp": -0.5,
+    "performance": "Audited all ten folds; mean ACC > 92.1891 and BA >= 92.0294; AUC/SEN deltas vs independently aligned B0 respect floors; positive net patient corrections.",
+    "mechanism": "All ten folds demonstrate nonzero main gradient for prompt projections, spectral MLP and gate after a real update, nonzero semantic gradient to prompt, non-identical class evidence and nonzero Best residual; full vs residual-off positive net hard corrections over legal diagnostic patients.",
+    "execute_g2": "Only after the independent G1 audit passes and both G1 gates pass. G2 differs solely by fixed Query buffer.",
+    "independent_medical_evidence": "Requires paired G1 ACC > G2, BA >= G2 and positive patient net corrections versus independently trained G2. Fixed Best Query swap is descriptive.",
+    "low_margin_diagnostic": "Report m_residual_off < 2, and Spearman correlation against continuous m_residual_off; neither is used for training or selecting a checkpoint."
+  }
+}
