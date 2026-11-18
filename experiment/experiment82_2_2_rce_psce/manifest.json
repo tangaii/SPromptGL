@@ -1,0 +1,2425 @@
+{
+  "status": "COMPLETE_AUDITED",
+  "experiment": "Experiment 82.2.2 RCE-PSCE",
+  "actual_path": "/model/spromptgl/experiment/experiment82_2_2_rce_psce",
+  "storage_probe": {
+    "preferred": "/data/adodas/SPromptGL-main/experiment/experiment82_2_2_rce_psce/",
+    "preferred_result": "errno5 EIO on minimal write",
+    "fallback_atomic_fsync_readback": "PASS",
+    "migration_during_training": false
+  },
+  "source_review": {
+    "retrieved_at": "2026-11-17T12:54:43.055802+00:00",
+    "records": [
+      {
+        "repository": "wanxixi11/SPromptGL",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "network.py",
+        "url": "https://raw.githubusercontent.com/wanxixi11/SPromptGL/ba3b9446fa451fde6864d6555bdf324de0c4b64a/network.py",
+        "sha256": "d0ac59ead2fecdf517845e2c389d361ef9924abff29707386f847e1fbaa22166",
+        "reference_sha256": "d0ac59ead2fecdf517845e2c389d361ef9924abff29707386f847e1fbaa22166",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 10641
+      },
+      {
+        "repository": "wanxixi11/SPromptGL",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "model.py",
+        "url": "https://raw.githubusercontent.com/wanxixi11/SPromptGL/ba3b9446fa451fde6864d6555bdf324de0c4b64a/model.py",
+        "sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "reference_sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 14734
+      },
+      {
+        "repository": "wanxixi11/SPromptGL",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "layers.py",
+        "url": "https://raw.githubusercontent.com/wanxixi11/SPromptGL/ba3b9446fa451fde6864d6555bdf324de0c4b64a/layers.py",
+        "sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "reference_sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 9276
+      },
+      {
+        "repository": "wanxixi11/SPromptGL",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "main.py",
+        "url": "https://raw.githubusercontent.com/wanxixi11/SPromptGL/ba3b9446fa451fde6864d6555bdf324de0c4b64a/main.py",
+        "sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "reference_sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 9812
+      },
+      {
+        "repository": "Hanyu1124/ssc",
+        "commit": "f87559c4deb3b624395cb9e9b4f83b68e3fb4beb",
+        "path": "public/models/combine_select.py",
+        "url": "https://raw.githubusercontent.com/Hanyu1124/ssc/f87559c4deb3b624395cb9e9b4f83b68e3fb4beb/public/models/combine_select.py",
+        "sha256": "f9d648141ee7afff4f3ee6976f9289b36f0430417a630fa011f44ddf8bc37ab9",
+        "reference_sha256": "f9d648141ee7afff4f3ee6976f9289b36f0430417a630fa011f44ddf8bc37ab9",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 3898
+      },
+      {
+        "repository": "Hanyu1124/ssc",
+        "commit": "f87559c4deb3b624395cb9e9b4f83b68e3fb4beb",
+        "path": "public/models/model_FOCUS.py",
+        "url": "https://raw.githubusercontent.com/Hanyu1124/ssc/f87559c4deb3b624395cb9e9b4f83b68e3fb4beb/public/models/model_FOCUS.py",
+        "sha256": "7536b5f5e47c1b65e0e6a54bf8a0d4c0d425b8528f5f8c2d577b56df5b67448f",
+        "reference_sha256": "7536b5f5e47c1b65e0e6a54bf8a0d4c0d425b8528f5f8c2d577b56df5b67448f",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 26334
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/psce.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/psce.py",
+        "sha256": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+        "reference_sha256": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 11537
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/run.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/run.py",
+        "sha256": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+        "reference_sha256": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 34178
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/audit.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/audit.py",
+        "sha256": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+        "reference_sha256": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 53531
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/config.json",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/config.json",
+        "sha256": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+        "reference_sha256": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 2008
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/results/report.md",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/results/report.md",
+        "sha256": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+        "reference_sha256": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+        "exact_local_or_pinned_match": true,
+        "local_path": null,
+        "bytes": 12597
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/psce.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/psce.py",
+        "sha256": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+        "reference_sha256": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/psce.py",
+        "bytes": 11537
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/run.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/run.py",
+        "sha256": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+        "reference_sha256": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/run.py",
+        "bytes": 34178
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/audit.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/audit.py",
+        "sha256": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+        "reference_sha256": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/audit.py",
+        "bytes": 53531
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/config.json",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/config.json",
+        "sha256": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+        "reference_sha256": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/config.json",
+        "bytes": 2008
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302",
+        "path": "experiment/experiment82_2_psce/results/report.md",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/9f104bda39cc9c4deaf90aa25cb09fd2c4a8d302/experiment/experiment82_2_psce/results/report.md",
+        "sha256": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+        "reference_sha256": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/results/report.md",
+        "bytes": 12597
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "47a15e30b06cc5bf48924a7b3f814c3c43341d93",
+        "path": "experiment/experiment82_2_1_bscp/bscp.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/47a15e30b06cc5bf48924a7b3f814c3c43341d93/experiment/experiment82_2_1_bscp/bscp.py",
+        "sha256": "5a14823343526e1c5c9dcbba621fdd499d3f65a58dcb6087ff32fbbe0c0e03b4",
+        "reference_sha256": "5a14823343526e1c5c9dcbba621fdd499d3f65a58dcb6087ff32fbbe0c0e03b4",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_1_bscp/bscp.py",
+        "bytes": 6069
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "47a15e30b06cc5bf48924a7b3f814c3c43341d93",
+        "path": "experiment/experiment82_2_1_bscp/run.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/47a15e30b06cc5bf48924a7b3f814c3c43341d93/experiment/experiment82_2_1_bscp/run.py",
+        "sha256": "a3aab88af287a8cd35b196cfed439b8ab78ce16695c19e4203f67dd3d0cc762a",
+        "reference_sha256": "a3aab88af287a8cd35b196cfed439b8ab78ce16695c19e4203f67dd3d0cc762a",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_1_bscp/run.py",
+        "bytes": 33717
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "47a15e30b06cc5bf48924a7b3f814c3c43341d93",
+        "path": "experiment/experiment82_2_1_bscp/audit.py",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/47a15e30b06cc5bf48924a7b3f814c3c43341d93/experiment/experiment82_2_1_bscp/audit.py",
+        "sha256": "5bab5fb8bfedf69107be5f8a9666e917c2fc4c912e50e337a5eeda82eea743e0",
+        "reference_sha256": "5bab5fb8bfedf69107be5f8a9666e917c2fc4c912e50e337a5eeda82eea743e0",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_1_bscp/audit.py",
+        "bytes": 47450
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "47a15e30b06cc5bf48924a7b3f814c3c43341d93",
+        "path": "experiment/experiment82_2_1_bscp/config.json",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/47a15e30b06cc5bf48924a7b3f814c3c43341d93/experiment/experiment82_2_1_bscp/config.json",
+        "sha256": "f67b1f0d33e8e79b5958d9545f2fa134bc3876fc11e774158316bf99f5957525",
+        "reference_sha256": "f67b1f0d33e8e79b5958d9545f2fa134bc3876fc11e774158316bf99f5957525",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_1_bscp/config.json",
+        "bytes": 2832
+      },
+      {
+        "repository": "tangaii/SPromptGL",
+        "commit": "47a15e30b06cc5bf48924a7b3f814c3c43341d93",
+        "path": "experiment/experiment82_2_1_bscp/results/report.md",
+        "url": "https://raw.githubusercontent.com/tangaii/SPromptGL/47a15e30b06cc5bf48924a7b3f814c3c43341d93/experiment/experiment82_2_1_bscp/results/report.md",
+        "sha256": "8b790be41bd9f01a54cc5c05ec3eeb2057d6009462d45967c9172d6d40dacf84",
+        "reference_sha256": "8b790be41bd9f01a54cc5c05ec3eeb2057d6009462d45967c9172d6d40dacf84",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_1_bscp/results/report.md",
+        "bytes": 18186
+      },
+      {
+        "repository": "paper",
+        "commit": null,
+        "path": "spromptgl.pdf",
+        "url": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+        "sha256": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+        "reference_sha256": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/spromptgl.pdf",
+        "bytes": 1286219
+      },
+      {
+        "repository": "paper",
+        "commit": null,
+        "path": "ssc.pdf",
+        "url": "https://papers.miccai.org/miccai-2026/paper/4444_paper.pdf",
+        "sha256": "b9a7bb0baafafa53a845340a470a09906cdbda3899de50038068b3316c7c91a3",
+        "reference_sha256": "b9a7bb0baafafa53a845340a470a09906cdbda3899de50038068b3316c7c91a3",
+        "exact_local_or_pinned_match": true,
+        "local_path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/ssc.pdf",
+        "bytes": 636653
+      }
+    ],
+    "prior_metadata_source": "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/source_review.json",
+    "notes": [
+      "All pinned remote bytes fetched anew; current default branch not claimed.",
+      "No remote trained models used for initialization."
+    ],
+    "local_findings": {
+      "paper_spromptgl": {
+        "pages": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "GFR": "cosine patient relations per modality; graph regularization plus label-supervised graph; multilayer relation GCN; fused raw multimodal nodes",
+        "CAM": "subject-wise attention across modality tokens",
+        "PEN": "global/local projections; SPGS maximizes over concept similarities per local token; RES softmax local-global relation residual",
+        "ABIDE": "871; 403 ASD and 468 controls; paper tenfold ACC/AUC/SEN/SPE; reported hyperparameters differ from historical DARG and are not substituted"
+      },
+      "paper_ssc": {
+        "pages": [
+          3,
+          4,
+          5
+        ],
+        "selection": "distributed K prompt top-r patch budgets; knowledge-token whitened PCA spectral projection; entropy fusion",
+        "boundary": "text-derived WSI patch scoring and pretrained vision-language alignment do not validate CAM144 latent directions"
+      },
+      "actual_inheritance_chain": [
+        "E74.4-G2 Positive-DCR",
+        "E74.1 runtime",
+        "E69.3 fixed Fold2 two rows",
+        "E61 E2 epoch10 complete warmup",
+        "vendor experiment51_dugsa PLNNoPEN"
+      ],
+      "DARG": {
+        "path": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py",
+        "original_support": "four GraphLearn once; non-CORR historical candidate support intersected with positive offdiagonal; CORR all positive edges",
+        "delta": "old_edge * 0.8 * gate * (2q-1); non-CORR q within (0.45,0.55) neutral",
+        "propagation": "normalize(unified_adjacency+I) once; four GCN calls on full320 features",
+        "positive_DCR": "clamp_min(deltaA,0); (deltaA@X - row_sum(deltaA)*X)/base_degree.clamp_min(1); bound blocks48/6/10/256; localize modality coordinates; 0.02*gate; sigmoid fusion",
+        "actual_loss": "historical out[total] directly: cls+graph+0.05pair+0.01adv+0.01preserve"
+      },
+      "PLNNoPEN": {
+        "path": "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/dugsa.py",
+        "path_execution": "InputLayer -> Encoder/FeedForward -> flatten144 -> OutputLayer",
+        "head": "LayerNorm144 -> Linear144,36 -> GELU -> historical Dropout -> Linear36,2 -> log_softmax"
+      },
+      "E822": "Original O + 6081-parameter PSCE, 16 spectral tokens, eight fixed RN50 queries, null/coverage, detached beta. Single8% positive ablation supervision uses normal CAM w_sem, hence potential auxiliary backbone gradient.",
+      "E8221": "Three-action Policy and hard-error supervision failed; correction-off yielded zero hard flips. This experiment has no Policy and preserves the prior NO-GO."
+    }
+  },
+  "config": {
+    "experiment": "Experiment 82.2.2 RCE-PSCE — Reliability-aware Counterfactual Evidence for Prompt-guided Spectral Learning",
+    "base_group": "E74.4-G2-Positive-DCR",
+    "seed": 0,
+    "folds": 10,
+    "subjects": 871,
+    "expected_tasks": 20,
+    "groups": {
+      "G1": "RCE-Anonymous",
+      "G2": "RCE-Medical"
+    },
+    "max_epochs": 450,
+    "start_epoch": 10,
+    "early_stop_wait_gt": 200,
+    "workers_max": 10,
+    "initialization_seed_base": 822000,
+    "anonymous_seed": 821991,
+    "spectral_dimensions": 16,
+    "token_dimension": 32,
+    "temperature": 0.5,
+    "epsilon": 1e-08,
+    "covariance": "unbiased n-1; pooled weighted by n_c",
+    "residual_limit": 0.08,
+    "residual_loss_coefficient": 0.001,
+    "historical_optimizers": {
+      "opt_base": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "opt_cam": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "opt_added": [
+        "AdamW",
+        0.001,
+        0.01
+      ]
+    },
+    "selection": "strict ACC improvement on test; retain earliest tie",
+    "preprocessing": "historical pre-CV scaling/RFE; transductive graph; val=test preserved",
+    "fold2_original_train_unchanged": true,
+    "fold2_pssec_zero_1based": [
+      377,
+      407
+    ],
+    "eigen_tie_rule": "gaps <= 1e-12 max absolute eigenvalue: coordinate-projector canonicalization; stable signed tie order; sign largest absolute coordinate positive",
+    "degenerate_rule": "trace <= epsilon: zero term; overall norm <= epsilon: complement total covariance fallback",
+    "normalization": "within-fold 16-component population variance plus epsilon",
+    "save_latest_every_epochs": 10,
+    "cf_loss_coefficient": 0.01,
+    "positive_tolerance": 1e-06,
+    "psce_optimizer": {
+      "class": "AdamW",
+      "lr": 0.0005,
+      "weight_decay": 0.01
+    },
+    "teacher": "Per-epoch current original OutputLayer deepcopy, detached eval, legal training raw CAM only, no RNG",
+    "harm_loss_coefficient": 0.01,
+    "teacher_input_order": "original, 16 z-0.5*d8, 16 z-d8; patient-major",
+    "reliability_formula": "positive D8,D4; 2*min(D8,2*D4)/(D8+2*D4+EPS); otherwise zero",
+    "valid_rule": "legal & teacher correct & true margin>0 & max(relu(D8)*rho)>1e-6",
+    "harm_valid_rule": "same valid reliable patients as CF; equal mean over present ASD/TD classes",
+    "scale_rule": "warmup correct legal patients abs(D8)>1e-6; float64 midpoint median; max(median,1e-3); immutable",
+    "auxiliary_gradient": "extra deterministic PSCE(z.detach()); auxiliary CF and harm update only PSCE",
+    "semantic_off": "original E82.2 w=w_sp; residual-off=noop uniform w",
+    "scientific_rules": {
+      "GO_all": [
+        "G2 ACC>B0 and fold ACC wins>losses",
+        "G2 BA>=B0",
+        "G2 Prob-AUC delta>=-0.1pp",
+        "G2 SEN delta>=-0.5pp vs B0",
+        "G2 ACC>E82.2",
+        "G2 ACC>G1 and wins>losses",
+        "q substitution mean abs probability>=0.001 and net correction<0",
+        "residual-off net correction<0",
+        "reliable target alignment at Best exceeds initial on same Best CAM; no zero residual collapse"
+      ],
+      "PARTIAL": "only when G2 exceeds B0 and residual has diagnostic benefit, with some GO conditions lacking; cannot claim medical innovation",
+      "NO_GO": "otherwise; stop E82 spectral-semantic route, no E82.2.3 or search"
+    },
+    "initialization_validation": "rebuild pinned original E82.2 PSCE in isolated RNG, exact named-parameter and saved SHA check; no independent initial file claimed",
+    "no_midtraining_changes": true,
+    "zero_residual_collapse_rule": "mean test residual norm ratio to historical E82.2-G2 <=0.1, or mean relative norm<=1e-5"
+  },
+  "source_maps": {
+    "protected": {
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+      "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+      "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+      "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+      "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+      "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+      "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa",
+      "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/manifest.json": "a0aa87234252b70d8ae2eeb143eb05bbd84c4731203b7763ab5e59e8d1db920a",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/run.py": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/model_e61.py": "28266568bcebcfdbab961dbedb7257c15ff4e862cd02ae744feacad54b7bc81b",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/config.json": "7a1a2e7d37918baf615c704a47d09e3a3eb8a9de5bfc752d852b15a8ada6569b",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/run.py": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/config.json": "4556c96bb92a9bdbdb048b6f702d853abe6030dd2ae9e2bdad9b5f0ba509c8e0",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/manifest.json": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/fold_metrics.csv": "646033fae333036e503930f6c0ced326113735f55d83ecd0a70d4917cff3318a",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/summary.csv": "c7ce729077618c21b14fc31f0fb7f448ac473acb79de5e91966e58ffcd731145",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/run.py": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/config.json": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/manifest.json": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/fold_metrics.csv": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/summary.csv": "9e8b23aaf6d79c0db33b39c02e1038d360834e540b653406a5a741749e1437cb",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/run.py": "938998419d8dec2d9ea3abc7e789e7d890f6aaa25c54d36c8ff8c02e97b45cf0",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/udag.py": "91b749aa99e86cb55018102bf5def1664b678adb94e3f4cdf94dbe9f5baf16bb",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/config.json": "1d2a3fd8cead1f8637ae4122b678e1c14fa3232aeaefeb87983ebcc4044f382d",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/manifest.json": "fe65396bf4c610a0f8338cb4e72fd71d2d3daac977a69d7d5a1c6c47475cf25f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/fold_metrics.csv": "fad616e122d65afcae939b4c8095e28f0dda43cba084f13ddb64a9be70161952",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/summary.csv": "d561d4b9a443465b228ac79c583a9316946236730ab94666d13d53b823ed5e59",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/run.py": "a487c87d52a0faeded5ff6406ff9908290fc2fdfd9d5b66e6378a5b2aad6ab5c",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/rudag.py": "7fb5920b21f43a117a47137fcce58b5411b91c13dfaaf7df85fc502124723a8e",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/audit.py": "dc7e6e5850d94faa41a8572c43016bb4c54aaee418528d994dc39454bcd08f43",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/config.json": "e353b0070e864c988d2b90334b96ac4f292d126052d7b6339fd78c82e37d7612",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/manifest.json": "adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/fold_metrics.csv": "a14103bc91fe393f0cfab60cd5e45f0c68a071e77c6f543028c49f8a5d12d7cd",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/summary.csv": "268f6fa2a4955c23d9293efcc63bdfd8b1ec55e700c7cd4dfd5b95f1836dec39",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/mechanism.csv": "d491fef8b30dbbe7a849811c2eb66e4806c73fa65854c2b1d932c09196adbeec",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/interventions.csv": "38ebf16e134a7feb8489fbd401ef747f465802153745fd829e207d7694d56481",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/run.py": "3b15a7827333061be4b52e357743062cd180e764b4cba3c4736d8d72ff38ebc6",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/dcr_rudag.py": "7f46bc51ef880cbab8d6fe270be4b101cc9a17d31b89117c32083212afdd644d",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/audit.py": "6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/config.json": "0c49e2a015b5bab5e067fadeb6eca012f807b2bbe9f09040a7591a1e52559a6c",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/manifest.json": "cd90873cb4a813a654104b66f7d03fff8564d7a6672a2b7a53e745bf08e5c3e4",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/report.md": "043c1111c664d609edcc895a6ca2c740301962687275196189f1d62fea80579d",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/fold_metrics.csv": "554856f10397c3acccbdaa626324db466410a7249a8f659634a398dd0d968e87",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/summary.csv": "72fd498283a77c781041431f96a2820c216b3c55f3df15bb50dd11d3c9e12cee",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/mechanism.csv": "309c7e7619b6023afe6a5c22ecf0906dccb3a3fd4ede80d05309fc0457019696",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/interventions.csv": "4d6ed5479ac270910b44c5e7ac7ad612c97b07840ea697c1b7cea15784ac1627",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/prior_training_failures.json": "58fd14d55b663ea6dbe15c02e89c96704b12d22309258d545249fc6d8356ef5a",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/local_dcr.py": "9d288f2a927317a066803b3fe4201af3f933a7e9ddae023126f75d53399e858f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/run.py": "727aa2aed0573b120030d43b6fc5b525b1cbe6488c0afd204fb733679c4a504f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/audit.py": "7f0a3dddd6e9fdd8464e51611a191bebec5f888cb86eddddd8900dd73cf950e4",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/config.json": "3b8a6b598bd35d826d1761989057b5f0927295103525cde1a815ea00c55905a8",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/manifest.json": "7eb54a314e25c81a028cb95538c0ba6c281213b3a43e73df08445e942b9224d5",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/report.md": "bdddc491b8a66046e1684c481cad92c083ccd460bfe37628bb1ee8e9cdd01c00",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/fold_metrics.csv": "29a1aac305066664e4631a95a90387132952d4c456d4aac9cdb55ad13d6318a9",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/summary.csv": "0f8df0072c05551bc1e71ec5b92500675a70fed5142a2f8b569b2435033f6f95",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/mechanism.csv": "2c7f40fc215de874bec1908e3f832aa35216107828b62478965b57a680d349dd",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/interventions.csv": "b9202a6acd9df417c846fe5b41931cf04d9b16a23e8742707edfc02fce3fcc60",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/paired_comparisons.csv": "7ac4b63a0d463d0900e635cfc00db207a6038cee49adfea3097251b961087429",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f01.json": "8b10359dbfaf277f2929fba568f53d52fe9c14340563ad5cbd5989d884951d3b",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f02.json": "3ca0d1f5cd677081e51eb1e78ce902deb47156669f639a31c8e48e3b0853090f",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f03.json": "ca53a12a3bc9f8396e6cec28df01f6dff10c51af7b6d5cdb58b539ae0af8d70b",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f04.json": "54c5ceaaa7a59ab41aee75193907fcdad128896c1f31f156bf9c1d59243be476",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f05.json": "37f083da285ced66ac25a153622512f686e08e6fbb495e7a377b4e0129afd749",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f06.json": "0e4bf68079f9d79b1e702129108be4ae8c742c26c97d211cc19930bc179b4c8b",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f07.json": "9f150d5054cec3cedbcaf52e27fb1944e481da6cc8acaa45a8f19b0f56c64ab5",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f08.json": "970320d41a006e998185ffdfa02851900a30556afed2e797f80199df22b9307a",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f09.json": "4ce95ead745086cabb068b303c1ff92ef91526321027e5f57684e308e78b4ae0",
+      "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f10.json": "8e3b174b60befbe4de86ef9af8c92bc63102c2fe076aa506d2509b0f31d406b1",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f01.json": "f87992605e4967979a8d3adb6263d68605533a98497dd22b2738bbeeaf510b8a",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f02.json": "43d868a9f17f61307ee3c4fb162f6a6a6714a828b6756b9f614cf1394ad84662",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f03.json": "7c70ebdc47317bc0df68a26cc4145edbdf0279037581b3e3c3817ce815f9cb7a",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f04.json": "4adf0f82120b9214bd249668d8e71420782e4a79f539750f1e9836b497bab98d",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f05.json": "71514dc254c08aae265885715969a6de56b750b1e796604aff10bd75062d9c6b",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f06.json": "6dffb0316e78ffe9d44bd83136481eb9a48af8137a41d196aa310f635cb7aea6",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f07.json": "eb73491dadff1496c061b0452598dbb5032d792b3d097c5e2fd0dc8ea4b822a8",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f08.json": "6b5d1cfd7fb24dff63b06985af8b86522c67f2fb78d99d04f5dee79115699428",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f09.json": "5c6fca63303ed12af66ae55a19b6f12e1994d75e1d72d0fa665ee8af11cd628c",
+      "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f10.json": "c6182a19f0a29b5ed0cab83ce69bd3f563a390e00a4bb592105f98119d4067ba",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f01.json": "dde4b87d5cfdb93f6ca0dcbc0c0489a0340d9713fe79edaae9cde903adcbf7b5",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f02.json": "508d4689509795a5605c65cbae5411b4361ea0505ad34d1b7960025a82029ed1",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f03.json": "c3c1e64f6d1792c436cc8bbbe5ba6cd9d57b26660bd42908e161ea776da93053",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f04.json": "b6656c8691beb297fa5a19faff7b87e152a9c134e3bb6fea12955a2baec67bf9",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f05.json": "c7ed4ad0e89226d209849c4828bfabeed84a4625f9e7f69bbbef62e7f0b78bf8",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f06.json": "2093c10cdd27632ab900ef2510e423209357fd8598c02c4d973b798bb2ae707c",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f07.json": "820a12fccaacb7b42b7366bbc3b983a1e86ddb539417ebc35ac9b8e463f0721d",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f08.json": "807407ebad8c2ea0366efd4952a27d1d9af24151afebf922919a7fd4a05962da",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f09.json": "1a5a9ed21b7e2d60cc126c8854262cab1af5e3d43c9349b75a078fe8f472bdc6",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f10.json": "9f841df091f932f5c6c3af0b0878a650cce61a3fa9cc76a66c532dc62711eb33",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f01.json": "eb7c9a194d0265b1636c28e6c863942ed961a7485da729cc0c8b1044eb69cd46",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f02.json": "f9af5b6bf96583de40826a64e624eae6a580182a208c8ed9733df48eca4f2df4",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f03.json": "15c54f4eb1615e30cbb87fc94040357b2b35b350e45e6ebbe777d30ca96044ba",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f04.json": "eda41f7ff85a7f5652bf618975d778801673fdfbfea3619df9b8966925a0c675",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f05.json": "eb2d1e17ae87dcb2eb727350193e9348be668467431823590b33b50c8069a4b1",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f06.json": "9289953588cd5ab340513316a45636ac459f1e972b31e9a77921f6d72f69ad27",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f07.json": "cf12e73c943b1efca0171765d0dea49cd7c12bd3836369dbae11aeaf8454fd45",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f08.json": "71c6699d52bd75e2022257351640c30a7f8183582c5f40421cde191b633e4a1e",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f09.json": "ce479cbc5dbc201fab3e30bc2f0177096854c254047d45665493bc97a40d5da1",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f10.json": "1d118ba928711aa48932216b15b5eedd251152cb96f1d19b07a557e1561585b7",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f01.json": "91186e71143d26780c35f759b958006849bb1277113a943b562c1940581cf847",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f02.json": "b6ca441a2410d834a3dddd803f0451b7b54cf9ebfbccc4710ecbef29485c701b",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f03.json": "66dc8526b2ba4b906fec9277c453f3628404df23e83f6e3294ef27dceeff1a02",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f04.json": "4598c896e0571a35f83e5a33ad7b09d2f46d8d67375ae3a6e45b3cd0a52a12ba",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f05.json": "696ca089dcafc4b9ed980bfafce58bbbc5473fbfdd4f44f19a514771bde4392f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f06.json": "2434f409dd8f620d3483e1029af58bb02314ae7e24c4d009f34c17a55d9acf19",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f07.json": "6e5c249185de62404dd6b0ea0df268a3099a05ce734a8c7a3e11fbd63e8c1695",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f08.json": "7dfaaa31981b6067fba1abfa7b5bf4c6e44637ca4ddc34123e7f41d86443b5eb",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f09.json": "6663ee00d8cd58013d6af73792401299c9c9c06207eddd9743375af6ba4c7a83",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f10.json": "71d0f5735672085b666fbd68276d4e36634a8d18132af33bfa25977d32e46be1",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f01.json": "ed3757f0e30b03e214ed0586d28d3684eaf2e677f86c9b862b36bc06899b3157",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f02.json": "0f44f6d9b81454b81af6a4f338d3c81d18ba4544ed958b17ff01ed426c7c0fe5",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f03.json": "e59c314e1186464714f45576cf5e402428b1d7cf599f007eaf0feec8b3d3d01e",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f04.json": "b4c10b7ac492c50ef81006b1f0bb3b0093e87a40ea6852cd1c72bfd50294fd05",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f05.json": "342f67a0dabd1b411178bceab43b131faa554475b9cd9623241e56d6f89ec23f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f06.json": "3d36c15d3554ce755dbbdf9f3604c15f568ad42ef6ef9fcedcb86a1ec548e7c6",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f07.json": "613ead06d0292f7576db2a57e5385150e2221624b45a95569dccc35628f6ad20",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f08.json": "bb68f20fc5e0dceb692054a9e6ab6700311ea9229e9ab02ddbc43cb0528e634a",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f09.json": "39240d083449129606317e0b317bcbc997edb3dff3e0584141c9d69d4b5256d4",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f10.json": "1947359b436be25b18dfb407ed39affd0947e4a96eab1578a4cc4fc27672454f",
+      "/data/adodas/SPromptGL-main/experiment/experiment81_3_e2e_pairwise_relational_learning/path_adapter.py": "f0519ee25271fa172bd30a9268cfef56707fd7a330e6291a8901292d0cfd2e19",
+      "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/.runtime/text_embeddings.pt": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+      "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+      "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+      "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "/data/adodas/SPromptGL-main/data/ABIDE/README.md": "9fbcfd5f971d03f0f08455f4618a4db7236b6ac84293253fa53a20287563c002",
+      "/data/adodas/SPromptGL-main/data/ABIDE/data_processing.ipynb": "348147e93555f765b4e78151b11221556a151b091f931d05b814dbcb70100c0f",
+      "/data/adodas/SPromptGL-main/data/ABIDE/phenotyic_processing.ipynb": "15a46187b6f994ab3cde623fc0b5b2aa509efb41b21459e55fafe828240fdc7c",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/audit.py": "b71b03c6752a0ca2131d5f969fc804084e8d3e0157c1129fa0fb3ac5817a21e2",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/pssec.py": "cda88032c6ff77f594bde75361f9fb2cbe399a4009e705ba8f40d17ae25944f9",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/run.py": "601ae89d194fc05e7c2717e71ba71a2996222a0ce3b9e0a3cda36e958a8f6523",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/config.json": "c3285895f859b5eefad39c3c2734a62fa8f4b7effc04d4e84ae9403de0b91b24",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/manifest.json": "1c4bec451f73716a7b7b8e9726b7113421dce4a32ca3437ebd7c4642349d5e3a",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/results/report.md": "91868c67f93d76485c45c19e3165179f291feea9b8cd86020343efb0986fd2fc",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/results/audit_status.json": "94a49e2f66af00364e6859b77ff54df70d8f3f830da8546dbbb9ac3eeb25b41d",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/results/fold_metrics.csv": "a4bfacfb445734a01b50cdce020acf3b5a9ad61d1376102fda3e58af90eca034",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f01.pt": "ed1ceea3c21403af3b2fcb01617c960f076b0659d67ef246445306610d4e351b",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f02.pt": "c1d0253e1fc372d5e8e57923e74aed3274039d28be650accce6bdcf29507072d",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f03.pt": "b10f07954e30a0f496d1b0b6e6164ac902cb6b33864b4c6eb71c570d5987dbca",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f04.pt": "c98ccfbfec0737d8e67fb1c60448a3a8642a1619c974645558db3fb38adf9645",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f05.pt": "8186d57eb49ca780615d1653f0760f03da4759b65e6dc71b5eacd7ef1ec93e27",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f06.pt": "9196ed84184bb94c5acfe402ee4c1e99b89dcee9940e908af4818c3e95e4e59e",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f07.pt": "0bd35367dcf21572c94783eea4c48666dc75ab85493c473f95954df9a39a640e",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f08.pt": "915e8c43b56eca56b5df378b3baee9f8fbc354b42612ea07382ac0d642f7d149",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f09.pt": "900706472acfc4a32433f112edd767a1dca555a61a4653d67ed72ba67ab734f9",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/spectrum_f10.pt": "94cd83b200418d6c4039c81ec6607632b35aa4999317cdd39701e8738a209685",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/prompts.pt": "3e04e9bd72d9c7e3a2fc53924640d3b2c8ddc4190e8a12a35b639eabb8e875be",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f01.best.pt": "93614a202fdb9336ccc47c3ffca4a44d6d6a6b0e671b8d44ee289a578a61131e",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f02.best.pt": "fa582f75ce8777981395e90b19cf259d6d95dc256807ca35c604d7c07ceb56ce",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f03.best.pt": "710ee9ce450e565e54b125c3d4832274007b178c5a32b8d3d0a94e625d28760e",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f04.best.pt": "2a843f33a8df0ca19a08cd4cea68e6e790a06f8ceefe4b4647ed0f5628ea9ca1",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f05.best.pt": "23f34b30f60921ed43f91427161d9613c78e801b1c8708e8e17d89f8343f4bb3",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f06.best.pt": "f171111674be97121e4fda5d10b32b5724b00e2a1f0ccdbbfd3e200fad244043",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f07.best.pt": "0a08e4682ad6c0608282a0765a45c97be7bd798538c761836b1c5241583af043",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f08.best.pt": "221a11af0884800a805f3c656f766253937e067acca94b6d82b64625eb99d840",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f09.best.pt": "0eec68e22553ac72c340e3d3be455a3b2b69be10c56f17bfdae69b781f9d893e",
+      "/data/adodas/SPromptGL-main/experiment/experiment82_pssec/runtime/checkpoints/G2_f10.best.pt": "46a4b718b2e9519528c423e9dad11808f2278aac28afc16a9f1a1ec75212a328",
+      "/model/spromptgl/experiment/experiment82_2_psce/run.py": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+      "/model/spromptgl/experiment/experiment82_2_psce/psce.py": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+      "/model/spromptgl/experiment/experiment82_2_psce/audit.py": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+      "/model/spromptgl/experiment/experiment82_2_psce/config.json": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+      "/model/spromptgl/experiment/experiment82_2_psce/manifest.json": "87547b2b12200dd5f95826023b33f0e252ef5c514da38a660c849b4a1b519989",
+      "/model/spromptgl/experiment/experiment82_2_psce/results/report.md": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+      "/model/spromptgl/experiment/experiment82_2_psce/results/audit_status.json": "1f04fc1ff3c18117e7259b3619e44f56cf81304f28a4e039dc228eec54f2afcc",
+      "/model/spromptgl/experiment/experiment82_2_psce/results/fold_metrics.csv": "88df60f136734c8fd1fbd1de75ef35142fb7fd6db5a552ddf1b3b9290f507180",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f01.pt": "3d20124173675c0fa09508e1838bd5f7ffd7b541e1fe64d9e3bce9a76bf156fc",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f10.pt": "2d6c74005f063de30e1ee9a7145ae2f9b13d1d64fcea159bdd516471e26acd6a",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f02.pt": "dc609dd90a71a73949af947f4f5de381562ee248da45f7824243ee37b808f85f",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f03.pt": "484d642c8e9677870bf8d4791ef1202986395d499f9d01e3d787f2ac55ec635e",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f05.pt": "fe35cc22a9add76297ce3e3cd49679a3bbfc4668e89bfa560e908d9f3b8cb527",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f06.pt": "0b08dd9c46adf86b8354bacfb770094d740ad9d3038899d1996c6b19b6c472e5",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f09.pt": "1bc0515e05195db76df531ff376ddc829915487d0923c6e222fae2227a1de59c",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f07.pt": "a36144901083e10ad7632c138cbc6b260b7b1e72c67f79bb23bbac8a4a6ae2b8",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f08.pt": "3a63b0f41ca7a75be50e05d9ae9853dea1ac415717cbd38e29ca6e86ff6598fb",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f04.pt": "3c101572f942cd12a1f289e8e28be0ef46a04ee3df78c58a3577d8aef27956a6",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/prompts.pt": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f06.best.pt": "8030a29fcb4a3cb710d498f0595580ddb705ac0d036efe2e77a0fe4a558fa3e4",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f02.best.pt": "1b866c965e58020494c5607a10c0e11e1ab2468177e96621f93f6f84f1192ce8",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f09.best.pt": "56334870c816e47645a488ee763822beebdc4debb679ff213315ea23280bdadb",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f10.best.pt": "3ae3f0df0afc127a9d30c1a218c269f408deeb41b61405d25411b797983ff4d5",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f04.best.pt": "60c7885fa5626062ae1536e54adc858d572c02793d6f135f26a8f68e51f5434d",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f01.best.pt": "b12d3726f24c4ff87d84e60a76a458615df8ba86cf1c35d893c86764d9440d13",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f05.best.pt": "0475fe1a41e0d31d56d0f3d96fe85c862b4dce3497a701c8d5a57d3467bb045c",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f08.best.pt": "6ed3862d768ea4d84363754896a2776eda3809d3dbfb1915e0c61930a7d9fbc3",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f07.best.pt": "293f0c468c6fc3d1d32da1412f07d6fd642bf11a38e1e729083f880050fd5847",
+      "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f03.best.pt": "f6345df617fa13beefb7fcd652dc3dba1ea8ab8742990a0710ec3cbb781189fb",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/run.py": "a3aab88af287a8cd35b196cfed439b8ab78ce16695c19e4203f67dd3d0cc762a",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/bscp.py": "5a14823343526e1c5c9dcbba621fdd499d3f65a58dcb6087ff32fbbe0c0e03b4",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/audit.py": "5bab5fb8bfedf69107be5f8a9666e917c2fc4c912e50e337a5eeda82eea743e0",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/config.json": "f67b1f0d33e8e79b5958d9545f2fa134bc3876fc11e774158316bf99f5957525",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/manifest.json": "1603df12a58af9c7a72b1038ef9a5d11891dbfb3172a88f6064021bc30347b5e",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/results/report.md": "8b790be41bd9f01a54cc5c05ec3eeb2057d6009462d45967c9172d6d40dacf84",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/results/audit_status.json": "b7b4864379620fe88e8fc2e2adfdfcccef935cebbc140941af903f63b6eb1c50",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/results/fold_metrics.csv": "7bb75c0a88a782ad48bce2d6867e1aeaf11f281fb97b09fea9ae2907690ceb77",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f01.pt": "3d20124173675c0fa09508e1838bd5f7ffd7b541e1fe64d9e3bce9a76bf156fc",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f10.pt": "2d6c74005f063de30e1ee9a7145ae2f9b13d1d64fcea159bdd516471e26acd6a",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f02.pt": "dc609dd90a71a73949af947f4f5de381562ee248da45f7824243ee37b808f85f",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f03.pt": "484d642c8e9677870bf8d4791ef1202986395d499f9d01e3d787f2ac55ec635e",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f05.pt": "fe35cc22a9add76297ce3e3cd49679a3bbfc4668e89bfa560e908d9f3b8cb527",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f06.pt": "0b08dd9c46adf86b8354bacfb770094d740ad9d3038899d1996c6b19b6c472e5",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f09.pt": "1bc0515e05195db76df531ff376ddc829915487d0923c6e222fae2227a1de59c",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f07.pt": "a36144901083e10ad7632c138cbc6b260b7b1e72c67f79bb23bbac8a4a6ae2b8",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f08.pt": "3a63b0f41ca7a75be50e05d9ae9853dea1ac415717cbd38e29ca6e86ff6598fb",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/spectrum_f04.pt": "3c101572f942cd12a1f289e8e28be0ef46a04ee3df78c58a3577d8aef27956a6",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/prompts.pt": "3f3794962f5c264dda57c4b726752b70d20c1fb7b36416315a74b64fcdba9dea",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f06.best.pt": "da3f9a07de5756317b0cb456629ac55e92c2c9b6f814950678d332cf7fed71e0",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f02.best.pt": "0628d0991163b3edaa370f10c88ff673ac842be868d75594c5f5dc3cb5b1109e",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f09.best.pt": "a1feb64566ef041bf8dbe8d9ebfb728a686b3ed90172aa7f7d42ed581cb339b8",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f10.best.pt": "ad930504a58ae089749dab446d3960f601c2d6cfb6b8895f70e753d1727cb6e3",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f04.best.pt": "22422d3ddaf051fe412a57d26e44d22fc03a0ee9ab521669585d758a1111ef63",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f01.best.pt": "89291324362995ab2918e63d823527e91334fe4fe8e7f047cc339c5069f5c0bf",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f05.best.pt": "cba0383b0ec4b60bef25371b205fc038e56f407c5a6cc8289c7f595285cf616a",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f08.best.pt": "e89437029779db8a5fdc2163a83313ca85a4f2bd284ee7de04f060b4a33efbd7",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f07.best.pt": "960666e108752f50a4b3b5c48e0336892200290a3bd9ed124145ffdf5744f724",
+      "/model/spromptgl/experiment/experiment82_2_1_bscp/runtime/checkpoints/G2_f03.best.pt": "dd53717534a7686fd287852f9ed628236f2614d1cdcc47d56100d56b96dbf52f",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/run.py": "506bfa430c74cd0ac3c7d84173c5d3dce31dfaecbb04692c15dea82b37948336",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/pcde_ps.py": "d0573e34d884bdf604afd598986b3f5067ab463743cde23545c1b945b10af1bd",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/audit.py": "e807ee405f7cd7e6ce812585a19bd203efaa8806d8d5bc0fb220800fe901ad17",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/config.json": "d96669a2abefa9e5413f1afbd38127b508a335c5b56266b5e8ba33034a76b238",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/manifest.json": "d8ef8fde2d0e9c9178dcb9c2c707d5a458a97283fb074906b111c14c48fb1659",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/results/report.md": "f39042d6df5ba997935fef23297aeed6bc81e8e04c5850598df9df5391f85824",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/results/audit_status.json": "6a14e7e2ee2679569afe6f284abc9df5040afb6074eaa5ab5b5a55944cfa6c04",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/results/fold_metrics.csv": "f73dce037330fdd98a4b6bb942408315df45262af28532eaf6834ab1113c5d09",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f01.pt": "3d20124173675c0fa09508e1838bd5f7ffd7b541e1fe64d9e3bce9a76bf156fc",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f10.pt": "2d6c74005f063de30e1ee9a7145ae2f9b13d1d64fcea159bdd516471e26acd6a",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f02.pt": "dc609dd90a71a73949af947f4f5de381562ee248da45f7824243ee37b808f85f",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f03.pt": "484d642c8e9677870bf8d4791ef1202986395d499f9d01e3d787f2ac55ec635e",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f05.pt": "fe35cc22a9add76297ce3e3cd49679a3bbfc4668e89bfa560e908d9f3b8cb527",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f06.pt": "0b08dd9c46adf86b8354bacfb770094d740ad9d3038899d1996c6b19b6c472e5",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f09.pt": "1bc0515e05195db76df531ff376ddc829915487d0923c6e222fae2227a1de59c",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f07.pt": "a36144901083e10ad7632c138cbc6b260b7b1e72c67f79bb23bbac8a4a6ae2b8",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f08.pt": "3a63b0f41ca7a75be50e05d9ae9853dea1ac415717cbd38e29ca6e86ff6598fb",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/spectrum_f04.pt": "3c101572f942cd12a1f289e8e28be0ef46a04ee3df78c58a3577d8aef27956a6",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/prompts.pt": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f06.best.pt": "8a0e6448327eb12b805797321eb359463bfd85a57f5a4dc9bb28d73f3f908887",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f02.best.pt": "ef504a551c3918fd64a784bcbbce7bb802170fd9d609181cc14ebc1de95b4128",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f09.best.pt": "8c7beae7191969334d2e41ce2114badd17d50a695bf26ce0799ab831e65aa750",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f10.best.pt": "88ae65c52ee9e41448187f0b7bdc781c4d3d84984db7b11f1d67d46f1a2d8fac",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f04.best.pt": "4315ff2dfbdb5eaba1cf45ca556acdd2bfb9b8260182d0070f66cb36d8deb0f1",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f01.best.pt": "c04c88aeea73d4200fcc445f1dc48d4cd420251a3126461cc1df573ece524f04",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f05.best.pt": "ea39b334148f83026cac9bc57f5030c39fc0cf0dd4a9f22af57cd4809fd96ee1",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f08.best.pt": "eecbc7e336025dbc4b4e8c9105aa66f8a3adf39a48b1aea2324ab0eaaf9cea05",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f07.best.pt": "8cf9e1c74acd1c16475f976120a232b667379c071d865d232d4fb91dfae59a2f",
+      "/model/spromptgl/experiment/experiment82_1_pcde_ps/runtime/checkpoints/G2_f03.best.pt": "80be695276abcdd96bf507fe680d8ad0f2f208a309c7deca6bc6765640c11948",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f01.best.pt": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f02.best.pt": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f03.best.pt": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f04.best.pt": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f05.best.pt": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f06.best.pt": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f07.best.pt": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f08.best.pt": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f09.best.pt": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f10.best.pt": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f01.json": "1b7ea0cc93569c3d3892aa4bd9143e714a83094a4b995bf9db07c9e2963bd32f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f02.json": "d7e3a9d384df5882787d09e33baa153f5935ec7677dfa9373d5dc5c4eb7dc57b",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f03.json": "08145807d7f0fc042cc3d25a9b425cc4ebd708e5f7bbbf78199d125177cf5c3f",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f04.json": "1641aaed13e0373531c2f31d0b38bd6cdd4d0c0d641e2a15c139d45743f2bf60",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f05.json": "457240a8acc22ecb6ae04491da452e3f8afe48b0f847800492d2d13a3d2fb8e7",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f06.json": "497a5bbe0a1d386024ec5055040a57287b7f83bb9f43517afeb7ebaade678d42",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f07.json": "e204974ecf91c32109a6ba8ba4c74834dd98631081b1954db82a68c6c852124b",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f08.json": "73fc4acb8dc42b9c1f701648377a5063ee60ee3a08882c60ae69c6d9817e9b89",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f09.json": "c836fd30a17792c4af76b174e7f923e7710f944fe14c06a059625b9e55ea0153",
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f10.json": "37d4127ebfabdda96ef7940abf9618265922e2adb3a6c864c71b94569d706110"
+    },
+    "implementation": {
+      "/model/spromptgl/experiment/experiment82_2_2_rce_psce/rce_psce.py": "4853bed7dd38007bf199e70c7744baff27b7e29363bf42df3f619e6f989c8a06",
+      "/model/spromptgl/experiment/experiment82_2_2_rce_psce/run.py": "6a1af3483e21422caa7bab49b89fe2e7b3282d2bc3b4cf274a76bba8e759e08d",
+      "/model/spromptgl/experiment/experiment82_2_2_rce_psce/audit.py": "85277f1d9b490fd0c877e01f2d2de2a8f91b84786f42fd8264f0cd750b210d8a",
+      "/model/spromptgl/experiment/experiment82_2_2_rce_psce/config.json": "2c1f80f2a8c1230d25fcc10c22c6aad6727f3de52664acfc8d88053a8ddca45e"
+    }
+  },
+  "preflight": {
+    "status": "PASS",
+    "source_sha": "015983ee79ffb6053f05dbb9e5f154ab75f95e84580ee3c79e2b1b8c6df29bd6",
+    "inheritance": [
+      {
+        "fold": 1,
+        "identity": {
+          "model_cam_sha": "52972009be2869cbcea912ae25f82b0ad0f5d4e31538e0d7b15bd0fd7e1a7419",
+          "optimizer_sha": "d6dc41d960a72fba6a4449f54116ffe8848f5a9d7dd7810b1b0dff0dc33db50c",
+          "warmup_sha256": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+          "warmup_rng_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+          "initial_rng_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 1,
+            "base_train_count": 783,
+            "effective_train_count": 783,
+            "test_count": 88,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+            "effective_train_sha": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+            "warmup_pair_sha": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22",
+            "effective_pair_sha": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+          "pair_sha": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22",
+          "effective_train_sha": "4b7c35b05c83c364ecfa0405d7442979c8015b0f242efd563562e1fd2ae68a4c",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+        "new_parameter_sha": "a40bce92eb2da7cd5acd06edb189dff252200f8fc3d71989ce6bf1b5acd3846c",
+        "spectra_sha": "93435fc4e47e29e2646a9131295ac35572b47bcb478ca7c533f6f9e224e3a9b2",
+        "legal_train_sha": "77f254990faa1a5d6afb4ef7215c39e8ad2a095e048991d26740dac3b07659fb",
+        "legal_train_count": 783,
+        "U_sha": "02d69f63db258a363d82df16468912fc58059cf8a48da99991e238629e7bbb81",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "a40bce92eb2da7cd5acd06edb189dff252200f8fc3d71989ce6bf1b5acd3846c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "a40bce92eb2da7cd5acd06edb189dff252200f8fc3d71989ce6bf1b5acd3846c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.006134629249572754,
+        "scale_audit": {
+          "s_fold": 0.006134629249572754,
+          "nonzero_count": 6095,
+          "independent_numpy_median": 0.006134629249572754,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.887379141862766e-15,
+          "eigen_residual": 2.3472560463381362e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 2,
+        "identity": {
+          "model_cam_sha": "f9ded2b284dafad23ebd2289b1938917028731901c0d1d3b47dfcc6ff6e2e8b4",
+          "optimizer_sha": "459862742254c220e8675a00bd459c7704c9f36fd0302a57f36500737184c709",
+          "warmup_sha256": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+          "warmup_rng_sha": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+          "initial_rng_sha": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 2,
+            "base_train_count": 784,
+            "effective_train_count": 786,
+            "test_count": 87,
+            "added_train_rows_1based": [
+              377,
+              407
+            ],
+            "train_test_overlap_1based": [
+              377,
+              407
+            ],
+            "base_train_sha": "adc1ad76987e573c0e0be29272d300108d24e72d31badb6525feb32429992c69",
+            "effective_train_sha": "df1ca3e4759b926cb10d11a17e21dc4db055d3e503b0ec43a4a4007346037a14",
+            "warmup_pair_sha": "61e050eebb3ecbc340923c0ffe88b45267c8bdda5f68554591a413f5dddf3632",
+            "effective_pair_sha": "c5ceb5c322490afe4c411751db8579ce4c960d5d7062d3c5c12640f56fbaf43c",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+          "pair_sha": "c5ceb5c322490afe4c411751db8579ce4c960d5d7062d3c5c12640f56fbaf43c",
+          "effective_train_sha": "df1ca3e4759b926cb10d11a17e21dc4db055d3e503b0ec43a4a4007346037a14",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+        "new_parameter_sha": "a004497a2cdb31a3c3e24f0498d90a185370afa8185615e3fd4a87bfcc87aff3",
+        "spectra_sha": "a21473a7e07e6b18c933d28327a8cef98447883e836cea6802703c2e6f8dcd55",
+        "legal_train_sha": "5a08276c256b6b4043e0ec3f287356441f4b88c627166ded046814927575c037",
+        "legal_train_count": 784,
+        "U_sha": "bbfdb5f90832c010077319ba5a3d9d1000882f1ae24e7858de9660cd02baba00",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "a004497a2cdb31a3c3e24f0498d90a185370afa8185615e3fd4a87bfcc87aff3",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "a004497a2cdb31a3c3e24f0498d90a185370afa8185615e3fd4a87bfcc87aff3",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.006921648979187012,
+        "scale_audit": {
+          "s_fold": 0.006921648979187012,
+          "nonzero_count": 6605,
+          "independent_numpy_median": 0.006921648979187012,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.9984014443252818e-15,
+          "eigen_residual": 3.358154350732876e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 3,
+        "identity": {
+          "model_cam_sha": "859cff03e513e9bcbbbfa82d4ddc90baea759f336cb939f73673f56257746707",
+          "optimizer_sha": "caa5a92ac213052ba0b0d68287a9aafc272f0d918c2675197fb431225c5b2177",
+          "warmup_sha256": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+          "warmup_rng_sha": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+          "initial_rng_sha": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 3,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "8e6b693095d613abca7ded2b16489776d56732728d567803296c60304a0a44f9",
+            "effective_train_sha": "8e6b693095d613abca7ded2b16489776d56732728d567803296c60304a0a44f9",
+            "warmup_pair_sha": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02",
+            "effective_pair_sha": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+          "pair_sha": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02",
+          "effective_train_sha": "8e6b693095d613abca7ded2b16489776d56732728d567803296c60304a0a44f9",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+        "new_parameter_sha": "017deb05f4503ef4ad945dbbc3532e23ab19d82e11cfbfc25c7508431866514c",
+        "spectra_sha": "10fed6fd3f2dca6a01c8a49daa7f684abd4091f50430b3d5cbe6fb25511925c0",
+        "legal_train_sha": "ecfaac0032e861511e3293bb14230cca875c54a6850224219031f14f52a8eebb",
+        "legal_train_count": 784,
+        "U_sha": "3e9dc33068da1249ff3640f9c6b2fef4bcec8ea0a7e3082f13c25cb089588dec",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "017deb05f4503ef4ad945dbbc3532e23ab19d82e11cfbfc25c7508431866514c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "017deb05f4503ef4ad945dbbc3532e23ab19d82e11cfbfc25c7508431866514c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.0084075927734375,
+        "scale_audit": {
+          "s_fold": 0.0084075927734375,
+          "nonzero_count": 7133,
+          "independent_numpy_median": 0.0084075927734375,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.5543122344752192e-15,
+          "eigen_residual": 1.4600894699161024e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 4,
+        "identity": {
+          "model_cam_sha": "7d79e03c22549a898b1790fb52b3ab44e845f4508116da2ca22b6d005acd6416",
+          "optimizer_sha": "903450b1d8d57662058520b70bc41e1ac7c6f7e24ac0e32ce0ead2d81d290205",
+          "warmup_sha256": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+          "warmup_rng_sha": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+          "initial_rng_sha": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 4,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "8ab6a55717ff8a462c97193108ae38303c0229d48fccf43246e3cd186dab5c9b",
+            "effective_train_sha": "8ab6a55717ff8a462c97193108ae38303c0229d48fccf43246e3cd186dab5c9b",
+            "warmup_pair_sha": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa",
+            "effective_pair_sha": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+          "pair_sha": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa",
+          "effective_train_sha": "8ab6a55717ff8a462c97193108ae38303c0229d48fccf43246e3cd186dab5c9b",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+        "new_parameter_sha": "7f8aed14aa8f7a0f2313168aecd84316ea23eb3491aeb3544c89c2d72bbc43ae",
+        "spectra_sha": "201b97aabe338bae3bf533522a178ef8256f13a29c50ee1e0799f5b75c38f2c7",
+        "legal_train_sha": "f54fa066735a884ff5667e247ec38a7ebfd498eef24a3bf34b4a537f54e72e09",
+        "legal_train_count": 784,
+        "U_sha": "f677360c0180b03acb0ff5e9bc4d201c4700a710fe5dde842fcd44d96a3d2466",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "7f8aed14aa8f7a0f2313168aecd84316ea23eb3491aeb3544c89c2d72bbc43ae",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "7f8aed14aa8f7a0f2313168aecd84316ea23eb3491aeb3544c89c2d72bbc43ae",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.004801198840141296,
+        "scale_audit": {
+          "s_fold": 0.004801198840141296,
+          "nonzero_count": 6895,
+          "independent_numpy_median": 0.004801198840141296,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.1102230246251565e-15,
+          "eigen_residual": 8.509297053153046e-16,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 5,
+        "identity": {
+          "model_cam_sha": "e182ebd32a43e192bde83ccb274077547917206dd95cc41679ffb3c14f0ac7f6",
+          "optimizer_sha": "ed24d1656a0bafb230e3eecddc30c80eac8f880e17c1aa0fa2a73c7aa964cf6a",
+          "warmup_sha256": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+          "warmup_rng_sha": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+          "initial_rng_sha": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 5,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "024dd75306f24d8b29631a2462229680d040c2da85ee6eb62cbe2582a2295544",
+            "effective_train_sha": "024dd75306f24d8b29631a2462229680d040c2da85ee6eb62cbe2582a2295544",
+            "warmup_pair_sha": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd",
+            "effective_pair_sha": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+          "pair_sha": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd",
+          "effective_train_sha": "024dd75306f24d8b29631a2462229680d040c2da85ee6eb62cbe2582a2295544",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+        "new_parameter_sha": "fbc797fac9ede2aa765cfd28e9a9a8be01ee87f6b11ef79acfbe5db59c5ce76b",
+        "spectra_sha": "49a5ea8fbed67c39c00d2c639c1a48c7b0fea2e27a3af51cf3b0d0fb5d16c3cc",
+        "legal_train_sha": "269b5ba55e644e2919d3dc071d77226487f46961f25dac3cdacb5c89de9bf066",
+        "legal_train_count": 784,
+        "U_sha": "2306e3dbe1ff7d29094abb58ab5a0774c4915ac5080e4759b918eda90e95436d",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "fbc797fac9ede2aa765cfd28e9a9a8be01ee87f6b11ef79acfbe5db59c5ce76b",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "fbc797fac9ede2aa765cfd28e9a9a8be01ee87f6b11ef79acfbe5db59c5ce76b",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.006170094013214111,
+        "scale_audit": {
+          "s_fold": 0.006170094013214111,
+          "nonzero_count": 6717,
+          "independent_numpy_median": 0.006170094013214111,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.7763568394002505e-15,
+          "eigen_residual": 3.6063312049433834e-16,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 6,
+        "identity": {
+          "model_cam_sha": "a65200cbdd9e00e7681fd1a80a63cdc8da3b8bb88f2defd1b4b650666bdf6906",
+          "optimizer_sha": "b3ac5e54ac3cf2f743be8e6ba78e8cd558d0bde44daae634a39cda7dfbe5432e",
+          "warmup_sha256": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+          "warmup_rng_sha": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+          "initial_rng_sha": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 6,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "132d80aeb27130aac83ede6684b7c74330b92a30c49d0a6e390b6ba5961b6506",
+            "effective_train_sha": "132d80aeb27130aac83ede6684b7c74330b92a30c49d0a6e390b6ba5961b6506",
+            "warmup_pair_sha": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7",
+            "effective_pair_sha": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+          "pair_sha": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7",
+          "effective_train_sha": "132d80aeb27130aac83ede6684b7c74330b92a30c49d0a6e390b6ba5961b6506",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+        "new_parameter_sha": "9aefbc0065af2d8b85ebedb44d42b1bf6f0085e957ca5989db079bb2e4059d6c",
+        "spectra_sha": "1666baaace01b8f2679a86e1f26f85e44411e7d785467dab53fe285f181e1a43",
+        "legal_train_sha": "ecd2cc32f6ff0cd0018d72bb9f06f3aa15a03220ed36a4547b66174c169dec1c",
+        "legal_train_count": 784,
+        "U_sha": "956dda6a7bf72b3930528b80a78108be7ee8ae0ca0f5c04c879d65ff7150ebd0",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "9aefbc0065af2d8b85ebedb44d42b1bf6f0085e957ca5989db079bb2e4059d6c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "9aefbc0065af2d8b85ebedb44d42b1bf6f0085e957ca5989db079bb2e4059d6c",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.006281793117523193,
+        "scale_audit": {
+          "s_fold": 0.006281793117523193,
+          "nonzero_count": 6495,
+          "independent_numpy_median": 0.006281793117523193,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 2.220446049250313e-15,
+          "eigen_residual": 2.731047157036515e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 7,
+        "identity": {
+          "model_cam_sha": "b0b6328068e07167f1787079fb8707de34b54a510edec81e845b5dc987feb69e",
+          "optimizer_sha": "e963a22b4e859abf4127803ac1cf2f4e3624609e2958cd68a37bf32787695318",
+          "warmup_sha256": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+          "warmup_rng_sha": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+          "initial_rng_sha": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 7,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "9a3066e1eb9fca400ad0553df6b6dc3c04dd4eb754d339ca97056626bf531c63",
+            "effective_train_sha": "9a3066e1eb9fca400ad0553df6b6dc3c04dd4eb754d339ca97056626bf531c63",
+            "warmup_pair_sha": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044",
+            "effective_pair_sha": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+          "pair_sha": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044",
+          "effective_train_sha": "9a3066e1eb9fca400ad0553df6b6dc3c04dd4eb754d339ca97056626bf531c63",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+        "new_parameter_sha": "5f1284a671a885f8087383bcd2a7c9f0b4ae4f53fd82542b6543e1e0d141316e",
+        "spectra_sha": "2a370d7f391ded27e8078f289194f6793484b756b62cd0550e99c847875f9309",
+        "legal_train_sha": "69ad21b363864fd7bc4fc0646f636b740bf09b873443fd29d3d1a9889d0c95d4",
+        "legal_train_count": 784,
+        "U_sha": "bfb5281eca4d13f1153751379c8953a79f17da8127553859c9a32fa6bc81d15e",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "5f1284a671a885f8087383bcd2a7c9f0b4ae4f53fd82542b6543e1e0d141316e",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "5f1284a671a885f8087383bcd2a7c9f0b4ae4f53fd82542b6543e1e0d141316e",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.008653655648231506,
+        "scale_audit": {
+          "s_fold": 0.008653655648231506,
+          "nonzero_count": 6686,
+          "independent_numpy_median": 0.008653655648231506,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.7763568394002505e-15,
+          "eigen_residual": 2.093400986844729e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 8,
+        "identity": {
+          "model_cam_sha": "1b422c6fd13e25082549d89326b92289616c73edea8ca47fd64013809da6e6da",
+          "optimizer_sha": "02adacf148594b185aee7cb09505e0c17ae7cdcae3d85744cfb7ceca966c1169",
+          "warmup_sha256": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+          "warmup_rng_sha": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+          "initial_rng_sha": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 8,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "2990610c8d831881e822ba33eb526129edefd0a0ed1d959ace74d5e604d26e0f",
+            "effective_train_sha": "2990610c8d831881e822ba33eb526129edefd0a0ed1d959ace74d5e604d26e0f",
+            "warmup_pair_sha": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c",
+            "effective_pair_sha": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+          "pair_sha": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c",
+          "effective_train_sha": "2990610c8d831881e822ba33eb526129edefd0a0ed1d959ace74d5e604d26e0f",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "new_parameter_sha": "500126bae5ec15df3ce60f96e3804e1503a1e82949e05390a88603ae51d62f23",
+        "spectra_sha": "e6ffc6d4e0dd6391e6f0f6317b0479148872f4291d8baf801c6295cda5e23a05",
+        "legal_train_sha": "626680da9068dba25ca2c6633cc52c7f6b3e42c6c3c41ce1c4a5dc960073b036",
+        "legal_train_count": 784,
+        "U_sha": "73eba96c0c55205ff97e55d7bd75de389a9b28268dc739bcf6bdfa8254faad43",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "500126bae5ec15df3ce60f96e3804e1503a1e82949e05390a88603ae51d62f23",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "500126bae5ec15df3ce60f96e3804e1503a1e82949e05390a88603ae51d62f23",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.0028395652770996094,
+        "scale_audit": {
+          "s_fold": 0.0028395652770996094,
+          "nonzero_count": 6732,
+          "independent_numpy_median": 0.0028395652770996094,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.5543122344752192e-15,
+          "eigen_residual": 1.781653788737757e-16,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 9,
+        "identity": {
+          "model_cam_sha": "208b2f3148707c06b660dc40d0a23153e988b1799ae8ec527aad78f64f9e22df",
+          "optimizer_sha": "5346a192cb00b047fb005ab09f972d0dad6365e6c0513f4eb5ea929868967245",
+          "warmup_sha256": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+          "warmup_rng_sha": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+          "initial_rng_sha": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 9,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "c1a0d7fd1a0d05682b2a0c79e9cfde78d79bca329a61b3bba15ed72a716418c0",
+            "effective_train_sha": "c1a0d7fd1a0d05682b2a0c79e9cfde78d79bca329a61b3bba15ed72a716418c0",
+            "warmup_pair_sha": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6",
+            "effective_pair_sha": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+          "pair_sha": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6",
+          "effective_train_sha": "c1a0d7fd1a0d05682b2a0c79e9cfde78d79bca329a61b3bba15ed72a716418c0",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+        "new_parameter_sha": "e3efe66746c56975405f0493297f758d35948a0a1aa094713fd2f0471047a016",
+        "spectra_sha": "0732bf0af9573790421e4865473b7d2cbcef67524bc7484170c83b6e297ac3d6",
+        "legal_train_sha": "cb3762f00a3046fee45c2287c6f67eff5b4e4017824dc52d2b0c44ad376e0a51",
+        "legal_train_count": 784,
+        "U_sha": "5c1fa7dc86df283c0c41082563463bac67eb547693bfce94bba39500707be04d",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "e3efe66746c56975405f0493297f758d35948a0a1aa094713fd2f0471047a016",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "e3efe66746c56975405f0493297f758d35948a0a1aa094713fd2f0471047a016",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.004885964095592499,
+        "scale_audit": {
+          "s_fold": 0.004885964095592499,
+          "nonzero_count": 6602,
+          "independent_numpy_median": 0.004885964095592499,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.3322676295501878e-15,
+          "eigen_residual": 1.2865579114275942e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      },
+      {
+        "fold": 10,
+        "identity": {
+          "model_cam_sha": "5408f51192d91c263cbd3a12264b321e09c94eff4ef649e0e44b662c0c5a40f7",
+          "optimizer_sha": "b6db2f92ce32280fcd322b8810e27a559e8cd9e49002aa6926bf1417ecb33ed7",
+          "warmup_sha256": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+          "warmup_rng_sha": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+          "initial_rng_sha": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+          "edge_gate_logits_initial": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "edge_gate_values_initial": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "adaptive_gate_theta_initial": [
+            -2.1972246170043945,
+            -2.1972246170043945,
+            -2.1972246170043945,
+            4.595119953155518
+          ],
+          "gate_scales": [
+            0.01,
+            0.01,
+            0.01,
+            1.0
+          ],
+          "effective_gate_values_initial": [
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.0010000000149011613,
+            0.9900000691413879
+          ],
+          "adaptive_optimizer_state_was_cleared": false,
+          "optimizer_gate_slots_at_warmup": {
+            "edge_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            },
+            "adaptive_gate_logits": {
+              "present": false,
+              "step": null,
+              "exp_avg_max_abs": 0.0,
+              "exp_avg_sq_max": 0.0,
+              "in_optimizer": true,
+              "weight_decay": 0.01
+            }
+          },
+          "membership": {
+            "fold": 10,
+            "base_train_count": 784,
+            "effective_train_count": 784,
+            "test_count": 87,
+            "added_train_rows_1based": [],
+            "train_test_overlap_1based": [],
+            "base_train_sha": "86b8ab26ab2612f6fb2df48d748da834a5b92548b788e59c9211737c306224af",
+            "effective_train_sha": "86b8ab26ab2612f6fb2df48d748da834a5b92548b788e59c9211737c306224af",
+            "warmup_pair_sha": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28",
+            "effective_pair_sha": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28",
+            "pair_count": 4096,
+            "main_rng_unchanged": true
+          },
+          "split_sha": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38",
+          "pair_sha": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28",
+          "effective_train_sha": "86b8ab26ab2612f6fb2df48d748da834a5b92548b788e59c9211737c306224af",
+          "train_pair_scope_pass": true
+        },
+        "warmup_rng_sha": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+        "new_parameter_sha": "d5e75295026c5018904b4d66e31561cd021d3a8b9405b73e663d3c33ce316c44",
+        "spectra_sha": "593ee2f13635e528c599710b0fd7bcd8dbb424795a267ead5600e601b7c54988",
+        "legal_train_sha": "e635faed830d58ac1ec554294c9f708436ebabc5cf8d9210403d965e2e7de0a3",
+        "legal_train_count": 784,
+        "U_sha": "4e837b1b4689c316eba7f5f59421b134d32346942e7daba195dc366cf84e32ae",
+        "e822_U_mu_exact": true,
+        "initialization_checks": [
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "d5e75295026c5018904b4d66e31561cd021d3a8b9405b73e663d3c33ce316c44",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          },
+          {
+            "named_parameters_exact_to_reconstruction": true,
+            "sha": "d5e75295026c5018904b4d66e31561cd021d3a8b9405b73e663d3c33ce316c44",
+            "evidence": "original pinned initialization code + seed + saved historical initial SHA; no independent initial tensor file claimed"
+          }
+        ],
+        "s_fold": 0.01206400990486145,
+        "scale_audit": {
+          "s_fold": 0.01206400990486145,
+          "nonzero_count": 7519,
+          "independent_numpy_median": 0.01206400990486145,
+          "legal_only": true
+        },
+        "spectral_audit": {
+          "orthogonality": 1.6653345369377348e-15,
+          "eigen_residual": 3.3569948082788704e-15,
+          "e82_original_U_exact": true,
+          "warmup_feature_and_both_graph_paths_exact": true
+        }
+      }
+    ],
+    "group_checks": [
+      {
+        "group": "G1",
+        "fold": 1,
+        "classification": {
+          "darg.": 0.08012737044204375,
+          "cam.": 0.19734341028829872,
+          "psce.": 0.0005023313726019092
+        },
+        "auxiliary": {
+          "darg.": 0.0,
+          "cam.": 0.0,
+          "psce.": 1.3227634633586154
+        },
+        "gradients": {
+          "null": 1.30539194742596e-06,
+          "direction.weight": 0.00021537816792260855,
+          "direction.bias": 0.00024135725107043982,
+          "evidence.weight": 0.000935578893404454,
+          "evidence.bias": 0.00024135725107043982,
+          "norm.weight": 0.0002662161714397371,
+          "norm.bias": 8.147438279593189e-07,
+          "key.weight": 0.0022159547079354525,
+          "spectral.0.weight": 0.0037056647706776857,
+          "spectral.0.bias": 0.0007580620585940778,
+          "spectral.2.weight": 0.012006411328911781,
+          "spectral.2.bias": 5.002220859751105e-11
+        },
+        "loss_gradient_norms": {
+          "cls_psce_gradient_norm": 0.0005023313726019092,
+          "cf_loss_psce_gradient_norm": 0.20358793598531574,
+          "harm_psce_gradient_norm": 1.305624474031609
+        },
+        "teacher_frozen": true
+      },
+      {
+        "group": "G2",
+        "fold": 1,
+        "classification": {
+          "darg.": 0.08013395155135324,
+          "cam.": 0.19732249749663291,
+          "psce.": 0.0005023592348649075
+        },
+        "auxiliary": {
+          "darg.": 0.0,
+          "cam.": 0.0,
+          "psce.": 1.4032876794884006
+        },
+        "gradients": {
+          "null": 6.640615310971043e-07,
+          "direction.weight": 0.00019514188170433044,
+          "direction.bias": 0.00018949023797176778,
+          "evidence.weight": 0.000773959734942764,
+          "evidence.bias": 0.00018949023797176778,
+          "norm.weight": 0.00025924600777216256,
+          "norm.bias": 3.8697061199854943e-07,
+          "key.weight": 0.003094588639214635,
+          "spectral.0.weight": 0.003890067106112838,
+          "spectral.0.bias": 0.0008110440103337169,
+          "spectral.2.weight": 0.012623327784240246,
+          "spectral.2.bias": 4.729372449219227e-11
+        },
+        "loss_gradient_norms": {
+          "cls_psce_gradient_norm": 0.0005023592348649075,
+          "cf_loss_psce_gradient_norm": 0.2139096469410753,
+          "harm_psce_gradient_norm": 1.37082559608858
+        },
+        "teacher_frozen": true
+      },
+      {
+        "group": "G1",
+        "fold": 2,
+        "classification": {
+          "darg.": 0.10597757021793287,
+          "cam.": 0.1732316176270181,
+          "psce.": 0.00042753940047029137
+        },
+        "auxiliary": {
+          "darg.": 0.0,
+          "cam.": 0.0,
+          "psce.": 1.7149363001204718
+        },
+        "gradients": {
+          "null": 2.495370154065313e-06,
+          "direction.weight": 0.0004004479560535401,
+          "direction.bias": 0.00040078532765619457,
+          "evidence.weight": 0.0009768095333129168,
+          "evidence.bias": 0.00040078532765619457,
+          "norm.weight": 0.00033856145455501974,
+          "norm.bias": 1.2080005262760096e-06,
+          "key.weight": 0.002965762745589018,
+          "spectral.0.weight": 0.004936820361763239,
+          "spectral.0.bias": 0.0011716570006683469,
+          "spectral.2.weight": 0.01633700169622898,
+          "spectral.2.bias": 9.322320693172514e-11
+        },
+        "loss_gradient_norms": {
+          "cls_psce_gradient_norm": 0.00042753940047029137,
+          "cf_loss_psce_gradient_norm": 0.14145033318189096,
+          "harm_psce_gradient_norm": 1.6974057313754445
+        },
+        "teacher_frozen": true
+      },
+      {
+        "group": "G2",
+        "fold": 2,
+        "classification": {
+          "darg.": 0.1059142832904105,
+          "cam.": 0.17315284375088508,
+          "psce.": 0.0004302054436408713
+        },
+        "auxiliary": {
+          "darg.": 0.0,
+          "cam.": 0.0,
+          "psce.": 1.7832499152382157
+        },
+        "gradients": {
+          "null": 1.9210579011996742e-06,
+          "direction.weight": 0.00047496682964265347,
+          "direction.bias": 0.0004214902292005718,
+          "evidence.weight": 0.0013967088889330626,
+          "evidence.bias": 0.0004214902292005718,
+          "norm.weight": 0.00034220749512314796,
+          "norm.bias": 1.1223421552131185e-06,
+          "key.weight": 0.003509154077619314,
+          "spectral.0.weight": 0.005105792544782162,
+          "spectral.0.bias": 0.0012121249455958605,
+          "spectral.2.weight": 0.01688269153237343,
+          "spectral.2.bias": 1.77351466845721e-10
+        },
+        "loss_gradient_norms": {
+          "cls_psce_gradient_norm": 0.0004302054436408713,
+          "cf_loss_psce_gradient_norm": 0.18594405462096725,
+          "harm_psce_gradient_norm": 1.7544251842770848
+        },
+        "teacher_frozen": true
+      }
+    ],
+    "noop_forward_losses_gradients_three_optimizers_rng_exact": true,
+    "next_update_disk_restore_four_optimizers_rng_exact": true,
+    "teacher_33_inputs_independent_reconstruction": true,
+    "auxiliary_gradients_isolated": true,
+    "two_actual_historical_rng_triplets": [
+      {
+        "epoch": 11,
+        "rng_before": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+        "rng_after_train": "1eb84a8c0ced2cc96cb7d764f743d4a76aa2addf1273523d13cb990ec018cec5",
+        "rng_after_eval": "1eb84a8c0ced2cc96cb7d764f743d4a76aa2addf1273523d13cb990ec018cec5"
+      },
+      {
+        "epoch": 12,
+        "rng_before": "1eb84a8c0ced2cc96cb7d764f743d4a76aa2addf1273523d13cb990ec018cec5",
+        "rng_after_train": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577",
+        "rng_after_eval": "0f62496e317145f242c9efc14548fb9ed0c8ac653ea79b4cd7515da4caca4577"
+      }
+    ],
+    "initialization_exact_original_reconstruction_and_historical_SHA": true,
+    "peak_gpu_bytes": 574814208,
+    "torch": "2.9.0",
+    "numpy": "2.5.3",
+    "device": "PPU-ZW810E"
+  },
+  "environment": {
+    "python": "3.12.3 (main, Jan 30 2026, 14:20:45) [GCC 13.3.0]",
+    "platform": "Linux-5.10.134-17.2.al8.x86_64-x86_64-with-glibc2.39",
+    "packages": {
+      "torch": "2.9.0+ppu2.0.0",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0",
+      "requests": "2.32.3",
+      "PyMuPDF": "2.1",
+      "dgl": "not installed as distribution; source dependency SHA in manifest",
+      "clip": "not installed as distribution; source dependency SHA in manifest"
+    },
+    "gpu": "PPU-ZW810E, 98304 MiB, 1.5.1-1d747a",
+    "workers_cpu_threads": 1
+  },
+  "environment_sha256": "56c0e65c9e08e1f234cc960daa2e44e99104e62f31ee50162005bb03a6b0a588",
+  "source_review_sha256": "3f925bfb57e011ab02b84c9bcd982484e26f6edba34ea762ba3c700d0c2eb2ff",
+  "text_embedding_provenance": {
+    "source_hashes": {
+      "knowledge_sha256": "11d7af18f653a243a6a0c822aca8340eef041bf1606b1da7bac0a8c1a8983db2",
+      "rn50_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+      "config_sha256": "8a5526ec025d9519d07f3e46e570e8d87543ba331140d309ff08c03c13b03826",
+      "text_features_sha256": "e4b1694d89ca50793c9febc44f84f17319098dd9cddd606a6014ac0daa6b5a04"
+    },
+    "tokenizer_normalization": "ascii_identity_equivalent_to_ftfy",
+    "used_keys": [
+      "text_map.original",
+      "embeddings.original"
+    ],
+    "patient_category_ids_used": false
+  },
+  "additional_historical_guard": {
+    "source": "protected historical E82.2 audit_status.json locked before training; indirect before/after identity anchor, not a newly claimed initial hash observation",
+    "checks": [
+      {
+        "fold": 1,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f01.best.pt",
+        "expected_from_locked_historical_audit": "577fb6c0da5699ea6475e720e6471272fa8d06162d057cefcd7648bdbe7cd86b",
+        "actual": "577fb6c0da5699ea6475e720e6471272fa8d06162d057cefcd7648bdbe7cd86b"
+      },
+      {
+        "fold": 2,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f02.best.pt",
+        "expected_from_locked_historical_audit": "62c735864260ef14f52267452a1bccd4c3b77fa71ea0871cc699fcbeedfb7e8a",
+        "actual": "62c735864260ef14f52267452a1bccd4c3b77fa71ea0871cc699fcbeedfb7e8a"
+      },
+      {
+        "fold": 3,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f03.best.pt",
+        "expected_from_locked_historical_audit": "4b4fea5faf1d6a405a3469bf1f28faeaac685f524ac8281e7202a2fb88c15e48",
+        "actual": "4b4fea5faf1d6a405a3469bf1f28faeaac685f524ac8281e7202a2fb88c15e48"
+      },
+      {
+        "fold": 4,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f04.best.pt",
+        "expected_from_locked_historical_audit": "a5bfc8574a949993e127df7c538622b044488a9dfdd8f7f6deecff0b37732a9a",
+        "actual": "a5bfc8574a949993e127df7c538622b044488a9dfdd8f7f6deecff0b37732a9a"
+      },
+      {
+        "fold": 5,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f05.best.pt",
+        "expected_from_locked_historical_audit": "e83009c84eb566c585df6d3a7e1fa794d840a16c26818dfff5bbfd6a0b6899c3",
+        "actual": "e83009c84eb566c585df6d3a7e1fa794d840a16c26818dfff5bbfd6a0b6899c3"
+      },
+      {
+        "fold": 6,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f06.best.pt",
+        "expected_from_locked_historical_audit": "6ff6e430954fc67dffbad2ec09b2c2038a51ad45a3eb07619ad7e19093e95751",
+        "actual": "6ff6e430954fc67dffbad2ec09b2c2038a51ad45a3eb07619ad7e19093e95751"
+      },
+      {
+        "fold": 7,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f07.best.pt",
+        "expected_from_locked_historical_audit": "3ae62d9058ec3602ba870e05ea8fcdebb4675881749e4ba4d4a7339a705a7d27",
+        "actual": "3ae62d9058ec3602ba870e05ea8fcdebb4675881749e4ba4d4a7339a705a7d27"
+      },
+      {
+        "fold": 8,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f08.best.pt",
+        "expected_from_locked_historical_audit": "c0ab96df2d2519b4d4317f183e47e508f79df69b28bdabc316e9cdfd50040cfc",
+        "actual": "c0ab96df2d2519b4d4317f183e47e508f79df69b28bdabc316e9cdfd50040cfc"
+      },
+      {
+        "fold": 9,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f09.best.pt",
+        "expected_from_locked_historical_audit": "b372fa280f0dc41199c7c1859031547f692d2e0e70bb2d179939a9cf8a058212",
+        "actual": "b372fa280f0dc41199c7c1859031547f692d2e0e70bb2d179939a9cf8a058212"
+      },
+      {
+        "fold": 10,
+        "path": "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G1_f10.best.pt",
+        "expected_from_locked_historical_audit": "4f723d34e50ddba2abe39eeea56a3918f71aa674a1c8982100772938c5089912",
+        "actual": "4f723d34e50ddba2abe39eeea56a3918f71aa674a1c8982100772938c5089912"
+      }
+    ]
+  },
+  "resource_observation": {
+    "observed_at": "2026-11-17T13:14:57.868628+00:00",
+    "external_concurrent_workers": [
+      "3994078 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group Scrambled-SA-PRCL-G2-Protected --fold 1",
+      "3994080 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G3-Joint --fold 1",
+      "3994081 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G1-Protected --fold 2",
+      "3994083 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group Scrambled-SA-PRCL-G2-Protected --fold 2",
+      "3994085 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G3-Joint --fold 2",
+      "3994087 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G1-Protected --fold 3",
+      "3994090 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group Scrambled-SA-PRCL-G2-Protected --fold 3",
+      "3994091 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G3-Joint --fold 3",
+      "3994092 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group SA-PRCL-G1-Protected --fold 4",
+      "3994093 3991452       09:02 /usr/local/bin/python /model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py --worker --group Scrambled-SA-PRCL-G2-Protected --fold 4"
+    ],
+    "our_max_workers": 10,
+    "action": "Continue our frozen tasks. No signals, state changes or writes to external experiment. Device exclusivity not claimed."
+  },
+  "audit_scheduling": {
+    "strategy": "Execute frozen audit.audit_one on completed immutable tasks; verify Best/Latest SHA again before frozen audit.main aggregation. No training changes.",
+    "scheduler_source_sha256": "62565ad39232b33f85fceb908bb407b402959008e8171af7b48a28ac7e5ebedc",
+    "audit_module_source_sha256": "85277f1d9b490fd0c877e01f2d2de2a8f91b84786f42fd8264f0cd750b210d8a",
+    "intermediate_cache": "runtime/staged_audit.pt; removed after final aggregation",
+    "training_metrics_not_used_to_modify_configuration": true
+  },
+  "completed_tasks": 20,
+  "execution": {
+    "status": "TRAINED",
+    "completed_tasks": 20,
+    "expected_tasks": 20,
+    "active_tasks": 0,
+    "pending_tasks": 0,
+    "max_workers_observed": 10,
+    "worker_limit": 10,
+    "elapsed_seconds": 3538.2446138858795,
+    "failures": [],
+    "sampled_peak_device_mib": 33936,
+    "wall_seconds": 3538.616037607193
+  },
+  "independent_audits": 20,
+  "latest_restore_audits": 20,
+  "audited_implementation_sha": "015983ee79ffb6053f05dbb9e5f154ab75f95e84580ee3c79e2b1b8c6df29bd6",
+  "audit_source_sha": "85277f1d9b490fd0c877e01f2d2de2a8f91b84786f42fd8264f0cd750b210d8a",
+  "scientific_conclusion": {
+    "verdict": "NO-GO",
+    "frozen_checks": {
+      "ACC_stable": false,
+      "BA_not_lower": false,
+      "Prob_AUC_not_materially_lower": true,
+      "ASD_SEN_not_materially_lower": false,
+      "beats_E822": false,
+      "medical_beats_anonymous": false,
+      "meaningful_immediate_text_effect": false,
+      "immediate_residual_diagnostic_benefit": false,
+      "target_alignment_improved": true,
+      "no_zero_residual_collapse": true
+    },
+    "corrections": {
+      "G1": {
+        "all": {
+          "corrected": 4,
+          "harmed": 7,
+          "net": -3,
+          "flips": 11
+        },
+        "asd": {
+          "corrected": 1,
+          "harmed": 6,
+          "net": -5,
+          "flips": 7
+        },
+        "td": {
+          "corrected": 3,
+          "harmed": 1,
+          "net": 2,
+          "flips": 4
+        }
+      },
+      "G2": {
+        "all": {
+          "corrected": 12,
+          "harmed": 16,
+          "net": -4,
+          "flips": 28
+        },
+        "asd": {
+          "corrected": 5,
+          "harmed": 10,
+          "net": -5,
+          "flips": 15
+        },
+        "td": {
+          "corrected": 7,
+          "harmed": 6,
+          "net": 1,
+          "flips": 13
+        }
+      }
+    },
+    "interventions": [
+      {
+        "intervention": "anonymous",
+        "mean_abs_probability_change": 0.0001436111720977351,
+        "max_abs_probability_change": 0.0017053782939910889,
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net": 0,
+        "metrics_mean_percent": {
+          "acc": 91.72936259143157,
+          "hard_auc": 91.5268411136933,
+          "prob_auc": 93.83336905755738,
+          "sen": 88.83536585365854,
+          "spe": 94.21831637372804,
+          "asd_f1": 90.81837606837608
+        },
+        "by_class": {
+          "asd": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          },
+          "td": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          }
+        }
+      },
+      {
+        "intervention": "semantic_off",
+        "mean_abs_probability_change": 9.394720382260857e-05,
+        "max_abs_probability_change": 0.001095890998840332,
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net": 0,
+        "metrics_mean_percent": {
+          "acc": 91.72936259143157,
+          "hard_auc": 91.5268411136933,
+          "prob_auc": 93.83336905755738,
+          "sen": 88.83536585365854,
+          "spe": 94.21831637372804,
+          "asd_f1": 90.81837606837608
+        },
+        "by_class": {
+          "asd": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          },
+          "td": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          }
+        }
+      },
+      {
+        "intervention": "residual_off",
+        "mean_abs_probability_change": 7.484233483410208e-05,
+        "max_abs_probability_change": 0.0008938238024711609,
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net": 0,
+        "metrics_mean_percent": {
+          "acc": 91.72936259143157,
+          "hard_auc": 91.5268411136933,
+          "prob_auc": 93.83868820649354,
+          "sen": 88.83536585365854,
+          "spe": 94.21831637372804,
+          "asd_f1": 90.81837606837608
+        },
+        "by_class": {
+          "asd": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          },
+          "td": {
+            "corrected": 0,
+            "harmed": 0,
+            "net": 0,
+            "flips": 0
+          }
+        }
+      }
+    ],
+    "alignment_vs_test_delta_spearman": {
+      "G1": 0.29502647161824747,
+      "G2": -0.3049120864632631
+    },
+    "g2_vs_references": {
+      "B0": {
+        "acc": -0.4597701149425276,
+        "hard_auc": -0.5025326594616601,
+        "prob_auc": 0.3440863247670407,
+        "sen": -1.2317073170731718,
+        "spe": 0.22664199814986147,
+        "asd_f1": -0.6406598812070214
+      },
+      "E82-G2": {
+        "acc": -0.45977011494252906,
+        "hard_auc": -0.4969512195121979,
+        "prob_auc": 0.5250445612689247,
+        "sen": -0.9939024390243916,
+        "spe": 0.0,
+        "asd_f1": -0.598235749238772
+      },
+      "E82.2-G2": {
+        "acc": -0.34482758620689535,
+        "hard_auc": -0.3540703052728986,
+        "prob_auc": 0.6790742537397619,
+        "sen": -0.5,
+        "spe": -0.20814061054579014,
+        "asd_f1": -0.4451021900594796
+      },
+      "E82.2.1-G2": {
+        "acc": 0.0,
+        "hard_auc": -0.0986665463324428,
+        "prob_auc": 0.22286839195866576,
+        "sen": -1.4878048780487816,
+        "spe": 1.2904717853839032,
+        "asd_f1": -0.23279774144165657
+      },
+      "G1": {
+        "acc": -0.11494252873563085,
+        "hard_auc": -0.10943175921120911,
+        "prob_auc": 0.04227679880869175,
+        "sen": -0.006097560975609895,
+        "spe": -0.21276595744680832,
+        "asd_f1": -0.16997168348327135
+      }
+    },
+    "route_action": "STOP_E82_SPECTRAL_SEMANTIC_NO_E82.2.3_NO_SEARCH",
+    "mean_mechanisms": {
+      "G1": {
+        "sign_agreement": 0.9326632440090179,
+        "scale_rank_spearman": 0.990126056357119,
+        "stable_positive_fraction": 0.5672096014022827,
+        "valid_fraction": 0.9684922695159912,
+        "asd_valid_fraction": 0.9487253427505493,
+        "td_valid_fraction": 0.9855157911777497,
+        "rho_mean": 0.47485521534170666,
+        "gain_positive_fraction": 0.8059528529644012,
+        "gain_negative_fraction": 0.1932816579937935,
+        "gain_mean": 0.00091600375744747,
+        "asd_gain_mean": 0.0009835082746576518,
+        "td_gain_mean": 0.0008577196073019877,
+        "residual_relative_test_mean": 0.004095848826370362,
+        "ratio_residual_to_E822_own_CAM": 0.21445761413900394,
+        "prompt_pairwise_cosine": 0.9935965478420258,
+        "beta_mean": 0.18861573397015516,
+        "null_mean": 0.05692134519022975,
+        "entropy_mean": 0.981871796042786,
+        "semantic_spectral_l1": 0.2766012907028198,
+        "cf_loss_psce_gradient_norm_mean": 0.15263644076562893,
+        "harm_psce_gradient_norm_mean": 2.4356774851440943,
+        "cls_psce_gradient_norm_mean": 0.007666294070904351
+      },
+      "G2": {
+        "sign_agreement": 0.9367635786533356,
+        "scale_rank_spearman": 0.9907228648150761,
+        "stable_positive_fraction": 0.5550833523273468,
+        "valid_fraction": 0.959943425655365,
+        "asd_valid_fraction": 0.946532142162323,
+        "td_valid_fraction": 0.9715015351772308,
+        "rho_mean": 0.47007381424873856,
+        "gain_positive_fraction": 0.6938413783907891,
+        "gain_negative_fraction": 0.3048830933868885,
+        "gain_mean": 0.0005806263980048243,
+        "asd_gain_mean": 0.0006445497598178918,
+        "td_gain_mean": 0.0005255899006442633,
+        "residual_relative_test_mean": 0.0036017135576062926,
+        "ratio_residual_to_E822_own_CAM": 0.234986417208174,
+        "prompt_pairwise_cosine": 0.9826421678066254,
+        "beta_mean": 0.18824845822304176,
+        "null_mean": 0.05875772213151673,
+        "entropy_mean": 0.9876615703074785,
+        "semantic_spectral_l1": 0.22796350494027137,
+        "cf_loss_psce_gradient_norm_mean": 0.1608748299909435,
+        "harm_psce_gradient_norm_mean": 2.6662750288246344,
+        "cls_psce_gradient_norm_mean": 0.007611194738094659
+      }
+    },
+    "protection": {
+      "protected_files": 282,
+      "all_map_sha": "5a6215f21ea72704827ac42bb646876f8415865137b19de04ca15044f82ca9db",
+      "root_code_files": 5,
+      "root_code_map_sha": "2970ceac4893fd79fecdb8e370f1d82e2bdf35552cff3e9afa9b6c27c6f76300",
+      "data_files": 5,
+      "data_map_sha": "fb02c5e01b1dacde07d4ae173a4e9d2b5783885bac0739c7058ac71ea8b5a9f5",
+      "historical_pt_files": 105,
+      "historical_pt_map_sha": "e855d3fbcce35b229b8dec86ff8e9ea225f2a98ff0a76bdcb41b2d97323f9310"
+    }
+  },
+  "protected_source_map_sha": "5a6215f21ea72704827ac42bb646876f8415865137b19de04ca15044f82ca9db",
+  "handoff": {
+    "path": "/model/spromptgl/experiment/handoff.md",
+    "append_verified": true,
+    "prefix_unchanged": true,
+    "appended_characters": 11661,
+    "sha256": "fc662f3edc9e7733ef3a999820cef6256e170e3646ed4b8782a92b4e0f4c3e40"
+  },
+  "finalization": {
+    "status": "FINALIZED_READBACK_VERIFIED",
+    "source_sha": "015983ee79ffb6053f05dbb9e5f154ab75f95e84580ee3c79e2b1b8c6df29bd6",
+    "analysis_script_sha": "06a82a726988a634d5cc442f8b76dbde8b35055c85afafd4403f1675087ef65e",
+    "before_artifact_shas": {
+      "report.md": "50dfe40c7e4c0ea2fac72dc446a6917d789dda6b3c036a6663aa3ccf9b640bca",
+      "mechanism.csv": "83a0e0ab362e49bce649b3de52f00129d0a4d3e83f12a40d3ac3332c75c54157",
+      "audit_status.json": "26300f676a5e79a2baa599bc1282c8f25c520fa9e959f394a86e94dab7d29fa4"
+    },
+    "after_artifact_shas": {
+      "report.md": "3c68e443d21a8437ecd3698c5909de5e42b30cd2d91e8da2ef00cf42d7e74722",
+      "mechanism.csv": "61cccf8238e84a560918be98c696fb1a8fd55515731cf67bb7244f7ba83111fd"
+    },
+    "medical_same_CAM_alignment": {
+      "spearman": 0.1308233477542096,
+      "top1": 0.2205466421844609,
+      "top3_overlap": 0.29481416187538123
+    },
+    "anonymous_same_CAM_alignment": {
+      "spearman": 0.10518622307606267,
+      "top1": 0.17298788665698486,
+      "top3_overlap": 0.26640528354592624
+    },
+    "historical_E822_residual_relative_test_mean": 0.035888444469310346,
+    "weighted_harm_to_cls_gradient_mean_ratio": 3.503096584140342,
+    "handoff": {
+      "path": "/model/spromptgl/experiment/handoff.md",
+      "append_verified": true,
+      "prefix_unchanged": true,
+      "prefix_sha256": "5b97cdb484c6765c410e3c9db2aed51602df5eb343bf5c272f868b85b6ac7d61",
+      "sha256": "eecbf5c84ae2c2fc659b416682c5ff8add6a5c7275eecf18740a53d142855803",
+      "main_report_still_present": true,
+      "addition_readback_exact": true
+    },
+    "wall_seconds": 29.06110382080078,
+    "protected_files_unchanged": true,
+    "implementation_unchanged": true
+  },
+  "handoff_final_readback": {
+    "path": "/model/spromptgl/experiment/handoff.md",
+    "append_verified": true,
+    "prefix_unchanged": true,
+    "prefix_sha256": "5b97cdb484c6765c410e3c9db2aed51602df5eb343bf5c272f868b85b6ac7d61",
+    "sha256": "eecbf5c84ae2c2fc659b416682c5ff8add6a5c7275eecf18740a53d142855803",
+    "main_report_still_present": true,
+    "addition_readback_exact": true
+  },
+  "final_artifact_shas": {
+    "report.md": "3c68e443d21a8437ecd3698c5909de5e42b30cd2d91e8da2ef00cf42d7e74722",
+    "mechanism.csv": "61cccf8238e84a560918be98c696fb1a8fd55515731cf67bb7244f7ba83111fd",
+    "audit_status.json": "e261dc382b6df91eaed8b168beef2444a4b9844b45812f6752dc89750ba9add4",
+    "fold_metrics.csv": "9900afceae60fdbde93e72eec1adc28ac9ac2f5edd81b29fb67195c94842f3c0",
+    "summary.csv": "d4c85bf03e17223d2d4656cd2a52220682977669daaf01ac6b4f6299df8a40c8",
+    "paired_comparisons.csv": "f1e141d21f8b69287a6058c4c91b47caea23668ee7ad305bb20b7299c77084d5"
+  }
+}

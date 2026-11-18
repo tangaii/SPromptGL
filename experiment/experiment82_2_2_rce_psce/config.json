@@ -1,0 +1,87 @@
+{
+  "experiment": "Experiment 82.2.2 RCE-PSCE — Reliability-aware Counterfactual Evidence for Prompt-guided Spectral Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "expected_tasks": 20,
+  "groups": {
+    "G1": "RCE-Anonymous",
+    "G2": "RCE-Medical"
+  },
+  "max_epochs": 450,
+  "start_epoch": 10,
+  "early_stop_wait_gt": 200,
+  "workers_max": 10,
+  "initialization_seed_base": 822000,
+  "anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "covariance": "unbiased n-1; pooled weighted by n_c",
+  "residual_limit": 0.08,
+  "residual_loss_coefficient": 0.001,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "selection": "strict ACC improvement on test; retain earliest tie",
+  "preprocessing": "historical pre-CV scaling/RFE; transductive graph; val=test preserved",
+  "fold2_original_train_unchanged": true,
+  "fold2_pssec_zero_1based": [
+    377,
+    407
+  ],
+  "eigen_tie_rule": "gaps <= 1e-12 max absolute eigenvalue: coordinate-projector canonicalization; stable signed tie order; sign largest absolute coordinate positive",
+  "degenerate_rule": "trace <= epsilon: zero term; overall norm <= epsilon: complement total covariance fallback",
+  "normalization": "within-fold 16-component population variance plus epsilon",
+  "save_latest_every_epochs": 10,
+  "cf_loss_coefficient": 0.01,
+  "positive_tolerance": 1e-06,
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "teacher": "Per-epoch current original OutputLayer deepcopy, detached eval, legal training raw CAM only, no RNG",
+  "harm_loss_coefficient": 0.01,
+  "teacher_input_order": "original, 16 z-0.5*d8, 16 z-d8; patient-major",
+  "reliability_formula": "positive D8,D4; 2*min(D8,2*D4)/(D8+2*D4+EPS); otherwise zero",
+  "valid_rule": "legal & teacher correct & true margin>0 & max(relu(D8)*rho)>1e-6",
+  "harm_valid_rule": "same valid reliable patients as CF; equal mean over present ASD/TD classes",
+  "scale_rule": "warmup correct legal patients abs(D8)>1e-6; float64 midpoint median; max(median,1e-3); immutable",
+  "auxiliary_gradient": "extra deterministic PSCE(z.detach()); auxiliary CF and harm update only PSCE",
+  "semantic_off": "original E82.2 w=w_sp; residual-off=noop uniform w",
+  "scientific_rules": {
+    "GO_all": [
+      "G2 ACC>B0 and fold ACC wins>losses",
+      "G2 BA>=B0",
+      "G2 Prob-AUC delta>=-0.1pp",
+      "G2 SEN delta>=-0.5pp vs B0",
+      "G2 ACC>E82.2",
+      "G2 ACC>G1 and wins>losses",
+      "q substitution mean abs probability>=0.001 and net correction<0",
+      "residual-off net correction<0",
+      "reliable target alignment at Best exceeds initial on same Best CAM; no zero residual collapse"
+    ],
+    "PARTIAL": "only when G2 exceeds B0 and residual has diagnostic benefit, with some GO conditions lacking; cannot claim medical innovation",
+    "NO_GO": "otherwise; stop E82 spectral-semantic route, no E82.2.3 or search"
+  },
+  "initialization_validation": "rebuild pinned original E82.2 PSCE in isolated RNG, exact named-parameter and saved SHA check; no independent initial file claimed",
+  "no_midtraining_changes": true,
+  "zero_residual_collapse_rule": "mean test residual norm ratio to historical E82.2-G2 <=0.1, or mean relative norm<=1e-5"
+}
