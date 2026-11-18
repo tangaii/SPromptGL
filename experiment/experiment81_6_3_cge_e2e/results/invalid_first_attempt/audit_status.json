@@ -1,0 +1,1338 @@
+{
+  "status": "PASS",
+  "groups": [
+    "SA-PRCL-CGE-G1-Medical"
+  ],
+  "models_reported": [
+    "SA-PRCL-CGE-G1-Medical",
+    "DARG",
+    "E81.6.1-G1",
+    "E81.6.2-G1",
+    "E81.6.2-G3"
+  ],
+  "completed_tasks": 10,
+  "expected_tasks": 10,
+  "best_recomputed": 10,
+  "latest_restored": 10,
+  "historical_starts": 10,
+  "same_fold_initializations": 10,
+  "same_fold_initialization_fields": [
+    "warmup_sha256",
+    "warmup_rng_sha256",
+    "public_rng_sha256",
+    "base_model_sha256",
+    "base_optimizer_sha256",
+    "relation_init_sha256",
+    "split_sha",
+    "pair_sha",
+    "membership"
+  ],
+  "gradient_mechanism_status": "PASS",
+  "rng_status": "PASS",
+  "fold2_status": "PASS",
+  "invariant_recheck": {
+    "status": "PASS",
+    "parameter_count": 8032,
+    "parameter_shapes": {
+      "position": [
+        16,
+        32
+      ],
+      "null_key": [
+        32
+      ],
+      "local_proj.weight": [
+        32,
+        9
+      ],
+      "local_proj.bias": [
+        32
+      ],
+      "local_norm.weight": [
+        32
+      ],
+      "local_norm.bias": [
+        32
+      ],
+      "query_proj.weight": [
+        32,
+        32
+      ],
+      "query_proj.bias": [
+        32
+      ],
+      "query_norm.weight": [
+        32
+      ],
+      "query_norm.bias": [
+        32
+      ],
+      "visual_key_proj.weight": [
+        32,
+        64
+      ],
+      "visual_key_proj.bias": [
+        32
+      ],
+      "semantic_key_proj.weight": [
+        8,
+        64
+      ],
+      "value_proj.weight": [
+        32,
+        96
+      ],
+      "value_proj.bias": [
+        32
+      ],
+      "output.weight": [
+        9,
+        32
+      ]
+    },
+    "expected_shapes": {
+      "z_cam": [
+        5,
+        144
+      ],
+      "slots": [
+        5,
+        4,
+        4,
+        9
+      ],
+      "local": [
+        5,
+        16,
+        9
+      ],
+      "u": [
+        5,
+        16,
+        32
+      ],
+      "global": [
+        5,
+        4,
+        9
+      ],
+      "query": [
+        5,
+        16,
+        32
+      ],
+      "key_visual": [
+        5,
+        16,
+        15,
+        32
+      ],
+      "key_semantic": [
+        5,
+        16,
+        15,
+        8
+      ],
+      "value": [
+        5,
+        16,
+        15,
+        32
+      ],
+      "score_visual": [
+        5,
+        16,
+        16
+      ],
+      "score_semantic": [
+        5,
+        8,
+        16,
+        15
+      ],
+      "score_prompt": [
+        5,
+        8,
+        16,
+        16
+      ],
+      "attention_visual": [
+        5,
+        16,
+        16
+      ],
+      "attention_prompt": [
+        5,
+        8,
+        16,
+        16
+      ],
+      "messages": [
+        5,
+        8,
+        16,
+        32
+      ],
+      "delta_messages": [
+        5,
+        8,
+        16,
+        32
+      ],
+      "evidence": [
+        5,
+        8,
+        16
+      ],
+      "beta_normal": [
+        5,
+        4,
+        16
+      ],
+      "beta_abnormal": [
+        5,
+        4,
+        16
+      ],
+      "relation_contrast": [
+        5,
+        16,
+        32
+      ],
+      "d": [
+        5,
+        4,
+        4,
+        9
+      ],
+      "raw_delta": [
+        5,
+        144
+      ],
+      "delta": [
+        5,
+        144
+      ]
+    },
+    "zero_init_and_prompt_off_exact": true,
+    "null_only_exact": true,
+    "beta_max_sd": 0.04307851567864418,
+    "beta_prompt_mean_medical": {
+      "normal": [
+        0.24009113013744354,
+        0.28605708479881287,
+        0.2743270695209503,
+        0.19952473044395447
+      ],
+      "abnormal": [
+        0.24161846935749054,
+        0.23473691940307617,
+        0.29034337401390076,
+        0.23330125212669373
+      ]
+    },
+    "prompt_semantic_key_gradient_norms": [
+      4892.736328125,
+      4318.87939453125,
+      4281.05859375,
+      5183.35546875,
+      4808.74365234375,
+      4611.45556640625,
+      3907.479736328125,
+      4629.49072265625
+    ],
+    "eta_zero_gradient_norm": 0.0,
+    "eta_point_one_gradient_norm": 0.0003190424176864326,
+    "eta_one_gradient_norm": 0.003190424060449004,
+    "res_max_ratio": 0.009069928899407387,
+    "unique_pairs": 120,
+    "directed_pairs": 240,
+    "RES_pool_and_match_exact": true,
+    "gram_max_error_float64": 5.440092820663267e-15,
+    "gram_max_error_float32": 1.1920928955078125e-07,
+    "numerical_rank": 8
+  },
+  "source_sha256": "dba2b1cc1f23f7f6fd2844bd6f337f4e1570a61f05e052bb7e3989ca2b0b7e0f",
+  "prompt_cache_sha256": "7bfd1d6e11bb9983e9896e682b5a8c40bf606c919dfd38bae368436955f83aff",
+  "g1_gate": false,
+  "g2_gate": "NOT_EXECUTED_CONDITIONAL",
+  "g2_gate_checks": {
+    "all10_acc": false,
+    "all10_hard_auc": false,
+    "exclude_fold2_acc": false,
+    "exclude_fold2_hard_auc": false
+  },
+  "research_decision": "E2E_MECHANISM_PASS_PERFORMANCE_NO_GO",
+  "decision_reasons": {
+    "performance": false,
+    "grouping": false,
+    "checks": {
+      "all10_acc": false,
+      "all10_hard_auc": false,
+      "exclude_fold2_acc": false,
+      "exclude_fold2_hard_auc": false
+    },
+    "decision": "E2E_MECHANISM_PASS_PERFORMANCE_NO_GO"
+  },
+  "mechanism_correction_totals": {
+    "SA-PRCL-CGE-G1-Medical": {
+      "all10": {
+        "A_to_B": {
+          "corrected": 4,
+          "harmed": 9,
+          "net_corrections": -5
+        },
+        "B_to_C": {
+          "corrected": 2,
+          "harmed": 0,
+          "net_corrections": 2
+        },
+        "A_to_C": {
+          "corrected": 4,
+          "harmed": 7,
+          "net_corrections": -3
+        }
+      },
+      "exclude_fold2": {
+        "A_to_B": {
+          "corrected": 3,
+          "harmed": 7,
+          "net_corrections": -4
+        },
+        "B_to_C": {
+          "corrected": 2,
+          "harmed": 0,
+          "net_corrections": 2
+        },
+        "A_to_C": {
+          "corrected": 3,
+          "harmed": 5,
+          "net_corrections": -2
+        }
+      }
+    }
+  },
+  "fold_mechanism_summary": [
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 1,
+      "best_epoch_1based": 199,
+      "metrics": {
+        "acc": 95.45454545454545,
+        "hard_auc": 95.1219512195122,
+        "prob_auc": 96.15983393876493,
+        "sen": 90.2439024390244,
+        "spe": 100.0,
+        "asd_f1": 94.87179487179486
+      },
+      "base_only_metrics": {
+        "acc": 94.31818181818183,
+        "hard_auc": 93.90243902439023,
+        "prob_auc": 96.26362221069019,
+        "sen": 87.8048780487805,
+        "spe": 100.0,
+        "asd_f1": 93.5064935064935
+      },
+      "latest_metrics": {
+        "acc": 73.86363636363636,
+        "hard_auc": 74.75350285417748,
+        "prob_auc": 80.02075765438505,
+        "sen": 87.8048780487805,
+        "spe": 61.702127659574465,
+        "asd_f1": 75.78947368421053
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.08916766196489334,
+      "residual_mean_ratio": 0.08028491586446762,
+      "cam_norm_mean": 4.911868095397949,
+      "cam_enhanced_cosine_mean": 0.9971972703933716,
+      "residual_parallel_fraction_mean": 0.2897334694862366,
+      "residual_orthogonal_fraction_mean": 0.9529866576194763,
+      "layernorm144_difference_mean": 0.3501051962375641,
+      "hidden_difference_mean": 0.04095910117030144,
+      "logit_margin_shift_mean": 0.008011040277779102,
+      "relation_response_effective_rank": 42.51228352276004,
+      "beta_normal_entropy": 1.3824180364608765,
+      "beta_abnormal_entropy": 1.3843040466308594,
+      "beta_normal_patient_sd": 0.021966641768813133,
+      "beta_abnormal_patient_sd": 0.015889521688222885,
+      "prompt_attention_mean_pairwise_mae": 0.008875230327248573,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1170,
+        "nonzero_delta_gradient_epochs": 1167,
+        "nonzero_controlled_gradient_epochs": 1167,
+        "negative_cosine_fraction": 0.6641025641025641,
+        "mean_base_norm": 2.4203643848171406,
+        "mean_delta_norm": 0.09882201062982794,
+        "mean_controlled_ratio": 0.004343653155282957,
+        "max_controlled_ratio": 0.13407682673176316
+      },
+      "historical_A_metrics": {
+        "acc": 95.45454545454545,
+        "hard_auc": 95.1219512195122,
+        "prob_auc": 96.00415153087701,
+        "sen": 90.2439024390244,
+        "spe": 100.0,
+        "asd_f1": 94.87179487179486
+      },
+      "current_epoch_B_metrics": {
+        "acc": 94.31818181818183,
+        "hard_auc": 93.90243902439023,
+        "prob_auc": 96.26362221069019,
+        "sen": 87.8048780487805,
+        "spe": 100.0,
+        "asd_f1": 93.5064935064935
+      },
+      "current_full_C_metrics": {
+        "acc": 95.45454545454545,
+        "hard_auc": 95.1219512195122,
+        "prob_auc": 96.15983393876493,
+        "sen": 90.2439024390244,
+        "spe": 100.0,
+        "asd_f1": 94.87179487179486
+      },
+      "A_to_B": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 1,
+        "corrected": 1,
+        "harmed": 0,
+        "net_corrections": 1
+      },
+      "A_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 2,
+      "best_epoch_1based": 242,
+      "metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.64156945917286,
+        "prob_auc": 93.00106044538707,
+        "sen": 87.8048780487805,
+        "spe": 93.47826086956522,
+        "asd_f1": 90.0
+      },
+      "base_only_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.64156945917286,
+        "prob_auc": 92.89501590668081,
+        "sen": 87.8048780487805,
+        "spe": 93.47826086956522,
+        "asd_f1": 90.0
+      },
+      "latest_metrics": {
+        "acc": 82.75862068965517,
+        "hard_auc": 82.23753976670201,
+        "prob_auc": 90.98621420996818,
+        "sen": 73.17073170731707,
+        "spe": 91.30434782608695,
+        "asd_f1": 80.0
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.09306588768959045,
+      "residual_mean_ratio": 0.08473461866378784,
+      "cam_norm_mean": 3.6086442470550537,
+      "cam_enhanced_cosine_mean": 0.9972172975540161,
+      "residual_parallel_fraction_mean": 0.3954647481441498,
+      "residual_orthogonal_fraction_mean": 0.9067292809486389,
+      "layernorm144_difference_mean": 0.2912135422229767,
+      "hidden_difference_mean": 0.06221402809023857,
+      "logit_margin_shift_mean": 0.0017596989637240767,
+      "relation_response_effective_rank": 41.95226166308147,
+      "beta_normal_entropy": 1.3820892572402954,
+      "beta_abnormal_entropy": 1.3842052221298218,
+      "beta_normal_patient_sd": 0.022991113364696503,
+      "beta_abnormal_patient_sd": 0.016158774495124817,
+      "prompt_attention_mean_pairwise_mae": 0.010856113396584988,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1299,
+        "nonzero_delta_gradient_epochs": 1294,
+        "nonzero_controlled_gradient_epochs": 1294,
+        "negative_cosine_fraction": 0.6966897613548884,
+        "mean_base_norm": 2.691460369638422,
+        "mean_delta_norm": 0.1005468695010975,
+        "mean_controlled_ratio": 0.0032150576926481688,
+        "max_controlled_ratio": 0.1054614706871646
+      },
+      "historical_A_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.86108165429481,
+        "prob_auc": 92.41781548250265,
+        "sen": 90.2439024390244,
+        "spe": 93.47826086956522,
+        "asd_f1": 91.35802469135803
+      },
+      "current_epoch_B_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.64156945917286,
+        "prob_auc": 92.89501590668081,
+        "sen": 87.8048780487805,
+        "spe": 93.47826086956522,
+        "asd_f1": 90.0
+      },
+      "current_full_C_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.64156945917286,
+        "prob_auc": 93.00106044538707,
+        "sen": 87.8048780487805,
+        "spe": 93.47826086956522,
+        "asd_f1": 90.0
+      },
+      "A_to_B": {
+        "flips": 3,
+        "corrected": 1,
+        "harmed": 2,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 3,
+        "corrected": 1,
+        "harmed": 2,
+        "net_corrections": -1
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 3,
+      "best_epoch_1based": 157,
+      "metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.6458112407211,
+        "prob_auc": 88.5471898197243,
+        "sen": 92.6829268292683,
+        "spe": 82.6086956521739,
+        "asd_f1": 87.35632183908046
+      },
+      "base_only_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.6458112407211,
+        "prob_auc": 88.5471898197243,
+        "sen": 92.6829268292683,
+        "spe": 82.6086956521739,
+        "asd_f1": 87.35632183908046
+      },
+      "latest_metrics": {
+        "acc": 78.16091954022988,
+        "hard_auc": 77.49204665959704,
+        "prob_auc": 85.63096500530223,
+        "sen": 65.85365853658537,
+        "spe": 89.13043478260869,
+        "asd_f1": 73.97260273972603
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.0489971749484539,
+      "residual_mean_ratio": 0.03338614106178284,
+      "cam_norm_mean": 5.8918023109436035,
+      "cam_enhanced_cosine_mean": 0.9995136260986328,
+      "residual_parallel_fraction_mean": 0.3477877378463745,
+      "residual_orthogonal_fraction_mean": 0.9305408596992493,
+      "layernorm144_difference_mean": 0.18043121695518494,
+      "hidden_difference_mean": 0.0333121120929718,
+      "logit_margin_shift_mean": 0.010512145236134529,
+      "relation_response_effective_rank": 43.788510750164285,
+      "beta_normal_entropy": 1.382302165031433,
+      "beta_abnormal_entropy": 1.384270429611206,
+      "beta_normal_patient_sd": 0.022494172677397728,
+      "beta_abnormal_patient_sd": 0.015938540920615196,
+      "prompt_attention_mean_pairwise_mae": 0.011174592189490795,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1044,
+        "nonzero_delta_gradient_epochs": 1040,
+        "nonzero_controlled_gradient_epochs": 1040,
+        "negative_cosine_fraction": 0.6580459770114943,
+        "mean_base_norm": 2.0956336559082227,
+        "mean_delta_norm": 0.06503555520181518,
+        "mean_controlled_ratio": 0.002498270331352449,
+        "max_controlled_ratio": 0.054278080059108315
+      },
+      "historical_A_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.6458112407211,
+        "prob_auc": 89.13043478260869,
+        "sen": 92.6829268292683,
+        "spe": 82.6086956521739,
+        "asd_f1": 87.35632183908046
+      },
+      "current_epoch_B_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.6458112407211,
+        "prob_auc": 88.5471898197243,
+        "sen": 92.6829268292683,
+        "spe": 82.6086956521739,
+        "asd_f1": 87.35632183908046
+      },
+      "current_full_C_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.6458112407211,
+        "prob_auc": 88.5471898197243,
+        "sen": 92.6829268292683,
+        "spe": 82.6086956521739,
+        "asd_f1": 87.35632183908046
+      },
+      "A_to_B": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 4,
+      "best_epoch_1based": 245,
+      "metrics": {
+        "acc": 94.25287356321839,
+        "hard_auc": 93.93617021276596,
+        "prob_auc": 96.01063829787233,
+        "sen": 90.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 93.5064935064935
+      },
+      "base_only_metrics": {
+        "acc": 94.25287356321839,
+        "hard_auc": 93.93617021276596,
+        "prob_auc": 96.06382978723403,
+        "sen": 90.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 93.5064935064935
+      },
+      "latest_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 87.5531914893617,
+        "prob_auc": 95.31914893617022,
+        "sen": 90.0,
+        "spe": 85.1063829787234,
+        "asd_f1": 86.74698795180723
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.08736136555671692,
+      "residual_mean_ratio": 0.06959729641675949,
+      "cam_norm_mean": 4.151646137237549,
+      "cam_enhanced_cosine_mean": 0.9976131319999695,
+      "residual_parallel_fraction_mean": 0.1713457703590393,
+      "residual_orthogonal_fraction_mean": 0.9795650243759155,
+      "layernorm144_difference_mean": 0.2237422913312912,
+      "hidden_difference_mean": 0.025157801806926727,
+      "logit_margin_shift_mean": 0.009159097447991371,
+      "relation_response_effective_rank": 36.609915466941494,
+      "beta_normal_entropy": 1.3772639036178589,
+      "beta_abnormal_entropy": 1.3843469619750977,
+      "beta_normal_patient_sd": 0.03400907665491104,
+      "beta_abnormal_patient_sd": 0.0155614223331213,
+      "prompt_attention_mean_pairwise_mae": 0.01069625373929739,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1308,
+        "nonzero_delta_gradient_epochs": 1303,
+        "nonzero_controlled_gradient_epochs": 1303,
+        "negative_cosine_fraction": 0.6414373088685015,
+        "mean_base_norm": 2.6814571722618497,
+        "mean_delta_norm": 0.0597172165634453,
+        "mean_controlled_ratio": 0.0018586054389628538,
+        "max_controlled_ratio": 0.058558194739223045
+      },
+      "historical_A_metrics": {
+        "acc": 94.25287356321839,
+        "hard_auc": 93.93617021276596,
+        "prob_auc": 95.79787234042553,
+        "sen": 90.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 93.5064935064935
+      },
+      "current_epoch_B_metrics": {
+        "acc": 94.25287356321839,
+        "hard_auc": 93.93617021276596,
+        "prob_auc": 96.06382978723403,
+        "sen": 90.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 93.5064935064935
+      },
+      "current_full_C_metrics": {
+        "acc": 94.25287356321839,
+        "hard_auc": 93.93617021276596,
+        "prob_auc": 96.01063829787233,
+        "sen": 90.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 93.5064935064935
+      },
+      "A_to_B": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 5,
+      "best_epoch_1based": 244,
+      "metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.80851063829788,
+        "prob_auc": 96.01063829787235,
+        "sen": 90.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 91.13924050632912
+      },
+      "base_only_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.80851063829788,
+        "prob_auc": 95.90425531914893,
+        "sen": 90.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 91.13924050632912
+      },
+      "latest_metrics": {
+        "acc": 88.50574712643679,
+        "hard_auc": 88.98936170212765,
+        "prob_auc": 93.88297872340426,
+        "sen": 95.0,
+        "spe": 82.97872340425532,
+        "asd_f1": 88.37209302325581
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.09534157812595367,
+      "residual_mean_ratio": 0.0832613855600357,
+      "cam_norm_mean": 3.6748263835906982,
+      "cam_enhanced_cosine_mean": 0.9976357817649841,
+      "residual_parallel_fraction_mean": 0.48705941438674927,
+      "residual_orthogonal_fraction_mean": 0.8530818819999695,
+      "layernorm144_difference_mean": 0.2846756875514984,
+      "hidden_difference_mean": 0.07827712595462799,
+      "logit_margin_shift_mean": -0.01861104741692543,
+      "relation_response_effective_rank": 35.66606284698685,
+      "beta_normal_entropy": 1.384089708328247,
+      "beta_abnormal_entropy": 1.3837437629699707,
+      "beta_normal_patient_sd": 0.016603216528892517,
+      "beta_abnormal_patient_sd": 0.017834940925240517,
+      "prompt_attention_mean_pairwise_mae": 0.008065895177423954,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1305,
+        "nonzero_delta_gradient_epochs": 1301,
+        "nonzero_controlled_gradient_epochs": 1301,
+        "negative_cosine_fraction": 0.7379310344827587,
+        "mean_base_norm": 2.1188224350486964,
+        "mean_delta_norm": 0.06370588008540241,
+        "mean_controlled_ratio": 0.002600232026232961,
+        "max_controlled_ratio": 0.093251595534281
+      },
+      "historical_A_metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 93.24468085106382,
+        "prob_auc": 95.37234042553192,
+        "sen": 95.0,
+        "spe": 91.48936170212765,
+        "asd_f1": 92.6829268292683
+      },
+      "current_epoch_B_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.80851063829788,
+        "prob_auc": 95.90425531914893,
+        "sen": 90.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 91.13924050632912
+      },
+      "current_full_C_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.80851063829788,
+        "prob_auc": 96.01063829787235,
+        "sen": 90.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 91.13924050632912
+      },
+      "A_to_B": {
+        "flips": 3,
+        "corrected": 1,
+        "harmed": 2,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 3,
+        "corrected": 1,
+        "harmed": 2,
+        "net_corrections": -1
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 6,
+      "best_epoch_1based": 96,
+      "metrics": {
+        "acc": 95.40229885057471,
+        "hard_auc": 95.18617021276596,
+        "prob_auc": 97.12765957446808,
+        "sen": 92.5,
+        "spe": 97.87234042553192,
+        "asd_f1": 94.87179487179486
+      },
+      "base_only_metrics": {
+        "acc": 95.40229885057471,
+        "hard_auc": 95.18617021276596,
+        "prob_auc": 97.12765957446808,
+        "sen": 92.5,
+        "spe": 97.87234042553192,
+        "asd_f1": 94.87179487179486
+      },
+      "latest_metrics": {
+        "acc": 88.50574712643679,
+        "hard_auc": 88.8031914893617,
+        "prob_auc": 97.12765957446808,
+        "sen": 92.5,
+        "spe": 85.1063829787234,
+        "asd_f1": 88.09523809523809
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.011483229696750641,
+      "residual_mean_ratio": 0.005528257228434086,
+      "cam_norm_mean": 7.9180755615234375,
+      "cam_enhanced_cosine_mean": 0.9999833106994629,
+      "residual_parallel_fraction_mean": 0.06393703073263168,
+      "residual_orthogonal_fraction_mean": 0.9966914653778076,
+      "layernorm144_difference_mean": 0.04336826130747795,
+      "hidden_difference_mean": 0.005255784839391708,
+      "logit_margin_shift_mean": 0.0011609570356085896,
+      "relation_response_effective_rank": 43.16266405800005,
+      "beta_normal_entropy": 1.3826571702957153,
+      "beta_abnormal_entropy": 1.3838682174682617,
+      "beta_normal_patient_sd": 0.021333450451493263,
+      "beta_abnormal_patient_sd": 0.01743212714791298,
+      "prompt_attention_mean_pairwise_mae": 0.013791799545288086,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 861,
+        "nonzero_delta_gradient_epochs": 857,
+        "nonzero_controlled_gradient_epochs": 857,
+        "negative_cosine_fraction": 0.6155632984901278,
+        "mean_base_norm": 1.9419996238668,
+        "mean_delta_norm": 0.04418788980092508,
+        "mean_controlled_ratio": 0.0017053261397653896,
+        "max_controlled_ratio": 0.0471465482954878
+      },
+      "historical_A_metrics": {
+        "acc": 96.55172413793103,
+        "hard_auc": 96.43617021276594,
+        "prob_auc": 97.07446808510637,
+        "sen": 95.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 96.20253164556962
+      },
+      "current_epoch_B_metrics": {
+        "acc": 95.40229885057471,
+        "hard_auc": 95.18617021276596,
+        "prob_auc": 97.12765957446808,
+        "sen": 92.5,
+        "spe": 97.87234042553192,
+        "asd_f1": 94.87179487179486
+      },
+      "current_full_C_metrics": {
+        "acc": 95.40229885057471,
+        "hard_auc": 95.18617021276596,
+        "prob_auc": 97.12765957446808,
+        "sen": 92.5,
+        "spe": 97.87234042553192,
+        "asd_f1": 94.87179487179486
+      },
+      "A_to_B": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 7,
+      "best_epoch_1based": 171,
+      "metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.43617021276596,
+        "prob_auc": 96.27659574468085,
+        "sen": 85.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 90.66666666666666
+      },
+      "base_only_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.43617021276596,
+        "prob_auc": 96.22340425531914,
+        "sen": 85.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 90.66666666666666
+      },
+      "latest_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 86.99468085106382,
+        "prob_auc": 93.88297872340426,
+        "sen": 82.5,
+        "spe": 91.48936170212765,
+        "asd_f1": 85.71428571428571
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.09042477607727051,
+      "residual_mean_ratio": 0.07673244923353195,
+      "cam_norm_mean": 5.453361988067627,
+      "cam_enhanced_cosine_mean": 0.9977143406867981,
+      "residual_parallel_fraction_mean": 0.40540647506713867,
+      "residual_orthogonal_fraction_mean": 0.9085856080055237,
+      "layernorm144_difference_mean": 0.36620596051216125,
+      "hidden_difference_mean": 0.05737137049436569,
+      "logit_margin_shift_mean": -0.006979476194828749,
+      "relation_response_effective_rank": 43.53984504797836,
+      "beta_normal_entropy": 1.3816784620285034,
+      "beta_abnormal_entropy": 1.3851490020751953,
+      "beta_normal_patient_sd": 0.024333886802196503,
+      "beta_abnormal_patient_sd": 0.01201528962701559,
+      "prompt_attention_mean_pairwise_mae": 0.011457923799753189,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1086,
+        "nonzero_delta_gradient_epochs": 1083,
+        "nonzero_controlled_gradient_epochs": 1083,
+        "negative_cosine_fraction": 0.7265193370165746,
+        "mean_base_norm": 2.611144736265548,
+        "mean_delta_norm": 0.0850274577988345,
+        "mean_controlled_ratio": 0.0024795946653154302,
+        "max_controlled_ratio": 0.043177946541025886
+      },
+      "historical_A_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.18617021276594,
+        "prob_auc": 95.37234042553192,
+        "sen": 82.5,
+        "spe": 97.87234042553192,
+        "asd_f1": 89.1891891891892
+      },
+      "current_epoch_B_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.43617021276596,
+        "prob_auc": 96.22340425531914,
+        "sen": 85.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 90.66666666666666
+      },
+      "current_full_C_metrics": {
+        "acc": 91.95402298850574,
+        "hard_auc": 91.43617021276596,
+        "prob_auc": 96.27659574468085,
+        "sen": 85.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 90.66666666666666
+      },
+      "A_to_B": {
+        "flips": 1,
+        "corrected": 1,
+        "harmed": 0,
+        "net_corrections": 1
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 1,
+        "corrected": 1,
+        "harmed": 0,
+        "net_corrections": 1
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 8,
+      "best_epoch_1based": 238,
+      "metrics": {
+        "acc": 88.50574712643679,
+        "hard_auc": 88.24468085106383,
+        "prob_auc": 88.77659574468085,
+        "sen": 85.0,
+        "spe": 91.48936170212765,
+        "asd_f1": 87.17948717948718
+      },
+      "base_only_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 86.99468085106382,
+        "prob_auc": 88.67021276595744,
+        "sen": 82.5,
+        "spe": 91.48936170212765,
+        "asd_f1": 85.71428571428571
+      },
+      "latest_metrics": {
+        "acc": 45.97701149425287,
+        "hard_auc": 50.0,
+        "prob_auc": 58.74999999999999,
+        "sen": 100.0,
+        "spe": 0.0,
+        "asd_f1": 62.99212598425197
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.09368005394935608,
+      "residual_mean_ratio": 0.07588352262973785,
+      "cam_norm_mean": 3.9391093254089355,
+      "cam_enhanced_cosine_mean": 0.9974749088287354,
+      "residual_parallel_fraction_mean": 0.2763814926147461,
+      "residual_orthogonal_fraction_mean": 0.9422975182533264,
+      "layernorm144_difference_mean": 0.2854336202144623,
+      "hidden_difference_mean": 0.0713593140244484,
+      "logit_margin_shift_mean": 0.03727458417415619,
+      "relation_response_effective_rank": 35.503131172299845,
+      "beta_normal_entropy": 1.376473307609558,
+      "beta_abnormal_entropy": 1.381024718284607,
+      "beta_normal_patient_sd": 0.03500288724899292,
+      "beta_abnormal_patient_sd": 0.025859687477350235,
+      "prompt_attention_mean_pairwise_mae": 0.007256835233420134,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1287,
+        "nonzero_delta_gradient_epochs": 1284,
+        "nonzero_controlled_gradient_epochs": 1284,
+        "negative_cosine_fraction": 0.6721056721056721,
+        "mean_base_norm": 2.663302351084189,
+        "mean_delta_norm": 0.11798145544803205,
+        "mean_controlled_ratio": 0.0034630319047357946,
+        "max_controlled_ratio": 0.06984079465573251
+      },
+      "historical_A_metrics": {
+        "acc": 88.50574712643679,
+        "hard_auc": 88.24468085106383,
+        "prob_auc": 87.81914893617022,
+        "sen": 85.0,
+        "spe": 91.48936170212765,
+        "asd_f1": 87.17948717948718
+      },
+      "current_epoch_B_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 86.99468085106382,
+        "prob_auc": 88.67021276595744,
+        "sen": 82.5,
+        "spe": 91.48936170212765,
+        "asd_f1": 85.71428571428571
+      },
+      "current_full_C_metrics": {
+        "acc": 88.50574712643679,
+        "hard_auc": 88.24468085106383,
+        "prob_auc": 88.77659574468085,
+        "sen": 85.0,
+        "spe": 91.48936170212765,
+        "asd_f1": 87.17948717948718
+      },
+      "A_to_B": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 1,
+        "corrected": 1,
+        "harmed": 0,
+        "net_corrections": 1
+      },
+      "A_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 9,
+      "best_epoch_1based": 176,
+      "metrics": {
+        "acc": 89.65517241379311,
+        "hard_auc": 89.30851063829788,
+        "prob_auc": 92.92553191489361,
+        "sen": 85.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 88.31168831168831
+      },
+      "base_only_metrics": {
+        "acc": 89.65517241379311,
+        "hard_auc": 89.30851063829788,
+        "prob_auc": 92.97872340425532,
+        "sen": 85.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 88.31168831168831
+      },
+      "latest_metrics": {
+        "acc": 87.35632183908046,
+        "hard_auc": 86.43617021276594,
+        "prob_auc": 89.62765957446808,
+        "sen": 75.0,
+        "spe": 97.87234042553192,
+        "asd_f1": 84.50704225352112
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.08205088973045349,
+      "residual_mean_ratio": 0.05521959438920021,
+      "cam_norm_mean": 5.298262119293213,
+      "cam_enhanced_cosine_mean": 0.9986745119094849,
+      "residual_parallel_fraction_mean": 0.3516325354576111,
+      "residual_orthogonal_fraction_mean": 0.9324842691421509,
+      "layernorm144_difference_mean": 0.265115350484848,
+      "hidden_difference_mean": 0.034642431885004044,
+      "logit_margin_shift_mean": 0.022427745163440704,
+      "relation_response_effective_rank": 44.7667891227218,
+      "beta_normal_entropy": 1.3838980197906494,
+      "beta_abnormal_entropy": 1.3835738897323608,
+      "beta_normal_patient_sd": 0.017280125990509987,
+      "beta_abnormal_patient_sd": 0.018406981602311134,
+      "prompt_attention_mean_pairwise_mae": 0.011420117691159248,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1101,
+        "nonzero_delta_gradient_epochs": 1097,
+        "nonzero_controlled_gradient_epochs": 1097,
+        "negative_cosine_fraction": 0.6630336058128974,
+        "mean_base_norm": 2.2789888893910755,
+        "mean_delta_norm": 0.0772716019649448,
+        "mean_controlled_ratio": 0.0029397179308910987,
+        "max_controlled_ratio": 0.08584138782948474
+      },
+      "historical_A_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.55851063829788,
+        "prob_auc": 92.34042553191489,
+        "sen": 87.5,
+        "spe": 93.61702127659575,
+        "asd_f1": 89.74358974358975
+      },
+      "current_epoch_B_metrics": {
+        "acc": 89.65517241379311,
+        "hard_auc": 89.30851063829788,
+        "prob_auc": 92.97872340425532,
+        "sen": 85.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 88.31168831168831
+      },
+      "current_full_C_metrics": {
+        "acc": 89.65517241379311,
+        "hard_auc": 89.30851063829788,
+        "prob_auc": 92.92553191489361,
+        "sen": 85.0,
+        "spe": 93.61702127659575,
+        "asd_f1": 88.31168831168831
+      },
+      "A_to_B": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 1,
+        "corrected": 0,
+        "harmed": 1,
+        "net_corrections": -1
+      }
+    },
+    {
+      "group": "SA-PRCL-CGE-G1-Medical",
+      "fold": 10,
+      "best_epoch_1based": 204,
+      "metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 92.87234042553192,
+        "prob_auc": 92.81914893617021,
+        "sen": 90.0,
+        "spe": 95.74468085106383,
+        "asd_f1": 92.3076923076923
+      },
+      "base_only_metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 92.87234042553192,
+        "prob_auc": 92.81914893617021,
+        "sen": 90.0,
+        "spe": 95.74468085106383,
+        "asd_f1": 92.3076923076923
+      },
+      "latest_metrics": {
+        "acc": 90.80459770114942,
+        "hard_auc": 90.74468085106382,
+        "prob_auc": 92.92553191489361,
+        "sen": 90.0,
+        "spe": 91.48936170212765,
+        "asd_f1": 90.0
+      },
+      "best_recomputed": true,
+      "latest_restored": true,
+      "initialization_verified": true,
+      "optimizer_state_count": 4,
+      "prompt_off_exact": true,
+      "null_only_exact": true,
+      "residual_max_ratio": 0.08748592436313629,
+      "residual_mean_ratio": 0.07742328941822052,
+      "cam_norm_mean": 5.001922607421875,
+      "cam_enhanced_cosine_mean": 0.9977082014083862,
+      "residual_parallel_fraction_mean": 0.4157443940639496,
+      "residual_orthogonal_fraction_mean": 0.9006597399711609,
+      "layernorm144_difference_mean": 0.30388396978378296,
+      "hidden_difference_mean": 0.03225138410925865,
+      "logit_margin_shift_mean": 0.014352806843817234,
+      "relation_response_effective_rank": 32.00193645414607,
+      "beta_normal_entropy": 1.3841155767440796,
+      "beta_abnormal_entropy": 1.3836084604263306,
+      "beta_normal_patient_sd": 0.016561266034841537,
+      "beta_abnormal_patient_sd": 0.018478689715266228,
+      "prompt_attention_mean_pairwise_mae": 0.012582427822053432,
+      "gradient_summary": {
+        "epochs_with_gradient_diagnostics": 1185,
+        "nonzero_delta_gradient_epochs": 1180,
+        "nonzero_controlled_gradient_epochs": 1180,
+        "negative_cosine_fraction": 0.7012658227848101,
+        "mean_base_norm": 2.176745580688576,
+        "mean_delta_norm": 0.06463925085150182,
+        "mean_controlled_ratio": 0.0023495547613282975,
+        "max_controlled_ratio": 0.07038827966591817
+      },
+      "historical_A_metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 93.05851063829788,
+        "prob_auc": 93.61702127659575,
+        "sen": 92.5,
+        "spe": 93.61702127659575,
+        "asd_f1": 92.5
+      },
+      "current_epoch_B_metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 92.87234042553192,
+        "prob_auc": 92.81914893617021,
+        "sen": 90.0,
+        "spe": 95.74468085106383,
+        "asd_f1": 92.3076923076923
+      },
+      "current_full_C_metrics": {
+        "acc": 93.10344827586206,
+        "hard_auc": 92.87234042553192,
+        "prob_auc": 92.81914893617021,
+        "sen": 90.0,
+        "spe": 95.74468085106383,
+        "asd_f1": 92.3076923076923
+      },
+      "A_to_B": {
+        "flips": 2,
+        "corrected": 1,
+        "harmed": 1,
+        "net_corrections": 0
+      },
+      "B_to_C": {
+        "flips": 0,
+        "corrected": 0,
+        "harmed": 0,
+        "net_corrections": 0
+      },
+      "A_to_C": {
+        "flips": 2,
+        "corrected": 1,
+        "harmed": 1,
+        "net_corrections": 0
+      }
+    }
+  ],
+  "audit_timestamp_utc": "2026-11-18T03:32:15Z"
+}
