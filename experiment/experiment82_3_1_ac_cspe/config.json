@@ -1,0 +1,111 @@
+{
+  "experiment": "Experiment 82.3.1 AC-CSPE — Adaptive Class-Calibrated Prompt Spectral Evidence Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "expected_tasks": 20,
+  "groups": {
+    "G1": "AC-CSPE-Anonymous",
+    "G2": "AC-CSPE-Medical"
+  },
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "selection": "Historical val=test. Strict test ACC improvement. Keep earliest tie.",
+  "preprocessing": "Historical pre-CV RFE and scaling, transductive graph, train/test arrays unchanged.",
+  "workers_max": 10,
+  "threads_per_worker": 1,
+  "initialization_seed_base": 822000,
+  "historical_anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "prompt_zero_based": {
+    "normal_like": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "abnormal_like": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_excluded_from_new_paths_rows_1based": [
+    377,
+    407
+  ],
+  "class_statistics": {
+    "variance_ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "estimation": "Initialize with byte-exact E82.3 fit on legal E61 epoch10 training rows; explicit post-evaluation EMA follows below."
+  },
+  "residual_limit": 0.08,
+  "residual_loss_coefficient": 0.001,
+  "prompt_loss_coefficient": 0.01,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "preflight": {
+    "row_sum_absolute_tolerance": 2e-06,
+    "maximum_weighted_aux_or_residual_to_prompt_classification_grad_ratio": 100.0,
+    "llr_no_discrimination": "Block if raw and bounded per-direction and direction-mean training ROC-AUC are all exactly chance within 1e-12, or any required evidence is nonfinite. No held-out labels used.",
+    "gradient_scale_scope": "Compare 0.01*L_Prompt and 0.001*L_res to L_cls on the shared trainable Prompt parameters. Also record on DARG, CAM, original head and spectral parameters."
+  },
+  "decision": {
+    "asd_sensitivity_min_delta_pp_vs_darg": -0.5,
+    "prob_auc_min_delta_pp_vs_darg": -0.1,
+    "go": "Require all audits, higher G2 ACC and no lower BA than DARG, SEN and Prob-AUC tolerances, higher G2 ACC and BA than both B1 and G1, positive G2 patient net corrections vs DARG, and T1 causing negative net corrections, lower fold-mean ACC, no higher fold-mean BA and net losses in at least two folds. T2-T5 and paired B2 are prespecified mechanism or historical comparisons.",
+    "partial": "All audits pass and either CSPE group improves at least one of ACC or BA vs DARG with the other no lower and positive patient net corrections. One or more GO criteria are unmet.",
+    "no_go": "Formal audit fails or neither GO nor PARTIAL is met. A Prob-AUC-only improvement does not satisfy the hard classification requirement. A Preflight block is reported as stopped before formal testing.",
+    "min_query_removal_net_loss_folds": 2
+  },
+  "ema": {
+    "alpha": 0.1,
+    "compute": "CPU float64 legal CAM projection using the original spectrum cache, then observed first and uncentered second moments.",
+    "initialization": "Start with E82.3 mean and stable inference variance exactly. Derive raw second moment from E82.3 unbiased variance times (n-1)/n plus squared mean.",
+    "variance": "Clamp roundoff in second minus mean squared at zero and apply n/(n-1) by class before E82.3 stabilization. Inference uses float32.",
+    "order": "Train, four optimizer steps, evaluate once and select Best with prior EMA, freeze Best if selected, update EMA once using captured legal eval CAM, persist post-update Latest."
+  },
+  "direction_selection": {
+    "score": "E82.3 scores from pre-gate normalized coverage and bounded Gaussian LLR.",
+    "weights": "Normalize coverage times class-specific softplus of signed bounded LLR per class, then mix with softmax class scores."
+  },
+  "gradient_diagnostics": {
+    "scope": "Per epoch on the shared Prompt parameters only, using two autograd.grad calls on the existing training graph before the normal backward.",
+    "long_term_summary": "Report all epochs and final quartile by fold. A negative cosine indicates opposing components on the shared Prompt parameters."
+  }
+}
