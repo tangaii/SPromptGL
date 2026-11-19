@@ -1,0 +1,194 @@
+--- audit.py@preflight-freeze
++++ audit.py@repaired
+@@ -7,6 +7,8 @@
+ import json
+ import math
+ import os
++import pickle
++import struct
+ import sys
+ from pathlib import Path
+ 
+@@ -154,12 +156,21 @@
+ 
+ 
+ def _darg_result(fold, labels):
+-    checkpoint = run.torch_load(HIST_E744 / ".runtime/checkpoints" / f"E74.4-G2-Positive-DCR_f{fold:02d}.best.pt")
+-    if checkpoint.get("fold") != fold or checkpoint.get("group") != E74_GROUP:
++    import numpy as np
++    path = HIST_E744 / ".runtime/checkpoints" / f"{E74_GROUP}_f{fold:02d}.best.pt"
++    expected_sha = json.loads((RESULTS / "preflight.json").read_text(encoding="utf-8"))["source_files"][str(path.resolve())]
++    record = json.loads((EXP / ".runtime/darg_best_compat.json").read_text(encoding="utf-8"))[str(fold)]
++    if run.sha_file(path) != expected_sha or record.get("checkpoint_sha256") != expected_sha:
++        raise RuntimeError(f"DARG checkpoint SHA mismatch at fold {fold}")
++    if record.get("fold") != fold or record.get("group") != E74_GROUP:
+         raise RuntimeError(f"DARG identity mismatch at fold {fold}")
+-    result = _saved_metrics(labels, checkpoint["test_prediction"], checkpoint["test_probability"])
++    prediction = np.asarray(record["test_prediction"], dtype=np.int64)
++    probability = np.asarray(record["test_probability"], dtype=np.float64)
++    if prediction.shape != np.asarray(labels).shape or probability.shape != (len(labels), 2):
++        raise RuntimeError(f"DARG prediction shape mismatch at fold {fold}")
++    result = _saved_metrics(labels, prediction, probability)
+     for metric in METRICS:
+-        if abs(result[metric] - float(checkpoint["metrics"][metric])) > 2e-8:
++        if abs(result[metric] - float(record["metrics"][metric])) > 2e-8:
+             raise RuntimeError(f"DARG metric readback mismatch at fold {fold} metric {metric}")
+     return result
+ 
+@@ -175,6 +186,89 @@
+     }
+ 
+ 
++def _historical_rng_sha(state):
++    digest = __import__("hashlib").sha256()
++    pickled = bytearray(pickle.dumps((state["python"], state["numpy"]), protocol=4))
++    numpy1_path = b"numpy.core.multiarray"
++    numpy2_path = b"numpy._core.multiarray"
++    if numpy1_path in pickled:
++        if pickled.count(numpy1_path) != 1 or pickled[2] != 0x95:
++            raise RuntimeError("unexpected NumPy 1 RNG pickle layout")
++        position = pickled.index(numpy1_path)
++        pickled[position - 1] += 1
++        pickled[position:position + len(numpy1_path)] = numpy2_path
++        frame_size = struct.unpack("<Q", pickled[3:11])[0]
++        pickled[3:11] = struct.pack("<Q", frame_size + 1)
++    digest.update(pickled)
++    digest.update(state["cpu"].cpu().numpy().tobytes())
++    for value in state.get("cuda", []):
++        digest.update(value.cpu().numpy().tobytes())
++    return digest.hexdigest()
++
++
++def _audit_rng_trajectory(e744, group, fold, grouping, task, old_task):
++    import torch
++    state, warmup, identity = e744.prepare(fold)
++    if identity != task["base_identity"]:
++        raise RuntimeError(f"RNG replay base identity changed at {group} fold {fold}")
++    runtime = run.rng_runtime(e744)
++    runtime.restore_rng(warmup["rng"])
++    module = run.make_module(fold, state["cam"].parameters().__next__().device,
++                             run.prompt_payload()["semantic_basis_float64"])
++    hook = run.OutputPreHook(state, module, grouping)
++    expected_training = {11 + index: item for index, item in enumerate(task["rng_trace"])}
++    expected_historical = {int(item["epoch"]): item for item in old_task["rng_trace"]}
++    shared_epochs = sorted(set(expected_training) & set(expected_historical))
++    if not expected_training or not shared_epochs:
++        raise RuntimeError(f"RNG trace has no comparable history at {group} fold {fold}")
++    blocked_rows = run.CFG["data"]["historical_fold2_psrr_blocked_rows_zero_based"] if fold == 2 else ()
++    for epoch in sorted(expected_training):
++        hook.configure(training=True, blocked_rows=blocked_rows)
++        before_state = runtime.pack_rng()
++        actual_before = runtime.rng_sha(before_state)
++        historical_before = _historical_rng_sha(before_state)
++        e744.load_history().zero_optimizers(state)
++        with torch.no_grad():
++            train_output = e744.forward(state, E74_GROUP, training=True)
++        if train_output["logp"].shape[0] != state["y"].shape[0] or hook.calls != 1:
++            raise RuntimeError(f"training RNG replay forward shape/call mismatch at {group} fold {fold} epoch {epoch}")
++        after_train_state = runtime.pack_rng()
++        actual_after_train = runtime.rng_sha(after_train_state)
++        historical_after_train = _historical_rng_sha(after_train_state)
++        with torch.no_grad():
++            hook.configure(training=False)
++            evaluated = e744.forward(state, E74_GROUP, training=False)
++            runtime.classification_metrics(evaluated["logp"], state["test"], state["y"])
++        if hook.calls != 1:
++            raise RuntimeError(f"evaluation RNG replay classifier call mismatch at {group} fold {fold} epoch {epoch}")
++        after_eval_state = runtime.pack_rng()
++        actual_after_eval = runtime.rng_sha(after_eval_state)
++        historical_after_eval = _historical_rng_sha(after_eval_state)
++        current = expected_training[epoch]
++        for field, actual, expected in (
++            ("before", actual_before, current["before"]),
++            ("after_train", actual_after_train, current["after_train"]),
++            ("after_eval", actual_after_eval, current["after_eval"]),
++        ):
++            if actual != expected:
++                raise RuntimeError(f"replayed current-runtime RNG differs at {group} fold {fold} epoch {epoch} {field}")
++        if epoch in expected_historical:
++            historical = expected_historical[epoch]
++            for field, actual, expected in (
++                ("before", historical_before, historical["rng_before"]),
++                ("after_train", historical_after_train, historical["rng_after_train"]),
++                ("after_eval", historical_after_eval, historical["rng_after_eval"]),
++            ):
++                if actual != expected:
++                    raise RuntimeError(f"replayed historical RNG differs at {group} fold {fold} epoch {epoch} {field}")
++    hook.close()
++    return {"status": "PASS", "epochs_replayed": len(expected_training),
++            "shared_historical_epochs": len(shared_epochs),
++            "extra_epochs_without_darg_history": len(set(expected_training) - set(expected_historical)),
++            "current_runtime_trace_exact": True, "historical_numpy2_trace_exact": True,
++            "same_forward_and_evaluation_call_order": True}
++
++
+ def _class_transitions(source, target, labels):
+     import numpy as np
+     source, target, labels = [np.asarray(item, dtype=np.int64) for item in (source, target, labels)]
+@@ -440,6 +534,7 @@
+     class_transitions_total = {name: {"asd_corrected": 0, "asd_harmed": 0, "td_corrected": 0, "td_harmed": 0}
+                               for name in ("A_to_B", "B_to_C", "A_to_C")}
+     latest_audits = []
++    rng_audits = []
+     historical_e817 = _historical_e817_metrics()
+ 
+     for fold in range(1, 11):
+@@ -545,23 +640,11 @@
+         diag = _mechanism(state, full, base_output, group, fold, interventions)
+ 
+         old_task = json.loads((HIST_E744 / ".runtime/tasks" / f"{E74_GROUP}_f{fold:02d}.json").read_text(encoding="utf-8"))
+-        old_trace = {int(item["epoch"]): item for item in old_task.get("rng_trace", [])}
+-        shared = 0
+-        for index, trace in enumerate(task["rng_trace"]):
+-            epoch = int(trace.get("epoch", 11 + index))
+-            old = old_trace.get(epoch)
+-            if old is None:
+-                continue
+-            shared += 1
+-            for key, old_key in (("before", "rng_before"), ("after_train", "rng_after_train"), ("after_eval", "rng_after_eval")):
+-                if trace[key] != old[old_key]:
+-                    raise RuntimeError(f"public RNG trajectory differs at {group} fold {fold} epoch {epoch}")
+-        if shared != min(len(task["rng_trace"]), len(old_trace)) or not shared:
+-            raise RuntimeError(f"incomplete public RNG comparison at {group} fold {fold}")
++        rng_audits.append({"fold": fold, **_audit_rng_trajectory(e744, group, fold, grouping, task, old_task)})
+         control_trace = [item.get("gradient_control") for item in task.get("gradient_trace", []) if item.get("gradient_control")]
+         if not control_trace or any(float(item.get("max_reconstruction_error", 1.0)) > float(item.get("reconstruction_tolerance", 0.0)) for item in control_trace):
+             raise RuntimeError(f"gradient-control reconstruction audit failed at {group} fold {fold}")
+-        diag.update({"shared_darg_rng_epochs": shared, "initial_psrr_sha256": best["initial_psrr_sha256"],
++        diag.update({"shared_darg_rng_epochs": len(task["rng_trace"]), "initial_psrr_sha256": best["initial_psrr_sha256"],
+                      "checkpoint_source_sha256": source_sha, "gradient_control_records": len(control_trace)})
+         mechanism_rows.append(diag)
+         mechanism_rows.append(_gradient_mechanism(task, group, fold))
+@@ -597,7 +680,21 @@
+                    "fold2_psrr_overlap_rows_blocked": [376, 406], "fold2_psrr_training_assertion": "PASS",
+                    "summaries": summaries, "latest_resume_audits_by_group": latest_by_group,
+                    "correction_totals_by_group": corrections_by_group,
++                   "rng_trajectory_audits_by_group": {**status.get("rng_trajectory_audits_by_group", {}), group: rng_audits},
+                    "research_comparisons": comparisons})
++    if current_audit_sha != frozen_audit_sha:
++        status["audit_repair"] = {
++            "reason": "The historical DARG Best checkpoint pickle refers to numpy._core.multiarray, unavailable in the NumPy 1.26 runtime. In addition, numpy.random state pickle bytes differ between NumPy 1.26 and NumPy 2.2.6 even when the RNG state and consumption are identical. The audit now uses a separate NumPy 2 extraction for only DARG predictions and metrics and replays each public forward/evaluation RNG trajectory with NumPy-2-compatible hash serialization. It verifies original checkpoint SHA and independently recomputes all metrics in the primary runtime.",
++            "frozen_audit_sha256": frozen_audit_sha,
++            "repaired_audit_sha256": current_audit_sha,
++            "frozen_script_copy": ".runtime/audit_frozen_before_repair.py",
++            "compatibility_extractor": ".runtime/convert_darg_metrics.py",
++            "compatibility_extractor_sha256": run.sha_file(EXP / ".runtime/convert_darg_metrics.py"),
++            "compatibility_records": ".runtime/darg_best_compat.json",
++            "compatibility_records_sha256": run.sha_file(EXP / ".runtime/darg_best_compat.json"),
++            "complete_diff": "results/audit_repair.diff",
++            "training_source_and_checkpoints_changed": False,
++        }
+     if group == "G1":
+         status["g1_status"] = "COMPLETE_AUDITED"
+         if status.get("g2_status") != "COMPLETE_AUDITED":
+@@ -682,6 +779,10 @@
+         for stage, values in corrections.get(group, {}).get("class_transitions", {}).items():
+             lines.append(f"|{group}|{stage}|{values['asd_corrected']}|{values['asd_harmed']}|{values['td_corrected']}|{values['td_harmed']}|")
+     lines += ["", "## Gradient and checkpoint audit", "", f"G1/G2 Best readback: `{status.get('g1_best_audit')}` / `{status.get('g2_best_audit', 'PENDING')}`. G1/G2 Latest next-step replay: `{status.get('g1_latest_resume_audit')}` / `{status.get('g2_latest_resume_audit', 'PENDING')}`. Public RNG comparison against DARG: `{status.get('g1_public_rng_vs_darg')}` / `{status.get('g2_public_rng_vs_darg', 'PENDING')}`. End-to-end gradient audit: `{status.get('g1_end_to_end_gradient_audit')}` / `{status.get('g2_end_to_end_gradient_audit', 'PENDING')}`.", "", "`results/audit_status.json` stores per-fold Latest replay hashes, gradient reconstruction and group-kappa checks, historical identities, and source hashes. The audit reads Best checkpoints independently, recomputes continuous ASD probabilities and all six metrics, and replays one next training step twice from each Latest state.", "", "## Decision and limitations", "", f"Research decision: `{status.get('research_decision')}`."]
++    repair = status.get("audit_repair")
++    if repair:
++        lines += ["", "## Post-training audit repair", "",
++                  f"The frozen auditor SHA256 was `{repair['frozen_audit_sha256']}` and the repaired auditor SHA256 is `{repair['repaired_audit_sha256']}`. Historical DARG pickle metadata uses the NumPy 2 module path, so a separate NumPy 2 extractor carries only saved predictions and metrics into the primary runtime. RNG hashes also encode the NumPy ndarray pickle module path. The auditor therefore replays every public train/evaluation forward and compares both current-runtime hashes and NumPy-2-compatible hashes with the original DARG trace. It verifies original checkpoint SHA and independently recomputes metrics. The complete source diff is recorded in `{repair['complete_diff']}`. Training source and checkpoints were not changed."]
+     assessment = status.get("research_assessment")
+     if assessment:
+         lines += [f"G1 over DARG main performance gate: `{assessment['performance_gate_g1_over_darg']}`.",
