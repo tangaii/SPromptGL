@@ -1,0 +1,176 @@
+{
+  "experiment": "82.3.9 PS-OTEC \u2014 Prompt-guided Optimizer-aware Trajectory and Evidence Correction",
+  "design_version": "1.0",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "base_group": "E74.4-G2-Positive-DCR",
+  "groups": {
+    "G1": "TR-SPEC \u2014 Trajectory-Retained Spectral Prompt Evidence Correction",
+    "G2": "CE-SPEC \u2014 Counterfactual Evidence-guided Spectral Prompt Correction"
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "prompt_rows_0based": {
+    "ASD": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "TD": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "fold2_protected_rows_1based": [
+    377,
+    407
+  ],
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "best_rule": "Strictly maximize historical test-fold ACC. The earliest epoch wins ties.",
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "historical_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "seeds": {
+    "prompt": 822000,
+    "fusion": 823600,
+    "gate": 823700,
+    "candidate": 823910
+  },
+  "spectral_dimensions": 16,
+  "stiefel": {
+    "offset_frobenius_radius": 2.0,
+    "anchor_weight": 0.05
+  },
+  "class_statistics": {
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "shrinkage_target": "all legal training pooled CAM144 covariance",
+    "likelihood": "FP64 full covariance; solve both 16D systems; share smoothness model between likelihood and G1"
+  },
+  "ema": {
+    "alpha": 0.1,
+    "representation": "FP64 raw CAM means and uncentered second moments, two legal training classes"
+  },
+  "fusion": {
+    "temperature": 0.5,
+    "alpha_min": 0.35,
+    "alpha_max": 0.65,
+    "quantile": 0.75,
+    "semantic_floor": 0.005,
+    "llr_floor": 0.25
+  },
+  "residual_limit": 0.08,
+  "jacobian_epsilon": 1e-06,
+  "loss": {
+    "aux_ratio_max": 0.25,
+    "g2_weight_floor": 0.25,
+    "g2_margin_center": 1.0,
+    "protection_margin_center": 2.0,
+    "norm_floor": 1e-12,
+    "g2_gain_temperature": 0.75,
+    "g2_gain_target": 1.0,
+    "spectral": 0.02,
+    "gain": 0.05,
+    "semantic": 0.01,
+    "stability": 0.001,
+    "candidate": 0.03,
+    "router": 0.02
+  },
+  "decision": {
+    "paired_prob_auc_min_pp": -0.1,
+    "paired_sen_min_pp": -0.5,
+    "performance": "Ten audited folds and unrounded paired ACC>0, BA>=0, patient net>0, tolerances for probability AUC and ASD sensitivity, positive paired ACC and net excluding Fold2.",
+    "mechanism": "Ten audited folds, faithful online reference, genuine end-to-end gradients, validated native actual update budgets and projection, rank 16 with projector change >1e-4 each fold, LLR consistency, measurable scores from actual residual."
+  },
+  "patients": {
+    "low_b0_true_margin_abs_lt": 2.0,
+    "high_confidence_b0_wrong_margin_le": -2.0,
+    "conflict_fraction_gt": 0.5
+  },
+  "preflight": {
+    "gram_max_abs": 1e-10,
+    "projector_change_min": 0.0001,
+    "max_cholesky_gram_condition": 5.000001,
+    "audit_fp64_atol": 2e-09,
+    "audit_feature_atol": 2e-06,
+    "audit_feature_rtol": 2e-05,
+    "residual_bound_roundoff": 2e-08
+  },
+  "gpu": {
+    "physical_index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "workers_max": 10,
+    "threads_per_worker": 1,
+    "gpu_free_reserve_mib": 4096,
+    "pilot_first_epoch": 20,
+    "target_worker_limit": 5
+  },
+  "environment": {
+    "torch": "2.9.0",
+    "cuda": "12.9",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0"
+    },
+    "readonly_numeric_packages": "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python"
+  },
+  "reference": {
+    "reliable_margin": 2.0,
+    "temperature": 0.5,
+    "margin_slack": 0.5,
+    "probability_weight": 0.25,
+    "retention_gain_weight": 0.05,
+    "retention_norm_budget": 0.1,
+    "audit_archive_to_historical_terminal": true,
+    "shadow_past_archived_terminal": true
+  },
+  "trust": {
+    "relative_actual_step_budget": 0.15,
+    "anchor_weight_max": 0.8,
+    "anchor_scale": 2.0,
+    "fp32_inward_factor": 0.9999,
+    "epsilon": 1e-12,
+    "history_moments": "native optimizer proposal; no change after step"
+  },
+  "counterfactual": {
+    "keep_logit_initial": 1.5,
+    "candidate_scale": 0.65,
+    "target_margin_slack": 0.03,
+    "target_gain_temperature": 0.25,
+    "candidate_wrong_direction_weight": 0.25
+  }
+}
