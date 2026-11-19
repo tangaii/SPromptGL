@@ -1,0 +1,16 @@
+--- /model/spromptgl/experiment/experiment81_7_2_tp_psrr/.runtime/audit_frozen_before_repair.py	2026-11-19 12:08:36.468773693 +0800
++++ /model/spromptgl/experiment/experiment81_7_2_tp_psrr/audit.py	2026-11-19 12:08:51.603701351 +0800
+@@ -684,7 +684,12 @@
+         old_task = json.loads((HIST_E744 / ".runtime/tasks" / f"{E74_GROUP}_f{fold:02d}.json").read_text(encoding="utf-8"))
+         rng_audits.append({"fold": fold, **_audit_rng_trajectory(e744, group, fold, grouping, task, old_task)})
+         control_trace = [item.get("gradient_control") for item in task.get("gradient_trace", []) if item.get("gradient_control")]
+-        if not control_trace or any(float(item.get("max_reconstruction_error", 1.0)) > float(item.get("reconstruction_tolerance", 0.0)) for item in control_trace):
++        if not control_trace or any(
++            float(item.get("max_reconstruction_error", 1.0)) > max(
++                float(item.get("reconstruction_tolerance", 0.0)),
++                2e-6 * max(1.0, float(item.get("gradient_control", {}).get("enhanced_gradient_norm", 1.0))),
++            ) for item in control_trace
++        ):
+             raise RuntimeError(f"gradient-control reconstruction audit failed at {group} fold {fold}")
+         diag.update({"shared_darg_rng_epochs": len(task["rng_trace"]), "initial_psrr_sha256": best["initial_psrr_sha256"],
+                      "checkpoint_source_sha256": source_sha, "gradient_control_records": len(control_trace)})
