@@ -1,0 +1,157 @@
+{
+  "experiment": "82.3.8 PS-CDSO — Prompt-guided Corrective Discriminative Spectral Optimization",
+  "design_version": "1.0",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "base_group": "E74.4-G2-Positive-DCR",
+  "groups": {
+    "G1": "FC-DSO — Full-Covariance Consistent Discriminative Spectral Optimization",
+    "G2": "CG-DSO — Classification-Gain-Guided Discriminative Spectral Optimization"
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "prompt_rows_0based": {
+    "ASD": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "TD": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "fold2_protected_rows_1based": [
+    377,
+    407
+  ],
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "best_rule": "Strictly maximize historical test-fold ACC. The earliest epoch wins ties.",
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "historical_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "seeds": {
+    "prompt": 822000,
+    "fusion": 823600,
+    "gate": 823700
+  },
+  "spectral_dimensions": 16,
+  "stiefel": {
+    "offset_frobenius_radius": 2.0,
+    "anchor_weight": 0.05
+  },
+  "class_statistics": {
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "shrinkage_target": "all legal training pooled CAM144 covariance",
+    "likelihood": "FP64 full covariance; solve both 16D systems; share smoothness model between likelihood and G1"
+  },
+  "ema": {
+    "alpha": 0.1,
+    "representation": "FP64 raw CAM means and uncentered second moments, two legal training classes"
+  },
+  "fusion": {
+    "temperature": 0.5,
+    "alpha_min": 0.35,
+    "alpha_max": 0.65,
+    "quantile": 0.75,
+    "semantic_floor": 0.005,
+    "llr_floor": 0.25
+  },
+  "residual_limit": 0.08,
+  "jacobian_epsilon": 1e-06,
+  "loss": {
+    "spectral": 0.05,
+    "semantic": 0.01,
+    "protect": 0.01,
+    "smooth": 0.001,
+    "aux_ratio_max": 0.25,
+    "shared_ratio_max": 0.01,
+    "g2_weight_floor": 0.25,
+    "g2_margin_center": 1.0,
+    "protection_margin_center": 2.0,
+    "norm_floor": 1e-12,
+    "g2_gain_temperature": 0.75,
+    "g2_gain_target": 1.0
+  },
+  "decision": {
+    "paired_prob_auc_min_pp": -0.1,
+    "paired_sen_min_pp": -0.5,
+    "performance": "Ten audited folds; unrounded paired ACC>0, BA>=0, patient net>0, paired probability AUC and ASD sensitivity tolerances; excluding Fold2 and separately excluding the maximum ACC-contributing fold still ACC>0 and patient net>0.",
+    "stability": "Require positive paired ACC and patient net after excluding Fold2 and after separately excluding the largest ACC-contributing and largest net-corrected fold.",
+    "mechanism": "Ten audited folds; rank 16 and projector distance>1e-4 per fold, verified full Gaussian model, true augmented gradients, direct hard net>0 and finite positive residual-induced score change; shared gradient bound and risk protection independently verified."
+  },
+  "patients": {
+    "low_b0_true_margin_abs_lt": 2.0,
+    "high_confidence_b0_wrong_margin_le": -2.0,
+    "conflict_fraction_gt": 0.5
+  },
+  "preflight": {
+    "gram_max_abs": 1e-10,
+    "projector_change_min": 0.0001,
+    "max_cholesky_gram_condition": 5.000001,
+    "audit_fp64_atol": 2e-09,
+    "audit_feature_atol": 2e-06,
+    "audit_feature_rtol": 2e-05,
+    "residual_bound_roundoff": 2e-08
+  },
+  "gpu": {
+    "physical_index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "workers_max": 10,
+    "threads_per_worker": 1,
+    "gpu_free_reserve_mib": 4096
+  },
+  "environment": {
+    "torch": "2.9.0",
+    "cuda": "12.9",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0"
+    },
+    "readonly_numeric_packages": "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python"
+  },
+  "long_protection": {
+    "floor_slack": 0.5,
+    "reliable_margin": 2.0,
+    "reliability_temperature": 0.5,
+    "rise_alpha": 0.03,
+    "fall_alpha": 0.003,
+    "gradient_weight": 0.05,
+    "training_only": true
+  }
+}
