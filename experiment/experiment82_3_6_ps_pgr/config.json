@@ -1,0 +1,192 @@
+{
+  "experiment": "Experiment 82.3.6 PS-PGR — Prompt-guided Protected Gradient Residual Learning",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "selection": "Historical val=test. Strict test ACC improvement. Keep earliest tie.",
+  "preprocessing": "Historical pre-CV RFE and scaling, transductive graph, train/test arrays unchanged.",
+  "workers_max": 10,
+  "threads_per_worker": 1,
+  "initialization_seed_base": 822000,
+  "historical_anonymous_seed": 821991,
+  "spectral_dimensions": 16,
+  "token_dimension": 32,
+  "temperature": 0.5,
+  "epsilon": 1e-08,
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_excluded_from_new_paths_rows_1based": [
+    377,
+    407
+  ],
+  "class_statistics": {
+    "variance_ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "estimation": "Initialize with byte-exact E82.3 fit on legal E61 epoch10 training rows; explicit post-evaluation EMA follows below."
+  },
+  "residual_limit": 0.08,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "psce_optimizer": {
+    "class": "AdamW",
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "ema": {
+    "alpha": 0.1,
+    "compute": "CPU float64 legal CAM projection using the original spectrum cache, then observed first and uncentered second moments.",
+    "initialization": "Start with E82.3 mean and stable inference variance exactly. Derive raw second moment from E82.3 unbiased variance times (n-1)/n plus squared mean.",
+    "variance": "Clamp roundoff in second minus mean squared at zero and apply n/(n-1) by class before E82.3 stabilization. Inference uses float32.",
+    "order": "Native DARG plus residual optimizer updates, full eval and Best with prior EMA, one EMA update on legal original CAM, then post-update Latest."
+  },
+  "groups": {
+    "G1": "Protected Residual",
+    "G2": "Protected End-to-End",
+    "ANON": "Conditional Anonymous Query"
+  },
+  "queries": {
+    "G1": "q_medical",
+    "G2": "q_medical",
+    "ANON": "q_anonymous"
+  },
+  "prompt_rows_0based": {
+    "ASD": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "TD": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "physical_gpu": 0,
+  "signed_gate": {
+    "seed_base": 823700,
+    "input": 178,
+    "hidden": 16,
+    "output": 16,
+    "layer_norm_eps": 1e-05
+  },
+  "parameter_groups": [
+    "prompt",
+    "spectral",
+    "fusion_net",
+    "signed_gate"
+  ],
+  "feature_math": {
+    "projection": "Use the canonical historical U and exact historical whitened CAM in tokens and Gaussian LLR.",
+    "class_attention": "C_c = (1-N_c) A_c/(sum(A_c)+eps), in ASD=0 then TD=1 order. S=C_ASD-C_TD.",
+    "signed_calibration": "Freeze fold-specific P75 absolute S and bounded LLR over pooled directions and legal E61 epoch10 CAM. Floors 0.005 and 0.25. Fit the technical scales once on the medical initialized model and retain them in paired arms including a conditional anonymous arm.",
+    "discriminative_evidence": "s=tanh(S/tau_s), l=tanh(LLR/tau_l). D=R*(1-(N_ASD+N_TD)/2)*(alpha*s+(1-alpha)*l). Alpha is a bounded patient-by-direction 8->8->1 network with zero last affine at start.",
+    "sensitivity": "Evaluate current OutputLayer deterministically by composing only actual LayerNorm, Linear, GELU and Linear. Detach parameters, compute input J of gap ASD minus TD using autograd.grad, then stop gradient. p=J@U; p_norm=p/sqrt(sum(p^2)+1e-12).",
+    "residual": "g=tanh(clamp_min(MLP([LN(z), D, R, N_ASD, N_TD]),0)); last affine zero with PyTorch one-sided clamp derivative. r=g*D*p_norm. delta=historical smooth_limit(r@U.T,z) with 8% bound and zero protection rows. Original OutputLayer classifies z+delta.",
+    "first_order": "J dot delta = c*sum(g*D*p^2)/sqrt(sum(p^2)+1e-12) with nonnegative radial c. D alone controls a coordinate sign. Overall signs can cancel.",
+    "evidence_off": "Set D to zero at the fixed checkpoint. Together with gate-off and residual-off this restores native CAM144."
+  },
+  "loss": {
+    "increment_weight_floor": 0.25,
+    "increment_margin_center": 1.0,
+    "protection_margin_center": 2.0,
+    "lambda_inc": 1.0,
+    "lambda_protect": 1.0,
+    "lambda_safe": 0.001,
+    "lambda_sem": 0.0,
+    "formulation": "BalancedMean by true class w*(CE(on)-stopgrad(CE(off))). Equivalent CE=softplus(-true margin). Protection uses sigmoid(off-2)*relu(off-on)^2. Safety uses same continuous weight for delta squared relative norm.",
+    "shared_path": "G1 detach z before new branch. G2 z is differentiable in delta(z) only; detached direct summand in on, detached head weights, detached off."
+  },
+  "preflight": {
+    "row_sum_atol": 2e-06,
+    "residual_bound_roundoff": 2e-08,
+    "basis_orthogonality_max_abs": 1e-10,
+    "independent_formula_atol": 1e-07,
+    "independent_formula_rtol": 2e-06,
+    "numeric_packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0"
+    },
+    "torch": "2.9.0",
+    "cuda": "12.9",
+    "projection_replay_atol": 2e-08
+  },
+  "decision": {
+    "darg_reference_pct": {
+      "acc": 92.1891,
+      "hard_auc": 92.0294,
+      "prob_auc": 93.4946,
+      "sen": 90.0671,
+      "spe": 93.9917,
+      "asd_f1": 91.459
+    },
+    "prob_auc_min_delta_pp": -0.1,
+    "sen_min_delta_pp": -0.5,
+    "performance": "A full audit, ACC > 92.1891, BA >= 92.0294, paired AUC/SEN tolerances, official net > 0, direct net > 0, truly new residual correction > 0, and positive independent-of-Fold2/single-fold sensitivity.",
+    "mechanism": "Complete mathematical, ownership, historical identity, RNG, residual, training gradient, Best, Latest and file audit in all ten folds. G1 exact historical state every recorded epoch; G2/its Anonymous use bounded nonconflicting shared residual VJP.",
+    "independent_medical_evidence": "Paired chosen medical arm ACC > Anonymous, BA >= Anonymous and net corrections > 0. Treat fixed Best Query swap as an instantaneous diagnostic.",
+    "low_margin_diagnostic": "Report m_residual_off < 2, and Spearman correlation against continuous m_residual_off; neither is used for training or selecting a checkpoint.",
+    "execute_anonymous": "One independent ten-fold counterfactual only when a medical arm meets both gates. Run after G2 is audited if authorized. Select highest ACC, then direct net, then G1.",
+    "execute_g2": "Ten independent G1 fold audits pass, official net > 0, fixed Best direct net > 0 and historical-wrong true new residual corrections > direct new harms to B0-correct.",
+    "sensitivity_no_single_fold": "Require positive ACC and patient net and nonnegative BA both excluding Fold2 and after subtracting the greatest individual fold contribution to each quantity."
+  },
+  "default_workers": 5,
+  "fusion": {
+    "seed_base": 823600,
+    "input": 8,
+    "hidden": 8,
+    "alpha_min": 0.2,
+    "alpha_max": 0.8,
+    "legal_pooled_abs_quantile": 0.75,
+    "semantic_scale_floor": 0.005,
+    "llr_scale_floor": 0.25
+  },
+  "sensitivity": {
+    "j_epsilon": 1e-06,
+    "finite_difference_step": 0.01,
+    "finite_difference_n_per_class": 4,
+    "derivative_abs_tolerance": 2e-05,
+    "derivative_rel_tolerance": 0.02
+  },
+  "shared_gradient": {
+    "ratio_max": 0.05,
+    "denominator_epsilon": 1e-24,
+    "minimum_baseline_norm_squared": 1e-24,
+    "groups": "Actual historical optimizer parameter groups; output head excluded. Native unused entries and zero baseline groups receive no increment.",
+    "numerics": "Compute float64 projection and norm. Orthogonality correction cancels remaining epsilon/roundoff. Native cast and actual applied gradients checked; conservative zero for a group if representable correction fails."
+  },
+  "audit_workers": 5,
+  "worker_memory_mib": 1800,
+  "gpu_free_reserve_mib": 4096,
+  "reference_workspace_commit": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4"
+}
