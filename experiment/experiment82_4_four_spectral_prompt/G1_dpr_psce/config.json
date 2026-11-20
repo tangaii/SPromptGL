@@ -1,0 +1,29 @@
+{
+  "method": "DPR-PSCE",
+  "inherits": "E82.2-G2",
+  "variant": "rotation_off",
+  "query_common_shrinkage": 0.4,
+  "angle_bound": 0.25,
+  "plane_variation": 0.25,
+  "token_update_scale": 0.12,
+  "min_prompt_diversity": 0.008,
+  "group": "G1",
+  "auxiliary": {
+    "counterfactual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.1
+    },
+    "rotation": {
+      "coefficient": 0.0005,
+      "gradient_cap": 0.04
+    },
+    "distinction": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.03
+    },
+    "residual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.04
+    }
+  }
+}

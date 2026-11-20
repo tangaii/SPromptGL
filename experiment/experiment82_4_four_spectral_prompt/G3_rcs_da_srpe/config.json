@@ -1,0 +1,29 @@
+{
+  "method": "RCS-DA-SRPE",
+  "inherits": "E82.3.2-G2",
+  "variant": "statistics_off",
+  "controller_scale": 0.22,
+  "controller_bias_range": [
+    0.2,
+    0.4
+  ],
+  "gradient_scale": 3.0,
+  "selection_power": 1.5,
+  "likelihood_contrast_weight": 0.35,
+  "token_update_scale": 0.25,
+  "group": "G3",
+  "auxiliary": {
+    "direction": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.1
+    },
+    "protect": {
+      "coefficient": 0.01,
+      "gradient_cap": 0.1
+    },
+    "residual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.04
+    }
+  }
+}

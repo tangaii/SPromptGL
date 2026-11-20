@@ -1,0 +1,19 @@
+{
+  "method": "HLG-PSCE",
+  "inherits": "E82.2-G2",
+  "variant": "global_only",
+  "local_scale": 0.12,
+  "local_mix_floor": 0.15,
+  "initial_local_mix_logit": -0.6,
+  "group": "G2",
+  "auxiliary": {
+    "counterfactual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.1
+    },
+    "residual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.04
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "method": "SOT-DA-SRPE",
+  "inherits": "E82.3.2-G2",
+  "variant": "diagonal_operator",
+  "rank": 4,
+  "basis_chart_scale": 0.45,
+  "operator_scale": 0.22,
+  "operator_bias_range": [
+    0.28,
+    0.54
+  ],
+  "gradient_scale": 3.0,
+  "likelihood_contrast_weight": 0.35,
+  "selection_power": 1.0,
+  "difficult_margin_temperature": 0.5,
+  "half_margin_weight": 0.5,
+  "group": "G4",
+  "auxiliary": {
+    "direction": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.1
+    },
+    "path_margin": {
+      "coefficient": 0.01,
+      "gradient_cap": 0.1
+    },
+    "residual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.04
+    }
+  }
+}

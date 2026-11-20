@@ -1,0 +1,97 @@
+{
+  "experiment": "Experiment 82.4 · Four Spectral Prompt Methods",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "dimensions": [
+    48,
+    6,
+    10,
+    256
+  ],
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_exclusions_1based": [
+    377,
+    407
+  ],
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "latest_interval": 10,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "spectrum": {
+    "variant": "Original O",
+    "pca_directions": 8,
+    "disease_directions": 8
+  },
+  "attention_temperature": 0.5,
+  "module_seed_base": 824000,
+  "crossfit": {
+    "splits": 5,
+    "seed_base": 824500,
+    "shrinkage": 0.25,
+    "ridge_relative": 0.001,
+    "ridge_min": 1e-08,
+    "calibration_relative_l2": 0.001,
+    "calibration_scale_min": 1e-06,
+    "calibration_max_slope": 4.0,
+    "support_quantile": 0.9,
+    "support_decay": 0.5
+  },
+  "direction_target": {
+    "rms_floor": 0.0001,
+    "clip_abs": 3.0,
+    "temperature": 1.0
+  },
+  "gpu": {
+    "index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "max_workers": 10,
+    "threads": 1
+  },
+  "comparison": {
+    "measurable_probability_delta": 1e-06,
+    "minimum_mechanism_delta": 1e-06,
+    "performance_go": "Higher paired ACC, BA and SEN-ASD, positive patient net vs DARG, and higher ACC and positive patient net without Fold 2.",
+    "mechanism_go": "Positive net and paired BA gain for residual-on against residual-off, observable medical-query effects on probabilities and hard predictions, and measurable effect of the group-specific fixed-weight intervention.",
+    "further_research": "Prioritize a method with both judgments GO. Otherwise identify any incremental mechanism lead separately from a candidate."
+  },
+  "group_dirs": {
+    "G1": "G1_dpr_psce",
+    "G2": "G2_hlg_psce",
+    "G3": "G3_rcs_da_srpe",
+    "G4": "G4_sot_da_srpe"
+  },
+  "directory_fallback": "Preferred OSSFS mkdir returned errno 5 (Input/output error).",
+  "residual": {
+    "norm_limit": 0.08
+  },
+  "protection": {
+    "margin_scale": 0.5,
+    "allowed_margin_drop": 0.025
+  }
+}
