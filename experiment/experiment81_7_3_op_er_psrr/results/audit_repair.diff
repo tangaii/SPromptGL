@@ -1,0 +1,146 @@
+--- .runtime/audit_frozen_before_repair.py	2026-11-19 15:42:05.342205242 +0800
++++ audit.py	2026-11-19 18:39:30.212491773 +0800
+@@ -155,11 +155,11 @@
+     return rows
+ 
+ 
+-def _darg_result(fold, labels):
++def _darg_result(fold, labels, compatibility_records):
+     import numpy as np
+     path = HIST_E744 / ".runtime/checkpoints" / f"{E74_GROUP}_f{fold:02d}.best.pt"
+     expected_sha = json.loads((RESULTS / "preflight.json").read_text(encoding="utf-8"))["source_files"][str(path.resolve())]
+-    record = json.loads((EXP / ".runtime/darg_best_compat.json").read_text(encoding="utf-8"))[str(fold)]
++    record = compatibility_records[str(fold)]
+     if run.sha_file(path) != expected_sha or record.get("checkpoint_sha256") != expected_sha:
+         raise RuntimeError(f"DARG checkpoint SHA mismatch at fold {fold}")
+     if record.get("fold") != fold or record.get("group") != E74_GROUP:
+@@ -175,6 +175,43 @@
+     return result
+ 
+ 
++def _ensure_darg_compatibility(preflight):
++    import subprocess
++
++    extractor = EXP / ".runtime/convert_darg_metrics.py"
++    records_path = EXP / ".runtime/darg_best_compat.json"
++    if not extractor.is_file():
++        raise FileNotFoundError(f"DARG audit compatibility extractor is missing: {extractor}")
++    if not records_path.is_file():
++        subprocess.run([sys.executable, str(extractor)], cwd=EXP, check=True)
++    records = json.loads(records_path.read_text(encoding="utf-8"))
++    if set(records) != {str(fold) for fold in range(1, 11)}:
++        raise RuntimeError("DARG compatibility export does not contain ten folds")
++    for fold in range(1, 11):
++        record = records[str(fold)]
++        checkpoint = HIST_E744 / ".runtime/checkpoints" / f"{E74_GROUP}_f{fold:02d}.best.pt"
++        expected_sha = preflight["source_files"].get(str(checkpoint.resolve()))
++        if (record.get("group"), record.get("fold"), record.get("checkpoint_sha256")) != (
++                E74_GROUP, fold, expected_sha):
++            raise RuntimeError(f"DARG compatibility export identity mismatch at fold {fold}")
++        if record.get("prior_independent_audit_status") != "INDEPENDENT_AUDIT_PASS":
++            raise RuntimeError(f"DARG compatibility export lacks historical independent audit at fold {fold}")
++    return records
++
++
++def _shared_initial_parameters_equal(left, right):
++    import torch
++
++    group_only = ("spgs_mlp.", "reliability_net.")
++    left_state = {key: value for key, value in left.state_dict().items()
++                  if key != "prompt_features" and not key.startswith(group_only)}
++    right_state = {key: value for key, value in right.state_dict().items()
++                   if key != "prompt_features" and not key.startswith(group_only)}
++    return left_state.keys() == right_state.keys() and all(
++        torch.equal(left_state[key], right_state[key]) for key in left_state
++    )
++
++
+ def _historical_e817_metrics():
+     path = Path("/model/spromptgl/experiment/experiment81_7_psrr/results/fold_metrics.csv")
+     records = [row for row in _read_csv(path) if row.get("group") == "G1"]
+@@ -342,10 +379,10 @@
+             f"{name}_negative_cosine_fraction": float(np.mean([row["negative_cosine"] for row in values])),
+             f"{name}_projection_fraction": float(np.mean([row["projection_applied"] for row in values])),
+             f"{name}_mean_cosine": float(np.mean([row["cosine_reference_delta"] for row in values])),
+-            f"{name}_mean_reference_norm": float(np.mean([row["reference_norm"] for row in values])),
+-            f"{name}_mean_delta_norm": float(np.mean([row["delta_norm"] for row in values])),
++            f"{name}_mean_reference_norm": float(np.mean([row["reference_gradient_norm"] for row in values])),
++            f"{name}_mean_delta_norm": float(np.mean([row["delta_gradient_norm"] for row in values])),
+             f"{name}_mean_projection_ratio": float(np.mean([
+-                row["projected_delta_norm"] / max(row["delta_norm"], 1e-30) for row in values
++                row["projected_delta_norm"] / max(row["delta_gradient_norm"], 1e-30) for row in values
+             ])),
+             f"{name}_mean_alpha": float(np.mean([row["alpha"] for row in values])),
+             f"{name}_max_optimizer_update_ratio": float(max(row["optimizer_update_ratio"] for row in values)),
+@@ -429,13 +466,13 @@
+             continue
+         means = {key: float(np.mean([float(row[key]) for row in rows])) for key in required}
+         gradient_rows = [row for row in mechanism_rows if row.get("group") == group and row.get("record_type") == "gradient_control"]
+-        expected_branch = all(row.get("epoch12_branch_to_cam_parameter_norm", 0.0) > 0 and
+-                              row.get("epoch12_branch_to_darg_parameter_norm", 0.0) > 0 for row in gradient_rows)
+-        update_admitted = all(any(row.get(f"{name}_mean_alpha", 0.0) > 0 for name in ("gfr", "cam", "darg"))
++        expected_branch = all(float(row.get("epoch12_branch_to_cam_parameter_norm", 0.0)) > 0 and
++                              float(row.get("epoch12_branch_to_darg_parameter_norm", 0.0)) > 0 for row in gradient_rows)
++        update_admitted = all(any(float(row.get(f"{name}_mean_alpha", 0.0)) > 0 for name in ("gfr", "cam", "darg"))
+                               for row in gradient_rows)
+-        evidence_path = (group != "G2" or all(row.get("epoch12_evidence_module_norm", 0.0) > 0 and
+-                                              row.get("epoch12_evidence_cam_norm", 0.0) > 0 and
+-                                              row.get("epoch12_evidence_darg_norm", 0.0) > 0
++        evidence_path = (group != "G2" or all(float(row.get("epoch12_evidence_module_norm", 0.0)) > 0 and
++                                              float(row.get("epoch12_evidence_cam_norm", 0.0)) > 0 and
++                                              float(row.get("epoch12_evidence_darg_norm", 0.0)) > 0
+                                               for row in gradient_rows))
+         gate_rows = [row for row in rows]
+         gate_variation = (group != "G2" or all(float(row.get("relation_gate_sd_mean", 0.0)) > 0.0 for row in gate_rows))
+@@ -618,6 +655,7 @@
+         if path != audit_path and (not Path(path).is_file() or run.sha_file(path) != expected):
+             raise RuntimeError(f"frozen training source changed: {path}")
+     current_audit_sha = run.sha_file(audit_path)
++    darg_compatibility = _ensure_darg_compatibility(preflight)
+     existing_rows = _read_csv(RESULTS / "fold_metrics.csv") if (RESULTS / "fold_metrics.csv").is_file() else []
+     existing_mechanism = _read_csv(RESULTS / "mechanism.csv") if (RESULTS / "mechanism.csv").is_file() else []
+     existing_interventions = _read_csv(RESULTS / "interventions.csv") if (RESULTS / "interventions.csv").is_file() else []
+@@ -673,10 +711,15 @@
+         if group == "G2":
+             g1_task = json.loads(run._task_path("G1", fold).read_text(encoding="utf-8"))
+             if (g1_task.get("status") != "COMPLETE" or
+-                    g1_task.get("initial_common_psrr_sha256") != task.get("initial_common_psrr_sha256") or
+                     g1_task.get("warmup_sha256") != task.get("warmup_sha256") or
+                     g1_task.get("base_identity") != task.get("base_identity")):
+                 raise RuntimeError(f"G1/G2 fold {fold} initialization or inherited DARG identity differs")
++            g1_initial_module = run.make_module(
++                fold, state["cam"].parameters().__next__().device,
++                run.prompt_payload()["semantic_basis_float64"], "G1",
++            )
++            if not _shared_initial_parameters_equal(g1_initial_module, initial_module):
++                raise RuntimeError(f"G1/G2 fold {fold} shared added-parameter initialization differs")
+         base = e744.load_history()
+         base.load_bundle(state, best["base_state"])
+         module = run.make_module(fold, state["cam"].parameters().__next__().device, run.prompt_payload()["semantic_basis_float64"], group)
+@@ -701,7 +744,7 @@
+             if not np.array_equal(interventions[name]["logp"], interventions["relation_off"]["logp"]):
+                 raise RuntimeError(f"{name} did not reproduce relation-off output at {group} fold {fold}")
+ 
+-        darg = _darg_result(fold, full["labels"])
++        darg = _darg_result(fold, full["labels"], darg_compatibility)
+         base_output = interventions["relation_off"]
+         darg["labels"] = full["labels"]
+         darg["test_ids"] = full["test_ids"]
+@@ -802,7 +845,7 @@
+                    "research_comparisons": comparisons})
+     if current_audit_sha != frozen_audit_sha:
+         status["audit_repair"] = {
+-            "reason": "The historical DARG Best checkpoint pickle refers to numpy._core.multiarray, unavailable in the NumPy 1.26 runtime. In addition, numpy.random state pickle bytes differ between NumPy 1.26 and NumPy 2.2.6 even when the RNG state and consumption are identical. The audit now uses a separate NumPy 2 extraction for only DARG predictions and metrics and replays each public forward/evaluation RNG trajectory with NumPy-2-compatible hash serialization. It verifies original checkpoint SHA and independently recomputes all metrics in the primary runtime.",
++            "reason": "The frozen auditor expected .runtime/darg_best_compat.json, but the compatibility extractor and records were not materialized before formal training. The audit-only repair adds a NumPy module-path alias for reading the historical E74.4 checkpoints, verifies E74.4's 30/30 independent audit, task and checkpoint identities, and exports only the checkpoint's already audited predictions, probabilities, and metrics. It also corrects a float32 probability row-sum tolerance, maps gradient summaries to the recorded schema, compares G1/G2 common initial state directly while excluding G2-only Prompt feature, SPGS, and reliability entries, and casts persisted mechanism CSV values back to numeric types before decision checks. The primary audit recomputes all metrics against current test labels and verifies the original checkpoint SHA. The existing RNG audit normalizes the NumPy 1/2 pickle module-name difference and replays the shared forwards and evaluations.",
+             "frozen_audit_sha256": frozen_audit_sha,
+             "repaired_audit_sha256": current_audit_sha,
+             "frozen_script_copy": ".runtime/audit_frozen_before_repair.py",
+@@ -909,7 +952,7 @@
+     repair = status.get("audit_repair")
+     if repair:
+         lines += ["", "## Post-training audit repair", "",
+-                  f"The frozen auditor SHA256 was `{repair['frozen_audit_sha256']}` and the repaired auditor SHA256 is `{repair['repaired_audit_sha256']}`. Historical DARG pickle metadata uses the NumPy 2 module path, so a separate NumPy 2 extractor carries only saved predictions and metrics into the primary runtime. RNG hashes also encode the NumPy ndarray pickle module path. The auditor therefore replays every public train/evaluation forward and compares both current-runtime hashes and NumPy-2-compatible hashes with the original DARG trace. It verifies original checkpoint SHA and independently recomputes metrics. The complete source diff is recorded in `{repair['complete_diff']}`. Training source and checkpoints were not changed."]
++                  f"The frozen auditor SHA256 was `{repair['frozen_audit_sha256']}` and the repaired auditor SHA256 is `{repair['repaired_audit_sha256']}`. The repair supplies the missing historical DARG compatibility export using a NumPy module-path alias, confirms the prior E74.4 independent checkpoint audits and original checkpoint SHAs, and carries forward only saved test predictions, probabilities, and metrics. This audit independently recomputes metrics against current fold labels. It also fixes float32 probability validation, gradient trace field mapping, G1/G2 common initialization comparison while excluding G2-only fixed components, and numeric conversion of persisted mechanism values. The existing RNG audit normalizes the NumPy pickle module-name difference and replays shared forwards and evaluations. The extractor SHA256 is `{repair['compatibility_extractor_sha256']}` and the compatibility-record SHA256 is `{repair['compatibility_records_sha256']}`. The complete auditor diff is recorded in `{repair['complete_diff']}`. Training source and checkpoints were not changed."]
+     assessment = status.get("research_assessment")
+     if assessment:
+         lines += [f"Performance gate by candidate: `{json.dumps(assessment['performance_gate_by_group'], sort_keys=True)}`.",

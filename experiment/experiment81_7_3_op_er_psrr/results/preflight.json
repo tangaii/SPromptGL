@@ -1,0 +1,1353 @@
+{
+  "status": "PASS",
+  "experiment": "Experiment 81.7.3 OP-PSRR / ER-PSRR",
+  "independent_audit_implementation": {
+    "status": "PASS",
+    "metric_recomputation": true,
+    "paired_all10_and_exclude_fold2": true,
+    "class_specific_transitions": true,
+    "decision_gate": true
+  },
+  "source_sha256": "c1e69afe0e6eff8982c57254f60275fc3745e9625d678c5c07bc4eaea076e179",
+  "source_files": {
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/manifest.json": "a0aa87234252b70d8ae2eeb143eb05bbd84c4731203b7763ab5e59e8d1db920a",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/config.json": "7a1a2e7d37918baf615c704a47d09e3a3eb8a9de5bfc752d852b15a8ada6569b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/model_e61.py": "28266568bcebcfdbab961dbedb7257c15ff4e862cd02ae744feacad54b7bc81b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/run.py": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f01.json": "f87992605e4967979a8d3adb6263d68605533a98497dd22b2738bbeeaf510b8a",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f02.json": "43d868a9f17f61307ee3c4fb162f6a6a6714a828b6756b9f614cf1394ad84662",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f03.json": "7c70ebdc47317bc0df68a26cc4145edbdf0279037581b3e3c3817ce815f9cb7a",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f04.json": "4adf0f82120b9214bd249668d8e71420782e4a79f539750f1e9836b497bab98d",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f05.json": "71514dc254c08aae265885715969a6de56b750b1e796604aff10bd75062d9c6b",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f06.json": "6dffb0316e78ffe9d44bd83136481eb9a48af8137a41d196aa310f635cb7aea6",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f07.json": "eb73491dadff1496c061b0452598dbb5032d792b3d097c5e2fd0dc8ea4b822a8",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f08.json": "6b5d1cfd7fb24dff63b06985af8b86522c67f2fb78d99d04f5dee79115699428",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f09.json": "5c6fca63303ed12af66ae55a19b6f12e1994d75e1d72d0fa665ee8af11cd628c",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f10.json": "c6182a19f0a29b5ed0cab83ce69bd3f563a390e00a4bb592105f98119d4067ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/config.json": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/manifest.json": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/fold_metrics.csv": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/summary.csv": "9e8b23aaf6d79c0db33b39c02e1038d360834e540b653406a5a741749e1437cb",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/run.py": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f01.json": "8b10359dbfaf277f2929fba568f53d52fe9c14340563ad5cbd5989d884951d3b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f02.json": "3ca0d1f5cd677081e51eb1e78ce902deb47156669f639a31c8e48e3b0853090f",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f03.json": "ca53a12a3bc9f8396e6cec28df01f6dff10c51af7b6d5cdb58b539ae0af8d70b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f04.json": "54c5ceaaa7a59ab41aee75193907fcdad128896c1f31f156bf9c1d59243be476",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f05.json": "37f083da285ced66ac25a153622512f686e08e6fbb495e7a377b4e0129afd749",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f06.json": "0e4bf68079f9d79b1e702129108be4ae8c742c26c97d211cc19930bc179b4c8b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f07.json": "9f150d5054cec3cedbcaf52e27fb1944e481da6cc8acaa45a8f19b0f56c64ab5",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f08.json": "970320d41a006e998185ffdfa02851900a30556afed2e797f80199df22b9307a",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f09.json": "4ce95ead745086cabb068b303c1ff92ef91526321027e5f57684e308e78b4ae0",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f10.json": "8e3b174b60befbe4de86ef9af8c92bc63102c2fe076aa506d2509b0f31d406b1",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/config.json": "4556c96bb92a9bdbdb048b6f702d853abe6030dd2ae9e2bdad9b5f0ba509c8e0",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/manifest.json": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/fold_metrics.csv": "646033fae333036e503930f6c0ced326113735f55d83ecd0a70d4917cff3318a",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/summary.csv": "c7ce729077618c21b14fc31f0fb7f448ac473acb79de5e91966e58ffcd731145",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/run.py": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f01.json": "91186e71143d26780c35f759b958006849bb1277113a943b562c1940581cf847",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f02.json": "b6ca441a2410d834a3dddd803f0451b7b54cf9ebfbccc4710ecbef29485c701b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f03.json": "66dc8526b2ba4b906fec9277c453f3628404df23e83f6e3294ef27dceeff1a02",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f04.json": "4598c896e0571a35f83e5a33ad7b09d2f46d8d67375ae3a6e45b3cd0a52a12ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f05.json": "696ca089dcafc4b9ed980bfafce58bbbc5473fbfdd4f44f19a514771bde4392f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f06.json": "2434f409dd8f620d3483e1029af58bb02314ae7e24c4d009f34c17a55d9acf19",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f07.json": "6e5c249185de62404dd6b0ea0df268a3099a05ce734a8c7a3e11fbd63e8c1695",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f08.json": "7dfaaa31981b6067fba1abfa7b5bf4c6e44637ca4ddc34123e7f41d86443b5eb",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f09.json": "6663ee00d8cd58013d6af73792401299c9c9c06207eddd9743375af6ba4c7a83",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f10.json": "71d0f5735672085b666fbd68276d4e36634a8d18132af33bfa25977d32e46be1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/audit.py": "dc7e6e5850d94faa41a8572c43016bb4c54aaee418528d994dc39454bcd08f43",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/config.json": "e353b0070e864c988d2b90334b96ac4f292d126052d7b6339fd78c82e37d7612",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/manifest.json": "adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/fold_metrics.csv": "a14103bc91fe393f0cfab60cd5e45f0c68a071e77c6f543028c49f8a5d12d7cd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/interventions.csv": "38ebf16e134a7feb8489fbd401ef747f465802153745fd829e207d7694d56481",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/mechanism.csv": "d491fef8b30dbbe7a849811c2eb66e4806c73fa65854c2b1d932c09196adbeec",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/summary.csv": "268f6fa2a4955c23d9293efcc63bdfd8b1ec55e700c7cd4dfd5b95f1836dec39",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/rudag.py": "7fb5920b21f43a117a47137fcce58b5411b91c13dfaaf7df85fc502124723a8e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/run.py": "a487c87d52a0faeded5ff6406ff9908290fc2fdfd9d5b66e6378a5b2aad6ab5c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f01.json": "eb7c9a194d0265b1636c28e6c863942ed961a7485da729cc0c8b1044eb69cd46",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f02.json": "f9af5b6bf96583de40826a64e624eae6a580182a208c8ed9733df48eca4f2df4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f03.json": "15c54f4eb1615e30cbb87fc94040357b2b35b350e45e6ebbe777d30ca96044ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f04.json": "eda41f7ff85a7f5652bf618975d778801673fdfbfea3619df9b8966925a0c675",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f05.json": "eb2d1e17ae87dcb2eb727350193e9348be668467431823590b33b50c8069a4b1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f06.json": "9289953588cd5ab340513316a45636ac459f1e972b31e9a77921f6d72f69ad27",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f07.json": "cf12e73c943b1efca0171765d0dea49cd7c12bd3836369dbae11aeaf8454fd45",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f08.json": "71c6699d52bd75e2022257351640c30a7f8183582c5f40421cde191b633e4a1e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f09.json": "ce479cbc5dbc201fab3e30bc2f0177096854c254047d45665493bc97a40d5da1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f10.json": "1d118ba928711aa48932216b15b5eedd251152cb96f1d19b07a557e1561585b7",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/audit.py": "6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/config.json": "0c49e2a015b5bab5e067fadeb6eca012f807b2bbe9f09040a7591a1e52559a6c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/dcr_rudag.py": "7f46bc51ef880cbab8d6fe270be4b101cc9a17d31b89117c32083212afdd644d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/manifest.json": "cd90873cb4a813a654104b66f7d03fff8564d7a6672a2b7a53e745bf08e5c3e4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/fold_metrics.csv": "554856f10397c3acccbdaa626324db466410a7249a8f659634a398dd0d968e87",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/interventions.csv": "4d6ed5479ac270910b44c5e7ac7ad612c97b07840ea697c1b7cea15784ac1627",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/mechanism.csv": "309c7e7619b6023afe6a5c22ecf0906dccb3a3fd4ede80d05309fc0457019696",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/prior_training_failures.json": "58fd14d55b663ea6dbe15c02e89c96704b12d22309258d545249fc6d8356ef5a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/report.md": "043c1111c664d609edcc895a6ca2c740301962687275196189f1d62fea80579d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/summary.csv": "72fd498283a77c781041431f96a2820c216b3c55f3df15bb50dd11d3c9e12cee",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/run.py": "3b15a7827333061be4b52e357743062cd180e764b4cba3c4736d8d72ff38ebc6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f01.json": "ed3757f0e30b03e214ed0586d28d3684eaf2e677f86c9b862b36bc06899b3157",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f02.json": "0f44f6d9b81454b81af6a4f338d3c81d18ba4544ed958b17ff01ed426c7c0fe5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f03.json": "e59c314e1186464714f45576cf5e402428b1d7cf599f007eaf0feec8b3d3d01e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f04.json": "b4c10b7ac492c50ef81006b1f0bb3b0093e87a40ea6852cd1c72bfd50294fd05",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f05.json": "342f67a0dabd1b411178bceab43b131faa554475b9cd9623241e56d6f89ec23f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f06.json": "3d36c15d3554ce755dbbdf9f3604c15f568ad42ef6ef9fcedcb86a1ec548e7c6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f07.json": "613ead06d0292f7576db2a57e5385150e2221624b45a95569dccc35628f6ad20",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f08.json": "bb68f20fc5e0dceb692054a9e6ab6700311ea9229e9ab02ddbc43cb0528e634a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f09.json": "39240d083449129606317e0b317bcbc997edb3dff3e0584141c9d69d4b5256d4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f10.json": "1947359b436be25b18dfb407ed39affd0947e4a96eab1578a4cc4fc27672454f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/audit.py": "7f0a3dddd6e9fdd8464e51611a191bebec5f888cb86eddddd8900dd73cf950e4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/config.json": "3b8a6b598bd35d826d1761989057b5f0927295103525cde1a815ea00c55905a8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/local_dcr.py": "9d288f2a927317a066803b3fe4201af3f933a7e9ddae023126f75d53399e858f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/manifest.json": "7eb54a314e25c81a028cb95538c0ba6c281213b3a43e73df08445e942b9224d5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/fold_metrics.csv": "29a1aac305066664e4631a95a90387132952d4c456d4aac9cdb55ad13d6318a9",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/interventions.csv": "b9202a6acd9df417c846fe5b41931cf04d9b16a23e8742707edfc02fce3fcc60",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/mechanism.csv": "2c7f40fc215de874bec1908e3f832aa35216107828b62478965b57a680d349dd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/paired_comparisons.csv": "7ac4b63a0d463d0900e635cfc00db207a6038cee49adfea3097251b961087429",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/report.md": "bdddc491b8a66046e1684c481cad92c083ccd460bfe37628bb1ee8e9cdd01c00",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/summary.csv": "0f8df0072c05551bc1e71ec5b92500675a70fed5142a2f8b569b2435033f6f95",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/run.py": "727aa2aed0573b120030d43b6fc5b525b1cbe6488c0afd204fb733679c4a504f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f01.best.pt": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f02.best.pt": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f03.best.pt": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f04.best.pt": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f05.best.pt": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f06.best.pt": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f07.best.pt": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f08.best.pt": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f09.best.pt": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f10.best.pt": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f01.json": "dde4b87d5cfdb93f6ca0dcbc0c0489a0340d9713fe79edaae9cde903adcbf7b5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f02.json": "508d4689509795a5605c65cbae5411b4361ea0505ad34d1b7960025a82029ed1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f03.json": "c3c1e64f6d1792c436cc8bbbe5ba6cd9d57b26660bd42908e161ea776da93053",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f04.json": "b6656c8691beb297fa5a19faff7b87e152a9c134e3bb6fea12955a2baec67bf9",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f05.json": "c7ed4ad0e89226d209849c4828bfabeed84a4625f9e7f69bbbef62e7f0b78bf8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f06.json": "2093c10cdd27632ab900ef2510e423209357fd8598c02c4d973b798bb2ae707c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f07.json": "820a12fccaacb7b42b7366bbc3b983a1e86ddb539417ebc35ac9b8e463f0721d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f08.json": "807407ebad8c2ea0366efd4952a27d1d9af24151afebf922919a7fd4a05962da",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f09.json": "1a5a9ed21b7e2d60cc126c8854262cab1af5e3d43c9349b75a078fe8f472bdc6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f10.json": "9f841df091f932f5c6c3af0b0878a650cce61a3fa9cc76a66c532dc62711eb33",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/config.json": "1d2a3fd8cead1f8637ae4122b678e1c14fa3232aeaefeb87983ebcc4044f382d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/manifest.json": "fe65396bf4c610a0f8338cb4e72fd71d2d3daac977a69d7d5a1c6c47475cf25f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/fold_metrics.csv": "fad616e122d65afcae939b4c8095e28f0dda43cba084f13ddb64a9be70161952",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/summary.csv": "d561d4b9a443465b228ac79c583a9316946236730ab94666d13d53b823ed5e59",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/run.py": "938998419d8dec2d9ea3abc7e789e7d890f6aaa25c54d36c8ff8c02e97b45cf0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/udag.py": "91b749aa99e86cb55018102bf5def1664b678adb94e3f4cdf94dbe9f5baf16bb",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/model/spromptgl/experiment/experiment81_6_1_contrastive_prcl_res/config.json": "df543af01b1ff7293da5c3a63dd219eb4c3d062b8af714f06becc0b6c0f2e3bc",
+    "/model/spromptgl/experiment/experiment81_6_1_contrastive_prcl_res/cprl_res.py": "bcda661ad0c74434fcdb46db2c1dd967c45ec28e1586ffbc5e5aa8837412c3be",
+    "/model/spromptgl/experiment/experiment81_6_1_contrastive_prcl_res/design.md": "74ce2e9d874504a889e420a7d4b3bbe6b20046a7f99dee07a9d4374a3c42c965",
+    "/model/spromptgl/experiment/experiment81_6_1_contrastive_prcl_res/results/report.md": "d7ed7443a7c4d706df8b6287e8f5561c44cced7f4af7a6cc2a4f1cd9b5427266",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/audit.py": "1f853e481b47cb27fcd769ce3ede2d526b8905c229a6cd62968407dc51e09966",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/config.json": "487221b64e2a0a35ff40f9e8320d32456c269fa25bc4d8e73da8d04b775a7ff8",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/design.md": "fe988abf8887969c505592f5c63f4d724bb5a2652aa124059c632546604e1b11",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/results/audit_status.json": "f9a1a7833ac6258c54272f4d6123f09b6ed2938d7ee8db8b20d258ac035cc0dd",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/results/fold_metrics.csv": "ad8bc4ef63f3d0e22ea0597dcd3ec12e8aa8969500a3d703f4eb76daae4b3cf2",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/results/paired_comparisons.csv": "2d5b437387e6cf96fd19a6c3f490d58d275605f514c3225f3d11f93092fc0454",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/results/report.md": "e76f572ba55c3bdb292f72e8c777801b53e27e846e3b14c822fd87f60bec00b2",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/run.py": "8c0d9a2fea12b24ed6da7f30af239f0d36136723acfd6f03efdc2abb825cf7a6",
+    "/model/spromptgl/experiment/experiment81_6_2_semantic_anchored_prcl/sa_prcl.py": "c05fe067bca1e8c4be2ef587b7c7fcb9fcca29417f2861a85068e8c14f414beb",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/audit.py": "7f9b7c284e76c5c17657419bc99f29d2e22a56bc5f54f62d6a3331bbe4fd7d4d",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/config.json": "1421e77169665851af3cf0153063034e17d2341882f4d5a6602d425c61e98732",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/design.md": "8200f0777cdaea72af68eb4aa39b6a63112a5728c8309e55d8231113e556a8af",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/results/audit_status.json": "d180ffe86dd8f31d99987bafe23885195b9a507fb4260a8c568fed6e7a3a001d",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/results/fold_metrics.csv": "5e8fc1bf97875e742dd740934f84bf82f26310faddf12c4162fb97d953e83777",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/results/mechanism.csv": "70dd1c9dcf3c7cf1de0e84dc52349c207f908e9c02370cbd8e82b6981f46b49a",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/results/paired_comparisons.csv": "27a8ed27ab7a4eac3f1efc1714a5d43721681c33f58bf97b8990204515e28696",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/results/report.md": "30561d67607e29aa1578a3af8d7448e83ef5722d0c0486cdb281dab6d63b2fa6",
+    "/model/spromptgl/experiment/experiment81_6_3_cge_e2e/run.py": "18637f96d089bf2645a1d74282860619078f0583e8e49ca999d631f54c78c36a",
+    "/model/spromptgl/experiment/experiment81_6_prcl_res/config.json": "c647145d401ad3677622441f7b3e9137498705bc32ad4e5129998a96abb24069",
+    "/model/spromptgl/experiment/experiment81_6_prcl_res/design.md": "3d1b8a68ae9703602094b831858f87c866fe6429ee9a19e38c53992e8e90a3d4",
+    "/model/spromptgl/experiment/experiment81_6_prcl_res/prcl_res.py": "4dc485491341f9293ad1c7de36d00db55900659901e04f1444f6e4c9645d8470",
+    "/model/spromptgl/experiment/experiment81_6_prcl_res/results/report.md": "9b9afdb141ee3802acbb673ca7f2c596e668c6dade42767445c5b64e825c9110",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/audit.py": "0284a6d5d77d5082eb3990ba89e99f4adb8924bbfc94d90827bfeecf32c1ba56",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/config.json": "ed9f108fe427101a67934f971dc617919d510681c501dab1a0e7cd2987a1d37a",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/design.md": "ad5eed70287c540b7c64ad715528e1308b6a241b443675350a4d9da95b5a0ab4",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/psrr_lcr.py": "bcc007b23da5fa2d6cec245f6f55f4d594abe0c96b8fe9a061d0d9c44b865b14",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/audit_status.json": "3d1ebfbe62788fcc0b9557f91fd99c72648eed6f58c403234d7f283fc32d86ea",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/fold_metrics.csv": "e2039bc563da89017431baa07ff1fae8eb5360da854b6c431929ad97df6b1b52",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/mechanism.csv": "b355c02256fcf338f3d48d652a22e8f736aaa9b0f1d6b0b9f2642e6596c6c629",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/paired_comparisons.csv": "7b526d0843504527235c42d4953f223f10fbbecb4a48d7d95039b3eb4937e000",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/preflight.json": "6f2cdea278c2cef04d4710671e404e3f1a463c4a11fe2c21fc85b7096f6105f9",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/results/report.md": "4be05d9775eae1245bdfad608b1ecd3f72287a1421816034ec4e861a8f5352be",
+    "/model/spromptgl/experiment/experiment81_7_1_psrr_lcr/run.py": "173a8974fe0c1cc8cff065e412d5a6ec9f8e264717351d316f9f0f7ced887999",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/audit.py": "f6adbf9d363af0977dc94bc901b1eddf7eb85f1dee50d0c6d2b321a458185300",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/config.json": "973795c569c13f034b53d4dcdfbb634b8d56f4010df12d76a4ce11afc2085bd5",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/design.md": "914790bf062d252d0cc4d2cac0e01b4669860da72aeaa16d10b3654175c9666f",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/audit_status.json": "c160cf48e7ea6638f1cf6466532e607a18bc4db1210ce9260381292b669ccc23",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/fold_metrics.csv": "5b4d163d904413776b0bec1a3781617be4cc9878d28930a93b172b8697b4c05f",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/mechanism.csv": "f9d4fc2b914e5ac70f5e34331e7c3f9e714f970f9f3210a690c1ea622635c8a4",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/paired_comparisons.csv": "80c808e976d1f2f1f04d82a2855acb34e22399cacc2e245f9a6d866fdeaea240",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/preflight.json": "8e5b17c8675fa936a2f41d38019003bbee8c980980ce58f9b237f1a44a2e03c9",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/report.md": "d0cd56962f2fc8f08d7bd45a86e5bd58ca6d90c1f3e222186e8a1863a971484d",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/run.py": "703ec224462656b0d6864dd76ab6f6b9c99d5f6eac63dd2e5a2fc95888b2ff99",
+    "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/tp_psrr.py": "31ffb4cb8694232de6d238cbdea20151fe1461a2db25ba8ed47af2322d435e15",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold01.pt": "3848e40fc8adeb5e40fe3faf5b7cb3cc8a79c5f5000b641a4c18aca4a893fe56",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold02.pt": "a149baa166ad40afe06ba019898def30c2b7be68760b10f2860592e270533376",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold03.pt": "f034fe43008166d1ce688f6da5a080a67394b6ce0f0a6ceab41f9da4d6412386",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold04.pt": "62503f7b2db4fb5be6a5b36d0c28319f1b874edf4d214fd44205321d7e971539",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold05.pt": "e13d855fe32c326c9450c82394fc15722c8b7f5f91283175a50b7cc0da0a803d",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold06.pt": "18bef8a597187ee781a4bd6d92ffab9951a70b0c5112eef79d4f0eb610c98acc",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold07.pt": "3fb2990ce9112558bd4eecaf811c84b41fd496ba54e9284656eee35d4d9970fe",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold08.pt": "5decb9424060c6ae7c4cb4d87378aedf3c7f5b0ee872e29c0010d6f71d68d600",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold09.pt": "25069fb233b84b0c8e224b4e5d92ffe42e85a3a2f3cd45594acd73ec117d39cb",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold10.pt": "c4b2a2fc1b763f3564c5158dc9e7bdae3557de455afc594c7fb06ec5859b9ea1",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/audit.py": "f503db7ea962afa52174075e0c46b5d4b8301bb10f9c4f2120c9b12f67b92216",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/config.json": "c23c54a548b0bb5066b81683efa6b058e357444949cc20521c0d6d2abc513d66",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/design.md": "0b4dc0247754639c4c55c7245a06d18eaff45f3b9926b3a96cda1e32654bdc7b",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/op_er_psrr.py": "6cf73bddcdd554fb5c80ca200f2d73ac564dea220e7f642d4fa8afbe7de46a26",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/path_adapter.py": "bbb8202881a4734f52ea32594bc255c94174fe4d4dc0e36ec77c4e5773150b73",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/prompt_features.pt": "7bfd1d6e11bb9983e9896e682b5a8c40bf606c919dfd38bae368436955f83aff",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/run.py": "a1ff2ffdb1e06ce169757eb41178bab2366fa80842db9f987e5c2aaca75588bb",
+    "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/tp_psrr.py": "3f5c91c9e8d5a45369f46c11f7484647eb4c39a4ff1d039a3f6655714a6bcfe6",
+    "/model/spromptgl/experiment/experiment81_7_psrr/audit.py": "75aee0026edc73f39926c367c6c08218e2f507bcbc3e0f57a2df1790e066d0f4",
+    "/model/spromptgl/experiment/experiment81_7_psrr/config.json": "d5a1b395b7af1ec1eca720396dd48a7e9bba9fc54f816275c0b7099da7f0c50e",
+    "/model/spromptgl/experiment/experiment81_7_psrr/manifest.json": "e2ea2b87b2899be0ef5df9fb6bbdeb0788ebc60b3e9eb515e9611dc6da5666ab",
+    "/model/spromptgl/experiment/experiment81_7_psrr/psrr.py": "eb17b57e607a1cc5c6a7b0409a5c0bf5de8600daa6402c5184dc0e8ca04a5fed",
+    "/model/spromptgl/experiment/experiment81_7_psrr/results/audit_status.json": "d28f4a7135022668200aa8d2758774b572391bb63d38d3e4b26d1cc3e7a18c6e",
+    "/model/spromptgl/experiment/experiment81_7_psrr/results/fold_metrics.csv": "fb1a2f604c2a3bd73846c61a80a9fe786876656ec27180802f73b22a3635453f",
+    "/model/spromptgl/experiment/experiment81_7_psrr/results/mechanism.csv": "1d394b04299d37bfdc756f6071037feeffacd9c218775cb990908d20592bba4b",
+    "/model/spromptgl/experiment/experiment81_7_psrr/results/preflight.json": "a627287339fcd7ab31448cb1626bca63286d503a06ff3b53d6cd679936acfc27",
+    "/model/spromptgl/experiment/experiment81_7_psrr/results/report.md": "b16f273ea16165c69a56fb51d26dfb3b87e6d2a6aebec8e5eeb89a1cf6b06bc2",
+    "/model/spromptgl/experiment/experiment81_7_psrr/run.py": "be834ec955e3b31ec172ef86dc8214560c781be16eb0b6981bbe82d63652b19e"
+  },
+  "prompt_cache_sha256": "7bfd1d6e11bb9983e9896e682b5a8c40bf606c919dfd38bae368436955f83aff",
+  "prompt_geometry": {
+    "prompt_count": 8,
+    "raw_feature_shape": [
+      8,
+      1024
+    ],
+    "basis_shape": [
+      8,
+      8
+    ],
+    "max_gram_error": 5.440092820663267e-15,
+    "max_recomputed_svd_gram_error": 5.440092820663267e-15,
+    "float32_cache_max_vector_error": 2.781557439934801e-08,
+    "float32_cache_max_gram_error": 4.649373108733812e-08,
+    "prompt_norms": [
+      0.9999999999999997,
+      0.9999999999999999,
+      0.9999999999999998,
+      1.0000000000000004,
+      0.9999999999999999,
+      1.0000000000000002,
+      0.9999999999999992,
+      1.0000000000000002
+    ],
+    "singular_values": [
+      2.5290329145065717,
+      0.6876877727043088,
+      0.5208437966251861,
+      0.49937662988462334,
+      0.45070938158367,
+      0.4225626808526426,
+      0.3926602452588161,
+      0.27302478194093255
+    ],
+    "numerical_rank": 8,
+    "gram_effective_rank": 2.379230598460444,
+    "centered_vector_norms_before_normalization": [
+      0.378629287175359,
+      0.48357123811907715,
+      0.3733701102787657,
+      0.598433340974052,
+      0.4090298367670688,
+      0.42088494352744,
+      0.4414865692437106,
+      0.4488418998173271
+    ],
+    "centered_unit_norm_error": 1.1102230246251565e-16,
+    "centered_numerical_rank": 7,
+    "centered_singular_values": [
+      1.401765313353228,
+      1.2338989982938535,
+      1.0575023179675638,
+      1.042995185888155,
+      0.9869538933064855,
+      0.9302922945863111,
+      0.6832828236660273,
+      3.211458632785058e-16
+    ],
+    "centered_gram_max_abs": 1.0000000000000002,
+    "centered_gram_preserves_original": false,
+    "centered_deterministic": true,
+    "label_independent": true,
+    "trainable_text_parameters": false
+  },
+  "warmup_compatibility": {
+    "warmup_reads": {
+      "1": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt",
+        "source_sha256": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold01.pt",
+        "compatibility_sha256": "3848e40fc8adeb5e40fe3faf5b7cb3cc8a79c5f5000b641a4c18aca4a893fe56",
+        "archived_rng_sha256": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b"
+        }
+      },
+      "2": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt",
+        "source_sha256": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold02.pt",
+        "compatibility_sha256": "a149baa166ad40afe06ba019898def30c2b7be68760b10f2860592e270533376",
+        "archived_rng_sha256": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510"
+        }
+      },
+      "3": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt",
+        "source_sha256": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold03.pt",
+        "compatibility_sha256": "f034fe43008166d1ce688f6da5a080a67394b6ce0f0a6ceab41f9da4d6412386",
+        "archived_rng_sha256": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427"
+        }
+      },
+      "4": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt",
+        "source_sha256": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold04.pt",
+        "compatibility_sha256": "62503f7b2db4fb5be6a5b36d0c28319f1b874edf4d214fd44205321d7e971539",
+        "archived_rng_sha256": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e"
+        }
+      },
+      "5": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt",
+        "source_sha256": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold05.pt",
+        "compatibility_sha256": "e13d855fe32c326c9450c82394fc15722c8b7f5f91283175a50b7cc0da0a803d",
+        "archived_rng_sha256": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9"
+        }
+      },
+      "6": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt",
+        "source_sha256": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold06.pt",
+        "compatibility_sha256": "18bef8a597187ee781a4bd6d92ffab9951a70b0c5112eef79d4f0eb610c98acc",
+        "archived_rng_sha256": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c"
+        }
+      },
+      "7": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt",
+        "source_sha256": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold07.pt",
+        "compatibility_sha256": "3fb2990ce9112558bd4eecaf811c84b41fd496ba54e9284656eee35d4d9970fe",
+        "archived_rng_sha256": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3"
+        }
+      },
+      "8": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt",
+        "source_sha256": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold08.pt",
+        "compatibility_sha256": "5decb9424060c6ae7c4cb4d87378aedf3c7f5b0ee872e29c0010d6f71d68d600",
+        "archived_rng_sha256": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0"
+        }
+      },
+      "9": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt",
+        "source_sha256": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold09.pt",
+        "compatibility_sha256": "25069fb233b84b0c8e224b4e5d92ffe42e85a3a2f3cd45594acd73ec117d39cb",
+        "archived_rng_sha256": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca"
+        }
+      },
+      "10": {
+        "source_path": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt",
+        "source_sha256": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+        "compatibility_path": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr/.runtime/compat_checkpoints/fold10.pt",
+        "compatibility_sha256": "c4b2a2fc1b763f3564c5158dc9e7bdae3557de455afc594c7fb06ec5859b9ea1",
+        "archived_rng_sha256": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+        "restore_audit": {
+          "model_exact": true,
+          "cam_exact": true,
+          "optimizers_exact": {
+            "opt_base": true,
+            "opt_cam": true,
+            "opt_added": true
+          },
+          "rng_components_exact": true,
+          "archived_rng_sha256": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c"
+        }
+      }
+    },
+    "construction_rng_mismatches": [
+      {
+        "fold": 1,
+        "actual_runtime_initial_rng_sha256": "c8ed67b09a83a6b0fb98ed00ce1d32f662228c22bb78930f51f60a8f3641dc4f",
+        "archived_constructor_rng_sha256": "8b11014f0095d0116b37316fd68dfa333362d78efaf027fabf96b5f0427058e0",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 2,
+        "actual_runtime_initial_rng_sha256": "045fb97490b5b4bfb68692e4afec2c3cbe546dc02ab57a4bf56fda0846880ae5",
+        "archived_constructor_rng_sha256": "71bd4815bdacf7a415352bf302701ee2067d794bb9bcb0841e8d26db126492ce",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 3,
+        "actual_runtime_initial_rng_sha256": "4c559cf415df20d382ca610771c34b869e2541b63f6f9a232bb94942a044ca56",
+        "archived_constructor_rng_sha256": "7298a5db132522286ef9069d27ead3d63353cb7926454330673f8c5b2f9abe4d",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 4,
+        "actual_runtime_initial_rng_sha256": "a628078a716fe47da4087697e310bc6f733923c6ecfb5eb810be0651c0d2866a",
+        "archived_constructor_rng_sha256": "378f1d278c4274bdc66fea4b6105bab216b90d5d4939946cefbe86a94c307940",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 5,
+        "actual_runtime_initial_rng_sha256": "58d0c0c1b9dde0404c8aefb230dd48040f3def4ea122513382dbc99c6419a071",
+        "archived_constructor_rng_sha256": "3e65ff22c0c898ca4c84db4615363113a2f720321d1685a1f50f22f2f22ef124",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 6,
+        "actual_runtime_initial_rng_sha256": "16efc44fb4ccaf3232d846de0774d7cbf4c53a8dd1ee17aa7fac1b876fd72fce",
+        "archived_constructor_rng_sha256": "f45faf71b36d008e40f7338f8e066a757a134f6285834061760eef8b30422344",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 7,
+        "actual_runtime_initial_rng_sha256": "6af3201e0e7c2e25af6c327af11e464faaaa534f769fe5cf338880c6530519d7",
+        "archived_constructor_rng_sha256": "021f46bda7190e42989591da8a43c65aaa68b273e6bc78217f861da229eae3de",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 8,
+        "actual_runtime_initial_rng_sha256": "8487a59b365c5199310d6ca1203d5aee18e7d4c7d2c421d4217ae16d15d09c48",
+        "archived_constructor_rng_sha256": "948dd5bf257285732fc256de67758b1725d1209558bd219350249e7426592109",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 9,
+        "actual_runtime_initial_rng_sha256": "c46192c8c18b1d1315c20f6bc13c94f2a28c6329625b3f045d7f1bec77e6468b",
+        "archived_constructor_rng_sha256": "cc5c7b812657dbef1b5695c4e3d9324ef929c89f9f0f1327e553fb9fa9d6793a",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      },
+      {
+        "fold": 10,
+        "actual_runtime_initial_rng_sha256": "82914ea25110a68a75c7f841aa37e8d72b8e10f7711083c1ee83fa3e19c454da",
+        "archived_constructor_rng_sha256": "ce125430197389134fe6e2ade540b77c880f67eac8a66ee12200d27ba90bdd91",
+        "shared_model_gfr_cam_checks_passed_before_rng_check": true
+      }
+    ],
+    "numpy_runtime": "1.26.0",
+    "compatibility_method": "local tensor-preserving warmup pickle with NumPy arrays encoded as primitive tuples"
+  },
+  "entmax": {
+    "status": "PASS",
+    "gradcheck": true,
+    "minimum_probability": 0.0,
+    "max_row_sum_error": 1.1102230246251565e-16,
+    "sparse_zero_count": 1,
+    "finite_difference_error": -1.3042233959481564e-11
+  },
+  "module": {
+    "status": "PASS",
+    "trainable_parameters": 7808,
+    "er_trainable_parameters": 533434,
+    "same_fold_initialization_identical": true,
+    "G1_G2_common_initialization_identical": true,
+    "initial_residual_exact_zero": true,
+    "pairwise_shapes": {
+      "local_tokens": [
+        5,
+        16,
+        32
+      ],
+      "prompt_scores": [
+        5,
+        16,
+        15,
+        8
+      ],
+      "attention_visual": [
+        5,
+        16,
+        16
+      ],
+      "attention_asd": [
+        5,
+        16,
+        16
+      ],
+      "beta_node": [
+        5,
+        16,
+        4
+      ],
+      "beta_er_node": [
+        5,
+        16,
+        4
+      ],
+      "relation_contrast": [
+        5,
+        16,
+        32
+      ],
+      "raw_delta": [
+        5,
+        144
+      ]
+    },
+    "prompt_changes_relation_probabilities": true,
+    "disease_conditioned_supports_differ": true,
+    "synthetic_model_relation_exact_zero_count": 2,
+    "entmax_function_exact_sparse_zeros_verified_separately": true,
+    "prompt_off_relation_off_zero": true,
+    "G2_gate_sigmoid_bounded_and_nonconstant": true,
+    "G2_gate_changes_scores_and_has_nonzero_gradient": true,
+    "node_local_prompt_weights_vary_across_slots_and_patients": true,
+    "ER_node_prompt_weights_vary_across_slots_and_patients": true,
+    "ER_reliability_gate_varies_across_candidate_relations": true,
+    "uniform_beta_exact": true,
+    "blocked_rows_zero": [
+      1,
+      3
+    ],
+    "max_residual_ratio": 0.0009195168968290091,
+    "semantic_mapping_gradient_norms": [
+      0.14871461689472198,
+      0.046324361115694046
+    ],
+    "cam_input_gradient_norm": 0.01203003991395235,
+    "RES_formula_exact": true
+  },
+  "historical_folds": [
+    {
+      "fold": 1,
+      "warmup_sha256": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+      "warmup_rng_sha256": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+      "train_pair_sha256": "e634bbec99b6dd7e5a75ad6d5fce2696e32244aa121ff5f523d3807c77e5fa22",
+      "train_count": 783,
+      "test_count": 88,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "3848e40fc8adeb5e40fe3faf5b7cb3cc8a79c5f5000b641a4c18aca4a893fe56"
+    },
+    {
+      "fold": 2,
+      "warmup_sha256": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+      "warmup_rng_sha256": "e63665b7bed03714baf5bc23fb8d0ba14cd4c60e86bee2ab8ef4e9dd4abea510",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+      "train_pair_sha256": "c5ceb5c322490afe4c411751db8579ce4c960d5d7062d3c5c12640f56fbaf43c",
+      "train_count": 786,
+      "test_count": 87,
+      "overlap_1based": [
+        377,
+        407
+      ],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "a149baa166ad40afe06ba019898def30c2b7be68760b10f2860592e270533376"
+    },
+    {
+      "fold": 3,
+      "warmup_sha256": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+      "warmup_rng_sha256": "847e29416afda8782ec72527c9607d2ec5c51fd82b247567e17d1d570fb96427",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+      "train_pair_sha256": "5eb4447fb20ccb1d9085014b3025c3a945c7b4077974bf4f1b758775e935fc02",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "f034fe43008166d1ce688f6da5a080a67394b6ce0f0a6ceab41f9da4d6412386"
+    },
+    {
+      "fold": 4,
+      "warmup_sha256": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+      "warmup_rng_sha256": "3351ca6873cea0b560cb0f6e193d172069f9492068a18a767c8536c3a5887b4e",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+      "train_pair_sha256": "8a81e57ab525dc99cb2e840e0a24365e36d493cb6976d459d17709f8e1e284aa",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "62503f7b2db4fb5be6a5b36d0c28319f1b874edf4d214fd44205321d7e971539"
+    },
+    {
+      "fold": 5,
+      "warmup_sha256": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+      "warmup_rng_sha256": "3138f64c66bb7a861f382713861e9b92b32a1dd111c309b678df5c965e68f5a9",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+      "train_pair_sha256": "0c2f1074ed7d3b47ccbf835bc81e1dcf0ad6644dd8618913f0232ab6bf1854cd",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "e13d855fe32c326c9450c82394fc15722c8b7f5f91283175a50b7cc0da0a803d"
+    },
+    {
+      "fold": 6,
+      "warmup_sha256": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+      "warmup_rng_sha256": "d61cf4c29a46ef982b8e5bf0fa1648bec8192a2f432a63defc1c442ef31d3d7c",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+      "train_pair_sha256": "a8d8e2a7b872b2fc04563cee3a7bb96c49d30bc201e1f7853d9831719f1945e7",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "18bef8a597187ee781a4bd6d92ffab9951a70b0c5112eef79d4f0eb610c98acc"
+    },
+    {
+      "fold": 7,
+      "warmup_sha256": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+      "warmup_rng_sha256": "925d3479e9f9deed5873c53fc9b1b39acd42b120dfe4f80b277c45525a0a6ef3",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+      "train_pair_sha256": "5204c9a774e16152d13da482c112ee569b2c92b4c8f2e17182d63d7acc526044",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "3fb2990ce9112558bd4eecaf811c84b41fd496ba54e9284656eee35d4d9970fe"
+    },
+    {
+      "fold": 8,
+      "warmup_sha256": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+      "warmup_rng_sha256": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+      "train_pair_sha256": "7703203aa478004a659584184b554ff70c4f8d3fb0bf9f36845afd494eb69d5c",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "5decb9424060c6ae7c4cb4d87378aedf3c7f5b0ee872e29c0010d6f71d68d600"
+    },
+    {
+      "fold": 9,
+      "warmup_sha256": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+      "warmup_rng_sha256": "cd92bb154fe3b7a2844161e7f7e4bd5c55bc31f013b59dfa2ed9ba9b5e403aca",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+      "train_pair_sha256": "e03afcd9f365228d35e313f2c34c785d25575a6d9dd282c218b8428f876b55a6",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "25069fb233b84b0c8e224b4e5d92ffe42e85a3a2f3cd45594acd73ec117d39cb"
+    },
+    {
+      "fold": 10,
+      "warmup_sha256": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+      "warmup_rng_sha256": "f82f12dcc272476d65a9f2255fdc1b9260592f8fcf7b25fe7ee5bbfa3f52a77c",
+      "initial_shared_sha256": null,
+      "initial_gfr_sha256": null,
+      "initial_cam_sha256": null,
+      "split_sha256": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38",
+      "train_pair_sha256": "1c3dd2298074e5e220ccb97f288623f8bbb641877873d9817ef9627f12c6bc28",
+      "train_count": 784,
+      "test_count": 87,
+      "overlap_1based": [],
+      "train_pairs": 4096,
+      "warmup_compatibility_sha256": "c4b2a2fc1b763f3564c5158dc9e7bdae3557de455afc594c7fb06ec5859b9ea1"
+    }
+  ],
+  "historical_fold_identity_10_of_10": true,
+  "zero_residual_and_dropout_parity": {
+    "g1": {
+      "zero_residual_classifier_output_exact": true,
+      "zero_residual_loss_exact": true,
+      "historical_optimizer_update_exact": true,
+      "virtual_optimizer_matches_native_clone": {
+        "opt_base": {
+          "parameters": 33,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_cam": {
+          "parameters": 35,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_added": {
+          "parameters": 39,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        }
+      },
+      "group": "G1",
+      "reference_gradient_matches_darg_at_zero_residual": true,
+      "reference_forward_state_isolated": true,
+      "dropout_and_classifier_forward_count": 1,
+      "public_rng_after_train_exact": true,
+      "public_rng_after_eval_exact": true,
+      "first_step_psrr_gradient_norm": 0.00039986077864573197,
+      "first_step_learned_residual_norm": 0.017039136961102486,
+      "second_step_branch_vjp": {
+        "classification_to_delta_norm": 0.008422886952757835,
+        "delta_to_cam_input_norm": 8.362193852917699e-07,
+        "branch_to_cam_parameter_norm": 1.1221015175247314e-05,
+        "branch_to_darg_parameter_norm": 9.235440097793809e-06
+      },
+      "second_step_gradient_control": {
+        "max_reconstruction_error": 0.0,
+        "reconstruction_tolerance": 1e-12,
+        "groups": {
+          "gfr": {
+            "reference_gradient_norm": 0.08797723950503561,
+            "enhanced_gradient_norm": 0.08797865037441314,
+            "delta_gradient_norm": 1.2055450505578877e-05,
+            "dot_reference_delta": 1.2405272147021954e-07,
+            "cosine_reference_delta": 0.11696408320948187,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.2055450505578877e-05,
+            "optimizer_reference_step_norm": 2.7318802806872764,
+            "optimizer_update_delta_norm": 3.671910825152401e-06,
+            "optimizer_update_ratio": 1.3440965371398468e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              1.3440965371398468e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 1.3440965371398468e-06
+          },
+          "cam": {
+            "reference_gradient_norm": 0.1752381949820753,
+            "enhanced_gradient_norm": 0.17523649093759106,
+            "delta_gradient_norm": 1.918926310232544e-05,
+            "dot_reference_delta": -2.987963416162372e-07,
+            "cosine_reference_delta": -0.08885629632534758,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 1.9113359113443438e-05,
+            "optimizer_reference_step_norm": 0.6863294826033537,
+            "optimizer_update_delta_norm": 2.307567565864785e-06,
+            "optimizer_update_ratio": 3.3621862740207885e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              3.3621862740207885e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 3.3621862740207885e-06
+          },
+          "darg": {
+            "reference_gradient_norm": 0.000724978311922395,
+            "enhanced_gradient_norm": 0.0007249793495410643,
+            "delta_gradient_norm": 1.29013039406354e-08,
+            "dot_reference_delta": 7.521683478937621e-13,
+            "cosine_reference_delta": 0.08041858595075937,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.29013039406354e-08,
+            "optimizer_reference_step_norm": 0.11292665663531543,
+            "optimizer_update_delta_norm": 1.0657464342204997e-06,
+            "optimizer_update_ratio": 9.437509849089166e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.437509849089166e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.437509849089166e-06
+          }
+        },
+        "reference_gradient_norm": 0.19608402598135066,
+        "enhanced_gradient_norm": 0.19608313612567738,
+        "delta_gradient_norm": 2.2661903533162746e-05,
+        "max_optimizer_update_ratio": 9.437509849089166e-06,
+        "kappa_update": 0.02,
+        "actual_virtual_update_max_abs_error": 0.0
+      },
+      "latest_restore_next_step_exact": true,
+      "restored_total_loss": -0.39197948575019836,
+      "restored_metrics": {
+        "acc": 0.5454545454545454,
+        "hard_auc": 0.5651271406331084,
+        "prob_auc": 0.6206538661131292,
+        "sen": 0.8536585365853658,
+        "spe": 0.2765957446808511,
+        "ba": 0.5651271406331084,
+        "asd_f1": 0.6363636363636365
+      },
+      "peak_gpu_bytes": 1618303488
+    },
+    "g2": {
+      "zero_residual_classifier_output_exact": true,
+      "zero_residual_loss_exact": true,
+      "historical_optimizer_update_exact": true,
+      "virtual_optimizer_matches_native_clone": {
+        "opt_base": {
+          "parameters": 33,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_cam": {
+          "parameters": 35,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_added": {
+          "parameters": 39,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        }
+      },
+      "group": "G2",
+      "reference_gradient_matches_darg_at_zero_residual": true,
+      "reference_forward_state_isolated": true,
+      "dropout_and_classifier_forward_count": 1,
+      "public_rng_after_train_exact": true,
+      "public_rng_after_eval_exact": true,
+      "first_step_psrr_gradient_norm": 0.0004666009989902099,
+      "first_step_learned_residual_norm": 0.010911377146840096,
+      "second_step_branch_vjp": {
+        "classification_to_delta_norm": 0.008422893472015858,
+        "delta_to_cam_input_norm": 4.618090940766706e-07,
+        "branch_to_cam_parameter_norm": 6.006435408903627e-06,
+        "branch_to_darg_parameter_norm": 4.891719672305557e-06
+      },
+      "second_step_gradient_control": {
+        "max_reconstruction_error": 1.1368683772161603e-13,
+        "reconstruction_tolerance": 1e-12,
+        "groups": {
+          "gfr": {
+            "reference_gradient_norm": 0.08797866107101178,
+            "enhanced_gradient_norm": 0.08797620235219453,
+            "delta_gradient_norm": 8.671072337948052e-05,
+            "dot_reference_delta": -2.200711416170296e-07,
+            "cosine_reference_delta": -0.028847815964012688,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 8.66746356710413e-05,
+            "optimizer_reference_step_norm": 2.731880342044747,
+            "optimizer_update_delta_norm": 2.563045669481866e-05,
+            "optimizer_update_ratio": 9.381983647071041e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.381983647071041e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.381983647071041e-06
+          },
+          "cam": {
+            "reference_gradient_norm": 0.1752391740918719,
+            "enhanced_gradient_norm": 0.17523035773990617,
+            "delta_gradient_norm": 0.00012606844890800057,
+            "dot_reference_delta": -1.5528779998498427e-06,
+            "cosine_reference_delta": -0.07029100132039022,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 0.0001257566221509428,
+            "optimizer_reference_step_norm": 0.6863295026975675,
+            "optimizer_update_delta_norm": 1.6310272299182674e-05,
+            "optimizer_update_ratio": 2.3764492470564577e-05,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              2.3764492470564577e-05
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 2.3764492470564577e-05
+          },
+          "darg": {
+            "reference_gradient_norm": 0.0007249769511261715,
+            "enhanced_gradient_norm": 0.0007249871458442859,
+            "delta_gradient_norm": 1.5543167381093586e-07,
+            "dot_reference_delta": 7.378908119753249e-12,
+            "cosine_reference_delta": 0.06548297159786727,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.5543167381093586e-07,
+            "optimizer_reference_step_norm": 0.11292655167293203,
+            "optimizer_update_delta_norm": 1.0429648556281026e-05,
+            "optimizer_update_ratio": 9.23578060409416e-05,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.23578060409416e-05
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.23578060409416e-05
+          }
+        },
+        "reference_gradient_norm": 0.1960855388136234,
+        "enhanced_gradient_norm": 0.19607655663115722,
+        "delta_gradient_norm": 0.00015300989353001708,
+        "max_optimizer_update_ratio": 9.23578060409416e-05,
+        "kappa_update": 0.02,
+        "actual_virtual_update_max_abs_error": 0.0
+      },
+      "latest_restore_next_step_exact": true,
+      "restored_total_loss": -0.3882605731487274,
+      "restored_metrics": {
+        "acc": 0.5454545454545454,
+        "hard_auc": 0.5651271406331084,
+        "prob_auc": 0.6206538661131292,
+        "sen": 0.8536585365853658,
+        "spe": 0.2765957446808511,
+        "ba": 0.5651271406331084,
+        "asd_f1": 0.6363636363636365
+      },
+      "peak_gpu_bytes": 1679410688
+    },
+    "g2_zero_residual_parity": {
+      "output_exact": true,
+      "loss_exact": true,
+      "reference_gradient_float_tolerance": {
+        "max_abs_error": 2.3283064365386963e-09,
+        "atol": 1e-08,
+        "rtol": 1e-06
+      },
+      "grad_none_semantics_exact": true,
+      "public_rng_exact": true,
+      "classifier_calls": 1,
+      "baseline_rng_sha256": "424e904ddf0f98ee5285b19d23879e7fa0286ef693dfc8cc9ba0fc8fa3faf358"
+    }
+  },
+  "resume_test": {
+    "g1": {
+      "zero_residual_classifier_output_exact": true,
+      "zero_residual_loss_exact": true,
+      "historical_optimizer_update_exact": true,
+      "virtual_optimizer_matches_native_clone": {
+        "opt_base": {
+          "parameters": 33,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_cam": {
+          "parameters": 35,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_added": {
+          "parameters": 39,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        }
+      },
+      "group": "G1",
+      "reference_gradient_matches_darg_at_zero_residual": true,
+      "reference_forward_state_isolated": true,
+      "dropout_and_classifier_forward_count": 1,
+      "public_rng_after_train_exact": true,
+      "public_rng_after_eval_exact": true,
+      "first_step_psrr_gradient_norm": 0.00039986077864573197,
+      "first_step_learned_residual_norm": 0.017039136961102486,
+      "second_step_branch_vjp": {
+        "classification_to_delta_norm": 0.008422886952757835,
+        "delta_to_cam_input_norm": 8.362193852917699e-07,
+        "branch_to_cam_parameter_norm": 1.1221015175247314e-05,
+        "branch_to_darg_parameter_norm": 9.235440097793809e-06
+      },
+      "second_step_gradient_control": {
+        "max_reconstruction_error": 0.0,
+        "reconstruction_tolerance": 1e-12,
+        "groups": {
+          "gfr": {
+            "reference_gradient_norm": 0.08797723950503561,
+            "enhanced_gradient_norm": 0.08797865037441314,
+            "delta_gradient_norm": 1.2055450505578877e-05,
+            "dot_reference_delta": 1.2405272147021954e-07,
+            "cosine_reference_delta": 0.11696408320948187,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.2055450505578877e-05,
+            "optimizer_reference_step_norm": 2.7318802806872764,
+            "optimizer_update_delta_norm": 3.671910825152401e-06,
+            "optimizer_update_ratio": 1.3440965371398468e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              1.3440965371398468e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 1.3440965371398468e-06
+          },
+          "cam": {
+            "reference_gradient_norm": 0.1752381949820753,
+            "enhanced_gradient_norm": 0.17523649093759106,
+            "delta_gradient_norm": 1.918926310232544e-05,
+            "dot_reference_delta": -2.987963416162372e-07,
+            "cosine_reference_delta": -0.08885629632534758,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 1.9113359113443438e-05,
+            "optimizer_reference_step_norm": 0.6863294826033537,
+            "optimizer_update_delta_norm": 2.307567565864785e-06,
+            "optimizer_update_ratio": 3.3621862740207885e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              3.3621862740207885e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 3.3621862740207885e-06
+          },
+          "darg": {
+            "reference_gradient_norm": 0.000724978311922395,
+            "enhanced_gradient_norm": 0.0007249793495410643,
+            "delta_gradient_norm": 1.29013039406354e-08,
+            "dot_reference_delta": 7.521683478937621e-13,
+            "cosine_reference_delta": 0.08041858595075937,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.29013039406354e-08,
+            "optimizer_reference_step_norm": 0.11292665663531543,
+            "optimizer_update_delta_norm": 1.0657464342204997e-06,
+            "optimizer_update_ratio": 9.437509849089166e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.437509849089166e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.437509849089166e-06
+          }
+        },
+        "reference_gradient_norm": 0.19608402598135066,
+        "enhanced_gradient_norm": 0.19608313612567738,
+        "delta_gradient_norm": 2.2661903533162746e-05,
+        "max_optimizer_update_ratio": 9.437509849089166e-06,
+        "kappa_update": 0.02,
+        "actual_virtual_update_max_abs_error": 0.0
+      },
+      "latest_restore_next_step_exact": true,
+      "restored_total_loss": -0.39197948575019836,
+      "restored_metrics": {
+        "acc": 0.5454545454545454,
+        "hard_auc": 0.5651271406331084,
+        "prob_auc": 0.6206538661131292,
+        "sen": 0.8536585365853658,
+        "spe": 0.2765957446808511,
+        "ba": 0.5651271406331084,
+        "asd_f1": 0.6363636363636365
+      },
+      "peak_gpu_bytes": 1618303488
+    },
+    "g2": {
+      "zero_residual_classifier_output_exact": true,
+      "zero_residual_loss_exact": true,
+      "historical_optimizer_update_exact": true,
+      "virtual_optimizer_matches_native_clone": {
+        "opt_base": {
+          "parameters": 33,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_cam": {
+          "parameters": 35,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        },
+        "opt_added": {
+          "parameters": 39,
+          "grad_none_checked": true,
+          "max_abs_update_error": 0.0
+        }
+      },
+      "group": "G2",
+      "reference_gradient_matches_darg_at_zero_residual": true,
+      "reference_forward_state_isolated": true,
+      "dropout_and_classifier_forward_count": 1,
+      "public_rng_after_train_exact": true,
+      "public_rng_after_eval_exact": true,
+      "first_step_psrr_gradient_norm": 0.0004666009989902099,
+      "first_step_learned_residual_norm": 0.010911377146840096,
+      "second_step_branch_vjp": {
+        "classification_to_delta_norm": 0.008422893472015858,
+        "delta_to_cam_input_norm": 4.618090940766706e-07,
+        "branch_to_cam_parameter_norm": 6.006435408903627e-06,
+        "branch_to_darg_parameter_norm": 4.891719672305557e-06
+      },
+      "second_step_gradient_control": {
+        "max_reconstruction_error": 1.1368683772161603e-13,
+        "reconstruction_tolerance": 1e-12,
+        "groups": {
+          "gfr": {
+            "reference_gradient_norm": 0.08797866107101178,
+            "enhanced_gradient_norm": 0.08797620235219453,
+            "delta_gradient_norm": 8.671072337948052e-05,
+            "dot_reference_delta": -2.200711416170296e-07,
+            "cosine_reference_delta": -0.028847815964012688,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 8.66746356710413e-05,
+            "optimizer_reference_step_norm": 2.731880342044747,
+            "optimizer_update_delta_norm": 2.563045669481866e-05,
+            "optimizer_update_ratio": 9.381983647071041e-06,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.381983647071041e-06
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.381983647071041e-06
+          },
+          "cam": {
+            "reference_gradient_norm": 0.1752391740918719,
+            "enhanced_gradient_norm": 0.17523035773990617,
+            "delta_gradient_norm": 0.00012606844890800057,
+            "dot_reference_delta": -1.5528779998498427e-06,
+            "cosine_reference_delta": -0.07029100132039022,
+            "negative_cosine": true,
+            "projection_applied": true,
+            "projected_delta_norm": 0.0001257566221509428,
+            "optimizer_reference_step_norm": 0.6863295026975675,
+            "optimizer_update_delta_norm": 1.6310272299182674e-05,
+            "optimizer_update_ratio": 2.3764492470564577e-05,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              2.3764492470564577e-05
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 2.3764492470564577e-05
+          },
+          "darg": {
+            "reference_gradient_norm": 0.0007249769511261715,
+            "enhanced_gradient_norm": 0.0007249871458442859,
+            "delta_gradient_norm": 1.5543167381093586e-07,
+            "dot_reference_delta": 7.378908119753249e-12,
+            "cosine_reference_delta": 0.06548297159786727,
+            "negative_cosine": false,
+            "projection_applied": false,
+            "projected_delta_norm": 1.5543167381093586e-07,
+            "optimizer_reference_step_norm": 0.11292655167293203,
+            "optimizer_update_delta_norm": 1.0429648556281026e-05,
+            "optimizer_update_ratio": 9.23578060409416e-05,
+            "alpha": 1.0,
+            "alpha_search_mode": "full_increment_feasible",
+            "alpha_search_steps": 0,
+            "alpha_probe_ratios": [
+              0.0,
+              9.23578060409416e-05
+            ],
+            "monotone_probes": true,
+            "zero_reference_update": false,
+            "candidate_full_update_ratio": 9.23578060409416e-05
+          }
+        },
+        "reference_gradient_norm": 0.1960855388136234,
+        "enhanced_gradient_norm": 0.19607655663115722,
+        "delta_gradient_norm": 0.00015300989353001708,
+        "max_optimizer_update_ratio": 9.23578060409416e-05,
+        "kappa_update": 0.02,
+        "actual_virtual_update_max_abs_error": 0.0
+      },
+      "latest_restore_next_step_exact": true,
+      "restored_total_loss": -0.3882605731487274,
+      "restored_metrics": {
+        "acc": 0.5454545454545454,
+        "hard_auc": 0.5651271406331084,
+        "prob_auc": 0.6206538661131292,
+        "sen": 0.8536585365853658,
+        "spe": 0.2765957446808511,
+        "ba": 0.5651271406331084,
+        "asd_f1": 0.6363636363636365
+      },
+      "peak_gpu_bytes": 1679410688
+    },
+    "g2_zero_residual_parity": {
+      "output_exact": true,
+      "loss_exact": true,
+      "reference_gradient_float_tolerance": {
+        "max_abs_error": 2.3283064365386963e-09,
+        "atol": 1e-08,
+        "rtol": 1e-06
+      },
+      "grad_none_semantics_exact": true,
+      "public_rng_exact": true,
+      "classifier_calls": 1,
+      "baseline_rng_sha256": "424e904ddf0f98ee5285b19d23879e7fa0286ef693dfc8cc9ba0fc8fa3faf358"
+    }
+  },
+  "gpu": {
+    "physical_index": 1,
+    "logical_index": 0,
+    "physical_uuid": "019e1211-c060-0210-0000-00006059cf27",
+    "logical_uuid": "019e1211-c060-0210-0000-00006059cf27",
+    "device_name": "PPU-ZW810E",
+    "free_bytes": 103077117952,
+    "total_bytes": 103079215104,
+    "cuda_visible_devices": "1",
+    "peak_allocated_bytes": 1679410688,
+    "safe_peak_bytes_per_worker": 2267204428,
+    "workers_max": 10
+  },
+  "groups": {
+    "G1": "READY",
+    "G2": "READY_INDEPENDENT_REQUIRED"
+  },
+  "fold2_history_unchanged_psrr_rows_blocked": [
+    376,
+    406
+  ]
+}

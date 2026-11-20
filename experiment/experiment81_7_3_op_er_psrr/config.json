@@ -1,0 +1,138 @@
+{
+  "experiment": "Experiment 81.7.3 - OP-PSRR / ER-PSRR",
+  "full_name": "Optimizer-aware and Evidence-guided Prompt Sparse Relational Reasoning",
+  "method": "OP-PSRR / ER-PSRR",
+  "root": "/model/spromptgl/experiment/experiment81_7_3_op_er_psrr",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_7_3_op_er_psrr",
+  "root_fallback_reason": "The preferred OSSFS mount returned EIO errno 5 on the single directory creation attempt. All new experiment state is kept in this /model directory.",
+  "seed": 0,
+  "folds": 10,
+  "initial_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "best_selection": "strict test-fold ACC improvement; equal ACC retains the earlier epoch",
+  "validation_equals_test": true,
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "historical_fold2_overlap_1based": [377, 407],
+    "historical_fold2_psrr_blocked_rows_zero_based": [376, 406],
+    "train_relation_pairs": 4096,
+    "pre_cv_processing_and_rfe": "inherit E74.4-G2 without modification",
+    "patient_graph": "inherit E74.4-G2 transductive graph without modification"
+  },
+  "base": {
+    "experiment": "E74.4-G2-Positive-DCR (DARG)",
+    "prepare_entrypoint": "experiment74_4_soft_positive_dcr.run.prepare(fold)",
+    "initialization": "independent E61 epoch-10 complete warmup for each fold and each group",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "optimizer_step_order": ["opt_base", "opt_cam", "opt_added", "opt_psrr"]
+  },
+  "architecture": {
+    "prompts": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "prompt_cache": "prompt_features.pt",
+    "prompt_cache_sha256": "7bfd1d6e11bb9983e9896e682b5a8c40bf606c919dfd38bae368436955f83aff",
+    "prompt_encoder": "frozen OpenAI CLIP RN50, original cached text features",
+    "semantic_basis": "frozen E[8,8] from original deterministic CPU float64 thin SVD; verify E@E.T against original normalized Prompt Gram",
+    "semantic_center": "fixed normalize(E[k] - mean(E,dim=0)); derived from original E and not trainable",
+    "cam_features": 144,
+    "cam_layout": "[N,4,4,9] and 16 latent slots of width 9",
+    "global_features": "AvgPool1d(4,4) over original four contiguous 36-value groups to [N,4,9]",
+    "local_encoder": "Linear(9,32) + learned position[16,32] + LayerNorm(32)",
+    "pair_key": "[u_i*u_j, abs(u_j-u_i)]",
+    "pair_value": "[u_j, u_i*u_j, u_j-u_i]",
+    "real_neighbors_per_receiver": 15,
+    "null_candidates": 1,
+    "semantic_map": "shared bias-free 64->4->8 low-rank mapping",
+    "g1_prompt_selection": "node-conditioned: per patient and receiver evidence, no reduction over receiver slots before softmax",
+    "g2_prompt_selection": "node-conditioned, inherited from G1",
+    "relation_competition": "D=S_ASD_sem-S_TD_sem; A_ASD=Entmax1.5(Svisual+0.5D), A_TD=Entmax1.5(Svisual-0.5D)",
+    "relation_scale": 1.0,
+    "message": "sum_j((A_ASD-A_TD)*V_ij)",
+    "output_projection": "zero-initialized bias-free 32->9",
+    "residual_rho": 0.1,
+    "raw_residual_lambda": 0.001,
+    "trainable_parameter_count": 7808,
+    "prompt_temperature": 1.0,
+    "private_init_salt": 817300,
+    "g2_evidence_margin": 0.1,
+    "g2_evidence_lambda": 0.005,
+    "g2_reliability_gate": "sigmoid of four local relation evidence features, strictly bounded in [0,1]; initialized independently; zero-initialized output projection preserves exact initial identity"
+  },
+  "groups": {
+    "G1": {
+      "name": "OP-PSRR",
+      "selection_mode": "node",
+      "TD_prompt_indices": [0, 1, 2, 3],
+      "ASD_prompt_indices": [4, 5, 6, 7],
+      "status": "RUN_FIRST"
+    },
+    "G2": {
+      "name": "ER-PSRR",
+      "selection_mode": "node",
+      "TD_prompt_indices": [0, 1, 2, 3],
+      "ASD_prompt_indices": [4, 5, 6, 7],
+      "status": "RUN_INDEPENDENTLY_AFTER_G1_AUDIT_REGARDLESS_OF_G1_METRICS",
+      "architecture": "SPGS -> node-level PSRR with reliability gate -> original RES, implemented as RES(P+deltaP)-RES(P) added to original DARG representation to preserve zero-residual identity"
+    }
+  },
+  "optimization": {
+    "end_to_end": true,
+    "detach_psrr_input": false,
+    "additional_dropout": false,
+    "additional_random_edge_sampling": false,
+    "additional_gumbel_sampling": false,
+    "psrr_optimizer": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01},
+    "shared_gradient_control": {
+      "method": "DARG-reference gradient followed by native optimizer virtual-step trust constraint",
+      "conflict": "remove the group-level component of delta_g parallel to g_B when the dot product is negative",
+      "optimizer_update_ratio_kappa": 0.02,
+      "maximum_alpha_search_iterations": 20,
+      "optimizer_update_epsilon": 1e-12,
+      "zero_reference_update_policy": "alpha=0 unless candidate and reference updates are exactly equal; preserve grad=None semantics",
+      "parameter_groups": ["GFR", "CAM", "DARG"],
+      "include_raw_residual_regularizer_gradient": true,
+      "include_g2_evidence_gradient": true,
+      "virtual_optimizer": "torch.optim.adam.adam functional update with cloned parameters and optimizer moments, honoring Adam coupled decay, AdamW decoupled decay, bias correction, AMSGrad, and missing-gradient behavior",
+      "reference_state_isolation": "restore Python, NumPy, PyTorch CPU/CUDA RNG and all model/CAM buffers between reference and enhanced forward"
+    },
+    "no_epoch_reseed": true,
+    "public_rng": "reference forward uses a restored RNG scope, enhanced forward consumes the single historical public forward stream",
+    "g2_auxiliary_loss": "L_DARG + 0.001*L_raw + 0.005*L_evid; L_evid only uses legal outer-training rows"
+  },
+  "execution": {
+    "physical_gpu_index": 1,
+    "cuda_visible_devices": "1",
+    "expected_device": "PPU-ZW810E",
+    "gpu_memory_mib": 98304,
+    "workers_max": 10,
+    "workers_first_pass": 1,
+    "cpu_threads_per_worker": 1,
+    "scheduling": "measure one actual worker peak on physical GPU1, then admit workers using physical GPU1 free memory and a safety reserve"
+  },
+  "metric_definitions": {
+    "acc": "accuracy",
+    "hard_auc": "historical hard-prediction balanced accuracy",
+    "prob_auc": "ROC-AUC using continuous P(ASD=0)",
+    "sen_asd": "recall for ASD label 0",
+    "spe_td": "recall for TD label 1",
+    "asd_f1": "F1 for ASD label 0",
+    "summary": "mean plus population SD across folds, percent"
+  }
+}
