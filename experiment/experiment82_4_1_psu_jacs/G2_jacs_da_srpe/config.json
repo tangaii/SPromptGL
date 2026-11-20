@@ -1,0 +1,25 @@
+{
+  "group": "G2",
+  "method": "JACS-DA-SRPE",
+  "inherits": "E82.3.2-G2",
+  "variants": [
+    "jacobian_neutral",
+    "reliability_off"
+  ],
+  "signed_width": 24,
+  "initial_activation_sd": 0.1,
+  "spectral_skip_scale": 0.12,
+  "strength_bias": -0.1,
+  "jacobian_floor": 0.01,
+  "evidence_skip_scale": 0.2,
+  "stats": {
+    "inner_splits": 5,
+    "seed_base": 824150,
+    "ema_alpha": 0.03,
+    "reference_shrinkage": 0.2,
+    "relative_variance_floor": 0.05,
+    "absolute_variance_floor": 1e-08,
+    "effect_prior": 0.25,
+    "support_radius": 3.0
+  }
+}

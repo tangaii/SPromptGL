@@ -1,0 +1,105 @@
+{
+  "experiment": "Experiment 82.4.1 · Prompt-guided Signed Utility and Jacobian-Aligned Spectral Correction",
+  "base_group": "E74.4-G2-Positive-DCR",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "dimensions": [
+    48,
+    6,
+    10,
+    256
+  ],
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_exclusions_1based": [
+    377,
+    407
+  ],
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "latest_interval": 10,
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "spectrum": {
+    "variant": "Original O",
+    "pca_directions": 8,
+    "disease_directions": 8
+  },
+  "attention_temperature": 0.5,
+  "module_seed_base": 824100,
+  "gpu": {
+    "index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "max_workers": 10,
+    "threads": 1
+  },
+  "comparison": {
+    "measurable_probability_delta": 1e-06,
+    "minimum_mechanism_delta": 1e-06,
+    "performance_go": "Higher paired ACC, BA and SEN-ASD, positive patient net vs DARG, and higher ACC and positive patient net without Fold 2.",
+    "mechanism_go": "Positive residual-on net and paired BA, measurable probability and hard effects of Query replacement, and a measurable CAM144 difference for every required group-specific intervention.",
+    "further_research": "Prioritize a method with both judgments GO. Otherwise identify any incremental mechanism lead separately from a candidate."
+  },
+  "group_dirs": {
+    "G1": "G1_psu_psce",
+    "G2": "G2_jacs_da_srpe"
+  },
+  "directory_fallback": "Preferred OSSFS mkdir returned errno 5 (Input/output error).",
+  "residual": {
+    "norm_limit": 0.08
+  },
+  "branch_gradient": 0.25,
+  "branch_scale": 0.12,
+  "prior_manifest_sha": "2f06559aadf2c2a2fdd1429368027b60007267f3eaa9643bb5889841222d1384",
+  "utility": {
+    "difficulty_center": 0.35,
+    "difficulty_temperature": 0.35,
+    "gain_temperature": 0.08,
+    "protect_margin_scale": 0.5,
+    "protect_allowance": 0.025,
+    "protect_smoothing": 0.02,
+    "direction_delta_floor": 0.005,
+    "direction_jacobian_floor": 0.01
+  },
+  "auxiliary": {
+    "alignment": {
+      "coefficient": 0.002,
+      "gradient_cap": 0.05
+    },
+    "gain": {
+      "coefficient": 0.002,
+      "gradient_cap": 0.05
+    },
+    "protect": {
+      "coefficient": 0.005,
+      "gradient_cap": 0.03
+    },
+    "residual": {
+      "coefficient": 0.001,
+      "gradient_cap": 0.02
+    }
+  }
+}
