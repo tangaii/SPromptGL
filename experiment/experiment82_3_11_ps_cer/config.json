@@ -1,0 +1,173 @@
+{
+  "experiment": "82.3.11 PS-CER \u2014 Prompt\u2013Spectral Conflict-aware Evidence Routing",
+  "design_version": "1.0",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "base_group": "E74.4-G2-Positive-DCR",
+  "groups": {
+    "G1": "PS-CER Medical",
+    "G2": "PS-CER Matched Non-semantic Control"
+  },
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "prompt_rows_0based": {
+    "ASD": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "TD": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "fold2_protected_rows_1based": [
+    377,
+    407
+  ],
+  "start_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "save_latest_every_epochs": 10,
+  "best_rule": "Strictly maximize historical test-fold ACC. The earliest epoch wins ties.",
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "historical_loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "seeds": {
+    "module": 824110,
+    "anonymous_tokens": 824111
+  },
+  "spectral_dimensions": 16,
+  "stiefel": {
+    "offset_frobenius_radius": 2.0,
+    "anchor_weight": 0.05,
+    "rank_fraction": 0.9,
+    "dispersion_limit": 8.0,
+    "dispersion_weight": 0.25
+  },
+  "class_statistics": {
+    "own_variance": 0.8,
+    "pooled_variance": 0.2,
+    "variance_floor": 0.0001,
+    "relative_floor": 0.01,
+    "llr_bound": 8.0,
+    "shrinkage_target": "all legal training pooled CAM144 covariance",
+    "likelihood": "FP64 full covariance; solve both 16D systems; share smoothness model between likelihood and G1",
+    "max_condition": 256.0
+  },
+  "ema": {
+    "alpha": 0.1,
+    "representation": "FP64 raw CAM means and uncentered second moments, two legal training classes"
+  },
+  "residual_limit": 0.08,
+  "jacobian_epsilon": 1e-06,
+  "loss": {
+    "aux_ratio_max": 0.25,
+    "semantic": 0.02,
+    "spectral": 0.02,
+    "safety": 0.03,
+    "residual": 0.001
+  },
+  "decision": {
+    "paired_prob_auc_min_pp": -0.1,
+    "paired_sen_min_pp": -0.5,
+    "performance": "Ten audited folds and unrounded paired ACC>0, BA>=0, patient net>0, tolerances for probability AUC and ASD sensitivity, positive paired ACC and net excluding Fold2.",
+    "mechanism": "Ten audited folds, faithful reference and native common RNG, exact same-mask action risks, legitimate and finite feature actions, at least one genuine historical-error residual correction, positive direct residual net, and same-epoch function protection.",
+    "functional_min_same_epoch_acc_pp": -0.5,
+    "functional_max_same_epoch_abs_asd_shift": 0.05,
+    "medical_min_acc_wins_over_losses": 1,
+    "medical": "G1 versus G2 requires positive paired ACC, nonnegative BA, positive patient net, more ACC wins than losses, positive paired ACC and net without Fold2, and positive paired ACC after deleting the largest contributing fold."
+  },
+  "patients": {
+    "low_b0_true_margin_abs_lt": 2.0,
+    "high_confidence_b0_wrong_margin_le": -2.0,
+    "conflict_fraction_gt": 0.5
+  },
+  "preflight": {
+    "gram_max_abs": 1e-10,
+    "projector_change_min": 0.0001,
+    "max_cholesky_gram_condition": 5.000001,
+    "audit_fp64_atol": 2e-09,
+    "audit_feature_atol": 2e-06,
+    "audit_feature_rtol": 2e-05,
+    "residual_bound_roundoff": 2e-08
+  },
+  "gpu": {
+    "physical_index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "workers_max": 10,
+    "threads_per_worker": 1,
+    "gpu_free_reserve_mib": 4096,
+    "pilot_first_epoch": 20,
+    "target_worker_limit": 10
+  },
+  "environment": {
+    "torch": "2.9.0",
+    "cuda": "12.9",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "networkx": "3.0"
+    },
+    "readonly_numeric_packages": "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python"
+  },
+  "reference": {
+    "reliable_margin": 2.0,
+    "temperature": 0.5,
+    "audit_archive_to_historical_terminal": true,
+    "shadow_past_archived_terminal": true,
+    "function_weight": 0.2,
+    "function_norm_budget": 0.2,
+    "masked_kl_fraction": 0.5
+  },
+  "trust": {
+    "relative_parameter_to_init": {
+      "opt_base": 0.025,
+      "opt_cam.representation": 0.02,
+      "opt_cam.classifier": 0.02,
+      "opt_added": 0.025
+    },
+    "relative_exp_avg": 0.2,
+    "relative_exp_avg_sq": 0.2,
+    "parameter_scale_floor": 0.001,
+    "moment_scale_floor": 1e-12,
+    "fp32_inward_factor": 0.9999
+  },
+  "routing": {
+    "token_temperature": 6.0,
+    "semantic_floor": 0.015,
+    "statistical_floor": 0.04,
+    "logit_bound": 4.0,
+    "llr_scale_floor": 0.25,
+    "llr_scale_quantile": 0.75,
+    "rank_fraction": 0.9,
+    "gap_scale": 2.0
+  }
+}
