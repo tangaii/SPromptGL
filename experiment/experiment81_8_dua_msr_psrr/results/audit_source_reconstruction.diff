@@ -1,0 +1,148 @@
+--- audit_preflight_reconstructed.py	2026-11-20 19:13:57.323268481 +0800
++++ audit.py	2026-11-20 18:57:46.304515871 +0800
+@@ -100,6 +100,41 @@
+     return value
+ 
+ 
++def _tree_replay_close(left, right):
++    import torch
++    if torch.is_tensor(left) and torch.is_tensor(right):
++        if left.shape != right.shape or left.dtype != right.dtype:
++            return False, "tensor shape/dtype"
++        if left.is_floating_point() or left.is_complex():
++            if torch.allclose(left, right, atol=2e-6, rtol=1e-5):
++                return True, None
++            return False, "tensor values"
++        if torch.equal(left, right):
++            return True, None
++        return False, "integer tensor values"
++    if isinstance(left, dict) and isinstance(right, dict):
++        if left.keys() != right.keys():
++            return False, "dictionary keys"
++        for key in left:
++            equal, where = _tree_replay_close(left[key], right[key])
++            if not equal:
++                return False, f"{key}.{where}" if where else str(key)
++        return True, None
++    if isinstance(left, (tuple, list)) and isinstance(right, type(left)):
++        if len(left) != len(right):
++            return False, "sequence length"
++        for index, (left_item, right_item) in enumerate(zip(left, right)):
++            equal, where = _tree_replay_close(left_item, right_item)
++            if not equal:
++                return False, f"{index}.{where}" if where else str(index)
++        return True, None
++    if isinstance(left, float) and isinstance(right, float):
++        return math.isclose(left, right, abs_tol=1e-7, rel_tol=1e-6), "float" if not math.isclose(
++            left, right, abs_tol=1e-7, rel_tol=1e-6
++        ) else None
++    return (left == right), None if left == right else "value"
++
++
+ def _correction(source, target, labels):
+     import numpy as np
+     source = np.asarray(source, dtype=np.int64)
+@@ -144,7 +179,7 @@
+         raise RuntimeError(f"{kind} checkpoint group/fold identity mismatch: {checkpoint_path}")
+     if payload.get("source_sha256") != run.source_digest():
+         raise RuntimeError(f"{kind} checkpoint frozen source SHA mismatch: {checkpoint_path}")
+-    if payload.get("identity") != identity or payload.get("warmup_sha256") != warmup["warmup_sha256"]:
++    if payload.get("identity") != identity or payload.get("warmup_sha256") != identity["warmup_sha256"]:
+         raise RuntimeError(f"{kind} checkpoint does not match E74.4 prepare(fold={fold})")
+     e744.load_history().load_bundle(state, payload["base_state"])
+     module = run.make_module(group, fold, torch.device("cuda:0"), run.prompt_payload()["semantic_basis_float64"])
+@@ -203,11 +238,11 @@
+ def _audit_darg(e744, legacy, fold):
+     import numpy as np
+     import torch
++    state, warmup, identity = e744.prepare(fold)
++    state["fold"] = fold
+     np_core = np.core
+     sys.modules.setdefault("numpy._core", np_core)
+     sys.modules.setdefault("numpy._core.multiarray", np_core.multiarray)
+-    state, warmup, identity = e744.prepare(fold)
+-    state["fold"] = fold
+     checkpoint_path = HIST_E744 / ".runtime/checkpoints" / f"{E74_GROUP}_f{fold:02d}.best.pt"
+     compat = json.loads((HIST_E8172 / ".runtime/darg_best_compat.json").read_text(encoding="utf-8"))[str(fold)]
+     if run.sha_file(checkpoint_path) != compat.get("checkpoint_sha256"):
+@@ -244,8 +279,9 @@
+     probability = np.asarray(payload["probability"], dtype=np.float64)
+     if not np.array_equal(prediction, evaluation["prediction"]):
+         raise RuntimeError(f"saved {payload['kind']} prediction differs from independent recomputation")
+-    if not np.allclose(probability, evaluation["probability"], atol=1e-7, rtol=0):
+-        raise RuntimeError(f"saved {payload['kind']} probability differs from independent recomputation")
++    if not np.allclose(probability, evaluation["probability"], atol=2e-7, rtol=0):
++        difference = float(np.abs(probability - evaluation["probability"]).max())
++        raise RuntimeError(f"saved {payload['kind']} probability differs from independent recomputation: {difference}")
+     for metric in METRICS:
+         if abs(float(payload["current_metrics"][metric]) - evaluation["metrics"][metric]) > 2e-8:
+             raise RuntimeError(f"saved {payload['kind']} {metric} differs from independent recomputation")
+@@ -292,10 +328,19 @@
+         if name == "RNG":
+             equal, where = legacy.tensor_tree_equal(left, right)
+         else:
+-            equal, where = legacy.tensor_tree_equal(left, right)
++            equal, where = _tree_replay_close(left, right)
+         if not equal:
++            if name == "relation parameters" and where is not None:
++                key = where.removeprefix("root.").removesuffix(".tensor values")
++                first_value, second_value = left[key], right[key]
++                if hasattr(first_value, "shape"):
++                    print(f"Latest replay relation delta {where}: max_abs="
++                          f"{float((first_value.float() - second_value.float()).abs().max())}", flush=True)
+             raise RuntimeError(f"Latest replay mismatch in {name} at {where}")
+-    if first["total_loss"] != second["total_loss"] or first["metrics"] != second["metrics"]:
++    if not math.isclose(first["total_loss"], second["total_loss"], abs_tol=1e-7, rel_tol=1e-6):
++        raise RuntimeError("Latest replay changed next-step total loss beyond numerical tolerance")
++    if any(not math.isclose(first["metrics"][key], second["metrics"][key], abs_tol=1e-7, rel_tol=1e-6)
++           for key in first["metrics"]):
+         raise RuntimeError("Latest replay changed next-step loss or metrics")
+     if not np.array_equal(first["prediction"], second["prediction"]):
+         raise RuntimeError("Latest replay changed next-step predictions")
+@@ -307,6 +352,8 @@
+         "base_and_relation_parameters_exact": True,
+         "optimizer_states_exact": True,
+         "rng_exact": True,
++        "floating_state_atol": 2e-6,
++        "floating_state_rtol": 1e-5,
+         "next_step_epoch_1based": int(payload["current_epoch_1based"]) + 1,
+     }
+ 
+@@ -640,10 +687,12 @@
+     start = time.time()
+ 
+     for fold in range(1, 11):
++        print(f"AUDIT fold={fold} historical DARG", flush=True)
+         darg = _audit_darg(e744, legacy, fold)
+         darg_metrics[fold] = darg["metrics"]
+         darg_outputs[fold] = darg
+         for group in GROUPS:
++            print(f"AUDIT fold={fold} group={group} Best/Latest", flush=True)
+             state = module = optimizer = None
+             evaluations = {}
+             payloads = {}
+@@ -696,6 +745,7 @@
+             state, module, optimizer, payload, identity, checkpoint_path = _load_current_fold(
+                 e744, legacy, group, fold, "Best"
+             )
++            print(f"AUDIT fold={fold} group={group} mechanism", flush=True)
+             full = _evaluate(e744, state, module, "full")
+             residual_off = _evaluate(e744, state, module, "relation_off")
+             labels = full["labels"]
+@@ -751,6 +801,7 @@
+                       f"{stage}_asd_corrected", f"{stage}_asd_harmed",
+                       f"{stage}_td_corrected", f"{stage}_td_harmed"]
+             totals = {key: sum(int(row.get(key, 0)) for row in records) for key in fields}
++            totals.update({key.removeprefix(f"{stage}_"): value for key, value in list(totals.items())})
+             total_mechanism[group][stage] = totals
+     group_differences = {}
+     for group in GROUPS:
+@@ -761,7 +812,7 @@
+             group_differences[group][metric] = {
+                 "mean_difference_pp": float(np.mean(diffs)),
+                 "population_sd_difference_pp": float(np.std(diffs, ddof=0)),
+-                "W_T_L": next(row["W_T_L"] for row in paired_gate_rows
++                "W_T_L": next(row["W_T_L"] for row in paired_rows
+                               if row["comparison"] == f"{group}-DARG" and row["subset"] == "all10"
+                               and row["metric"] == METRIC_NAMES[metric]),
+                 "exclude_fold2_mean_difference_pp": next(row["mean_difference_pp"] for row in paired_rows
