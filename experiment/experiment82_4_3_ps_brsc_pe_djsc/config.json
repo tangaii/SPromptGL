@@ -1,0 +1,57 @@
+{
+  "experiment": "Experiment 82.4.3 — Prompt-guided Reliable Spectral Correction",
+  "directory": "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+  "directory_fallback": {"errno": 5, "reason": "OSSFS mkdir: Input/output error"},
+  "groups": {"G1": "PS-BRSC", "G2": "PE-DJSC"},
+  "seed": 0,
+  "seed_stream": {"G1": 824301, "G2": 824302},
+  "subjects": 871,
+  "cam_width": 144,
+  "folds": 10,
+  "labels": {"ASD": 0, "TD": 1},
+  "fold2_overlap_1based": [377, 407],
+  "base": "E74.4-G2-Positive-DCR",
+  "start_epoch_completed": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "latest_interval": 10,
+  "best_selection": "First strict maximum outer test-fold ACC under the historical val=test protocol",
+  "historical_loss": "cls + graph + 0.05*pair + 0.01*adv + 0.01*preserve",
+  "historical_optimizers": {
+    "opt_base": ["Adam", 0.0038, 0.11],
+    "opt_cam": ["Adam", 0.0038, 0.11],
+    "opt_added": ["AdamW", 0.001, 0.01]
+  },
+  "new_optimizer": {"lr": 0.0005, "weight_decay": 0.01},
+  "gpu": {"index": 0, "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149", "workers": 10, "threads": 1},
+  "sources": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "author": {"url": "https://github.com/wanxixi11/SPromptGL", "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a"},
+    "user": {"url": "https://github.com/tangaii/SPromptGL", "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d"},
+    "server_commit": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4"
+  },
+  "spectrum": {"pca": 8, "disease_covariance": 8, "eps": 1e-8},
+  "prompt": {"query_count": 8, "width": 32, "spectral_tokens": 16, "null_tokens": 1, "temperature": 0.35, "min_temperature": 0.20, "max_temperature": 0.60},
+  "residual": {"fraction": 0.08, "branch_scale": 0.12, "branch_cam_gradient": 0.25, "jacobian_floor": 0.01},
+  "boundary": {"b_fraction": 0.25, "b_offset": 0.05, "error_temperature": 0.20, "protect_scale": 0.50, "protect_allowance": 0.02, "protect_smoothing": 0.02, "target_gain_fraction": 0.25, "gain_temperature": 0.08, "direction_scale": 0.03},
+  "controllers": {"width": 32, "action_initial_sd": 0.035, "gate_initial_bias": 0.35, "strength_initial_bias": 0.35},
+  "evidence": {
+    "inner_folds": 5, "archived_split_seed_base": 824250, "alpha": 0.1,
+    "ddof": 1, "own_variance": 0.9, "pooled_variance": 0.1,
+    "relative_floor": 0.01, "variance_floor": 0.0001, "llr_bound": 8.0,
+    "support_radius": 3.0, "effect_prior": 0.25, "evidence_temperature": 0.30,
+    "prompt_evidence_temperature": 1.0, "conflict_temperature": 0.35,
+    "reliability_gate_floor": 0.35
+  },
+  "auxiliary": {
+    "native": {"coefficient": 0.1, "cap": 0.1},
+    "alignment": {"coefficient": 0.002, "cap": 0.05},
+    "gain": {"coefficient": 0.002, "cap": 0.05},
+    "protection": {"coefficient": 0.005, "cap": 0.03},
+    "regularization": {"coefficient": 0.001, "cap": 0.02}
+  },
+  "measurable_probability_change": 1e-6,
+  "active_residual_relative": 1e-5,
+  "ece_equal_width_bins": 10
+}

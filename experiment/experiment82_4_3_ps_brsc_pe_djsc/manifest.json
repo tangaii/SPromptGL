@@ -1,0 +1,2019 @@
+{
+  "experiment": "Experiment 82.4.3 — Prompt-guided Reliable Spectral Correction",
+  "status": "COMPLETE_AUDITED",
+  "directory": "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+  "fallback": {
+    "errno": 5,
+    "reason": "OSSFS mkdir: Input/output error"
+  },
+  "config": {
+    "experiment": "Experiment 82.4.3 — Prompt-guided Reliable Spectral Correction",
+    "directory": "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+    "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_3_ps_brsc_pe_djsc",
+    "directory_fallback": {
+      "errno": 5,
+      "reason": "OSSFS mkdir: Input/output error"
+    },
+    "groups": {
+      "G1": "PS-BRSC",
+      "G2": "PE-DJSC"
+    },
+    "seed": 0,
+    "seed_stream": {
+      "G1": 824301,
+      "G2": 824302
+    },
+    "subjects": 871,
+    "cam_width": 144,
+    "folds": 10,
+    "labels": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "fold2_overlap_1based": [
+      377,
+      407
+    ],
+    "base": "E74.4-G2-Positive-DCR",
+    "start_epoch_completed": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "latest_interval": 10,
+    "best_selection": "First strict maximum outer test-fold ACC under the historical val=test protocol",
+    "historical_loss": "cls + graph + 0.05*pair + 0.01*adv + 0.01*preserve",
+    "historical_optimizers": {
+      "opt_base": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "opt_cam": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "opt_added": [
+        "AdamW",
+        0.001,
+        0.01
+      ]
+    },
+    "new_optimizer": {
+      "lr": 0.0005,
+      "weight_decay": 0.01
+    },
+    "gpu": {
+      "index": 0,
+      "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+      "workers": 10,
+      "threads": 1
+    },
+    "sources": {
+      "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+      "author": {
+        "url": "https://github.com/wanxixi11/SPromptGL",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a"
+      },
+      "user": {
+        "url": "https://github.com/tangaii/SPromptGL",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d"
+      },
+      "server_commit": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4"
+    },
+    "spectrum": {
+      "pca": 8,
+      "disease_covariance": 8,
+      "eps": 1e-08
+    },
+    "prompt": {
+      "query_count": 8,
+      "width": 32,
+      "spectral_tokens": 16,
+      "null_tokens": 1,
+      "temperature": 0.35,
+      "min_temperature": 0.2,
+      "max_temperature": 0.6
+    },
+    "residual": {
+      "fraction": 0.08,
+      "branch_scale": 0.12,
+      "branch_cam_gradient": 0.25,
+      "jacobian_floor": 0.01
+    },
+    "boundary": {
+      "b_fraction": 0.25,
+      "b_offset": 0.05,
+      "error_temperature": 0.2,
+      "protect_scale": 0.5,
+      "protect_allowance": 0.02,
+      "protect_smoothing": 0.02,
+      "target_gain_fraction": 0.25,
+      "gain_temperature": 0.08,
+      "direction_scale": 0.03
+    },
+    "controllers": {
+      "width": 32,
+      "action_initial_sd": 0.035,
+      "gate_initial_bias": 0.35,
+      "strength_initial_bias": 0.35
+    },
+    "evidence": {
+      "inner_folds": 5,
+      "archived_split_seed_base": 824250,
+      "alpha": 0.1,
+      "ddof": 1,
+      "own_variance": 0.9,
+      "pooled_variance": 0.1,
+      "relative_floor": 0.01,
+      "variance_floor": 0.0001,
+      "llr_bound": 8.0,
+      "support_radius": 3.0,
+      "effect_prior": 0.25,
+      "evidence_temperature": 0.3,
+      "prompt_evidence_temperature": 1.0,
+      "conflict_temperature": 0.35,
+      "reliability_gate_floor": 0.35
+    },
+    "auxiliary": {
+      "native": {
+        "coefficient": 0.1,
+        "cap": 0.1
+      },
+      "alignment": {
+        "coefficient": 0.002,
+        "cap": 0.05
+      },
+      "gain": {
+        "coefficient": 0.002,
+        "cap": 0.05
+      },
+      "protection": {
+        "coefficient": 0.005,
+        "cap": 0.03
+      },
+      "regularization": {
+        "coefficient": 0.001,
+        "cap": 0.02
+      }
+    },
+    "measurable_probability_change": 1e-06,
+    "active_residual_relative": 1e-05,
+    "ece_equal_width_bins": 10
+  },
+  "implementation": {
+    "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+    "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+    "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+    "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+    "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+    "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+    "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+    "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+    "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+    "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+    "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+    "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+    "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+    "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+  },
+  "implementation_sha": "5657b6c146a49938c6a79b42326efe2608cc12ffddcecd232b8d53f8efbf40a8",
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/2025 MICCAI SPromptGL、Semantic Prompt Guided Graph Learning for Multi-modal Brain Disease.pdf": "219ceddfd017e6105490a72864dd24df0bdbbf1c0579cf14af5bbd99a5d60c89",
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/config.json": "4a2aeab504bc12111d35ccd0bf2790389889ed64713dcc5da4b8c275ab0668fa",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/manifest.json": "a0aa87234252b70d8ae2eeb143eb05bbd84c4731203b7763ab5e59e8d1db920a",
+    "/data/adodas/SPromptGL-main/experiment/experiment53_3_cadr_graph_fallback_fix/run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+    "/data/adodas/SPromptGL-main/experiment/experiment60_dss_pen/.runtime/text_embeddings.pt": "c4b44b30acea3a59183c8a7df11139295782c1f5d5adecd670022f24108b383a",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold01.pt": "3bb9b0ea943acf5564a2de01fd594a7d9e3a73604da4896e3860e00fc77e7112",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold02.pt": "3892f9ce8761f7a3a3d5f43e7c4ce7ea9b4e1d4cac183eb51b1ef272962196d8",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold03.pt": "683bc84b7819d7760e351bd4d282c805cc08a8d952b2bf0b50ebc8d5490b5955",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold04.pt": "bb21453c603baab01115843b136f12d380fbd5f3e8e185cd2d186b0155d0be69",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold05.pt": "1afc3041ecc85d8a06b6735c90594081a8f06f0e9943e81422e8129d0f97c510",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold06.pt": "f1c0f6c640b26b4228642696b827ba219f071ef6f318e26486e620739e705426",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold07.pt": "883e8b94f0176428b85c59a6f734931cc8ecd6082d83d4c47d0459776b20f67d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold08.pt": "187068f3dff2987d3aa656f405cd7b4f14ad384a63f4c7f6ec45f9d21ffa1827",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold09.pt": "49ffdf6a4e517be4748e011a3b9f4166666b6c4a0fe87f127d5b0ad278255407",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup/fold10.pt": "27b82298a3f0533b953a97aed6b305d10e5b353f77ea9895bdbf661829dbef0a",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/config.json": "7a1a2e7d37918baf615c704a47d09e3a3eb8a9de5bfc752d852b15a8ada6569b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/design.md": "715b00d2e15ab43e9875fe0a9467db4570f774eadf0da52adf134458267d844a",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/model_e61.py": "28266568bcebcfdbab961dbedb7257c15ff4e862cd02ae744feacad54b7bc81b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/checkpoint_audit.csv": "adf2dbc0e8c42c8503e8c095ffb53605d70554ff3f445555cb726034aa9e8f9d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/fold_metrics.csv": "c6e9647493b858ef126fdaa314860a6b2c69ab5efeb6bde4574848c61fd3d776",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/mechanism_metrics.csv": "3ec6ebc33607d9334b2291058b36b1183262fd791cad93bcb9521e29dc2c0a5b",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/paired_comparisons.csv": "2cd1aae18839b4b2eed2b94269e1b2c8049bfb833411c84e2de7a0daaa7e018e",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/preflight_initialization.csv": "d7a04dfc9cc408468824316f78b4ef40368660506e3b341c821ec9ce5ed19d50",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/report.md": "659e630e7c6b9ab53aba61cc4d3950d254946fcb782a54b65423e4f765a9fa10",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/results/summary.csv": "188a964a0a40f802ea2f5841d1ec1b84981f403d20cc0c152c92e072a26a095d",
+    "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/run.py": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f01.json": "f87992605e4967979a8d3adb6263d68605533a98497dd22b2738bbeeaf510b8a",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f02.json": "43d868a9f17f61307ee3c4fb162f6a6a6714a828b6756b9f614cf1394ad84662",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f03.json": "7c70ebdc47317bc0df68a26cc4145edbdf0279037581b3e3c3817ce815f9cb7a",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f04.json": "4adf0f82120b9214bd249668d8e71420782e4a79f539750f1e9836b497bab98d",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f05.json": "71514dc254c08aae265885715969a6de56b750b1e796604aff10bd75062d9c6b",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f06.json": "6dffb0316e78ffe9d44bd83136481eb9a48af8137a41d196aa310f635cb7aea6",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f07.json": "eb73491dadff1496c061b0452598dbb5032d792b3d097c5e2fd0dc8ea4b822a8",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f08.json": "6b5d1cfd7fb24dff63b06985af8b86522c67f2fb78d99d04f5dee79115699428",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f09.json": "5c6fca63303ed12af66ae55a19b6f12e1994d75e1d72d0fa665ee8af11cd628c",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/.runtime/tasks/E62-E2_f10.json": "c6182a19f0a29b5ed0cab83ce69bd3f563a390e00a4bb592105f98119d4067ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/config.json": "fe27795543a5bf3cb4be39d4e4e77054bfb394ab18ce5b8af3381bf90b0a8a83",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/manifest.json": "2e05c4eb18a2da8857eac4a1d96f17015a3ead35ae47378ba8ddafbbc198f038",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/fold_metrics.csv": "17e53c441538ad1931dbc9788dce0b41f1695a22bbdd617400e14d75650b6aa9",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/results/summary.csv": "9e8b23aaf6d79c0db33b39c02e1038d360834e540b653406a5a741749e1437cb",
+    "/data/adodas/SPromptGL-main/experiment/experiment62_e2e_gate_init_sensitivity/run.py": "c2036b6ac3db832e828a839b99c59b5c4c48fc7ff39910f0cdce4bc80da57acc",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f01.json": "8b10359dbfaf277f2929fba568f53d52fe9c14340563ad5cbd5989d884951d3b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f02.json": "3ca0d1f5cd677081e51eb1e78ce902deb47156669f639a31c8e48e3b0853090f",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f03.json": "ca53a12a3bc9f8396e6cec28df01f6dff10c51af7b6d5cdb58b539ae0af8d70b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f04.json": "54c5ceaaa7a59ab41aee75193907fcdad128896c1f31f156bf9c1d59243be476",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f05.json": "37f083da285ced66ac25a153622512f686e08e6fbb495e7a377b4e0129afd749",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f06.json": "0e4bf68079f9d79b1e702129108be4ae8c742c26c97d211cc19930bc179b4c8b",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f07.json": "9f150d5054cec3cedbcaf52e27fb1944e481da6cc8acaa45a8f19b0f56c64ab5",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f08.json": "970320d41a006e998185ffdfa02851900a30556afed2e797f80199df22b9307a",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f09.json": "4ce95ead745086cabb068b303c1ff92ef91526321027e5f57684e308e78b4ae0",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/.runtime/tasks/E69.3-G2_f10.json": "8e3b174b60befbe4de86ef9af8c92bc63102c2fe076aa506d2509b0f31d406b1",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/config.json": "4556c96bb92a9bdbdb048b6f702d853abe6030dd2ae9e2bdad9b5f0ba509c8e0",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/manifest.json": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/fold_metrics.csv": "646033fae333036e503930f6c0ced326113735f55d83ecd0a70d4917cff3318a",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/results/summary.csv": "c7ce729077618c21b14fc31f0fb7f448ac473acb79de5e91966e58ffcd731145",
+    "/data/adodas/SPromptGL-main/experiment/experiment69_3_g2_two_rows/run.py": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold01.pt": "773f2485af178e5ecf4de57e5ad8e40fa909e35b90c202324aa365ed8c915766",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold02.pt": "c7cd3b633e8cf8808d6edc8ef9f951e4da34a80a202fa2723b86d96149d55efa",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold03.pt": "bb3085ddcf0379ea62c01d2f4ab6dca6e9f2d3ec65bd31f8ebd2aa39820be8bc",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold04.pt": "7e00b3505c5adc2b4c2dd3b049f2c806ddc4c64a8a1e07676a4ab2a870531039",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold05.pt": "b8d379cba0876e2d90609fac6075805db3fee0f53feb2eb5edab29f97f8ad184",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold06.pt": "26eb513bd50e87cc08e622ef5d9d4ee3d2a5b191a3afc01a1dec2452530aa856",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold07.pt": "efad7c140f33f5ef8562a5728685da207afa88601f87984ed332b07f2da96a8a",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold08.pt": "b11c55c6306d6e10b00a8a6867e4117034246d5756782d44b8455cf058f93f9d",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold09.pt": "cb2a19178b18dc6869d0f15d5ac6d6a3ee25ab700a7809e179bd0dc7e770d476",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors/fold10.pt": "c30873d2a3fe61046a73abba67b35b0dd69fbbcb89b9dc08bc76a5fe759952fa",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/run.py": "32fc05c0e8c1211947f3003eae74d705eb4087e629b8a6af0fdf1878299a8718",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/source/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa/tests.py": "e56b2bf41b492758e780a98b0d95ad2a3c2deaec49e09e14635264bc3ebc2eaa",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f01.json": "91186e71143d26780c35f759b958006849bb1277113a943b562c1940581cf847",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f02.json": "b6ca441a2410d834a3dddd803f0451b7b54cf9ebfbccc4710ecbef29485c701b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f03.json": "66dc8526b2ba4b906fec9277c453f3628404df23e83f6e3294ef27dceeff1a02",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f04.json": "4598c896e0571a35f83e5a33ad7b09d2f46d8d67375ae3a6e45b3cd0a52a12ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f05.json": "696ca089dcafc4b9ed980bfafce58bbbc5473fbfdd4f44f19a514771bde4392f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f06.json": "2434f409dd8f620d3483e1029af58bb02314ae7e24c4d009f34c17a55d9acf19",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f07.json": "6e5c249185de62404dd6b0ea0df268a3099a05ce734a8c7a3e11fbd63e8c1695",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f08.json": "7dfaaa31981b6067fba1abfa7b5bf4c6e44637ca4ddc34123e7f41d86443b5eb",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f09.json": "6663ee00d8cd58013d6af73792401299c9c9c06207eddd9743375af6ba4c7a83",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/.runtime/tasks/G1-RUDAG-U_f10.json": "71d0f5735672085b666fbd68276d4e36634a8d18132af33bfa25977d32e46be1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/audit.py": "dc7e6e5850d94faa41a8572c43016bb4c54aaee418528d994dc39454bcd08f43",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/config.json": "e353b0070e864c988d2b90334b96ac4f292d126052d7b6339fd78c82e37d7612",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/manifest.json": "adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/fold_metrics.csv": "a14103bc91fe393f0cfab60cd5e45f0c68a071e77c6f543028c49f8a5d12d7cd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/interventions.csv": "38ebf16e134a7feb8489fbd401ef747f465802153745fd829e207d7694d56481",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/mechanism.csv": "d491fef8b30dbbe7a849811c2eb66e4806c73fa65854c2b1d932c09196adbeec",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/results/summary.csv": "268f6fa2a4955c23d9293efcc63bdfd8b1ec55e700c7cd4dfd5b95f1836dec39",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/rudag.py": "7fb5920b21f43a117a47137fcce58b5411b91c13dfaaf7df85fc502124723a8e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_1_rudag/run.py": "a487c87d52a0faeded5ff6406ff9908290fc2fdfd9d5b66e6378a5b2aad6ab5c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f01.json": "eb7c9a194d0265b1636c28e6c863942ed961a7485da729cc0c8b1044eb69cd46",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f02.json": "f9af5b6bf96583de40826a64e624eae6a580182a208c8ed9733df48eca4f2df4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f03.json": "15c54f4eb1615e30cbb87fc94040357b2b35b350e45e6ebbe777d30ca96044ba",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f04.json": "eda41f7ff85a7f5652bf618975d778801673fdfbfea3619df9b8966925a0c675",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f05.json": "eb2d1e17ae87dcb2eb727350193e9348be668467431823590b33b50c8069a4b1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f06.json": "9289953588cd5ab340513316a45636ac459f1e972b31e9a77921f6d72f69ad27",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f07.json": "cf12e73c943b1efca0171765d0dea49cd7c12bd3836369dbae11aeaf8454fd45",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f08.json": "71c6699d52bd75e2022257351640c30a7f8183582c5f40421cde191b633e4a1e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f09.json": "ce479cbc5dbc201fab3e30bc2f0177096854c254047d45665493bc97a40d5da1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/.runtime/tasks/E74.2-G1-DCR-RUDAG_f10.json": "1d118ba928711aa48932216b15b5eedd251152cb96f1d19b07a557e1561585b7",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/audit.py": "6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/config.json": "0c49e2a015b5bab5e067fadeb6eca012f807b2bbe9f09040a7591a1e52559a6c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/dcr_rudag.py": "7f46bc51ef880cbab8d6fe270be4b101cc9a17d31b89117c32083212afdd644d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/manifest.json": "cd90873cb4a813a654104b66f7d03fff8564d7a6672a2b7a53e745bf08e5c3e4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/fold_metrics.csv": "554856f10397c3acccbdaa626324db466410a7249a8f659634a398dd0d968e87",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/interventions.csv": "4d6ed5479ac270910b44c5e7ac7ad612c97b07840ea697c1b7cea15784ac1627",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/mechanism.csv": "309c7e7619b6023afe6a5c22ecf0906dccb3a3fd4ede80d05309fc0457019696",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/prior_training_failures.json": "58fd14d55b663ea6dbe15c02e89c96704b12d22309258d545249fc6d8356ef5a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/report.md": "043c1111c664d609edcc895a6ca2c740301962687275196189f1d62fea80579d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/results/summary.csv": "72fd498283a77c781041431f96a2820c216b3c55f3df15bb50dd11d3c9e12cee",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_2_dcr_rudag/run.py": "3b15a7827333061be4b52e357743062cd180e764b4cba3c4736d8d72ff38ebc6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f01.json": "ed3757f0e30b03e214ed0586d28d3684eaf2e677f86c9b862b36bc06899b3157",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f02.json": "0f44f6d9b81454b81af6a4f338d3c81d18ba4544ed958b17ff01ed426c7c0fe5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f03.json": "e59c314e1186464714f45576cf5e402428b1d7cf599f007eaf0feec8b3d3d01e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f04.json": "b4c10b7ac492c50ef81006b1f0bb3b0093e87a40ea6852cd1c72bfd50294fd05",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f05.json": "342f67a0dabd1b411178bceab43b131faa554475b9cd9623241e56d6f89ec23f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f06.json": "3d36c15d3554ce755dbbdf9f3604c15f568ad42ef6ef9fcedcb86a1ec548e7c6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f07.json": "613ead06d0292f7576db2a57e5385150e2221624b45a95569dccc35628f6ad20",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f08.json": "bb68f20fc5e0dceb692054a9e6ab6700311ea9229e9ab02ddbc43cb0528e634a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f09.json": "39240d083449129606317e0b317bcbc997edb3dff3e0584141c9d69d4b5256d4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/.runtime/tasks/E74.3-G1-Local-DCR_f10.json": "1947359b436be25b18dfb407ed39affd0947e4a96eab1578a4cc4fc27672454f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/audit.py": "7f0a3dddd6e9fdd8464e51611a191bebec5f888cb86eddddd8900dd73cf950e4",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/config.json": "3b8a6b598bd35d826d1761989057b5f0927295103525cde1a815ea00c55905a8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/local_dcr.py": "9d288f2a927317a066803b3fe4201af3f933a7e9ddae023126f75d53399e858f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/manifest.json": "7eb54a314e25c81a028cb95538c0ba6c281213b3a43e73df08445e942b9224d5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/fold_metrics.csv": "29a1aac305066664e4631a95a90387132952d4c456d4aac9cdb55ad13d6318a9",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/interventions.csv": "b9202a6acd9df417c846fe5b41931cf04d9b16a23e8742707edfc02fce3fcc60",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/mechanism.csv": "2c7f40fc215de874bec1908e3f832aa35216107828b62478965b57a680d349dd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/paired_comparisons.csv": "7ac4b63a0d463d0900e635cfc00db207a6038cee49adfea3097251b961087429",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/report.md": "bdddc491b8a66046e1684c481cad92c083ccd460bfe37628bb1ee8e9cdd01c00",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/results/summary.csv": "0f8df0072c05551bc1e71ec5b92500675a70fed5142a2f8b569b2435033f6f95",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_3_local_dcr/run.py": "727aa2aed0573b120030d43b6fc5b525b1cbe6488c0afd204fb733679c4a504f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f01.best.pt": "0a77882962b9b0b01170c08bbc35a9399d16938fcf8a17479a0095e63478d47e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f02.best.pt": "a01cd4019069e3933d19ec64685db971ad1ea538c45a0680e6c3386b49e8761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f03.best.pt": "62ff89a10f793496cdc2fb805aa6eced89f5af1e9cb6ad631703e7c1d132b218",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f04.best.pt": "73ea10b55b4a48f2aa804f0884f4fa3d1f48a454f4e040fdffb99d4702bf7aa3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f05.best.pt": "e060994c381b39428d35b8e9f114942a3317ac227c82b56c2a9c8e157d4a5e1d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f06.best.pt": "aa168f17e74537bf731d8ee0ee2819a93e99c09d098a0bdeeed08257e61215d0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f07.best.pt": "3b955109140dfd727e7fbc3b2ba816727d58f2e5109cec93184cb4a7ccf46d4b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f08.best.pt": "3ebb481064895408a2cfbc29d0eed1728ca8b52754f73acc744a361f29b797f5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f09.best.pt": "24ce6dac3ab363f438fed1a890b646cc80dbeb028bf39f573c015efc48d42829",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints/E74.4-G2-Positive-DCR_f10.best.pt": "4e3ef267ac389a663af83277c776c3641a50356633afd37ee259f942b64890a3",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f01.json": "1b7ea0cc93569c3d3892aa4bd9143e714a83094a4b995bf9db07c9e2963bd32f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f02.json": "d7e3a9d384df5882787d09e33baa153f5935ec7677dfa9373d5dc5c4eb7dc57b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f03.json": "08145807d7f0fc042cc3d25a9b425cc4ebd708e5f7bbbf78199d125177cf5c3f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f04.json": "1641aaed13e0373531c2f31d0b38bd6cdd4d0c0d641e2a15c139d45743f2bf60",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f05.json": "457240a8acc22ecb6ae04491da452e3f8afe48b0f847800492d2d13a3d2fb8e7",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f06.json": "497a5bbe0a1d386024ec5055040a57287b7f83bb9f43517afeb7ebaade678d42",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f07.json": "e204974ecf91c32109a6ba8ba4c74834dd98631081b1954db82a68c6c852124b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f08.json": "73fc4acb8dc42b9c1f701648377a5063ee60ee3a08882c60ae69c6d9817e9b89",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f09.json": "c836fd30a17792c4af76b174e7f923e7710f944fe14c06a059625b9e55ea0153",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/tasks/E74.4-G2-Positive-DCR_f10.json": "37d4127ebfabdda96ef7940abf9618265922e2adb3a6c864c71b94569d706110",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/audit_status.json": "ffad67d097e359df2a3838c6cdb56fb5f42d1f6798d7e023a0d09d31935f89ef",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/checkpoint_audit.csv": "9c052fe02271e1f631e9828e1edd0693a12c5d112a34665cfac69efd0f486a64",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/fold_metrics.csv": "01f4090373a0f8888a1cb21254571cb31dd7a8b6c1a65d6341efb98e7d22da35",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/handoff_append.md": "9c7cd8ad548ec2817bc5547ce18165718f2e49a2e7e3c7e75461729e535bd7da",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/handoff_audit_correction.md": "325eb4c58f3313b106ecd2e4bea943bc04776358cebd46324b0157708efc5015",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/interventions.csv": "83a245bc64fa3f4916539ba82f092d743b716c7d27cbd922f8e4724a5a38124b",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/mechanism.csv": "e60eebeea828b603bd6a844057ba42a645f751b31d1f0c9b26de42df98d3625c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/paired_comparisons.csv": "c84e561b86bec3de087a27de34926e6d8e2e3e6daedce5863d5c20873aa6b35e",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/report.md": "438e7f88239c91c9112638066a3af5a4447de89255c8c99b8e01bdf1b5ca27f8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/results/summary.csv": "78f8b9cb43bd70ef6e48bd6d0e9df4da7293a3ace2d59664172fb2ff06a405c8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f01.json": "dde4b87d5cfdb93f6ca0dcbc0c0489a0340d9713fe79edaae9cde903adcbf7b5",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f02.json": "508d4689509795a5605c65cbae5411b4361ea0505ad34d1b7960025a82029ed1",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f03.json": "c3c1e64f6d1792c436cc8bbbe5ba6cd9d57b26660bd42908e161ea776da93053",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f04.json": "b6656c8691beb297fa5a19faff7b87e152a9c134e3bb6fea12955a2baec67bf9",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f05.json": "c7ed4ad0e89226d209849c4828bfabeed84a4625f9e7f69bbbef62e7f0b78bf8",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f06.json": "2093c10cdd27632ab900ef2510e423209357fd8598c02c4d973b798bb2ae707c",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f07.json": "820a12fccaacb7b42b7366bbc3b983a1e86ddb539417ebc35ac9b8e463f0721d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f08.json": "807407ebad8c2ea0366efd4952a27d1d9af24151afebf922919a7fd4a05962da",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f09.json": "1a5a9ed21b7e2d60cc126c8854262cab1af5e3d43c9349b75a078fe8f472bdc6",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/.runtime/tasks/E74-UDAG_f10.json": "9f841df091f932f5c6c3af0b0878a650cce61a3fa9cc76a66c532dc62711eb33",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/config.json": "1d2a3fd8cead1f8637ae4122b678e1c14fa3232aeaefeb87983ebcc4044f382d",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/manifest.json": "fe65396bf4c610a0f8338cb4e72fd71d2d3daac977a69d7d5a1c6c47475cf25f",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/fold_metrics.csv": "fad616e122d65afcae939b4c8095e28f0dda43cba084f13ddb64a9be70161952",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/results/summary.csv": "d561d4b9a443465b228ac79c583a9316946236730ab94666d13d53b823ed5e59",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/run.py": "938998419d8dec2d9ea3abc7e789e7d890f6aaa25c54d36c8ff8c02e97b45cf0",
+    "/data/adodas/SPromptGL-main/experiment/experiment74_udag/udag.py": "91b749aa99e86cb55018102bf5def1664b678adb94e3f4cdf94dbe9f5baf16bb",
+    "/data/adodas/SPromptGL-main/experiment/experiment81_3_e2e_pairwise_relational_learning/path_adapter.py": "f0519ee25271fa172bd30a9268cfef56707fd7a330e6291a8901292d0cfd2e19",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/model/spromptgl/experiment/experiment82_2_psce/audit.py": "acedb3c948e2a538c15d47c5d8408519ec9ab23e41d08656434d3099e50d2236",
+    "/model/spromptgl/experiment/experiment82_2_psce/config.json": "3e15b61f8fb5eac1dc8b1ba9e480e1392ba2bdeaffac5a1c2f09ab6e12c3073b",
+    "/model/spromptgl/experiment/experiment82_2_psce/manifest.json": "87547b2b12200dd5f95826023b33f0e252ef5c514da38a660c849b4a1b519989",
+    "/model/spromptgl/experiment/experiment82_2_psce/psce.py": "e46c831938cfae72c70d90847d9f76cab1e514cd1b93a368a1ff6dc9f234adbc",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/audit_status.json": "1f04fc1ff3c18117e7259b3619e44f56cf81304f28a4e039dc228eec54f2afcc",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/fold_metrics.csv": "88df60f136734c8fd1fbd1de75ef35142fb7fd6db5a552ddf1b3b9290f507180",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/mechanism.csv": "9702781308a7ea449097915317480a761d1db7d1d234e1193a68f43e3a66ef6c",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/paired_comparisons.csv": "5e991ed7b69aec0c77fa5e3135240ec7f61d6752fd1d2e1cbcd43a80d67f170a",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/report.md": "5b06821b4ae0f4bdf773efaf490f9b63d80fa8af199d97896c4a98dc04424377",
+    "/model/spromptgl/experiment/experiment82_2_psce/results/summary.csv": "025440a8393f8bf342f6bb2c8426ecd9d0f44da3de01986787c0680246f44624",
+    "/model/spromptgl/experiment/experiment82_2_psce/run.py": "790a97689b3529c998b2e9c2cacdee395683836f0aa6af61b659ec4d6070454e",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f01.best.pt": "b12d3726f24c4ff87d84e60a76a458615df8ba86cf1c35d893c86764d9440d13",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f02.best.pt": "1b866c965e58020494c5607a10c0e11e1ab2468177e96621f93f6f84f1192ce8",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f03.best.pt": "f6345df617fa13beefb7fcd652dc3dba1ea8ab8742990a0710ec3cbb781189fb",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f04.best.pt": "60c7885fa5626062ae1536e54adc858d572c02793d6f135f26a8f68e51f5434d",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f05.best.pt": "0475fe1a41e0d31d56d0f3d96fe85c862b4dce3497a701c8d5a57d3467bb045c",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f06.best.pt": "8030a29fcb4a3cb710d498f0595580ddb705ac0d036efe2e77a0fe4a558fa3e4",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f07.best.pt": "293f0c468c6fc3d1d32da1412f07d6fd642bf11a38e1e729083f880050fd5847",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f08.best.pt": "6ed3862d768ea4d84363754896a2776eda3809d3dbfb1915e0c61930a7d9fbc3",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f09.best.pt": "56334870c816e47645a488ee763822beebdc4debb679ff213315ea23280bdadb",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/checkpoints/G2_f10.best.pt": "3ae3f0df0afc127a9d30c1a218c269f408deeb41b61405d25411b797983ff4d5",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/prompts.pt": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f01.pt": "3d20124173675c0fa09508e1838bd5f7ffd7b541e1fe64d9e3bce9a76bf156fc",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f02.pt": "dc609dd90a71a73949af947f4f5de381562ee248da45f7824243ee37b808f85f",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f03.pt": "484d642c8e9677870bf8d4791ef1202986395d499f9d01e3d787f2ac55ec635e",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f04.pt": "3c101572f942cd12a1f289e8e28be0ef46a04ee3df78c58a3577d8aef27956a6",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f05.pt": "fe35cc22a9add76297ce3e3cd49679a3bbfc4668e89bfa560e908d9f3b8cb527",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f06.pt": "0b08dd9c46adf86b8354bacfb770094d740ad9d3038899d1996c6b19b6c472e5",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f07.pt": "a36144901083e10ad7632c138cbc6b260b7b1e72c67f79bb23bbac8a4a6ae2b8",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f08.pt": "3a63b0f41ca7a75be50e05d9ae9853dea1ac415717cbd38e29ca6e86ff6598fb",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f09.pt": "1bc0515e05195db76df531ff376ddc829915487d0923c6e222fae2227a1de59c",
+    "/model/spromptgl/experiment/experiment82_2_psce/runtime/spectrum_f10.pt": "2d6c74005f063de30e1ee9a7145ae2f9b13d1d64fcea159bdd516471e26acd6a",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/audit.py": "d67c8415ad7901e34aa7d62aa9bf4c230346ff7f842eb863200b38d7aaa011c4",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/config.json": "2c4982f5d291fae281ae162a60f7d1ce0277c0327c2672f1e83702b811147361",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/da_srpe.py": "9485bf2c96f3182e82a16689a6b613e396cd4dc5480c3cee69a2fef46d66d14c",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/manifest.json": "bc8edc7846e59c787b4a698f439265054450ba031ccd78ac62dd61d8cf1519ca",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/results/audit_status.json": "4be771b458559d2895a2fba689c57e5c9dc6d578a15fb537a37560f7a8b731d5",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/results/fold_metrics.csv": "02cfcda42c465c588b8873149f2b2d11a2ddc596d1a8272195fa55f71e33705d",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/results/paired_comparisons.csv": "8f7fea195d7e24a9fb0f1bdafaa900208d5733994e53c764a3b0ae0754c38252",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/results/report.md": "fd673ab3673a37ce51e8d4c4b7500c99361dbea5ad4515e455331bd0a0ddd6da",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/run.py": "61dcec6bcb5fd76e523955f13729161af60aad24bb9a422b4471c23d614c3b50",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f01.best.pt": "4576030f4db61058ff3eab2e38c0700d913d0f2b9038ca25200ebaf508def7ac",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f02.best.pt": "21cf0dcb1173fccfe322ae1a8cda101b406a57a90334a917274cba974b19eeeb",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f03.best.pt": "bfa9a31b382fbd7b109c90c6bd81e8a4f1ac6bf50492ca2b519b58aaf3280447",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f04.best.pt": "154b522a263658318c93debbcf9a59dbdc9ab9bad37c3919857d3f873cc6be15",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f05.best.pt": "0b43fb75627b4470d692406e8f9c7b8d7957eaf025ec3d942fa340759dbbda73",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f06.best.pt": "72c31671119242444457fefd2ddba35a75186d58580ea4775fa267648b795a38",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f07.best.pt": "455df3d48dbfeda558752316567c4d52cee60deaf289e84acdbbf832cd9e84c4",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f08.best.pt": "c68343ede5f8840d9198d18d6c8a4bbc083d00c5e209ee7b92bb4e12dea7686e",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f09.best.pt": "1be8cb766796c9f15e02825cd4c4565bdd74b2251feb01d795280db57d5dfdb2",
+    "/model/spromptgl/experiment/experiment82_3_2_da_srpe/runtime/checkpoints/G2_f10.best.pt": "e77f6c7b64c210b185ee0bf5bf97ff2cad6757e5d4a82bc130cb336e800d8627",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/joblib-1.4.2.dist-info/METADATA": "f8f2fb393ed13a31124fc5c3bc5b0d7ad893d42dfdc4fd078e23cd7d1e7537bf",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/numpy-2.5.3.dist-info/METADATA": "451a9b8028000588e66b0b415587b6aef0bbc51a96d8e8a0cba0dc23acf64f99",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/pandas-3.0.6.dist-info/METADATA": "c2e8c472e1f49c30b7b00dc1cde8b8ed384b1b6d85b4d5ffe163e800e71dbc61",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/scikit_learn-1.9.1.dist-info/METADATA": "32e503c710a61e4e04be4edb450f9f8141233ac6af3f3db59a877667538fa4ec",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/scipy-1.18.1.dist-info/METADATA": "6d1ebfbce110009e25e8249fea05e21c0449735144e9bd8df1a52931f957c1ea",
+    "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python/threadpoolctl-3.5.0.dist-info/METADATA": "6e28baa733e393b2e472180903e6c7efc094a6858916091835b03d1a045cb08c",
+    "/model/spromptgl/experiment/experiment82_3_cspe/audit.py": "70352b0ab74c9cdbcfcf1560ffc33120a3e79c016705d22576566d8b904c3164",
+    "/model/spromptgl/experiment/experiment82_3_cspe/config.json": "5f69c196047b3d1940d2b6d2ec71d0637e155a9c8f30737e93108ce0b644f157",
+    "/model/spromptgl/experiment/experiment82_3_cspe/cspe.py": "991e9fea1711f00569f5655f452ed4f7a1dcde8653820d76218c58927007e39c",
+    "/model/spromptgl/experiment/experiment82_3_cspe/manifest.json": "38bfed664d39d10507c3f687a299858e1dfa5c380f76184657f35e91f0259cd3",
+    "/model/spromptgl/experiment/experiment82_3_cspe/results/audit_status.json": "cf0063c210a2e8fe02af839c2efdf918ee935765f8cbaee6d97015c6be59c514",
+    "/model/spromptgl/experiment/experiment82_3_cspe/results/fold_metrics.csv": "1f2d60e8d46e29fd8cca0b2b469824ebffec959add803336237b45a4e4bc1ba4",
+    "/model/spromptgl/experiment/experiment82_3_cspe/results/paired_comparisons.csv": "b599533547f347bfda8492dce51d41345366f74ed5dc785a3c5fe1d5aad4c7d0",
+    "/model/spromptgl/experiment/experiment82_3_cspe/results/report.md": "794da121b8b550e3d6bd17539f40cc3d3496d221312091bbc38d22c0c0494c18",
+    "/model/spromptgl/experiment/experiment82_3_cspe/run.py": "c4d2daff267d9d513f52c4c5d950aaa5e380c17467cb69f127ace1b4b7dab376",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f01.pt": "e091725fb9a53552536ed7a0666caa18ea265af5245e2d9039430fb752fd4ac5",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f02.pt": "2919bcc7efb800afe14ff15be93c447bdcbd45d84db38a255c9980f40ab58cbb",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f03.pt": "6353cc590d561e436c652848fe8118934cdf77adf054107196eb8f25f8341195",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f04.pt": "56f1b6e2aa9c3ee0b4ae28adbc02a4fed17fdaac370b9d9ee6c095e7d2ef1b1f",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f05.pt": "7feb899a5ab0965a2ff52034a62b04ed041b0995cc037ae377ac6a4171fc2b92",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f06.pt": "d7c0fab5255edb231fe3aebdffd9c995cdc4ecad7e6a77e64558bdce3b4df900",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f07.pt": "aab5608abfeaa9eafd163dc8f4297f73e8201e0ef7b31d456143ac4e9400d50e",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f08.pt": "46fa476cdcc676f8f76877e26fca81f8715e7a03a673d375e2911ed2da6c9c04",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f09.pt": "06fd3a71d8ffaafa3726302632fe8ce8d0658b3aec8f6b198110700505dce9e5",
+    "/model/spromptgl/experiment/experiment82_3_cspe/runtime/class_stats_f10.pt": "c2397a2d4f5c7480e202560ade6b529c4e077f13459221e5a2118c4b1667f66a",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/config.json": "652f23cdf04eb00b9d7ea8decef0488b4b9f2a021350edcc09e15dbe3f263b96",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/model.py": "272e9d98039c3ccd2e870ea0e933a66afb3e7ca611eda64b4b67c2557b6ea248",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f01.json": "28950aa8e4574a302ec95c8065747fdcc024392948c1cb6fa20102a68f52a4e0",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f02.json": "bbf8b82380dce97cceaf5445035201cf1a0cf5d439dc0f04b6de3b347211dba3",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f03.json": "714d6a62c8f4bc51599eadf615e83552d0f14edfed7ba84801362f2734a66746",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f04.json": "5737ef37d847da9be031d3a932f90910b965897b618c1a01e3f7d9880283033a",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f05.json": "c534466f51ab8d0e2c8c19027b409c26e3c0a5d040a19814aff66d9797a60423",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f06.json": "6401427e6184d286dae004df52a2f772d015893e9fbbfd124450c3fdcfcdca38",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f07.json": "731474d799e93b7a895beb6736e3fece949398005d16923bbceb7e40c47e6356",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f08.json": "3d798e09127b9fd54f0b1924ff5c2a12da4062353223d4a197d041b16b748aef",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f09.json": "6763712cfc340e82af5218c7c518b871cfda63b80804f0a8bbd0579b01cd0724",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G1_psu_psce/runtime/preflight/G1_f10.json": "0b40c7078dff2042ee5fc0e90b29eaca74294b2a55c85d36d811abd7b230c6cb",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G2_jacs_da_srpe/config.json": "2db1010ba128348c225ac03bbb8e04f26fabf3ca0366eedafcde5ece80fd470e",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/G2_jacs_da_srpe/model.py": "7b99568c8ccc7c259fc49e406bc67a54b879233d522b0f433271ad27ffa3254a",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/audit.py": "016973ebea0f8d98faf1f23b96cbf1a626608780ca782fe946f13d0b543a1c6b",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/common/geometry.py": "36887cd575c3e4b813890c1bca85a3ffd9ded7017c579d1f80f6d977c9a336b4",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/common/history.py": "c9d70d9d329913de7efaeeadd144f5027a488916c0bca5ca74cc36f8101dafe8",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/common/references.py": "88b4fb8e379d7888b5a9159c59eac006cea53e12123c7f41789dd4f5cfd5493e",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/common/spectral.py": "650b024671d0ff46cde532b91e0002b04ad3c8864b68c5f9a26b746a97e8dec9",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/config.json": "0f2bdea7c83a79dc9aeee638ea10a302861c0dd0ef7f827d530ac4d0ca4334ca",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/design.md": "b0defa54380857f6a614e107dcc12f1381ebcc27995f320e004e6f6d56dec543",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/manifest.json": "b83ff0e8d77ce1b15b2826abecde0e03ede3a77aa0c503cebfa81bc2c1c5c2e4",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/results/audit_status.json": "31418d935c382a8e22586ea0d3e632b429760681d79896f8a1380406e1ed89a3",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/results/fold_metrics.csv": "1db021b515a18cee8fb013015021c1d6faf0863402ffd4f203e120800c77c613",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/results/mechanism.csv": "c174173d2b5658998ac5f65367d1501b9ee495442683dac001e6855061347655",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/results/paired_comparisons.csv": "c45a60085a0d887101d6bd5e5d28e844f5c2c0a4530853388a3704178776c12a",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/results/report.md": "2e2c03b8d63ee9999f02127b1740348e0547b6e4c055f536d5a60e7d5016155c",
+    "/model/spromptgl/experiment/experiment82_4_1_psu_jacs/run.py": "dddb5be039ed777e99f1ef6d1b5eec9eb3c05148b14baf69e07ea51bbe08772f",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G1_sacs_psce/config.json": "aa425c1076ad6d96db4f2f0f68a7e6c12d050e2e74ca03299ab2c60ce3ab870f",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G1_sacs_psce/model.py": "1ae36926b8e8d2b67e988f1d17c57c9666beb2ef2308d3de1cdad86a770b5356",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f01.best.pt": "2d47586ce7b525adbbf8577b9065962249a96596f7f9adc78ff3c7f24875ddec",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f02.best.pt": "5df9cf39451af4bb1c847ba6861932516ebe73993808f44ba6199a500e64b9d2",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f03.best.pt": "ffacda81cdf16cb95354e8a8a88b1fe2fb496acb86268f36b381ce9f270a4a98",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f04.best.pt": "aa693a92fbc697c875051b30d54fb08330f5dbdec53cacffb6832b5ed7154043",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f05.best.pt": "5cb9a47fe986351e17bdc0f9ddfebae9646e1d3ffe01fb1a70bf8b499d245c1a",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f06.best.pt": "8193d53f94a26094a57642be58fce2c36477ad9c384c84ff4a6930658e4b488a",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f07.best.pt": "f99e932db785e40f19bc3fcbba12dc25badcabf7882856baaa7f511d5cf48131",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f08.best.pt": "00781570534eaf90d811faaa8075b580827f24f9e6ac398002eeacf2019255eb",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f09.best.pt": "ae0c90a6252041a6e8328eed9e73e02588ef2c7b4996aea5709bc0f7c25a3c6e",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/checkpoints/G2_f10.best.pt": "72d4166cf7624fc169fa94efb2fca3d8d592311cee85ac0aba755bb4be397426",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/config.json": "46d7c2652c6f36d6f69de21a3e1890eabd4d8d25076c47b693e490ce038a28c5",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/G2_pdjc_da_srpe/model.py": "76dca33e2f0dbf75460df0cb547cadbf467eb03a1679f114b0981e77a12d43a6",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/audit.py": "cddc235ae1d8631f8e586a5c90e92fad946c943b893eb42211f9cd4b86156462",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/common/geometry.py": "a0503e64b888dafe48d85c2370ad972e1621bd646469607a65608c0d6374e455",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/common/history.py": "c9d70d9d329913de7efaeeadd144f5027a488916c0bca5ca74cc36f8101dafe8",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/common/references.py": "fb9fbf463f11e3c47f619a6e330efeef51070f40c181941f7d26ddbdb6d9e877",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/common/spectral.py": "855e48bc56dac0c5bf98c05efe8fff5ff2607b42b8461726b9a04b7d901d8f40",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/config.json": "badc1aa5f8bc94bb19e1b7fb9ed6a40f8febd171021675dce4c592dd3f690b66",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/design.md": "62062d8e136c26acb040fabc123bd47312f1f8288e9f51bea0254c26b6354e1f",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/manifest.json": "f924812b1d0184258b4cf85c1c55593fb6852c47094022a85a36272cc68eac85",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/results/audit_status.json": "1d8d491e8ffcc9d03091556ccebdf8257b06816fff3f0a04fff854090100ac75",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/results/fold_metrics.csv": "90f2c1cbe1e6aec714f9ba3d09224983a033c2fe6b2e1b2d38af0f8ab1b7d20e",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/results/mechanism.csv": "5e7fc0f05b5ee242f6ac8dcf807adeefa8eddb233c13d5dc35612228c41b8e11",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/results/paired_comparisons.csv": "7b423fc646245c446e0545df8007e17229b7a0e85a45c7f242938dc30b21c4a7",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/results/report.md": "8d9aabb77ad7b3e7265d8e48d89b40ff382255a63e1c9fe9074b0a1b26f10f43",
+    "/model/spromptgl/experiment/experiment82_4_2_sacs_pdjc/run.py": "dd8e2d2e0ba4b5aaed80631856a42bd7b4e0847c51aaa8b4b2215340bc94be16",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G1_dpr_psce/config.json": "1d62f8c57e911ae7012390194de8505954e5dc17b0b28b25d6a98570fdefb97c",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G1_dpr_psce/model.py": "de56655292740764408af159569da37aa0f33b77d8e444033dc82c14e411e4d9",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G2_hlg_psce/config.json": "7dee77cae2a81436130aa84291398f01b690d15d56f7adb996e0b80b4ba14c14",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G2_hlg_psce/model.py": "e0e2ca664818c094241ffdc1a4af5deac08266de37e0317767f5f77364f70177",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G3_rcs_da_srpe/config.json": "4871b93473d605f3ef64c76a06fcdb18bdb48861467820443082fe92b58d0200",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G3_rcs_da_srpe/model.py": "529ec6a5fa114fb52e9c7888a6e47217b5fd0a61d2665d1a4c4ae7925422e0ff",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G4_sot_da_srpe/config.json": "6c64bcd72e01ab50e39cc0520ee32cdbf969d78d5451c77ba5f83f4430c02d28",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/G4_sot_da_srpe/model.py": "9aceecb9c470519555072dda97a1511a71656f0e7e1f3383fa7c44c6f32110dd",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/audit.py": "01e52eec40464c719d1378aa6292aa262097db24dc396bd6c248d57a53ceeb8c",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/common/history.py": "019a7f03a7fe7cf97a9c4b53b34c73a15b41f50cdc86754c4710c5f4eb6da0e3",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/common/references.py": "9559e9539ebeebb5be2cbc5de35812786c0e5ca2f03c1fff889214df61be0a52",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/common/spectral.py": "1864c439495a178eb1c3c66880cab1401235aff0a9fdb365a8d1602c31eb9b69",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/config.json": "547353aef29e0dfd2f88dbb2663b7b8c2c8be10d08ffc97b1b426577c59c6513",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/design.md": "3b010ae974f58d4b642064f2cc50bdd0a64de3579797d861a6bcfdce233aadc5",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/manifest.json": "2f06559aadf2c2a2fdd1429368027b60007267f3eaa9643bb5889841222d1384",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/results/audit_status.json": "a8da0ddb5a5287dd83bcadf121889459ef6d0a572cd77ff9c40387b0b5167253",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/results/fold_metrics.csv": "3e93d92ce5aef239d6fffaa24a4a66eb2c8e0bd6458c38e46c1476c35b022a5d",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/results/mechanism.csv": "8abede85aea62b16bef09884eb9372e6fe1e877fd527ac1b609c43cafd971fd8",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/results/paired_comparisons.csv": "59bffcae989bbf81c04ab02333461f689843dc4c9bad97f3adc2b447158bde11",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/results/report.md": "23b83456fea3a4ef354c39d8e58a78620b1e8fbd0416782397a9da79345d8b6c",
+    "/model/spromptgl/experiment/experiment82_4_four_spectral_prompt/run.py": "e7fd557e8f0cc54cb2f1e55949533ffdeaf5bc3f092f960e378da0d833539e92"
+  },
+  "protected_bundle_sha": "9cddfd42ba9a8d2ca1d3ab7546d08f8032c0554b47df85818b7eeefe1494c870",
+  "runtime": {
+    "python": "3.12.3 (main, Jan 30 2026, 14:20:45) [GCC 13.3.0]",
+    "torch": "2.9.0",
+    "cuda": "12.9",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "profile": "/model/spromptgl/experiment/experiment82_3_6_ps_pgr/runtime/python"
+  },
+  "device": {
+    "index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "name": "PPU-ZW810E",
+    "bus": "00000000:64:00.0",
+    "total_mib": 98304,
+    "used_mib": 2,
+    "utilization": 0
+  },
+  "cpu": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41
+  ],
+  "history": {
+    "training": {
+      "base": "E61 epoch-10 full warmup, loaded independently for every fold",
+      "max_epochs": 450,
+      "early_stop_wait_gt": 200,
+      "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+      "workers_max": 10,
+      "expected_tasks": 30,
+      "schedule": "interleave groups within fold order; every task independently restores its matching E61 epoch-10 warmup",
+      "optimizers": {
+        "gfr": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "cam": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "darg": {
+          "class": "AdamW",
+          "lr": 0.001,
+          "weight_decay": 0.01
+        }
+      },
+      "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+      "pair_count": 4096,
+      "balanced_pairs": [
+        2048,
+        2048
+      ],
+      "no_per_epoch_reseed": true
+    },
+    "data": {
+      "dataset": "ABIDE A",
+      "subjects": 871,
+      "modalities": [
+        "PHENO",
+        "ANAT",
+        "FUNC",
+        "CORR"
+      ],
+      "modality_dims": [
+        48,
+        6,
+        10,
+        256
+      ],
+      "feature_dim": 320,
+      "label_encoding": {
+        "ASD": 0,
+        "TD": 1
+      },
+      "seed": 0,
+      "folds": 10,
+      "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+      "validation_equals_test": true,
+      "intentional_fold2_overlap_1based": [
+        377,
+        407
+      ]
+    },
+    "reference_base": "E61 epoch-10 full warmup, loaded independently for every fold"
+  },
+  "sources": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "author": {
+      "url": "https://github.com/wanxixi11/SPromptGL",
+      "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a"
+    },
+    "user": {
+      "url": "https://github.com/tangaii/SPromptGL",
+      "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d"
+    },
+    "server_commit": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4"
+  },
+  "training_runs": [
+    {
+      "phase": "run",
+      "group": "G1",
+      "folds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "max_workers": 10,
+      "gpu_peak_mib": 13959,
+      "wall_seconds": 614.6175891570747,
+      "retries": {
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1
+      }
+    },
+    {
+      "phase": "run",
+      "group": "G2",
+      "folds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "max_workers": 10,
+      "gpu_peak_mib": 13939,
+      "wall_seconds": 367.57466915249825,
+      "retries": {
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1
+      }
+    }
+  ],
+  "completed_folds": {
+    "G1": [
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 1,
+        "epoch": 450,
+        "best_epoch": 317,
+        "best_correct": 84,
+        "wait": 133,
+        "best_sha": "22645623cd11bf426904f76142475b923a8306ac9796d7f9b3095892f2bdb6fd",
+        "latest_sha": "13d8c3a8fba514212d16c9146a0848f0dd0356d34b3305f23cb89e9fe087253c",
+        "journal_sha": "3865abbe70adca189b99fd89d66bdde146a7a17a49d058aa297ae241f9626c12",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 169.91789634525776,
+        "peak_mib": 1018.0,
+        "affinity": [
+          32
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "4e1ec69ce65c85157907e0a64aeea8a7cac13b23417587df9b47650913a3dc78",
+            "rng_after_train": "03373613711f06d014021af0677d2ebe52160e2d848db53dd535eedd98e3780d",
+            "rng_after_eval": "03373613711f06d014021af0677d2ebe52160e2d848db53dd535eedd98e3780d"
+          },
+          "training_sha": "9ed61753610f0c988fae72288285c892c6880e739868c86b6e088ab17d747923",
+          "state_sha": "d6acbcc2a8772685c99f403f841963454a4c017682407adf0fb558397885abb1",
+          "evaluation_sha": "e66c4339fc7c6574d87e103ea47b59bda45955d6918eda4674d4c7353badd3ce",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 2,
+        "epoch": 342,
+        "best_epoch": 141,
+        "best_correct": 78,
+        "wait": 201,
+        "best_sha": "34858b48423061c307d22ac35c02bbeb2d26a95a4bb271b02a7f1ab3600c1a59",
+        "latest_sha": "9ea2f3765416b7026a67a91f922f6186bc975c3403c56fd5bf102b7accaa168b",
+        "journal_sha": "f5cff6580805c0a5b44cff5f2324dd51a213b4bda094137abb65894192bb4fc8",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 132.95760794356465,
+        "peak_mib": 944.0,
+        "affinity": [
+          33
+        ],
+        "next_witness": {
+          "epoch": 343,
+          "rng": {
+            "epoch": 343,
+            "rng_before": "d90f6327341854f5feb7e7d277dfbe58f11c769a7b8d3796bfc1083dedbd3d6a",
+            "rng_after_train": "1a587a897f1548358b38eb2e6b485232ca7b451e19d104c7f05c702b089702a7",
+            "rng_after_eval": "1a587a897f1548358b38eb2e6b485232ca7b451e19d104c7f05c702b089702a7"
+          },
+          "training_sha": "b3874786ea38ee9f7c83315a876900ec08744d6bf7b2ab062aaf3ec6a0d61c88",
+          "state_sha": "59f8f9c4f4edec33157c51aac875cc8fbbdbdf55acdf8ec4dc6f0b4198f20908",
+          "evaluation_sha": "7b6dcc051a1d85603d43759db71e62d9fde50d14a22c5920f23b1cd089783bd1",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 3,
+        "epoch": 364,
+        "best_epoch": 163,
+        "best_correct": 76,
+        "wait": 201,
+        "best_sha": "20ebb85e62bb262f65b87b037c5b3db804f857da278e4b45bb744cce881f42ea",
+        "latest_sha": "de4a437a39320c60691ebfb8e312e7bfebe44be96e153db41fa936385525a4ae",
+        "journal_sha": "f6ebe3e4a33a8ffba66a9bc2fc574106e115070ea844e2c301e2b9cc3bd59d76",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 152.94462985545397,
+        "peak_mib": 906.0,
+        "affinity": [
+          34
+        ],
+        "next_witness": {
+          "epoch": 365,
+          "rng": {
+            "epoch": 365,
+            "rng_before": "0695c8a1050133f3be4ca4e62cbda99a3a660707b0e2127b70158afdc5bbfe5c",
+            "rng_after_train": "12b716e22f8253800fe4358600e14df68d7176d86b6d3008fa0041bec7855bef",
+            "rng_after_eval": "12b716e22f8253800fe4358600e14df68d7176d86b6d3008fa0041bec7855bef"
+          },
+          "training_sha": "3572dc16e28c70e08341c684e5c400e16dea8c71ede3a69d1b72517510dbbc96",
+          "state_sha": "b7e20196a4ff5e8ec36886f7a178bd253ecfe465a278c436b21fed11dc9f0bdf",
+          "evaluation_sha": "6e4fa0bd5d3947677a40bd07d32850aa01383c9f77b6a24dcbdab9963f84a037",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 4,
+        "epoch": 387,
+        "best_epoch": 186,
+        "best_correct": 82,
+        "wait": 201,
+        "best_sha": "914a6d590662aab98de0e8be413ded0bf02d63a570a6333059e2499287977155",
+        "latest_sha": "59576a2b08afc3e8de4e1bf6c1f6b9bb04cc0aeb55bba1d7ae9bf2968b7186f7",
+        "journal_sha": "9d9fb5363cda3739feee9581bc4ba7099ce56ef24ec57db29ea1037fa83b7704",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 150.58154464140534,
+        "peak_mib": 1014.0,
+        "affinity": [
+          35
+        ],
+        "next_witness": {
+          "epoch": 388,
+          "rng": {
+            "epoch": 388,
+            "rng_before": "cb297b797325606c266f3704c06e4c1c8337f12897afc88436114ed9835f88e5",
+            "rng_after_train": "840eb188ab745cd594181b2df262a4e64b113608a11b894060a9011cc1219fa8",
+            "rng_after_eval": "840eb188ab745cd594181b2df262a4e64b113608a11b894060a9011cc1219fa8"
+          },
+          "training_sha": "1ae795caf86741e6374a1415b57a704f80fba96dc3fad3e3635cdaf5a2547fbb",
+          "state_sha": "6b0ea7023b00edead34626b88691a46f96de3db42b491c27cc1e441ea03f82ef",
+          "evaluation_sha": "6d3b7b979f116bca29881ed7c3d4b58964c1b14faa33cca9e8034100ba664df6",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 5,
+        "epoch": 417,
+        "best_epoch": 216,
+        "best_correct": 81,
+        "wait": 201,
+        "best_sha": "a65240cc561d9f9333e9016ac495c1233a7ce920331263f3ea8c564324a48332",
+        "latest_sha": "1486862fb0547477d07e0e5a15d9e65fcef0afd411dfcb9077daa444a3ced558",
+        "journal_sha": "cf57ddeef31a259deb7f1cd44b63efd17356d1e5637b08f29dc15203b70d6ca5",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 152.04781775921583,
+        "peak_mib": 1008.0,
+        "affinity": [
+          36
+        ],
+        "next_witness": {
+          "epoch": 418,
+          "rng": {
+            "epoch": 418,
+            "rng_before": "af3ec713b6afdb060218dfd158d59a5fabb858cbf35f6caa776406a690a81758",
+            "rng_after_train": "dfa8d6d277454f4f7f2427997f3023c163c0158e2ed0c7e5079a0f6835fe9b31",
+            "rng_after_eval": "dfa8d6d277454f4f7f2427997f3023c163c0158e2ed0c7e5079a0f6835fe9b31"
+          },
+          "training_sha": "5adbd2c7f5cbd0058ecb73a9d9c847fb6f9b80856601f050b4819e1e13cef476",
+          "state_sha": "70aed1f593e42be29d0f1bd844e02ecc66dc1fd77c52f2e59136b15d778ba70d",
+          "evaluation_sha": "1df295497dece02e51a4646987bef7086a20353a22115f25105154ca2c857f18",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 6,
+        "epoch": 362,
+        "best_epoch": 161,
+        "best_correct": 84,
+        "wait": 201,
+        "best_sha": "676e1a7db5ef98a1380df4f2c265fd0cff051fdd9c0e1d444f3a319390d4330e",
+        "latest_sha": "3a949462438a7ce90970f7c6c8aead7314d4fc431f8371dabad1d3686bb134cf",
+        "journal_sha": "69129f0c4d6b3a7d04f1baf628024aa4d0b02b5ad7f16731884a7083375b817b",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 83.98148269951344,
+        "peak_mib": 950.0,
+        "affinity": [
+          37
+        ],
+        "next_witness": {
+          "epoch": 363,
+          "rng": {
+            "epoch": 363,
+            "rng_before": "e1d8e08c42a72a8943a99911a0744d7af50c19e2329abc186d8195dc318cd54a",
+            "rng_after_train": "7f3d1d52f1ed64d1517c13011330406d7d7384697be2cdadd7b333a1f4401782",
+            "rng_after_eval": "7f3d1d52f1ed64d1517c13011330406d7d7384697be2cdadd7b333a1f4401782"
+          },
+          "training_sha": "00b6337817674d648b6287157688fbe3a240f14f42b31e887d373e31de362b87",
+          "state_sha": "bef7bc40e6fe5a6637c8148b29d246619c02a83740574682fed756f75caf4c94",
+          "evaluation_sha": "e3c6adbbf86c8c50ec8c4ad281974c66de22676b4861a011a1fbfea97eaf09a8",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 7,
+        "epoch": 372,
+        "best_epoch": 171,
+        "best_correct": 79,
+        "wait": 201,
+        "best_sha": "5c75fa4edc0a6aae73bafc497aa1c596e86740f5d61fd9ddf03ff84e210446e3",
+        "latest_sha": "4563832c0bb6a2257c02082fb837bf35e57b73db3fd97b67c073d224bf4c005e",
+        "journal_sha": "f7ea49eff7d2589fa4c5153ba25d1bf288ccf4db2c3ebe106af98cd1888a55f1",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 90.8125230781734,
+        "peak_mib": 868.0,
+        "affinity": [
+          38
+        ],
+        "next_witness": {
+          "epoch": 373,
+          "rng": {
+            "epoch": 373,
+            "rng_before": "0e33bbb8e0009c99fa5aa3f9e4f3609108be00dd6ba534035018310010fe50ce",
+            "rng_after_train": "b85be985a02859d15410b7d6ef6eca43d5f75ada4cd97e0b2b889328cd87ddce",
+            "rng_after_eval": "b85be985a02859d15410b7d6ef6eca43d5f75ada4cd97e0b2b889328cd87ddce"
+          },
+          "training_sha": "e1175d7fdd6c5fcde97ad9e380ece0102d7d38bf6457378618c3b007f6f5a395",
+          "state_sha": "7d24b6664490f40cf52aaeb1c7876336242608a3f52fada8dff7c6c6cc2dc762",
+          "evaluation_sha": "3d5f1647f7aa31a2a23120c3dd47b208c035da50b369eecb4d1d613929542bd9",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 8,
+        "epoch": 344,
+        "best_epoch": 143,
+        "best_correct": 76,
+        "wait": 201,
+        "best_sha": "f89246e890f44f75fbab956eb542e676c5fda21f3d1a6e322abddeeaac1cd45e",
+        "latest_sha": "551ca756aea668d638f6f5bd35f7781b775eb9749d6dd279e4626047b9b61f67",
+        "journal_sha": "9ac16270bc5d8880beb2338b240c8fd44395819bfc57c1dbc2fbbc261e3c73da",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 77.24114142358303,
+        "peak_mib": 922.0,
+        "affinity": [
+          39
+        ],
+        "next_witness": {
+          "epoch": 345,
+          "rng": {
+            "epoch": 345,
+            "rng_before": "c4903328d8cd64bb4396f68fbd1f25ebc9423a8d99b0bf328634ebdaf6d10dff",
+            "rng_after_train": "7aafc8c96ef73b857f98a83ee370846fdc0acd2588ab9f8eecfcfe27a89219a2",
+            "rng_after_eval": "7aafc8c96ef73b857f98a83ee370846fdc0acd2588ab9f8eecfcfe27a89219a2"
+          },
+          "training_sha": "ad66580e38a1f26d4a24662d59dbd141121f6781207a007c7e04de6e139d0e6d",
+          "state_sha": "8457ddde1d584d46006eafdde9b3edcae4210db5cb154901a3888074edbcc50c",
+          "evaluation_sha": "8d0cbfe3405815b53707658c847e0ac8022769a9df04bef793398a5d9c153103",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 9,
+        "epoch": 419,
+        "best_epoch": 218,
+        "best_correct": 78,
+        "wait": 201,
+        "best_sha": "971b0c47ee990fd9a54821d674dfd07588a180402ab5afd65c403badb6358b52",
+        "latest_sha": "d1746850d515e21aa1afc3ce6fa1b71ff21d9d2b621de9c0ebd8798a04477fcf",
+        "journal_sha": "7d88d66334a76f175af0a8494f92567718782e3637caaa3d494dcfd894005115",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 103.66256149485707,
+        "peak_mib": 934.0,
+        "affinity": [
+          40
+        ],
+        "next_witness": {
+          "epoch": 420,
+          "rng": {
+            "epoch": 420,
+            "rng_before": "476210ec0c647315a94afb9df851ee9510df66ac5ec0993c133465d5ce7db776",
+            "rng_after_train": "8967f5cf87b4da4a794cedfb60cc0184c48e3dfd185f993c82c027a14f43c161",
+            "rng_after_eval": "8967f5cf87b4da4a794cedfb60cc0184c48e3dfd185f993c82c027a14f43c161"
+          },
+          "training_sha": "406f1fe2f6462fd5689e9814bf2a0a66b9c0b99b932b437e304cee7fea9f48df",
+          "state_sha": "5b037950aae14794f2dfe1cfdcbe076336f085af9e6727e05de21a087cf68257",
+          "evaluation_sha": "e934810999ea9b4ad10f1f8281aff2483419e13aa49ce1d41a2e7e5f4e47abee",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G1",
+        "fold": 10,
+        "epoch": 450,
+        "best_epoch": 254,
+        "best_correct": 81,
+        "wait": 196,
+        "best_sha": "cb93cb24c7041440ded0fff4ec99fc3f924b6fd0affbae13ab0bafc29f638ae4",
+        "latest_sha": "ba008dae79aed673aea7381acf4386154abf5972152b032bb47f62c8045b5a89",
+        "journal_sha": "0868e3f957cf2461cacc697893c41e26b9c226112d6670c5ba7b26c3900fe0e7",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 113.0960593521595,
+        "peak_mib": 924.0,
+        "affinity": [
+          41
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "18aaef814eb99bc15419d487dc771f81df46f570752424a1d378ff0621bfbcc5",
+            "rng_after_train": "ef750dd7fdab88231829814363a594a1e10ea9200cd3c7040964fa4b9dc21ca7",
+            "rng_after_eval": "ef750dd7fdab88231829814363a594a1e10ea9200cd3c7040964fa4b9dc21ca7"
+          },
+          "training_sha": "b886d0d7a89f09718460b25ebc817ce38f100e8fc1af9050e537123765932807",
+          "state_sha": "9a4e9ab2c0cc768a2819618c68d2f4ed94371f8317a17a569d6e27f6c91c7672",
+          "evaluation_sha": "f13f308caf2b109c117aa261ed88786d4524568f4d40b77fa746a8b2b3239354",
+          "previous_ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "observation": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+          "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc"
+        }
+      }
+    ],
+    "G2": [
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 1,
+        "epoch": 450,
+        "best_epoch": 286,
+        "best_correct": 84,
+        "wait": 164,
+        "best_sha": "4fd764308e6038a8eda1409793ef33710238f9da75f5af2ef78ea1ebbe58d2c8",
+        "latest_sha": "6dcf5b0389a62ece260c08fec4222b73df8a265e9958f8bea6b95b28abca039d",
+        "journal_sha": "37a699f23d218bed76f8f3ef80124d42aa8edd646b68238a5b81051a66509bbc",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 177.26151041686535,
+        "peak_mib": 998.0,
+        "affinity": [
+          32
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "4e1ec69ce65c85157907e0a64aeea8a7cac13b23417587df9b47650913a3dc78",
+            "rng_after_train": "03373613711f06d014021af0677d2ebe52160e2d848db53dd535eedd98e3780d",
+            "rng_after_eval": "03373613711f06d014021af0677d2ebe52160e2d848db53dd535eedd98e3780d"
+          },
+          "training_sha": "783d8d9a08cf64fb058ef89d213f9e334f4c42beca1c6c8e0d8f6afd12ca2a28",
+          "state_sha": "954066fb981a5ff6f1d1bb295b066190bf41e25ed8d9d15b1d09337f190c4362",
+          "evaluation_sha": "d638f2ef6d9606ab6ff83e3951089459b302529078d384afde89de7ff61b61ed",
+          "previous_ema": "8dcc02c2ef7f828b315c5b27e8423fab571a6ae3ab9db6be42d8319513d5d47c",
+          "observation": "4d45886ebd3e8742c61ed0aa5d136ec0074b24b9a16a00780019c8026e2ab8b8",
+          "ema": "50c3fba2427f920534840f02c2581dd49414e38fa20ded4506cfdcd5bddba599"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 2,
+        "epoch": 390,
+        "best_epoch": 189,
+        "best_correct": 79,
+        "wait": 201,
+        "best_sha": "d51cc0ad1dab27fc185343622b094c88326b2a27054621657c8a267faf99cda4",
+        "latest_sha": "ff549b4579800cb3ef2826ec337bf99a51fbd010b75958136490c92ccf87e341",
+        "journal_sha": "f9bac1c3f16b16811207e3f7d76f0e3afbc8ff97da306e764c870b0ab1805b28",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 153.54585902020335,
+        "peak_mib": 924.0,
+        "affinity": [
+          33
+        ],
+        "next_witness": {
+          "epoch": 391,
+          "rng": {
+            "epoch": 391,
+            "rng_before": "98afebcbe6403051e7c3f083f3d8fa043409c1830394da6b4665eea0bbf6d236",
+            "rng_after_train": "f222c9e588067cbbc991e7a9a4e80a9e2a1d25e6bea8908594c7cfb1f0da8199",
+            "rng_after_eval": "f222c9e588067cbbc991e7a9a4e80a9e2a1d25e6bea8908594c7cfb1f0da8199"
+          },
+          "training_sha": "13f6431cfd51f5f3b0f22b86b914d6badc1f221cbd982c8ba5a5f71a7e807494",
+          "state_sha": "1e32f906dacd738c970dfa0657cff261f400b7ff309faf431357cd467201618f",
+          "evaluation_sha": "2ddf60852bb6772fb4e114726930bf1e476978f05a31cee463320376c19464d9",
+          "previous_ema": "7326048b9ae06d41d8e7807affa37717ba9b4f7fa55bbe0a8e9f3b4a2e6c43bc",
+          "observation": "2caac3f28b53b34720f717ecdb00b866a2cfd299d1ba36484abdb8dda8b18326",
+          "ema": "97e28d94cd7af4a3a01bf34d71336d3673813029e2922a8684303de3ddeb601c"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 3,
+        "epoch": 376,
+        "best_epoch": 175,
+        "best_correct": 76,
+        "wait": 201,
+        "best_sha": "ff03c2b2143a06ab268d5220bf372fce2e30478a529dac005694c8647c1d0472",
+        "latest_sha": "f26de567ab60502ef4eaef03413753e8f3e662cdbda9e2ffe8f48ee35aa557cd",
+        "journal_sha": "5b05fa91572fc13a44cb2e1e8815695352d22503b793b2686b34bfa1e06dc22f",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 163.2210017517209,
+        "peak_mib": 964.0,
+        "affinity": [
+          34
+        ],
+        "next_witness": {
+          "epoch": 377,
+          "rng": {
+            "epoch": 377,
+            "rng_before": "10b52934db0f174882f3cc0ec32db53f49ca960a7088520fb3be29e33583df30",
+            "rng_after_train": "ff08e77f807ff159cf390f7b9897db5457e763f761e382f276225a35ea5195dc",
+            "rng_after_eval": "ff08e77f807ff159cf390f7b9897db5457e763f761e382f276225a35ea5195dc"
+          },
+          "training_sha": "7247f254d4309891c861d84a53d91fb019b4607afeff68224506227d8782adf6",
+          "state_sha": "8bb32f82ea9003eb7828df5a0ed25d2da9274144bffef68240707969b5e5fd23",
+          "evaluation_sha": "61823f620ae679929695d8d0b9a045e54987d919726286daccada7f2ddc315e4",
+          "previous_ema": "8f3a90601ddec3c99e06f65f5d560c2a0bf5423126cdfc2c88734386111ea545",
+          "observation": "298fdd56a7f1d5f571f46fd5194bff6ebc6f081de2bd7001b4c6febd1867db29",
+          "ema": "3c7bf77d0039906fb444f3acecbe8ffa9d7a0a768e8bca720782fc482aae322e"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 4,
+        "epoch": 450,
+        "best_epoch": 279,
+        "best_correct": 82,
+        "wait": 171,
+        "best_sha": "87a84b3c98e83936534f14527d3e05b71cc7d7d1d41d3d4eb8fb0f3bb9176a8d",
+        "latest_sha": "7721063cffccb8263ff99951b4c9c715955fdcfafc4e7a470ad15ee7a3403277",
+        "journal_sha": "7ac1dd60f61016f504f37c8d2df4b26e2b2807ab8c66ba2f2ce3e511fea757eb",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 173.6653328500688,
+        "peak_mib": 982.0,
+        "affinity": [
+          35
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "26fb7daefcf387ab7a6d1a706756e7a7b784d4b2cef7c2131aa36d680add8791",
+            "rng_after_train": "41c555dcbf5f8fc97ceb892f9d15da44533abc5cfcdab98d357d3ce2ffd03ac1",
+            "rng_after_eval": "41c555dcbf5f8fc97ceb892f9d15da44533abc5cfcdab98d357d3ce2ffd03ac1"
+          },
+          "training_sha": "38409f275af0770c59e64cfc370bc810fe7b6370da91f179280ade1d22552435",
+          "state_sha": "01f06aae5ffd57c1d57e7376b573f4a99ebf5e2375896ac48c7bb401e32cb4e5",
+          "evaluation_sha": "abc7c4564263405c19155f0b6d9e57b873a0de7d2857e5ab54be6cd914220a47",
+          "previous_ema": "79f39d4e02c7458f6cab95a83768756e2dc476cecc8366fc355d37bc3c7b9b56",
+          "observation": "0d917a9b960f41c7d6f6415096f7995aeb0422190887744276f6151a0d6be708",
+          "ema": "527f715d8bfe076a01e93c65114e2d0d80ed3427d9d925331417648341d9d65e"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 5,
+        "epoch": 450,
+        "best_epoch": 250,
+        "best_correct": 80,
+        "wait": 200,
+        "best_sha": "526ccd7292ed933f95956dc9883b5b944f9603d7dc7f5cfab516898e0235f793",
+        "latest_sha": "b5ab78462670e3acadad8f3347f583ebbc932bf9e857ee792d3e53dcebdc567b",
+        "journal_sha": "39f211f989daae03ff892c820d2fdd0619939d22d0cd084cce363a1f0f0e2106",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 167.21545541286469,
+        "peak_mib": 1012.0,
+        "affinity": [
+          36
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "0941bd09e3f885a01553adc0f225f576c1b25d7b2b9f44e6d864293b42c72f42",
+            "rng_after_train": "7f909289310b05360ec33996fa758e5d2201e62fd2de56b6291e60de782da1e3",
+            "rng_after_eval": "7f909289310b05360ec33996fa758e5d2201e62fd2de56b6291e60de782da1e3"
+          },
+          "training_sha": "82dab00f3a74cf012eb0bc6cb84795bb245d7fe953de225530f490254b9e242e",
+          "state_sha": "881808e8f1c53559eb5726386d1c8976a5f4255e0805528f20d562e44708672e",
+          "evaluation_sha": "da6188f7049aa72d9efd2f62acbeed407e0f5d433ef2202c8ff64a3a1226efb9",
+          "previous_ema": "7af36f4ea09df0c3cc0b1a6573eb2d9ee12fbae477f958df64e4f94fb1ef0ecc",
+          "observation": "9fee89c98e08b81cc6baa2d17773934f7dd68713a6d11b20939a6cce3d0b33ed",
+          "ema": "379065469c7548c65fe1cfbb225a380719392842f6a81fe9ad42e7862d155b7d"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 6,
+        "epoch": 306,
+        "best_epoch": 105,
+        "best_correct": 84,
+        "wait": 201,
+        "best_sha": "f0de77b6cb7f8f92327fe5a70d4a6ccf023c24adf8999dd02dc96b9632b3a629",
+        "latest_sha": "f0fab978b3cb4e982ae501556093b0339c036601863600819106fea11d1f61fb",
+        "journal_sha": "df36b1e462c5edc28eb266ceef151b046c1656d4bafb29ef2b41cdd0d4479106",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 99.44401228800416,
+        "peak_mib": 908.0,
+        "affinity": [
+          37
+        ],
+        "next_witness": {
+          "epoch": 307,
+          "rng": {
+            "epoch": 307,
+            "rng_before": "6f95a619bc9a33e811ca152ad16c0cd54879eb151fcbcd93535b0023c3bd414f",
+            "rng_after_train": "a5bb686181fe174ea2af5e3e8c9a70f0556da62721d936e2c2e7d8f0898f35ec",
+            "rng_after_eval": "a5bb686181fe174ea2af5e3e8c9a70f0556da62721d936e2c2e7d8f0898f35ec"
+          },
+          "training_sha": "93ac5b8a22c8ca28d1141a948b2fa0176efc1c25cc9b93c651ce24c024044ecb",
+          "state_sha": "bee06a37b0ba8dff993c7407e94a86b2ba5db13fe6dfc39294fd2909f81ef99e",
+          "evaluation_sha": "06fad22ed21fa99adb071edd2fee0989069565239eb93000a2ebe340586c09df",
+          "previous_ema": "590dbf49df1697890684e5280f587ab6b8d9fd2b5c6fd8e1c0b0632ce9240964",
+          "observation": "408296588f65738972b17d2e37339529a1d1dda772da61fcd50d9ed293773423",
+          "ema": "e7eac3bb63472983db728e84ea4040176ece5ceddc77bc980008f1fadc2fa630"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 7,
+        "epoch": 363,
+        "best_epoch": 162,
+        "best_correct": 80,
+        "wait": 201,
+        "best_sha": "62feb8be45fb600963343120cd8355e3d8c5d3c75983e26099e58053ca285902",
+        "latest_sha": "40c0db8bc285319724bbe104b225cbea322628b07188bbe1fd7be7cad5f77717",
+        "journal_sha": "7c7d022ff76b5d16694bceb05a38a790a073b3153eb2e9768a85e5fd0022d9d0",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 119.84015484899282,
+        "peak_mib": 966.0,
+        "affinity": [
+          38
+        ],
+        "next_witness": {
+          "epoch": 364,
+          "rng": {
+            "epoch": 364,
+            "rng_before": "bdff3f4db7a23f242dfac9271282c7b2ab34d5f92bd67daff2e1be4c9ef83b76",
+            "rng_after_train": "19e68bd8d792364b2398babdf1d7b1282515f368e90375204792acd47e0d7c9d",
+            "rng_after_eval": "19e68bd8d792364b2398babdf1d7b1282515f368e90375204792acd47e0d7c9d"
+          },
+          "training_sha": "43ace4b6b1c28dbfef7e7f3bfa0fb6fb17bc9258354635dd079d79e068928f87",
+          "state_sha": "50bfc21a5074df1cc9f13a606fcb8b0ea951061e5235830996a68a7a55512a2f",
+          "evaluation_sha": "e2fdf5cfba90c941020325fc51020411422a69898ff1978eeba39c77279a6f56",
+          "previous_ema": "312d04e7c8d307df514c8c2ee391a5c56d7fa8aac4cf2308028ca778cae6ee20",
+          "observation": "4563482d3f3898b706c0a95c157e7376ad3067224c237b896c7c13a3622734f6",
+          "ema": "331acb9e6398d8880f94cd9ed25d2191eb470fa46e27c68d0f0f4c8e5684dc55"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 8,
+        "epoch": 450,
+        "best_epoch": 272,
+        "best_correct": 77,
+        "wait": 178,
+        "best_sha": "025ab952e9f20b7b77c90717d00b4e93ca5744b7a30db7c2f2e4010ec54069ed",
+        "latest_sha": "4d4ce44aa02706f7b87c7eef3aeacab438ae41fe7ba6f0b87e8943ff2f07edce",
+        "journal_sha": "c9986721b7f734e6b480cb34adcb681b46666d4881a655adbb5b61fa05228e3d",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 150.90470563992858,
+        "peak_mib": 956.0,
+        "affinity": [
+          39
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "b5a6b6836a0935129a230b50ba4d4eb314420281a9c342db72dcb23ab0896f3c",
+            "rng_after_train": "391b61b0a288a6cdb66ea90ce0ee512faaa87417aae387a18fde6f63d28c6a6e",
+            "rng_after_eval": "391b61b0a288a6cdb66ea90ce0ee512faaa87417aae387a18fde6f63d28c6a6e"
+          },
+          "training_sha": "aa7ee38615ac67dd3590ef713a36583b4e0a7adf3c9ab59cfbb875f092295629",
+          "state_sha": "e6bed94cc62ecc7e256e4b339782b2860c8dc3994a75ce4ea72c8605888ff72a",
+          "evaluation_sha": "91a65b32b8f7cbb3655a88d360784fe5367d0ad45e216c3f24563efb99f4bf9c",
+          "previous_ema": "5fb51c29cd4c4e8a1da2a96ae01ee098c486f56d429e09a3fef931c330b03f9d",
+          "observation": "b3b126139f1dfa6d9c1afe1dafa0c349561ac842bc6560fe1096e3321779a585",
+          "ema": "a3c7af57f0fcb7abb126ac325d395c5dbe7c2cdb5caad335aca2d7bb815cea69"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 9,
+        "epoch": 330,
+        "best_epoch": 129,
+        "best_correct": 78,
+        "wait": 201,
+        "best_sha": "ad0a453c86d52e4510c3c254c3fc73aded3aef3906c4efe837b36e7b7cb8c6c3",
+        "latest_sha": "1742a8c794718cb059e6e5dbf644cc1975a931e0c8da6c7986d921564b0b3ab8",
+        "journal_sha": "0532a4d112f1fda417fdb80197b6909d11f7e197e483292f6cc2691b229f0bbf",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 109.40611281991005,
+        "peak_mib": 924.0,
+        "affinity": [
+          40
+        ],
+        "next_witness": {
+          "epoch": 331,
+          "rng": {
+            "epoch": 331,
+            "rng_before": "41306fee2316d5a1261b5cc554b815d1a54c896e31d085683c8160fe5a933e70",
+            "rng_after_train": "051c079053c18b2ed61dab46992d08c709bda213bf70232a83564fabfb6556dc",
+            "rng_after_eval": "051c079053c18b2ed61dab46992d08c709bda213bf70232a83564fabfb6556dc"
+          },
+          "training_sha": "1c4d15ab7ca2df99bff6ab338a41c6960db008e708a6c605b36dbf490bf1d902",
+          "state_sha": "cf1ae048e14a488c9c3614a2a731b33831f49dfc50b10afc75dd5c50b6202506",
+          "evaluation_sha": "e546dd2371396f28e1f9880fb32e2b4b582ab732ad1c3e7109127c61a1a6921a",
+          "previous_ema": "84e924f7266840134cf275b11c8a7f62fe828b2c29985c5abd6006db8f9fb3df",
+          "observation": "e188e680113179305a5c394a2775f88776cc774084704eec90b860ea4b98fc54",
+          "ema": "aeeb195792e8f9c8c41141f9d6f2e9943556cf13e9d711a0785e75b995da013d"
+        }
+      },
+      {
+        "status": "TRAINED",
+        "group": "G2",
+        "fold": 10,
+        "epoch": 450,
+        "best_epoch": 315,
+        "best_correct": 81,
+        "wait": 135,
+        "best_sha": "08549b3992aa1a651313eba5e52bf50f9281ffacc8e6a9e80c54471d88ac852b",
+        "latest_sha": "2093eb533ff8680c405cd0736b03273e41bd8116ed5ad20df7015f3a6540ef0d",
+        "journal_sha": "4fd91d63ec0679470c0993b8850360fea786770dc1978cc181b609226c5f573e",
+        "implementation": {
+          "audit.py": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+          "common/evidence.py": "bd741a7f8fa58625661500f9f5a450d86668d780bc5e1be3f8a8ca002a9f6e47",
+          "common/history.py": "78e21064dc43a7fdf40af6cea8b70a1715d2b5a2d44c2820cf7bf7ac82505663",
+          "common/optimization.py": "abd0ae743943dea70791f73b2c6ba32d82947138f9d85dd834257531104bbfcd",
+          "common/spectral.py": "7d1c62583070850ef0225b1368d808118107fabf2c4b0656b22b04241a32645f",
+          "config.json": "792d9f2d083d9f331b96c59f672d17f1239d48eb0746aa489fda38f6fcbbf145",
+          "design.md": "943b2a43e97b29330a513e969ecfd8bf4b12e83069a9a25549024404acc1367d",
+          "execute.py": "93dc3f7442bf7594cdfb7f9f03f6915211a5b0896e8756c9b78fc0de0834fb5e",
+          "forensic.py": "d544a83b8eac7219b2aa871f6cb086323f9a16fa025b36d8ba6cdf08752855a1",
+          "g1.py": "9336e5faa78372bed6a9eedb07388591533304a68fa69918c6e9b22942fd0a25",
+          "g2.py": "8f8bd9e26718ab7e6ab0f1e11b9455b554b7cc2d192e4db077922e37b9dfcd94",
+          "preflight.py": "55913fce6b99f79a57f015ad902f96514e15afe07f7676b143467f1e03ea1fc7",
+          "publish.py": "b42c7c207198efba2a7a04c7fb5092d2bef32c6187a8dc9a5d5a2a02409d3238",
+          "run.py": "1e23cd527ac6938c3b8443887f7ee5b2043626e329cd55c865b953f4aaa70d58"
+        },
+        "wall_seconds": 149.1354512348771,
+        "peak_mib": 882.0,
+        "affinity": [
+          41
+        ],
+        "next_witness": {
+          "epoch": 451,
+          "rng": {
+            "epoch": 451,
+            "rng_before": "18aaef814eb99bc15419d487dc771f81df46f570752424a1d378ff0621bfbcc5",
+            "rng_after_train": "ef750dd7fdab88231829814363a594a1e10ea9200cd3c7040964fa4b9dc21ca7",
+            "rng_after_eval": "ef750dd7fdab88231829814363a594a1e10ea9200cd3c7040964fa4b9dc21ca7"
+          },
+          "training_sha": "0e80a5e0870e5c1bc193ab8a493736af96d41d48607b840c7c35208394b3bac2",
+          "state_sha": "4d50067bea8efef8563a49a5ea5ea469405aee57c9d90065509423d221da22df",
+          "evaluation_sha": "ad2d012a4a9713529052744511a8fd3b34b7bdb6069def6ed249f77893de9f2e",
+          "previous_ema": "76ea518c7d306be5918c5ebd78746599065b3da5c7cd2459e6ef8c9a4e910f66",
+          "observation": "b1a66d856fcb2493ff0fab965c39b66af4139f8d139e38656ef69b99fd8d8fd1",
+          "ema": "8cc032470d064fbc7ef2ade5855b0b5dbb2416baea7fbaa00be886d62282f41f"
+        }
+      }
+    ]
+  },
+  "preflight": {
+    "status": "PASS",
+    "verified": 20,
+    "gpu_estimate_mib": 16202.0,
+    "run": [
+      {
+        "phase": "preflight",
+        "group": null,
+        "folds": [
+          1
+        ],
+        "max_workers": 1,
+        "gpu_peak_mib": 1082,
+        "wall_seconds": 24.819019123911858,
+        "retries": {}
+      },
+      {
+        "phase": "preflight",
+        "group": null,
+        "folds": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "max_workers": 9,
+        "gpu_peak_mib": 9431,
+        "wall_seconds": 73.16848530992866,
+        "retries": {}
+      }
+    ],
+    "sha256": {
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f01.json": "aae836542ad002a435e90305ba934e71e7d798de446033d18c3cb84fdc31a1e7",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f02.json": "edaea4589e3cfbcf0c6b58c05498f7d2ac76726634e7f050578347f901e79544",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f03.json": "15d529d7d6cee4fd8aca5cdf08640f3bde7faa5d2a887d638521380564158853",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f04.json": "7aa2fae1367d48e1bb60f6a08fc85e4f7e6b0e84e7dd31f2bdc8bc6f5bc202c0",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f05.json": "10eb6c930c861270fe10f6c16f19da2544da99612b71b238c711ac8d3c080583",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f06.json": "c536a3d721dac2c2f5870c1aa94ae1d7455db161b5f89059c2d8bcddeb147242",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f07.json": "52ae8929cdf041b67aad1641452e8386a3120de2c1f05a4ab1a99a0bfd7b8e83",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f08.json": "35cf2edc7a560291287d6cff6eec80cb4549442274775cf55e293e66401c8bfe",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f09.json": "0dfd0a3c2f0f06dddec7928d7568633a92a9e1cd5741ab94cbb3872671ce93c4",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G1_f10.json": "3b16d783ca8d0860768f0093b84ce3dcaf02621c6c31864865f41854c0f2ad10",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f01.json": "12ce65957109e166a2c142f55dc07749db3a5f6c0ea8bfd9316704d9303ad687",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f02.json": "e68e214e476506f555031510f3bd1e60505032a0d762d5514a850aba1d5d5b23",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f03.json": "2dbf858505bc581079573c199dac1aceb7def0a6d55d4afab1f02a806a1ba487",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f04.json": "5d6f30ebde37477b8a1eb102f25a98c9d37da20aed1022f43b97a58edce9dce8",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f05.json": "132c888c75b1092640156bc2909d47b3bcbb3c80104f852511314f098ba74a88",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f06.json": "855b2e1c56a3ddcd5cef1bbdd1f7de872953c31dd1e5e1eac131d17a84052a17",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f07.json": "d05c2ce99bcebeb8a1dfb0d339fbc439f90b98ae4ff584853ec25bc95b38e886",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f08.json": "61dac33fe769703108ab84c9b1b104f8a5a65653eda5ae62f5f5680ecbdb70e7",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f09.json": "209d7610edbfb82dfbb2d00f354a530eceee28500838573923207e6fd48feb67",
+      "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/preflight/G2_f10.json": "5c5f5347193b4895713d9e64f675f8506e62bc9fa338f8758c7afaf9114f2a63"
+    }
+  },
+  "guard_before": {
+    "status": "PASS",
+    "files": 348,
+    "sha256": "9cddfd42ba9a8d2ca1d3ab7546d08f8032c0554b47df85818b7eeefe1494c870"
+  },
+  "last_failure": {
+    "status": "INTERRUPTED_AUDITING",
+    "blocked_stage": "AUDITING",
+    "error": "audit  worker failure {1: 1, 2: 1, 4: 1, 3: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1}. See /model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/logs",
+    "preflight": {
+      "G1": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "G2": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "trained": {
+      "G1": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "G2": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "audited": {
+      "G1": [],
+      "G2": []
+    }
+  },
+  "audit_amendment": {
+    "scope": "independent audit only",
+    "path": "/model/spromptgl/experiment/experiment82_4_3_ps_brsc_pe_djsc/runtime/audit_restore_repair.py",
+    "sha256": "bec231d4adec90035d69b9ce8340205ec6133648b50892a61521b82b7ae1d70a",
+    "frozen_original_audit_sha256": "5b653c7e73f49a6b4d5c7cc7116015be1b65fab0b929f17593a2186daaaff018",
+    "reason": "AdamW load_state_dict aliases the payload CPU step on a repeated restore. The G2 journal now models float32 rounding of the sample-count quotient explicitly, with a propagated bound relative to the all-float64 estimator. Gaussian LLR clamping and the auxiliary margin difference use stage-aware propagated bounds.",
+    "wall_seconds": 53.769339829683304,
+    "fold_workers": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0
+    }
+  },
+  "context_recoveries": {
+    "G1": {
+      "6": {
+        "pid": 3249466,
+        "epoch": 150,
+        "rng": "e46600b932541cd2a0e758d9c8bbccfe70dc627041bc642f6383d4489d52d521",
+        "state_sha": "d2904e5dbd3db7f53f148cef30778937a90415d99b560ec3c6d850a72c64b373",
+        "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+        "journal_sha": "75955ca08bfa7eee0a584dd3af7f3b8ce859a5556b6ceb8710c94f5305698fd4",
+        "journal_size": 280776,
+        "best_sha": "71811dcffb21e4840e4b3e0b3539ff4b99635d8936dc808df0763aec9f4a1c85",
+        "latest_file_sha": "fe53d14872548037365c00a373cfaa3e8e4dad5b0b819a2f9eaddf6d3a72bef1",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "7": {
+        "pid": 3249467,
+        "epoch": 150,
+        "rng": "34e77578d95eb41153a5edfbccc1a004eb95cd04188fa18db26bc33cbd20a234",
+        "state_sha": "c5977fa2dc6156c8b9eec416ce6afc8170b78aa8586ee0e6cb07da86e1cd5bd3",
+        "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+        "journal_sha": "c713bed1a429aec13111beb0302a0a5d6bcc106878028dce379faa002aa68bf7",
+        "journal_size": 279680,
+        "best_sha": "00b6f3cf642b2e561ac57f3f6d2ed2f9249fc6248df6cbab2d4f167a87d58ec1",
+        "latest_file_sha": "cb955f766bc98a7c0a832aefd869a61f8aae07dad25f5f5659d63e74bc556c76",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "8": {
+        "pid": 3249471,
+        "epoch": 150,
+        "rng": "efd0148365e5fd3b38dc24b8a97643c0f61cb41c8df42694890d8ac5b33f4e99",
+        "state_sha": "47bfc28020d85620d9074b5d54d6956c037be303ec57254eab5a488b15d22035",
+        "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+        "journal_sha": "c335d53a7c5dcc66b9140b8f00137ba36d428cb76bbc0387c0e52a701241b20e",
+        "journal_size": 279280,
+        "best_sha": "f89246e890f44f75fbab956eb542e676c5fda21f3d1a6e322abddeeaac1cd45e",
+        "latest_file_sha": "efbf492982a334b7ed70163a5b48344f652cceb754af69caf7f9a38923007ece",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "9": {
+        "pid": 3249475,
+        "epoch": 150,
+        "rng": "7ed034b24c647f710b39488e6cfce47575946d505b67c433fdf38516ff176096",
+        "state_sha": "6e078833ecc3a1558c2dee157be9adaeccc6ced89a925632f1e895720427ffa9",
+        "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+        "journal_sha": "de5b8374ac56a6e6708c273f6ccca28f2d2de1e47a426af12fc5feea56513372",
+        "journal_size": 280565,
+        "best_sha": "88beef64c7f53dfa32cd81beded22d4403f551ed6095996a944980e589d62e2c",
+        "latest_file_sha": "588ab62874462fbe5128247ff7c478625c8faf2dabdddcd33a422c456d8b189c",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "10": {
+        "pid": 3249493,
+        "epoch": 152,
+        "rng": "984ff0f585c19ad65efc0464a0b74a6659dd3afe3d2d2049024eaf1cb9b8e74d",
+        "state_sha": "935e28900567aa78214ff0dc7fad3e3fc3fa5f64d7daa374a63dfd64edfef08b",
+        "ema": "97cccb1b1197f11c6edbb0d93975220592ef8faf618c8770a131e4f7dfe567cc",
+        "journal_sha": "56ca980d678435887ea9069a031fd4472f191223654e36e450446fcac62e3282",
+        "journal_size": 283769,
+        "best_sha": "c1cd83d550b54feaf1e9b2e3d36e3af3d3d2261c697b1b3f625b08280132ca53",
+        "latest_file_sha": "df67b2a86e22a443e9fa6e64539badf80aa05502f09db9b8bf2a03a94cc7f574",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      }
+    },
+    "G2": {
+      "6": {
+        "pid": 3264949,
+        "epoch": 60,
+        "rng": "eee1af2dc2ecbf2bb75a4f0a17a8e6134319b8eafd412942f6b5387fdde1bfea",
+        "state_sha": "2a0551ef867859af5241e88b85b189cb5d05af9d2adaf0c98c764d1fa845a3ec",
+        "ema": "a0e67adf4f7acfd4bcb0c91e2eaa5a084b11e8cda05699ca274db5136b765d80",
+        "journal_sha": "c551594dc3251c67f099f7b6917a97a30615ecdb27ff14d4ae48136421cf8b9f",
+        "journal_size": 306919,
+        "best_sha": "a5c7a6ab6770bf71f8d1e5789300f41d7ef7a4889a285bca562708f68f0425f4",
+        "latest_file_sha": "36b40fd135113c1568cdecb680b29eb88224929dcb08ed07d2c90348c5233ce1",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "7": {
+        "pid": 3264974,
+        "epoch": 60,
+        "rng": "12ae30d425c013cce2fadafab2712b3db47f36751ca30fd6a830ff61208d6825",
+        "state_sha": "47e15f32f76d83506771a1b682b22174f646af96afaad7e64347fb9ff6ddba14",
+        "ema": "c54f261aca6e971c77ccb5daacd04c3ae8279e7f51ba71167088a2b2511a2387",
+        "journal_sha": "9311e92e50b2b15d0ec769639b691cb4408dad13238f4abbf01507f5e0c6d5eb",
+        "journal_size": 306468,
+        "best_sha": "7a0c9298bb089e49558d7021e93f781db31fcb982ac55a4c6f98c53733a60cc5",
+        "latest_file_sha": "1c659f984b506e661ebe8725fc470e1ae82e2eddecdf027f26dd059a38d8f533",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "8": {
+        "pid": 3264975,
+        "epoch": 60,
+        "rng": "8046460dc2fd78648780dd272499da1daee71dea8646a545394f2da21528bc5d",
+        "state_sha": "d61eab8f5bfd2b0426fa252a4a707a5b0451ce92ff18c9c2c3b6ffe9587633b9",
+        "ema": "cc9e03612febb4db1d7e43252781c03242efef24b0ce4fa41d94d0efe9279628",
+        "journal_sha": "d951086d75191ad914563a9e7a7a06fb5d820ffa481ac9ed75fff6eaedcfbfeb",
+        "journal_size": 305987,
+        "best_sha": "bd363bf952cbbd3e3f9cb2ca361663325cacce115863d53bbae6dd986ccc82a7",
+        "latest_file_sha": "703610f74b35936937371230b72b394defbb44e7db0e723b904d54221e932806",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "9": {
+        "pid": 3264979,
+        "epoch": 60,
+        "rng": "191710b9031d7987f0c8685980c72be20a2cf1c82ba1e7c122139b9ba7914cae",
+        "state_sha": "083e43bcad8e4e95dd08892be2acc24462313d883ed74e07e7ae1989b928607c",
+        "ema": "06daafe24b60e9812e302757159bf032cbf112b34b408d18dbc66088b9cc82ea",
+        "journal_sha": "4405ac1b79cdb698fa8c7e514c6b824d67d7680cedae9420ebcdfa7b2fd86d22",
+        "journal_size": 306806,
+        "best_sha": "71f73ad8d61785071edc5e211ddd2708039bd9e9ac02ef263d1dc3a5f38e3c62",
+        "latest_file_sha": "5a8d72394e3649c7e5de6982f6624a56c9bd1e37ce52d4107cc6f60e256b8073",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      },
+      "10": {
+        "pid": 3264983,
+        "epoch": 60,
+        "rng": "c2510e1e8bbfca35fd33529f0e7586d20b917e55e326a7f1db046e1401568719",
+        "state_sha": "a408f3d7105ab036e91f50df7326e0c3a3e943d9d8e31e1539459e41d7bd5daf",
+        "ema": "5705ba828c0fa78c02ba211cdc730b0972714ff020c731e1cc419fe53d5d5f63",
+        "journal_sha": "1fa640601ed530fb4c62308f576c2715e52857d87975b56a91545378a4fd4dc8",
+        "journal_size": 306569,
+        "best_sha": "fcc9d7aee4f767e2ea158671ca57f525abd02b7f77003d745c2af1a5ce362dc4",
+        "latest_file_sha": "68a40516597323639009f9e634c2ff1c1047dd26bceae9c26fe4753ca8456ebe",
+        "audit": "exact_committed_journal_state_rng_ema_boundary"
+      }
+    }
+  },
+  "gpu_context_recovery_source_sha256": "a2c0d8971e500d6c514d7b84b4c29b3fc1cec9bfac438e343f01ec6dbf2455d8",
+  "guard_after": {
+    "status": "PASS",
+    "files": 348,
+    "sha256": "9cddfd42ba9a8d2ca1d3ab7546d08f8032c0554b47df85818b7eeefe1494c870"
+  },
+  "scientific_decisions": {
+    "G1": {
+      "performance_go": false,
+      "mechanism_go": false,
+      "overall": "NO-GO",
+      "performance": {
+        "acc": false,
+        "ba": false,
+        "sen": false,
+        "net": false,
+        "exclude_fold_2_acc": false,
+        "exclude_fold_2_net": false
+      },
+      "mechanism": {
+        "fixed_weight_net": false,
+        "fixed_weight_ba": false,
+        "query_changes_cam": true,
+        "query_changes_probability": true,
+        "verified_core_mechanisms_nonzero": true
+      },
+      "medical_query_probability_changed": 57,
+      "medical_query_hard_flipped": 0,
+      "medical_vs_anonymous_net": 0,
+      "medical_vs_anonymous_acc_pp": 0.0,
+      "medical_vs_anonymous_ba_pp": 0.0,
+      "observed_diagnostic_gain_vs_anonymous": false,
+      "core_feature_delta_max": {
+        "correctability_gate_off": 0.20631808042526245,
+        "signed_action_unsigned": 0.19463522732257843
+      }
+    },
+    "G2": {
+      "performance_go": false,
+      "mechanism_go": false,
+      "overall": "NO-GO",
+      "performance": {
+        "acc": false,
+        "ba": false,
+        "sen": false,
+        "net": false,
+        "exclude_fold_2_acc": false,
+        "exclude_fold_2_net": false
+      },
+      "mechanism": {
+        "fixed_weight_net": false,
+        "fixed_weight_ba": false,
+        "query_changes_cam": true,
+        "query_changes_probability": true,
+        "verified_core_mechanisms_nonzero": true
+      },
+      "medical_query_probability_changed": 145,
+      "medical_query_hard_flipped": 0,
+      "medical_vs_anonymous_net": 0,
+      "medical_vs_anonymous_acc_pp": 0.0,
+      "medical_vs_anonymous_ba_pp": 0.0,
+      "observed_diagnostic_gain_vs_anonymous": false,
+      "core_feature_delta_max": {
+        "reliability_off": 0.09594417363405228,
+        "evidence_direction_off": 0.11361023783683777,
+        "spectral_only": 0.043355945497751236,
+        "complement_only": 0.0438157394528389
+      }
+    }
+  },
+  "handoff": {
+    "path": "/model/spromptgl/experiment/handoff.md",
+    "offset": 1262404,
+    "historical_prefix_sha": "da18481f06979f38f025674d71ff0215c9c5e9cfd5583b6f792d9d544aac4f0c",
+    "append_sha": "56eca2d9bfe986b874ef7c82bdee79678e56a98425bce0b2c17043861a081871",
+    "after_sha": "3f42d416243f3d7fd7d5d179fc2af15e9295964cd3ea2a00a11fd5e304e57e57",
+    "verified": true,
+    "idempotent": false
+  },
+  "result_sha256": {
+    "report.md": "7452f3a3416c3170873bf63e00427f0f9b1f3b84e4980d84c63f9f526178b231",
+    "fold_metrics.csv": "365c695727ac2babfdeb4c6a0c22bbce991b8edf7e83188aa9e4a65a3f207959",
+    "paired_comparisons.csv": "15c31ea2183a804dc93633dd53a76e5b8d93c9c544a3c00be73e1ad26b0c581a",
+    "mechanism.csv": "b1020aed4da88826ae5c934ddb8c3cff7986cb51543a0c4202a841705c882839",
+    "patient_margins.csv": "8ebbd4594458bd34547dcb189d38911bdcb2ab60d6b87d5131df5d7c97008ec7",
+    "audit_status.json": "8b0b6115e42e23aab44522f15fc1e8e533ba9fdd0a79d656402ea1f82b506ef3"
+  },
+  "last_failure_record": "runtime/audit_initial_failure.json"
+}
