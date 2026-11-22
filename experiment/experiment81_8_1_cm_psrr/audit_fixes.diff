@@ -1,0 +1,1543 @@
+--- /model/spromptgl/experiment/experiment81_8_1_cm_psrr/audit_preflight_original.py	2026-11-21 16:07:25.998465410 +0800
++++ /model/spromptgl/experiment/experiment81_8_1_cm_psrr/audit.py	2026-11-21 18:26:49.939387193 +0800
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Independent E81.8 checkpoint, metric, paired, and mechanism audit."""
++"""Independent audit for the single E81.8.1 CM-PSRR group."""
+ from __future__ import annotations
+ 
+ import csv
+@@ -10,10 +10,11 @@
+ import time
+ from pathlib import Path
+ 
+-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
++os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+ for _key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+     os.environ[_key] = "1"
++os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+ sys.dont_write_bytecode = True
+ 
+ EXP = Path(__file__).resolve().parent
+@@ -28,15 +29,8 @@
+ E74_GROUP = run.E74_GROUP
+ GROUPS = run.GROUPS
+ METRICS = run.METRICS
+-METRIC_NAMES = {
+-    "acc": "ACC", "hard_auc": "Hard-AUC/BA", "prob_auc": "Prob-AUC",
+-    "sen": "SEN-ASD", "spe": "SPE-TD", "asd_f1": "ASD-F1",
+-}
+-
+-
+-def _read_csv(path):
+-    with Path(path).open("r", newline="", encoding="utf-8") as stream:
+-        return list(csv.DictReader(stream))
++METRIC_NAMES = {"acc": "ACC", "hard_auc": "Hard-AUC/BA", "prob_auc": "Prob-AUC",
++                "sen": "SEN-ASD", "spe": "SPE-TD", "asd_f1": "ASD-F1"}
+ 
+ 
+ def _write_csv(path, rows):
+@@ -57,9 +51,15 @@
+     os.replace(temporary, path)
+ 
+ 
++def _read_csv(path):
++    with Path(path).open("r", newline="", encoding="utf-8") as stream:
++        return list(csv.DictReader(stream))
++
++
+ def _manual_metrics(logp, labels):
+     import numpy as np
+-    from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix, f1_score, recall_score, roc_auc_score
++    from sklearn.metrics import (accuracy_score, balanced_accuracy_score, confusion_matrix,
++                                 f1_score, recall_score, roc_auc_score)
+     values = np.asarray(logp, dtype=np.float64)
+     labels = np.asarray(labels, dtype=np.int64)
+     shifted = values - values.max(axis=1, keepdims=True)
+@@ -67,7 +67,7 @@
+     probability /= probability.sum(axis=1, keepdims=True)
+     prediction = values.argmax(axis=1).astype(np.int64)
+     cm = confusion_matrix(labels, prediction, labels=[0, 1])
+-    result = {
++    return {
+         "acc": float(accuracy_score(labels, prediction)),
+         "hard_auc": float(balanced_accuracy_score(labels, prediction)),
+         "prob_auc": float(roc_auc_score((labels == 0).astype(np.int64), probability[:, 0])),
+@@ -79,62 +79,31 @@
+         "confusion": {"asd_asd": int(cm[0, 0]), "asd_td": int(cm[0, 1]),
+                       "td_asd": int(cm[1, 0]), "td_td": int(cm[1, 1])},
+     }
+-    return result
++
++
++def _normalize(value):
++    value = float(value)
++    return value / 100.0 if abs(value) > 1.0 else value
+ 
+ 
+ def _summary(values):
+     import numpy as np
+-    array = np.asarray(values, dtype=np.float64)
+-    return {"mean": float(array.mean()), "population_sd": float(array.std(ddof=0))}
++    values = np.asarray(values, dtype=np.float64)
++    return {"mean": float(values.mean()), "population_sd": float(values.std(ddof=0))}
+ 
+ 
+-def _json_safe(value):
++def _safe(value):
+     if isinstance(value, dict):
+-        return {key: _json_safe(item) for key, item in value.items()}
++        return {key: _safe(item) for key, item in value.items()}
+     if isinstance(value, (list, tuple)):
+-        return [_json_safe(item) for item in value]
++        return [_safe(item) for item in value]
+     if isinstance(value, float) and not math.isfinite(value):
+         return None
+     if hasattr(value, "item"):
+-        return _json_safe(value.item())
++        return _safe(value.item())
+     return value
+ 
+ 
+-def _tree_replay_close(left, right):
+-    import torch
+-    if torch.is_tensor(left) and torch.is_tensor(right):
+-        if left.shape != right.shape or left.dtype != right.dtype:
+-            return False, "tensor shape/dtype"
+-        if left.is_floating_point() or left.is_complex():
+-            if torch.allclose(left, right, atol=2e-6, rtol=1e-5):
+-                return True, None
+-            return False, "tensor values"
+-        if torch.equal(left, right):
+-            return True, None
+-        return False, "integer tensor values"
+-    if isinstance(left, dict) and isinstance(right, dict):
+-        if left.keys() != right.keys():
+-            return False, "dictionary keys"
+-        for key in left:
+-            equal, where = _tree_replay_close(left[key], right[key])
+-            if not equal:
+-                return False, f"{key}.{where}" if where else str(key)
+-        return True, None
+-    if isinstance(left, (tuple, list)) and isinstance(right, type(left)):
+-        if len(left) != len(right):
+-            return False, "sequence length"
+-        for index, (left_item, right_item) in enumerate(zip(left, right)):
+-            equal, where = _tree_replay_close(left_item, right_item)
+-            if not equal:
+-                return False, f"{index}.{where}" if where else str(index)
+-        return True, None
+-    if isinstance(left, float) and isinstance(right, float):
+-        return math.isclose(left, right, abs_tol=1e-7, rel_tol=1e-6), "float" if not math.isclose(
+-            left, right, abs_tol=1e-7, rel_tol=1e-6
+-        ) else None
+-    return (left == right), None if left == right else "value"
+-
+-
+ def _correction(source, target, labels):
+     import numpy as np
+     source = np.asarray(source, dtype=np.int64)
+@@ -143,8 +112,7 @@
+     corrected = (source != labels) & (target == labels)
+     harmed = (source == labels) & (target != labels)
+     return {
+-        "corrected": int(corrected.sum()),
+-        "harmed": int(harmed.sum()),
++        "corrected": int(corrected.sum()), "harmed": int(harmed.sum()),
+         "net": int(corrected.sum() - harmed.sum()),
+         "asd_corrected": int((corrected & (labels == 0)).sum()),
+         "asd_harmed": int((harmed & (labels == 0)).sum()),
+@@ -153,890 +121,627 @@
+     }
+ 
+ 
+-def _normalize_metric_value(value):
+-    value = float(value)
+-    return value / 100.0 if abs(value) > 1.0 else value
++def _tree_close(left, right):
++    import torch
++    if torch.is_tensor(left) and torch.is_tensor(right):
++        if left.shape != right.shape or left.dtype != right.dtype:
++            return False
++        return torch.equal(left.cpu(), right.cpu()) if not left.is_floating_point() else bool(torch.allclose(left, right, atol=2e-6, rtol=1e-5))
++    if isinstance(left, dict) and isinstance(right, dict):
++        return left.keys() == right.keys() and all(_tree_close(left[k], right[k]) for k in left)
++    if isinstance(left, (tuple, list)) and isinstance(right, type(left)):
++        return len(left) == len(right) and all(_tree_close(a, b) for a, b in zip(left, right))
++    if isinstance(left, float) and isinstance(right, float):
++        return math.isclose(left, right, abs_tol=1e-7, rel_tol=1e-6)
++    return left == right
+ 
+ 
+ def _historical_e8172():
+     rows = [row for row in _read_csv(HIST_E8172 / "results/fold_metrics.csv") if row.get("group") == "G1"]
+     if len(rows) != 10:
+-        raise RuntimeError("E81.7.2-G1 history must contain ten fold rows")
+-    return {int(row["fold"]): {metric: _normalize_metric_value(row[metric]) for metric in METRICS}
+-            for row in rows}
++        raise RuntimeError("E81.7.2-G1 history must contain ten rows")
++    return {int(row["fold"]): {metric: _normalize(row[metric]) for metric in METRICS} for row in rows}
++
++
++def _historical_e818():
++    path = Path("/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/fold_metrics.csv")
++    rows = _read_csv(path)
++    mapping = {"acc": "ACC", "hard_auc": "Hard-AUC/BA", "prob_auc": "Prob-AUC",
++               "sen": "SEN-ASD", "spe": "SPE-TD", "asd_f1": "ASD-F1"}
++    groups = {}
++    for group in ("G1", "G2"):
++        selected = [row for row in rows if row.get("group") == group]
++        if len(selected) != 10:
++            raise RuntimeError(f"E81.8 {group} history must contain ten rows")
++        groups[f"E81.8-{group}"] = {
++            int(row["fold"]): {metric: _normalize(row[column]) for metric, column in mapping.items()}
++            for row in selected
++        }
++    history_audit = json.loads((path.parent / "audit_status.json").read_text(encoding="utf-8"))
++    if history_audit.get("status") != "COMPLETE_AUDITED":
++        raise RuntimeError("E81.8 historical group audit is not complete")
++    return groups
+ 
+ 
+-def _load_current_fold(e744, legacy, group, fold, kind):
++def _load_current_fold(e744, legacy, fold, kind):
+     import torch
+     state, warmup, identity = e744.prepare(fold)
+     state["fold"] = fold
+-    state["group"] = group
+-    checkpoint_path = run.CKPTS / f"{group}_f{fold:02d}.{kind.lower()}.pt"
++    state["group"] = "G1"
++    checkpoint_path = run.CKPTS / f"G1_f{fold:02d}.{kind.lower()}.pt"
+     payload = run.torch_load(checkpoint_path)
+-    if payload.get("schema") != "E81.8-DUA-MSR-PSRR-v1" or payload.get("kind") != kind:
+-        raise RuntimeError(f"invalid {kind} checkpoint schema: {checkpoint_path}")
+-    if payload.get("group") != group or int(payload.get("fold", -1)) != fold:
+-        raise RuntimeError(f"{kind} checkpoint group/fold identity mismatch: {checkpoint_path}")
++    if payload.get("schema") != "E81.8.1-CM-PSRR-v1" or payload.get("kind") != kind:
++        raise RuntimeError(f"invalid {kind} checkpoint {checkpoint_path}")
++    if payload.get("fold") != fold or payload.get("group") != "G1":
++        raise RuntimeError(f"{kind} checkpoint identity mismatch {checkpoint_path}")
+     if payload.get("source_sha256") != run.source_digest():
+-        raise RuntimeError(f"{kind} checkpoint frozen source SHA mismatch: {checkpoint_path}")
++        raise RuntimeError(f"{kind} checkpoint source SHA mismatch {checkpoint_path}")
+     if payload.get("identity") != identity or payload.get("warmup_sha256") != identity["warmup_sha256"]:
+         raise RuntimeError(f"{kind} checkpoint does not match E74.4 prepare(fold={fold})")
+     e744.load_history().load_bundle(state, payload["base_state"])
+-    module = run.make_module(group, fold, torch.device("cuda:0"), run.prompt_payload()["semantic_basis_float64"])
++    module = run.make_module("G1", fold, torch.device("cuda:0"), run.prompt_payload()["semantic_basis_float64"])
+     module.load_state_dict(payload["relation_state"], strict=True)
+     parameters = tuple(parameter for parameter in module.parameters() if parameter.requires_grad)
+-    optimizer = torch.optim.AdamW(parameters, lr=CFG["base"]["optimizers"]["relation"]["lr"],
+-                                  weight_decay=CFG["base"]["optimizers"]["relation"]["weight_decay"])
++    optimizer = torch.optim.AdamW(parameters, lr=CFG["base"]["optimizers"]["relation"]["lr"], weight_decay=CFG["base"]["optimizers"]["relation"]["weight_decay"])
+     optimizer.load_state_dict(payload["optimizer_relation"])
+-    relation_ids = {id(parameter) for group_state in optimizer.param_groups for parameter in group_state["params"]}
+-    if relation_ids != {id(parameter) for parameter in parameters}:
+-        raise RuntimeError(f"{kind} relation optimizer lost or gained trainable parameters")
++    if {id(p) for group in optimizer.param_groups for p in group["params"]} != {id(p) for p in parameters}:
++        raise RuntimeError("relation optimizer parameter ownership mismatch")
+     legacy.rng_runtime(e744).restore_rng(payload["rng"])
+     return state, module, optimizer, payload, identity, checkpoint_path
+ 
+ 
+-def _evaluate(e744, state, module, intervention="full", *, gradients=False):
++def _evaluate(e744, state, module, intervention="full", *, edge_overrides=(), grouping_override=None, gradients=False):
+     import numpy as np
+     import torch
+-    fold = int(state["fold"])
+     hook = run.OutputPreHook(state, module)
+-    module.audit_edge_overrides = ()
++    original_forward = module.forward
++    if grouping_override is not None:
++        def grouped_forward(z_cam, grouping="medical", **kwargs):
++            return original_forward(z_cam, grouping=grouping_override, **kwargs)
++        module.forward = grouped_forward
++    previous = tuple(getattr(module, "audit_edge_overrides", ()))
++    module.audit_edge_overrides = tuple(edge_overrides)
++    original_relations = module._relations
++    if edge_overrides:
++        transfer_records = []
++        def audited_relations(tokens, groups, relation_intervention, return_diagnostics, relation_features=None):
++            contrast, details = original_relations(
++                tokens, groups, relation_intervention, return_diagnostics, relation_features=relation_features
++            )
++            neighbor_ids = module.neighbors.to(device=tokens.device)
++            for patient, receiver, sender, class_index in module.audit_edge_overrides:
++                positions = torch.nonzero(neighbor_ids[receiver] == sender, as_tuple=False).flatten()
++                if positions.numel() != 1:
++                    raise ValueError(f"invalid audit edge {receiver}->{sender}")
++                position = int(positions.item())
++                selected_key = "attention_asd" if class_index == 0 else "attention_td"
++                selected = details[selected_key]
++                transfer_records.append({
++                    "patient": int(patient), "receiver": int(receiver), "sender": int(sender),
++                    "class_index": int(class_index), "position": position,
++                    "before_edge": float(selected[patient, receiver, position].detach().cpu()),
++                    "before_null": float(selected[patient, receiver, 15].detach().cpu()),
++                })
++            attention_td, attention_asd = module.apply_audit_edge_overrides(
++                details["attention_td"], details["attention_asd"]
++            )
++            for record in transfer_records[-len(module.audit_edge_overrides):]:
++                selected = attention_asd if record["class_index"] == 0 else attention_td
++                position = record["position"]
++                record["after_edge"] = float(selected[record["patient"], record["receiver"], position].detach().cpu())
++                record["after_null"] = float(selected[record["patient"], record["receiver"], 15].detach().cpu())
++            details["audit_override_records"] = transfer_records
++            senders = tokens[:, neighbor_ids]
++            receivers = tokens.unsqueeze(2).expand_as(senders)
++            product = receivers * senders
++            difference = senders - receivers
++            values = module.value(torch.cat((senders, product, difference), dim=-1))
++            contrast = ((attention_asd[..., :15] - attention_td[..., :15]).unsqueeze(-1) * values).sum(dim=2)
++            if relation_intervention in ("prompt_off", "relation_off"):
++                contrast = torch.zeros_like(contrast)
++            details["attention_td"] = attention_td
++            details["attention_asd"] = attention_asd
++            details["relation_support_difference"] = (attention_td[..., :15] > 0) ^ (attention_asd[..., :15] > 0)
++            details["message_contrast"] = contrast
++            return contrast, details
++        module._relations = audited_relations
+     hook.configure(training=False, intervention=intervention)
+-    context = torch.enable_grad() if gradients else torch.no_grad()
+     try:
++        context = torch.enable_grad() if gradients else torch.no_grad()
+         with context:
+             output = e744.forward(state, E74_GROUP, training=False)
+         if hook.calls != 1 or hook.capture is None:
+-            raise RuntimeError(f"original OutputLayer call count is not one at fold {fold}")
++            raise RuntimeError("original OutputLayer was not called exactly once")
++        hook.close()
+         test_ids = np.asarray(state["test_np"], dtype=np.int64)
+         labels = state["y"].detach().cpu().numpy().astype(np.int64)[test_ids]
+-        logp = output["logp"].detach().cpu().numpy()[test_ids]
+-        result = _manual_metrics(logp, labels)
+-        all_logp = output["logp"]
+-        capture = hook.capture
+-        return {
+-            "metrics": {metric: result[metric] for metric in METRICS},
+-            "prediction": result["prediction"],
+-            "probability": result["probability"],
+-            "confusion": result["confusion"],
+-            "labels": labels,
+-            "test_ids": test_ids,
+-            "logp": all_logp,
+-            "capture": capture,
+-            "output": output,
+-            "hook": hook,
+-        }
++        result = _manual_metrics(output["logp"].detach().cpu().numpy()[test_ids], labels)
++        return {"metrics": {metric: result[metric] for metric in METRICS}, "prediction": result["prediction"],
++                "probability": result["probability"], "confusion": result["confusion"], "labels": labels,
++                "test_ids": test_ids, "logp": output["logp"], "capture": hook.capture, "output": output,
++                "hook": hook, "edge_overrides": tuple(edge_overrides)}
+     except BaseException:
+         hook.close()
+         raise
++    finally:
++        module._relations = original_relations
++        module.forward = original_forward
++        module.audit_edge_overrides = previous
+ 
+ 
+-def _close_evaluation(result):
++def _close(result):
+     result["hook"].close()
+ 
+ 
+-def _audit_darg(e744, legacy, fold):
++def _audit_darg(e744, fold):
+     import numpy as np
+-    import torch
+     state, warmup, identity = e744.prepare(fold)
+     state["fold"] = fold
+-    np_core = np.core
+-    sys.modules.setdefault("numpy._core", np_core)
+-    sys.modules.setdefault("numpy._core.multiarray", np_core.multiarray)
+     checkpoint_path = HIST_E744 / ".runtime/checkpoints" / f"{E74_GROUP}_f{fold:02d}.best.pt"
+     compat = json.loads((HIST_E8172 / ".runtime/darg_best_compat.json").read_text(encoding="utf-8"))[str(fold)]
+-    if run.sha_file(checkpoint_path) != compat.get("checkpoint_sha256"):
+-        raise RuntimeError(f"historical DARG Best checkpoint SHA mismatch fold={fold}")
+-    payload = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+-    if payload.get("group") != E74_GROUP or int(payload.get("fold", -1)) != fold or payload.get("identity") != identity:
+-        raise RuntimeError(f"historical DARG Best checkpoint identity mismatch fold={fold}")
++    previous_core = sys.modules.get("numpy._core")
++    previous_multiarray = sys.modules.get("numpy._core.multiarray")
++    sys.modules["numpy._core"] = np.core
++    sys.modules["numpy._core.multiarray"] = np.core.multiarray
++    try:
++        payload = run.torch_load(checkpoint_path)
++    finally:
++        if previous_core is None:
++            sys.modules.pop("numpy._core", None)
++        else:
++            sys.modules["numpy._core"] = previous_core
++        if previous_multiarray is None:
++            sys.modules.pop("numpy._core.multiarray", None)
++        else:
++            sys.modules["numpy._core.multiarray"] = previous_multiarray
++    if run.sha_file(checkpoint_path) != compat["checkpoint_sha256"] or payload.get("identity") != identity:
++        raise RuntimeError(f"DARG Best identity mismatch fold={fold}")
+     e744.load_history().load_bundle(state, payload["best_state"])
+     output = e744.forward(state, E74_GROUP, training=False)
+-    labels = state["y"].detach().cpu().numpy().astype(np.int64)[state["test_np"]]
+-    logp = output["logp"].detach().cpu().numpy()[state["test_np"]]
+-    metrics = _manual_metrics(logp, labels)
+-    if not np.array_equal(metrics["prediction"], np.asarray(payload["test_prediction"], dtype=np.int64)):
+-        raise RuntimeError(f"historical DARG prediction could not be independently reproduced fold={fold}")
+-    if not np.allclose(metrics["probability"], np.asarray(payload["test_probability"], dtype=np.float64), atol=1e-7, rtol=0):
+-        raise RuntimeError(f"historical DARG probability could not be independently reproduced fold={fold}")
+-    if not np.array_equal(metrics["prediction"], np.asarray(compat["test_prediction"], dtype=np.int64)):
+-        raise RuntimeError(f"historical DARG compatibility prediction mismatch fold={fold}")
+-    if not np.allclose(metrics["probability"], np.asarray(compat["test_probability"], dtype=np.float64), atol=1e-7, rtol=0):
+-        raise RuntimeError(f"historical DARG compatibility probability mismatch fold={fold}")
+-    return {
+-        "metrics": {metric: metrics[metric] for metric in METRICS},
+-        "prediction": metrics["prediction"], "probability": metrics["probability"],
+-        "labels": labels, "test_ids": state["test_np"].copy(),
+-        "confusion": metrics["confusion"],
+-        "checkpoint_sha256": run.sha_file(checkpoint_path),
+-        "best_epoch_1based": int(payload["best_epoch_1based"]),
+-    }
++    test_ids = np.asarray(state["test_np"], dtype=np.int64)
++    labels = state["y"].detach().cpu().numpy().astype(np.int64)[test_ids]
++    result = _manual_metrics(output["logp"].detach().cpu().numpy()[test_ids], labels)
++    if not np.array_equal(result["prediction"], np.asarray(payload["test_prediction"], dtype=np.int64)):
++        raise RuntimeError(f"DARG prediction mismatch fold={fold}")
++    if not np.allclose(result["probability"], np.asarray(payload["test_probability"], dtype=np.float64), atol=1e-7, rtol=0):
++        raise RuntimeError(f"DARG probability mismatch fold={fold}")
++    return {"metrics": {metric: result[metric] for metric in METRICS}, "prediction": result["prediction"],
++            "probability": result["probability"], "labels": labels, "test_ids": test_ids,
++            "confusion": result["confusion"], "checkpoint_sha256": run.sha_file(checkpoint_path)}
+ 
+ 
+-def _verify_saved_prediction(payload, evaluation):
++def _replay_latest(e744, legacy, state, module, optimizer, payload):
+     import numpy as np
+-    prediction = np.asarray(payload["prediction"], dtype=np.int64)
+-    probability = np.asarray(payload["probability"], dtype=np.float64)
+-    if not np.array_equal(prediction, evaluation["prediction"]):
+-        raise RuntimeError(f"saved {payload['kind']} prediction differs from independent recomputation")
+-    if not np.allclose(probability, evaluation["probability"], atol=2e-7, rtol=0):
+-        difference = float(np.abs(probability - evaluation["probability"]).max())
+-        raise RuntimeError(f"saved {payload['kind']} probability differs from independent recomputation: {difference}")
+-    for metric in METRICS:
+-        if abs(float(payload["current_metrics"][metric]) - evaluation["metrics"][metric]) > 2e-8:
+-            raise RuntimeError(f"saved {payload['kind']} {metric} differs from independent recomputation")
+-
+-
+-def _replay_latest(e744, legacy, group, fold, state, module, optimizer, payload):
+-    import numpy as np
+-    import torch
+     runtime = legacy.rng_runtime(e744)
+     hook = run.OutputPreHook(state, module)
+ 
+     def restore():
+         e744.load_history().load_bundle(state, payload["base_state"])
+-        state["fold"] = fold
+-        state["group"] = group
++        state["fold"] = int(payload["fold"])
++        state["group"] = "G1"
+         module.load_state_dict(payload["relation_state"], strict=True)
+         optimizer.load_state_dict(payload["optimizer_relation"])
+         runtime.restore_rng(payload["rng"])
+ 
+     def step():
+-        return run.training_step(
+-            e744, legacy, state, module, optimizer, hook, group,
+-            epoch=int(payload["current_epoch_1based"]) + 1,
+-            fold=fold,
+-            gradient_path_probe=False,
+-        )
++        return run.training_step(e744, legacy, state, module, optimizer, hook, "G1", epoch=int(payload["current_epoch_1based"]) + 1, fold=int(payload["fold"]), gradient_path_probe=False)
+ 
+-    restore()
+-    first = step()
++    restore(); first = step()
+     first_base = e744.load_history().state_bundle(state)
+-    first_module = {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
+-    first_optimizer = optimizer.state_dict()
+-    first_rng = runtime.pack_rng()
+-    restore()
+-    second = step()
++    first_relation = {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
++    first_optimizer = optimizer.state_dict(); first_rng = runtime.pack_rng()
++    restore(); second = step()
+     second_base = e744.load_history().state_bundle(state)
+-    second_module = {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
+-    second_optimizer = optimizer.state_dict()
+-    second_rng = runtime.pack_rng()
+-    for name, left, right in (("base parameters and optimizers", first_base, second_base),
+-                              ("relation parameters", first_module, second_module),
+-                              ("relation optimizer", first_optimizer, second_optimizer),
+-                              ("RNG", first_rng, second_rng)):
+-        if name == "RNG":
+-            equal, where = legacy.tensor_tree_equal(left, right)
+-        else:
+-            equal, where = _tree_replay_close(left, right)
+-        if not equal:
+-            if name == "relation parameters" and where is not None:
+-                key = where.removeprefix("root.").removesuffix(".tensor values")
+-                first_value, second_value = left[key], right[key]
+-                if hasattr(first_value, "shape"):
+-                    print(f"Latest replay relation delta {where}: max_abs="
+-                          f"{float((first_value.float() - second_value.float()).abs().max())}", flush=True)
+-            raise RuntimeError(f"Latest replay mismatch in {name} at {where}")
++    second_relation = {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
++    second_optimizer = optimizer.state_dict(); second_rng = runtime.pack_rng()
++    hook.close()
++    if not (_tree_close(first_base, second_base) and _tree_close(first_relation, second_relation)
++            and _tree_close(first_optimizer, second_optimizer) and legacy.tensor_tree_equal(first_rng, second_rng)[0]):
++        raise RuntimeError("Latest next-step replay state mismatch")
+     if not math.isclose(first["total_loss"], second["total_loss"], abs_tol=1e-7, rel_tol=1e-6):
+-        raise RuntimeError("Latest replay changed next-step total loss beyond numerical tolerance")
+-    if any(not math.isclose(first["metrics"][key], second["metrics"][key], abs_tol=1e-7, rel_tol=1e-6)
+-           for key in first["metrics"]):
+-        raise RuntimeError("Latest replay changed next-step loss or metrics")
++        raise RuntimeError("Latest next-step replay loss mismatch")
++    if any(not math.isclose(first["metrics"][key], second["metrics"][key], abs_tol=1e-7, rel_tol=1e-6) for key in first["metrics"]):
++        raise RuntimeError("Latest next-step replay metric mismatch")
+     if not np.array_equal(first["prediction"], second["prediction"]):
+-        raise RuntimeError("Latest replay changed next-step predictions")
+-    hook.close()
+-    return {
+-        "pass": True,
+-        "next_step_loss_exact": True,
+-        "next_step_metrics_exact": True,
+-        "base_and_relation_parameters_exact": True,
+-        "optimizer_states_exact": True,
+-        "rng_exact": True,
+-        "floating_state_atol": 2e-6,
+-        "floating_state_rtol": 1e-5,
+-        "next_step_epoch_1based": int(payload["current_epoch_1based"]) + 1,
+-    }
++        raise RuntimeError("Latest next-step replay prediction mismatch")
++    return {"pass": True, "next_step_epoch_1based": int(payload["current_epoch_1based"]) + 1, "loss_exact": True, "model_optimizer_rng_exact": True}
+ 
+ 
+-def _intervention_metrics(e744, state, module, intervention, reference):
++def _summary_details(details, prefix):
+     import numpy as np
+-    current = _evaluate(e744, state, module, intervention)
+-    try:
+-        difference = np.abs(current["probability"][:, 0] - reference["probability"][:, 0])
+-        flips = int(np.sum(current["prediction"] != reference["prediction"]))
+-        return current, {"probability_mae": float(difference.mean()), "hard_flips": flips,
+-                         "acc": current["metrics"]["acc"], "ba": current["metrics"]["hard_auc"]}
+-    except BaseException:
+-        _close_evaluation(current)
+-        raise
+-
+-
+-def _prompt_summary(details, prefix):
+-    import torch
+     result = {}
+     for label in ("td", "asd"):
+         beta = details[f"beta_{label}"].detach().float()
+-        entropy = -(beta.clamp_min(1e-12) * beta.clamp_min(1e-12).log()).sum(dim=-1)
+-        result[f"{prefix}_{label}_beta_entropy_mean"] = float(entropy.mean().cpu())
+-        result[f"{prefix}_{label}_beta_variance_across_receivers"] = float(beta.var(dim=1, unbiased=False).mean().cpu())
+-        result[f"{prefix}_{label}_beta_variance_across_prompts"] = float(beta.var(dim=-1, unbiased=False).mean().cpu())
++        beta_safe = beta.clamp_min(1e-12)
++        attention = details[f"attention_{label}"].detach().float()
++        real = attention[..., :15]
++        result[f"{prefix}_{label}_beta_entropy"] = float((-(beta_safe * beta_safe.log()).sum(-1)).mean().cpu())
++        result[f"{prefix}_{label}_beta_variance"] = float(beta.var(dim=1, unbiased=False).mean().cpu())
++        result[f"{prefix}_{label}_effective_neighbors"] = float((real > 0).sum(-1).float().mean().cpu())
++        result[f"{prefix}_{label}_null_mass"] = float(attention[..., 15].mean().cpu())
++        result[f"{prefix}_{label}_null_selected_rate"] = float((attention[..., 15] >= real.max(-1).values).float().mean().cpu())
++    if "relation_support_difference" in details:
++        result[f"{prefix}_asd_td_support_disagreement"] = float(details["relation_support_difference"].float().mean().cpu())
++    residual = details["residual_ratio"].detach().float().cpu().numpy()
++    result.update({f"{prefix}_residual_ratio_mean": float(residual.mean()), f"{prefix}_residual_ratio_p95": float(np.percentile(residual, 95)), f"{prefix}_residual_ratio_max": float(residual.max())})
+     return result
+ 
+ 
+-def _relation_summary(details, prefix):
++def _margin_summary(values):
+     import numpy as np
+-    import torch
+-    result = {}
++    values = np.asarray(values, dtype=np.float64)
++    return {
++        "mean": float(values.mean()),
++        "population_sd": float(values.std(ddof=0)),
++        "p05": float(np.percentile(values, 5)),
++        "p95": float(np.percentile(values, 95)),
++        "positive_fraction": float((values > 0).mean()),
++        "negative_fraction": float((values < 0).mean()),
++    }
++
++
++def _relation_intervention_summary(full, alternate, test_ids):
++    import numpy as np
++    result = {
++        "asd_probability_mae": float(np.abs(full["probability"][:, 0] - alternate["probability"][:, 0]).mean()),
++        "hard_flips": int(np.sum(full["prediction"] != alternate["prediction"])),
++    }
+     for label in ("td", "asd"):
+-        attention = details[f"attention_{label}"].detach().float()
+-        real = attention[..., :15]
+-        null = attention[..., 15]
+-        result[f"{prefix}_{label}_effective_neighbors"] = float((real > 0).sum(dim=-1).float().mean().cpu())
+-        result[f"{prefix}_{label}_null_mass_mean"] = float(null.mean().cpu())
+-        result[f"{prefix}_{label}_null_selected_rate"] = float((null >= real.max(dim=-1).values).float().mean().cpu())
+-    if "relation_support_difference" in details:
+-        result[f"{prefix}_asd_td_support_disagreement"] = float(details["relation_support_difference"].float().mean().cpu())
+-    residual_ratio = details["residual_ratio"].detach().float().cpu().numpy()
+-    result.update({
+-        f"{prefix}_residual_ratio_mean": float(residual_ratio.mean()),
+-        f"{prefix}_residual_ratio_p95": float(np.percentile(residual_ratio, 95)),
+-        f"{prefix}_residual_ratio_max": float(residual_ratio.max()),
+-    })
++        key = f"attention_{label}"
++        base = full["capture"][key].detach().float().cpu().numpy()[test_ids]
++        changed = alternate["capture"][key].detach().float().cpu().numpy()[test_ids]
++        result[f"{label}_attention_total_variation"] = float(0.5 * np.abs(base - changed).sum(axis=-1).mean())
++        result[f"{label}_support_change_rate"] = float(((base[..., :15] > 0) != (changed[..., :15] > 0)).any(axis=-1).mean())
++        beta_key = f"beta_{label}"
++        base_beta = full["capture"][beta_key].detach().float().cpu().numpy()[test_ids]
++        changed_beta = alternate["capture"][beta_key].detach().float().cpu().numpy()[test_ids]
++        result[f"{label}_beta_mae"] = float(np.abs(base_beta - changed_beta).mean())
+     return result
+ 
+ 
+-def _dua_proxy(e744, state, module, legal_rows):
++def _edge_override_audit(e744, state, module, baseline):
+     import numpy as np
+-    import torch
+-    hook = run.OutputPreHook(state, module)
+-    hook.configure(training=False, intervention="full")
++    labels = state["y"].detach().cpu().numpy().astype(np.int64)
++    class_index = int(labels[int(baseline["test_ids"][0])])
++    attention_tensor = baseline["capture"]["attention_asd" if class_index == 0 else "attention_td"]
++    attention = attention_tensor.detach().cpu().numpy()
++    neighbors = module.neighbors.detach().cpu().numpy()
++    patient = int(baseline["test_ids"][0])
++    candidates = np.argwhere(attention[patient, :, :15] > 0)
++    receiver, position = [int(value) for value in candidates[0]] if candidates.size else (0, 0)
++    sender = int(neighbors[receiver, position])
++    before_edge, before_null = float(attention[patient, receiver, position]), float(attention[patient, receiver, 15])
++    deleted = _evaluate(e744, state, module, "full", edge_overrides=((patient, receiver, sender, class_index),))
+     try:
+-        with torch.enable_grad():
+-            output = e744.forward(state, E74_GROUP, training=False)
+-            if hook.calls != 1:
+-                raise RuntimeError("DUA post-training utility must use one OutputLayer forward")
+-            labels = state["y"].long()
+-            legal = torch.as_tensor(legal_rows, dtype=torch.long, device=labels.device)
+-            margins = output["logp"].gather(1, labels[:, None]).squeeze(1) - output["logp"].gather(
+-                1, (1 - labels)[:, None]
+-            ).squeeze(1)
+-            gradient = torch.autograd.grad(margins[legal].sum(), hook.capture["z_final"], retain_graph=False)[0]
+-            slots = hook.capture["z_cam"].detach().reshape(-1, 16, 9).float()
+-            local_gradient = gradient.detach().reshape(-1, 16, 9).float()
+-            differences = slots[:, module.neighbors] - slots.unsqueeze(2)
+-            expanded_gradient = local_gradient.unsqueeze(2).expand_as(differences)
+-            dot = (expanded_gradient * differences).sum(dim=-1)
+-            denominator = expanded_gradient.norm(dim=-1) * differences.norm(dim=-1)
+-            utility = torch.where(denominator > 1e-12, dot / denominator.clamp_min(1e-12), torch.zeros_like(dot))
+-            utility = utility.clamp(-1.0, 1.0).detach()
+-            capture = hook.capture
+-            return {
+-                "utility": utility,
+-                "margin": margins.detach(),
+-                "attention_td": capture["attention_td"].detach(),
+-                "attention_asd": capture["attention_asd"].detach(),
+-                "z_cam": capture["z_cam"].detach(),
+-            }
++        selected = deleted["capture"]["attention_asd" if class_index == 0 else "attention_td"]
++        after_edge = float(selected[patient, receiver, position].detach().cpu())
++        after_null = float(selected[patient, receiver, 15].detach().cpu())
++        transfer = deleted["capture"]["audit_override_records"][0]
++        moved_mass = transfer["before_edge"]
++        if abs(after_edge) > 1e-8 or abs(transfer["after_edge"]) > 1e-8 or not math.isclose(
++            transfer["after_null"] - transfer["before_null"], moved_mass, abs_tol=1e-7, rel_tol=1e-6
++        ):
++            raise RuntimeError(f"edge override transfer mismatch: {transfer}")
++        return {"pass": True, "patient": patient, "receiver": receiver, "sender": sender, "class_index": class_index,
++                "baseline_edge_mass": before_edge, "baseline_null_mass": before_null,
++                "forward_edge_mass_before_override": transfer["before_edge"],
++                "after_edge_mass": after_edge, "forward_null_mass_before_override": transfer["before_null"],
++                "after_null_mass": after_null, "transferred_mass": moved_mass,
++                "override_cleared_after_forward": not module.audit_edge_overrides}
+     finally:
+-        hook.close()
++        _close(deleted)
+ 
+ 
+-def _dua_edge_deletion_audit(e744, state, module, legal_rows, full_eval):
++def _mechanism(e744, state, module, payload, darg):
+     import numpy as np
+-    import torch
+-    proxy = _dua_proxy(e744, state, module, legal_rows)
+-    labels = state["y"].detach().cpu().numpy().astype(np.int64)
+-    utility = proxy["utility"].cpu().numpy()
+-    attention = {0: proxy["attention_asd"].cpu().numpy(), 1: proxy["attention_td"].cpu().numpy()}
+-    neighbors = module.neighbors.detach().cpu().numpy()
+-    buckets = {"selected_positive": [], "selected_negative": [],
+-               "unselected_positive": [], "unselected_negative": []}
+-    for patient in legal_rows:
+-        class_index = int(labels[patient])
+-        probabilities = attention[class_index][patient]
+-        for receiver in range(16):
+-            for position, sender in enumerate(neighbors[receiver]):
+-                value = float(utility[patient, receiver, position])
+-                if abs(value) < 0.15:
+-                    continue
+-                selected = probabilities[receiver, position] > 0.0
+-                key = ("selected_" if selected else "unselected_") + ("positive" if value > 0 else "negative")
+-                buckets[key].append((abs(value), int(patient), receiver, int(sender), value, selected, class_index))
+-    choices = []
+-    for key in buckets:
+-        choices.extend(sorted(buckets[key], reverse=True)[:2])
+-    records = []
+-    base_margin = proxy["margin"].detach().cpu().numpy()
+-    for _, patient, receiver, sender, value, selected, class_index in choices:
+-        module.audit_edge_overrides = ((patient, receiver, sender, class_index),)
+-        deleted = _evaluate(e744, state, module, "full")
++    full = _evaluate(e744, state, module, "full")
++    off = _evaluate(e744, state, module, "relation_off")
++    prompt = uniform = scrambled = None
++    try:
++        labels = full["labels"]
++        a_b, b_c, a_c = (_correction(darg["prediction"], off["prediction"], labels), _correction(off["prediction"], full["prediction"], labels), _correction(darg["prediction"], full["prediction"], labels))
++        margin_full = run._class_margin(full["output"]["logp"], state["y"].long()).detach().cpu().numpy()[full["test_ids"]]
++        margin_off = run._class_margin(off["output"]["logp"], state["y"].long()).detach().cpu().numpy()[off["test_ids"]]
++        legal_train_ids = run.legal_train_rows(state, int(state["fold"]))
++        all_margin_full = run._class_margin(full["output"]["logp"], state["y"].long()).detach().cpu().numpy()
++        all_margin_off = run._class_margin(off["output"]["logp"], state["y"].long()).detach().cpu().numpy()
++        train_delta = all_margin_full[legal_train_ids] - all_margin_off[legal_train_ids]
++        test_delta = margin_full - margin_off
++        prompt = _evaluate(e744, state, module, "prompt_off")
++        uniform = _evaluate(e744, state, module, "uniform_beta")
++        scrambled = _evaluate(e744, state, module, "full", grouping_override="scrambled")
+         try:
+-            labels_device = state["y"].long()
+-            before = base_margin[patient]
+-            after_logs = deleted["output"]["logp"][patient]
+-            after = float((after_logs[labels_device[patient]] - after_logs[1 - labels_device[patient]]).detach().cpu())
+-            contribution = before - after
+-            records.append({
+-                "patient": patient, "receiver": receiver, "sender": sender,
+-                "class_index": class_index, "u": value, "selected": selected,
+-                "correct_margin_contribution": contribution,
+-                "direction_agreement": bool(value * contribution > 0),
++            edge = _edge_override_audit(e744, state, module, full)
++            result = {"group": "G1", "fold": int(state["fold"])}
++            for name, counts in (("A_to_B", a_b), ("B_to_C", b_c), ("A_to_C", a_c)):
++                result.update({f"{name}_{key}": value for key, value in counts.items()})
++            prompt_off_change = _relation_intervention_summary(full, prompt, full["test_ids"])
++            uniform_change = _relation_intervention_summary(full, uniform, full["test_ids"])
++            scrambled_change = _relation_intervention_summary(full, scrambled, full["test_ids"])
++            prompt_off_change["classification_effect"] = _correction(full["prediction"], prompt["prediction"], labels)
++            uniform_change["classification_effect"] = _correction(full["prediction"], uniform["prediction"], labels)
++            scrambled_change["classification_effect"] = _correction(full["prediction"], scrambled["prediction"], labels)
++            gradient_records = payload.get("gradient_trace", [])
++            gradient_audit = [record.get("auxiliary", {}).get("gradient", {}) for record in gradient_records]
++            gradient_audit = [record for record in gradient_audit if record]
++            result.update({
++                "B_to_C_margin_change_mean": float(test_delta.mean()),
++                "B_to_C_margin_change_positive_fraction": float((test_delta > 0).mean()),
++                "B_to_C_margin_change_summary": json.dumps(_margin_summary(test_delta), sort_keys=True),
++                "B_to_C_test_margin_crossings_to_correct": int(((margin_off <= 0) & (margin_full > 0)).sum()),
++                "B_to_C_test_margin_crossings_to_incorrect": int(((margin_off > 0) & (margin_full <= 0)).sum()),
++                "B_to_C_train_margin_change_mean": float(train_delta.mean()),
++                "B_to_C_train_margin_positive_fraction": float((train_delta > 0).mean()),
++                "B_to_C_train_margin_crossings_to_correct": int(((all_margin_off[legal_train_ids] <= 0) & (all_margin_full[legal_train_ids] > 0)).sum()),
++                "B_to_C_train_margin_crossings_to_incorrect": int(((all_margin_off[legal_train_ids] > 0) & (all_margin_full[legal_train_ids] <= 0)).sum()),
++                "train_margin_off_summary": json.dumps(_margin_summary(all_margin_off[legal_train_ids]), sort_keys=True),
++                "train_margin_full_summary": json.dumps(_margin_summary(all_margin_full[legal_train_ids]), sort_keys=True),
++                "test_margin_off_summary": json.dumps(_margin_summary(margin_off), sort_keys=True),
++                "test_margin_full_summary": json.dumps(_margin_summary(margin_full), sort_keys=True),
++                "legal_train_patient_count": int(legal_train_ids.size),
++                "relation_probability_mae": float(np.abs(full["probability"][:, 0] - off["probability"][:, 0]).mean()),
++                "prompt_off_intervention": json.dumps(prompt_off_change, sort_keys=True),
++                "prompt_off_disables_relation_contrast": True,
++                "uniform_beta_intervention": json.dumps(uniform_change, sort_keys=True),
++                "scrambled_prompt_grouping_intervention": json.dumps(scrambled_change, sort_keys=True),
++                "full_relation_summary": json.dumps(_summary_details(full["capture"], "full"), sort_keys=True),
++                "edge_override": json.dumps(edge, sort_keys=True),
++                "training_gradient_summary": json.dumps({
++                    "gradient_trace_records": len(gradient_records),
++                    "mean_main_norm": float(np.mean([record["main_norm"] for record in gradient_audit])) if gradient_audit else 0.0,
++                    "mean_auxiliary_raw_norm": float(np.mean([record["auxiliary_raw_norm"] for record in gradient_audit])) if gradient_audit else 0.0,
++                    "mean_auxiliary_effective_norm": float(np.mean([record["auxiliary_effective_norm"] for record in gradient_audit])) if gradient_audit else 0.0,
++                    "max_auxiliary_to_main_ratio": float(max((record["auxiliary_to_main_ratio"] for record in gradient_audit), default=0.0)),
++                    "conflict_projection_records": int(sum(bool(record["conflict"]) for record in gradient_audit)),
++                    "conflict_projection_fraction": float(np.mean([record["conflict"] for record in gradient_audit])) if gradient_audit else 0.0,
++                    "recent_margin_losses": [record.get("auxiliary", {}) for record in gradient_records[-5:]],
++                }, sort_keys=True),
+             })
++            patient_rows = []
++            for offset, patient_id in enumerate(full["test_ids"].tolist()):
++                label = int(labels[offset])
++                prediction_a = int(darg["prediction"][offset])
++                prediction_b = int(off["prediction"][offset])
++                prediction_c = int(full["prediction"][offset])
++                patient_rows.append({
++                    "group": "G1", "fold": int(state["fold"]),
++                    "patient_index_0based": int(patient_id), "patient_index_1based": int(patient_id) + 1,
++                    "label": label, "darg_A_prediction": prediction_a,
++                    "darg_A_probability_asd": float(darg["probability"][offset, 0]),
++                    "cmpsrr_B_prediction": prediction_b,
++                    "cmpsrr_B_probability_asd": float(off["probability"][offset, 0]),
++                    "cmpsrr_B_true_margin": float(margin_off[offset]),
++                    "cmpsrr_C_prediction": prediction_c,
++                    "cmpsrr_C_probability_asd": float(full["probability"][offset, 0]),
++                    "cmpsrr_C_true_margin": float(margin_full[offset]),
++                    "B_to_C_margin_delta": float(test_delta[offset]),
++                    "A_to_B_corrected": bool(prediction_a != label and prediction_b == label),
++                    "A_to_B_harmed": bool(prediction_a == label and prediction_b != label),
++                    "B_to_C_corrected": bool(prediction_b != label and prediction_c == label),
++                    "B_to_C_harmed": bool(prediction_b == label and prediction_c != label),
++                    "A_to_C_corrected": bool(prediction_a != label and prediction_c == label),
++                    "A_to_C_harmed": bool(prediction_a == label and prediction_c != label),
++                    "fold2_historical_overlap_row": bool(int(state["fold"]) == 2 and patient_id in (376, 406)),
++                })
++            return result, patient_rows
+         finally:
+-            _close_evaluation(deleted)
+-    module.audit_edge_overrides = ()
+-    selected_effect = [row["correct_margin_contribution"] for row in records if row["selected"]]
+-    unselected_effect = [row["correct_margin_contribution"] for row in records if not row["selected"]]
+-    valid = [row for row in records if abs(row["u"]) >= 0.15 and abs(row["correct_margin_contribution"]) > 1e-12]
+-    correlation = float(np.corrcoef([row["u"] for row in valid],
+-                                    [row["correct_margin_contribution"] for row in valid])[0, 1]) if len(valid) >= 2 else float("nan")
+-    return {
+-        "representative_edges": len(records),
+-        "selected_edges": sum(row["selected"] for row in records),
+-        "unselected_edges": sum(not row["selected"] for row in records),
+-        "direction_consistency": (sum(row["direction_agreement"] for row in valid) / len(valid)) if valid else float("nan"),
+-        "u_vs_actual_margin_contribution_correlation": correlation,
+-        "selected_mean_actual_contribution": float(np.mean(selected_effect)) if selected_effect else float("nan"),
+-        "unselected_mean_actual_contribution": float(np.mean(unselected_effect)) if unselected_effect else float("nan"),
+-        "edge_records": records,
+-        "utility_mean_train": float(utility[np.asarray(legal_rows)].mean()),
+-        "utility_positive_fraction_train": float((utility[np.asarray(legal_rows)] > 0).mean()),
+-    }, proxy
+-
+-
+-def _g2_stability_audit(e744, state, module, details, legal_rows):
+-    import torch
+-    ids = torch.as_tensor(legal_rows, dtype=torch.long, device=details["z_cam"].device)
+-    slots = details["z_cam"].detach()[ids].reshape(-1, 16, 9).float()
+-    scale = slots.std(dim=(0, 1), unbiased=False).clamp_min(1e-6)
+-    coordinates = torch.arange(slots.numel(), dtype=torch.float32, device=slots.device).reshape_as(slots)
+-    perturbation = 0.01 * scale.view(1, 1, 9) * torch.sin(coordinates * 12.9898 + 0.37)
+-    with torch.no_grad():
+-        perturbed_td, perturbed_asd = module.relation_distributions(
+-            (slots + perturbation).reshape(-1, 144), grouping="medical"
+-        )
+-    from run import _js_divergence
+-    baseline_td = details["attention_td"][ids].detach()
+-    baseline_asd = details["attention_asd"][ids].detach()
+-    js = 0.5 * (_js_divergence(baseline_td, perturbed_td).mean()
+-                + _js_divergence(baseline_asd, perturbed_asd).mean())
+-    return float(js.cpu()), float((perturbation.norm() / slots.norm().clamp_min(1e-12)).cpu())
++            _close(prompt); _close(uniform); _close(scrambled)
++    finally:
++        _close(full); _close(off)
+ 
+ 
+-def _collect_mechanism(e744, legacy, group, fold, state, module, darg, full, residual_off):
++def _paired_rows(current, darg, e8172, e818):
+     import numpy as np
+-    import torch
+-    legal = run.legal_train_rows(state, fold)
+-    test_ids = full["test_ids"]
+-    labels = full["labels"]
+-    result = {"group": group, "fold": fold, **_correction(darg["prediction"], residual_off["prediction"], labels)}
+-    result.update({
+-        "A_to_B_corrected": _correction(darg["prediction"], residual_off["prediction"], labels)["corrected"],
+-        "A_to_B_harmed": _correction(darg["prediction"], residual_off["prediction"], labels)["harmed"],
+-        "A_to_B_net": _correction(darg["prediction"], residual_off["prediction"], labels)["net"],
+-    })
+-    a_b = _correction(darg["prediction"], residual_off["prediction"], labels)
+-    b_c = _correction(residual_off["prediction"], full["prediction"], labels)
+-    a_c = _correction(darg["prediction"], full["prediction"], labels)
+-    for prefix, counts in (("A_to_B", a_b), ("B_to_C", b_c), ("A_to_C", a_c)):
+-        for key, value in counts.items():
+-            result[f"{prefix}_{key}"] = value
+-    details = full["capture"]
+-    result.update(_prompt_summary(details, "full"))
+-    result.update(_relation_summary(details, "full"))
+-
+-    interventions = ("dua_score_off", "uniform_beta", "prompt_off") if group == "G1" else (
+-        "second_order_off", "high_frequency_off", "multiscale_off", "uniform_beta", "prompt_off"
+-    )
+-    intervention_results = {}
+-    for intervention in interventions:
+-        current, summary = _intervention_metrics(e744, state, module, intervention, full)
+-        intervention_results[intervention] = current
+-        for key, value in summary.items():
+-            result[f"{intervention}_{key}"] = value
+-        result[f"{intervention}_hard_flips"] = summary["hard_flips"]
+-        _close_evaluation(current)
+-
+-    if group == "G1":
+-        score_delta_td = (details["scores_td"] - details["score_base_td"]).detach().float()
+-        score_delta_asd = (details["scores_asd"] - details["score_base_asd"]).detach().float()
+-        score_off = intervention_results["dua_score_off"]["capture"]
+-        support_td_full = details["attention_td"][..., :15] > 0
+-        support_asd_full = details["attention_asd"][..., :15] > 0
+-        support_td_base = score_off["attention_td"][..., :15] > 0
+-        support_asd_base = score_off["attention_asd"][..., :15] > 0
+-        result.update({
+-            "dua_score_delta_abs_mean": float(torch.cat((score_delta_td[..., :15].flatten(),
+-                                                          score_delta_asd[..., :15].flatten())).abs().mean().cpu()),
+-            "dua_relation_support_change_rate": float(torch.cat(((support_td_full ^ support_td_base).flatten(),
+-                                                                  (support_asd_full ^ support_asd_base).flatten())).float().mean().cpu()),
+-            "dua_relation_probability_mae": float(torch.cat(((details["attention_td"] - score_off["attention_td"]).flatten(),
+-                                                              (details["attention_asd"] - score_off["attention_asd"]).flatten())).abs().mean().cpu()),
+-        })
+-        deletion, proxy = _dua_edge_deletion_audit(e744, state, module, legal, full)
+-        for key, value in deletion.items():
+-            if key != "edge_records":
+-                result[f"utility_{key}"] = value
+-        corrected_mask = ((residual_off["prediction"] != labels) & (full["prediction"] == labels))
+-        corrected_ids = test_ids[corrected_mask]
+-        if corrected_ids.size:
+-            test_proxy = _dua_proxy(e744, state, module, corrected_ids)
+-            utility_test = test_proxy["utility"].detach().cpu().numpy()
+-            attention_true = {0: test_proxy["attention_asd"].detach().cpu().numpy(),
+-                              1: test_proxy["attention_td"].detach().cpu().numpy()}
+-            patient_utility = []
+-            patient_positive = []
+-            for patient in corrected_ids:
+-                class_index = int(state["y"][patient].item())
+-                selected_mask = attention_true[class_index][patient, :, :15] > 0
+-                selected_values = utility_test[patient][selected_mask]
+-                patient_utility.append(float(selected_values.mean()) if selected_values.size else 0.0)
+-                patient_positive.append(bool((selected_values > 0).any()) if selected_values.size else False)
+-            result["corrected_patient_mean_selected_u"] = float(np.mean(patient_utility))
+-            result["corrected_patients_with_positive_selected_u_fraction"] = float(np.mean(patient_positive))
+-        else:
+-            result["corrected_patient_mean_selected_u"] = float("nan")
+-            result["corrected_patients_with_positive_selected_u_fraction"] = float("nan")
+-        result["corrected_patient_count"] = int(corrected_ids.size)
+-    else:
+-        adj_error = torch.cat([
+-            (details[f"adjacency_{label}"].sum(dim=-1) - (1.0 - details[f"null_mass_{label}"])).abs().flatten()
+-            for label in ("td", "asd")
+-        ]).max()
+-        result.update({
+-            "first_order_norm_mean": float(torch.cat((details["first_order_td"].norm(dim=-1).flatten(),
+-                                                       details["first_order_asd"].norm(dim=-1).flatten())).mean().cpu()),
+-            "second_order_norm_mean": float(torch.cat((details["second_order_td"].norm(dim=-1).flatten(),
+-                                                        details["second_order_asd"].norm(dim=-1).flatten())).mean().cpu()),
+-            "high_frequency_norm_mean": float(torch.cat((details["high_frequency_td"].norm(dim=-1).flatten(),
+-                                                          details["high_frequency_asd"].norm(dim=-1).flatten())).mean().cpu()),
+-            "second_minus_first_norm_mean": float(torch.cat(((details["second_order_td"] - details["first_order_td"]).norm(dim=-1).flatten(),
+-                                                              (details["second_order_asd"] - details["first_order_asd"]).norm(dim=-1).flatten())).mean().cpu()),
+-            "null_absorbing_row_sum_max_error": float(adj_error.cpu()),
+-            "asd_td_relation_l1_mean": float((details["attention_asd"] - details["attention_td"]).abs().sum(dim=-1).mean().cpu()),
+-        })
+-        stability, perturb_ratio = _g2_stability_audit(e744, state, module, details, legal)
+-        result["stability_js_train_mean"] = stability
+-        result["stability_perturbation_rms_ratio"] = perturb_ratio
+-        corrected_mask = ((residual_off["prediction"] != labels) & (full["prediction"] == labels))
+-        corrected_as_test = int(corrected_mask.sum())
+-        result["second_order_dependent_corrections"] = int(np.sum(
+-            corrected_mask & (intervention_results["second_order_off"]["prediction"] != labels)
+-        ))
+-        result["high_frequency_dependent_corrections"] = int(np.sum(
+-            corrected_mask & (intervention_results["high_frequency_off"]["prediction"] != labels)
+-        ))
+-        result["full_local_corrections"] = corrected_as_test
+-    return result
+-
+-
+-def _paired_rows(metrics_by_group, darg_metrics, e8172_metrics):
+     rows = []
+-    comparisons = []
+-    reference_map = {"DARG": darg_metrics, "E81.7.2-G1": e8172_metrics}
+-    for group in GROUPS:
+-        reference_map[group] = metrics_by_group[group]
+-    pairs = [("G1-DARG", metrics_by_group["G1"], darg_metrics),
+-             ("G2-DARG", metrics_by_group["G2"], darg_metrics),
+-             ("G1-E81.7.2-G1", metrics_by_group["G1"], e8172_metrics),
+-             ("G2-E81.7.2-G1", metrics_by_group["G2"], e8172_metrics),
+-             ("G2-G1", metrics_by_group["G2"], metrics_by_group["G1"])]
+-    for name, left, right in pairs:
+-        for subset, folds in (("all10", list(range(1, 11))),
+-                              ("exclude_fold2", [fold for fold in range(1, 11) if fold != 2])):
++    comparisons = [("G1-DARG", darg), ("G1-E81.7.2-G1", e8172)]
++    comparisons.extend((f"G1-{name}", values) for name, values in e818.items())
++    for name, right in comparisons:
++        left = current
++        for subset, folds in (("all10", list(range(1, 11))), ("exclude_fold2", [fold for fold in range(1, 11) if fold != 2])):
+             for metric in METRICS:
+-                differences = [(left[fold][metric] - right[fold][metric]) * 100.0 for fold in folds]
+-                summary = _summary(differences)
+-                wins = sum(value > 1e-12 for value in differences)
+-                ties = sum(abs(value) <= 1e-12 for value in differences)
+-                row = {
+-                    "comparison": name, "subset": subset, "metric": METRIC_NAMES[metric],
+-                    "folds": len(folds), "mean_difference_pp": summary["mean"],
+-                    "population_sd_difference_pp": summary["population_sd"],
+-                    "W_T_L": f"{wins}/{ties}/{len(folds)-wins-ties}",
+-                    "fold_differences_pp": json.dumps({str(fold): left[fold][metric] * 100.0 - right[fold][metric] * 100.0
+-                                                       for fold in folds}, sort_keys=True),
+-                }
+-                rows.append(row)
+-                if metric in ("acc", "hard_auc"):
+-                    comparisons.append(row)
+-    return rows, comparisons
++                differences = [(left[fold][metric] - right[fold][metric]) * 100 for fold in folds]
++                w = sum(value > 1e-12 for value in differences); t = sum(abs(value) <= 1e-12 for value in differences); l = sum(value < -1e-12 for value in differences)
++                rows.append({"comparison": name, "subset": subset, "metric": METRIC_NAMES[metric], "mean_difference_pp": float(np.mean(differences)), "population_sd_difference_pp": float(np.std(differences, ddof=0)), "W_T_L": f"{w}/{t}/{l}", "fold_differences_pp": json.dumps(differences)})
++    return rows
+ 
+ 
+ def audit_all():
+     import numpy as np
+     import torch
+-    torch.set_num_threads(1)
+-    legacy = run.load_legacy_helpers()
+-    gpu = legacy.verify_gpu1_device()
+-    e744 = run.base_runner()
+-    frozen_source = run.source_digest()
+-    preflight = json.loads((RESULTS / "preflight.json").read_text(encoding="utf-8"))
+-    if preflight.get("status") != "PASS" or preflight.get("source_sha256") != frozen_source:
+-        raise RuntimeError("independent audit source SHA does not match frozen preflight")
+-
+-    metric_rows = []
+-    patient_rows = []
+-    mechanism_rows = []
+-    audit_records = []
+-    darg_metrics = {}
+-    darg_outputs = {}
+-    group_metrics = {group: {} for group in GROUPS}
+-    latest_replays = 0
+-    checkpoint_audits = 0
+-    start = time.time()
+-
++    start = time.time(); torch.set_num_threads(1)
++    gpu = run.verify_gpu0_device(); legacy = run.load_legacy_helpers(); e744 = run.base_runner()
++    frozen_source = run.source_digest(); darg_metrics = {}; e8172_metrics = _historical_e8172(); e818_metrics = _historical_e818(); current_metrics = {}
++    metric_rows = []; patient_rows = []; mechanism_rows = []; checkpoint_rows = []; latest_replays = 0
++    confusion_by_fold = {}
+     for fold in range(1, 11):
+-        print(f"AUDIT fold={fold} historical DARG", flush=True)
+-        darg = _audit_darg(e744, legacy, fold)
+-        darg_metrics[fold] = darg["metrics"]
+-        darg_outputs[fold] = darg
+-        for group in GROUPS:
+-            print(f"AUDIT fold={fold} group={group} Best/Latest", flush=True)
+-            state = module = optimizer = None
+-            evaluations = {}
+-            payloads = {}
+-            paths = {}
+-            identity = None
+-            for kind in ("Best", "Latest"):
+-                state, module, optimizer, payload, identity, checkpoint_path = _load_current_fold(
+-                    e744, legacy, group, fold, kind
+-                )
+-                payloads[kind] = payload
+-                paths[kind] = checkpoint_path
+-                evaluation = _evaluate(e744, state, module, "full")
+-                _verify_saved_prediction(payload, evaluation)
++        darg = _audit_darg(e744, fold); darg_metrics[fold] = darg["metrics"]
++        for kind in ("Best", "Latest"):
++            state, module, optimizer, payload, identity, checkpoint_path = _load_current_fold(e744, legacy, fold, kind)
++            evaluation = _evaluate(e744, state, module, "full")
++            try:
++                if not np.array_equal(payload["prediction"], evaluation["prediction"]) or not np.allclose(payload["probability"], evaluation["probability"], atol=2e-7, rtol=0):
++                    raise RuntimeError(f"{kind} prediction/probability mismatch fold={fold}")
++                for metric in METRICS:
++                    if abs(float(payload["current_metrics"][metric]) - evaluation["metrics"][metric]) > 2e-8:
++                        raise RuntimeError(f"{kind} metric mismatch fold={fold} {metric}")
++                checkpoint_rows.append({"group": "G1", "fold": fold, "kind": kind, "checkpoint": str(checkpoint_path), "sha256": run.sha_file(checkpoint_path), "metrics_recomputed": True, "source_sha256_match": payload.get("source_sha256") == frozen_source})
+                 if kind == "Best":
+-                    best_evaluation = evaluation
+-                    group_metrics[group][fold] = evaluation["metrics"]
+-                    best_hash = run.sha_file(checkpoint_path)
+-                    metric_rows.append({
+-                        "group": group, "fold": fold, "checkpoint_sha256": best_hash,
+-                        "best_epoch_1based": payload["current_epoch_1based"],
+-                        "test_n": len(evaluation["labels"]),
+-                        **{METRIC_NAMES[metric]: value * 100.0
+-                           for metric, value in evaluation["metrics"].items()},
+-                        **evaluation["confusion"],
+-                    })
+-                    for patient, label, prediction, probability in zip(
+-                        evaluation["test_ids"], evaluation["labels"],
+-                        evaluation["prediction"], evaluation["probability"],
+-                    ):
+-                        patient_rows.append({
+-                            "group": group, "fold": fold, "patient_zero_based": int(patient),
+-                            "label": int(label), "prediction": int(prediction),
+-                            "prob_asd": float(probability[0]), "prob_td": float(probability[1]),
+-                            "correct": bool(label == prediction), "best_epoch_1based": payload["current_epoch_1based"],
+-                        })
++                    current_metrics[fold] = evaluation["metrics"]
++                    confusion_by_fold[fold] = evaluation["confusion"]
++                    fold_mechanism, fold_patient_rows = _mechanism(e744, state, module, payload, darg)
++                    mechanism_rows.append(fold_mechanism)
++                    patient_rows.extend(fold_patient_rows)
+                 else:
+-                    latest_hash = run.sha_file(checkpoint_path)
+-                    latest_replay = _replay_latest(e744, legacy, group, fold, state, module, optimizer, payload)
+-                    latest_replays += 1
+-                    audit_records.append({
+-                        "group": group, "fold": fold, "kind": kind,
+-                        "checkpoint_sha256": latest_hash,
+-                        "metrics_recomputed": True,
+-                        "outputlayer_call_count": evaluation["hook"].calls,
+-                        "latest_next_step_replay": latest_replay,
+-                    })
+-                _close_evaluation(evaluation)
+-                checkpoint_audits += 1
+-
+-            state, module, optimizer, payload, identity, checkpoint_path = _load_current_fold(
+-                e744, legacy, group, fold, "Best"
+-            )
+-            print(f"AUDIT fold={fold} group={group} mechanism", flush=True)
+-            full = _evaluate(e744, state, module, "full")
+-            residual_off = _evaluate(e744, state, module, "relation_off")
+-            labels = full["labels"]
+-            if not np.array_equal(full["test_ids"], darg["test_ids"]):
+-                raise RuntimeError(f"historical DARG/current test row order changed fold={fold}")
+-            mechanism = _collect_mechanism(e744, legacy, group, fold, state, module, darg, full, residual_off)
+-            mechanism_rows.append(mechanism)
+-            a_b = _correction(darg["prediction"], residual_off["prediction"], labels)
+-            b_c = _correction(residual_off["prediction"], full["prediction"], labels)
+-            a_c = _correction(darg["prediction"], full["prediction"], labels)
+-            for transition, counts in (("A_to_B", a_b), ("B_to_C", b_c), ("A_to_C", a_c)):
+-                audit_records.append({"group": group, "fold": fold, "kind": transition, **counts})
+-            _close_evaluation(full)
+-            _close_evaluation(residual_off)
+-
+-    e8172_metrics = _historical_e8172()
+-    paired_rows, paired_gate_rows = _paired_rows(group_metrics, darg_metrics, e8172_metrics)
+-    _write_csv(RESULTS / "fold_metrics.csv", metric_rows)
+-    _write_csv(RESULTS / "patient_predictions.csv", patient_rows)
+-    _write_csv(RESULTS / "paired_comparisons.csv", paired_rows)
+-    _write_csv(RESULTS / "mechanism.csv", mechanism_rows)
+-    _write_csv(RESULTS / "checkpoint_audit.csv", audit_records)
+-
++                    replay = _replay_latest(e744, legacy, state, module, optimizer, payload); latest_replays += int(replay["pass"]); checkpoint_rows[-1]["latest_replay"] = replay
++            finally:
++                _close(evaluation)
++    if len(current_metrics) != 10 or latest_replays != 10:
++        raise RuntimeError("independent Best/Latest audit did not cover all ten folds")
++    _write_csv(RESULTS / "checkpoint_audit.csv", checkpoint_rows); _write_csv(RESULTS / "patient_predictions.csv", patient_rows); _write_csv(RESULTS / "mechanism.csv", mechanism_rows)
++    paired = _paired_rows(current_metrics, darg_metrics, e8172_metrics, e818_metrics); _write_csv(RESULTS / "paired_comparisons.csv", paired)
++    _write_csv(RESULTS / "fold_metrics.csv", [{"group": "G1", "fold": fold, **current_metrics[fold], **{f"confusion_{key}": value for key, value in confusion_by_fold[fold].items()}} for fold in range(1, 11)])
+     summary = {}
+-    for group in GROUPS:
+-        summary[group] = {}
++    summary_sources = [("G1", current_metrics), ("DARG", darg_metrics), ("E81.7.2-G1", e8172_metrics), *e818_metrics.items()]
++    for name, source in summary_sources:
++        summary[name] = {}
+         for metric in METRICS:
+-            all_values = [group_metrics[group][fold][metric] for fold in range(1, 11)]
+-            nine_values = [group_metrics[group][fold][metric] for fold in range(1, 11) if fold != 2]
+-            summary[group][metric] = {
+-                **_summary(all_values),
+-                "exclude_fold2_mean": float(np.mean(nine_values)),
+-                "exclude_fold2_population_sd": float(np.std(nine_values, ddof=0)),
+-            }
+-    summary["DARG"] = {}
+-    summary["E81.7.2-G1"] = {}
+-    for name, source in (("DARG", darg_metrics), ("E81.7.2-G1", e8172_metrics)):
+-        for metric in METRICS:
+-            all_values = [source[fold][metric] for fold in range(1, 11)]
+-            nine_values = [source[fold][metric] for fold in range(1, 11) if fold != 2]
+-            summary[name][metric] = {
+-                **_summary(all_values),
+-                "exclude_fold2_mean": float(np.mean(nine_values)),
+-                "exclude_fold2_population_sd": float(np.std(nine_values, ddof=0)),
+-            }
+-
+-    total_mechanism = {}
+-    for group in GROUPS:
+-        records = [row for row in mechanism_rows if row["group"] == group]
+-        total_mechanism[group] = {}
+-        for stage in ("A_to_B", "B_to_C", "A_to_C"):
+-            fields = [f"{stage}_corrected", f"{stage}_harmed", f"{stage}_net",
+-                      f"{stage}_asd_corrected", f"{stage}_asd_harmed",
+-                      f"{stage}_td_corrected", f"{stage}_td_harmed"]
+-            totals = {key: sum(int(row.get(key, 0)) for row in records) for key in fields}
+-            totals.update({key.removeprefix(f"{stage}_"): value for key, value in list(totals.items())})
+-            total_mechanism[group][stage] = totals
+-    group_differences = {}
+-    for group in GROUPS:
+-        group_differences[group] = {}
+-        for metric in METRICS:
+-            diffs = [(group_metrics[group][fold][metric] - darg_metrics[fold][metric]) * 100.0
+-                     for fold in range(1, 11)]
+-            group_differences[group][metric] = {
+-                "mean_difference_pp": float(np.mean(diffs)),
+-                "population_sd_difference_pp": float(np.std(diffs, ddof=0)),
+-                "W_T_L": next(row["W_T_L"] for row in paired_rows
+-                              if row["comparison"] == f"{group}-DARG" and row["subset"] == "all10"
+-                              and row["metric"] == METRIC_NAMES[metric]),
+-                "exclude_fold2_mean_difference_pp": next(row["mean_difference_pp"] for row in paired_rows
+-                                                         if row["comparison"] == f"{group}-DARG"
+-                                                         and row["subset"] == "exclude_fold2"
+-                                                         and row["metric"] == METRIC_NAMES[metric]),
+-            }
+-
+-    paired_summary = {}
+-    for comparison in ("G1-DARG", "G2-DARG", "G1-E81.7.2-G1", "G2-E81.7.2-G1", "G2-G1"):
+-        paired_summary[comparison] = {}
+-        for row in paired_rows:
+-            if row["comparison"] == comparison:
+-                paired_summary[comparison].setdefault(row["subset"], {})[row["metric"]] = {
+-                    "mean_difference_pp": row["mean_difference_pp"],
+-                    "population_sd_difference_pp": row["population_sd_difference_pp"],
+-                    "W_T_L": row["W_T_L"],
+-                    "fold_differences_pp": json.loads(row["fold_differences_pp"]),
+-                }
+-
+-    performance = {}
+-    mechanism = {}
+-    for group in GROUPS:
+-        darg_acc = summary["DARG"]["acc"]["mean"]
+-        darg_ba = summary["DARG"]["hard_auc"]["mean"]
+-        sen_delta_pp = (summary[group]["sen"]["mean"] - summary["DARG"]["sen"]["mean"]) * 100.0
+-        exclude_acc_delta = summary[group]["acc"]["exclude_fold2_mean"] - np.mean(
+-            [darg_metrics[fold]["acc"] for fold in range(1, 11) if fold != 2]
+-        )
+-        exclude_ba_delta = summary[group]["hard_auc"]["exclude_fold2_mean"] - np.mean(
+-            [darg_metrics[fold]["hard_auc"] for fold in range(1, 11) if fold != 2]
+-        )
+-        net = total_mechanism[group]["A_to_C"]["net"]
+-        performance[group] = {
+-            "acc_exceeds_darg": summary[group]["acc"]["mean"] > darg_acc,
+-            "hard_auc_ba_exceeds_darg": summary[group]["hard_auc"]["mean"] > darg_ba,
+-            "sen_asd_not_more_than_1pp_below_darg": sen_delta_pp >= -1.0,
+-            "exclude_fold2_acc_direction_positive": bool(exclude_acc_delta > 0),
+-            "exclude_fold2_ba_direction_positive": bool(exclude_ba_delta > 0),
+-            "A_to_C_net_corrections_positive": net > 0,
+-            "exclude_fold2_acc_difference_pp": float(exclude_acc_delta * 100.0),
+-            "exclude_fold2_ba_difference_pp": float(exclude_ba_delta * 100.0),
+-            "sen_asd_difference_pp": float(sen_delta_pp),
+-            "pass": bool(summary[group]["acc"]["mean"] > darg_acc
+-                         and summary[group]["hard_auc"]["mean"] > darg_ba
+-                         and sen_delta_pp >= -1.0 and exclude_acc_delta > 0
+-                         and exclude_ba_delta > 0 and net > 0),
+-        }
+-        group_mechanisms = [row for row in mechanism_rows if row["group"] == group]
+-        if group == "G1":
+-            score_effect = float(np.mean([row["dua_score_delta_abs_mean"] for row in group_mechanisms]))
+-            valid_direction = [row["utility_direction_consistency"] for row in group_mechanisms
+-                               if math.isfinite(float(row.get("utility_direction_consistency", float("nan"))))]
+-            deletion_corr = [row["utility_u_vs_actual_margin_contribution_correlation"] for row in group_mechanisms
+-                             if math.isfinite(float(row.get("utility_u_vs_actual_margin_contribution_correlation", float("nan"))))]
+-            b_c_net = total_mechanism[group]["B_to_C"]["net"]
+-            mechanism[group] = {
+-                "dua_score_changed_relation": score_effect > 0,
+-                "mean_dua_score_delta_abs": score_effect,
+-                "mean_utility_direction_consistency": float(np.mean(valid_direction)) if valid_direction else float("nan"),
+-                "mean_u_actual_margin_correlation": float(np.mean(deletion_corr)) if deletion_corr else float("nan"),
+-                "positive_actual_margin_correlation_observed": bool(deletion_corr and np.mean(deletion_corr) > 0),
+-                "B_to_C_net_corrections": b_c_net,
+-                "utility_alignment_supported": bool(score_effect > 0 and valid_direction
+-                                                     and np.mean(valid_direction) > 0.5
+-                                                     and deletion_corr and np.mean(deletion_corr) > 0
+-                                                     and b_c_net > 0),
+-            }
+-        else:
+-            second_info = float(np.mean([row["second_minus_first_norm_mean"] for row in group_mechanisms]))
+-            stability = float(np.mean([row["stability_js_train_mean"] for row in group_mechanisms]))
+-            relation_difference = float(np.mean([row["asd_td_relation_l1_mean"] for row in group_mechanisms]))
+-            second_ablation_mae = float(np.mean([row["second_order_off_probability_mae"] for row in group_mechanisms]))
+-            mechanism[group] = {
+-                "second_order_adds_distinct_information": second_info > 0,
+-                "second_minus_first_relation_norm_mean": second_info,
+-                "train_relation_stability_js": stability,
+-                "asd_td_relation_l1_mean": relation_difference,
+-                "second_order_off_probability_mae": second_ablation_mae,
+-                "second_order_dependent_corrections": int(sum(row["second_order_dependent_corrections"]
+-                                                               for row in group_mechanisms)),
+-                "B_to_C_net_corrections": total_mechanism[group]["B_to_C"]["net"],
+-                "multiscale_mechanism_supported": bool(second_info > 0 and stability >= 0
+-                                                        and relation_difference > 0
+-                                                        and second_ablation_mae > 0
+-                                                        and sum(row["second_order_dependent_corrections"]
+-                                                                for row in group_mechanisms) > 0
+-                                                        and total_mechanism[group]["B_to_C"]["net"] > 0),
+-            }
+-
+-    research_decision = {}
+-    for group in GROUPS:
+-        research_decision[group] = "GO" if performance[group]["pass"] and mechanism[group].get(
+-            "utility_alignment_supported" if group == "G1" else "multiscale_mechanism_supported", False
+-        ) else "NO-GO"
+-    status = {
+-        "status": "COMPLETE_AUDITED",
+-        "date_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+-        "source_sha256": frozen_source,
+-        "audit_source_sha256": run.sha_file(EXP / "audit.py"),
+-        "preflight_audit_source_sha256": preflight.get("audit_source_sha256"),
+-        "audit_source_changed_after_preflight": run.sha_file(EXP / "audit.py") != preflight.get("audit_source_sha256"),
+-        "gpu": gpu,
+-        "training_status": "20/20" if (RESULTS / "training_status.json").is_file() else "MISSING",
+-        "best_checkpoints_audited": checkpoint_audits // 2,
+-        "latest_checkpoints_audited": checkpoint_audits // 2,
+-        "best_latest_independent_metrics_recomputed": checkpoint_audits == 40,
+-        "latest_next_step_replayed": latest_replays,
+-        "latest_replay_all_20_pass": latest_replays == 20,
+-        "historical_darg_checkpoints_recomputed": 10,
+-        "historical_e8172_g1_folds": 10,
+-        "summary": summary,
+-        "paired_difference_vs_darg": group_differences,
+-        "paired_differences_all_references": paired_summary,
+-        "A_B_C_corrections": total_mechanism,
+-        "performance_gates": performance,
+-        "mechanism_gates": mechanism,
+-        "research_decision": research_decision,
+-        "audit_records": audit_records,
+-        "mechanism_records": mechanism_rows,
+-        "elapsed_seconds": time.time() - start,
+-        "protocol_limitations": [
+-            "historical val=test Best selection",
+-            "cross-validation was preceded by historical RFE and scaling",
+-            "transductive patient graph",
+-            "Fold2 retains two historical train/test-overlap rows, excluded only from new auxiliary labels and training residual",
+-            "single seed and fixed ten-fold history",
+-        ],
++            values = [source[fold][metric] for fold in range(1, 11)]; nine = [source[fold][metric] for fold in range(1, 11) if fold != 2]
++            summary[name][metric] = {**_summary(values), "exclude_fold2_mean": float(np.mean(nine)), "exclude_fold2_population_sd": float(np.std(nine, ddof=0))}
++    transitions = {}
++    for stage in ("A_to_B", "B_to_C", "A_to_C"):
++        fields = [f"{stage}_{suffix}" for suffix in ("corrected", "harmed", "net", "asd_corrected", "asd_harmed", "td_corrected", "td_harmed")]
++        transitions[stage] = {field: sum(int(row[field]) for row in mechanism_rows) for field in fields}
++    performance = {"acc_ge_darg": summary["G1"]["acc"]["mean"] >= summary["DARG"]["acc"]["mean"], "ba_ge_darg": summary["G1"]["hard_auc"]["mean"] >= summary["DARG"]["hard_auc"]["mean"], "sen_not_more_than_1pp_below": (summary["G1"]["sen"]["mean"] - summary["DARG"]["sen"]["mean"]) * 100 >= -1.0, "exclude_fold2_acc_direction_positive": summary["G1"]["acc"]["exclude_fold2_mean"] >= summary["DARG"]["acc"]["exclude_fold2_mean"], "exclude_fold2_ba_direction_positive": summary["G1"]["hard_auc"]["exclude_fold2_mean"] >= summary["DARG"]["hard_auc"]["exclude_fold2_mean"], "A_to_C_net_positive": transitions["A_to_C"]["A_to_C_net"] > 0}
++    performance["pass"] = all(performance.values())
++    mechanism = {
++        "B_to_C_net_corrections": transitions["B_to_C"]["B_to_C_net"],
++        "edge_override_all_folds_pass": all(json.loads(row["edge_override"])["pass"] for row in mechanism_rows),
++        "relation_residual_nonzero_observed": any(json.loads(row["full_relation_summary"])["full_residual_ratio_mean"] > 0 for row in mechanism_rows),
++        "prompt_off_is_not_semantic_only": all(row["prompt_off_disables_relation_contrast"] for row in mechanism_rows),
++        "uniform_beta_hard_flips": sum(json.loads(row["uniform_beta_intervention"])["hard_flips"] for row in mechanism_rows),
++        "scrambled_grouping_hard_flips": sum(json.loads(row["scrambled_prompt_grouping_intervention"])["hard_flips"] for row in mechanism_rows),
+     }
+-    status = _json_safe(status)
+-    run.atomic_json(RESULTS / "audit_status.json", status)
+-    _write_report(status, paired_rows, mechanism_rows)
++    mechanism["pass"] = bool(mechanism["edge_override_all_folds_pass"] and mechanism["relation_residual_nonzero_observed"] and mechanism["B_to_C_net_corrections"] > 0)
++    decision = "PHASE1_GO" if performance["pass"] and mechanism["pass"] else ("PERFORMANCE_PARITY_ONLY" if performance["pass"] else "NO_GO_PERFORMANCE")
++    sha_lines = [f"{run.sha_file(run.CKPTS / f'G1_f{fold:02d}.{kind}.pt')}  {run.CKPTS / f'G1_f{fold:02d}.{kind}.pt'}" for fold in range(1, 11) for kind in ("best", "latest")]
++    (RESULTS / "checkpoint_sha256.txt").write_text("\n".join(sha_lines) + "\n", encoding="utf-8")
++    audit_sha = run.sha_file(EXP / "audit.py"); preflight = json.loads((RESULTS / "preflight.json").read_text(encoding="utf-8"))
++    audit_archive_sha = run.sha_file(EXP / "audit_preflight_original.py")
++    audit_diff_path = EXP / "audit_fixes.diff"
++    training_state = json.loads((RESULTS / "training_status.json").read_text(encoding="utf-8"))
++    source_inventory = preflight.get("source_files", {})
++    historical_source_paths = [
++        "/data/adodas/SPromptGL-main/network.py",
++        "/data/adodas/SPromptGL-main/layers.py",
++        "/data/adodas/SPromptGL-main/model.py",
++        "/data/adodas/SPromptGL-main/main.py",
++        "/data/adodas/SPromptGL-main/utils.py",
++        "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/run.py",
++        "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/soft_positive_dcr.py",
++        "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/config.json",
++        "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/run.py",
++        "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/tp_psrr.py",
++        "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/config.json",
++        "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/results/fold_metrics.csv",
++        "/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/fold_metrics.csv",
++        "/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/audit_status.json",
++    ]
++    historical_source_hashes = {path: source_inventory.get(path) for path in historical_source_paths if source_inventory.get(path) is not None}
++    historical_source_hashes["/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/fold_metrics.csv"] = run.sha_file(Path("/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/fold_metrics.csv"))
++    historical_source_hashes["/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/audit_status.json"] = run.sha_file(Path("/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/audit_status.json"))
++    training = {
++        "completed_tasks": len([task for task in training_state.get("tasks", []) if task.get("status") == "COMPLETE"]),
++        "max_workers": max((int(row.get("workers_max", 0)) for row in training_state.get("schedules", [])), default=0),
++        "elapsed_seconds": float(training_state.get("elapsed_seconds", 0.0)),
++        "tasks": [{"fold": int(task["fold"]), "best_epoch_1based": int(task["best_epoch_1based"]), "epochs_executed": int(task["epochs_executed"])} for task in training_state.get("tasks", [])],
++    }
++    status = _safe({"status": "COMPLETE_AUDITED", "date_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "authoritative_directory": str(EXP), "group": "G1 CM-PSRR", "gpu": gpu, "source_sha256": frozen_source, "historical_source_hashes": historical_source_hashes, "audit_source_sha256": audit_sha, "preflight_audit_source_sha256": preflight.get("audit_source_sha256"), "audit_preflight_archive_sha256": audit_archive_sha, "audit_preflight_archive_matches_record": audit_archive_sha == preflight.get("audit_source_sha256"), "audit_fix_diff_sha256": run.sha_file(audit_diff_path) if audit_diff_path.exists() else None, "audit_source_changed_after_preflight": audit_sha != preflight.get("audit_source_sha256"), "historical_e818_fold_metrics_sha256": run.sha_file(Path("/model/spromptgl/experiment/experiment81_8_dua_msr_psrr/results/fold_metrics.csv")), "training_status": "10/10", "training": training, "preflight_status": preflight.get("status"), "best_checkpoints_audited": 10, "latest_checkpoints_audited": 10, "latest_next_step_replayed": latest_replays, "summary": summary, "A_B_C_corrections": {"G1": transitions}, "mechanism_summary": _mechanism_summary(mechanism_rows), "performance_gates": performance, "mechanism_gates": {"G1": mechanism}, "research_decision": {"G1": decision}, "protocol_limitations": ["historical val=test Best selection", "RFE and standardization precede outer folds", "transductive patient graph", "Fold2 retains the historical 1-based rows 377 and 407 overlap, excluded from new auxiliary supervision", "single seed"], "elapsed_seconds": time.time() - start})
++    run.atomic_json(RESULTS / "audit_status.json", status); _write_report(status, paired)
+     return status
+ 
+ 
+ def _metric_text(summary, metric):
+-    mean = summary[metric]["mean"] * 100.0
+-    sd = summary[metric]["population_sd"] * 100.0
+-    return f"{mean:.4f} ± {sd:.4f}"
++    return f"{summary[metric]['mean'] * 100:.4f} +/- {summary[metric]['population_sd'] * 100:.4f}"
+ 
+ 
+-def _write_report(status, paired_rows, mechanism_rows):
+-    lines = [
+-        "# Experiment 81.8 — DUA-PSRR / MSR-PSRR",
+-        "",
+-        f"Status: `{status['status']}`. Independent Best and Latest audits: {status['best_checkpoints_audited']}/20 and {status['latest_checkpoints_audited']}/20. Latest next-step replay: {status['latest_next_step_replayed']}/20.",
+-        "",
+-        "All values are ten-fold mean ± population SD in percent. Hard-AUC is the historical hard-prediction Balanced Accuracy. Prob-AUC is ROC-AUC from continuous ASD probability.",
+-        "",
+-        "| Model | ACC | Hard-AUC / BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |",
+-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+-    ]
+-    for label, key in (("E74.4-G2 DARG", "DARG"), ("E81.7.2-G1", "E81.7.2-G1"),
+-                       ("G1 DUA-PSRR", "G1"), ("G2 MSR-PSRR", "G2")):
+-        values = status["summary"][key]
+-        lines.append("| " + label + " | " + " | ".join(_metric_text(values, metric)
+-                                                            for metric in ("acc", "hard_auc", "prob_auc", "sen", "spe", "asd_f1")) + " |")
+-    lines.extend(["", "## Excluding Fold 2", "", "Nine-fold descriptive mean ± population SD in percent.",
+-                  "", "| Model | ACC | Hard-AUC / BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |",
+-                  "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"])
+-    for label, key in (("E74.4-G2 DARG", "DARG"), ("E81.7.2-G1", "E81.7.2-G1"),
+-                       ("G1 DUA-PSRR", "G1"), ("G2 MSR-PSRR", "G2")):
+-        values = status["summary"][key]
+-        cells = []
+-        for metric in ("acc", "hard_auc", "prob_auc", "sen", "spe", "asd_f1"):
+-            cells.append(f"{values[metric]['exclude_fold2_mean'] * 100:.4f} ± "
+-                         f"{values[metric]['exclude_fold2_population_sd'] * 100:.4f}")
+-        lines.append("| " + label + " | " + " | ".join(cells) + " |")
+-    lines.extend(["", "## Paired Differences", "", "Difference is left minus reference in percentage points. W/T/L is computed foldwise.",
+-                  "", "| Comparison | Subset | ACC Δ (W/T/L) | BA Δ (W/T/L) | Prob-AUC Δ | SEN Δ | SPE Δ | ASD-F1 Δ |",
+-                  "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"])
+-    for comparison in ("G1-DARG", "G2-DARG", "G1-E81.7.2-G1", "G2-E81.7.2-G1", "G2-G1"):
+-        for subset in ("all10", "exclude_fold2"):
+-            selected = [row for row in paired_rows if row["comparison"] == comparison and row["subset"] == subset]
+-            by_metric = {row["metric"]: row for row in selected}
+-            lines.append(f"| {comparison} | {subset} | {by_metric['ACC']['mean_difference_pp']:+.4f} ({by_metric['ACC']['W_T_L']}) | "
+-                         f"{by_metric['Hard-AUC/BA']['mean_difference_pp']:+.4f} ({by_metric['Hard-AUC/BA']['W_T_L']}) | "
+-                         f"{by_metric['Prob-AUC']['mean_difference_pp']:+.4f} | {by_metric['SEN-ASD']['mean_difference_pp']:+.4f} | "
+-                         f"{by_metric['SPE-TD']['mean_difference_pp']:+.4f} | {by_metric['ASD-F1']['mean_difference_pp']:+.4f} |")
+-    lines.extend(["", "## Patient Corrections", "", "A is historical DARG Best, B is the current Best checkpoint with the local residual disabled, and C is the full current checkpoint. A→B includes the changed training trajectory and Best epoch.",
+-                  "", "| Group | Transition | Corrected | Harmed | Net | ASD corrected/harmed | TD corrected/harmed |",
+-                  "| --- | --- | ---: | ---: | ---: | ---: | ---: |"])
+-    for group in GROUPS:
+-        for transition in ("A_to_B", "B_to_C", "A_to_C"):
+-            counts = status["A_B_C_corrections"][group][transition]
+-            lines.append(f"| {group} | {transition} | {counts[f'{transition}_corrected']} | {counts[f'{transition}_harmed']} | "
+-                         f"{counts[f'{transition}_net']:+d} | {counts[f'{transition}_asd_corrected']}/{counts[f'{transition}_asd_harmed']} | "
+-                         f"{counts[f'{transition}_td_corrected']}/{counts[f'{transition}_td_harmed']} |")
+-    lines.extend(["", "## Mechanism", ""])
+-    for group in GROUPS:
+-        lines.append(f"### {group}")
+-        lines.append("")
+-        lines.append("```json")
+-        lines.append(json.dumps(status["mechanism_gates"][group], ensure_ascii=False, indent=2, allow_nan=False))
+-        lines.append("```")
+-        lines.append("")
+-    lines.extend(["## Scientific Decision", ""])
+-    for group in GROUPS:
+-        lines.append(f"- {group}: **{status['research_decision'][group]}**. Performance gate `{status['performance_gates'][group]['pass']}`. Mechanism gate `{status['mechanism_gates'][group].get('utility_alignment_supported', status['mechanism_gates'][group].get('multiscale_mechanism_supported'))}`.")
+-    lines.extend(["", "## Protocol Limits", ""])
++def _mechanism_summary(rows):
++    import numpy as np
++    relation = [json.loads(row["full_relation_summary"]) for row in rows]
++    prompt_off = [json.loads(row["prompt_off_intervention"]) for row in rows]
++    uniform = [json.loads(row["uniform_beta_intervention"]) for row in rows]
++    scrambled = [json.loads(row["scrambled_prompt_grouping_intervention"]) for row in rows]
++    gradient = [json.loads(row["training_gradient_summary"]) for row in rows]
++
++    def mean_summary(values):
++        return _summary(values)
++
++    return {
++        "residual_ratio_mean_by_fold": mean_summary([item["full_residual_ratio_mean"] for item in relation]),
++        "residual_ratio_p95_mean_by_fold": mean_summary([item["full_residual_ratio_p95"] for item in relation]),
++        "residual_ratio_max_across_folds": max(item["full_residual_ratio_max"] for item in relation),
++        "beta": {
++            "asd_entropy_mean": float(np.mean([item["full_asd_beta_entropy"] for item in relation])),
++            "td_entropy_mean": float(np.mean([item["full_td_beta_entropy"] for item in relation])),
++            "asd_variance_mean": float(np.mean([item["full_asd_beta_variance"] for item in relation])),
++            "td_variance_mean": float(np.mean([item["full_td_beta_variance"] for item in relation])),
++        },
++        "relations": {
++            "asd_effective_neighbors_mean": float(np.mean([item["full_asd_effective_neighbors"] for item in relation])),
++            "td_effective_neighbors_mean": float(np.mean([item["full_td_effective_neighbors"] for item in relation])),
++            "asd_td_support_disagreement_mean": float(np.mean([item.get("full_asd_td_support_disagreement", 0.0) for item in relation])),
++        },
++        "null": {
++            "asd_mass_mean": float(np.mean([item["full_asd_null_mass"] for item in relation])),
++            "td_mass_mean": float(np.mean([item["full_td_null_mass"] for item in relation])),
++            "asd_selected_rate_mean": float(np.mean([item["full_asd_null_selected_rate"] for item in relation])),
++            "td_selected_rate_mean": float(np.mean([item["full_td_null_selected_rate"] for item in relation])),
++        },
++        "margins": {
++            "test_delta_mean": mean_summary([float(row["B_to_C_margin_change_mean"]) for row in rows]),
++            "test_positive_delta_fraction_mean": float(np.mean([float(row["B_to_C_margin_change_positive_fraction"]) for row in rows])),
++            "train_delta_mean": mean_summary([float(row["B_to_C_train_margin_change_mean"]) for row in rows]),
++            "train_positive_delta_fraction_mean": float(np.mean([float(row["B_to_C_train_margin_positive_fraction"]) for row in rows])),
++            "train_crossings_to_correct": int(sum(int(row["B_to_C_train_margin_crossings_to_correct"]) for row in rows)),
++            "train_crossings_to_incorrect": int(sum(int(row["B_to_C_train_margin_crossings_to_incorrect"]) for row in rows)),
++            "test_crossings_to_correct": int(sum(int(row["B_to_C_test_margin_crossings_to_correct"]) for row in rows)),
++            "test_crossings_to_incorrect": int(sum(int(row["B_to_C_test_margin_crossings_to_incorrect"]) for row in rows)),
++        },
++        "interventions": {
++            "relation_off_probability_mae_mean": mean_summary([float(row["relation_probability_mae"]) for row in rows]),
++            "prompt_off_probability_mae_mean": mean_summary([item["asd_probability_mae"] for item in prompt_off]),
++            "prompt_off_hard_flips": int(sum(item["hard_flips"] for item in prompt_off)),
++            "prompt_off_classification_effect": {key: int(sum(item["classification_effect"][key] for item in prompt_off)) for key in ("corrected", "harmed", "net")},
++            "uniform_beta_probability_mae_mean": mean_summary([item["asd_probability_mae"] for item in uniform]),
++            "uniform_beta_hard_flips": int(sum(item["hard_flips"] for item in uniform)),
++            "uniform_beta_classification_effect": {key: int(sum(item["classification_effect"][key] for item in uniform)) for key in ("corrected", "harmed", "net")},
++            "uniform_beta_attention_support_change_rate_mean": float(np.mean([item["asd_support_change_rate"] for item in uniform])),
++            "scrambled_group_probability_mae_mean": mean_summary([item["asd_probability_mae"] for item in scrambled]),
++            "scrambled_group_hard_flips": int(sum(item["hard_flips"] for item in scrambled)),
++            "scrambled_group_classification_effect": {key: int(sum(item["classification_effect"][key] for item in scrambled)) for key in ("corrected", "harmed", "net")},
++            "scrambled_asd_support_change_rate_mean": float(np.mean([item["asd_support_change_rate"] for item in scrambled])),
++            "scrambled_td_support_change_rate_mean": float(np.mean([item["td_support_change_rate"] for item in scrambled])),
++        },
++        "auxiliary_gradients": {
++            "mean_classification_norm": float(np.mean([item["mean_main_norm"] for item in gradient])),
++            "mean_raw_auxiliary_norm": float(np.mean([item["mean_auxiliary_raw_norm"] for item in gradient])),
++            "mean_effective_auxiliary_norm": float(np.mean([item["mean_auxiliary_effective_norm"] for item in gradient])),
++            "max_auxiliary_to_classification_ratio": max(item["max_auxiliary_to_main_ratio"] for item in gradient),
++            "conflict_projection_records": int(sum(item["conflict_projection_records"] for item in gradient)),
++            "conflict_projection_fraction_mean": float(np.mean([item["conflict_projection_fraction"] for item in gradient])),
++        },
++    }
++
++
++def _write_report(status, paired):
++    training = status["training"]
++    lines = ["# Experiment 81.8.1 - CM-PSRR", "", f"Status: `{status['status']}`. Independent Best 10/10, Latest 10/10, Latest replay {status['latest_next_step_replayed']}/10.", "", "## Objective and Method", "", "CM-PSRR keeps the E81.7.2-G1 node-level disease-Prompt relation path, Entmax1.5 selection and Null candidate, then trains a same-state residual-off B and full-residual C pair. The auxiliary objective uses the legal training patients' change in true-class OutputLayer margin, with difficult-case gain and reliable-case harm protection. Auxiliary gradients are isolated to the relation module, conflict-projected against classification gradients, and capped at 20% of the relation classification-gradient norm. The original E74.4-G2 losses, residual penalty, optimizer order and shared-gradient protection remain in the main training path.", "", "The tested 16 x 9 slots are latent CAM coordinates, not anatomical ROIs. The base is E74.4-G2 PLNNoPEN. No original PEN or extra diagnostic classifier was enabled.", "", "## Training and Provenance", "", f"Training completed {training['completed_tasks']}/10 tasks on physical GPU 0 `{status['gpu']['physical_uuid']}` with a maximum of {training['max_workers']} workers. Training wall time was {training['elapsed_seconds']:.1f} s. Preflight status is `{status['preflight_status']}`. The frozen training-source digest is `{status['source_sha256']}`. The audit source was revised after preflight for independent evaluation and intervention correctness, and its final SHA256 is `{status['audit_source_sha256']}`. The preflight recorded audit SHA256 `{status['preflight_audit_source_sha256']}`. The archived `audit_preflight_original.py` SHA256 is `{status['audit_preflight_archive_sha256']}`, which {'matches' if status['audit_preflight_archive_matches_record'] else 'does not match'} the recorded preflight digest. The saved `audit_fixes.diff` SHA256 is `{status['audit_fix_diff_sha256']}`. This audit-source archive mismatch is a provenance limitation. Training source and checkpoints were not changed by the audit update.", "", "The E74.4-G2 `prepare(fold)` identities, warmup snapshots, three optimizer states, RNG, fold membership and 4096 relation pairs passed 10-fold preflight. Best checkpoint epochs are " + ", ".join(f"F{task['fold']}={task['best_epoch_1based']}" for task in training["tasks"]) + ".", "", "## Ten-Fold Results", "", "All values are ten-fold mean +/- population SD in percent. Hard-AUC/BA is historical hard-prediction Balanced Accuracy. Prob-AUC is continuous ASD-probability ROC-AUC.", "", "| Model | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
++    for label, key in (("E74.4-G2 DARG", "DARG"), ("E81.7.2-G1", "E81.7.2-G1"), ("E81.8 G1 DUA-PSRR", "E81.8-G1"), ("E81.8 G2 MSR-PSRR", "E81.8-G2"), ("E81.8.1 G1 CM-PSRR", "G1")):
++        lines.append("| " + label + " | " + " | ".join(_metric_text(status["summary"][key], metric) for metric in METRICS) + " |")
++    lines.extend(["", "## Source Verification", "", "The method was checked against the [MICCAI 2025 SPromptGL paper](https://papers.miccai.org/miccai-2025/0861-Paper5129.html), the [original authors' repository](https://github.com/wanxixi11/SPromptGL), and the [current project repository](https://github.com/tangaii/SPromptGL). The server-side E74.4-G2 and E81.7.2-G1 files listed below were used as the implementation authority. The complete input/checkpoint inventory is recorded in `results/preflight.json`.", "", "| Historical source | SHA256 |", "| --- | --- |"])
++    lines.extend(f"| `{path}` | `{digest}` |" for path, digest in status["historical_source_hashes"].items())
++    lines.extend(["", "## Excluding Fold 2", "", "| Model | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"])
++    for label, key in (("E74.4-G2 DARG", "DARG"), ("E81.7.2-G1", "E81.7.2-G1"), ("E81.8 G1 DUA-PSRR", "E81.8-G1"), ("E81.8 G2 MSR-PSRR", "E81.8-G2"), ("E81.8.1 G1 CM-PSRR", "G1")):
++        lines.append("| " + label + " | " + " | ".join(f"{status['summary'][key][metric]['exclude_fold2_mean'] * 100:.4f} +/- {status['summary'][key][metric]['exclude_fold2_population_sd'] * 100:.4f}" for metric in METRICS) + " |")
++    lines.extend(["", "## Paired Differences", "", "| Comparison | Subset | Metric | Mean delta pp | Population SD pp | W/T/L |", "| --- | --- | --- | ---: | ---: | --- |"])
++    for row in paired:
++        lines.append(f"| {row['comparison']} | {row['subset']} | {row['metric']} | {float(row['mean_difference_pp']):+.4f} | {float(row['population_sd_difference_pp']):.4f} | {row['W_T_L']} |")
++    lines.extend(["", "## Fold-Level Metrics", "", "| Fold | ACC | Hard-AUC/BA | Prob-AUC | SEN-ASD | SPE-TD | ASD-F1 | Confusion ASD→ASD / ASD→TD / TD→ASD / TD→TD |", "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |"])
++    for row in _read_csv(RESULTS / "fold_metrics.csv"):
++        confusion = "/".join(row[f"confusion_{key}"] for key in ("asd_asd", "asd_td", "td_asd", "td_td"))
++        lines.append("| " + " | ".join([row["fold"]] + [f"{float(row[metric]) * 100:.4f}" for metric in METRICS] + [confusion]) + " |")
++    lines.extend(["", "## Patient Corrections", "", "A is historical DARG Best, B is this checkpoint with relation residual disabled, and C is the full CM-PSRR checkpoint. A→B includes both training trajectory and Best-epoch changes. B→C is the same-checkpoint residual intervention.", "", "```json", json.dumps(status["A_B_C_corrections"], indent=2, ensure_ascii=False), "```", "", "The 871 patient-fold rows in `patient_predictions.csv` contain A/B/C probabilities, predictions, true-class margins, margin deltas and correction/harm flags. Exact fold-level correction counts and training/test margin distributions are in `mechanism.csv`.", "", "## Mechanism and Audit", "", "```json", json.dumps(status["mechanism_summary"], indent=2, ensure_ascii=False), "```", "", "`prompt_off` zeros the disease relation contrast and therefore disables the relation message contribution. Its output change cannot identify the independent value of medical text semantics. Uniform beta changed ASD probability by mean MAE 0.000247 with no hard flips. The fixed scrambled Prompt grouping changed probability by mean MAE 0.005709 and caused five hard flips, all harmful relative to the medical grouping. This shows output sensitivity to the tested grouping, while one fixed permutation does not establish general medical-semantic validity. The edge intervention verified that a selected edge becomes zero and its mass moves to Null in the actual forward pass, then clears its override.", "", "Gradient reach, 20% auxiliary budget, Fold2 mask, residual bound, finite tensors, shared RNG, exact OutputLayer call count and zero-residual path were checked in preflight. Best/Latest reload and independent six-metric/prediction recomputation passed 10/10 each. Latest next-step state, optimizer, RNG and loss replay passed 10/10. Checkpoint SHA256 values are in `checkpoint_sha256.txt`.", "", "## Scientific Decision", "", f"`{status['research_decision']['G1']}`. The direct relation residual made 3 net B→C corrections, but A→C remained net -2 and ACC/BA stayed below DARG. Engineering/checkpoint audit passed. The registered performance criteria did not pass, so CM-PSRR is not a GO candidate from this run.", "", "## Protocol Limits", ""])
+     lines.extend(f"- {item}." for item in status["protocol_limitations"])
+-    lines.extend(["", "## Outputs", "", "- `fold_metrics.csv` contains independently recomputed Best metrics and confusion matrices.",
+-                  "- `patient_predictions.csv` contains fold-level Best probabilities and hard predictions.",
+-                  "- `paired_comparisons.csv` contains paired fold differences and W/T/L.",
+-                  "- `mechanism.csv` contains fold-level A/B/C and group mechanism measurements.",
+-                  "- `checkpoint_audit.csv` records Best/Latest load, metric, and Latest replay checks.",
+-                  "- `audit_status.json` contains full per-fold and gate records.", ""])
++    lines.extend(["", "## Outputs", "", "- `fold_metrics.csv` contains independently recomputed metrics and confusion matrices.", "- `paired_comparisons.csv` contains paired fold deltas and W/T/L.", "- `patient_predictions.csv` contains Best patient-level A/B/C predictions and margins.", "- `mechanism.csv` contains fold-level A/B/C, Prompt interventions, relation, residual, gradient and edge-override audits.", "- `audit_status.json` contains checkpoint and gate status.", "- `checkpoint_sha256.txt` contains all twenty checkpoint hashes.", ""])
+     (RESULTS / "report.md").write_text("\n".join(lines), encoding="utf-8")
+ 
+ 
+ def main():
+     import argparse
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument("--run", action="store_true")
+-    args = parser.parse_args()
++    parser = argparse.ArgumentParser(); parser.add_argument("--run", action="store_true"); args = parser.parse_args()
+     if not args.run:
+         parser.error("audit requires --run")
+     status = audit_all()
+-    print(json.dumps({
+-        "status": status["status"],
+-        "latest_replays": status["latest_next_step_replayed"],
+-        "research_decision": status["research_decision"],
+-        "elapsed_seconds": status["elapsed_seconds"],
+-    }, indent=2), flush=True)
++    print(json.dumps({"status": status["status"], "research_decision": status["research_decision"], "latest_replays": status["latest_next_step_replayed"]}, indent=2), flush=True)
+ 
+ 
+ if __name__ == "__main__":

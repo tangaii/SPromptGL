@@ -1,0 +1,111 @@
+{
+  "experiment": "Experiment 81.8.1 - Classification-Margin Guided Prompt Sparse Relational Reasoning",
+  "groups": {
+    "G1": "CM-PSRR: Classification-Margin Guided Prompt Sparse Relational Reasoning"
+  },
+  "seed": 0,
+  "folds": 10,
+  "initial_epoch": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "best_selection": "strict test-fold ACC improvement; equal ACC retains the earlier epoch",
+  "validation_equals_test": true,
+  "base": {
+    "experiment": "E74.4-G2-Positive-DCR (DARG)",
+    "prepare_entrypoint": "experiment/experiment74_4_soft_positive_dcr/run.py::prepare(fold)",
+    "initialization": "independent E61 epoch-10 complete warmup for each group and fold",
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "optimizer_step_order": ["opt_base", "opt_cam", "opt_added", "opt_relation"],
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01},
+      "relation": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+    }
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "labels": {"ASD": 0, "TD": 1},
+    "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "historical_fold2_overlap_1based": [377, 407],
+    "blocked_auxiliary_and_training_residual_rows_zero_based": [376, 406],
+    "train_relation_pairs": 4096,
+    "pre_cv_processing_and_rfe": "inherit E74.4-G2 without modification",
+    "patient_graph": "inherit E74.4-G2 transductive graph without modification"
+  },
+  "architecture": {
+    "cam_features": 144,
+    "latent_slots": 16,
+    "slot_width": 9,
+    "anatomical_roi_claim": false,
+    "prompt_cache": "/model/spromptgl/experiment/experiment81_7_2_tp_psrr/prompt_features.pt",
+    "prompt_cache_sha256": "7bfd1d6e11bb9983e9896e682b5a8c40bf606c919dfd38bae368436955f83aff",
+    "prompts": [
+      "Nromal brain volume",
+      "Uniform cortical thickness",
+      "Symmetrical brain structure",
+      "Normal ventricular morphology",
+      "Altered brain volume",
+      "Abnormal functional connectivity",
+      "White matter integrity issues",
+      "Different activation patterns"
+    ],
+    "prompt_encoder": "frozen OpenAI CLIP RN50; cached original text features",
+    "prompt_groups": {"TD": [0, 1, 2, 3], "ASD": [4, 5, 6, 7]},
+    "semantic_basis": "fixed E[8,8] and normalized row-centered semantic directions inherited from E81.7.2-G1",
+    "prompt_selection": "patient-receiver node beta over four class prompts",
+    "real_neighbors_per_receiver": 15,
+    "null_candidates": 1,
+    "null_message": "zero; retain null probability as stopped propagation mass",
+    "entmax_alpha": 1.5,
+    "residual_rho": 0.1,
+    "raw_residual_lambda": 0.001,
+    "residual_formula": "E81.7.2-G1 RES-style local/global coordinate matching and bounded CAM144 residual",
+    "private_init_salt": 818100
+  },
+  "CM_PSRR": {
+    "margin_gain_target": 0.05,
+    "safe_margin_drop": 0.02,
+    "difficulty_temperature": 0.5,
+    "auxiliary_start_epoch_1based": 31,
+    "auxiliary_ramp_end_epoch_1based": 50,
+    "auxiliary_full_weight_epoch_1based": 51,
+    "auxiliary_gradient_norm_fraction": 0.20,
+    "auxiliary_gradient_scope": "relation-module parameters only; current-state B margin detached",
+    "total_loss": "L_original_DARG + 0.001*L_raw_residual + ramp(epoch)*L_margin"
+  },
+  "optimization": {
+    "end_to_end_classification": true,
+    "shared_gradient_control": {
+      "method": "E81.7.2-G1 same-state DARG reference g_B and RNG-restored enhanced g_F, negative-conflict group projection, then group-level delta norm cap",
+      "kappa": 0.05,
+      "groups": ["GFR", "CAM", "DARG"],
+      "auxiliary_loss_gradient_to_shared_backbone": false
+    },
+    "no_epoch_reseed": true,
+    "public_rng": "reference pass restores Python, NumPy, Torch CPU/CUDA RNG and model/CAM buffers; enhanced forward consumes the historical stream once"
+  },
+  "execution": {
+    "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment81_8_1_cm_psrr",
+    "preferred_root_creation_error": "OSSFS OSError(5, Input/output error)",
+    "authoritative_root": "/model/spromptgl/experiment/experiment81_8_1_cm_psrr",
+    "physical_gpu_index": 0,
+    "cuda_visible_devices": "0",
+    "physical_gpu_uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "workers_max": 10,
+    "first_pass_workers": 1,
+    "cpu_threads_per_worker": 1,
+    "only_best_and_latest_checkpoints": true,
+    "experiment_tasks": 10
+  },
+  "metrics": {
+    "acc": "accuracy",
+    "hard_auc": "historical hard-prediction balanced accuracy",
+    "prob_auc": "ROC-AUC using continuous P(ASD=0)",
+    "sen_asd": "recall for ASD label 0",
+    "spe_td": "recall for TD label 1",
+    "asd_f1": "F1 for ASD label 0",
+    "summary": "mean plus population SD across ten folds, percent"
+  }
+}
