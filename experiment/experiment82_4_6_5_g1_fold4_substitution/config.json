@@ -1,0 +1,40 @@
+{
+  "experiment": "Experiment 82.4.6.5 — E82.4.6.4-G1 Fold-3-to-Fold-4 Patient Substitution",
+  "name": "Cumulative DARG-only Overlap Supervision with Fold-3-to-Fold-4 Patient Substitution",
+  "group": "G1",
+  "folds": [2, 3, 4],
+  "seed": 0,
+  "start_epoch_completed": 10,
+  "full_path_directory": "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension",
+  "source_e8246_directory": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired",
+  "source_e82463_directory": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap",
+  "historical_overlap_1based": {
+    "2": [377, 407],
+    "3": [46, 66, 172, 266, 388],
+    "4": []
+  },
+  "additions_1based": {
+    "2": [681, 779, 784, 260, 288, 375],
+    "3": [46, 66, 172, 266, 388],
+    "4": [713, 727, 773]
+  },
+  "overlap_1based": {
+    "2": [377, 407, 681, 779, 784, 260, 288, 375],
+    "3": [46, 66, 172, 266, 388],
+    "4": [713, 727, 773]
+  },
+  "native_rows": {"2": 792, "3": 789, "4": 787},
+  "legal_rows": {"2": 784, "3": 784, "4": 784},
+  "test_rows": {"2": 87, "3": 87, "4": 87},
+  "new_labels": {
+    "2": [0, 1, 1, 0, 1, 0],
+    "3": [1, 0, 0, 0, 0],
+    "4": [0, 0, 0]
+  },
+  "physical_gpu_index": 0,
+  "physical_gpu_uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+  "max_workers": 1,
+  "worker_cpu_candidates": [32],
+  "protocol": "Intentional training-test overlap diagnostic. Fold 2 is reused from E82.4.6.4-G1, Fold 3 is reused from E82.4.6.3 DARG-only, and only Fold 4 is retrained after replacing the four Fold-3 additions with three Fold-4 additions.",
+  "status_note": "No independent-generalization or innovation claim is permitted from this label-exposure experiment."
+}
