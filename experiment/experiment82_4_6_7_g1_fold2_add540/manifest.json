@@ -1,0 +1,574 @@
+{
+  "experiment": "Experiment 82.4.6.7 — E82.4.6.6-G1 Fold 2 Patient 540 Addition",
+  "status": "COMPLETE_AUDITED",
+  "directory": "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540",
+  "config": {
+    "experiment": "Experiment 82.4.6.7 — E82.4.6.6-G1 Fold 2 Patient 540 Addition",
+    "name": "SCMR-DA-SRPE Cumulative DARG-only Overlap Supervision with Fold-2 Patient 540 Addition",
+    "group": "G1",
+    "folds": [
+      2
+    ],
+    "seed": 0,
+    "start_epoch_completed": 10,
+    "full_path_directory": "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension",
+    "source_e8246_directory": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired",
+    "source_e82463_directory": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap",
+    "source_e82465_directory": "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution",
+    "source_e8266_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+    "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_6_7_g1_fold2_add540",
+    "authoritative_directory": "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540",
+    "preferred_directory_errno": 5,
+    "historical_overlap_1based": {
+      "2": [
+        377,
+        407
+      ]
+    },
+    "prior_e8266_overlap_1based": {
+      "2": [
+        377,
+        407,
+        681,
+        779,
+        784,
+        260,
+        288,
+        375
+      ]
+    },
+    "additions_1based": {
+      "2": [
+        681,
+        779,
+        784,
+        260,
+        288,
+        375,
+        540
+      ]
+    },
+    "new_patient_1based": [
+      540
+    ],
+    "overlap_1based": {
+      "2": [
+        377,
+        407,
+        681,
+        779,
+        784,
+        260,
+        288,
+        375,
+        540
+      ]
+    },
+    "historical_train_rows": {
+      "2": 786
+    },
+    "prior_e8266_train_rows": {
+      "2": 792
+    },
+    "native_rows": {
+      "2": 793
+    },
+    "legal_rows": {
+      "2": 784
+    },
+    "test_rows": {
+      "2": 87
+    },
+    "new_labels": {
+      "2": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "physical_gpu_index": 0,
+    "physical_gpu_uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "max_workers": 10,
+    "worker_cpu_candidates": [
+      32
+    ],
+    "formal_workers": 1,
+    "protocol": "Intentional training-test overlap diagnostic. Only Fold 2 is retrained from the verified E61 epoch-10 state with the single additional patient 540. All other folds are read-only reuse of E82.4.6.6-G1.",
+    "status_note": "No independent-generalization or innovation claim is permitted from this label-exposure experiment.",
+    "required_parent_status": "COMPLETE_AUDITED",
+    "expected_manifest_sha256": {
+      "e8246_pcsr_scmr": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+      "e8246_full_path": "cbb0bcb9e0f4c5b78f3c73e82841502b364ffac0d6795ee3745f2e3eae499847",
+      "e82464_cumulative": "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1",
+      "e82463_darg_only": "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293",
+      "e82465_g1": "4cc8dda0ec64d2015a48b8ef08fc016b9fd07ab5364b491711db1b3a86b7b96c",
+      "e8266_g1": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "e744_g2": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+      "e61": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7"
+    },
+    "training": {
+      "base": "E61 epoch-10 full warmup",
+      "max_epochs": 450,
+      "early_stop_wait_gt": 200,
+      "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+      "workers_max": 10,
+      "formal_workers": 1,
+      "optimizer_configs": {
+        "gfr": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "cam": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "darg": {
+          "class": "AdamW",
+          "lr": 0.001,
+          "weight_decay": 0.01
+        }
+      },
+      "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+      "pair_count": 4096,
+      "balanced_pairs": [
+        2048,
+        2048
+      ],
+      "no_per_epoch_reseed": true,
+      "historical_dropout_calls_per_epoch": 6
+    },
+    "supervision": {
+      "darg_train_rows": 793,
+      "scmr_legal_rows": 784,
+      "gaussian_legal_rows": 784,
+      "ema_legal_rows": 784,
+      "test_rows": 87,
+      "masked_rows": 9,
+      "mask_1based": [
+        377,
+        407,
+        681,
+        779,
+        784,
+        260,
+        288,
+        375,
+        540
+      ],
+      "new_patient_mask_1based": [
+        540
+      ],
+      "spectral_prompt_supervision_masked": true,
+      "gaussian_excludes_masked": true,
+      "ema_excludes_masked": true
+    },
+    "reuse": {
+      "all_non_fold2": "E82.4.6.6-G1",
+      "fold1": "E82.4.6.6-G1",
+      "fold2": "retrained",
+      "fold3": "E82.4.6.6-G1",
+      "fold4": "E82.4.6.6-G1",
+      "fold5": "E82.4.6.6-G1",
+      "fold6": "E82.4.6.6-G1",
+      "fold7": "E82.4.6.6-G1",
+      "fold8": "E82.4.6.6-G1",
+      "fold9": "E82.4.6.6-G1",
+      "fold10": "E82.4.6.6-G1"
+    },
+    "source_readback": {
+      "e744_manifest": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/manifest.json",
+      "e61_manifest": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json"
+    }
+  },
+  "implementation": {
+    "config.json": "b24f820fd1775e9a23bf9c3a0e8a21d345f5d4101eea7d30a88e2eff1f871371",
+    "core.py": "dfcdaa400df09cfcfc5966248dab4f33e4dc15c5615112a3afe480418b5d8c07",
+    "execute.py": "e6a9b001e9fce578fb4fe5a300c228171db57969412586ee7028209f5dc48f2c",
+    "independent_467.py": "c462a360d2b70e082e2dda5d87c4676ff6fb912fe7decbf321c280ecc7e64ca7"
+  },
+  "implementation_sha": "912cabec399311155cf15bf64cff6ad92c3bbf0351e26be263b1eeb7bac06e1b",
+  "protected_sha256": {
+    "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/config.json": "92aca21d869051c184c3e31ecd8a6b54ba436f737bbe2cd9dfe39384bacae788",
+    "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/core.py": "f30c0e70db8975d5dab66779f6d65e634b0e832d08ce8806a4513fc391b7af63",
+    "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/execute.py": "053145565b4f218bf6681299bca985bb6c0360837c1fe5cfe5e6cfe66a700301",
+    "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/manifest.json": "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1",
+    "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/config.json": "b2f0dcfa656ace2909bc607a71cbe14f87dfe25e45a96cc924e44264b61901a3",
+    "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/darg_only.py": "5aad79ca012340d12192042c47296cffeb47b5b4c30f9b3d4dc9d7c55293075a",
+    "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/execute.py": "6918231645fa8a88ed3b47484c836504321e761b50ae1ff6ba478d612863b83d",
+    "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/manifest.json": "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/config.json": "40f47d70c5245d84fa58cff1a57cca8bdb89ae2ddde32a65ecb13d539d2480b9",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/core.py": "389d623cabbacb745ac268acbba534ad8fc18d3fba107258c1bce1a3be3e9d0f",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/execute.py": "addbdcddae23ff2ede22f01c8c8300227e5c5b2d3591254d34d730e5e843930d",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/independent_465.py": "e9d415535d5aeb6a53076e1f53f8f10913cda3fe5a39f94f56abebe1bad5cc11",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/manifest.json": "4cc8dda0ec64d2015a48b8ef08fc016b9fd07ab5364b491711db1b3a86b7b96c",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/report.md": "36bfcf123f35ec7e9966d68192101fd1aee85369f6e14149e62c97499977ed53",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/fold_metrics.csv": "99857dc5f1830f19a47ff76c33cfe329fa6cc0566fbdab417697163b53ffebef",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/paired_comparisons.csv": "c543ddc852b0e58d259de34c452aa59233ec6a47c3c1f832949b9a597e0affa8",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/patient_level.csv": "aa631d6c4e58a6603c779fc7e57bb40cd4e56cc89387a06b6fb79d7bb5d88406",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/membership_audit.json": "19689096e0ca0915e1a911b8ee6453f8d7e1bebe95dc75ffe1e88077a3a9cad2",
+    "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution/results/audit_status.json": "991b134786f980f49a394246609bad99143193ec53592ed5daae09d92bceff4b",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/config.json": "c931f58cb557c8e28a86ea27fe4e2b4943ba907bd66984177ce02b16540862c8",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/core.py": "cd85e8862ec2394294c92386db9eb0a3d5f6fb7c7041ec512f89f3422f19bed2",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/execute.py": "39d6cdf34b9970dfd5352b6c7da33570b2bdb9f6755a91f194be8f394cf51618",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/independent_465.py": "cf6795f42eded0f28c208bb5d2a32a882d828bb839a1e7e857b4e6d9a9878bab",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/manifest.json": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/report.md": "294714910fbaa2522d457fd16ac52a29d943b450bb824ba58643ff0af4a1fa1f",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/fold_metrics.csv": "3b89f1361260001cebd9213550c9a10ebf09892f52d15a075297c322ce94795e",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/paired_comparisons.csv": "7d5bbed5c4034fd1363b3edb6a4c5db512f0cab9bebabd67d9f77a9379507a31",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/patient_level.csv": "beee91e150e9bfe8b6d560e0441bf84d2fa325a611097b47ef47adbc668935c5",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/membership_audit.json": "72e16b036ef24fc3b0185f30e1cec633d8208647a6d533e1cf75b5dd272faedd",
+    "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/results/audit_status.json": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+    "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension/config.json": "a38b49a2eaa6c5eab34b3aad8d90c3b57bc38c459ab1e97a445a164430587733",
+    "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension/extension.py": "8cd83b00e802f1a118f39f98bcefb72a1fe073993e84d5655d384411c2339632",
+    "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension/manifest.json": "cbb0bcb9e0f4c5b78f3c73e82841502b364ffac0d6795ee3745f2e3eae499847",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/run.py": "49589891443a24682f76ca27d302ec6c0c20c47f78ff847562627e299deb0216",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/g2.py": "b07e3d55690fc0230798b336cdd53aa49ebecc89af1979836a9a5ca51e48ab67",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/common/evidence.py": "0c8e2e33d802cd4fd2a1996b3d298fc84297b77e56b7d24045612d7e31eac6ba",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/common/spectral.py": "176d9ba7923beed39d583bfd9831ac99ac2e4e5204d1da7cef0bb727567a2e13",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/common/optimization.py": "6071142cbbabc21dfe31e1a5cb561b214e0430d4b2e75827b3d7b773157591f0",
+    "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/common/history.py": "455bcd1a0c7486b90bc47d17c0db8a657d283eb6f601328c8939e6bfee215c9b"
+  },
+  "device": {
+    "index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "name": "PPU-ZW810E",
+    "bus": "00000000:64:00.0",
+    "total_mib": 98304,
+    "used_mib": 2,
+    "utilization": 0
+  },
+  "parent_training_config": {
+    "training": {
+      "base": "E61 epoch-10 full warmup, loaded independently for every fold",
+      "max_epochs": 450,
+      "early_stop_wait_gt": 200,
+      "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+      "workers_max": 10,
+      "expected_tasks": 30,
+      "schedule": "interleave groups within fold order; every task independently restores its matching E61 epoch-10 warmup",
+      "optimizers": {
+        "gfr": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "cam": {
+          "class": "Adam",
+          "lr": 0.0038,
+          "weight_decay": 0.11
+        },
+        "darg": {
+          "class": "AdamW",
+          "lr": 0.001,
+          "weight_decay": 0.01
+        }
+      },
+      "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+      "pair_count": 4096,
+      "balanced_pairs": [
+        2048,
+        2048
+      ],
+      "no_per_epoch_reseed": true
+    },
+    "data": {
+      "dataset": "ABIDE A",
+      "subjects": 871,
+      "modalities": [
+        "PHENO",
+        "ANAT",
+        "FUNC",
+        "CORR"
+      ],
+      "modality_dims": [
+        48,
+        6,
+        10,
+        256
+      ],
+      "feature_dim": 320,
+      "label_encoding": {
+        "ASD": 0,
+        "TD": 1
+      },
+      "seed": 0,
+      "folds": 10,
+      "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+      "validation_equals_test": true,
+      "intentional_fold2_overlap_1based": [
+        377,
+        407
+      ]
+    },
+    "reference_base": "E61 epoch-10 full warmup, loaded independently for every fold"
+  },
+  "source_status": {
+    "base": "COMPLETE_AUDITED",
+    "full": "COMPLETE_AUDITED",
+    "e8246": "COMPLETE_AUDITED",
+    "e82463": "COMPLETE_AUDITED",
+    "e82465": "COMPLETE_AUDITED",
+    "e8266": "COMPLETE_AUDITED",
+    "e744": "COMPLETE_AUDITED",
+    "e61": "COMPLETE_AUDITED"
+  },
+  "expected_tasks": [
+    "G1_f02"
+  ],
+  "reuse": {
+    "direct_reference": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "patient_rows": 871
+    },
+    "1": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f01",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "3": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f03",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "4": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f04",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "5": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f05",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "6": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f06",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "7": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f07",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "8": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f08",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "9": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f09",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "10": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "source_audit_sha": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b",
+      "source_task": "G1_f10",
+      "checkpoint_identity": "E82.4.6.6-G1 read-only"
+    },
+    "all_non_fold4": {
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "source_manifest_sha": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+      "result_files": {
+        "report.md": "294714910fbaa2522d457fd16ac52a29d943b450bb824ba58643ff0af4a1fa1f",
+        "fold_metrics.csv": "3b89f1361260001cebd9213550c9a10ebf09892f52d15a075297c322ce94795e",
+        "paired_comparisons.csv": "7d5bbed5c4034fd1363b3edb6a4c5db512f0cab9bebabd67d9f77a9379507a31",
+        "patient_level.csv": "beee91e150e9bfe8b6d560e0441bf84d2fa325a611097b47ef47adbc668935c5",
+        "membership_audit.json": "72e16b036ef24fc3b0185f30e1cec633d8208647a6d533e1cf75b5dd272faedd",
+        "audit_status.json": "d355a242390a4df5f684afaec210fe0dc235466048a0a0ef1659f2c75111f40b"
+      },
+      "patient_rows": 871,
+      "checkpoint_identity": "E82.4.6.6-G1 manifest/result files"
+    }
+  },
+  "guard_before": {
+    "status": "PASS",
+    "files": 39,
+    "bundle_sha": "79a4e112a6e64adea021c3324b216270fc8fbf689cadb0d10afed97559323707"
+  },
+  "preflight": {
+    "status": "PASS",
+    "task": "G1_f02",
+    "sha": "7e33cc04c4649ef6329f308930b81f56b6cd07067e18b017f6398e021e4bee41"
+  },
+  "frozen_before_training": true,
+  "completed_task": {
+    "status": "TRAINED",
+    "group": "G1",
+    "fold": 2,
+    "epoch": 450,
+    "best_epoch": 251,
+    "best_correct": 84,
+    "wait": 199,
+    "best_sha": "956cb5309aefe5f864e4831e6c29b1da46dfc253d91c5d4515af600b1399e0d3",
+    "latest_sha": "4b3dcde14ff0d9b996df7ba80611a26ffdcda1f2b0f2e6f039e5fbb3bb8d6f0e",
+    "journal_sha": "74f61cb79380cf9609e60ac65c1510cbca89208fc08b7f88e4a26fc9dd5b1e01",
+    "implementation": {
+      "config.json": "b24f820fd1775e9a23bf9c3a0e8a21d345f5d4101eea7d30a88e2eff1f871371",
+      "core.py": "dfcdaa400df09cfcfc5966248dab4f33e4dc15c5615112a3afe480418b5d8c07",
+      "execute.py": "e6a9b001e9fce578fb4fe5a300c228171db57969412586ee7028209f5dc48f2c",
+      "independent_467.py": "c462a360d2b70e082e2dda5d87c4676ff6fb912fe7decbf321c280ecc7e64ca7"
+    },
+    "wall_seconds": 319.01198191195726,
+    "peak_mib": 948.0,
+    "affinity": [
+      32
+    ],
+    "next_witness": {
+      "epoch": 451,
+      "rng": {
+        "epoch": 451,
+        "rng_before": "fda8a336cb8a790ce34cc402da905ed12a798e20bdfd240320246df84e6ac287",
+        "rng_after_train": "9ad4f88d52ecf75be7c483864d43710e18d640f0935a8eee770e2ea108c64d4d",
+        "rng_after_eval": "9ad4f88d52ecf75be7c483864d43710e18d640f0935a8eee770e2ea108c64d4d"
+      },
+      "training_sha": "34e8bb95786390179327fc2e1ae43866420d3853eea3763a5a0ae36a58a28734",
+      "state_sha": "93a12b6540e497f43d4ea52ce2bd493bc68b4629a1b529133ad8c875dcdf9fa0",
+      "evaluation_sha": "9424b50edece086dbd1256e6627aca37879c0a6cae1844270522ab880549f433",
+      "previous_ema": "d42eee0d037b6cdeb09d73e5e063a921c91dc0706dfdae2c415f25cea3f08b70",
+      "observation": "b7dc02d5b9d3f398483a3f1434f779248b17e8a7e9ad0881f772a1afc5cdcfa0",
+      "ema": "41f33fc9dcc7ce4a9d1e8cfa6bc7fcb3191c580dc88527a2a2750f3be2fc2700"
+    },
+    "task_group": "G1"
+  },
+  "audit_entry_repair_pending": {
+    "preflight_initial_ema_registration": {
+      "path": "runtime/G1_f02.preflight.json",
+      "reason": "Register already-computed initial EMA digest for historical audit schema",
+      "not_training_code": true
+    }
+  },
+  "audit": {
+    "status": "COMPLETE_AUDITED",
+    "replay": "f2386982ef7dfc6a82cc64923abdb33117b5f1bf2ad84439c7be7c32db94b795",
+    "publish": "66e85cca07ab4fa219dc888af95ad3b7054e977e0729ad6e04c701adf73b28af",
+    "audit_fix": "7c299a319471ce1bd0a4f86c3a297ae75b9c3efdfd8448af3fce3778591940d4",
+    "audit_status": "fc7cef128dc750b9f6aa0ccec7531ceeedb50ad3fc9e048b6b2e9490a336a6d2",
+    "membership": "298278762cd4e85582da7ae12872acd622089fbae2e7b686d0c705c949294013",
+    "handoff": {
+      "path": "/model/spromptgl/experiment/handoff.md",
+      "historical_prefix_preserved": true,
+      "section_marker": "## Experiment 82.4.6.7-G1 — E82.4.6.6-G1 plus Fold-2 Patient 540",
+      "readback_sha": "16d116231fecf475f29d8c8f6984bc154a9dfda53858a771f7437150c09d4227",
+      "result_sha256_at_append": {
+        "results/report.md": "b13f3dfe6ce9837d31b2d24c2d5adb5eb08546e388b6c201a2039d36d467366f",
+        "results/fold_metrics.csv": "e1e529bc7f3383af17d90e643df52d895394a1923b3a5ffb01d6055391bc4d73",
+        "results/paired_comparisons.csv": "a1c449f360e010d50a90729adfb42ca86c0fdff3539db15c4f7947911024f25d",
+        "results/patient_level.csv": "3f5b60d23c3477eacf21eee1c662c12755d9c48a1a4e2bdb33ca8c9919c4efc2",
+        "results/membership_audit.json": "298278762cd4e85582da7ae12872acd622089fbae2e7b686d0c705c949294013"
+      }
+    }
+  },
+  "authoritative_directory": "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540",
+  "fallback": {
+    "used": true,
+    "errno": 5,
+    "reason": "preferred OSSFS directory returned errno 5"
+  },
+  "actual_new_folds": [
+    2
+  ],
+  "reused_folds": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "frozen_training_implementation": {
+    "config.json": "b24f820fd1775e9a23bf9c3a0e8a21d345f5d4101eea7d30a88e2eff1f871371",
+    "core.py": "dfcdaa400df09cfcfc5966248dab4f33e4dc15c5615112a3afe480418b5d8c07",
+    "execute.py": "e6a9b001e9fce578fb4fe5a300c228171db57969412586ee7028209f5dc48f2c",
+    "independent_467.py": "c462a360d2b70e082e2dda5d87c4676ff6fb912fe7decbf321c280ecc7e64ca7"
+  },
+  "frozen_training_implementation_sha": "912cabec399311155cf15bf64cff6ad92c3bbf0351e26be263b1eeb7bac06e1b",
+  "audit_entry_repairs": {
+    "preflight_initial_ema_registration": {
+      "path": "runtime/G1_f02.preflight.json",
+      "reason": "Register the already-computed initial EMA digest for the historical audit schema",
+      "not_training_code": true,
+      "sha256": "7e33cc04c4649ef6329f308930b81f56b6cd07067e18b017f6398e021e4bee41"
+    },
+    "independent_mask_index": {
+      "path": "independent_467.py",
+      "reason": "List-based advanced indexing for the nine masked rows in the independent audit entry",
+      "not_training_code": true,
+      "sha256": "c462a360d2b70e082e2dda5d87c4676ff6fb912fe7decbf321c280ecc7e64ca7"
+    },
+    "replay_numpy_runtime": {
+      "path": "audit/replay.py",
+      "reason": "Historical NumPy 2.5 read-only runtime for checkpoint pickle resolution",
+      "not_training_code": true,
+      "sha256": "f2386982ef7dfc6a82cc64923abdb33117b5f1bf2ad84439c7be7c32db94b795"
+    },
+    "training_metadata_group": {
+      "path": "runtime/G1_f02.training.json",
+      "reason": "Correct inherited canonical G2 metadata labels in the formal G1 recovery record",
+      "not_training_code": true,
+      "sha256": "bffb63d9fd73a0f0df54921568733d7ec0750863e360b06b5fa47d78c38366f9"
+    }
+  },
+  "result_files": {
+    "results/report.md": "b13f3dfe6ce9837d31b2d24c2d5adb5eb08546e388b6c201a2039d36d467366f",
+    "results/fold_metrics.csv": "e1e529bc7f3383af17d90e643df52d895394a1923b3a5ffb01d6055391bc4d73",
+    "results/paired_comparisons.csv": "a1c449f360e010d50a90729adfb42ca86c0fdff3539db15c4f7947911024f25d",
+    "results/patient_level.csv": "3f5b60d23c3477eacf21eee1c662c12755d9c48a1a4e2bdb33ca8c9919c4efc2",
+    "results/membership_audit.json": "298278762cd4e85582da7ae12872acd622089fbae2e7b686d0c705c949294013",
+    "results/audit_status.json": "fc7cef128dc750b9f6aa0ccec7531ceeedb50ad3fc9e048b6b2e9490a336a6d2"
+  },
+  "runtime_files": {
+    "runtime/replayed_folds.json": "88b805921e7e17f67d462a313183ccdf751d7328589f5815c0d46eeb8fe5f6e3",
+    "runtime/G1_f02.training.json": "bffb63d9fd73a0f0df54921568733d7ec0750863e360b06b5fa47d78c38366f9",
+    "runtime/G1_f02.preflight.json": "7e33cc04c4649ef6329f308930b81f56b6cd07067e18b017f6398e021e4bee41",
+    "runtime/G1_f02.jsonl": "74f61cb79380cf9609e60ac65c1510cbca89208fc08b7f88e4a26fc9dd5b1e01"
+  },
+  "fold2_result": {
+    "best_epoch": 251,
+    "latest_epoch": 450,
+    "best_sha": "956cb5309aefe5f864e4831e6c29b1da46dfc253d91c5d4515af600b1399e0d3",
+    "latest_sha": "4b3dcde14ff0d9b996df7ba80611a26ffdcda1f2b0f2e6f039e5fbb3bb8d6f0e",
+    "journal_sha": "74f61cb79380cf9609e60ac65c1510cbca89208fc08b7f88e4a26fc9dd5b1e01",
+    "correct": 84,
+    "test": 87
+  },
+  "checkpoint_internal_group": "G2 canonical parent field retained for historical loader compatibility",
+  "guard_after": {
+    "status": "PASS",
+    "files": 39,
+    "bundle_sha": "79a4e112a6e64adea021c3324b216270fc8fbf689cadb0d10afed97559323707"
+  },
+  "completed_task_group": "G1"
+}
