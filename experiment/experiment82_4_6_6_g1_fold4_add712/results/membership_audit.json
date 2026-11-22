@@ -1,0 +1,181 @@
+{
+  "status": "PASS",
+  "experiment": "Experiment 82.4.6.6 — E82.4.6.5-G1 Fold 4 Patient 712 Addition",
+  "patient_id_base": "1-based",
+  "index_conversion": "index_0based = patient_id_1based - 1",
+  "index_conversion_verified": true,
+  "labels": {
+    "712": 0,
+    "713": 0,
+    "727": 0,
+    "773": 0
+  },
+  "fold4": {
+    "darg_train_rows": 788,
+    "scmr_legal_rows": 784,
+    "gaussian_legal_rows": 784,
+    "ema_legal_rows": 784,
+    "test_rows": 87,
+    "masked_rows": 4,
+    "masked_ids_1based": [
+      712,
+      713,
+      727,
+      773
+    ],
+    "masked_rows_0based": [
+      711,
+      712,
+      726,
+      772
+    ],
+    "darg_classification_participation": true,
+    "darg_relation_participation": true,
+    "scmr_label_supervision_excluded": true,
+    "gaussian_excluded": true,
+    "ema_excluded": true,
+    "relation_pairs": 4096,
+    "same_class_pairs": 2048,
+    "different_class_pairs": 2048,
+    "pair_rng_unchanged": true,
+    "all_pairs_legal_darg_members": true,
+    "no_self_pairs": true,
+    "relation_labels_verified": true,
+    "raw_spectral_components_masked": true,
+    "class_counts_asd_td": [
+      367,
+      421
+    ],
+    "class_weights_asd_td": [
+      1.0735695362091064,
+      0.9358670115470886
+    ],
+    "per_overlap_pair_count": {
+      "712": 12,
+      "713": 13,
+      "727": 24,
+      "773": 23
+    },
+    "legal_index_sha": "f54fa066735a884ff5667e247ec38a7ebfd498eef24a3bf34b4a537f54e72e09",
+    "gaussian": {
+      "legal_rows": 784,
+      "reference_sha": "1a73d2e510cc1aac2a835008c1223911472f9c92c1dcf168cb4c8b588f8176c6",
+      "rebuild_exact": true,
+      "oof_self_exclusion": true,
+      "counts": [
+        [
+          363,
+          421
+        ],
+        [
+          290,
+          337
+        ],
+        [
+          290,
+          337
+        ],
+        [
+          290,
+          337
+        ],
+        [
+          291,
+          336
+        ],
+        [
+          291,
+          337
+        ]
+      ],
+      "ema_legal_index_sha": "f54fa066735a884ff5667e247ec38a7ebfd498eef24a3bf34b4a537f54e72e09",
+      "test_overlap_in_bank": false
+    }
+  },
+  "current_overlap_by_fold_1based": {
+    "2": [
+      260,
+      288,
+      375,
+      377,
+      407,
+      681,
+      779,
+      784
+    ],
+    "3": [
+      46,
+      66,
+      172,
+      266,
+      388
+    ],
+    "4": [
+      712,
+      713,
+      727,
+      773
+    ]
+  },
+  "previous_overlap_by_fold_1based": {
+    "2": [
+      260,
+      288,
+      375,
+      377,
+      407,
+      681,
+      779,
+      784
+    ],
+    "3": [
+      46,
+      66,
+      172,
+      266,
+      388
+    ],
+    "4": [
+      713,
+      727,
+      773
+    ]
+  },
+  "current_overlap_count": 17,
+  "previous_overlap_count": 16,
+  "outside_fixed_union_count": 854,
+  "reused_fold_membership": {
+    "2": {
+      "darg_train_rows": 792,
+      "scmr_legal_rows": 784
+    },
+    "3": {
+      "darg_train_rows": 789,
+      "scmr_legal_rows": 784
+    }
+  },
+  "outside_fixed_union_definition": "871 patients minus the explicit current-or-previous overlap union by fold and patient ID",
+  "all_non_fold4_reused": true,
+  "reuse_exact_check": {
+    "patients": 784,
+    "probability_hard_prediction_and_margin_exact": true
+  },
+  "parent_manifest_status": {
+    "base": "COMPLETE_AUDITED",
+    "full": "COMPLETE_AUDITED",
+    "e8246": "COMPLETE_AUDITED",
+    "e82463": "COMPLETE_AUDITED",
+    "e82465": "COMPLETE_AUDITED",
+    "e744": "COMPLETE_AUDITED",
+    "e61": "COMPLETE_AUDITED"
+  },
+  "parent_manifest_sha256": {
+    "base": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+    "full": "cbb0bcb9e0f4c5b78f3c73e82841502b364ffac0d6795ee3745f2e3eae499847",
+    "e8246": "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1",
+    "e82463": "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293",
+    "e82465": "4cc8dda0ec64d2015a48b8ef08fc016b9fd07ab5364b491711db1b3a86b7b96c",
+    "e744": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "e61": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7"
+  }
+}
