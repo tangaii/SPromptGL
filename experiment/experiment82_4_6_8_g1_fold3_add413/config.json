@@ -1,0 +1,180 @@
+{
+  "experiment": "Experiment 82.4.6.8 \u2014 E82.4.6.7-G1 Fold 2 rollback and Fold 3 Patient 413 Addition",
+  "name": "SCMR-DA-SRPE Cumulative DARG-only Overlap Supervision with Fold-3 Patient 413 Addition",
+  "group": "G1",
+  "folds": [
+    3
+  ],
+  "seed": 0,
+  "start_epoch_completed": 10,
+  "full_path_directory": "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension",
+  "source_e8246_directory": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired",
+  "source_e82463_directory": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap",
+  "source_e82465_directory": "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution",
+  "source_e8266_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_6_8_g1_fold3_add413",
+  "authoritative_directory": "/model/spromptgl/experiment/experiment82_4_6_8_g1_fold3_add413",
+  "preferred_directory_errno": 5,
+  "historical_overlap_1based": {
+    "3": []
+  },
+  "prior_e8266_overlap_1based": {
+    "3": [
+      46,
+      66,
+      172,
+      266,
+      388
+    ]
+  },
+  "additions_1based": {
+    "3": [
+      46,
+      66,
+      172,
+      266,
+      388,
+      413
+    ]
+  },
+  "new_patient_1based": [
+    413
+  ],
+  "overlap_1based": {
+    "3": [
+      46,
+      66,
+      172,
+      266,
+      388,
+      413
+    ]
+  },
+  "historical_train_rows": {
+    "3": 784
+  },
+  "prior_e8266_train_rows": {
+    "3": 789
+  },
+  "native_rows": {
+    "3": 790
+  },
+  "legal_rows": {
+    "3": 784
+  },
+  "test_rows": {
+    "3": 87
+  },
+  "new_labels": {
+    "3": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "label_encoding": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "physical_gpu_index": 0,
+  "physical_gpu_uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+  "max_workers": 10,
+  "worker_cpu_candidates": [
+    32
+  ],
+  "formal_workers": 1,
+  "protocol": "Intentional training-test overlap mechanism diagnostic. Fold 2 is read-only rollback to E82.4.6.6-G1. Only Fold 3 is retrained from the verified E61 epoch-10 state with patient 413 appended after 46, 66, 172, 266, 388. No independent-generalization claim.",
+  "status_note": "Training-test label overlap diagnostic only. Results do not establish independent generalization.",
+  "required_parent_status": "COMPLETE_AUDITED",
+  "expected_manifest_sha256": {
+    "e8246_pcsr_scmr": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+    "e8246_full_path": "cbb0bcb9e0f4c5b78f3c73e82841502b364ffac0d6795ee3745f2e3eae499847",
+    "e82464_cumulative": "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1",
+    "e82463_darg_only": "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293",
+    "e82465_g1": "4cc8dda0ec64d2015a48b8ef08fc016b9fd07ab5364b491711db1b3a86b7b96c",
+    "e8266_g1": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+    "e744_g2": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+    "e61": "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7",
+    "e8267_g1": "b9de4ae8d2580d41a4d24c6bbbfc5c0081d529b1bad6a030735b84f1ea723a30"
+  },
+  "training": {
+    "base": "E61 epoch-10 full warmup",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+    "workers_max": 10,
+    "formal_workers": 1,
+    "optimizer_configs": {
+      "gfr": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "cam": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "darg": {
+        "class": "AdamW",
+        "lr": 0.001,
+        "weight_decay": 0.01
+      }
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "pair_count": 4096,
+    "balanced_pairs": [
+      2048,
+      2048
+    ],
+    "no_per_epoch_reseed": true,
+    "historical_dropout_calls_per_epoch": 6,
+    "expected_tasks": 1
+  },
+  "supervision": {
+    "darg_train_rows": 790,
+    "scmr_legal_rows": 784,
+    "gaussian_legal_rows": 784,
+    "ema_legal_rows": 784,
+    "test_rows": 87,
+    "masked_rows": 6,
+    "mask_1based": [
+      46,
+      66,
+      172,
+      266,
+      388,
+      413
+    ],
+    "new_patient_mask_1based": [
+      413
+    ],
+    "spectral_prompt_supervision_masked": true,
+    "gaussian_excludes_masked": true,
+    "ema_excludes_masked": true
+  },
+  "reuse": {
+    "fold1": "E82.4.6.7-G1 read-only reuse",
+    "fold2": "E82.4.6.6-G1 exact read-only rollback",
+    "fold3": "retrained",
+    "fold4": "E82.4.6.7-G1 read-only reuse",
+    "fold5": "E82.4.6.7-G1 read-only reuse",
+    "fold6": "E82.4.6.7-G1 read-only reuse",
+    "fold7": "E82.4.6.7-G1 read-only reuse",
+    "fold8": "E82.4.6.7-G1 read-only reuse",
+    "fold9": "E82.4.6.7-G1 read-only reuse",
+    "fold10": "E82.4.6.7-G1 read-only reuse"
+  },
+  "source_readback": {
+    "e744_manifest": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/manifest.json",
+    "e61_manifest": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/manifest.json"
+  },
+  "prior_e8266_delta": {
+    "3": 5
+  },
+  "source_e8267_directory": "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540",
+  "direct_reference_directory": "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540"
+}
