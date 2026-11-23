@@ -1,0 +1,56 @@
+{
+  "experiment": "Experiment 83.2",
+  "title": "TADPOLE Minimal Adaptation and MMGPL-12 Prompt Fidelity Experiment",
+  "status": "BLOCKED_BEFORE_FORMAL_G4_TRAINING",
+  "root": "/model/spromptgl/experiment/experiment83_2_tadpole_minimal_adaptation_mmgpl12",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment83_2_tadpole_minimal_adaptation_mmgpl12",
+  "root_fallback_reason": "OSSFS errno 5 Input/output error observed during E83/E83.1 lineage, using /model",
+  "current_head": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+  "e831_anchor": "339cabd44e04c38ed2808b309ffbb643d54b8d8c",
+  "dataset": {
+    "n_samples": 598,
+    "class_names": [
+      "NC",
+      "MCI",
+      "AD"
+    ],
+    "class_counts": [
+      209,
+      315,
+      74
+    ],
+    "modalities": [
+      "UCSFFSX",
+      "UCBERKELEYAV45",
+      "UPENNBIOMK9",
+      "RISK_FACTOR",
+      "COGNITIVE_TEST",
+      "ROI_AVERAGE"
+    ],
+    "modal_dims": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ],
+    "feature_dim": 365,
+    "processed_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "cv": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "seed": 0
+  },
+  "groups": {
+    "G1": "REUSED_VERIFIED_FORMAL from E83.1, copied into E83.2; replay pending",
+    "G2": "REUSED_VERIFIED_FORMAL from E83.1, copied into E83.2; replay pending",
+    "G3": "REUSED_VERIFIED_FORMAL from E83.1, copied into E83.2; replay pending",
+    "G4": "NOT_TRAINED. E83.1 8-prompt weights are not valid MMGPL12 formal results"
+  },
+  "clip": {
+    "weights_path": "/root/.cache/clip/RN50.pt",
+    "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+    "implementation": "sources/CLIP copied from repository original implementation"
+  },
+  "blocker": "E83.1 SCMR runtime hard-codes the 8-prompt archive SHA and binary 4+4 routing. A 12-prompt three-class adaptation requires code changes and new mathematical preflight before any G4 training. No formal G4 result is claimed."
+}

@@ -1,0 +1,106 @@
+{
+  "experiment": "Experiment 61 — Post-alignment OOF Reliability versus End-to-end Adaptive CADR Graph Propagation",
+  "status": "DESIGN_FROZEN",
+  "experiment_root": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+  "base_root": "/model/spromptgl",
+  "locked_reference_commit": "b7e477c9657422a119adc7872ccf8c8188871e9e",
+  "base_experiment": "experiment/experiment53_3_cadr_graph_fallback_fix",
+  "base_group": "CADR_WD_0p01_GFR_WD_0p11",
+  "seed": 0,
+  "folds": {
+    "class": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "inner_class": "StratifiedKFold",
+    "inner_splits": 3,
+    "inner_random_state_base": 61000,
+    "inner_fit_epochs": 10
+  },
+  "data": {
+    "n": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "dims": [48, 6, 10, 256],
+    "total_dim": 320,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "transductive_all_nodes": true,
+    "pre_cv_rfe_and_standardization": "historical protocol retained"
+  },
+  "optimization": {
+    "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+    "cadr_all_added_params": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01, "bias_and_norm_weight_decay": 0.01},
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "best_checkpoint": "strict ACC improvement under historical val=test protocol",
+    "relation_pair_cap": 4096,
+    "relation_pairs_balanced": true,
+    "relation_pair_candidate_priority": "union of the four anchor GraphLearn candidate supports"
+  },
+  "cadr": {
+    "relation_encoder": "Linear(d,32) -> GELU -> LayerNorm(32) -> L2 normalize",
+    "pair_features": "concat(abs(z_i-z_j), z_i*z_j, cosine(z_i,z_j)); width=65",
+    "relation_scorer": "Linear(65,32) -> GELU -> Linear(32,1)",
+    "conditioned_adversary": "shared 4-way modality classifier over pair feature + same/different one-hot",
+    "corr_anchor": "detach CORR only in adversarial branch; PHENO/ANAT/FUNC use GRL",
+    "grl_scale": 0.03,
+    "positive_threshold": 0.55,
+    "negative_threshold": 0.45,
+    "edge_topk": 12,
+    "edge_confidence": "positive clamp(2*(q-.5),0,1); negative clamp(2*(.5-q),0,1)",
+    "edge_weight": "original selected similarity * confidence * reliability * sigmoid(edge_gate)",
+    "q": "sigmoid(supervised_relation_logit); no Platt calibration",
+    "negative_message_scale": 0.25,
+    "direct_difference_scale": 0.02,
+    "relation_pair_loss_weight": 0.05,
+    "conditional_adversarial_loss_weight": 0.01,
+    "relation_preservation_loss_weight": 0.01,
+    "relation_preservation_margin": 0.02,
+    "graph_construct_loss": "unchanged original GraphLearn only"
+  },
+  "groups": [
+    {
+      "id": "E61-E1",
+      "name": "POSTALIGN_OOF",
+      "warmup": "shared 10 epochs",
+      "after_warmup": "one patient-disjoint 3-fold jointly aligned relation OOF; fixed reliability then CADR graph or exact original GraphLearn fallback"
+    },
+    {
+      "id": "E61-E2",
+      "name": "E2E_ADAPTIVE_GATE",
+      "warmup": "shared 10 epochs",
+      "after_warmup": "no OOF or reliability; four learned sigmoid scalar gates initialized at .1 blend original graph and CADR disease messages"
+    }
+  ],
+  "adaptive_gate": {
+    "formula": "fused = X + sum(sigmoid(w_m)*((1-g_m)*M_original_m + g_m*M_CADR_m))",
+    "initial_value": 0.1,
+    "optimizer": "CADR AdamW, lr=.001, weight_decay=.01",
+    "hard_edge_threshold_topology_differentiable": false
+  },
+  "oof": {
+    "reliability": "valid iff AUC>=0.55 and mean_same_logit>mean_different_logit; clip((AUC-.5)/.25,0,1), else 0",
+    "selection_epoch": "fixed tenth epoch; no validation-based epoch selection",
+    "calibration": "none; OOF determines reliability only, never supplies main-model edge scores",
+    "training_label_scope": "inner train patients only",
+    "validation_labels_scope": "pair AUC/PR-AUC and logit separation only",
+    "all_outer_train_patients_oof_once": true
+  },
+  "rng": {
+    "main_seed": 0,
+    "no_per_epoch_reseed": true,
+    "new_module_init": "isolated torch RNG scope",
+    "oof_sampling_and_model_rng": "local NumPy generators and isolated torch RNG scope",
+    "warmup_shared_across_groups": true,
+    "post_fork_rng_trace_comparison": true
+  },
+  "resources": {"gpu": "single CUDA device", "max_workers": 10},
+  "protocol_limits": [
+    "Historical val=test checkpoint selection retained.",
+    "Historical pre-CV preprocessing and 871-node transductive graph retained.",
+    "These are protocol-matched exploratory comparisons, not unbiased external generalization estimates.",
+    "E53.3 used its OOF-derived reliability and Platt parameters; E61 uniformly uses sigmoid(logit) without Platt calibration. The latter is a shared, predeclared difference from the historical base.",
+    "Conditional modality adversarial alignment is not a patient-pair CORR teacher consistency loss."
+  ]
+}
