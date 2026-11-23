@@ -1,0 +1,29 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G2_E43_1_E00",
+  "seed": 0,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "E43.1-E00 B0-B / E00_B0B_REPLAY",
+    "pen": false,
+    "darg": false,
+    "dpsl": false,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.012,
+        0.0036
+      ],
+      "cam": [
+        "Adam",
+        0.012,
+        0.0036
+      ]
+    },
+    "loss": "L_cls + mean_6(GraphConstructLoss)",
+    "pen_removal": "physical module and parameter removal"
+  },
+  "actual_workers": 1,
+  "device": "cuda"
+}

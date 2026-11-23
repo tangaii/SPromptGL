@@ -1,0 +1,48 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G4_E82_4_6_10_G1",
+  "seed": 0,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "E82.4.6.10-G1 TADPOLE Core-Method Adaptation",
+    "method_fidelity_status": "PASS_WITH_TADPOLE_ADAPTATION",
+    "base_identity": "E82.4.6-G2 SCMR-DA-SRPE on E74.4-G2 base",
+    "pen": false,
+    "darg": true,
+    "dpsl": true,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "cam": [
+        "Adam",
+        0.0038,
+        0.11
+      ],
+      "darg": [
+        "AdamW",
+        0.001,
+        0.01
+      ],
+      "dpsl": [
+        "AdamW",
+        0.0005,
+        0.01
+      ]
+    },
+    "loss": "historical DARG loss plus SCMR auxiliary objectives",
+    "spectrum": "train-only CAM240 PCA plus three-class between-class covariance; 16 orthonormal directions; whitening and class Gaussian statistics",
+    "classes": "NC/MCI/AD retained as three conditional Gaussian classes",
+    "gaussian_banks": "one all-outer-train bank plus five StratifiedKFold inner leave-bank banks, random_state=824250; comparison banks use the historical double-deletion moment reconstruction",
+    "prompts": "canonical E82.4.6-G2 fixed eight-text medical and anonymous embeddings, SHA verified",
+    "residual_cap": 0.08,
+    "gradient_budget": "shared GFR, DARG, CAM and classification-head gradients use historical family-level tangent projection with a 0.001 norm budget; DPSL-only parameters use historical objective-family budgets",
+    "ema": "train-only class mean/second-moment state updated after each epoch and checkpointed",
+    "abide_fold8": "not copied; no patient overlap or ABIDE checkpoint is used"
+  },
+  "actual_workers": 1,
+  "device": "cuda"
+}

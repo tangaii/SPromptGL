@@ -1,0 +1,409 @@
+{
+  "experiment": "Experiment 83.1",
+  "title": "TADPOLE Historical-Method Fidelity Repair and Reproduction",
+  "current_status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment83_1_tadpole_fidelity_repair",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment83_1_tadpole_fidelity_repair",
+  "root_fallback_reason": "OSSFS errno 5 Input/output error during directory creation",
+  "dataset": {
+    "name": "TADPOLE",
+    "n_samples": 598,
+    "class_names": [
+      "NC",
+      "MCI",
+      "AD"
+    ],
+    "class_counts": [
+      209,
+      315,
+      74
+    ],
+    "modalities": [
+      "UCSFFSX",
+      "UCBERKELEYAV45",
+      "UPENNBIOMK9",
+      "RISK_FACTOR",
+      "COGNITIVE_TEST",
+      "ROI_AVERAGE"
+    ],
+    "modal_dims": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ],
+    "feature_dim": 365,
+    "processed_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "split_protocol": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "preprocessing": [
+      "full-data RFE before outer CV",
+      "StandardScaler before outer CV",
+      "historical mean imputation",
+      "transductive patient graph"
+    ],
+    "validation_equals_test": true,
+    "abide_overlap_migrated": false,
+    "sample_ids_sha256": "3c354e2623128209544b23d84fbac0e436f55b4c898c74af83d2e99e7f61d8e0",
+    "feature_order_manifest_sha256": "54eecaf93f2bd942635c5012eb42d6e341760cc162ab53e320dc5ae402716814",
+    "class_mapping": {
+      "NC": 0,
+      "MCI": 1,
+      "AD": 2
+    }
+  },
+  "randomness": {
+    "formal_seed": 0,
+    "python_numpy_torch_cpu_cuda_fixed": true,
+    "per_epoch_reseed": false,
+    "formal_concurrency": 8,
+    "worker_limit": 10,
+    "device": "cuda:0",
+    "isolated_method_streams": {
+      "darg_initialization": "532000 + fold",
+      "dpsl_initialization": "824602 * 100 + fold",
+      "inner_gaussian_split": "824250 + fold",
+      "reason": "Internal fixed source stream(s), independent of the single experimental seed 0."
+    },
+    "planned_formal_workers": 8,
+    "intraop_threads_per_worker": 1,
+    "interop_threads_per_worker": 1,
+    "cublas_workspace_config": ":4096:8",
+    "observed_worker_count": 8,
+    "worker_cpu_threads": 1,
+    "deterministic_algorithms": true,
+    "fold_initialization": "Python, NumPy, PyTorch CPU and all CUDA streams reset to experimental seed 0 once at the start of each independent fold. Resume restores serialized RNG states. G1 and G2 retain original registration and initialization with physical no-PEN differences; G3 and G4 use the same model/optimizer/pairs/RNG state across the matched 10-epoch warmup."
+  },
+  "groups": {
+    "G1_E28_E0": {
+      "identity": "Original SPromptGL reproduction",
+      "pen": true,
+      "darg": false,
+      "dpsl": false,
+      "optimizers": {
+        "gfr": [
+          "Adam",
+          0.012,
+          0.0036
+        ],
+        "cam": [
+          "Adam",
+          0.012,
+          0.0036
+        ]
+      },
+      "loss": "L_cls + mean_6(GraphConstructLoss)",
+      "aloss": "observation only, excluded from backpropagation",
+      "method_fidelity_status": "PREFLIGHT_PASS",
+      "gfr_fusion": "Historical second-modality overwrite, followed by addition of modalities 3 through 6."
+    },
+    "G2_E43_1_E00": {
+      "identity": "E43.1-E00 B0-B / E00_B0B_REPLAY",
+      "pen": false,
+      "darg": false,
+      "dpsl": false,
+      "optimizers": {
+        "gfr": [
+          "Adam",
+          0.012,
+          0.0036
+        ],
+        "cam": [
+          "Adam",
+          0.012,
+          0.0036
+        ]
+      },
+      "loss": "L_cls + mean_6(GraphConstructLoss)",
+      "pen_removal": "physical module and parameter removal",
+      "method_fidelity_status": "PREFLIGHT_PASS",
+      "gfr_fusion": "Historical second-modality overwrite, followed by addition of modalities 3 through 6."
+    },
+    "G3_E74_4_G2": {
+      "identity": "E74.4-G2 Positive-DCR",
+      "method_fidelity_status": "PREFLIGHT_PASS",
+      "pen": false,
+      "darg": true,
+      "dpsl": false,
+      "optimizers": {
+        "gfr": [
+          "Adam",
+          0.012,
+          0.11
+        ],
+        "cam": [
+          "Adam",
+          0.012,
+          0.11
+        ],
+        "darg": [
+          "AdamW",
+          0.001,
+          0.01
+        ]
+      },
+      "loss": "L_cls + L_graph + 0.05 L_pair + 0.01 L_adv + 0.01 L_preserve",
+      "pairs": {
+        "total": 4096,
+        "same_class": 2048,
+        "different_class": 2048,
+        "scope": "outer train labels only"
+      },
+      "graph": "signed DeltaA in unified graph; clamp_min(DeltaA,0) only in direct residual",
+      "candidate_adaptation": "All six retain historical non-CORR original support, mutual top-12 and E53.3 sparse anchor fallback. Confidence <= .45 or >= .55, temperature 1.0, gate initial probability .1 and non-CORR scale .01.",
+      "candidate_adaptation_status": "PREFLIGHT_PASS_SOURCE_NUMERICAL_PARITY",
+      "warmup": "TADPOLE-only E51/E53.3/E61 epoch 1–10 with original graph and all three relation terms for G3 and G4. State_dict, base/CAM/DARG optimizer, ordered pair, and complete RNG SHA-256 recorded per fold.",
+      "optimizer_step_order": [
+        "GFR Adam",
+        "CAM Adam",
+        "DARG AdamW"
+      ],
+      "gfr_fusion": "Historical E74 additive GCN and bounded direct disease messages; baseline second-modality overwrite is specific to G1/G2."
+    },
+    "G4_E82_4_6_10_G1": {
+      "identity": "E82.4.6.10-G1 TADPOLE Core-Method Adaptation",
+      "method_fidelity_status": "PREFLIGHT_PASS",
+      "base_identity": "E82.4.6-G2 SCMR-DA-SRPE on E74.4-G2 base",
+      "pen": false,
+      "darg": true,
+      "dpsl": true,
+      "optimizers": {
+        "gfr": [
+          "Adam",
+          0.012,
+          0.11
+        ],
+        "cam": [
+          "Adam",
+          0.012,
+          0.11
+        ],
+        "darg": [
+          "AdamW",
+          0.001,
+          0.01
+        ],
+        "dpsl": [
+          "AdamW",
+          0.0005,
+          0.01
+        ]
+      },
+      "loss": "Historical DARG total plus canonical SCMR objectives and family-specific optimizer application. Full/off CE, true-strongest margin gain, guard, calibration guidance, regularization and source budget.",
+      "spectrum": "Train-only CAM240. Eight PCA and eight orthogonal disease directions from empirical-prior-weighted squared pairwise class-conditional covariance differences, with historical whitening and 16 spectral tokens.",
+      "classes": "NC/MCI/AD retained as three conditional Gaussian classes",
+      "gaussian_banks": "One all-outer-train and five StratifiedKFold leave-bank banks, random_state=824250+fold. Three conditional classes, double deletion comparison banks, and train-only cross-fitted class-balanced calibration.",
+      "prompts": "canonical E82.4.6-G2 fixed eight-text medical and anonymous embeddings, SHA verified",
+      "residual_cap": 0.08,
+      "gradient_budget": "Canonical SCMR apply_budget plus optimizer_measurements. Shared families GFR/DARG/CAM/head use the historical float64 tangent projection of q=grad(F-O) against b and exact cast-aware 0.001 norm budget. New-family controls follow the source optimizer. Zero residual and real optimizer step are verified.",
+      "ema": "Initialize from matching outer-train warmup. Train-only class mean/second-moment state advances from native post-eval CAM once per epoch. Best stores the bank for the selected eval; Latest stores the advanced bank.",
+      "abide_fold8": "not copied; no patient overlap or ABIDE checkpoint is used",
+      "candidate_adaptation": "Six historical non-CORR branches. Keep original supported off-diagonal edges, mutual Top-12, 0.55/0.45 thresholds and temperature 1.0. Uniform fixed scale uses historical non-CORR 0.01. Reweight strength 0.8; adaptive gate initialization sigmoid=0.1 and bounded direct residual multiplier 0.02.",
+      "candidate_adaptation_status": "PREDECLARED_SOURCE_VERIFIED_NON_CORR",
+      "warmup": "TADPOLE-only E51/E53.3/E61 epoch 1–10 with original graph and all three relation terms for G3 and G4. State_dict, base/CAM/DARG optimizer, ordered pair, and complete RNG SHA-256 recorded per fold.",
+      "three_class_adaptation": {
+        "inference": "top two native-logit classes oriented AD>MCI>NC, using the same LLR, Jacobian and calibration direction; no outer-test labels",
+        "training": "balanced over three classes, true-class minus strongest competitor, route pair guidance when the true class belongs to the selected contrast"
+      },
+      "optimizer_step_order": [
+        "GFR Adam",
+        "CAM Adam",
+        "DARG AdamW",
+        "DPSL AdamW"
+      ],
+      "gfr_fusion": "Historical E74 additive GCN and bounded direct disease messages; baseline second-modality overwrite is specific to G1/G2.",
+      "class_routing": "The two highest native-logit classes are oriented by disease stage. Three independent reference classes; no true test label needed. Training margin is true class minus strongest competitor. Signed guidance skips rows whose true class lies outside the routed pair."
+    }
+  },
+  "training": {
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "first strict ACC maximum on val_idx == test_idx",
+    "checkpoint_outputs": [
+      "config.json",
+      "train.log",
+      "fold_metrics.csv",
+      "summary.json",
+      "Best checkpoint",
+      "Latest checkpoint",
+      "predictions",
+      "audit.json"
+    ],
+    "official_metrics": [
+      "ACC",
+      "AUC"
+    ],
+    "auc": "macro one-vs-rest ROC AUC computed from hard one-hot predicted labels, matching original model.py",
+    "supporting_outputs": "three-class probabilities and hard predictions are retained for replay",
+    "tadpole_model": {
+      "n_hidden": 10,
+      "n_head": 4,
+      "nlayer": 2,
+      "dropout": 0.0,
+      "archived_encoder_attention_internal_dropout": 0.1,
+      "alpha": 1.0,
+      "cam_width": 240,
+      "learning_rate": 0.012
+    },
+    "optimizer_priority": {
+      "base_learning_rate": "paper TADPOLE 0.012 overrides source ABIDE 0.0038 for all groups",
+      "base_weight_decay": "paper silent: author base default 0.0036 for G1/G2, E61/E74 0.11 for G3/G4",
+      "method_specific": "archived DARG and DPSL per-family AdamW",
+      "ordering": [
+        "GFR Adam",
+        "CAM Adam",
+        "DARG AdamW when present",
+        "SCMR AdamW when present"
+      ]
+    },
+    "resume": "Latest restores model, optimizer, RNG, EMA and progress; independent replay verifies completed folds before skipping",
+    "execution_events": [
+      {
+        "event": "The method audit matrix documentation changed during the first batch",
+        "affected_folds": "All four groups folds 8-10, blocked before an optimizer step",
+        "recovery": "Revalidated the unchanged training code and preflight, launched the remaining 12 folds only",
+        "previous_matrix_sha256": "c50465fabaf820ee4e3b2d75d8b2325c6652ece4554de8f18f93e5a01f02df79",
+        "accepted_matrix_sha256": "9895534d9d4e37889e990f82abf2a794ee5b6869adaaa47d04e302af5e9c48d4"
+      }
+    ],
+    "early_stop_logic": "first strict ACC improvement resets wait; stop when wait > 200 or 450 epoch cap.",
+    "population_std": true
+  },
+  "paper_reference": {
+    "ACC_mean_sd_percent": [
+      94.81,
+      2.95
+    ],
+    "AUC_mean_sd_percent": [
+      95.59,
+      2.57
+    ]
+  },
+  "source_provenance": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "author_repo": "https://github.com/wanxixi11/SPromptGL",
+    "user_repo_commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+    "base_core_sha256": {
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda"
+    },
+    "darg_source_sha256": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+    "dpsl_source_sha256": {
+      "g2.py": "b07e3d55690fc0230798b336cdd53aa49ebecc89af1979836a9a5ca51e48ab67",
+      "spectral.py": "176d9ba7923beed39d583bfd9831ac99ac2e4e5204d1da7cef0bb727567a2e13",
+      "evidence.py": "0c8e2e33d802cd4fd2a1996b3d298fc84297b77e56b7d24045612d7e31eac6ba",
+      "optimization.py": "6071142cbbabc21dfe31e1a5cb561b214e0430d4b2e75827b3d7b773157591f0"
+    },
+    "prompt_sha256": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+    "canonical_dpsl_package": {
+      "root": "/model/spromptgl/experiment/DPSL",
+      "verified_model_variant": "E82.4.6-G2 SCMR-DA-SRPE",
+      "canonical_g2_sha256": "b07e3d55690fc0230798b336cdd53aa49ebecc89af1979836a9a5ca51e48ab67",
+      "canonical_history_sha256": "e5398816322477f52ac509b24eb615585d24b7af02b112100438c6b268baccda",
+      "canonical_prompts_sha256": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+      "runtime_adapter_uses_canonical_source": true,
+      "runtime_prompt_artifact": "sources/E82_4_6_G2_SCMR_DA_SRPE/inputs/prompts/prompts.pt",
+      "runtime_prompt_artifact_sha256": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+      "runtime_prompt_tensor_parity": true,
+      "runtime_scmr_class": "sources/E82_4_6_G2_SCMR_DA_SRPE/code/history_base/g2.py::SCMRDASRPE",
+      "canonical_runtime_class": "SCMRDASRPE",
+      "runtime_contains_noncanonical_prompt_suppression": false
+    },
+    "source_manifest": "sources/source_manifest.json",
+    "lineage_review": "sources/lineage_review.json",
+    "darg_dependency_sha256": {
+      "e53_3_run.py": "574fb23745ccbd49f45250cae8b678d05137d092187e9e959e474e185d02be3c",
+      "e61_run.py": "f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334",
+      "cadr_gfr.py": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d"
+    },
+    "e51_source_commit": "939fe7e05ec141582af6a26bc19713fda08fdba3"
+  },
+  "preflight_gate": {
+    "path": "audits/preflight.json",
+    "status": "PASS",
+    "checks": 20,
+    "passed_checks": 20,
+    "failed_checks": [],
+    "formal_training_allowed": true,
+    "preflight_sha256": "4d1684a53b0c9077f897027ad16308f859fb8a75c85fce8cc236109dbdef9284",
+    "method_fidelity_matrix_sha256": "9895534d9d4e37889e990f82abf2a794ee5b6869adaaa47d04e302af5e9c48d4",
+    "target_gpu_probe": {
+      "device": "PPU-ZW810E",
+      "free_mib": 97262.93711853027,
+      "peak_reserved_mib": 612.0,
+      "scmr_step_and_eval_seconds": 0.5391634665429592,
+      "gpu_best_ema_replay_exact": true,
+      "gpu_update_shared_cap": 0.001
+    },
+    "training_release_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286"
+  },
+  "base_hyperparameters": {
+    "n_hidden": 10,
+    "n_head": 4,
+    "nlayer": 2,
+    "dropout": 0,
+    "alpha": 1,
+    "learning_rate": 0.012,
+    "threshold": 0.9,
+    "inherited_internal_scaled_attention_dropout": 0.1,
+    "cam_dim": 240,
+    "priority": "TADPOLE paper base hidden/head/layer/dropout/alpha/LR, source-chain graph and optimizer controls. E61 base lr=.0038 is replaced by .012 for both G3 and G4. E61 base Adam decay .11 and DARG Opt .001/.01 are retained. G1/G2 retain base source .0036 weight decay."
+  },
+  "completion": {
+    "utc": "2026-11-23T16:01:16Z",
+    "formal_folds_completed": 40,
+    "actual_max_workers": 8,
+    "formal_batches": [
+      {
+        "folds_per_group": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "worker_count": 8
+      },
+      {
+        "folds_per_group": [
+          8,
+          9,
+          10
+        ],
+        "worker_count": 8
+      }
+    ],
+    "EXECUTION_AUDIT": "PASS",
+    "METHOD_FIDELITY_AUDIT": "PASS",
+    "CHECKPOINT_REPLAY_AUDIT": "PASS",
+    "independent_best_replays": 40,
+    "latest_identity_and_first_best_verified": 40,
+    "final_audit_sha256": "66f9901163ae1ad42e4d14c069c06e4317e6354080990f3343c68d7dad821686",
+    "report_sha256": "f0f44ad10b5ea63c5d60db129c61338ff790edc4aa3083b85e17120239ddb677",
+    "published_files": {
+      "results/all_fold_metrics.csv": "7a09e4884a70a54d32eef440762bdfefa653195b313474992fc7aae27450c571",
+      "results/e83_vs_e83_1.csv": "a999fd0523c2357525c5a6fd286618dc41b255dc46612fe35dd69edb3e6349b4",
+      "results/fold_contrasts.csv": "cb63218e98f41ecca3e77158c5f23c6276181fd1687d9c0ec4990c648b062f6f",
+      "results/group_summary.csv": "4b9bb7768fc47978c57bcdd7f5252d6df2e628fdc5c6697795673e12156ce586",
+      "results/paper_comparison.csv": "3e6ab4d31be072b8679233f11498fb2b0ddea823f6deb061f1dc703162491b29"
+    }
+  },
+  "execution": {
+    "formal_folds": 40,
+    "actual_fold_workers": 8,
+    "gpu_count": 1,
+    "gpu_name": "PPU-ZW810E",
+    "gpu_total_mib": 98304,
+    "max_per_fold_cuda_reserved_mib": 968.0,
+    "training_release_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286",
+    "execution_audit": "PASS",
+    "method_fidelity_audit": "PASS",
+    "checkpoint_replay_audit": "PASS"
+  }
+}

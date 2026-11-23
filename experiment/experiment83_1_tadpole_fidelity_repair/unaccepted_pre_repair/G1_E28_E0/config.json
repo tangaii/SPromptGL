@@ -1,0 +1,29 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G1_E28_E0",
+  "seed": 0,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "Original SPromptGL reproduction",
+    "pen": true,
+    "darg": false,
+    "dpsl": false,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.012,
+        0.0036
+      ],
+      "cam": [
+        "Adam",
+        0.012,
+        0.0036
+      ]
+    },
+    "loss": "L_cls + mean_6(GraphConstructLoss)",
+    "aloss": "observation only, excluded from backpropagation"
+  },
+  "actual_workers": 1,
+  "device": "cuda"
+}

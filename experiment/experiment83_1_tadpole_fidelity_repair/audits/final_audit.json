@@ -1,0 +1,115 @@
+{
+  "experiment": "Experiment 83.1",
+  "training_status": "COMPLETE",
+  "formal_folds": 40,
+  "EXECUTION_AUDIT": "PASS",
+  "METHOD_FIDELITY_AUDIT": "PASS",
+  "CHECKPOINT_REPLAY_AUDIT": "PASS",
+  "checkpoint_replay_passes": 40,
+  "actual_workers": 8,
+  "implementation_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286",
+  "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+  "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+  "failed_mechanisms": [],
+  "completed_utc": "2026-11-23T16:01:16Z",
+  "preflight_passes": 20,
+  "target_gpu_probe": "PASS",
+  "preflight_sha256": "4d1684a53b0c9077f897027ad16308f859fb8a75c85fce8cc236109dbdef9284",
+  "method_fidelity_matrix_sha256": "9895534d9d4e37889e990f82abf2a794ee5b6869adaaa47d04e302af5e9c48d4",
+  "checkpoint_replay_sha256": "8c45af77b8ff49dd7417930f300c3b139a955f7e73d5f7dc60074b09ee77bd71",
+  "external_latest_audit": {
+    "latest_identity_and_best_first_strict_maximum": 40,
+    "group_and_aggregate_metrics_agree": 40,
+    "paired_warmup_state_optimizer_rng_pairs_exact": 10
+  },
+  "DARG": {
+    "G3": {
+      "folds_active": 10,
+      "positive_edge_count_sum": 56855,
+      "negative_edge_count_sum": 14145,
+      "max_neutral_intervention_logp_abs": 8.7738037109375e-05,
+      "max_direct_off_logp_abs": 1.6689300537109375e-06
+    },
+    "G4": {
+      "folds_active": 10,
+      "positive_edge_count_sum": 61922,
+      "negative_edge_count_sum": 14964,
+      "max_neutral_intervention_logp_abs": 0.0015268325805664062,
+      "max_direct_off_logp_abs": 1.6689300537109375e-06
+    }
+  },
+  "SCMR_DPSL": {
+    "historical_source": "E82.4.6-G2 SCMR-DA-SRPE",
+    "folds_with_effect": 10,
+    "folds_with_exact_train_spectrum_and_bank_reconstruction": 10,
+    "folds_with_exact_native_output_at_residual_off": 10,
+    "max_cam_relative_residual": 0.07993891090154648,
+    "max_active_vs_off_logp_abs": 0.41646671295166016,
+    "max_best_applied_shared_gradient_ratio": 0.0009998839831913456,
+    "folds_with_nonzero_best_differential_gradient": 10,
+    "nonzero_shared_families": [
+      "gfr",
+      "darg",
+      "cam",
+      "head"
+    ]
+  },
+  "seed": 0,
+  "gpu": {
+    "model": "PPU-ZW810E",
+    "count": 1,
+    "total_mib": 98304,
+    "max_fold_peak_reserved_mib": 968.0
+  },
+  "out_of_fold_correct_counts": {
+    "G1": 521,
+    "G2": 531,
+    "G3": 553,
+    "G4": 552
+  },
+  "updated_utc": "2026-11-23T16:02:47+00:00",
+  "target_gpu_preflight": "PASS",
+  "verified_source_manifest_files": 76,
+  "independent_epoch10_warmup_reproduction": {
+    "status": "PASS",
+    "folds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "exact_checks": [
+      "loss history",
+      "model-state SHA-256",
+      "optimizer-state SHA-256",
+      "RNG-state SHA-256",
+      "ordered training-pair SHA-256",
+      "SCMR input CAM",
+      "SCMR input logits"
+    ]
+  },
+  "latest_checkpoint_selection": {
+    "status": "PASS",
+    "verified_folds": 40,
+    "stop_counts": {
+      "patience_201": 33,
+      "450_epoch_cap": 7
+    }
+  },
+  "realized_mechanisms": {
+    "G3_darg_output_effect_folds": 10,
+    "G3_best_without_negative_edge_fold": [
+      2
+    ],
+    "G4_darg_output_effect_folds": 10,
+    "G4_dpsl_active_and_zero_residual_parity_folds": 10,
+    "G4_dpsl_max_cam_relative_norm": 0.07993891090154648
+  },
+  "max_per_fold_cuda_reserved_mib": 968.0
+}

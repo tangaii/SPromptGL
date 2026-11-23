@@ -1,0 +1,63 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G4_E82_4_6_10_G1",
+  "seed": 0,
+  "device": "cuda:0",
+  "implementation_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286",
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "E82.4.6.10-G1 TADPOLE Core-Method Adaptation",
+    "method_fidelity_status": "SOURCE_PARITY_WITH_DECLARED_TADPOLE_ADAPTATIONS",
+    "base_identity": "E82.4.6-G2 SCMR-DA-SRPE on E74.4-G2 base",
+    "pen": false,
+    "darg": true,
+    "dpsl": true,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.012,
+        0.11
+      ],
+      "cam": [
+        "Adam",
+        0.012,
+        0.11
+      ],
+      "darg": [
+        "AdamW",
+        0.001,
+        0.01
+      ],
+      "dpsl": [
+        "AdamW",
+        0.0005,
+        0.01
+      ]
+    },
+    "loss": "L_cls + L_graph + 0.05 L_pair + 0.01 L_adv + 0.01 L_preserve; SCMR balanced O/F and archived guidance/background/boundary terms with archived differential update",
+    "spectrum": "CAM240, 8 train-only PCA directions + 8 weighted squared pairwise class covariance contrast directions on PCA complement, 16 whitened tokens",
+    "classes": "NC/MCI/AD retained as three conditional Gaussian classes",
+    "gaussian_banks": "one global outer-train bank and five inner leave-bank StratifiedKFold banks, seed 824250 + fold, plus historical double-deletion comparison banks",
+    "prompts": "canonical E82.4.6-G2 fixed eight-text medical and anonymous embeddings, SHA verified",
+    "residual_cap": 0.08,
+    "gradient_budget": "archived apply_budget and optimizer_measurements; four shared parameter families, fp64 tangent to historical gradient and cast-protected 0.001 norm cap",
+    "ema": "source observation and advancing class moments; Best uses the exact pre-advance evaluation bank, Latest uses advance for subsequent training",
+    "abide_fold8": "not copied; no patient overlap or ABIDE checkpoint is used",
+    "candidate_adaptation": "Six historical non-CORR branches. Keep original supported off-diagonal edges, mutual Top-12, 0.55/0.45 thresholds and temperature 1.0. Uniform fixed scale uses historical non-CORR 0.01. Reweight strength 0.8; adaptive gate initialization sigmoid=0.1 and bounded direct residual multiplier 0.02.",
+    "candidate_adaptation_status": "PREDECLARED_SOURCE_VERIFIED_NON_CORR",
+    "warmup": {
+      "source": "TADPOLE E51/E53.3/E61 epoch-10, computed inside each fold",
+      "epochs": 10,
+      "relation_losses_active": true,
+      "graph": "source graphs only",
+      "DARG_activation_epoch": 11,
+      "shared_with_other_DARG_group": true
+    },
+    "three_class_adaptation": {
+      "inference": "top two native-logit classes oriented AD>MCI>NC, using the same LLR, Jacobian and calibration direction; no outer-test labels",
+      "training": "balanced over three classes, true-class minus strongest competitor, route pair guidance when the true class belongs to the selected contrast"
+    }
+  },
+  "actual_workers": 8
+}
