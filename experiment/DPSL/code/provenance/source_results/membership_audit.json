@@ -1,0 +1,1204 @@
+{
+  "status": "PASS",
+  "experiment": "E82.4.6.10 — Dual ASD Additions in Fold 8",
+  "label_encoding": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold8_original": {
+    "status": "PASS",
+    "checkpoint": {
+      "lineage": [
+        "E82.4.6.6-G1",
+        "E82.4.6.5-G1",
+        "E82.4.6-G2"
+      ],
+      "source": "base",
+      "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+      "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+      "task": "G2_f08",
+      "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f08.json",
+      "task_sha": "5ce960e7ecf508907beba4344da78942059d5b9f2a419835b72e680bb73fe0f0",
+      "best_epoch": 249,
+      "latest_epoch": 450,
+      "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f08.best.pt",
+      "best_sha": "c13f97d4139ecd4cdcc2c07f1dee8821adee741d38d232e0fc24bf17356747cf",
+      "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f08.latest.pt",
+      "latest_sha": "d8e31b02f372cc3909201aabc0fd0ffe100febaf71516edf90a809d7caa90d61",
+      "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f08.jsonl",
+      "journal_sha": "0bc0eb6bb3cf673f30753e61643d902e98b03dce60e9a2e5eb2d3cbd30d4253e"
+    },
+    "native_rows": 784,
+    "legal_rows": 784,
+    "test_rows": 87,
+    "overlap_ids_1based": [],
+    "all_three_interventions_exact": true,
+    "metrics": {
+      "n_test": 87,
+      "tp": 34,
+      "fp": 4,
+      "tn": 43,
+      "fn": 6,
+      "correct": 77,
+      "acc": 0.8850574712643678,
+      "hard_auc": 0.8824468085106383,
+      "prob_auc": 0.8819148936170214,
+      "sen": 0.85,
+      "spe": 0.9148936170212766,
+      "asd_f1": 0.8717948717948718
+    }
+  },
+  "direct_reference": {
+    "status": "PASS",
+    "checkpoint": {
+      "lineage": [
+        "E82.4.6.9-G2"
+      ],
+      "source": "e469",
+      "task": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/runtime/G2_f08.training.json",
+      "best_epoch": 164,
+      "latest_epoch": 365,
+      "best": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/checkpoints/G2_f08.best.pt",
+      "latest": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/checkpoints/G2_f08.latest.pt",
+      "journal": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/runtime/G2_f08.jsonl",
+      "preflight": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/runtime/G2_f08.preflight.json",
+      "audit": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/runtime/G2_f08.audit.json",
+      "log": "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd/runtime/G2_f08.log",
+      "best_sha": "5e1a1a8ef3e22d0d717a4c0fc61be5b3aa2757974d2e392aacd52535fa5d4659",
+      "latest_sha": "a5f4ba50246bbec64f23609bdcf663037e6949b5644062f8cb914c8ac50bea5b",
+      "journal_sha": "01e88c7ce27fed00b087700efbc1d17db2eaa85586418294303c99f41a6219da",
+      "task_sha": "e969eda9177ed079e89e738cd916c2dbadeb873447ee9012499e19509a528b26",
+      "preflight_sha": "d1e4bc71697b74d6e232cc0b64b0156f911414a4864bbc3e3da9828747e43744",
+      "audit_sha": "942994d29ff256a4a0e9f29ae9fe011488e5d633c34c199fad828d0732ccc788",
+      "log_sha": "69009d892c37de07db6ce096c85f6e77dede7973540424fb713e297247396b04"
+    },
+    "native_rows": 785,
+    "legal_rows": 784,
+    "test_rows": 87,
+    "overlap_ids_1based": [
+      383
+    ],
+    "all_three_interventions_exact": true,
+    "metrics": {
+      "n_test": 87,
+      "tp": 35,
+      "fp": 5,
+      "tn": 42,
+      "fn": 5,
+      "correct": 77,
+      "acc": 0.8850574712643678,
+      "hard_auc": 0.8843085106382979,
+      "prob_auc": 0.8840425531914893,
+      "sen": 0.875,
+      "spe": 0.8936170212765957,
+      "asd_f1": 0.875
+    },
+    "latest_exact": true,
+    "hard_flips_vs_e466": {
+      "383": 0,
+      "601": 0
+    },
+    "target_pair_occurrences": 1
+  },
+  "nine_fold_reuse": {
+    "1": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f01",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f01.json",
+        "task_sha": "98019e48f73e3f25526c5264f921c11ca982f7f460d4d2e22b458b267df05735",
+        "best_epoch": 102,
+        "latest_epoch": 303,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f01.best.pt",
+        "best_sha": "ee6e80b46e4bfd41efae1bec8156c2a5ff370aafb33c7b1deb99afae7fce6d9c",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f01.latest.pt",
+        "latest_sha": "841220dfc1ecb1ac9acf7f56b619d4adb611641d94a7cda2f039fe03c5353149",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f01.jsonl",
+        "journal_sha": "f0a4f07612189a691149e2c497e46e042122ba0dcf27ab19019c04ae10acb1a4"
+      },
+      "test_rows": 88,
+      "projection_sha256": "6545d595ca759c01d52ebdf91096d194e02327c27f8b9d63b32245d6ad109c39",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "2": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6.4-G1"
+        ],
+        "source": "e464",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired",
+        "source_manifest_sha256": "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1",
+        "task": "G1_f02",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/runtime/G1_f02.training.json",
+        "task_sha": "3be0c1ee164b0ce65db490d976bdaabc9e138a703a3892964079ccb3265f3ce8",
+        "best_epoch": 166,
+        "latest_epoch": 367,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/checkpoints/G1_f02.best.pt",
+        "best_sha": "b003b2779e8ef559389caa0bbec9fb296a6081010ada96a82a40724df3e43340",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/checkpoints/G1_f02.latest.pt",
+        "latest_sha": "6a5983afae1286668fb3e213c66ffc6d61b82d787767cf7a84ecd1b3744f16d0",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/runtime/G1_f02.jsonl",
+        "journal_sha": "8c4d43a60c39005c14609c8ef88930dc5a68085e887b13657487fc29bf6c3010"
+      },
+      "test_rows": 87,
+      "projection_sha256": "1cc7a92f1531f2089fdf4b47f46cd0f782c7ac8c213a09f2e197ff488ecf81ad",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "3": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6.3 DARG-only"
+        ],
+        "source": "e463",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap",
+        "source_manifest_sha256": "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293",
+        "task": "G2_f03",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/runtime/G2_f03.training.json",
+        "task_sha": "4addb7f2388efaf5ff8d41dedda1afb508b2f81131903f767b67b01e9d86d45b",
+        "best_epoch": 244,
+        "latest_epoch": 445,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/checkpoints/G2_f03.best.pt",
+        "best_sha": "97b9e3f8121eda63fc7841e64402bdd4b9c65c973aa8532f859b9a8c7a37bb6b",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/checkpoints/G2_f03.latest.pt",
+        "latest_sha": "5a5a0a5072b8d1369f43f3428b90142502a30a96efbfaba7ff689f69e946398a",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/runtime/G2_f03.jsonl",
+        "journal_sha": "6862666fe3db30ad00908624513b302dfbcd389feaaa8701782ea7c7d4e772b2"
+      },
+      "test_rows": 87,
+      "projection_sha256": "d49afc7de039c6c345d1719d365c3a978ca61df1c276511275be67a42007643f",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "4": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1"
+        ],
+        "source": "e466",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+        "source_manifest_sha256": "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587",
+        "task": "G1_f04",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/runtime/G1_f04.training.json",
+        "task_sha": "aef9b9e0ac3b8f11c05f49f72fe4b961839e3bd965e50324e20669c80400e055",
+        "best_epoch": 182,
+        "latest_epoch": 383,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/checkpoints/G1_f04.best.pt",
+        "best_sha": "51c92445fd8c97905eb8d7d05ba48f6a47b7a5566302fb81de0285acb4eea1ff",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/checkpoints/G1_f04.latest.pt",
+        "latest_sha": "55a7a4bc179983ce96f2c0f8c582b702a1ea4047253ef12bc69998bf59205463",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/runtime/G1_f04.jsonl",
+        "journal_sha": "eabd17ac5c712dc89ae8055a8ab4d4bc60e6face641bc9202690518c75e2951a"
+      },
+      "test_rows": 87,
+      "projection_sha256": "1f18226159b7b8ff7406140b85d0c2967b932287750feb93701731c4e35bc02c",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "5": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f05",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f05.json",
+        "task_sha": "ecdd5fdef9aa034fd73c6a356383725190610f032e1a64180ed1878cf4e5ab08",
+        "best_epoch": 428,
+        "latest_epoch": 450,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f05.best.pt",
+        "best_sha": "b22868fac2ab832fcd7948ef29b61601a9ed9908f284f1cba51dc3fddd481dba",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f05.latest.pt",
+        "latest_sha": "83dc400f7c0ab3ce3c4cdf42d0a1f3134ea081dcff8cc0c98f5aa682ca10914d",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f05.jsonl",
+        "journal_sha": "d2c3191b9433deb4d11bfcb765fe399f6b08ea2e069d21c344f108eaf6dd4566"
+      },
+      "test_rows": 87,
+      "projection_sha256": "4e90b545ce6f8fbed1972632466d66e922243618caafe878f81e33cf0e08e19e",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "6": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f06",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f06.json",
+        "task_sha": "4a1c06fa2abd12f005ea5693f948e2bce59c20b87472042f6c9f82223dba1ca4",
+        "best_epoch": 157,
+        "latest_epoch": 358,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f06.best.pt",
+        "best_sha": "9193d847d51a11e0f4c766ef56b42318848925ed051152a8c88b45b0e631e123",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f06.latest.pt",
+        "latest_sha": "df45d62f91eca54cba2c71debc7e912d6c61a39239595a970ac3d7d28613a02d",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f06.jsonl",
+        "journal_sha": "250fbe4ebf51d6ee2fccd1d00dbbfb9f9c615520f646cf897e8c5840970c5a92"
+      },
+      "test_rows": 87,
+      "projection_sha256": "91da41b02311a0eb800d1ec5387181217dcb7da3060a397060c4c3a6e0040c6a",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "7": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f07",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f07.json",
+        "task_sha": "d9e576ed031b6cea09279f4e2ae9a6bf3000376d69704ddf15dd3c4bda7fb8bf",
+        "best_epoch": 166,
+        "latest_epoch": 367,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f07.best.pt",
+        "best_sha": "84955835d460e44de338a806eb64179fab4b5c829ef2c6762fd60e3064626a92",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f07.latest.pt",
+        "latest_sha": "b84805c1ba6302609d3f8f48535ceb9d75c7bf34a1d7800434e13e57bbdb96b9",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f07.jsonl",
+        "journal_sha": "53afa69202d997891f45ee18c453236e48a7fb5bab8afb85904486af0e9ea986"
+      },
+      "test_rows": 87,
+      "projection_sha256": "eb03bdbfad05bccf78a3e33366ae1475f053664dc6dd0cbe31b7faf294663a4c",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "9": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f09",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f09.json",
+        "task_sha": "81a371e95966f951c3a9a0e5f344434a74df3fdc8daa1a516a87a4c98fdb318e",
+        "best_epoch": 231,
+        "latest_epoch": 432,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f09.best.pt",
+        "best_sha": "8b789dccb37bb55f834a086029789b25ef0e877229f021d6a7c8ed7c1ce64b2a",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f09.latest.pt",
+        "latest_sha": "dfd54d80dedba161abb4019018855306b1cf5ff1bbecb3329ca91da3aeb4ff4c",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f09.jsonl",
+        "journal_sha": "66932b226985a26fc94c25e637dde054d80b39259190f4d980c8f2b7a21b8247"
+      },
+      "test_rows": 87,
+      "projection_sha256": "8fd9b850aaf129fc87d87edb5b080e94fa2618ce6aaf19b9b15f4036c58bc9c6",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    },
+    "10": {
+      "direct_source": "E82.4.6.9-G2",
+      "checkpoint": {
+        "lineage": [
+          "E82.4.6.6-G1",
+          "E82.4.6.5-G1",
+          "E82.4.6-G2"
+        ],
+        "source": "base",
+        "source_directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+        "source_manifest_sha256": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "task": "G2_f10",
+        "task_path": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/tasks/G2_f10.json",
+        "task_sha": "3e8fcbb37e426c57ff0fd7e7d03d166e16fd931f2985e14cc13c1c879ee2bde6",
+        "best_epoch": 152,
+        "latest_epoch": 353,
+        "best": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f10.best.pt",
+        "best_sha": "82fa8f4709b4d8dc2544691e93081ede41a46ffcd579f31d0b03c5f2eca48b06",
+        "latest": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f10.latest.pt",
+        "latest_sha": "6c4430ebdf331cb62a08ad1f3ad2cfffb981eb8e37a2a926995dfab787225c6f",
+        "journal": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/runtime/journal/G2_f10.jsonl",
+        "journal_sha": "9b03fc71baec9413794d648a12ed55af9cd362fc2eb439489c682925b5ce449c"
+      },
+      "test_rows": 87,
+      "projection_sha256": "4a34508df38c74416c8bd6206b2dfeb9ac06d709c699203ce96311fcb5ba3013",
+      "all_variants_probabilities_margins_residuals_best_sha_exact": true
+    }
+  },
+  "groups": {
+    "G1": {
+      "membership": {
+        "task_group": "G1",
+        "fold": 8,
+        "patient_ids_1based": [
+          383,
+          430
+        ],
+        "patient_indices_0based": [
+          382,
+          429
+        ],
+        "labels": [
+          0,
+          0
+        ],
+        "added_train_rows_1based": [
+          383,
+          430
+        ],
+        "added_train_count": 2,
+        "train_test_overlap_1based": [
+          383,
+          430
+        ],
+        "excluded": [
+          382,
+          429
+        ],
+        "supervision_mode": "DARG-only overlap supervision (E82.4.6.4-G1)",
+        "original_native_rows": 784,
+        "native_rows": 786,
+        "legal_scmr_gaussian_ema_rows": 784,
+        "test_rows": 87,
+        "masked_rows": 2,
+        "original_train_sha": "2990610c8d831881e822ba33eb526129edefd0a0ed1d959ace74d5e604d26e0f",
+        "extended_train_sha": "da33c5220c96cd536ddf50c94c65c92e7c95ddff55ea5b4f050a3a78e6104319",
+        "original_test_sha": "d3a1e52ba1fa1b49ec744994d9518519970768a6b17c666b135afb79219080db",
+        "class_counts_asd_td": [
+          365,
+          421
+        ],
+        "class_weights_asd_td": [
+          1.0767123699188232,
+          0.9334917068481445
+        ],
+        "pair_sha": "c801eadbc653e3db346ff4dc4f4569efd3d7c87d0efb373a357a64f8e33d6490",
+        "test_labels_sha": "121d59b72f9df1748c19c075eef23f55cfd1c8f720f1ae0d3d8a931932444552",
+        "pair_count": 4096,
+        "same_class_pairs": 2048,
+        "different_class_pairs": 2048,
+        "covered_rows": 772,
+        "uncovered_rows": 14,
+        "uncovered_ids_1based": [
+          194,
+          360,
+          366,
+          378,
+          382,
+          386,
+          390,
+          452,
+          473,
+          474,
+          481,
+          834,
+          840,
+          842
+        ],
+        "covered_fraction": 0.9821882951653944,
+        "target_pairs": {
+          "383": {
+            "eligible": true,
+            "sampled": true,
+            "endpoint_occurrences": 1,
+            "same_occurrences": 1,
+            "different_occurrences": 0
+          },
+          "430": {
+            "eligible": true,
+            "sampled": true,
+            "endpoint_occurrences": 14,
+            "same_occurrences": 9,
+            "different_occurrences": 5
+          }
+        },
+        "pair_rng_before": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "pair_rng_after": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "raw_label_path": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+        "raw_label_column": "label",
+        "candidates": [
+          {
+            "patient_id_1based": 383,
+            "patient_index_0based": 382,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          },
+          {
+            "patient_id_1based": 430,
+            "patient_index_0based": 429,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          },
+          {
+            "patient_id_1based": 723,
+            "patient_index_0based": 722,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          }
+        ],
+        "ordered_pairs_rederived": true,
+        "pair_endpoints_all_darg_members": true,
+        "global_rng_unchanged_during_rederive": true,
+        "original_test_order_exact": true,
+        "other_candidate_absent_from_training": true,
+        "original_train_order_exact": true,
+        "historical_features_and_supports_exact": true
+      },
+      "gaussian": {
+        "legal_rows": 784,
+        "legal_index_sha": "626680da9068dba25ca2c6633cc52c7f6b3e42c6c3c41ce1c4a5dc960073b036",
+        "gaussian_reference_sha": "b94e689a6866fda9093da19f6270ba1f7147b2e47cc9e44f4067cb568e6fe2d9",
+        "deterministic_rebuild_exact": true,
+        "counts": [
+          [
+            363,
+            421
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            291,
+            336
+          ],
+          [
+            291,
+            337
+          ]
+        ],
+        "min_oof_score": -0.009273741242903491,
+        "max_oof_score": 0.020504735184521415,
+        "disagreement_comparison_banks_exclude_target_inner_fold": true
+      },
+      "preflight_gradients": {
+        "dropout_exact": true,
+        "rng_before": "3b33a22e254ba56a29d900ae1ec5d21f7b111656eab98bb01336b75766d675db",
+        "rng_after": "a95891050f196638bda41010ea654e761e0524b461dbcfedc6407c94a1fac1d5",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0009325878290025083,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 1,
+            "relation_direct_bce_grad_l2": 8.373738972775323e-06,
+            "relation_direct_weighted_grad_l2": 7.501067147312787e-07,
+            "relation_bce_logit_grad_l2_by_modality": [
+              3.0294610041892156e-05,
+              3.1113981094677e-05,
+              3.111966361757368e-05,
+              3.0520161089953035e-05
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              3.7871887557271256e-06,
+              3.534215336773458e-06,
+              5.000743102453584e-06,
+              4.275347481696492e-06
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              3.4163868459818713e-07,
+              3.155742102813593e-07,
+              4.4532067735404573e-07,
+              3.847668187320765e-07
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "430": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0005803870859020889,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 14,
+            "relation_direct_bce_grad_l2": 3.483474995889451e-05,
+            "relation_direct_weighted_grad_l2": 3.135839156865686e-06,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.00011393038417487178,
+              0.00011437055103237016,
+              0.00011365237104485986,
+              0.00011377079326141304
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              2.323735833782944e-05,
+              1.3481325204590298e-05,
+              1.5568962594530426e-05,
+              1.5790701587839612e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              2.092031903744205e-06,
+              1.205062818338867e-06,
+              1.4022873050634429e-06,
+              1.427691720702893e-06
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.011976730078458786,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 7.545315838797251e-06,
+            "darg": 3.5213543192469388e-09,
+            "cam": 2.065675835183356e-05,
+            "prompt": 3.176085738232359e-05,
+            "control": 0.03002976067364216,
+            "cam144": 1.2737868928525131e-06
+          },
+          "class_to_delta": 0.011976730078458786,
+          "per_space_directional_gradient": [
+            3.142348305118503e-06,
+            3.134021881123772e-06
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 9.560724265611498e-07
+        }
+      },
+      "best_gradients": {
+        "dropout_exact": true,
+        "rng_before": "b488ddf9623d543853830d466573c2e15cf8042be711f0a44311dd606ddbf5d2",
+        "rng_after": "da74dbdcde79eb151a801e7f05b6bae67ee2e864598bf7fc252420d11dd6864d",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0006656919921864206,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 1,
+            "relation_direct_bce_grad_l2": 0.00031751244684179034,
+            "relation_direct_weighted_grad_l2": 1.5890036306566083e-05,
+            "relation_bce_logit_grad_l2_by_modality": [
+              2.502048300812021e-05,
+              3.0254734156187624e-05,
+              3.598648982006125e-05,
+              1.6784470062702894e-06
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0002679383814799084,
+              8.285111322588105e-05,
+              0.00014832764326997339,
+              1.2561087078576845e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              1.3410723687795081e-05,
+              4.150076084779271e-06,
+              7.418096801573744e-06,
+              6.280543978229417e-07
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "430": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0008578539013346819,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 14,
+            "relation_direct_bce_grad_l2": 0.0016787562177697224,
+            "relation_direct_weighted_grad_l2": 8.395743786929323e-05,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.00010520827441399225,
+              0.00010961398244748183,
+              0.00010241159437674673,
+              1.6055965104454918e-05
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0015452530127458236,
+              0.00046762881389883997,
+              0.0003473328067606683,
+              0.0003018257428712458
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              7.727651635090647e-05,
+              2.3348406542946366e-05,
+              1.7444093014936344e-05,
+              1.5091286394335876e-05
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.005396080669015646,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 1.773672556737438e-05,
+            "darg": 1.4188563909556251e-05,
+            "cam": 0.02660568617284298,
+            "prompt": 0.00038341188337653875,
+            "control": 0.012547065503895283,
+            "cam144": 8.806154801277444e-05
+          },
+          "class_to_delta": 0.005396081134676933,
+          "per_space_directional_gradient": [
+            3.483926775516011e-05,
+            4.6993249270599335e-05
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 1.4036412721907254e-05
+        }
+      },
+      "latest_gradients": {
+        "dropout_exact": true,
+        "rng_before": "d7fa432c8a83c721309799b72a75781118c40e43469e683b6aa5477544b1e69f",
+        "rng_after": "f958e63ba9ae07a501f30148d3162d84892824c9613e6b3a715d76eb58cf6e7c",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 9.597998114808357e-05,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 1,
+            "relation_direct_bce_grad_l2": 0.0008499154553931643,
+            "relation_direct_weighted_grad_l2": 4.2480546355904054e-05,
+            "relation_bce_logit_grad_l2_by_modality": [
+              1.72220534295775e-05,
+              3.1206454877974465e-05,
+              3.893482789862901e-05,
+              1.1039119272027165e-06
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0005426765580426086,
+              0.00043531391805424525,
+              0.00048803618594033123,
+              1.3450227814924782e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              2.7137944111341827e-05,
+              2.176194806694983e-05,
+              2.437404670592679e-05,
+              6.725114233072456e-07
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "430": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.000978383408925967,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 14,
+            "relation_direct_bce_grad_l2": 0.0045867711025684805,
+            "relation_direct_weighted_grad_l2": 0.00022927222908227207,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.00010953825791516581,
+              0.00010151954715749421,
+              9.526621166391375e-05,
+              1.3632473043378584e-06
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.00404505137652745,
+              0.0017222811152090135,
+              0.0013073398001741557,
+              2.5276781552481915e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              0.00020222257765845552,
+              8.610438022679035e-05,
+              6.52397312238807e-05,
+              1.2638390403416836e-06
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.015127885155379772,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 0.14682485163211823,
+            "darg": 0.00023599328415002674,
+            "cam": 3.5316848754882812,
+            "prompt": 0.01994188502430916,
+            "control": 0.16951580345630646,
+            "cam144": 0.0076552643440663815
+          },
+          "class_to_delta": 0.015127885155379772,
+          "per_space_directional_gradient": [
+            8.770093700150028e-05,
+            0.0011285314103588462
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 0.00047483560047112405
+        }
+      },
+      "relation_coverage": {
+        "383": "DIRECT_RELATION_SUPERVISION_CONFIRMED",
+        "430": "DIRECT_RELATION_SUPERVISION_CONFIRMED"
+      }
+    },
+    "G2": {
+      "membership": {
+        "task_group": "G2",
+        "fold": 8,
+        "patient_ids_1based": [
+          383,
+          723
+        ],
+        "patient_indices_0based": [
+          382,
+          722
+        ],
+        "labels": [
+          0,
+          0
+        ],
+        "added_train_rows_1based": [
+          383,
+          723
+        ],
+        "added_train_count": 2,
+        "train_test_overlap_1based": [
+          383,
+          723
+        ],
+        "excluded": [
+          382,
+          722
+        ],
+        "supervision_mode": "DARG-only overlap supervision (E82.4.6.4-G1)",
+        "original_native_rows": 784,
+        "native_rows": 786,
+        "legal_scmr_gaussian_ema_rows": 784,
+        "test_rows": 87,
+        "masked_rows": 2,
+        "original_train_sha": "2990610c8d831881e822ba33eb526129edefd0a0ed1d959ace74d5e604d26e0f",
+        "extended_train_sha": "3726eae8c3d48a3c2a84418cb9004f22d3aeecc9a66e594cf54ec65b0c9c6f5c",
+        "original_test_sha": "d3a1e52ba1fa1b49ec744994d9518519970768a6b17c666b135afb79219080db",
+        "class_counts_asd_td": [
+          365,
+          421
+        ],
+        "class_weights_asd_td": [
+          1.0767123699188232,
+          0.9334917068481445
+        ],
+        "pair_sha": "f9e25f5dd1b51adfc36c8d638b405134f096d7eb67ec904f2d41d00d63805d93",
+        "test_labels_sha": "121d59b72f9df1748c19c075eef23f55cfd1c8f720f1ae0d3d8a931932444552",
+        "pair_count": 4096,
+        "same_class_pairs": 2048,
+        "different_class_pairs": 2048,
+        "covered_rows": 772,
+        "uncovered_rows": 14,
+        "uncovered_ids_1based": [
+          117,
+          357,
+          360,
+          369,
+          385,
+          386,
+          387,
+          390,
+          420,
+          481,
+          685,
+          686,
+          830,
+          383
+        ],
+        "covered_fraction": 0.9821882951653944,
+        "target_pairs": {
+          "383": {
+            "eligible": true,
+            "sampled": false,
+            "endpoint_occurrences": 0,
+            "same_occurrences": 0,
+            "different_occurrences": 0
+          },
+          "723": {
+            "eligible": true,
+            "sampled": true,
+            "endpoint_occurrences": 12,
+            "same_occurrences": 6,
+            "different_occurrences": 6
+          }
+        },
+        "pair_rng_before": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "pair_rng_after": "bdd85f8be746b4f6f495a6fa8af8700773303979f68118d7e6848da05946a6b0",
+        "raw_label_path": "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv",
+        "raw_label_column": "label",
+        "candidates": [
+          {
+            "patient_id_1based": 383,
+            "patient_index_0based": 382,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          },
+          {
+            "patient_id_1based": 430,
+            "patient_index_0based": 429,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          },
+          {
+            "patient_id_1based": 723,
+            "patient_index_0based": 722,
+            "raw_label": 1,
+            "encoded_label": 0,
+            "in_fold8_test": true
+          }
+        ],
+        "ordered_pairs_rederived": true,
+        "pair_endpoints_all_darg_members": true,
+        "global_rng_unchanged_during_rederive": true,
+        "original_test_order_exact": true,
+        "other_candidate_absent_from_training": true,
+        "original_train_order_exact": true,
+        "historical_features_and_supports_exact": true
+      },
+      "gaussian": {
+        "legal_rows": 784,
+        "legal_index_sha": "626680da9068dba25ca2c6633cc52c7f6b3e42c6c3c41ce1c4a5dc960073b036",
+        "gaussian_reference_sha": "b94e689a6866fda9093da19f6270ba1f7147b2e47cc9e44f4067cb568e6fe2d9",
+        "deterministic_rebuild_exact": true,
+        "counts": [
+          [
+            363,
+            421
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            290,
+            337
+          ],
+          [
+            291,
+            336
+          ],
+          [
+            291,
+            337
+          ]
+        ],
+        "min_oof_score": -0.009273741242903491,
+        "max_oof_score": 0.020504735184521415,
+        "disagreement_comparison_banks_exclude_target_inner_fold": true
+      },
+      "preflight_gradients": {
+        "dropout_exact": true,
+        "rng_before": "3b33a22e254ba56a29d900ae1ec5d21f7b111656eab98bb01336b75766d675db",
+        "rng_after": "a95891050f196638bda41010ea654e761e0524b461dbcfedc6407c94a1fac1d5",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0009329629181112042,
+            "relation_eligible": true,
+            "relation_sampled": false,
+            "relation_sampled_pairs": 0,
+            "relation_direct_bce_grad_l2": 0.0,
+            "relation_direct_weighted_grad_l2": 0.0,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "723": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0007752515249314472,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 12,
+            "relation_direct_bce_grad_l2": 2.532855330916942e-05,
+            "relation_direct_weighted_grad_l2": 2.2747822742127307e-06,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.00010583671576540197,
+              0.00010587418034752387,
+              0.00010590510412920362,
+              0.00010579516453008327
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              9.709905330660143e-06,
+              1.535182515399744e-05,
+              1.4465162328388513e-05,
+              1.0116021671562202e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              8.71415696477706e-07,
+              1.3796591146173985e-06,
+              1.2932932794852966e-06,
+              9.160798544319263e-07
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.01197713240981102,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 7.525333785451949e-06,
+            "darg": 3.5050595759145153e-09,
+            "cam": 2.0636909539462067e-05,
+            "prompt": 3.175748133799061e-05,
+            "control": 0.030025696381926537,
+            "cam144": 1.2746170341415564e-06
+          },
+          "class_to_delta": 0.01197713240981102,
+          "per_space_directional_gradient": [
+            3.1423028303834144e-06,
+            3.133974132651929e-06
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 9.560626494931057e-07
+        }
+      },
+      "best_gradients": {
+        "dropout_exact": true,
+        "rng_before": "9109f593d024130992e49524271af014fb6db70c7ef246c92632288295474bb1",
+        "rng_after": "53f1a8b5cc00383294dfbca18954176b0a9713fa45f4be3d596fb11ae4dcab60",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0009564990166159624,
+            "relation_eligible": true,
+            "relation_sampled": false,
+            "relation_sampled_pairs": 0,
+            "relation_direct_bce_grad_l2": 0.0,
+            "relation_direct_weighted_grad_l2": 0.0,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "723": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.001281891733766122,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 12,
+            "relation_direct_bce_grad_l2": 0.0016752784891139766,
+            "relation_direct_weighted_grad_l2": 8.380627810328769e-05,
+            "relation_bce_logit_grad_l2_by_modality": [
+              7.918863657817696e-05,
+              0.0001021839138363096,
+              9.369406763561961e-05,
+              2.4993514982780083e-06
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.001179041684119157,
+              0.000949883386955838,
+              0.0007151965671076911,
+              5.132392015571286e-05
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              5.905398795056055e-05,
+              4.749243010668813e-05,
+              3.5693171287835395e-05,
+              2.5661961420034625e-06
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.008161182515323162,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 0.0001451426651328802,
+            "darg": 7.447561074513942e-05,
+            "cam": 0.20241588354110718,
+            "prompt": 0.0034525571390986443,
+            "control": 0.03407413884997368,
+            "cam144": 0.0005066863377578557
+          },
+          "class_to_delta": 0.008161182515323162,
+          "per_space_directional_gradient": [
+            8.090764458756894e-05,
+            0.0001705513132037595
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 1.951046215253882e-05
+        }
+      },
+      "latest_gradients": {
+        "dropout_exact": true,
+        "rng_before": "b5a6b6836a0935129a230b50ba4d4eb314420281a9c342db72dcb23ab0896f3c",
+        "rng_after": "391b61b0a288a6cdb66ea90ce0ee512faaa87417aae387a18fde6f63d28c6a6e",
+        "patients": {
+          "383": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0001825327606916229,
+            "relation_eligible": true,
+            "relation_sampled": false,
+            "relation_sampled_pairs": 0,
+            "relation_direct_bce_grad_l2": 0.0,
+            "relation_direct_weighted_grad_l2": 0.0,
+            "relation_bce_logit_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scmr_delta_grad_l2": 0.0
+          },
+          "723": {
+            "classification_logp_grad_l2": 0.001369863050058484,
+            "classification_cam144_grad_l2": 0.0006071298833508188,
+            "relation_eligible": true,
+            "relation_sampled": true,
+            "relation_sampled_pairs": 12,
+            "relation_direct_bce_grad_l2": 0.004137279966098362,
+            "relation_direct_weighted_grad_l2": 0.00020686514558176933,
+            "relation_bce_logit_grad_l2_by_modality": [
+              7.555229137048893e-05,
+              0.00010078381940199458,
+              9.04776535682405e-05,
+              4.2509557415725925e-06
+            ],
+            "relation_bce_embedding_grad_l2_by_modality": [
+              0.0025455290922756983,
+              0.002792535328283985,
+              0.0016790315726190111,
+              0.00014130313758479676
+            ],
+            "relation_weighted_embedding_grad_l2_by_modality": [
+              0.00012732423198329954,
+              0.00013962387779746266,
+              8.388673738515748e-05,
+              7.065157188794745e-06
+            ],
+            "scmr_delta_grad_l2": 0.0
+          }
+        },
+        "relation_gradient_zero_outside_endpoints": true,
+        "modality_order": [
+          "PHENO",
+          "ANAT",
+          "FUNC",
+          "CORR"
+        ],
+        "scmr_all_auxiliary_test_cam_grad_zero": true,
+        "scmr_legal_delta_grad_l2": 0.010956764221191406,
+        "end_to_end_gradient": {
+          "from_full_ce_through_delta": {
+            "gfr": 0.039540115743875504,
+            "darg": 0.0016108107520267367,
+            "cam": 0.8878747820854187,
+            "prompt": 0.009769967757165432,
+            "control": 0.04996694251894951,
+            "cam144": 0.0037047588266432285
+          },
+          "class_to_delta": 0.010956764221191406,
+          "per_space_directional_gradient": [
+            3.353759166202508e-05,
+            0.0007481725770048797
+          ],
+          "zero_residual": false,
+          "min_new_parameter_residual_gradient": 2.1472287698998116e-05
+        }
+      },
+      "relation_coverage": {
+        "383": "RELATION_SUPERVISION_COVERAGE_LIMITED",
+        "723": "DIRECT_RELATION_SUPERVISION_CONFIRMED"
+      }
+    }
+  }
+}
