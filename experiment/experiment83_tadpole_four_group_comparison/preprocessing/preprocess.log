@@ -1,0 +1,72 @@
+/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/preprocess_tadpole_mmgl.py:161: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value '[[72.4, 74.4), [72.4, 74.4), [72.4, 74.4), [72.4, 74.4), [72.4, 74.4), ..., [74.4, 76.4), [60.4, 62.4), [68.4, 70.4), [76.4, 78.4), [72.4, 74.4)]
+Length: 7405
+Categories (19, interval[float64, left]): [[54.4, 56.4) < [56.4, 58.4) < [58.4, 60.4) <
+                                           [60.4, 62.4) ... [84.4, 86.4) < [86.4, 88.4) <
+                                           [88.4, 90.4) < [90.4, 92.4)]' has dtype incompatible with float64, please explicitly cast to a compatible dtype first.
+  data.loc[:,'AGE'] = pd.cut(data.AGE, bins, right = False)
+/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/preprocess_tadpole_mmgl.py:175: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value '[[16, 18), [16, 18), [16, 18), [16, 18), [16, 18), ..., [16, 18), [16, 18), [12, 14), [16, 18), [16, 18)]
+Length: 7405
+Categories (8, interval[int64, left]): [[4, 6) < [6, 8) < [8, 10) < [10, 12) < [12, 14) < [14, 16) <
+                                        [16, 18) < [18, 20)]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  data.loc[:,'PTEDUCAT'] = pd.cut(data.PTEDUCAT, bins, right = False)
+/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/preprocess_tadpole_mmgl.py:317: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data_[feat_list] = standard_data
+/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/preprocess_tadpole_mmgl.py:327: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  data[i].fillna(data[i].mean(), inplace=True)
+remove longitudinal feature (12741, 1495)
+delete columns with all Nan (12741, 1477)
+only select stable samples from bl to m48 (7405, 1477)
+data_baseline (1721, 1477)
+data shape (7405, 1477)
+['FDG', 'AV45', 'Ventricles', 'Hippocampus', 'WholeBrain', 'Entorhinal', 'Fusiform', 'MidTemp', 'ICV']
+feature selection for modal: UCSFFSX
+The number of features of intersection between modal and data: 329
+The number of samples applicable to the feature selection condition: 2064
+Fitting estimator with 328 features.
+--------------------------------------------------------------
+feature selection for modal: BAIPETNMRC
+The number of features of intersection between modal and data: 335
+There is no sample has all the features of Modal BAIPETNMRC
+--------------------------------------------------------------
+feature selection for modal: UCBERKELEYAV45
+The number of features of intersection between modal and data: 234
+The number of samples applicable to the feature selection condition: 600
+Fitting estimator with 233 features.
+--------------------------------------------------------------
+feature selection for modal: UCBERKELEYAV1451
+The number of features of intersection between modal and data: 239
+The number of samples applicable to the feature selection condition: 20
+Fitting estimator with 238 features.
+--------------------------------------------------------------
+feature selection for modal: DTIROI
+The number of features of intersection between modal and data: 229
+The number of samples applicable to the feature selection condition: 582
+Fitting estimator with 228 features.
+--------------------------------------------------------------
+feature selection for modal: UPENNBIOMK9
+The number of features of intersection between modal and data: 4
+The number of samples applicable to the feature selection condition: 2134
+--------------------------------------------------------------
+feature selection for modal: RISK_FACTOR
+The number of features of intersection between modal and data: 37
+The number of samples applicable to the feature selection condition: 7405
+--------------------------------------------------------------
+feature selection for modal: COGNITIVE_TEST
+The number of features of intersection between modal and data: 25
+The number of samples applicable to the feature selection condition: 3144
+--------------------------------------------------------------
+feature selection for modal: ROI_AVERAGE
+The number of features of intersection between modal and data: 10
+The number of samples applicable to the feature selection condition: 974
+--------------------------------------------------------------
+modalities:  dict_keys(['UCSFFSX', 'UCBERKELEYAV45', 'UPENNBIOMK9', 'RISK_FACTOR', 'COGNITIVE_TEST', 'ROI_AVERAGE'])
+preprocessed data shape:  (598, 366)

@@ -1,0 +1,164 @@
+{
+  "experiment": "Experiment 83",
+  "generated_utc": "2026-11-23T16:00:00Z",
+  "repository": "https://github.com/tangaii/SPromptGL",
+  "groups": {
+    "G1_E28_E0": {
+      "selected_method": "E0_P0 original SPromptGL baseline from E28, with original PEN/GFR/CAM chain",
+      "original_directory": "experiment/experiment28_imaging_anchored_finegrained_semantic_alignment",
+      "branch": "local historical checkout, manifest source_remote_head 8217b36bfe7f51d878b793c070774129d11cad73",
+      "commit": "1167dd392837a02eb4f83481ae49f02607a9dae5",
+      "core_files": [
+        "run.py",
+        "e28_method.py",
+        "e28_integration.py",
+        "e28_prompts.py"
+      ],
+      "copied_hashes": {
+        "E28_E0_original/e28_integration.py": "3b0c6a0114caf87d989e8af7bd905a26c3ab0661c358ecb8bdfc0869c9d585c2",
+        "E28_E0_original/e28_method.py": "f162285872dcfda9d894ee4b163556a030bda152775720b90629dd26743c3a44",
+        "E28_E0_original/e28_prompts.py": "0c5f09f23e3c0ca9db1f2292cfd957f04f779bab2eb213d5a97a7a947c6a4cb5",
+        "E28_E0_original/integration.patch": "77cb8197e6af3329c04b4fa86e093be637d058d0a9b0695f0cf28a932caddb6c",
+        "E28_E0_original/manifest.json": "db8c669976e11b69e8921669c72751233c73b212090c2368d78bf51bb4769f30",
+        "E28_E0_original/run.py": "47ae00a8c98015cd9cd82bcb63ef1394343cf1edc09153fc03d2fa3e6f36956a"
+      },
+      "adaptation": "Dynamic six-modality graph and token dimensions, TADPOLE three-class classifier, fixed historical eight semantic prompts, no ABIDE checkpoint or fold reuse. E0_P0 selected explicitly."
+    },
+    "G2_E43_1_E00": {
+      "selected_method": "E00_B0B_REPLAY / physical B0-B baseline with PEN removed",
+      "original_directory": "experiment/experiment43_1_b0b_gfr_mechanism_retest",
+      "branch": "local git history commit ccca6484de8e0c4f448c314a4863e7b56f46208c",
+      "commit": "ccca6484de8e0c4f448c314a4863e7b56f46208c",
+      "core_files": [
+        "run.py",
+        "method.py",
+        "integration.py",
+        "audit.py",
+        "config.json",
+        "manifest.json"
+      ],
+      "copied_hashes": {
+        "E43_1_E00_original/README.md": "d0f1da88de0a20619ba014c7001d38395b8b6764ae484e0fdd4ba1aa02957346",
+        "E43_1_E00_original/audit.py": "dae71215c3d9cce9fa9386ac6880619cd595fef7dbafa99ce8a1cc25c90c667f",
+        "E43_1_E00_original/config.json": "9e9461a0a8821c8b7170acaa315c34376489425bfab2217a1e6e50c04d3771c5",
+        "E43_1_E00_original/integration.py": "2d2d7fe07bda8bbe2834820bf52f1f3a506d138e5b70f91ff9cb535867c28153",
+        "E43_1_E00_original/manifest.json": "f656191466463c2250e7f572635d1205ac37bfedf1cc670d219743298534c97f",
+        "E43_1_E00_original/method.py": "0d44582352c9dc935a52744fe24e492a18a4fe87b2cba28ba6b7841f428c3fe8",
+        "E43_1_E00_original/run.py": "a35130f64b97a103afc5f3daae27ea518ad564b0d5e5942d2e87950d9fba18de"
+      },
+      "adaptation": "Physical no-PEN path retained. Dynamic six-modality dimensions, TADPOLE three-class labels and common split protocol."
+    },
+    "G3_E74_4_G2": {
+      "selected_method": "E74.4-G2-Positive-DCR, treated as requested DARG lineage",
+      "original_directory": "experiment/experiment74_4_soft_positive_dcr",
+      "branch": "upload/experiment74-4-soft-positive-dcr",
+      "commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf",
+      "upstream_branches": {
+        "E74.1": "upload/experiment74-1-rudag d1522a23682b62e41d899d95c9721a68d3828456",
+        "E74.2": "upload/experiment74-2-dcr-rudag 6555308455814af5b6b4c82ceece73eb2333be15",
+        "E74.3": "upload/experiment74-3-local-dcr e05275cb4b18dcd01679682b9df02f3cbc13b713"
+      },
+      "core_files": [
+        "run.py",
+        "soft_positive_dcr.py",
+        "config.json",
+        "manifest.json",
+        "audit.py"
+      ],
+      "copied_hashes": {
+        "E74_4_G2_original/audit.py": "cba6be99dd4eb418fed230d1b545199ad95ae674b520883680fe7b9d1ab8cafb",
+        "E74_4_G2_original/config.json": "a369c644e0dabc55f8dd40056fedde5726f749e33eba931ebf59da7d55a2761a",
+        "E74_4_G2_original/manifest.json": "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840",
+        "E74_4_G2_original/run.py": "cbb226657480b5cd28f9c8e13391da70d3f8cbed23a27f8befbcfb0cd47595cd",
+        "E74_4_G2_original/soft_positive_dcr.py": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718"
+      },
+      "adaptation": "Positive-only disease-aware relation residual and graph fusion retained. ABIDE four-block slices and overlap IDs replaced by six TADPOLE modality blocks and train-only three-class same/different relation supervision."
+    },
+    "G4_E82_4_6_10_G1": {
+      "selected_method": "E82.4.6.10-G1 incremental wrapper traced to E82.4.6 PCSR-PSCE / SCMR-DA-SRPE DPSL chain",
+      "original_directory": "experiment82_4_6_10_fold8_dual_asd",
+      "branch": "codex/experiment82-4-6-10-fold8-dual-asd-upload",
+      "commit": "1ef9a17fb50585aad9b2f878018ded16646a19a7",
+      "upstream_branch": "codex/experiment82-4-6-pcsr-scmr-upload",
+      "upstream_commit": "f1e0697d06eeff160cd93920a419dcf4dbec1a47",
+      "core_files": [
+        "core.py",
+        "sources.py",
+        "execute.py",
+        "audit_tasks.py"
+      ],
+      "dependency_files": [
+        "g1.py",
+        "g2.py",
+        "common/spectral.py",
+        "common/evidence.py",
+        "common/history.py",
+        "common/optimization.py",
+        "runtime/prompts.pt"
+      ],
+      "copied_hashes": {
+        "E82_4_6_10_G1_original/audit_tasks.py": "205f95046681c77b98ae1f2da9c91103c06e17b2f6d4813814d8554ef9ca31e3",
+        "E82_4_6_10_G1_original/config.json": "211322f60f62f16f7b247d6721718258f1d8a7620114cc292a03185434807448",
+        "E82_4_6_10_G1_original/core.py": "26a679105737d20e4c528ed0c5118f3a36dd0540f68a204775300e6d0d875dab",
+        "E82_4_6_10_G1_original/execute.py": "fa079a5df74ea69c3d41be4760e285a8856129b153d701d2cc8f02aa96ffbc45",
+        "E82_4_6_10_G1_original/manifest.json": "4d8c8bb00f59111d1772f961497ad12f36145b17d481b9f90a7a6df7b62ef4d8",
+        "E82_4_6_10_G1_original/sources.py": "031f093d9c09e397401e8c8a3a979ef11fc8e96b6d65b3dc7c04372d75cd6671",
+        "E82_dependencies/config.json": "f6b56fa862c4e3ba2aae9e34863057f3c3968583fa2b9563cf947f2268b1f495",
+        "E82_dependencies/design.md": "5423fbb04def76fe38d89be79a6a4889cc58140ff5b11f8de92e5f631eb68085",
+        "E82_dependencies/evidence.py": "0c8e2e33d802cd4fd2a1996b3d298fc84297b77e56b7d24045612d7e31eac6ba",
+        "E82_dependencies/g1.py": "8434eb9d24b745af6049997574d1e552fefaa463eb250e3708d1abe126c158d4",
+        "E82_dependencies/g2.py": "b07e3d55690fc0230798b336cdd53aa49ebecc89af1979836a9a5ca51e48ab67",
+        "E82_dependencies/history.py": "455bcd1a0c7486b90bc47d17c0db8a657d283eb6f601328c8939e6bfee215c9b",
+        "E82_dependencies/manifest.json": "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e",
+        "E82_dependencies/optimization.py": "6071142cbbabc21dfe31e1a5cb561b214e0430d4b2e75827b3d7b773157591f0",
+        "E82_dependencies/prompts.pt": "3f3794962f5c264dda57c4b726752b70d20c1fb7b36416315a74b64fcdba9dea",
+        "E82_dependencies/spectral.py": "176d9ba7923beed39d583bfd9831ac99ac2e4e5204d1da7cef0bb727567a2e13"
+      },
+      "adaptation": "DARG to CAM to DPSL to classifier order retained. Binary ASD margin and ABIDE overlap additions are not copied. The eight historical fixed prompts and prompt embeddings are copied from the E82 runtime artifact, while spectral basis width and classifier margins are generalized to TADPOLE CAM width 240 and three classes."
+    }
+  },
+  "common_base_sources": {
+    "files": {
+      "base_original/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "base_original/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "base_original/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "base_original/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "base_original/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+    },
+    "original_core_commit": "1167dd392837a02eb4f83481ae49f02607a9dae5",
+    "notes": "Original local SPromptGL core files copied for audit only. E83 executes isolated adapters in common/."
+  },
+  "provenance_rules": [
+    "No historical ABIDE prediction, checkpoint, fold, patient ID or overlap list is used.",
+    "All copied source files are hashed in this manifest.",
+    "E83 model implementation is isolated under common/ and does not modify historical experiment directories."
+  ],
+  "e83_adapters": {
+    "common/tadpole_model.py": "d58f1cc3407b4692ab44eaeceab8b2a43682e510311e96d6da83d1616a8e4f2a",
+    "common/run_e83.py": "820269b412b8cecd4319e327c3ca772c52de0dd3cb39eb1b3a95e5844edc662f",
+    "common/metrics.py": "5c27abb852bfc5e6f8fcbd7b67b45d18dce79d9b7783f04320a3e31615da789d",
+    "common/audit_and_report.py": "fe8f27e01558531563e15196d3fe40df8f4e4775475175c5cc09219e19ff62dc",
+    "prompt_artifact": {
+      "path": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/sources/E82_dependencies/prompts.pt",
+      "sha256": "3f3794962f5c264dda57c4b726752b70d20c1fb7b36416315a74b64fcdba9dea",
+      "texts": [
+        "Nromal brain volume",
+        "Uniform cortical thickness",
+        "Symmetrical brain structure",
+        "Normal ventricular morphology",
+        "Altered brain volume",
+        "Abnormal functional connectivity",
+        "White matter integrity issues",
+        "Different activation patterns"
+      ]
+    },
+    "version": "E83-DPSL-v2 true CAM-margin gradient constraint and medical-anonymous differential prompt conditioning"
+  },
+  "generated_final_utc": "2026-11-23T09:08:00Z",
+  "references": {
+    "paper": "https://papers.miccai.org/miccai-2025/0861-Paper5129.html",
+    "paper_pdf": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "original_repository": "https://github.com/tangaii/SPromptGL",
+    "MMGL_preprocessing_repository": "https://github.com/SsGood/MMGL"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "group": "G2_E43_1_E00",
+  "dataset": "TADPOLE",
+  "seed": 0,
+  "n_splits": 10,
+  "cv_random_state": 10,
+  "n_samples": 598,
+  "nclass": 3,
+  "nmodal": 6,
+  "modal_dims": [
+    145,
+    148,
+    3,
+    36,
+    24,
+    9
+  ],
+  "dropout": 0.0,
+  "lr": 0.012,
+  "n_hidden": 10,
+  "nlayer": 2,
+  "n_head": 4,
+  "alpha": 1.0,
+  "max_epochs": 450,
+  "early": 200,
+  "checkpoint_criterion": "val=test ACC",
+  "rfe": "full data before outer CV",
+  "device": "cuda",
+  "actual_concurrency": 1,
+  "worker_limit": 10,
+  "optimizer_protocol": "base Adam 0.012/0.0036, E74 DARG AdamW 0.001/0.01, E82 DPSL AdamW 0.0005/0.01",
+  "adapter_version": "E83-DPSL-v2 true CAM-margin gradient constraint and medical-anonymous prompt differential"
+}
