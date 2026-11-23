@@ -1,8 +1,9 @@
 """E82.3.2 Gaussian evidence with legal five-fold reference banks and post-evaluation EMA."""
 from __future__ import annotations
 
-from .history import CFG, E823, E8242, load, require, sha
+from .history import CFG, E823, load, require, sha
 from .spectral import EPS
+from dpsl_runtime import ROOT, read_json, verify_sha
 
 import numpy as np
 import torch
@@ -12,7 +13,13 @@ E = CFG["evidence"]
 
 
 def fit_reference(fold, warm_cam, spectrum, legal, labels):
-    previous = load(E8242 / "G2_pdjc_da_srpe/checkpoints" / f"G2_f{fold:02d}.best.pt")["reference"]
+    registration = read_json(ROOT / "runtime" / "gaussian_source.json")[fold - 1]
+    path = ROOT / "inputs" / "gaussian" / f"inner_f{fold:02d}.pt"
+    require(registration["fold"] == fold and ROOT / registration["path"] == path,
+            "Archived Gaussian reference source differs")
+    verify_sha(path, registration["sha256"])
+    previous = load(path)
+    require(sha(previous) == registration["content_sha"], "Archived Gaussian reference values differ")
     split_seed = E["archived_split_seed_base"] + fold
     require(previous["seed"] == split_seed and np.array_equal(previous["legal"], legal)
             and np.array_equal(previous["labels"], labels), "Archived legal inner split differs")

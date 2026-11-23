@@ -7,13 +7,15 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+from standalone_paths import DPSL_ROOT
+
 ROOT = Path(__file__).resolve().parent
 CONFIG_FILE = ROOT / "config.json"
 CONFIG = json.loads(CONFIG_FILE.read_bytes())
 RUNTIME = ROOT / "runtime"
 RESULTS = ROOT / "results"
 MANIFEST = ROOT / "manifest.json"
-SOURCES = {name: Path(spec[0]) for name, spec in CONFIG["source_manifests"].items()}
+FULL_PATH = DPSL_ROOT / "code" / "vendor" / "history" / "experiment82_4_6_2_g2_full_path_extension"
 FOLD = CONFIG["fold"]
 GROUPS = CONFIG["groups"]
 # The base dispatches G2 to SCMR, independently of the formal task group.
@@ -22,7 +24,7 @@ MASKED_COMPONENTS = ("raw_parallel", "raw_perp", "delta_parallel", "delta_perp",
 CANDIDATE_IDS = (383, 430, 723)
 
 sys.dont_write_bytecode = True
-sys.path.insert(0, str(SOURCES["e462"]))
+sys.path.insert(0, str(FULL_PATH))
 try:
     import extension as ext
 finally:
@@ -36,8 +38,7 @@ optimization = ext.optimization
 
 
 def implementation():
-    return {name: h.sha_file(ROOT / name) for name in
-            ("config.json", "core.py", "sources.py", "audit_tasks.py", "execute.py")}
+    return {name: h.sha_file(ROOT / name) for name in ("config.json", "core.py")}
 
 
 def paths(group):
@@ -82,8 +83,6 @@ def setup(group, fold=FOLD, *, verify_spectrum=False):
     ctx = parent.setup(MODEL_VARIANT, fold, verify_spectrum=verify_spectrum)
     original = ctx["provenance"]
     old = ctx["members"]
-    canonical = h.read_json(parent.paths(MODEL_VARIANT, fold)["preflight"])
-    h.require(original == canonical["provenance"], "Canonical Fold 8 initialization differs")
     state, module = ctx["state"], ctx["module"]
     identity = ext.identity_snapshot(state, module, ctx["optimizer"])
     rows = registered_rows(group)

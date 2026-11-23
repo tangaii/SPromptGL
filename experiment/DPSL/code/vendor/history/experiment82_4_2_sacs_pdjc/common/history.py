@@ -14,22 +14,25 @@ from contextlib import contextmanager
 from functools import lru_cache
 from pathlib import Path
 
+from standalone_paths import DPSL_ROOT, VENDOR_REPO, VENDOR_HISTORY, LOCAL_RUNTIME
+
 ORIGINAL_SPEC = importlib.util.spec_from_file_location
 HERE = Path(__file__).resolve().parents[1]
-REPO = Path("/data/adodas/SPromptGL-main")
-HISTORY = Path("/model/spromptgl/experiment")
-PYTHON_PROFILE = HISTORY / "experiment82_3_6_ps_pgr/runtime/python"
+REPO = VENDOR_REPO
+HISTORY = VENDOR_HISTORY
+PYTHON_PROFILE = LOCAL_RUNTIME
 CFG = json.loads((HERE / "config.json").read_text())
 GROUPS = {name: json.loads((HERE / directory / "config.json").read_text())
           for name, directory in CFG["group_dirs"].items()}
 GPU = CFG["gpu"]
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = GPU["uuid"]
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "0")
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 for key in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ[key] = str(GPU["threads"])
 sys.dont_write_bytecode = True
-sys.path.insert(1, str(PYTHON_PROFILE))
+if str(PYTHON_PROFILE) not in sys.path:
+    sys.path.insert(0, str(PYTHON_PROFILE))
 
 import numpy as np
 import torch
@@ -42,8 +45,9 @@ E823 = HISTORY / "experiment82_3_cspe"
 E8232 = HISTORY / "experiment82_3_2_da_srpe"
 ADAPTER = REPO / "experiment/experiment81_3_e2e_pairwise_relational_learning/path_adapter.py"
 VENDOR = REPO / "experiment/experiment72_mgdss/.runtime/vendor/root"
-TEXT_CACHE = E822 / "runtime/prompts.pt"
-TEXT_SOURCE = REPO / "experiment/experiment60_dss_pen/.runtime/text_embeddings.pt"
+LOCAL_INPUTS = DPSL_ROOT / "inputs"
+TEXT_CACHE = LOCAL_INPUTS / "prompts" / "prompts.pt"
+TEXT_SOURCE = LOCAL_INPUTS / "prompts" / "text_embeddings.pt"
 BASE = CFG["base_group"]
 OPTS = tuple(CFG["historical_optimizers"])
 METRICS = ("acc", "hard_auc", "prob_auc", "sen", "spe", "asd_f1")

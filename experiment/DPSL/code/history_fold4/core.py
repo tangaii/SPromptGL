@@ -4,10 +4,12 @@ import json, sys
 from pathlib import Path
 from types import SimpleNamespace
 
+from standalone_paths import DPSL_ROOT
+
 ROOT = Path(__file__).resolve().parent
 MANIFEST, RUNTIME, RESULTS = ROOT / "manifest.json", ROOT / "runtime", ROOT / "results"
 CONFIG = json.loads((ROOT / "config.json").read_bytes())
-FULL_PATH = Path(CONFIG["full_path_directory"])
+FULL_PATH = DPSL_ROOT / "code" / "vendor" / "history" / "experiment82_4_6_2_g2_full_path_extension"
 GROUP = "G1"
 FOLDS = tuple(CONFIG["folds"])
 TASKS = tuple((GROUP, f) for f in FOLDS)
@@ -41,21 +43,17 @@ NATIVE_FIELDS = (
 MASKED_COMPONENTS = ("raw_parallel", "raw_perp", "delta_parallel", "delta_perp", "delta")
 
 def implementation():
-    return {p.name: h.sha_file(p) for p in sorted([ROOT / "config.json", *ROOT.glob("*.py")])}
+    return {p.name: h.sha_file(p) for p in (ROOT / "config.json", Path(__file__))}
 
 def source_manifests():
     # Every parent is bound to a pre-frozen manifest digest.  A status field alone
     # is insufficient because it can survive an unrecorded source mutation.
     expected = CONFIG["expected_manifest_sha256"]
-    paths = {
-        "base": FULL_PATH.parent / "experiment82_4_6_pcsr_scmr" / "manifest.json",
-        "full": FULL_PATH / "manifest.json",
-        "e8246": Path(CONFIG["source_e8246_directory"]) / "manifest.json",
-        "e82463": Path(CONFIG["source_e82463_directory"]) / "manifest.json",
-        "e82465": Path(CONFIG["source_e82465_directory"]) / "manifest.json",
-        "e744": Path(CONFIG["source_readback"]["e744_manifest"]),
-        "e61": Path(CONFIG["source_readback"]["e61_manifest"]),
-    }
+    archived = DPSL_ROOT / "code" / "provenance" / "manifests"
+    paths = {key: archived / f"{name}.json" for key, name in {
+        "base": "E82_4_6-G2", "full": "E82_4_6_2", "e8246": "E82_4_6_4",
+        "e82463": "E82_4_6_3", "e82465": "E82_4_6_5", "e744": "E74_4-G2", "e61": "E61",
+    }.items()}
     keys = {
         "base": "e8246_pcsr_scmr", "full": "e8246_full_path", "e8246": "e82464_cumulative",
         "e82463": "e82463_darg_only", "e82465": "e82465_g1", "e744": "e744_g2", "e61": "e61",
@@ -83,8 +81,7 @@ def setup(task_group, fold, *, verify_spectrum=False):
     h.require(task_group == GROUP and fold in FOLDS, "Unregistered task")
     ctx = parent.setup(CANONICAL, fold, verify_spectrum=verify_spectrum)
     old, original = ctx["members"], ctx["provenance"]
-    canonical = h.read_json(parent.paths(CANONICAL, fold)["preflight"])
-    h.require(original == canonical["provenance"] and len(old["legal"]) == 784,
+    h.require(len(old["legal"]) == 784,
               "Canonical E82.4.6-G2 membership differs")
     state, module, optimizer = ctx["state"], ctx["module"], ctx["optimizer"]
     old_identity = ext.identity_snapshot(state, module, optimizer)

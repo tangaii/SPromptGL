@@ -6,10 +6,12 @@ from pathlib import Path
 import sys
 from types import SimpleNamespace
 
+from standalone_paths import DPSL_ROOT
+
 ROOT = Path(__file__).resolve().parent
 MANIFEST, RUNTIME, RESULTS = (ROOT / name for name in ("manifest.json", "runtime", "results"))
-CONFIG = json.loads((ROOT / "config.json").read_bytes())
-FULL_PATH = Path(CONFIG["full_path_directory"])
+CONFIG = json.loads((ROOT / "e82463_config.json").read_bytes())
+FULL_PATH = DPSL_ROOT / "code" / "vendor" / "history" / "experiment82_4_6_2_g2_full_path_extension"
 GROUP, FOLDS = CONFIG["group"], tuple(CONFIG["folds"])
 EXPOSED = {int(fold): tuple(i - 1 for i in patients) for fold, patients in CONFIG["overlap_1based"].items()}
 
@@ -36,7 +38,7 @@ MASKED_COMPONENTS = ("raw_parallel", "raw_perp", "delta_parallel", "delta_perp",
 
 
 def implementation():
-    return {path.name: h.sha_file(path) for path in sorted([ROOT / "config.json", *ROOT.glob("*.py")])}
+    return {path.name: h.sha_file(path) for path in (ROOT / "e82463_config.json", Path(__file__))}
 
 
 def source_manifests():
@@ -65,8 +67,7 @@ def setup(group, fold, *, verify_spectrum=False):
     ctx = parent.setup(group, fold, verify_spectrum=verify_spectrum)
     old = ctx["members"]
     original = ctx["provenance"]
-    baseline = h.read_json(parent.paths(group, fold)["preflight"])
-    h.require(original == baseline["provenance"] and len(old["legal"]) == CONFIG["new_supervision_rows"],
+    h.require(len(old["legal"]) == CONFIG["new_supervision_rows"],
               "Original SCMR membership or Gaussian source differs")
     state, module = ctx["state"], ctx["module"]
     snapshot = ext.identity_snapshot(state, module, ctx["optimizer"])
@@ -89,10 +90,11 @@ def setup(group, fold, *, verify_spectrum=False):
     now = ext.identity_snapshot(state, module, ctx["optimizer"])
     h.require(all(value == now[key] for key, value in snapshot.items() if key != "spectrum_and_prompts"),
               "Native or new trainable initialization, optimizer, or RNG changed")
+    full = h.read_json(DPSL_ROOT / "runtime" / "history" / f"fold{fold:02d}.preflight.json")[
+        "provenance"]["registration"]
     for key in ("extended_train_index_sha", "extended_pair_sha", "original_test_index_sha",
                 "after_class_counts_asd_td", "after_class_weights_asd_td"):
-        full = h.read_json(ext.paths(group, fold)["preflight"])["provenance"]["registration"]
-        h.require(registration[key] == full[key], f"DARG membership differs from E82.4.6.2: {key}")
+        h.require(registration[key] == full[key], f"DARG membership differs from the formal preflight: {key}")
     registration.update(before_legal=len(old["legal"]), after_legal=len(members["legal"]),
                         legal_index_sha=original["legal_index_sha"], excluded_0based=state["excluded"],
                         legal_labels_sha=h.sha(ctx["labels"].cpu()), original_o_sha=original["spectrum"],

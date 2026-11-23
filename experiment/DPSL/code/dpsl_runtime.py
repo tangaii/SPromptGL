@@ -1,18 +1,12 @@
-"""Standalone checkpoint, result, and recovery utilities for DPSL.
-
-The historical model implementation is kept under ``code/provenance`` and
-``code/history_*``.  This module is the only code imported by the public CLI.
-It reads the frozen local artifacts and never resolves an adjacent experiment
-directory at runtime.
-"""
+"""Integrity and archived results for the formal DPSL experiment."""
 from __future__ import annotations
 
 import csv
 import hashlib
 import json
 import math
-import re
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -91,8 +85,141 @@ def checkpoint_path(fold: int, kind: str) -> Path:
     return ROOT / "checkpoints" / f"fold{fold:02d}.{kind}.pt"
 
 
+def verify_sha(path: Path, expected: str) -> str:
+    actual = sha256_file(path)
+    if actual != expected:
+        raise ValueError(f"SHA-256 mismatch for {path}")
+    return actual
+
+
+@lru_cache(maxsize=1)
+def official_manifest() -> dict[str, Any]:
+    path = ROOT / "code/provenance/manifests/E82_4_6_10-G1.json"
+    receipt = next(row for row in source_records()["manifest_records"]
+                   if ROOT / row["path"] == path)
+    verify_sha(path, receipt["sha256"])
+    return read_json(path)
+
+
+def checkpoint_source(fold: int, kind: str) -> tuple[str, str, int]:
+    official = official_manifest()
+    if fold == 8:
+        group = official["groups"]["G1"]
+        if group["patient_ids_1based"] != [383, 430] or group["status"] != "COMPLETE_AUDITED":
+            raise ValueError("Invalid Fold 8 official G1 registration")
+        source = str(Path(official["directory"]) / "checkpoints" / f"G1_f08.{kind}.pt")
+        training = group["training"]
+        return source, training[kind + "_sha"], int(training["best_epoch" if kind == "best" else "epoch"])
+    ref = official["nine_fold_reuse"][str(fold)]["checkpoint"]
+    return ref[kind], ref[kind + "_sha"], int(ref[kind + "_epoch"])
+
+
 def load_checkpoint(fold: int, kind: str) -> dict[str, Any]:
-    return torch.load(checkpoint_path(fold, kind), map_location="cpu", weights_only=False)
+    path = checkpoint_path(fold, kind)
+    source, digest, epoch = checkpoint_source(fold, kind)
+    record = next(row for row in source_records()["checkpoint_records"]
+                  if row["fold"] == fold and row["kind"] == kind)
+    if (record["source_path"], record["sha256"], ROOT / record["path"]) != (source, digest, path):
+        raise ValueError(f"Fold {fold} {kind} copy receipt disagrees with the official Manifest")
+    verify_sha(path, digest)
+    checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+    validate_checkpoint(checkpoint, fold, kind, epoch)
+    return checkpoint
+
+
+def require_keys(value: Any, required: set[str], label: str) -> None:
+    if not isinstance(value, dict):
+        raise ValueError(f"{label} must be a mapping")
+    missing = required - value.keys()
+    if missing:
+        raise ValueError(f"{label} missing {sorted(missing)}")
+
+
+def validate_evaluation(evaluation: Any, count: int, labels: Any = None) -> None:
+    require_keys(evaluation, {"logits", "probability", "prediction", "correct"}, "evaluation")
+    logits = _array(evaluation["logits"])
+    probability = _array(evaluation["probability"])
+    prediction = _array(evaluation["prediction"])
+    correct = evaluation["correct"]
+    if (logits.shape != (count, 2) or probability.shape != (count, 2) or prediction.shape != (count,)
+            or logits.dtype.kind != "f" or probability.dtype.kind != "f" or prediction.dtype.kind not in "iu"
+            or not np.isfinite(logits).all() or not np.isfinite(probability).all()
+            or not ((0 <= probability) & (probability <= 1)).all()
+            or not np.allclose(probability.sum(axis=1), 1, rtol=0, atol=6 * np.finfo(probability.dtype).eps)
+            or not np.array_equal(probability.argmax(axis=1), prediction)
+            or not isinstance(correct, (int, np.integer)) or not 0 <= correct <= count
+            or (labels is not None and np.count_nonzero(prediction == labels) != correct)):
+        raise ValueError("Invalid evaluation shape, dtype, values or correctness")
+
+
+def validate_membership(membership: Any, fold: int) -> None:
+    require_keys(membership, REQUIRED_MEMBERSHIP_KEYS, "membership")
+    train, legal, test, pairs, same, weights = (
+        _array(membership[key]) for key in ("train", "legal", "test", "train_pairs", "train_same", "weights"))
+    test_count = 88 if fold == 1 else 87
+    overlap = np.array(OVERLAP_1BASED.get(fold, ()), dtype=np.int64) - 1
+    for value in (train, legal, test):
+        if value.ndim != 1 or value.dtype.kind not in "iu" or len(np.unique(value)) != len(value) or (
+                (value < 0) | (value >= 871)).any():
+            raise ValueError(f"Fold {fold} invalid member IDs")
+    if (len(test) != test_count or len(legal) != 871 - test_count
+            or not np.array_equal(np.intersect1d(train, test), np.sort(overlap))
+            or not np.array_equal(legal, train[~np.isin(train, overlap)])):
+        raise ValueError(f"Fold {fold} historical legal supervision or overlap differs")
+    if (pairs.shape != (4096, 2) or pairs.dtype.kind not in "iu" or not np.isin(pairs, train).all()
+            or same.shape != (4096,) or not np.isin(same, [0, 1]).all() or int(same.sum()) != 2048
+            or not np.isfinite(weights).all()):
+        raise ValueError(f"Fold {fold} invalid historical relation scope")
+
+
+def validate_optimizer(optimizer: Any, label: str) -> None:
+    require_keys(optimizer, {"state", "param_groups"}, label)
+    if not isinstance(optimizer["state"], dict) or not optimizer["state"] or not optimizer["param_groups"]:
+        raise ValueError(f"{label} optimizer state or groups are empty")
+    seen = [position for group in optimizer["param_groups"] for position in group["params"]]
+    if len(set(seen)) != len(seen) or not set(optimizer["state"]).issubset(seen):
+        raise ValueError(f"{label} optimizer parameter IDs differ")
+    for state in optimizer["state"].values():
+        require_keys(state, {"step", "exp_avg", "exp_avg_sq"}, f"{label} optimizer moments")
+        step = _array(state["step"])
+        mean, second = (_array(state[k]) for k in ("exp_avg", "exp_avg_sq"))
+        if (step.ndim != 0 or not np.isfinite(step) or step < 1 or step != int(step)
+                or mean.shape != second.shape or mean.dtype.kind != "f" or second.dtype != mean.dtype
+                or not np.isfinite(mean).all() or not np.isfinite(second).all() or (second < 0).any()):
+            raise ValueError(f"{label} optimizer moments or step are invalid")
+
+
+def validate_checkpoint(payload: Any, fold: int, kind: str, epoch: int) -> None:
+    required = REQUIRED_CHECKPOINT_KEYS | ({"eval_ema", "best_sha", "journal_size"} if kind == "latest" else set())
+    require_keys(payload, required, f"Fold {fold} {kind}")
+    if (payload["group"], payload["fold"], payload["seed"], payload["epoch"]) != ("G2", fold, 0, epoch):
+        raise ValueError(f"Fold {fold} {kind} has wrong formal identity or epoch")
+    require_keys(payload["rng"], REQUIRED_RNG_KEYS, "RNG")
+    if len(payload["rng"]["cuda"]) != 1 or not all(
+            torch.is_tensor(t) and t.dtype == torch.uint8 and t.ndim == 1 and t.numel()
+            for t in (payload["rng"]["cpu"], *payload["rng"]["cuda"])):
+        raise ValueError(f"Fold {fold} RNG streams are malformed")
+    require_keys(payload["ema"], REQUIRED_EMA_KEYS, "EMA/Gaussian")
+    require_keys(payload["state"], REQUIRED_STATE_KEYS, "state bundle")
+    require_keys(payload["state"]["native"], REQUIRED_NATIVE_KEYS, "native state")
+    validate_optimizer(payload["state"]["optimizer"], "DPSL")
+    for name in ("opt_base", "opt_cam", "opt_added"):
+        validate_optimizer(payload["state"]["native"][name], name)
+    validate_membership(payload["membership"], fold)
+    validate_evaluation(payload["evaluation"], len(payload["membership"]["test"]))
+    if (payload["best_epoch"] > epoch or payload["wait"] != epoch - payload["best_epoch"]
+            or (kind == "best" and (payload["best_epoch"] != epoch
+                                     or payload["best_correct"] != payload["evaluation"]["correct"]))):
+        raise ValueError(f"Fold {fold} {kind} inconsistent early-stopping state")
+    if kind == "latest":
+        require_keys(payload["eval_ema"], REQUIRED_EMA_KEYS, "pre-update EMA")
+        if payload["best_sha"] != checkpoint_source(fold, "best")[1]:
+            raise ValueError(f"Fold {fold} Latest Best digest differs")
+
+
+def verify_warmup_file(fold: int) -> str:
+    record = next(row for row in source_records()["warmup_records"] if row["fold"] == fold)
+    return verify_sha(ROOT / record["path"], record["sha256"])
 
 
 def load_csv(path: Path) -> tuple[list[str], list[dict[str, str]]]:
@@ -115,6 +242,7 @@ def row_index(rows: Iterable[dict[str, str]]) -> dict[tuple[int, int], dict[str,
     return {(int(row["fold"]), int(row["patient_index_0based"])): row for row in rows}
 
 
+@lru_cache(maxsize=1)
 def source_records() -> dict[str, Any]:
     return read_json(ROOT / "runtime" / "copy_records.json")
 
@@ -139,6 +267,15 @@ def checkpoint_summary(fold: int) -> dict[str, Any]:
         recorded_overlap = sorted(train & test)
     return {
         "fold": fold,
+        "checkpoint_config": best["config"],
+        "checkpoint_config_same_best_latest": best["config"] == latest["config"],
+        "model_keys": {key: list(best["state"]["native"][key]) for key in ("model", "cam")}
+                      | {"DPSL": list(best["state"]["module"])},
+        "train_order_1based": (_array(best["membership"]["train"]) + 1).tolist(),
+        "test_order_1based": (_array(best["membership"]["test"]) + 1).tolist(),
+        "legal_supervision_1based": (_array(best["membership"]["legal"]) + 1).tolist(),
+        "state_metadata": {"rng_sha": latest["rng_sha"], "ema_sha": latest["ema_sha"],
+                           "journal_sha": latest["journal_sha"]},
         "internal_group_best": best.get("group"),
         "internal_group_latest": latest.get("group"),
         "best_epoch": int(best["epoch"]),
@@ -203,7 +340,7 @@ def _binary_metrics(labels: np.ndarray, prediction: np.ndarray, probability: np.
     }
 
 
-def replay_best_evaluation(write: bool = True) -> dict[str, Any]:
+def replay_archive(write: bool = True, folds=FOLDS) -> dict[str, Any]:
     """Replay the frozen checkpoint evaluation payload in test-member order.
 
     The checkpoint stores the exact historical test forward output.  The replay
@@ -214,7 +351,7 @@ def replay_best_evaluation(write: bool = True) -> dict[str, Any]:
     indexed = row_index(patient)
     output_rows: list[dict[str, Any]] = []
     fold_status: list[dict[str, Any]] = []
-    for fold in FOLDS:
+    for fold in folds:
         checkpoint = load_checkpoint(fold, "best")
         membership = checkpoint["membership"]
         test = _array(membership["test"]).astype(np.int64, copy=False)
@@ -265,7 +402,7 @@ def replay_best_evaluation(write: bool = True) -> dict[str, Any]:
         "status": "PASS" if all(
             item["test_order_exact"] and item["probability_exact"] and item["hard_prediction_exact"]
             and item["checkpoint_correct"] == item["replayed_correct"] for item in fold_status
-        ) and len(output_rows) == 871 else "FAIL",
+        ) and len(output_rows) == sum(88 if f == 1 else 87 for f in folds) else "FAIL",
         "folds": fold_status,
         "patient_count": len(output_rows),
         "columns": [
@@ -274,7 +411,7 @@ def replay_best_evaluation(write: bool = True) -> dict[str, Any]:
         ],
     }
     if write:
-        path = ROOT / "results" / "evaluation_replay.csv"
+        path = ROOT / "results" / "recheck" / "evaluation_replay.csv"
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w", newline="", encoding="utf-8") as stream:
             writer = csv.DictWriter(stream, fieldnames=result["columns"])
@@ -283,227 +420,7 @@ def replay_best_evaluation(write: bool = True) -> dict[str, Any]:
     return result
 
 
-def verify_checkpoint_payloads() -> dict[str, Any]:
-    records = {(int(row["fold"]), row["kind"]): row for row in source_records()["checkpoint_records"]}
-    checks: list[dict[str, Any]] = []
-    for fold in FOLDS:
-        best = load_checkpoint(fold, "best")
-        latest = load_checkpoint(fold, "latest")
-        fold_errors: list[str] = []
-        for kind, payload in (("best", best), ("latest", latest)):
-            path = checkpoint_path(fold, kind)
-            record = records[(fold, kind)]
-            if sha256_file(path) != record["sha256"]:
-                fold_errors.append(f"{kind}: copied SHA differs from source record")
-            missing = sorted(REQUIRED_CHECKPOINT_KEYS.difference(payload))
-            if missing:
-                fold_errors.append(f"{kind}: missing checkpoint keys {missing}")
-            if payload.get("group") != "G2":
-                fold_errors.append(f"{kind}: internal model group is {payload.get('group')!r}, expected G2")
-            if int(payload.get("fold", -1)) != fold:
-                fold_errors.append(f"{kind}: fold field differs")
-            if not REQUIRED_MEMBERSHIP_KEYS.issubset(payload.get("membership", {})):
-                fold_errors.append(f"{kind}: membership is incomplete")
-            if not REQUIRED_RNG_KEYS.issubset(payload.get("rng", {})):
-                fold_errors.append(f"{kind}: RNG state is incomplete")
-            if not REQUIRED_EMA_KEYS.issubset(payload.get("ema", {})):
-                fold_errors.append(f"{kind}: EMA/Gaussian state is incomplete")
-            if not REQUIRED_STATE_KEYS.issubset(payload.get("state", {})):
-                fold_errors.append(f"{kind}: state bundle is incomplete")
-            if not REQUIRED_NATIVE_KEYS.issubset(payload.get("state", {}).get("native", {})):
-                fold_errors.append(f"{kind}: native optimizer/model state is incomplete")
-            evaluation = payload.get("evaluation", {})
-            if set(evaluation) < {"logits", "probability", "prediction", "correct"}:
-                fold_errors.append(f"{kind}: evaluation payload is incomplete")
-        if latest.get("best_sha") and latest["best_sha"] != sha256_file(checkpoint_path(fold, "best")):
-            fold_errors.append("latest.best_sha does not point to the copied Best")
-        if int(latest["epoch"]) < int(best["best_epoch"]):
-            fold_errors.append("Latest epoch precedes Best selection epoch")
-        checks.append({"fold": fold, "status": "PASS" if not fold_errors else "FAIL", "errors": fold_errors})
-    return {"status": "PASS" if all(item["status"] == "PASS" for item in checks) else "FAIL", "folds": checks}
-
-
-def verify_warmups_and_membership() -> dict[str, Any]:
-    records = {int(row["fold"]): row for row in source_records()["warmup_records"]}
-    checks = []
-    for fold in FOLDS:
-        warmup_path = ROOT / "inputs" / "warmup" / f"fold{fold:02d}.pt"
-        warmup = torch.load(warmup_path, map_location="cpu", weights_only=False)
-        best = load_checkpoint(fold, "best")
-        membership = best["membership"]
-        errors: list[str] = []
-        if sha256_file(warmup_path) != records[fold]["sha256"]:
-            errors.append("warmup SHA differs from source record")
-        required = {"model", "cam", "optimizer_base", "optimizer_cam", "optimizer_added", "rng",
-                    "train_indices", "test_indices", "train_pairs", "train_same", "rng_trace"}
-        missing = sorted(required.difference(warmup))
-        if missing:
-            errors.append(f"warmup is incomplete: {missing}")
-        if not np.array_equal(_array(warmup["test_indices"]), _array(membership["test"])):
-            errors.append("warmup/test order differs from checkpoint test order")
-        if not np.array_equal(_array(warmup["train_indices"]), _array(membership["legal"])):
-            errors.append("warmup train does not equal checkpoint legal supervision scope")
-        overlap = set(OVERLAP_1BASED.get(fold, ()))
-        recorded_overlap = {int(x) for x in best.get("train_test_overlap_1based", [])}
-        derived_overlap = set((_array(membership["train"]).astype(np.int64) + 1).tolist()) & set(
-            (_array(membership["test"]).astype(np.int64) + 1).tolist())
-        if recorded_overlap and recorded_overlap != overlap:
-            errors.append(f"overlap registration differs: {sorted(recorded_overlap)} != {sorted(overlap)}")
-        if derived_overlap != overlap:
-            errors.append(f"derived train/test overlap differs: {sorted(derived_overlap)} != {sorted(overlap)}")
-        pairs = _array(membership["train_pairs"])
-        same = _array(membership["train_same"])
-        if pairs.shape != (4096, 2) or same.shape != (4096,) or not np.array_equal(np.bincount(same.astype(int), minlength=2), [2048, 2048]):
-            errors.append("relation pair shape or balance differs")
-        checks.append({"fold": fold, "status": "PASS" if not errors else "FAIL", "errors": errors,
-                       "train_rows": int(len(membership["train"])), "legal_rows": int(len(membership["legal"])),
-                       "test_rows": int(len(membership["test"])), "overlap_1based": sorted(overlap)})
-    return {"status": "PASS" if all(item["status"] == "PASS" for item in checks) else "FAIL", "folds": checks}
-
-
-def verify_overlap_and_results() -> dict[str, Any]:
-    rows = formal_patient_rows()
-    errors: list[str] = []
-    if len(rows) != 871 or len({int(row["patient_id_1based"]) for row in rows}) != 871:
-        errors.append("formal patient table is not the 871-row G1 table")
-    overlap_rows = []
-    expected = {(fold, patient) for fold, patients in OVERLAP_1BASED.items() for patient in patients}
-    for row in rows:
-        key = (int(row["fold"]), int(row["patient_id_1based"]))
-        if key in expected:
-            overlap_rows.append(row)
-            for name in ("scmr_label_supervised", "gaussian_member", "ema_member"):
-                if row[name].lower() != "false":
-                    errors.append(f"overlap {key} enters {name}")
-            for name in ("delta_l2", "delta_parallel_l2", "delta_perp_l2", "query_feature_change_l2"):
-                if float(row[name]) != 0.0:
-                    errors.append(f"overlap {key} has nonzero {name}")
-    if len(overlap_rows) != 19:
-        errors.append(f"expected 19 overlap rows, found {len(overlap_rows)}")
-    return {"status": "PASS" if not errors else "FAIL", "overlap_count": len(overlap_rows), "errors": errors,
-            "overlap_1based": {str(fold): list(patients) for fold, patients in OVERLAP_1BASED.items()}}
-
-
-def verify_metrics() -> dict[str, Any]:
-    rows = formal_metric_rows()
-    summary = next((row for row in rows if row["scope"] == "macro_mean"), None)
-    spread = next((row for row in rows if row["scope"] == "macro_population_sd"), None)
-    errors = []
-    values = {}
-    if summary is None or spread is None:
-        return {"status": "FAIL", "errors": ["formal metric summary rows are missing"]}
-    for key, (expected_mean, expected_sd) in EXPECTED_METRICS_PERCENT.items():
-        mean = float(summary[key]) * 100
-        sd = float(spread[key]) * 100
-        values[key] = {"mean_percent": mean, "population_sd_percent": sd}
-        if not math.isclose(mean, expected_mean, rel_tol=0, abs_tol=5e-5):
-            errors.append(f"{key} mean {mean} != {expected_mean}")
-        if not math.isclose(sd, expected_sd, rel_tol=0, abs_tol=5e-5):
-            errors.append(f"{key} population SD {sd} != {expected_sd}")
-    return {"status": "PASS" if not errors else "FAIL", "values": values, "errors": errors}
-
-
-def verify_runtime_dependency_closure() -> dict[str, Any]:
-    checked = [ROOT / "cli.py", ROOT / "code" / "dpsl_runtime.py"]
-    forbidden = re.compile(r"/(?:data/adodas/SPromptGL-main|model/spromptgl/experiment/experiment)")
-    hits = []
-    for path in checked:
-        text = path.read_text(encoding="utf-8")
-        for line_no, line in enumerate(text.splitlines(), 1):
-            if forbidden.search(line):
-                hits.append({"path": str(path.relative_to(ROOT)), "line": line_no, "text": line.strip()})
-    return {"status": "PASS" if not hits else "FAIL", "checked": [str(p.relative_to(ROOT)) for p in checked], "hits": hits,
-            "provenance_paths_allowed": True}
-
-
-def audit() -> dict[str, Any]:
-    checkpoint = verify_checkpoint_payloads()
-    warmup = verify_warmups_and_membership()
-    replay = replay_best_evaluation(write=True)
-    overlap = verify_overlap_and_results()
-    metrics = verify_metrics()
-    dependency = verify_runtime_dependency_closure()
-    blockers = [
-        "Full historical model forward for all ten folds is not executed by the standalone CLI. The archived checkpoint evaluation payload is replayed exactly.",
-        "Latest next-step train/eval is validated for serialized state, optimizer, RNG, EMA, epoch, and journal identity only. No training step is run in this migration.",
-    ]
-    status = "PARTIALLY_STANDALONE"
-    if all(item["status"] == "PASS" for item in (checkpoint, warmup, replay, overlap, metrics, dependency)):
-        status = "PARTIALLY_STANDALONE"
-    result = {
-        "status": status,
-        "completed_at_utc": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
-        "checkpoint_sha_source_verification": checkpoint,
-        "warmup_membership_relation_verification": warmup,
-        "best_evaluation_replay": replay,
-        "overlap_and_patient_table": overlap,
-        "formal_metrics": metrics,
-        "runtime_dependency_closure": dependency,
-        "full_forward": {"status": "BLOCKED_UNEXECUTED", "folds": 0, "required": 10},
-        "latest_next_step_train_eval": {"status": "BLOCKED_UNEXECUTED", "folds": 0, "required": 10},
-        "blockers": blockers,
-        "historical_overlap_warning": "The 19 listed patients intentionally overlap training and test labels in their historical folds and are not an independent generalization estimate.",
-    }
-    write_json(ROOT / "results" / "audit_status.json", result)
-    return result
-
-
-def resume_check() -> dict[str, Any]:
-    checks = []
-    records = {(int(row["fold"]), row["kind"]): row for row in source_records()["checkpoint_records"]}
-    history = {(int(row["fold"]), row["kind"]): row for row in history_records()}
-    for fold in FOLDS:
-        latest = load_checkpoint(fold, "latest")
-        errors = []
-        for key in ("state", "ema", "rng", "optimizer", "epoch", "best_epoch", "wait", "journal_sha"):
-            if key not in latest and key != "optimizer":
-                errors.append(f"Latest lacks {key}")
-        if not REQUIRED_RNG_KEYS.issubset(latest.get("rng", {})):
-            errors.append("RNG streams incomplete")
-        if not REQUIRED_EMA_KEYS.issubset(latest.get("ema", {})):
-            errors.append("EMA/Gaussian state incomplete")
-        journal_record = history.get((fold, "journal"))
-        journal_ok = False
-        if journal_record:
-            journal_path = ROOT / journal_record["path"]
-            journal_ok = sha256_file(journal_path) == journal_record["sha256"]
-            if not journal_ok:
-                errors.append("journal SHA differs from source record")
-            raw = journal_path.read_bytes()
-            if latest.get("journal_size") is not None and len(raw) != int(latest["journal_size"]):
-                errors.append("Latest journal_size differs from frozen journal")
-            if latest.get("journal_sha") and hashlib.sha256(raw).hexdigest() != latest["journal_sha"]:
-                errors.append("Latest journal_sha differs from frozen journal")
-        else:
-            errors.append("frozen journal is missing")
-        checks.append({"fold": fold, "status": "PASS" if not errors else "FAIL",
-                       "latest_epoch": int(latest["epoch"]), "best_epoch": int(latest["best_epoch"]),
-                       "optimizer_state_present": bool(latest.get("state", {}).get("optimizer")),
-                       "rng_present": REQUIRED_RNG_KEYS.issubset(latest.get("rng", {})),
-                       "ema_present": REQUIRED_EMA_KEYS.issubset(latest.get("ema", {})),
-                       "journal_exact": journal_ok, "errors": errors})
-    result = {
-        "status": "PARTIALLY_STANDALONE" if all(item["status"] == "PASS" for item in checks) else "FAIL",
-        "mode": "in-memory serialized recovery validation only",
-        "folds": checks,
-        "next_step_execution": "NOT_RUN_BY_REQUEST",
-        "note": "No optimizer step, RNG advance, or checkpoint write occurred.",
-    }
-    write_json(ROOT / "results" / "resume_check.json", result)
-    return result
-
-
-def train_resume() -> dict[str, str]:
-    result = {
-        "status": "NOT_RUN_BY_REQUEST",
-        "reason": "This migration explicitly forbids starting or continuing training.",
-        "formal_checkpoint_writes": "none",
-    }
-    write_json(ROOT / "results" / "train_resume_status.json", result)
-    return result
-
-
-def inspect() -> dict[str, Any]:
+def inspect(folds=FOLDS) -> dict[str, Any]:
     manifest = read_json(ROOT / "manifest.json")
     config = read_json(ROOT / "config.json")
     return {
@@ -511,7 +428,7 @@ def inspect() -> dict[str, Any]:
         "authority": str(ROOT),
         "model_identity": config.get("model_identity"),
         "formal_checkpoint_mapping": manifest.get("formal_checkpoint_mapping"),
-        "folds": [checkpoint_summary(fold) for fold in FOLDS],
+        "folds": [checkpoint_summary(fold) for fold in folds],
         "overlap_19": {str(fold): list(patients) for fold, patients in OVERLAP_1BASED.items()},
         "historical_manifest_sha256": manifest.get("historical_manifest_sha256"),
     }

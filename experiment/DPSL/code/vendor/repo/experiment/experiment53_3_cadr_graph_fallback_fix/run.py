@@ -19,6 +19,8 @@ from collections import Counter
 from pathlib import Path
 from types import SimpleNamespace
 
+from standalone_paths import DPSL_ROOT, VENDOR_ROOT
+
 for key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ.setdefault(key, "2")
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -32,9 +34,9 @@ CKPTS = RT / "checkpoints"
 REL_CACHE = RT / "relation_cache"
 LOGS = RT / "logs"
 RESULTS = EXP / "results"
-LEGACY_EXP = ROOT / "experiment/experiment51_dugsa"
+LEGACY_EXP = VENDOR_ROOT / "repo/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment51_dugsa"
 LEGACY_SOURCE = LEGACY_EXP / "source"
-ANCHORS = ROOT / "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
+ANCHORS = VENDOR_ROOT / "repo/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
 HIST_E0 = ROOT / "experiment/experiment53_1_drap_corrected_adversarial_propagation/results/fold_metrics.csv"
 DIMS = [48, 6, 10, 256]
 MODS = ["PHENO", "ANAT", "FUNC", "CORR"]
@@ -189,7 +191,7 @@ def load_data():
     c = runtime()
     from sklearn.model_selection import StratifiedKFold
 
-    data_dir = ROOT / "data/ABIDE"
+    data_dir = DPSL_ROOT / "inputs" / "data"
     frame = c["pd"].read_csv(data_dir / "processed_standard_data.csv")
     mapping = c["np"].load(data_dir / "modal_feat_dict.npy", allow_pickle=True).item()
     expected_columns = [

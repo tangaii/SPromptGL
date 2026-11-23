@@ -1,106 +1,51 @@
-# E82.4.6.10-G1 DPSL formal migration report
+# DPSL 独立实验基座验收
 
-## Status
+**COMPLETE_AUDITED_STANDALONE**
 
-`PARTIALLY_STANDALONE`. The preferred directory
-`/data/adodas/SPromptGL-main/experiment/DPSL` returned errno 5 while being
-created. The single authoritative directory is
-`/model/spromptgl/experiment/DPSL`. No historical experiment file was
-modified and no Fold was trained.
+权威目录为 `/model/spromptgl/experiment/DPSL`。E82.4.6.10-G1 的外部实验身份和 G2 SCMR-DA-SRPE 的内部模型分派均已保留。Fold 8 正式来源使用患者 383、430。
 
-The external task identity is `E82.4.6.10-G1`. The serialized model identity
-in every selected checkpoint is `E82.4.6-G2 SCMR-DA-SRPE`, based on
-`E74.4-G2 DARG`. GFR, DARG, CAM144, the output classifier, disease Prompt,
-spectral and Jacobian in/out paths, Gaussian, EMA, classification evidence,
-reliability, end-to-end CAM144 enhancement, residual and shared-gradient
-limits remain represented by the archived model state and source snapshots.
+## 正式十折来源及真实前向
 
-## Formal ten-fold source mapping
+| Fold | 正式来源 | Best epoch | Latest epoch | 正确 / 测试 |
+|---:|---|---:|---:|---:|
+| 1 | E82.4.6-G2 | 102 | 303 | 84 / 88 |
+| 2 | E82.4.6.4-G1 | 166 | 367 | 84 / 87 |
+| 3 | E82.4.6.3-G2 | 244 | 445 | 79 / 87 |
+| 4 | E82.4.6.6-G1 | 182 | 383 | 83 / 87 |
+| 5 | E82.4.6-G2 | 428 | 450 | 81 / 87 |
+| 6 | E82.4.6-G2 | 157 | 358 | 84 / 87 |
+| 7 | E82.4.6-G2 | 166 | 367 | 79 / 87 |
+| 8 | E82.4.6.10-G1 | 201 | 402 | 78 / 87 |
+| 9 | E82.4.6-G2 | 231 | 432 | 78 / 87 |
+| 10 | E82.4.6-G2 | 152 | 353 | 81 / 87 |
 
-| Fold | Historical source | Target Best | Target Latest |
-| --- | --- | --- | --- |
-| 1 | E82.4.6-G2 | `checkpoints/fold01.best.pt` | `checkpoints/fold01.latest.pt` |
-| 2 | E82.4.6.4-G1 | `checkpoints/fold02.best.pt` | `checkpoints/fold02.latest.pt` |
-| 3 | E82.4.6.3-G2 | `checkpoints/fold03.best.pt` | `checkpoints/fold03.latest.pt` |
-| 4 | E82.4.6.6-G1 | `checkpoints/fold04.best.pt` | `checkpoints/fold04.latest.pt` |
-| 5 | E82.4.6-G2 | `checkpoints/fold05.best.pt` | `checkpoints/fold05.latest.pt` |
-| 6 | E82.4.6-G2 | `checkpoints/fold06.best.pt` | `checkpoints/fold06.latest.pt` |
-| 7 | E82.4.6-G2 | `checkpoints/fold07.best.pt` | `checkpoints/fold07.latest.pt` |
-| 8 | E82.4.6.10-G1 | `checkpoints/fold08.best.pt` | `checkpoints/fold08.latest.pt` |
-| 9 | E82.4.6-G2 | `checkpoints/fold09.best.pt` | `checkpoints/fold09.latest.pt` |
-| 10 | E82.4.6-G2 | `checkpoints/fold10.best.pt` | `checkpoints/fold10.latest.pt` |
+各折新路径为 `checkpoints/foldXX.best.pt` 与 `checkpoints/foldXX.latest.pt`。原始绝对路径、SHA-256 和 epoch 见 [manifest.json](../manifest.json)。
 
-The complete source and target SHA mapping is in `manifest.json` and
-`runtime/copy_records.json`. Fold 8 is the formal G1 checkpoint from
-`E82.4.6.10-G1`, never the E82.4.6.10-G2 or E82.4.6.9-G2 Fold 8 weight.
+实际前向 10/10 折通过。871 名患者的顺序、标签、硬预测、两类 logits、ASD/TD 概率及真类 Margin 与历史证据一致，最大绝对误差为 0。完整 CAM144、增强特征、谱内外分量及总残差与原历史代码前向的张量摘要逐折相同。原 GPU UUID 已映射至当前物理 GPU0。Fold 4 保留原核心和原评价实现，历史目录中后续修订的审计包装器未参与前向。
 
-## Frozen inputs and restoration state
+| 指标 | 十折均值 ± population SD，% | Pooled，% |
+|---|---:|---:|
+| ACC | 93.1087 ± 2.6257 | 93.1114 |
+| Hard-AUC / BA | 93.0348 ± 2.6450 | 93.0383 |
+| Prob-AUC | 94.8628 ± 2.8903 | 94.2053 |
+| SEN-ASD | 92.0549 ± 3.6745 | 92.0596 |
+| SPE-TD | 94.0148 ± 3.4314 | 94.0171 |
+| ASD-F1 | 92.5096 ± 2.8797 | 92.5187 |
 
-The local snapshot contains the processed feature table and original order,
-labels and encodings, ten train/test and legal-supervision memberships, the
-19-patient overlap registration, relation pairs and balanced relation labels,
-E61 epoch-10 warmup state and RNG, ten spectrum files, the eight prompt and
-text-embedding resources, and the selected runtime closure. Each Best and
-Latest payload retains model, native optimizer, EMA/Gaussian, RNG, epoch,
-early-stop, evaluation, membership, relation and journal state. The ten
-warmup files are byte-identical to their recorded historical sources.
+Pooled 混淆矩阵按 ASD 为阳性计算，TP=371、FP=28、TN=440、FN=32，共 811/871 正确。Hard-AUC 取硬预测的 balanced accuracy，Prob-AUC 根据连续 ASD 概率计算。
 
-`cli.py` is independent of the working directory and resolves all runtime
-paths from its own file. `inspect`, `evaluate`, `audit`, `resume-check`, and
-`train-resume` are available. The public CLI imports only local
-`code/dpsl_runtime.py`; an external working-directory audit recorded no read
-of an adjacent historical experiment directory.
+## 恢复与训练入口
 
-## Exact replay and audit outcome
+正式 20 份 Best/Latest 按来源 Manifest 逐份核验字节 SHA。10 折 Latest 实际恢复模型、四个优化器、Python/NumPy/CPU/设备 RNG、Gaussian/EMA 和早停计数。同轮评估以及下一步训练加评估的归档见证逐折精确匹配。历史正式 Latest 已达到停止条件。
 
-Best checkpoint SHA verification passed 10/10. Best payload loading and the
-serialized evaluation replay passed 10/10. The replay contains all 871
-historical test rows in their original fold/test order. ASD probabilities,
-classification logits, and hard predictions stored in the Best evaluation
-payload match the frozen patient table exactly, with maximum probability error
-zero. `results/evaluation_replay.csv` contains the patient-level logits,
-probabilities, labels and predictions.
+10 折从各自 E61 epoch 10 恢复，实际执行 epoch 11、保存 Best 和 Latest、从存盘 Latest 恢复并执行 epoch 12。两轮训练及评估日志与历史记录逐折一致。历史顺序有 6 次 Dropout，训练轮次未重设种子。审计过程的临时训练文件已清理。完整十折训练未重复执行。
 
-Latest checkpoint loading, optimizer/RNG/EMA presence, epoch and journal
-identity passed 10/10. The `resume-check` command intentionally performs only
-an in-memory serialized recovery validation. It does not advance an optimizer,
-consume a training RNG stream, or write a checkpoint.
+正式训练入口提供单折、十折和运行目录续训。共用差分梯度预算为 0.1%，新增 CAM144 残差限幅为 8%。19 名重叠患者保留 DARG 分类和关系资格，新增谱及 Prompt 标签监督、Gaussian/EMA 更新均使用历史合法成员，重叠患者的新增残差各分量严格为零。
 
-The 19 historical train-test overlaps remain explicit. Fold 2 has
-377, 407, 681, 779, 784, 260, 288 and 375. Fold 3 has 46, 66, 172, 266 and
-388. Fold 4 has 712, 713, 727 and 773. Fold 8 has 383 and 430. They retain
-DARG classification and relation eligibility, stay outside the added spectral,
-Prompt, Gaussian and EMA label supervision, and have zero added residuals in
-the frozen patient audit. These historical results are not an independent
-generalization estimate.
+## 完整性和边界
 
-The two remaining audit blockers are deliberate. The public standalone entry
-has not executed a new full historical model forward for all ten folds, and it
-has not executed a Latest next-step optimizer/training/evaluation replay.
-Consequently the package is not marked `COMPLETE_AUDITED_STANDALONE`.
+在 `/tmp` 启动 CLI，Python 导入和文件审计与 strace 的 286,943 次文件系统调用均未发现外部项目访问或正式权重和输入的写入。迁移前后 1,423 份历史来源 SHA-256 相同。缺少字段、优化器损坏、SHA 错误、患者顺序改变、非法监督、非零重叠残差、外部路径与缺少 RNG 的负向审计全部正确判为失败。
 
-## Formal ten-fold metrics
+19 名有意保留的训练—测试标签重叠、历史 `val=test`、CV 前 RFE/预处理及转导患者图限制了独立泛化推断。跨其他设备或数值库的逐位复现尚未验证。公开 GitHub main 为旧快照 `bb6b010`，受控制品恢复指令见 [README.md](../README.md)。
 
-All values are percentages and use population SD across the ten folds.
-
-| Metric | Mean ± population SD |
-| --- | ---: |
-| ACC | 93.1087 ± 2.6257 |
-| Hard-AUC / BA | 93.0348 ± 2.6450 |
-| Prob-AUC | 94.8628 ± 2.8903 |
-| SEN-ASD | 92.0549 ± 3.6745 |
-| SPE-TD | 94.0148 ± 3.4314 |
-| ASD-F1 | 92.5096 ± 2.8797 |
-
-The complete per-fold values are in `results/fold_metrics.csv`. The formal
-871-row historical table is in `results/patient_level.csv`, and the exact
-serialized prediction replay is in `results/evaluation_replay.csv`.
-
-## Minimum formal files
-
-`runtime/required_sha256.json` records the final SHA256 of the formal code,
-configuration, manifest, input snapshots, warmups, ten Best and ten Latest
-checkpoints, reports and audit outputs. `code/provenance` contains read-only
-historical manifests, source result snapshots, source implementation snapshots
-and the paper provenance copy. The provenance paths in those records are
-metadata only and are not runtime imports or data sources.
+[完整审计](audit_status.json) · [逐折指标](fold_metrics_real.csv) · [逐患者前向](evaluation_real.csv) · [Latest 恢复](resume_check.json) · [Warmup 训练](warmup_step_check.json) · [完整文件 SHA](../SHA256SUMS)

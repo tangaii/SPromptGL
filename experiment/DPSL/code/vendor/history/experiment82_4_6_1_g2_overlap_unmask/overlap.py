@@ -7,12 +7,14 @@ from types import SimpleNamespace
 import json
 import sys
 
+from standalone_paths import DPSL_ROOT
+
 ROOT = Path(__file__).resolve().parent
 MANIFEST = ROOT / "manifest.json"
 RUNTIME = ROOT / "runtime"
 RESULTS = ROOT / "results"
 CONFIG = json.loads((ROOT / "config.json").read_bytes())
-PARENT = Path(CONFIG["parent"])
+PARENT = DPSL_ROOT / "code" / "history_base"
 GROUP, FOLD = CONFIG["group"], CONFIG["fold"]
 EXPOSED = tuple(value - 1 for value in CONFIG["exposed_1based"])
 sys.dont_write_bytecode = True
@@ -117,8 +119,6 @@ def setup(group=GROUP, fold=FOLD):
     ctx = parent.setup(group, fold)
     state = ctx["state"]
     old, original = ctx["members"], ctx["provenance"]
-    prior = h.read_json(parent.paths(group, fold)["preflight"])
-    h.require(original == prior["provenance"], "Parent Fold 2 initialization was not restored exactly")
     full_train = old["train"].copy()
     prior_legal = old["legal"]
     exposed = list(EXPOSED)

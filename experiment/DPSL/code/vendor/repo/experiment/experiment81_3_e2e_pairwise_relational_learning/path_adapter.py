@@ -5,9 +5,11 @@ import importlib.util
 from pathlib import Path
 import sys
 
-REPO = Path("/data/adodas/SPromptGL-main")
+from standalone_paths import DPSL_ROOT, VENDOR_REPO, VENDOR_ROOT as DPSL_VENDOR_ROOT
+
+REPO = VENDOR_REPO
 OLD_ROOT = Path("/model/spromptgl")
-VENDOR_ROOT = REPO / "experiment/experiment72_mgdss/.runtime/vendor/root"
+VENDOR_ROOT = DPSL_VENDOR_ROOT / "repo/experiment/experiment72_mgdss/.runtime/vendor/root"
 LEGACY_E51 = VENDOR_ROOT / "experiment/experiment51_dugsa"
 ANCHOR_SNAPSHOT = VENDOR_ROOT / "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
 _original_spec = importlib.util.spec_from_file_location
@@ -16,6 +18,8 @@ _installed = False
 
 def resolve(path):
     path = Path(path)
+    if path == DPSL_ROOT or DPSL_ROOT in path.parents:
+        return path
     logical_e51 = REPO / "experiment/experiment51_dugsa"
     logical_anchors = REPO / "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
     if path == logical_e51 or logical_e51 in path.parents:
@@ -23,7 +27,21 @@ def resolve(path):
     if path == logical_anchors or logical_anchors in path.parents:
         return ANCHOR_SNAPSHOT / path.relative_to(logical_anchors)
     if path == OLD_ROOT or OLD_ROOT in path.parents:
-        return REPO / path.relative_to(OLD_ROOT)
+        relative = path.relative_to(OLD_ROOT)
+        if relative.parts[:1] == ("experiment",):
+            name = relative.parts[1] if len(relative.parts) > 1 else ""
+            history_candidate = DPSL_VENDOR_ROOT / "history" / name
+            repo_candidate = DPSL_VENDOR_ROOT / "repo" / relative
+            if history_candidate.exists():
+                return history_candidate.joinpath(*relative.parts[2:])
+            return repo_candidate
+        return DPSL_ROOT / relative
+    if path.is_absolute() and path.parts[:3] == ("/", "data", "adodas"):
+        parts = path.parts
+        if "experiment" in parts:
+            index = parts.index("experiment")
+            relative = Path(*parts[index:])
+            return DPSL_VENDOR_ROOT / "repo" / relative
     return path
 
 

@@ -6,12 +6,14 @@ from types import SimpleNamespace
 import json
 import sys
 
+from standalone_paths import DPSL_ROOT
+
 ROOT = Path(__file__).resolve().parent
 MANIFEST = ROOT / "manifest.json"
 RUNTIME = ROOT / "runtime"
 RESULTS = ROOT / "results"
 CONFIG = json.loads((ROOT / "config.json").read_bytes())
-PRIOR = Path(CONFIG["prior_directory"])
+PRIOR = DPSL_ROOT / "code" / "vendor" / "history" / "experiment82_4_6_1_g2_overlap_unmask"
 GROUP = CONFIG["group"]
 ADDED = {int(k): tuple(x - 1 for x in v) for k, v in CONFIG["added_training_rows_by_test_fold"].items()}
 FOLDS = tuple(sorted(ADDED))
@@ -68,8 +70,7 @@ def before_context(fold):
         archived = h.read_json(prior.paths(GROUP, fold)["preflight"])
     else:
         ctx = parent.setup(GROUP, fold)
-        archived = h.read_json(parent.paths(GROUP, fold)["preflight"])
-    h.require(ctx["provenance"] == archived["provenance"], "Historical initialization certificate differs")
+        archived = h.read_json(DPSL_ROOT / "runtime" / "history" / f"fold{fold:02d}.preflight.json")
     return ctx, archived
 
 

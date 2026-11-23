@@ -7,10 +7,12 @@ import os
 import sys
 from pathlib import Path
 
+from standalone_paths import DPSL_ROOT, VENDOR_REPO, VENDOR_HISTORY
+
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config.json").read_text())
-REPO = Path("/data/adodas/SPromptGL-main")
-HISTORY = Path("/model/spromptgl/experiment")
+REPO = VENDOR_REPO
+HISTORY = VENDOR_HISTORY
 E61 = REPO / "experiment/experiment61_cadr_postalign_vs_e2e"
 E744 = REPO / "experiment/experiment74_4_soft_positive_dcr"
 E822 = HISTORY / "experiment82_2_psce"
@@ -24,7 +26,7 @@ E8244 = HISTORY / "experiment82_4_4_ba_psce_ba_da_srpe"
 E8245 = HISTORY / "experiment82_4_5_ec_psce_ecda_srpe"
 GPU = CFG["gpu"]
 os.environ.update(
-    CUDA_VISIBLE_DEVICES=GPU["uuid"], CUDA_DEVICE_ORDER="PCI_BUS_ID",
+    CUDA_VISIBLE_DEVICES=os.environ.get("CUDA_VISIBLE_DEVICES", "0"), CUDA_DEVICE_ORDER="PCI_BUS_ID",
     PYTHONDONTWRITEBYTECODE="1",
 )
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -61,17 +63,24 @@ LOSS_KEYS = ("cls", "graph", "pair", "adv", "preserve", "total")
 def warmup_and_membership(fold):
     state, warmup, identity, optimizers = archive.prepare(fold)
     require(identity["train_pair_scope_pass"], "Historical training pair scope")
-    previous = read_json(E8241 / "G1_psu_psce/runtime/preflight" / f"G1_f{fold:02d}.json")["identity"]
+    local_preflight = ROOT.parents[1] / "runtime" / "history" / f"fold{fold:02d}.preflight.json"
+    previous = read_json(local_preflight)["provenance"]
     require(identity == previous["identity"] and optimizers == previous["optimizers"],
             f"Fold {fold} historical parameters and all optimizer moments differ")
     members = archive.membership(state)
-    require(sha(members) == previous["membership_sha"], "Historical fold identities or pair order differ")
+    # Fold-specific DPSL adapters record the unextended SCMR membership as
+    # ``source_membership_sha`` and the final masked membership separately.
+    # The historical warmup loader must validate the state it actually builds.
+    expected_membership = previous.get("source_membership_sha",
+                                      previous.get("membership_sha", previous["membership"]))
+    require(sha(members) == expected_membership,
+            "Historical fold identities or pair order differ")
     require(state["excluded"] == ([376, 406] if fold == 2 else []), "Fold 2 row exclusion differs")
     return state, warmup, identity, optimizers, members
 
 
 def spectrum(fold, identity, legal):
-    cache = load(E822 / "runtime" / f"spectrum_f{fold:02d}.pt")
+    cache = load(DPSL_ROOT / "inputs" / "spectrum" / f"spectrum_f{fold:02d}.pt")
     require(cache["identity"] == identity and np.array_equal(cache["legal_train"], legal),
             "Original O origin or legal patient membership differs")
     data = cache["spectrum"]

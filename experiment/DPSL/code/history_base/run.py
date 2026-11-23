@@ -346,14 +346,14 @@ def checkpoint_prefix(files, saved, raw):
     return digest, actual_sha, records
 
 
-def train_fold(group, fold):
-    manifest = h.read_json(MANIFEST)
+def train_fold(group, fold, *, files=None, manifest=None, preflight=None, stop_at=None):
+    manifest = h.read_json(MANIFEST) if manifest is None else manifest
     hashes = manifest["implementation"]
-    files = paths(group, fold)
+    files = paths(group, fold) if files is None else files
     started = time.monotonic()
     h.require(hashes == h.implementation() and manifest["preflight"]["status"] == "PASS",
               "Formal training must match a passed frozen preflight")
-    preflight = h.read_json(files["preflight"])
+    preflight = h.read_json(files["preflight"]) if preflight is None else preflight
     h.require(preflight["status"] == "PASS" and preflight["implementation"] == hashes,
               "Fold preflight is unavailable or incompatible")
     if files["task"].is_file():
@@ -400,7 +400,8 @@ def train_fold(group, fold):
         latest_base_sha = digest.hexdigest()
         persisted_suffix = bytearray()
 
-        for epoch in range(completed + 1, CFG["max_epochs"] + 1):
+        limit = CFG["max_epochs"] if stop_at is None else min(stop_at, CFG["max_epochs"])
+        for epoch in range(completed + 1, limit + 1):
             if wait > CFG["early_stop_wait_gt"]:
                 break
             result, diag, rng, previous, observed = transition(
@@ -413,8 +414,9 @@ def train_fold(group, fold):
             else:
                 wait += 1
             completed = epoch
-            latest_due = epoch % CFG["latest_interval"] == 0 or (
+            historical_latest_due = epoch % CFG["latest_interval"] == 0 or (
                 epoch == CFG["max_epochs"] or wait > CFG["early_stop_wait_gt"])
+            latest_due = historical_latest_due or epoch == stop_at
             payload = snapshot(ctx, fixed) if improved or latest_due else None
             observed_bytes = None if observed is None else base64.b64encode(
                 observed.numpy().astype("<f8", copy=False).tobytes()).decode("ascii")
@@ -424,7 +426,8 @@ def train_fold(group, fold):
                       "probability_sha": h.sha(result["probability"]), "losses": diag["losses"],
                       "budget": pack_gradient_budget(diag["budget"]), "routing": diag["routing"], "paths": diag["paths"],
                       "ema_before": h.sha(previous), "ema_after": h.sha(ema(ctx)), "ema_observation": observed_bytes,
-                      "checkpoint_state_sha": None if payload is None else payload["state_sha"], "improved": improved}
+                      "checkpoint_state_sha": payload["state_sha"] if (improved or historical_latest_due) else None,
+                      "improved": improved}
             if epoch == START + 1:
                 h.require(h.sha((result, diag, rng, h.sha(ema(ctx)))) == preflight["first_step_sha"],
                           "Formal first transition differs from preflight")
@@ -456,6 +459,8 @@ def train_fold(group, fold):
             if epoch == START + 1 or epoch % 50 == 0:
                 print(f"{group} fold {fold:02d} epoch {epoch} best {best_correct}@{best_epoch} wait {wait}", flush=True)
 
+    if stop_at is not None and completed == stop_at and completed < CFG["max_epochs"] and wait <= CFG["early_stop_wait_gt"]:
+        return {"epoch": completed, "best_epoch": best_epoch, "best_correct": best_correct, "wait": wait}
     h.require(best_epoch > START and (completed == CFG["max_epochs"] or wait > CFG["early_stop_wait_gt"]),
               "Fold stopped before historical completion condition")
     # A terminal in-memory transition serves as a witness for a separate reload process.
@@ -471,6 +476,7 @@ def train_fold(group, fold):
               "Terminal Best or journal digest differs")
     h.write_json(files["task"], summary)
     print(f"TRAINED {group} fold {fold:02d} end {completed} best {best_correct}@{best_epoch}", flush=True)
+    return summary
 
 
 def main():

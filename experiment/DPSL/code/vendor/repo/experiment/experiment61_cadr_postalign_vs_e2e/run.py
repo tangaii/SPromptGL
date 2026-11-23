@@ -19,6 +19,8 @@ import traceback
 from collections import Counter
 from pathlib import Path
 
+from standalone_paths import DPSL_ROOT, VENDOR_REPO, VENDOR_ROOT
+
 for _key in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ.setdefault(_key, "1")
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -26,17 +28,17 @@ sys.dont_write_bytecode = True
 
 EXP = Path(__file__).resolve().parent
 ROOT = EXP.parents[1]
-BASE_ROOT = Path("/model/spromptgl")
-BASE_EXP = BASE_ROOT / "experiment/experiment53_3_cadr_graph_fallback_fix"
+BASE_ROOT = VENDOR_REPO
+BASE_EXP = VENDOR_REPO / "experiment/experiment53_3_cadr_graph_fallback_fix"
 BASE_RUN = BASE_EXP / "run.py"
 BASE_CADR = BASE_EXP / "cadr_gfr.py"
 BASE_GROUP = "CADR_WD_0p01_GFR_WD_0p11"
 BASE_RUNTIME = BASE_EXP / ".runtime/fallback_wd_sweep" / BASE_GROUP
-ANCHORS = BASE_ROOT / "experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
+ANCHORS = VENDOR_ROOT / "repo/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors"
 CONFIG_PATH = EXP / "config.json"
 CFG = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 RT = EXP / ".runtime"
-WARMUP = RT / "warmup"
+WARMUP = DPSL_ROOT / "inputs" / "warmup"
 TASKS = RT / "tasks"
 CKPTS = RT / "checkpoints"
 LOGS = RT / "logs"
