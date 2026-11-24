@@ -1,0 +1,420 @@
+{
+  "actual_root": "/model/spromptgl/experiment/experiment83_6_tadpole_crossrepo_factorial",
+  "author_source_commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+  "dataset": {
+    "cam_output_dimensions": 240,
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "dimensions": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ],
+    "folds": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "label_counts": {
+      "AD": 74,
+      "MCI": 315,
+      "NC": 209
+    },
+    "label_mapping": {
+      "AD": 2,
+      "MCI": 1,
+      "NC": 0
+    },
+    "modalities": [
+      "UCSFFSX",
+      "UCBERKELEYAV45",
+      "UPENNBIOMK9",
+      "RISK_FACTOR",
+      "COGNITIVE_TEST",
+      "ROI_AVERAGE"
+    ],
+    "n_samples": 598,
+    "preserved_protocol": [
+      "full-data RFE",
+      "mean imputation",
+      "StandardScaler before outer CV",
+      "transductive patient graph",
+      "val_idx == test_idx",
+      "first strict test-fold ACC improvement saves Best",
+      "450 epoch cap",
+      "stop when wait > 200"
+    ],
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "total_input_dimensions": 365
+  },
+  "experiment": "Experiment 83.6",
+  "groups": {
+    "A1": {
+      "base_reference": "H1",
+      "class_prefix_prompts": true,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Prompt text only",
+      "pair_mean_graph_supervision": false,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "A2": {
+      "base_reference": "H1",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Pair-mean graph loss only",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "A3": {
+      "base_reference": "H1",
+      "class_prefix_prompts": true,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Prompt and pair-mean graph loss",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "B1": {
+      "base_reference": "H2",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Pair-mean graph loss only",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "B2": {
+      "base_reference": "H2",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Original Eq. 6 RES only",
+      "pair_mean_graph_supervision": false,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "B3": {
+      "base_reference": "H2",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "RES and pair-mean graph loss",
+      "pair_mean_graph_supervision": true,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "C1": {
+      "base_reference": "H3",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DARG plus pair-mean graph loss",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "C2": {
+      "base_reference": "H3",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DARG plus original Eq. 6 RES",
+      "pair_mean_graph_supervision": false,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "C3": {
+      "base_reference": "H3",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DARG plus RES and graph loss",
+      "pair_mean_graph_supervision": true,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "C4": {
+      "base_reference": "H3",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": true,
+      "max_epochs": 450,
+      "note": "GFR/CAM base WD 0.0036",
+      "pair_mean_graph_supervision": false,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "D1": {
+      "base_reference": "H4",
+      "class_prefix_prompts": true,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL class-prefixed medical queries",
+      "pair_mean_graph_supervision": false,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "H3"
+    },
+    "D2": {
+      "base_reference": "H4",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL plus C1-matched graph warmup",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C1"
+    },
+    "D3": {
+      "base_reference": "H4",
+      "class_prefix_prompts": true,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL class prefix plus C1-matched graph warmup",
+      "pair_mean_graph_supervision": true,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C1"
+    },
+    "D4": {
+      "base_reference": "H4",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL plus C2-matched RES warmup",
+      "pair_mean_graph_supervision": false,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C2"
+    },
+    "D5": {
+      "base_reference": "H4",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL plus C3-matched RES/graph warmup",
+      "pair_mean_graph_supervision": true,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C3"
+    },
+    "D6": {
+      "base_reference": "H4",
+      "class_prefix_prompts": true,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "DPSL class prefix plus C3-matched RES/graph warmup",
+      "pair_mean_graph_supervision": true,
+      "res_only": true,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C3"
+    },
+    "D7": {
+      "base_reference": "H4",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": null,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": true,
+      "max_epochs": 450,
+      "note": "DPSL plus C4-matched low-WD warmup",
+      "pair_mean_graph_supervision": false,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": "C4"
+    },
+    "E1": {
+      "base_reference": "H2",
+      "class_prefix_prompts": false,
+      "early_stop_wait_gt": 200,
+      "encoder_attention_dropout": 0.0,
+      "kind": "NEW_FORMAL_TRAINING",
+      "low_base_weight_decay": false,
+      "max_epochs": 450,
+      "note": "Only CAM Encoder attention dropout 0.1 to 0",
+      "pair_mean_graph_supervision": false,
+      "res_only": false,
+      "training": true,
+      "training_seed": 0,
+      "warmup_reference": null
+    },
+    "H1": {
+      "kind": "HISTORICAL_REPLAY",
+      "label": "Original SPromptGL-MMGPL12",
+      "source_experiment": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+      "source_group": "G1_E28_E0",
+      "training": false
+    },
+    "H2": {
+      "kind": "HISTORICAL_REPLAY",
+      "label": "Physical No-PEN",
+      "source_experiment": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+      "source_group": "G2_E43_1_E00",
+      "training": false
+    },
+    "H3": {
+      "kind": "HISTORICAL_REPLAY",
+      "label": "DARG Positive-DCR",
+      "source_experiment": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+      "source_group": "G3_E74_4_G2",
+      "training": false
+    },
+    "H4": {
+      "kind": "HISTORICAL_REPLAY",
+      "label": "DARG+DPSL",
+      "source_experiment": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+      "source_group": "G4_E82_4_6_10_G1",
+      "training": false
+    },
+    "H5": {
+      "kind": "HISTORICAL_REPLAY",
+      "label": "Anchored physical CAM-only",
+      "source_experiment": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+      "source_group": "G5_E43_4_E0_ANCHORED_PHYSICAL_CAM",
+      "training": false
+    },
+    "S0": {
+      "attention_dropout": 0.0,
+      "base_reference": "sp/exp/tadpole_repair",
+      "class_prefix_prompts": true,
+      "epochs": 300,
+      "feature_order": "sp deterministic lexical order",
+      "kind": "CROSS_REPOSITORY_POSITIVE_CONTROL",
+      "optimizer": "sp original Adam",
+      "pair_mean_graph_supervision": true,
+      "rng": "sp original continuous ten-fold RNG propagation",
+      "split_seed": 10,
+      "training": true,
+      "training_seed": 0,
+      "variant": "mmgpl_class_graph_sup"
+    }
+  },
+  "limitations": [
+    "val=test checkpoint selection",
+    "full-data RFE and scaling before outer CV",
+    "transductive patient graph",
+    "multi-candidate comparison on one fixed CV"
+  ],
+  "metrics": {
+    "ACC": "argmax accuracy",
+    "AUC_original": "macro OVR AUC from hard argmax one-hot predictions",
+    "AUC_probability": "supplemental only"
+  },
+  "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+  "paper_references": {
+    "CAM_GFR": [
+      0.938,
+      0.9437
+    ],
+    "CAM_GFR_RES": [
+      0.9431,
+      0.9446
+    ],
+    "CAM_only": [
+      0.8912,
+      0.9084
+    ],
+    "full": [
+      0.9481,
+      0.9559
+    ]
+  },
+  "repositories": {
+    "author": "https://github.com/wanxixi11/SPromptGL",
+    "project_history": "https://github.com/tangaii/SPromptGL",
+    "tadpole_reproduction": "https://github.com/tangaii/sp"
+  },
+  "requested_reference_project_commit": "4649c5d",
+  "requested_reference_project_full_commit": "4649c5dddf166a4aa957c16c2f667a5cea485cdc",
+  "sealed_e83_5_project_commit": "5ebc4f5a6602d3c2e5ea1ea0ea4c3d9009aa8a11",
+  "sp_project_commit": "f4534f8",
+  "status": "REGISTERED_PRETRAINING",
+  "title": "TADPOLE Cross-Repository Reproduction, Fidelity Repair and DARG-DPSL Improvement",
+  "training": {
+    "device": "cuda:0",
+    "gpu_workers_global_max": 8,
+    "historical_replay_folds": 50,
+    "new_formal_folds": 190,
+    "per_epoch_reseed": false,
+    "seed": 0
+  }
+}

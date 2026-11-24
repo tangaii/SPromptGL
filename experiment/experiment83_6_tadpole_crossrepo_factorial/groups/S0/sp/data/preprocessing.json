@@ -1,0 +1,108 @@
+{
+  "preprocessing_source": "https://github.com/SsGood/MMGL/blob/c13b05c190f85e614ccb3ace60bb6b152a1f4a1b/data/TADPOLE/Data_preprocessing_TADPOLE%20%282%29.ipynb",
+  "raw_sources": {
+    "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D1_D2.csv": "ae4967ad3fb46adf4ea99c96f94b2e0720f4443c57b0debcf9c02fefc9ce45fd",
+    "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D1_D2_Dict.csv": "03456311f2631c3d739df5bcd3b26b9224a3f39254602dc3f57fcb9223d2105d"
+  },
+  "output_hashes": {
+    "features.json": "31257179d55d34b67e4212ff20bd650fe294887b683aa9eb24de4aa9b356b1b0",
+    "modal_feat_dict.npy": "2c0c961496090b27d816e92ba31b37b121788d977d9b1b81080e0903219a3edf",
+    "processed_standard_data.csv": "b10fd48df089789162dda588c7be0b806758cbe1914506121e8b9194bc1c687a",
+    "samples.csv": "90ca952b943654a16235ea0c5dcb440f065502ddc8f771b0b63fb27137313fe4"
+  },
+  "shape": [
+    598,
+    366
+  ],
+  "modalities": [
+    "UCSFFSX",
+    "UCBERKELEYAV45",
+    "UPENNBIOMK9",
+    "RISK_FACTOR",
+    "COGNITIVE_TEST",
+    "ROI_AVERAGE"
+  ],
+  "dimensions": [
+    145,
+    148,
+    3,
+    36,
+    24,
+    9
+  ],
+  "class_counts": {
+    "1": 209,
+    "2": 315,
+    "3": 74
+  },
+  "visits_by_code": {
+    "bl": 471,
+    "m24": 107,
+    "m36": 3,
+    "m48": 17
+  },
+  "visit_filter": [
+    "bl",
+    "m06",
+    "m12",
+    "m18",
+    "m24",
+    "m30",
+    "m36",
+    "m42",
+    "m48"
+  ],
+  "eligible_visits": 7405,
+  "complete_visits": 685,
+  "visit_selection": "keep last qualifying row per RID in label-concatenated source order",
+  "missing_value_rule": "missing visit count < 102",
+  "feature_order": "fixed modality order and lexical column order within each modality",
+  "feature_selection": {
+    "UCSFFSX": {
+      "candidates": 328,
+      "complete_visits_for_rfe": 2064,
+      "selected_before_missing_filter": 150
+    },
+    "UCBERKELEYAV45": {
+      "candidates": 233,
+      "complete_visits_for_rfe": 600,
+      "selected_before_missing_filter": 150
+    },
+    "UPENNBIOMK9": {
+      "candidates": 3,
+      "complete_visits_for_rfe": 2134,
+      "selected_before_missing_filter": 3
+    },
+    "RISK_FACTOR": {
+      "candidates": 36,
+      "complete_visits_for_rfe": 7405,
+      "selected_before_missing_filter": 36
+    },
+    "COGNITIVE_TEST": {
+      "candidates": 24,
+      "complete_visits_for_rfe": 3144,
+      "selected_before_missing_filter": 24
+    },
+    "ROI_AVERAGE": {
+      "candidates": 9,
+      "complete_visits_for_rfe": 974,
+      "selected_before_missing_filter": 9
+    }
+  },
+  "fit_scope": "full cohort RFE, standardization and mean imputation per MMGL",
+  "reference_comparison": {
+    "csv_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "dictionary_sha256": "54eecaf93f2bd942635c5012eb42d6e341760cc162ab53e320dc5ae402716814",
+    "same_feature_sets_by_modality": {
+      "UCSFFSX": true,
+      "UCBERKELEYAV45": true,
+      "UPENNBIOMK9": true,
+      "RISK_FACTOR": true,
+      "COGNITIVE_TEST": true,
+      "ROI_AVERAGE": true
+    },
+    "same_label_order": true,
+    "common_columns": 366,
+    "max_abs_difference_after_alignment": 1.7763568394002505e-15
+  }
+}

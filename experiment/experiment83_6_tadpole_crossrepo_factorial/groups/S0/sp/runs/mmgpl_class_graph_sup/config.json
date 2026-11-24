@@ -1,0 +1,177 @@
+{
+  "variant": "mmgpl_class_graph_sup",
+  "hyperparameters": {
+    "n_hidden": 10,
+    "n_head": 4,
+    "nlayer": 2,
+    "dropout": 0.0,
+    "attention_dropout": 0.0,
+    "alpha": 1.0,
+    "nmodal": 6,
+    "nclass": 3,
+    "lr": 0.012,
+    "lambda_graph": 1.0,
+    "eta_classification": 1.0,
+    "epochs": 300,
+    "folds": 10,
+    "seed": 0,
+    "split_seed": 10,
+    "reg": 0.0036,
+    "th": 0.9,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "graph_layers": 2,
+    "optimizer": "Adam",
+    "data": "deterministic",
+    "clip_init": "frozen_pretrained",
+    "prompts": "mmgpl_class_prompts",
+    "prompt_format": "figure_6_concepts_with_class",
+    "pen": "public",
+    "fusion": "legacy",
+    "graph_supervision": "pair_mean",
+    "executed_folds": 10
+  },
+  "provenance": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "release": "https://github.com/wanxixi11/SPromptGL/tree/ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+    "author_log": "https://github.com/wanxixi11/SPromptGL/blob/ba3b9446fa451fde6864d6555bdf324de0c4b64a/result_Tadpole.txt",
+    "mmgpl_paper": "2024 MIA (MMGPL)Multimodal Medical Data Analysis with Graph Prompt Learning.pdf",
+    "mmgpl_prompt_source": "Figure 6, ADNI-3CLS concepts, four per class",
+    "mmgpl_middle_class_mapping": "paper LMCI -> TADPOLE MCI",
+    "paper_section_3_1": {
+      "dropout": 0.0,
+      "lr": 0.012,
+      "hidden_value": 10,
+      "encoding_layers": 2,
+      "heads": 4,
+      "alpha": 1.0,
+      "folds": 10
+    },
+    "paper_equation_7": {
+      "lambda_graph": 1.0,
+      "eta_classification": 1.0
+    },
+    "interpretation_of_hidden_value": "per-head width following released argument semantics",
+    "released_main_defaults": [
+      "reg",
+      "th",
+      "theta_smooth",
+      "theta_degree",
+      "theta_sparsity",
+      "seed",
+      "split_seed"
+    ],
+    "epoch_budget_source": "300 epochs in each of ten folds in result_Tadpole.txt",
+    "unpublished": [
+      "author TADPOLE command line",
+      "exact prompt list",
+      "full per-subject split manifest"
+    ],
+    "class_weight_rule": "inverse training frequency in original Counter insertion order (legacy)",
+    "evaluation": "full-cohort transductive graph and first maximal outer-test-fold ACC",
+    "graph_supervision_target": "binary label equality on train-train pairs only",
+    "graph_supervision_scores": "pre-threshold cosine matrix; threshold retained for propagation and LS"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "packages": {
+      "torch": "2.9.0+ppu2.0.0",
+      "numpy": "1.26.0",
+      "scipy": "1.11.3",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.3.2",
+      "torchvision": "0.24.0"
+    },
+    "device": "cuda",
+    "gpu": "PPU-ZW810E",
+    "cuda_build": "12.9",
+    "float32_matmul_precision": "highest",
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "torch_cpu_threads": 128
+  },
+  "inputs": {
+    "paths": {
+      "/model/spromptgl/experiment/experiment83_6_tadpole_crossrepo_factorial/groups/S0/sp/data/processed_standard_data.csv": "b10fd48df089789162dda588c7be0b806758cbe1914506121e8b9194bc1c687a",
+      "/model/spromptgl/experiment/experiment83_6_tadpole_crossrepo_factorial/groups/S0/sp/data/modal_feat_dict.npy": "2c0c961496090b27d816e92ba31b37b121788d977d9b1b81080e0903219a3edf"
+    },
+    "modalities": [
+      "UCSFFSX",
+      "UCBERKELEYAV45",
+      "UPENNBIOMK9",
+      "RISK_FACTOR",
+      "COGNITIVE_TEST",
+      "ROI_AVERAGE"
+    ],
+    "dimensions": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ],
+    "samples": 598,
+    "label_counts": {
+      "NC": 209,
+      "MCI": 315,
+      "AD": 74
+    },
+    "row_metadata": "/model/spromptgl/experiment/experiment83_6_tadpole_crossrepo_factorial/groups/S0/sp/data/samples.csv"
+  },
+  "mmgpl_prompt_reference": {
+    "path": "/model/spromptgl/experiment/experiment83_6_tadpole_crossrepo_factorial/sources/sp/2024 MIA (MMGPL)Multimodal Medical Data Analysis with Graph Prompt Learning.pdf",
+    "sha256": "c56762c64025bb9222d872459dea9f4dfe158db1e470fba89e7e7c822743e355",
+    "figure": "Figure 6"
+  },
+  "prompts": {
+    "NC": [
+      "NC: Normal brain volume",
+      "NC: Normal ventricle morphology",
+      "NC: Symmetrical brain structure",
+      "NC: Uniform cortical thickness"
+    ],
+    "MCI": [
+      "MCI: Mild hippocampal atrophy",
+      "MCI: Mild brain volume reduction",
+      "MCI: Mild ventricular enlargement",
+      "MCI: Mild local cortical thinning"
+    ],
+    "AD": [
+      "AD: Pronounced hippocampal atrophy",
+      "AD: Marked local cortical thinning",
+      "AD: Significant brain volume reduction",
+      "AD: Significant ventricular enlargement"
+    ]
+  },
+  "clip_weights": {
+    "path": "/root/.cache/clip/RN50.pt",
+    "sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+  },
+  "source_sha256": {
+    "run.py": "900ba9545fe41d9e671e8dc33437518ea13a21ef662d18a7093bc066eb8b89cc",
+    "config.py": "f2d68c39775ea56fad9d87e87a57f03319705721bde3f0f47aaf2e3f60cf7c04",
+    "prepare.py": "630263d93df22137366388c4578024a6d5e938ec92e3d04a774df0442c59ae38",
+    "src/CLIP/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "src/CLIP/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "src/CLIP/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "src/CLIP/clip/bpe_simple_vocab_16e6.txt.gz": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+    "src/CLIP/clip/clip.py": "091f5f4a590efe5892763780967af11997a3831407bd300cd416eb241e63d639",
+    "src/CLIP/clip/model.py": "bd74aaecab16cb7809ae69bf2ce41adbac64e13fe4e9af6c196cc22af41c5c91",
+    "src/CLIP/clip/old.py": "754a05697e7605629b7aff28b77c24e334ae1effc1605f10f31c666013c26c9c",
+    "src/CLIP/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "src/CLIP/clip.py": "4ab4d5187823792c14997808854fe219dc485042606d439757a704a20d57aaf4",
+    "src/CLIP/model.py": "acce23b761dc90950229eadf2e58f6da5f9dac3facff4cc05730b7c8bd2b8bb3",
+    "src/CLIP/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "src/layers.py": "851c7e9065d491951a67c870b07e4a76587cdf6e069b65e1f926a7fa6e9770cb",
+    "src/network.py": "47b61a81f50df1b00e421060ec083034399d332161962e1341aa13eed207a9bf",
+    "src/utils.py": "f62458b69529956e264edc3f35de4cc90873c946a69d6719df3905203a12b500"
+  },
+  "metric_definitions": {
+    "acc": "argmax accuracy",
+    "auc_hard": "macro one-vs-rest ROC AUC from one-hot argmax predictions",
+    "auc_probability": "macro one-vs-rest ROC AUC from softmax probabilities",
+    "aggregate": "unweighted mean and population standard deviation over outer folds"
+  }
+}
