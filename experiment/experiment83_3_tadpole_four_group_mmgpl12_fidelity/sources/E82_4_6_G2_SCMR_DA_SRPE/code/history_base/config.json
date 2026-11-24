@@ -1,0 +1,412 @@
+{
+  "experiment": "Experiment 82.4.6 — PCSR-PSCE & SCMR-DA-SRPE",
+  "directory": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_6_pcsr_scmr",
+  "directory_fallback": {
+    "errno": 5,
+    "reason": "[Errno 5] Input/output error: '/data/adodas/SPromptGL-main/experiment/experiment82_4_6_pcsr_scmr'"
+  },
+  "groups": {
+    "G1": "PCSR-PSCE",
+    "G2": "SCMR-DA-SRPE"
+  },
+  "seed": 0,
+  "seed_stream": {
+    "G1": 824601,
+    "G2": 824602
+  },
+  "subjects": 871,
+  "cam_width": 144,
+  "folds": 10,
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "fold2_overlap_1based": [
+    377,
+    407
+  ],
+  "base": "E74.4-G2-Positive-DCR",
+  "start_epoch_completed": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "latest_interval": 10,
+  "best_selection": "First strict maximum outer test-fold ACC under the historical val=test protocol",
+  "historical_loss": "cls + graph + 0.05*pair + 0.01*adv + 0.01*preserve",
+  "historical_optimizers": {
+    "opt_base": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_cam": [
+      "Adam",
+      0.0038,
+      0.11
+    ],
+    "opt_added": [
+      "AdamW",
+      0.001,
+      0.01
+    ]
+  },
+  "new_optimizer": {
+    "lr": 0.0005,
+    "weight_decay": 0.01
+  },
+  "gpu": {
+    "index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "workers": 10,
+    "threads": 1
+  },
+  "sources": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "author": {
+      "url": "https://github.com/wanxixi11/SPromptGL",
+      "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a"
+    },
+    "user": {
+      "url": "https://github.com/tangaii/SPromptGL",
+      "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d"
+    },
+    "server_commit": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+    "server_core_sha256": {
+      "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+      "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+      "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+      "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+      "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+    },
+    "E82.4.3_frozen_sha": "5657b6c146a49938c6a79b42326efe2608cc12ffddcecd232b8d53f8efbf40a8",
+    "E82.4.4_frozen_sha": "77c8b0bcfea4a6819a1fe5122166f112cc94e35b551b9a28858c9a83021d4d8b",
+    "E82_4_5_upload": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+    "E82_4_5_frozen_sha": "f2b550b88a8a9cccad165d0c7e530ba7eac3a583ab789992eb1bd8cec1fb1232",
+    "remote_content_verification": [
+      {
+        "owner": "wanxixi11",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "main.py",
+        "sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "server_sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "wanxixi11",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "model.py",
+        "sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "server_sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "wanxixi11",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "layers.py",
+        "sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "server_sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "wanxixi11",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "network.py",
+        "sha256": "d0ac59ead2fecdf517845e2c389d361ef9924abff29707386f847e1fbaa22166",
+        "server_sha256": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "exact": false,
+        "first_changed_line": 30
+      },
+      {
+        "owner": "wanxixi11",
+        "commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+        "path": "utils.py",
+        "sha256": "25afd06c4a46f278aeab2eef166b930bdfab53b901956c30e03bb3b499688001",
+        "server_sha256": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "exact": false,
+        "first_changed_line": 26
+      },
+      {
+        "owner": "tangaii",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+        "path": "main.py",
+        "sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "server_sha256": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+        "path": "model.py",
+        "sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "server_sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+        "path": "layers.py",
+        "sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "server_sha256": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+        "path": "network.py",
+        "sha256": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "server_sha256": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "4a86923a28ce9920c0fec28c797c9c6c5933674d",
+        "path": "utils.py",
+        "sha256": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "server_sha256": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/g1.py",
+        "sha256": "f312913d92e83d15c3fd7f2926400142a5994840dc6fa15077432402615bd25a",
+        "server_sha256": "f312913d92e83d15c3fd7f2926400142a5994840dc6fa15077432402615bd25a",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/g2.py",
+        "sha256": "041265ee816a307d5eab21fdee40f02d8962bf5bee933567f05f162fb2a107bf",
+        "server_sha256": "041265ee816a307d5eab21fdee40f02d8962bf5bee933567f05f162fb2a107bf",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/common/spectral.py",
+        "sha256": "019404274c491ff35194b5eb4fb3b371d7b983fd10e6a8b87e73642b80d4e4d6",
+        "server_sha256": "019404274c491ff35194b5eb4fb3b371d7b983fd10e6a8b87e73642b80d4e4d6",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/common/evidence.py",
+        "sha256": "1f99a30d9496d92f5cae41a9acec04eca5b38a72655c9025d8d8ecc503eb486b",
+        "server_sha256": "1f99a30d9496d92f5cae41a9acec04eca5b38a72655c9025d8d8ecc503eb486b",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/common/optimization.py",
+        "sha256": "d8d54d592b134d892ef094c84c79b6d240a7cced74a88a9b72b5d048402c66e3",
+        "server_sha256": "d8d54d592b134d892ef094c84c79b6d240a7cced74a88a9b72b5d048402c66e3",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/common/history.py",
+        "sha256": "58d14f9741ef3f103fbe0b5a03e80249dd2cc9f9e9574538526ad41f5a25c8c5",
+        "server_sha256": "58d14f9741ef3f103fbe0b5a03e80249dd2cc9f9e9574538526ad41f5a25c8c5",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/config.json",
+        "sha256": "5b50e9670ca79c5d103d23f03d2d273a045aec86adff0508060705b43b8289d6",
+        "server_sha256": "5b50e9670ca79c5d103d23f03d2d273a045aec86adff0508060705b43b8289d6",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/design.md",
+        "sha256": "1423212ec8df12e7017a62fcebfd8a44472cbe7e960418014b70657d18ebb1ff",
+        "server_sha256": "1423212ec8df12e7017a62fcebfd8a44472cbe7e960418014b70657d18ebb1ff",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/manifest.json",
+        "sha256": "92ed00df6bc3f54b6db40acedac897dccdd62d53467e3f9f8a9a18f6ec5d40ab",
+        "server_sha256": "92ed00df6bc3f54b6db40acedac897dccdd62d53467e3f9f8a9a18f6ec5d40ab",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/results/report.md",
+        "sha256": "72989de6a972e9b322f3e7f57d9e00b8a1b4e3be60d90becd70850ac442ef10a",
+        "server_sha256": "72989de6a972e9b322f3e7f57d9e00b8a1b4e3be60d90becd70850ac442ef10a",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/results/mechanism.csv",
+        "sha256": "3a05e9c10d18a995cc99e23e45d489bebab7c7fc48909eb76c45b86113e4707f",
+        "server_sha256": "3a05e9c10d18a995cc99e23e45d489bebab7c7fc48909eb76c45b86113e4707f",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/results/patient_margins.csv",
+        "sha256": "7ce5fa497373cba0763d5eea7e2374797e7db82fc127a9d7d8eda8cbe3b5a08e",
+        "server_sha256": "7ce5fa497373cba0763d5eea7e2374797e7db82fc127a9d7d8eda8cbe3b5a08e",
+        "exact": true,
+        "first_changed_line": null
+      },
+      {
+        "owner": "tangaii",
+        "commit": "1685b92b1f42ce463a5b06681596af8e0d3092d2",
+        "path": "experiment/experiment82_4_5_ec_psce_ecda_srpe/results/audit_status.json",
+        "sha256": "6be81b14e92df87bb81ccc0c721a43996b027f07e5e9c9d6ce7192e20a40b30b",
+        "server_sha256": "6be81b14e92df87bb81ccc0c721a43996b027f07e5e9c9d6ce7192e20a40b30b",
+        "exact": true,
+        "first_changed_line": null
+      }
+    ]
+  },
+  "spectrum": {
+    "pca": 8,
+    "disease_covariance": 8,
+    "eps": 1e-08
+  },
+  "prompt": {
+    "query_count": 8,
+    "width": 32,
+    "spectral_tokens": 16,
+    "null_tokens": 1,
+    "temperature": 0.35,
+    "min_temperature": 0.2,
+    "max_temperature": 0.6,
+    "contrast_temperature": 0.1,
+    "common_suppression_cap": 0.5,
+    "common_suppression_init": 0.25
+  },
+  "residual": {
+    "fraction": 0.08,
+    "branch_cam_gradient": 1.0,
+    "jacobian_floor": 0.01,
+    "spectral_action_multiplier": 4.0
+  },
+  "boundary": {
+    "b_fraction": 0.25,
+    "b_offset": 0.05,
+    "error_temperature": 0.5,
+    "protect_scale": 0.5,
+    "gain_temperature": 0.1,
+    "initial_memory_mix": 0.25
+  },
+  "controllers": {
+    "width": 32,
+    "action_initial_sd": 0.035,
+    "gate_initial_bias": 0.0
+  },
+  "evidence": {
+    "inner_folds": 5,
+    "archived_split_seed_base": 824250,
+    "alpha": 0.1,
+    "ddof": 1,
+    "own_variance": 0.9,
+    "pooled_variance": 0.1,
+    "relative_floor": 0.01,
+    "variance_floor": 0.0001,
+    "llr_bound": 8.0,
+    "support_radius": 3.0,
+    "effect_prior": 0.25,
+    "evidence_temperature": 0.3,
+    "prompt_evidence_temperature": 1.0,
+    "conflict_temperature": 0.35,
+    "ema_variance_arithmetic": "all-float64 sample count quotient and moment updates"
+  },
+  "auxiliary": {
+    "gain": {
+      "coefficient": 0.002,
+      "cap": 0.05
+    },
+    "guard": {
+      "coefficient": 0.005,
+      "cap": 0.03
+    },
+    "regularization": {
+      "coefficient": 0.0005,
+      "cap": 0.02
+    },
+    "guidance": {
+      "coefficient": 0.001,
+      "cap": 0.02
+    }
+  },
+  "measurable_probability_change": 1e-06,
+  "active_residual_relative": 1e-05,
+  "ece_equal_width_bins": 10,
+  "full_classification": {
+    "new_coefficient": 1.0,
+    "shared_cap": 0.001,
+    "historical_norm_floor": 1e-12,
+    "shared_gradient": "d BalancedCE(Head(C+Delta),y) - d BalancedCE(Head(C),y)"
+  },
+  "near_zero_gate_threshold": 0.01,
+  "material_cap_attenuation": 0.05,
+  "registered_decision": {
+    "strict_parity": "five unrounded fold means at least DARG, patient net >= 0; report exclusion separately",
+    "nontrivial_residual": "nonzero features, measured probability response, and same-weight net > 0 or BA delta > 0 following independent gradient audit",
+    "candidate": "strict parity, nontrivial residual, DARG paired ACC/BA/net > 0 in all 10 folds and excluding fold 2, and medical vs matched anonymous paired ACC/BA/net > 0 with observable hard flips; ACC and BA wins >= losses in both patient scopes"
+  },
+  "dual_gain_weights": {
+    "joint": 0.5,
+    "spectral": 0.25,
+    "complement": 0.25
+  },
+  "group_artifact_names": {
+    "G1": "G1_pcsr_psce",
+    "G2": "G2_scmr_da_srpe"
+  },
+  "rotation": {
+    "planes": [
+      [
+        0,
+        8
+      ],
+      [
+        1,
+        9
+      ]
+    ],
+    "angle_cap": 0.1
+  },
+  "margin_calibration": {
+    "width": 24,
+    "shift_cap": 0.75,
+    "regularization_ratio": 0.25,
+    "reliability_aux_weight": 0.25,
+    "reliability_initial_bias": -1.0,
+    "jacobian_ridge": 0.0001
+  }
+}

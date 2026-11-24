@@ -1,0 +1,58 @@
+{
+  "experiment": "Experiment 83.3",
+  "title": "TADPOLE Four-Group Fidelity Restoration and MMGPL-12 DPSL Adaptation",
+  "status": "COMPLETE_AUDITED",
+  "root": "/model/spromptgl/experiment/experiment83_3_tadpole_four_group_mmgpl12_fidelity",
+  "root_fallback_reason": "OSSFS fallback to /model",
+  "current_head": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+  "e831_anchor": "339cabd44e04c38ed2808b309ffbb643d54b8d8c",
+  "dataset": {
+    "n_samples": 598,
+    "modal_dims": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ],
+    "classes": [
+      0,
+      1,
+      2
+    ],
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5"
+  },
+  "preflight_gate": {
+    "status": "PASS",
+    "formal_training_allowed": true,
+    "preflight_path": "audits/preflight.json",
+    "preflight_sha256": "59e1bbf8567546eab01b90f42e007f2938c347baabd5bd2f60e5e36f2f2940b3"
+  },
+  "groups": {
+    "G1_E28_E0": "REUSED_VERIFIED_FORMAL, E83.1 10-fold Best/Latest independently replayed",
+    "G2_E43_1_E00": "REUSED_VERIFIED_FORMAL, E83.1 10-fold Best/Latest independently replayed",
+    "G3_E74_4_G2": "REUSED_VERIFIED_FORMAL, E83.1 10-fold Best/Latest independently replayed",
+    "G4_E82_4_6_10_G1": "NEW_FORMAL_TRAINING, ten MMGPL12 folds independently replayed"
+  },
+  "prompt_sha256": "14ec1779b0bca574eef4a23d559a83f75364810a7f10ba9c8568620bb18db086",
+  "query_sha256": "834f4a6f4f7b76d2b334cfd55e22aa5acd601fc7931618eb3363e670e41878a2",
+  "prompt_files": {
+    "rn50": "inputs/prompts/mmGPL12_rn50.pt",
+    "scmr_queries": "inputs/prompts/mmGPL12_scmr.pt",
+    "rn50_sha256": "14ec1779b0bca574eef4a23d559a83f75364810a7f10ba9c8568620bb18db086",
+    "scmr_sha256": "834f4a6f4f7b76d2b334cfd55e22aa5acd601fc7931618eb3363e670e41878a2",
+    "query_shape": [
+      12,
+      32
+    ]
+  },
+  "audits": {
+    "preflight": "audits/preflight.json",
+    "inherited_replay": "audits/inherited_replay.json",
+    "checkpoint_replay": "audits/checkpoint_replay.json",
+    "final": "audits/final_audit.json"
+  },
+  "git_worktree_at_start": "pre-existing dirty workspace with extensive modified/deleted/untracked files; no cleanup or root-model edits performed by E83.3"
+}

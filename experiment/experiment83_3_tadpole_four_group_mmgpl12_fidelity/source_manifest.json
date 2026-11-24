@@ -1,0 +1,109 @@
+{
+  "experiment": "Experiment 83.3",
+  "title": "TADPOLE Four-Group Fidelity Restoration and MMGPL-12 DPSL Adaptation",
+  "actual_root": "/model/spromptgl/experiment/experiment83_3_tadpole_four_group_mmgpl12_fidelity",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment83_3_tadpole_four_group_mmgpl12_fidelity",
+  "fallback_reason": "Preferred OSSFS path returned Input/output error (errno 5, EIO)",
+  "current_head": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+  "e831_anchor": "339cabd44e04c38ed2808b309ffbb643d54b8d8c",
+  "e832_upload": "4b9a7ed85f87c4a6e35f2efe2ee6512be2f942b3",
+  "historical_sources": {
+    "G1": "E28-E0",
+    "G2": "E43.1-E00",
+    "G3": "E74.4-G2",
+    "G4_base": "E82.4.6.10-G1 with E82.4.6-G2 SCMR-DA-SRPE core"
+  },
+  "local_files": {
+    "sources/processed_standard_data.csv": {
+      "sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+      "size_bytes": 4294435
+    },
+    "sources/split_indices.json": {
+      "sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+      "size_bytes": 79946
+    },
+    "sources/modal_feat_dict.npy": {
+      "sha256": "54eecaf93f2bd942635c5012eb42d6e341760cc162ab53e320dc5ae402716814",
+      "size_bytes": 16928
+    },
+    "sources/sample_ids.csv": {
+      "sha256": "3c354e2623128209544b23d84fbac0e436f55b4c898c74af83d2e99e7f61d8e0",
+      "size_bytes": 5385
+    },
+    "inputs/prompts/mmGPL12_rn50.pt": {
+      "sha256": "14ec1779b0bca574eef4a23d559a83f75364810a7f10ba9c8568620bb18db086",
+      "size_bytes": 51660
+    },
+    "inputs/prompts/mmGPL12_scmr.pt": {
+      "sha256": "834f4a6f4f7b76d2b334cfd55e22aa5acd601fc7931618eb3363e670e41878a2",
+      "size_bytes": 236240
+    },
+    "sources/E82_4_6_G2_SCMR_DA_SRPE/inputs/prompts/prompts.pt": {
+      "sha256": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+      "size_bytes": 202645
+    },
+    "inputs/e83_1_summary_snapshot.json": {
+      "sha256": "288aa86bc9b4224ef42c05b616d0c034bdc4b1783170688cad38ab90622afcb5",
+      "size_bytes": 873
+    }
+  },
+  "common_code_sha256": {
+    "common/adapt_prompt12.py": "34eddf5b2d6464b7a193a1783c2864b9af3533ba33d9eb9b640902e162f6f65c",
+    "common/baseline_parity.py": "64f8eea4f27fa4952b5d50c98b3660025caff4f2eb66f764d9281c2c6fdbf750",
+    "common/fidelity_model.py": "97c076fc23cfa24009228cb5e3685ac8bd76274c3c24131a16d359d1c7455ddf",
+    "common/fold_checkpoint.py": "8e6dfdf32e89ce1718a5f91d3fcb3ab9a4ad12cc7bcf33c51afda9485e69c62a",
+    "common/generate_mmgpl12.py": "68e2514b2a6e739f0d36ef8f68b5f463bc53de154485e686f84d5409632cff44",
+    "common/inherited_replay.py": "baeed62e6dc2bea7ee9a96b4b2ff83b687766a3ef4fc6ef9a60d2068878d4400",
+    "common/latest_replay.py": "68d2c87f91a7552cf8043329c8b2fc72e1157e65af2c44734a361e412dd283da",
+    "common/metrics.py": "17926460a207f8baf152e41c715935751e7b1993166b7a2c1e8ca31b66b075e7",
+    "common/preflight.py": "e5cb548652c5144569db07a313f70d15686e1469400a4d546fafc23089fceb83",
+    "common/replay_check.py": "d26da49e5beaff33ddbfa135f3a5b7da81524adbeb0e4c13707616767260aa27",
+    "common/report.py": "a05d6e3cc030101a12c9ded6611b8423212e4ec511120cfba2f44b6c8639165f",
+    "common/report_e833.py": "646e76be21ebbe25a3eb2bceeea791063cd462f63c785434b7538859509abbb1",
+    "common/reseal_g4_metadata.py": "787c1cbe932563878cb4635e94baa5797d29bfc1b7d6415a9821b490794fd0eb",
+    "common/run_e831.py": "b93def6f55b7bf280e6587985552a892eba57dd14f0183c07cd9bc7be4ebf74b",
+    "common/run_e833.py": "f1bc074a5e135683fe16e7f4ff9641bc3d0049b5e8073f0891d6ed0f604adb17",
+    "common/scmr_optimization.py": "d5ddd9bcbc311240a1251cbbebcc8f93ba4008bbbe4adc4225cfbaa6dbf43dfc",
+    "common/scmr_runtime.py": "d78f2ec1204777ef8818cc7f783488cf44b6c83a62faf93417c1a7651f01add5",
+    "common/source_runtime.py": "a26ad4dee4306d3a2edb0de57a453822876c87fee875133810c603eb4020b210",
+    "sources/E82_4_6_G2_SCMR_DA_SRPE/code/history_base/g2.py": "3ae709aacd50198602cb9510f825ee5c12c0e8b334c1dc4c55f6237982084b1a"
+  },
+  "original_root_code_modified": false,
+  "historical_reuse_root": "/model/spromptgl/experiment/experiment83_1_tadpole_fidelity_repair",
+  "prompt_encoder": "OpenAI CLIP RN50 official RN50.pt",
+  "prompt_weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+  "query_adapter": "Deterministic historical P_text projection with 8-row medical-to-anonymous orthogonal Procrustes bridge",
+  "query_shape": [
+    12,
+    32
+  ],
+  "route_groups": {
+    "NC": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "MCI": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "AD": [
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "notes": "All formal outputs, local source copies, frozen inputs, and audits are under actual_root.",
+  "latest_audits": {
+    "preflight": "audits/preflight.json",
+    "best_replay": "audits/checkpoint_replay.json",
+    "latest_replay": "audits/latest_replay.json",
+    "final": "audits/final_audit.json"
+  },
+  "formal_status": "COMPLETE_AUDITED",
+  "git_worktree_at_start": "pre-existing dirty workspace with extensive modified/deleted/untracked files; no cleanup or root-model edits performed by E83.3"
+}
