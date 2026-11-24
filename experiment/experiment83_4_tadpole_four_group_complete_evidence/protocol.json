@@ -1,0 +1,69 @@
+{
+  "experiment": "Experiment 83.4",
+  "experiment_identity": "Experiment 83.4",
+  "title": "TADPOLE Four-Group Complete Evidence Adaptation",
+  "status": "PRE-REGISTERED",
+  "actual_root": "/model/spromptgl/experiment/experiment83_4_tadpole_four_group_complete_evidence",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment83_4_tadpole_four_group_complete_evidence",
+  "fallback_reason": "The preferred OSSFS path returned Input/output error (errno 5, EIO).",
+  "source_head": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+  "requested_e83_3_commit": "20edaff1ecf84e82ad4c09147dbab65347ad5003",
+  "e83_1_anchor": "339cabd44e04c38ed2808b309ffbb643d54b8d8c",
+  "dataset": {
+    "n_samples": 598,
+    "modality_order": ["UCSFFSX", "UCBERKELEYAV45", "UPENNBIOMK9", "RISK_FACTOR", "COGNITIVE_TEST", "ROI_AVERAGE"],
+    "modal_dims": [145, 148, 3, 36, 24, 9],
+    "n_features": 365,
+    "class_order": ["NC", "MCI", "AD"],
+    "class_counts": [209, 315, 74],
+    "label_encoding": {"NC": 0, "MCI": 1, "AD": 2},
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "processed_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5"
+  },
+  "folds": {
+    "class": "StratifiedKFold",
+    "n_splits": 10,
+    "shuffle": true,
+    "random_state": 10,
+    "training_seed": 0,
+    "transductive_patient_graph": true,
+    "validation_equals_test": true,
+    "best_selection": "first strict test-fold ACC improvement",
+    "rfe_and_standard_scaler_scope": "complete dataset before outer cross-validation, inherited historical protocol"
+  },
+  "historical_constraints": {
+    "mean_imputation": true,
+    "global_rfe_before_outer_cv": true,
+    "outer_cv_pre_scaler": true,
+    "no_new_data_split": true,
+    "no_test_label_routing": true,
+    "no_per_epoch_seed_reset": true
+  },
+  "groups": {
+    "G1_E28_E0": "Original SPromptGL with historical GFR, CAM, RES, PEN, eight prompts and loss/optimizer behavior.",
+    "G2_E43_1_E00": "Historical No-PEN with PEN module and parameters physically absent.",
+    "G3_E74_4_G2": "Historical DARG Positive-DCR with signed edges, original GFR fusion, losses, optimizer, and ten-epoch warmup.",
+    "G4_E82_4_6_10_G1": "Historical DARG and shared DPSL core with MMGPL-12 TADPOLE semantics and all three class-pair evidence routes."
+  },
+  "g4_three_class_adapter": {
+    "pairs": [[0, 1], [0, 2], [1, 2]],
+    "pair_weight": "(native_probability_i + native_probability_j) / 2",
+    "weights_detached_during_training": true,
+    "shared_scmr_parameters": true,
+    "route_uses_labels": false,
+    "pair_supervision_scope": "only training rows whose class is a member of that pair",
+    "residual_cap": 0.08,
+    "shared_gradient_budget": 0.001,
+    "prompt_groups": {"NC": [0, 1, 2, 3], "MCI": [4, 5, 6, 7], "AD": [8, 9, 10, 11]}
+  },
+  "training": {
+    "max_epochs": 450,
+    "early_stopping_patience": 200,
+    "formal_new_folds": 10,
+    "g1_g2_g3_status": "pending independent verification",
+    "g4_status": "new formal training"
+  },
+  "metrics": ["ACC", "AUC_original", "AUC_probability"],
+  "forbidden": ["test-based parameter search", "fold deletion", "threshold tuning", "multiple G4 fusion variants", "remote git push"]
+}

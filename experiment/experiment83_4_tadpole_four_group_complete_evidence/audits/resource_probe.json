@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "device": "PPU-ZW810E",
+  "device_total_memory_mib": 98304,
+  "worker_processes_tested": [
+    1,
+    2
+  ],
+  "single_process_wall_seconds": 13.631378415971994,
+  "two_process_wall_seconds": 14.007716361433268,
+  "single_process_steps_per_second": 0.07336015254541625,
+  "two_process_steps_per_second": 0.1427784478493938,
+  "two_vs_one_throughput_ratio": 1.9462670522802097,
+  "single_process_peak_reserved_mib": 672.0,
+  "two_process_peak_reserved_mib_each": [
+    672.0,
+    672.0
+  ],
+  "two_process_summed_peak_reserved_mib": 1344.0,
+  "selected_gpu_workers": 2,
+  "selection_rule": "Use two workers only when measured aggregate throughput improves by more than 5 percent and summed peak reservation stays below 80 percent of device memory.",
+  "single_probe": {
+    "device": "PPU-ZW810E",
+    "free_mib": 97202.93711853027,
+    "peak_reserved_mib": 672.0,
+    "scmr_step_and_eval_seconds": 0.5994799137115479,
+    "gpu_best_ema_replay_exact": true,
+    "gpu_update_shared_cap": 0.001,
+    "shared_family_increment_norms": {
+      "gfr": 0.0,
+      "darg": 0.0,
+      "cam": 0.0,
+      "head": 0.0
+    },
+    "all_pair_training_objectives_finite": true,
+    "three_class_main_cross_entropy": true
+  },
+  "parallel_probes": [
+    {
+      "device": "PPU-ZW810E",
+      "free_mib": 96088.87852478027,
+      "peak_reserved_mib": 672.0,
+      "scmr_step_and_eval_seconds": 0.577621191740036,
+      "gpu_best_ema_replay_exact": true,
+      "gpu_update_shared_cap": 0.001,
+      "shared_family_increment_norms": {
+        "gfr": 0.0,
+        "darg": 0.0,
+        "cam": 0.0,
+        "head": 0.0
+      },
+      "all_pair_training_objectives_finite": true,
+      "three_class_main_cross_entropy": true
+    },
+    {
+      "device": "PPU-ZW810E",
+      "free_mib": 96048.87852478027,
+      "peak_reserved_mib": 672.0,
+      "scmr_step_and_eval_seconds": 0.6069926247000694,
+      "gpu_best_ema_replay_exact": true,
+      "gpu_update_shared_cap": 0.001,
+      "shared_family_increment_norms": {
+        "gfr": 0.0,
+        "darg": 0.0,
+        "cam": 0.0,
+        "head": 0.0
+      },
+      "all_pair_training_objectives_finite": true,
+      "three_class_main_cross_entropy": true
+    }
+  ],
+  "formal_training_folds_touched": 0
+}

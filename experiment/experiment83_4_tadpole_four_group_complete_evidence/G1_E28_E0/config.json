@@ -1,0 +1,35 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G1_E28_E0",
+  "seed": 0,
+  "device": "cuda:0",
+  "implementation_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286",
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "Original SPromptGL reproduction",
+    "pen": true,
+    "darg": false,
+    "dpsl": false,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.012,
+        0.0036
+      ],
+      "cam": [
+        "Adam",
+        0.012,
+        0.0036
+      ]
+    },
+    "loss": "L_cls + mean_6(GraphConstructLoss)",
+    "aloss": "observation only, excluded from backpropagation"
+  },
+  "actual_workers": 10,
+  "e833_experiment": "Experiment 83.3",
+  "source_status": "REUSED_VERIFIED_FORMAL",
+  "source_experiment": "Experiment 83.1",
+  "source_root": "/model/spromptgl/experiment/experiment83_1_tadpole_fidelity_repair",
+  "independent_replay_path": "audits/inherited_replay.json"
+}
