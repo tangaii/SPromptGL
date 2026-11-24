@@ -1,0 +1,543 @@
+{
+  "status": "PASS",
+  "mode": "real model forward and historical independent evaluator",
+  "folds": [
+    {
+      "fold": 1,
+      "status": "PASS",
+      "best_epoch": 102,
+      "test_rows": 88,
+      "correct": 84,
+      "scope": {
+        "test": 88,
+        "legal": 783,
+        "train": 783,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 783,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.0018417424289509654,
+        "membership_sha": "8eb9711f3f0134d380aa244f5be30a363d64ca8375a586e5cc9c7cdcb5c6cdd5",
+        "basis_sha": "02d69f63db258a363d82df16468912fc58059cf8a48da99991e238629e7bbb81",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "826e83b353a2cd735802f6252a13d9d9a0038156c256f6a4bc2b1f06a8c902be"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "9fc29e2f85dd75040df0081d6b264fcf209865ef99697068577ef61ad71dbcfc",
+        "enhanced": "aa871665b09a2093499522b0dc74949466f7e3feb54ab8a68a1110b1c05c8f34",
+        "raw_parallel": "82838bf27ebc34dec6597bf81be8b67837147d8d908d30dcac5c9524ddfa3048",
+        "raw_perp": "08a7867ab0c658e31b971e804f1deb32180ec64fb21a2a7577973cb2f7879648",
+        "delta_parallel": "7410b7b932b028f625e4191415735c28866998de660098a1eb84cc7c05a21037",
+        "delta_perp": "661e058e4f54ba09e0436cb3f1e30cc65ba4af17eb85a0d191eb78cd0919b45b",
+        "delta": "d38144be56fa113e5ed6cde428f9828a50dfe29b39dc6823c6ed8ea1f09aec52"
+      },
+      "result_sha": "9db6c91822eb71d87b226d532244bd9933a214536f4063b746480ebbb8803fc5",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "970ff2ccfc28db4a6bf3ff6349563253070e28c06c7085996c251d6d61c80bcd",
+      "best_ema_sha": "a06063a0d602a91352cbc3fd69996c668a91df232eb31f93bff0c0f82ec300fd"
+    },
+    {
+      "fold": 2,
+      "status": "PASS",
+      "best_epoch": 166,
+      "test_rows": 87,
+      "correct": 84,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 792,
+        "overlap_1based": [
+          260,
+          288,
+          375,
+          377,
+          407,
+          681,
+          779,
+          784
+        ],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {
+          "260": 3,
+          "288": 5,
+          "375": 1,
+          "377": 5,
+          "407": 15,
+          "681": 8,
+          "779": 6,
+          "784": 8
+        },
+        "max_residual_ratio": 0.04416966810822487,
+        "membership_sha": "97dd99ddbf5f2055b503584e70b8c2fb84e67d158e5d8eb1461dc16a035bedbc",
+        "basis_sha": "bbfdb5f90832c010077319ba5a3d9d1000882f1ae24e7858de9660cd02baba00",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "179ce8785f2a40b8695522c5ad62995579ec15286c6f8e3521c9b04cc133e9e7"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "812d9d5ffe8aab6e27f69c9cc6ca633ee8e2abbd68983b4dcadb6a3a6facc988",
+        "enhanced": "d072ab32051411951efc8f63a06e6b7715cab814d492bb241b8db4aee2eee80b",
+        "raw_parallel": "7bd24a100a2927d9d5396503e26c6b97be97efd6c6ed7ec749b8181d9b6166c4",
+        "raw_perp": "862e50ff798c2f52ad11d8ad930bce9e2d90c5525aa05e78eec77af61a52684f",
+        "delta_parallel": "31425c2e7bad3a8df0468ae6f11aa32173a6e3ad509bb2fc18b28ae15467789c",
+        "delta_perp": "3feca16e38f9ea0c9f56e28879e2058a9194167c7d8bfdc54c398ecbd8cca82b",
+        "delta": "cf504852ef6221992f12c226910a20dfddf839fe12275c3b0086eccb0e6064b5"
+      },
+      "result_sha": "39dded1931720246b4e1648cee683b1fe1bd82fcee37df7e972dfd173bb281b2",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "b34d91e17fb7d293d5e8815511d2a45f94ae05a4c60dba95d7d7c5b31322db1d",
+      "best_ema_sha": "427545edf92c8ce21b53933430e32e8c9ed8389bdffad493912e4ef5d8a3547f"
+    },
+    {
+      "fold": 3,
+      "status": "PASS",
+      "best_epoch": 244,
+      "test_rows": 87,
+      "correct": 79,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 789,
+        "overlap_1based": [
+          46,
+          66,
+          172,
+          266,
+          388
+        ],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {
+          "46": 16,
+          "66": 9,
+          "172": 12,
+          "266": 10,
+          "388": 1
+        },
+        "max_residual_ratio": 0.07493565231561661,
+        "membership_sha": "59b1b0b347a233b78bec764a057c8f8a79dba38472d9fd6ec27440b16b7e7478",
+        "basis_sha": "3e9dc33068da1249ff3640f9c6b2fef4bcec8ea0a7e3082f13c25cb089588dec",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "b894fa5a7caf0930c7ddfb4c5efa12dd418118d7bda0b694215361e800516a76"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "1fe24c29a942caa83073df847ada7f7f89f118b0c1348a9f8f52dcd029cd2d31",
+        "enhanced": "b0baa29f089da4e59645546737aa19c964165476dd399c557107ac65089a92f0",
+        "raw_parallel": "f9fdb495252bc5124c867c188dcc9c318f30e0fcef0c40218fc1971157dedc70",
+        "raw_perp": "1c945846f76719a58d863dcfdd534d54c39852f5a43d8b67d51292f6461cae65",
+        "delta_parallel": "7ac69a3a45413e68419cb0f6e80a1821077055c2d295fcffd5b01b34fcf1327e",
+        "delta_perp": "01515d7c2ede64de13ff2315708826307941f7f813ce46e830c1290e60703102",
+        "delta": "320c03edb89e755d26252b8dbac16d2ed9cd29d62240c637420fe53537791075"
+      },
+      "result_sha": "0dff437b1d56b9a26bd9f90c4c4ffcd05f7069608f3115579a4e38f0ad503a87",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "1ebbf1b9f40a87ffe7321416e16101d286b6a869f8e323c42f3963bd8456d427",
+      "best_ema_sha": "aed8edbc5fa6361f97ddd4f4e3c038cef3641f4cd0c54767a353393285a86ac9"
+    },
+    {
+      "fold": 4,
+      "status": "PASS",
+      "best_epoch": 182,
+      "test_rows": 87,
+      "correct": 83,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 788,
+        "overlap_1based": [
+          712,
+          713,
+          727,
+          773
+        ],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {
+          "712": 12,
+          "713": 13,
+          "727": 24,
+          "773": 23
+        },
+        "max_residual_ratio": 0.01480575930327177,
+        "membership_sha": "7315c5f0188433bad866b155baa26a98748551f62c4c5414f76c99c6eaf6e207",
+        "basis_sha": "f677360c0180b03acb0ff5e9bc4d201c4700a710fe5dde842fcd44d96a3d2466",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "1a73d2e510cc1aac2a835008c1223911472f9c92c1dcf168cb4c8b588f8176c6"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "a85b8ca60a2d7b590f20574e3ce0a0b6411d209e48e67e2aefb22e0d4442d582",
+        "enhanced": "85d74dcfef6d3bcd381003ea86accbc05c278906d3c5e6677a00f6607de27a5a",
+        "raw_parallel": "c918f344d4c209f4b9501d35ea2b5c3099b4c57e1939b6bb6ac0f19266a96e0f",
+        "raw_perp": "f11d96449e56c455da5022f4cf3d6307f00b47256ad9215eadf293136595a1bb",
+        "delta_parallel": "c9eed40f82ba191fabbe60bc365c65acc84f4d5dc05df937e2385f65425cf35b",
+        "delta_perp": "6b46cd0359ac6b6c086454c2eb5910c06aed6799f90a70a2374f7ac7e0add64f",
+        "delta": "21605f93c62c6473c1ff850fe91ed3b480abe3261f7e30d3de1d4c29a3ceb09c"
+      },
+      "result_sha": "8c0074ecbd766e9f1cad57fefcb6a356d290f5cf7c6b61e1b78b5cac5a957538",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "8fbdf6d93ad0a7083b69c60ed6a01a536947ef24db5069b46fafdf4a7bd08a9b",
+      "best_ema_sha": "c2ed5d80f5077697965b27f190716bbcc4457cda0fe359dfe6205459de039fe3"
+    },
+    {
+      "fold": 5,
+      "status": "PASS",
+      "best_epoch": 428,
+      "test_rows": 87,
+      "correct": 81,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 784,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.07934513688087463,
+        "membership_sha": "d276981eefdcf1df17275e929c4089f190bdf2321d63ea8312a16bc61503714e",
+        "basis_sha": "2306e3dbe1ff7d29094abb58ab5a0774c4915ac5080e4759b918eda90e95436d",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "5d13d36878786cbcb0c2b7d2cad5dd2e5fd7c12378f1d2e92a814116c652cd60"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "0c6daa4e9b411779052ce5b9d039b01d252f61d8a1870251e83af5aba9436912",
+        "enhanced": "8a0f250912b05b16f85d705c518c297df6ac4a0f25ff07ad68d763441d4ec88b",
+        "raw_parallel": "0c6eded3f729f98f851da88f0daa195a4fe254b8c71e7d9b0d56b04aa658198e",
+        "raw_perp": "233afd7e12ca0f9f57248abce401b8df15a5ef0d2af5fb801791e4f6c8c80528",
+        "delta_parallel": "33ec74401c24e8ab14283e2d8fe8a41d5feba56ed87b2a4acfc40e1619316f20",
+        "delta_perp": "ee42f15f9a604c92acc1641a862057790c5c81946f6513ede3d65ce018e754d5",
+        "delta": "9621b4fd3b48d4741f2a6b769b9a99b5c04069feed3ca0e38b6877b237cbe874"
+      },
+      "result_sha": "0797947a7ab389f60823fc513ace36eddc6742f9020a6a9dcafb56e1586d3bd2",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "167e55b5637e2c5597eb6f04d2ecde1d7befc6b664d232a65c435de46a6a9a31",
+      "best_ema_sha": "5b32e5ace8d1bd32a9d04f27bc6e6b9b7d2a8ae54c9ab4487d2e631d86dbd7d5"
+    },
+    {
+      "fold": 6,
+      "status": "PASS",
+      "best_epoch": 157,
+      "test_rows": 87,
+      "correct": 84,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 784,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.014816146343946457,
+        "membership_sha": "1a1854301168fb4f1c0d5346c1c72fa31457c94af8ddce5953ab2bb7a39c3dd2",
+        "basis_sha": "956dda6a7bf72b3930528b80a78108be7ee8ae0ca0f5c04c879d65ff7150ebd0",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "a808410da18c6f2683c8b974cfafb4b0db79fbb3965abfafc82adf77d8a599ab"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "372a515e75e1e8d1ed7b0a3580492fe299ab15a5d05ce15bdc0a3ec08c8b61dd",
+        "enhanced": "cd49302c9f342925ce92ffaabfc9923799f3e6b9c7aad009a1e43dedb88c99ca",
+        "raw_parallel": "b67d192e70363eb62e8e917381e215e7fba5071b4df640bca55c0f22277e801e",
+        "raw_perp": "a8554432452719857f349eea3cef85746b38bb66061b961adcbfd25ac7ebe6b4",
+        "delta_parallel": "69da86977beb99d10ad3a821c6813ff76acf1f5b423f7db5b8c0d96e55ae78a5",
+        "delta_perp": "082f9bd279fe766cfa66beb876ac72c328e7fc50edc69e89837a8cf27d7f3203",
+        "delta": "fd939c4fcb2803419e51762c289452015653e49199ca049ed35003a3c8b3d686"
+      },
+      "result_sha": "b1d6b67bade32753088af3bf8553aa1bd1362a343068f25562613e800f41f194",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "ab151d423871ecce0551c8554cf7778ba31c62d0f95dce653d37e1402b44243a",
+      "best_ema_sha": "e69ffe7fe3a0becc22009ae7480311fe4071b4a46a1fe94c8fc2c838277b19ef"
+    },
+    {
+      "fold": 7,
+      "status": "PASS",
+      "best_epoch": 166,
+      "test_rows": 87,
+      "correct": 79,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 784,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.07347341626882553,
+        "membership_sha": "366d1883227c18946f5f43386e9ab15282d672a8227040663ea16d6d8ccd23f9",
+        "basis_sha": "bfb5281eca4d13f1153751379c8953a79f17da8127553859c9a32fa6bc81d15e",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "41756e9ec0ef7c82691c0759f50adab2e71b44ed5494b23429e74d081441e6c3"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "666e1f6e9abde338394455358400f43cae028e28d4984d23818d3d41a04962eb",
+        "enhanced": "2065c4276018feb2a118bca57494c71af8bbb850fe27b2315f933ba239aed3d5",
+        "raw_parallel": "785d0f00cc7770302ae25da9d874ce6fb999a66ecd4db84d131babc9c0241283",
+        "raw_perp": "45b5f7f946f00b75f93040cf81b14994b1f7e0d46ae81768765f9fb50c0e410b",
+        "delta_parallel": "542e2cadb09cee94bf9a30e339e43f5b987d5f03154eb88c1fc225303617b457",
+        "delta_perp": "f6d391d68204fa6c8054173ac94b4191bcfceb3185b1f90f39b187bb80c6a51e",
+        "delta": "2c9bad3b32a559ad1aebb5edd3a813e9431a61577f89aa1ab59c9ac58c764666"
+      },
+      "result_sha": "2e68544eb500e224bbe0fa5dadd0c21e4773e4faae5c5a53615f86f502bd2d2f",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "5c928c044e720ad1196cb1ce4c960e7a4086e423a311ccdcaedbdfc95a3f586d",
+      "best_ema_sha": "c42c2163e2ac1c850f122a2bf0a6145e88a9df12bb25786be5ee49c9265f773f"
+    },
+    {
+      "fold": 8,
+      "status": "PASS",
+      "best_epoch": 201,
+      "test_rows": 87,
+      "correct": 78,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 786,
+        "overlap_1based": [
+          383,
+          430
+        ],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {
+          "383": 1,
+          "430": 14
+        },
+        "max_residual_ratio": 0.03142036125063896,
+        "membership_sha": "b05c36ede56e5e5fffa3705bdd28893aa275e72f256d5e51bba93f5dd3a81421",
+        "basis_sha": "73eba96c0c55205ff97e55d7bd75de389a9b28268dc739bcf6bdfa8254faad43",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "b94e689a6866fda9093da19f6270ba1f7147b2e47cc9e44f4067cb568e6fe2d9"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "c278fa0045b5e03a6f6d778044fcd8e320c30cd21e9ee4110b38b0d139aef920",
+        "enhanced": "ecc73130b9608ed1d06c1a094793ba727f81eaf11cef9f1da346193e2be9108a",
+        "raw_parallel": "8fc327da6d89a472677ad699fa415403e1e84d0cd5d00bcca9f15f28bcc2cdb5",
+        "raw_perp": "e7c7014749ee73087baca6d6640a0a76cdc3d93c7bff2623b2dd8c4c739122d2",
+        "delta_parallel": "910a055e9fcf022eed02cc5d44454064a9a8712fe4247028222e0a2125465fbd",
+        "delta_perp": "5668221a8e123f944226faf1639e60a721bf2150f880fe2aac600623780a2fa6",
+        "delta": "c3c365e13b19ff8cbeaa78a454f7ed11e300e93e9f6a1bd5e1dc30e80a2710f9"
+      },
+      "result_sha": "f5036953d65a0cb16d6ce71085d1190276a450aaf20701d39363df8dab33d2f5",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "b488ddf9623d543853830d466573c2e15cf8042be711f0a44311dd606ddbf5d2",
+      "best_ema_sha": "c903db9b5a9edf531cb7ddab8b4f13351671c1de453e1f227060ff07ddc44ca8"
+    },
+    {
+      "fold": 9,
+      "status": "PASS",
+      "best_epoch": 231,
+      "test_rows": 87,
+      "correct": 78,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 784,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.07118955999612808,
+        "membership_sha": "b3604481021adb759735cc7d1a85d898408c7f1b39d422812dd7b354ca825ee2",
+        "basis_sha": "5c1fa7dc86df283c0c41082563463bac67eb547693bfce94bba39500707be04d",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "7cb0f61be9f75e904604f3d13534b3b361ee819b6b395d63be5171f3b92a0bc1"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "21736a51be6e2264c21b6052057655e8d8d46dac97acb78a0f1f9dcc9b3de38c",
+        "enhanced": "c759f0354e84d13a05cee75fb3c6ba07f0fa7c7ee3058e0a65aec2687bf7f2a0",
+        "raw_parallel": "6269e680bec76cc992b8122e6e95fc3aab9621a3b4adb4f8ee074419d30614e9",
+        "raw_perp": "4117bb0b8c5ce9c794d89a6eff10e0ba4c3095223a818b19e35e64771a0008c6",
+        "delta_parallel": "388726ca6b0f1e98df99b3c9f47e8af58c15bf9bcaebdd029c9fe5e358f71679",
+        "delta_perp": "c009f71c09ec1027ebaf2f14b0f195a75f2a4dff3a7dbbfdacfedede697a48a7",
+        "delta": "5714a3e011d37f37f0e898e2bbd61b1e05c552cb6919b824a93c58dde509141c"
+      },
+      "result_sha": "1c7b99f3fa5b2531d0e4e220e2192a8f7d70e961b506b3e1359eded6e03f8fae",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "9c6c1f65f4f5e375b71f89fc76efc6923531ac61934e29b34aa60b2ad0609207",
+      "best_ema_sha": "97c71655599412737ba96c4d8d330e1993a1e41c01480a786a44edbc90fe508e"
+    },
+    {
+      "fold": 10,
+      "status": "PASS",
+      "best_epoch": 152,
+      "test_rows": 87,
+      "correct": 81,
+      "scope": {
+        "test": 87,
+        "legal": 784,
+        "train": 784,
+        "overlap_1based": [],
+        "overlap_all_delta_components_exactly_zero": true,
+        "active_legal": 784,
+        "overlap_pair_occurrences": {},
+        "max_residual_ratio": 0.022552983835339546,
+        "membership_sha": "482db3687338a38d34c294f2d53d4901af4fe5a74e72f23097fa85a2d126d5c1",
+        "basis_sha": "4e837b1b4689c316eba7f5f59421b134d32346942e7daba195dc366cf84e32ae",
+        "prompt_sha": "a974b2e2261fd86d37cd8fa34ec8f0ad884c6aeec57095000189b102962af0ce",
+        "gaussian_reference_sha": "a41bda925864fca024af01d409c5426912219bb3896061d7846ae8f223b461c5"
+      },
+      "maximum_absolute_error": {
+        "logits": 0.0,
+        "probability": 0.0,
+        "prediction": 0.0,
+        "cam": 0.0,
+        "enhanced": 0.0,
+        "raw_parallel": 0.0,
+        "raw_perp": 0.0,
+        "delta_parallel": 0.0,
+        "delta_perp": 0.0,
+        "delta": 0.0
+      },
+      "full_tensor_sha": {
+        "cam": "c1732621cf8c8eda079e60451c5a434f6c280d1133a2dacad63bd86702786876",
+        "enhanced": "14d0ffa185f2360c1ba9b7fbef02287099d6a6e87dff9bfd179f2cd4eb24ad15",
+        "raw_parallel": "2229a5e1233bdeaec6572b084776d4c53d42ea92ac58fed7c6809e109f529f7e",
+        "raw_perp": "813b258a3c02254f3fadb472c178e3d717db6e824f7b46d7bda4f25d5625512a",
+        "delta_parallel": "2cbfa2e79faafb69d12035a5c19a856a19287e53a23c42e775743f7970a401d2",
+        "delta_perp": "3ae5d253f4f0c3284d18528d9a27b1e944478bb9dd25143db17920e88ae012c3",
+        "delta": "fe972c4f8a9a650111fa1a642eaf6a9a09c5ab0b466bb3f40b1e377b75c6ced3"
+      },
+      "result_sha": "b2d50dc1f79c4dd2d962f248fdfd85585988a81db56adaf747d29a3fc87559c1",
+      "configuration_sha": "6d0c4e5a5338aaccde83c72c0d0fc161e85b48527c912674b4dbc2052861f8b0",
+      "best_rng_sha": "984ff0f585c19ad65efc0464a0b74a6659dd3afe3d2d2049024eaf1cb9b8e74d",
+      "best_ema_sha": "8a6cd62467da16c48d098fa0882e1d6d5bd4871bcb0232422e15b07fd8fd4bc4"
+    }
+  ],
+  "patients": 871,
+  "macro_mean": {
+    "acc": 0.9310867293625915,
+    "hard_auc": 0.9303483957943188,
+    "prob_auc": 0.9486283026105007,
+    "sen": 0.9205487804878049,
+    "spe": 0.9401480111008326,
+    "asd_f1": 0.9250958582827987
+  },
+  "macro_population_sd": {
+    "acc": 0.02625718045623524,
+    "hard_auc": 0.026450440674886902,
+    "prob_auc": 0.028902565858041122,
+    "sen": 0.03674462288722433,
+    "spe": 0.03431446328788012,
+    "asd_f1": 0.02879737303235551
+  },
+  "pooled": {
+    "n_test": 871,
+    "correct": 811,
+    "tp": 371,
+    "fp": 28,
+    "tn": 440,
+    "fn": 32,
+    "acc": 0.931113662456946,
+    "hard_auc": 0.9303832368348497,
+    "prob_auc": 0.942053190812496,
+    "sen": 0.9205955334987593,
+    "spe": 0.9401709401709402,
+    "asd_f1": 0.9251870324189526
+  }
+}
