@@ -1,0 +1,36 @@
+{
+  "experiment": "Experiment 83.5",
+  "group": "G1_E28_E0",
+  "method": "Original SPromptGL TADPOLE CAM/GFR/RES with a frozen MMGPL-12 3-class PEN. Original PEN MLP and local/global fusion are retained. The two-class semantic competition is extended to three class prompt rows.",
+  "protocol_sha256": "4a12135e8775d275b89bde647ae43589051d8069d415313cfbfde242d1b98001",
+  "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+  "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+  "seed": 0,
+  "folds": 10,
+  "actual_gpu_workers": 8,
+  "status": "NEW_FORMAL_TRAINING",
+  "model_type": "FidelityModel",
+  "prompt_file": "inputs/prompts/mmGPL12_scmr.pt",
+  "prompt_file_sha256": "999439580169b9c3422744eb9a68585f0f1c0cb0bb8bfed04c1c63c1cc93bedf",
+  "class_prompt_groups": {
+    "NC": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "MCI": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "AD": [
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "formal_retraining": true
+}

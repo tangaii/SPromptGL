@@ -1,0 +1,108 @@
+{
+  "experiment": "Experiment 83.1",
+  "reviewed_utc_date": "2026-11-23",
+  "archive_source": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/sources",
+  "copied_archives": {
+    "E28_E0_original": {
+      "source_directory": "E28_E0_original",
+      "same_file_content_as_read_only_E83_archive": true,
+      "recorded_commit": "1167dd392837a02eb4f83481ae49f02607a9dae5"
+    },
+    "E43_1_E00_original": {
+      "source_directory": "E43_1_E00_original",
+      "same_file_content_as_read_only_E83_archive": true,
+      "recorded_commit": "ccca6484de8e0c4f448c314a4863e7b56f46208c"
+    },
+    "E74_4_G2_original": {
+      "source_directory": "E74_4_G2_original",
+      "same_file_content_as_read_only_E83_archive": true,
+      "recorded_commit": "711d87f4ccc9e11124bce62751fcd3dbb97fdbdf"
+    },
+    "E82_4_6_10_G1_original": {
+      "source_directory": "E82_4_6_10_G1_original",
+      "same_file_content_as_read_only_E83_archive": true,
+      "recorded_commit": "1ef9a17fb50585aad9b2f878018ded16646a19a7",
+      "dependency_commit": "f1e0697d06eeff160cd93920a419dcf4dbec1a47",
+      "verified_model_variant": "E82.4.6-G2 SCMR-DA-SRPE",
+      "historical_G1_meaning": "fold-8 membership extension"
+    },
+    "TADPOLE_source_description": {
+      "files": [
+        "TADPOLE_D1_D2.py",
+        "TADPOLE_readme.txt",
+        "MMGL_Data_preprocessing_TADPOLE.ipynb"
+      ],
+      "same_file_content_as_read_only_E83_archive": true
+    }
+  },
+  "canonical_dpsl_package": {
+    "root": "/model/spromptgl/experiment/DPSL",
+    "variant": "E82.4.6-G2 SCMR-DA-SRPE",
+    "canonical_sources_copied_to": "E82_4_6_G2_SCMR_DA_SRPE",
+    "exact_sha256": {
+      "code/history_base/g2.py": "b07e3d55690fc0230798b336cdd53aa49ebecc89af1979836a9a5ca51e48ab67",
+      "code/history_base/common/spectral.py": "176d9ba7923beed39d583bfd9831ac99ac2e4e5204d1da7cef0bb727567a2e13",
+      "code/history_base/common/evidence.py": "0c8e2e33d802cd4fd2a1996b3d298fc84297b77e56b7d24045612d7e31eac6ba",
+      "code/history_base/common/optimization.py": "6071142cbbabc21dfe31e1a5cb561b214e0430d4b2e75827b3d7b773157591f0",
+      "code/history_base/common/history.py": "e5398816322477f52ac509b24eb615585d24b7af02b112100438c6b268baccda",
+      "inputs/prompts/prompts.pt": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e"
+    },
+    "legacy_adapter_copy": {
+      "directory": "history_dpsl",
+      "exact_source_matches": [
+        "g2.py",
+        "spectral.py",
+        "evidence.py",
+        "optimization.py",
+        "run.py"
+      ],
+      "nonmatching_runtime_inputs": {
+        "history.py": "455bcd1a0c7486b90bc47d17c0db8a657d283eb6f601328c8939e6bfee215c9b",
+        "prompts.pt": "3f3794962f5c264dda57c4b726752b70d20c1fb7b36416315a74b64fcdba9dea"
+      },
+      "prompt_comparison": {
+        "texts_equal": true,
+        "medical_embedding_equal": true,
+        "anonymous_embedding_equal": false,
+        "medical_query_equal": false,
+        "anonymous_query_equal": false,
+        "projection_equal": false
+      },
+      "runtime_uses_legacy_copy": false
+    },
+    "prompt_scope": "Eight frozen RN50 text embeddings and their deterministic medical and anonymous text-query transforms. No patient data, classifier, or model state.",
+    "runtime_executes_verified_canonical_modules": true
+  },
+  "runtime_binding_review": {
+    "adapter_class": "common/scmr_runtime.py::make_scmr",
+    "canonical_runtime_class": "sources/E82_4_6_G2_SCMR_DA_SRPE/code/history_base/g2.py::SCMRDASRPE",
+    "executes_canonical_historical_modules": true,
+    "contains_noncanonical_prompt_suppression": false,
+    "active_prompt_file": "sources/E82_4_6_G2_SCMR_DA_SRPE/inputs/prompts/prompts.pt",
+    "active_prompt_sha256": "0e6a48bbdfad5e6fcbacfc11122495b334e82bdfd978cee9b6a14b49ddc9d28e",
+    "legacy_adapter_prompt_file_is_used": false,
+    "conclusion": "Uses hash-verified canonical SCMRDASRPE, MedicalSpectrum, AgreementEvidence, apply_budget, and optimizer_measurements. Binary forward, objective, and EMA parity are established. TADPOLE dimension, membership, and three-class bindings are recorded in the fidelity matrix."
+  },
+  "locked_tadpole": {
+    "processed_data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_indices_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "sample_ids_sha256": "3c354e2623128209544b23d84fbac0e436f55b4c898c74af83d2e99e7f61d8e0",
+    "modal_feat_dict_sha256": "54eecaf93f2bd942635c5012eb42d6e341760cc162ab53e320dc5ae402716814",
+    "modalities": [
+      145,
+      148,
+      3,
+      36,
+      24,
+      9
+    ]
+  },
+  "decision": "The source identity and binary limiting parity pass. Three-class TADPOLE is the documented core-method adaptation. Fold 8 ABIDE membership is archive documentation only.",
+  "updated_utc": "2026-11-23T15:42:59.936232+00:00",
+  "darg_dependency_chain": {
+    "graph_base": "E51 DUGSA, local Git commit 939fe7e05ec141582af6a26bc19713fda08fdba3",
+    "relation_model": "E53.3 CADR source confirmed by E61 manifest",
+    "warmup": "E61 E2E original-graph pretraining, E61 archived manifest locked_base_commit b7e477c9657422a119adc7872ccf8c8188871e9e",
+    "formal": "E74.4-G2 Positive-DCR, archived non-CORR route"
+  }
+}

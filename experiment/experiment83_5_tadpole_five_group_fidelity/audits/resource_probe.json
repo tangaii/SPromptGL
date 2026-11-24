@@ -1,0 +1,115 @@
+{
+  "experiment": "Experiment 83.5",
+  "status": "PASS",
+  "device": "PPU-ZW810E",
+  "device_total_memory_mib": 98304.0,
+  "worker_processes_tested": [
+    1,
+    2,
+    4,
+    8,
+    10
+  ],
+  "measurements": [
+    {
+      "workers": 1,
+      "status": "PASS",
+      "wall_seconds": 15.467102486640215,
+      "aggregate_steps_per_second": 0.06465335061067545,
+      "peak_reserved_mib_each": [
+        672.0
+      ],
+      "summed_peak_reserved_mib": 672.0,
+      "device": "PPU-ZW810E",
+      "steps_finite": true,
+      "memory_safe": true
+    },
+    {
+      "workers": 2,
+      "status": "PASS",
+      "wall_seconds": 15.433532983064651,
+      "aggregate_steps_per_second": 0.12958795644487994,
+      "peak_reserved_mib_each": [
+        672.0,
+        672.0
+      ],
+      "summed_peak_reserved_mib": 1344.0,
+      "device": "PPU-ZW810E",
+      "steps_finite": true,
+      "memory_safe": true
+    },
+    {
+      "workers": 4,
+      "status": "PASS",
+      "wall_seconds": 17.104113273322582,
+      "aggregate_steps_per_second": 0.23386187498178176,
+      "peak_reserved_mib_each": [
+        672.0,
+        672.0,
+        672.0,
+        672.0
+      ],
+      "summed_peak_reserved_mib": 2688.0,
+      "device": "PPU-ZW810E",
+      "steps_finite": true,
+      "memory_safe": true
+    },
+    {
+      "workers": 8,
+      "status": "PASS",
+      "wall_seconds": 21.554984714835882,
+      "aggregate_steps_per_second": 0.3711438493618487,
+      "peak_reserved_mib_each": [
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0
+      ],
+      "summed_peak_reserved_mib": 5376.0,
+      "device": "PPU-ZW810E",
+      "steps_finite": true,
+      "memory_safe": true
+    },
+    {
+      "workers": 10,
+      "status": "PASS",
+      "wall_seconds": 33.48726724460721,
+      "aggregate_steps_per_second": 0.2986209632143214,
+      "peak_reserved_mib_each": [
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0,
+        672.0
+      ],
+      "summed_peak_reserved_mib": 6720.0,
+      "device": "PPU-ZW810E",
+      "steps_finite": true,
+      "memory_safe": true
+    }
+  ],
+  "selected_gpu_workers": 8,
+  "selection_rule": "Highest measured aggregate full G4 training-step throughput among safe successful settings. Safe requires summed peak reserved memory below 80 percent of total GPU memory.",
+  "single_process_wall_seconds": 15.467102486640215,
+  "two_process_wall_seconds": 15.433532983064651,
+  "single_process_steps_per_second": 0.06465335061067545,
+  "two_process_steps_per_second": 0.12958795644487994,
+  "two_vs_one_throughput_ratio": 2.0043502033672267,
+  "single_process_peak_reserved_mib": 672.0,
+  "two_process_peak_reserved_mib_each": [
+    672.0,
+    672.0
+  ],
+  "two_process_summed_peak_reserved_mib": 1344.0,
+  "selected_aggregate_steps_per_second": 0.3711438493618487,
+  "formal_training_folds_touched": 0
+}

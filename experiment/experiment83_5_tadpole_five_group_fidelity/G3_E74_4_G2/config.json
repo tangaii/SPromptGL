@@ -1,0 +1,57 @@
+{
+  "experiment": "Experiment 83.1",
+  "group": "G3_E74_4_G2",
+  "seed": 0,
+  "device": "cuda:0",
+  "implementation_sha256": "9c6bce4d4ffc15efe223982515bb114d3b16fa7fc609f0c25e85d0a6b13db286",
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "protocol": {
+    "identity": "E74.4-G2 Positive-DCR",
+    "method_fidelity_status": "SOURCE_PARITY_WITH_DECLARED_TADPOLE_ADAPTATIONS",
+    "pen": false,
+    "darg": true,
+    "dpsl": false,
+    "optimizers": {
+      "gfr": [
+        "Adam",
+        0.012,
+        0.11
+      ],
+      "cam": [
+        "Adam",
+        0.012,
+        0.11
+      ],
+      "darg": [
+        "AdamW",
+        0.001,
+        0.01
+      ]
+    },
+    "loss": "L_cls + L_graph + 0.05 L_pair + 0.01 L_adv + 0.01 L_preserve",
+    "pairs": {
+      "total": 4096,
+      "same_class": 2048,
+      "different_class": 2048,
+      "scope": "outer train labels only"
+    },
+    "graph": "signed DeltaA in unified graph; clamp_min(DeltaA,0) only in direct residual",
+    "candidate_adaptation": "Six historical non-CORR branches. Keep original supported off-diagonal edges, mutual Top-12, 0.55/0.45 thresholds and temperature 1.0. Uniform fixed scale uses historical non-CORR 0.01. Reweight strength 0.8; adaptive gate initialization sigmoid=0.1 and bounded direct residual multiplier 0.02.",
+    "candidate_adaptation_status": "PREDECLARED_SOURCE_VERIFIED_NON_CORR",
+    "warmup": {
+      "source": "TADPOLE E51/E53.3/E61 epoch-10, computed inside each fold",
+      "epochs": 10,
+      "relation_losses_active": true,
+      "graph": "source graphs only",
+      "DARG_activation_epoch": 11,
+      "shared_with_other_DARG_group": true
+    }
+  },
+  "actual_workers": 10,
+  "e833_experiment": "Experiment 83.3",
+  "source_status": "REUSED_VERIFIED_FORMAL",
+  "source_experiment": "Experiment 83.1",
+  "source_root": "/model/spromptgl/experiment/experiment83_1_tadpole_fidelity_repair",
+  "independent_replay_path": "audits/inherited_replay.json"
+}
