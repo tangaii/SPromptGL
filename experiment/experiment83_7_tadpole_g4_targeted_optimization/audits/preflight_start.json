@@ -1,0 +1,102 @@
+{
+  "checks": {
+    "data": {
+      "class_counts": [
+        209,
+        315,
+        74
+      ],
+      "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+      "folds": 10,
+      "modality_dimensions": [
+        145,
+        148,
+        3,
+        36,
+        24,
+        9
+      ],
+      "oof_coverage_once": true,
+      "rows": 598,
+      "shape": [
+        598,
+        365
+      ],
+      "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+      "status": "PASS",
+      "val_equals_test": true
+    },
+    "dpsl_budget": {
+      "records": [
+        {
+          "cam_historical_norm": 0.28687168022133325,
+          "cam_shared_applied_norm": 0.0,
+          "configured_cap": 0.003,
+          "dpsl_gradient_norm": 0.005093408715879377,
+          "finite": true,
+          "fold": 1,
+          "full_native_logit_max_abs": 0.0005054473876953125,
+          "group": "T1",
+          "observed_cap": 0.003,
+          "residual_max": 0.0,
+          "residual_off_native_exact": true
+        },
+        {
+          "cam_historical_norm": 0.28687168022133325,
+          "cam_shared_applied_norm": 0.0,
+          "configured_cap": 0.01,
+          "dpsl_gradient_norm": 0.005093408715879377,
+          "finite": true,
+          "fold": 1,
+          "full_native_logit_max_abs": 0.0005054473876953125,
+          "group": "T2",
+          "observed_cap": 0.01,
+          "residual_max": 0.0,
+          "residual_off_native_exact": true
+        }
+      ],
+      "status": "PASS"
+    },
+    "graph_supervision": {
+      "gradient_norms": [
+        0.01531469076871872,
+        0.06155363842844963,
+        0.04598785564303398,
+        0.01012488268315792,
+        0.044578228145837784,
+        0.04675925895571709
+      ],
+      "loss": 0.45917007327079773,
+      "modalities": 6,
+      "status": "PASS",
+      "test_label_permutation_invariant": true
+    },
+    "structure": {
+      "cam_dim": 240,
+      "class_pairs": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "historical_shared_cap": 0.001,
+      "nclass": 3,
+      "residual_fraction": 0.08,
+      "status": "PASS"
+    }
+  },
+  "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+  "experiment": "Experiment 83.7",
+  "formal_training_allowed": true,
+  "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+  "status": "PASS",
+  "training_seal_sha256": "c9bdd4065145041cddaa31cffbb5a566dba34a8f264553126849b4d144512c18"
+}

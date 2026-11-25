@@ -1,0 +1,50 @@
+{
+  "experiment": "Experiment 83.7",
+  "title": "TADPOLE G4-Targeted Optimization and Fidelity Study",
+  "actual_root": "/data/adodas/SPromptGL-main/experiment/experiment83_7_tadpole_g4_targeted_optimization",
+  "historical_protocol": {
+    "samples": 598,
+    "classes": {"NC": 209, "MCI": 315, "AD": 74},
+    "dimensions": [145, 148, 3, 36, 24, 9],
+    "total_dimensions": 365,
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "split_rule": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "val_equals_test": true,
+    "full_data_rfe": true,
+    "pre_cv_standardization_and_mean_imputation": true,
+    "transductive_patient_graph": true,
+    "max_epochs": 450,
+    "early_stop": "wait > 200",
+    "best_rule": "first strict outer-test ACC improvement",
+    "seed": 0
+  },
+  "base_groups": {
+    "G1": "E28-E0 SPromptGL-MMGPL12",
+    "G2": "E43.1-E00 No-PEN with GFR and graph learning",
+    "G3": "E74.4-G2 DARG Positive-DCR",
+    "G4": "E82.4.6.10-G1 DARG+DPSL",
+    "G5": "E43.4-E0 Anchored Physical CAM-only"
+  },
+  "new_groups": {
+    "T1": "G4 DPSL shared_cap 0.003",
+    "T2": "G4 DPSL shared_cap 0.010",
+    "T3": "G3 pair_mean graph supervision epochs 1-10 only",
+    "T4": "G4 pair_mean graph supervision epochs 1-10 only",
+    "T5": "G3 GFR/CAM weight_decay 0.055 from epoch 11",
+    "T6": "G4 GFR/CAM weight_decay 0.055 from epoch 11"
+  },
+  "metric_definition": {
+    "ACC": "test-fold hard argmax accuracy",
+    "AUC_original": "hard one-hot macro OVR ROC AUC",
+    "summary": "10-fold mean plus population standard deviation"
+  },
+  "prohibited_changes": [
+    "prompt text search",
+    "DARG signed edge algorithm",
+    "DPSL class-pair mechanism",
+    "preprocessing and split protocol",
+    "val=test selection protocol",
+    "additional seeds or unregistered groups"
+  ]
+}

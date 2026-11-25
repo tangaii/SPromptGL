@@ -1,0 +1,150 @@
+{
+  "experiment": "E82.4.6.10 — Dual ASD Additions in Fold 8",
+  "fold": 8,
+  "seed": 0,
+  "start_epoch_completed": 10,
+  "supervision_mode": "DARG-only overlap supervision (E82.4.6.4-G1)",
+  "model_variant": "E82.4.6-G2 SCMR-DA-SRPE",
+  "label_encoding": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "groups": {
+    "G1": {
+      "patient_ids_1based": [
+        383,
+        430
+      ],
+      "patient_indices_0based": [
+        382,
+        429
+      ],
+      "labels": [
+        0,
+        0
+      ],
+      "cpu": 32
+    },
+    "G2": {
+      "patient_ids_1based": [
+        383,
+        723
+      ],
+      "patient_indices_0based": [
+        382,
+        722
+      ],
+      "labels": [
+        0,
+        0
+      ],
+      "cpu": 33
+    }
+  },
+  "fold8_sizes": {
+    "native_original": 784,
+    "native": 786,
+    "legal": 784,
+    "test": 87,
+    "masked": 2
+  },
+  "training": {
+    "base": "E61 epoch-10 full warmup",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+    "pair_count": 4096,
+    "balanced_pairs": [
+      2048,
+      2048
+    ],
+    "pair_seed": 532108,
+    "dropout_calls": 6,
+    "no_per_epoch_reseed": true,
+    "optimizer_configs": {
+      "gfr": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "cam": {
+        "class": "Adam",
+        "lr": 0.0038,
+        "weight_decay": 0.11
+      },
+      "darg": {
+        "class": "AdamW",
+        "lr": 0.001,
+        "weight_decay": 0.01
+      }
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "cam_residual_cap": 0.08,
+    "shared_differential_gradient_cap": 0.001
+  },
+  "gpu": {
+    "physical_index": 0,
+    "uuid": "GPU-019e120d-89d0-0224-0000-000060af1149",
+    "worker_limit": 10,
+    "formal_tasks": 2
+  },
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment82_4_6_10_fold8_dual_asd",
+  "preferred_directory_errno": 5,
+  "authoritative_directory": "/model/spromptgl/experiment/experiment82_4_6_10_fold8_dual_asd",
+  "source_manifests": {
+    "e61": [
+      "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e",
+      "335e03be46a2a21ff8c6978c6ea42993b8faeb80e72853e83d8cb077878811b7"
+    ],
+    "e744": [
+      "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+      "4bdfb4fbf191d830c9484c9fdc5d584079895ba9157add248f3f354ea2b48840"
+    ],
+    "base": [
+      "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr",
+      "6619e0bac57568e6b5705c6f3c7199f7d12c9dbb3f0df865ae61a1facb48a81e"
+    ],
+    "e461": [
+      "/model/spromptgl/experiment/experiment82_4_6_1_g2_overlap_unmask",
+      "e5f2c7e19dcd8e4a58c2f926956810f3fc4a9d98a9e0df318fcda21182729841"
+    ],
+    "e462": [
+      "/model/spromptgl/experiment/experiment82_4_6_2_g2_full_path_extension",
+      "cbb0bcb9e0f4c5b78f3c73e82841502b364ffac0d6795ee3745f2e3eae499847"
+    ],
+    "e463": [
+      "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap",
+      "b35d360a5aba8d5e95d7df0903675c49f6010a546a340769dbeccb441e447293"
+    ],
+    "e464": [
+      "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired",
+      "b319d18b410e32b8be0fb9693eead99d6e0b24feae5fa5e43c29293666ea75b1"
+    ],
+    "e465": [
+      "/model/spromptgl/experiment/experiment82_4_6_5_g1_fold4_substitution",
+      "4cc8dda0ec64d2015a48b8ef08fc016b9fd07ab5364b491711db1b3a86b7b96c"
+    ],
+    "e466": [
+      "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712",
+      "68bd21b3c62090a6edf445b263c9efa1588b6cd72176705cf2e57285ec948587"
+    ],
+    "e467": [
+      "/model/spromptgl/experiment/experiment82_4_6_7_g1_fold2_add540",
+      "b9de4ae8d2580d41a4d24c6bbbfc5c0081d529b1bad6a030735b84f1ea723a30"
+    ],
+    "e468_audit": [
+      "/model/spromptgl/experiment/experiment82_4_6_8_g1_fold3_add413",
+      "a95d58498b46d230ab9b93c6a40462a5b84e996d6a3d17431bb21d10126f19c6"
+    ],
+    "e469": [
+      "/model/spromptgl/experiment/experiment82_4_6_9_fold8_six_single_asd",
+      "0c46e5b5ed4d7f8bee3232f8adcd9ff15462e14bc79d4527e686d396fb69b384"
+    ]
+  },
+  "protocol": "Intentional training-test label overlap for mechanism diagnosis. Each task starts independently from E61 Fold 8 epoch 10, then appends only its two ordered ASD members to DARG. The other nine folds are reused read-only from E82.4.6.9-G2. Historical val=test selection, pre-CV RFE and preprocessing, and transductive graphs are retained.",
+  "direct_reference": "E82.4.6.9-G2",
+  "single_patient_comparators": {
+    "G1": "G4",
+    "G2": "G6"
+  }
+}

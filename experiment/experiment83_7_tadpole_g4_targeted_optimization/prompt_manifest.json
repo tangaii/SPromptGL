@@ -1,0 +1,80 @@
+{
+  "class_mapping": {
+    "AD": 2,
+    "MCI": 1,
+    "NC": 0
+  },
+  "class_prompts": [
+    "NC: Normal brain volume",
+    "NC: Normal ventricle morphology",
+    "NC: Symmetrical brain structure",
+    "NC: Uniform cortical thickness",
+    "MCI: Mild hippocampal atrophy",
+    "MCI: Mild brain volume reduction",
+    "MCI: Mild ventricular enlargement",
+    "MCI: Mild local cortical thinning",
+    "AD: Pronounced hippocampal atrophy",
+    "AD: Marked local cortical thinning",
+    "AD: Significant brain volume reduction",
+    "AD: Significant ventricular enlargement"
+  ],
+  "concepts": {
+    "AD": [
+      "Pronounced hippocampal atrophy",
+      "Marked local cortical thinning",
+      "Significant brain volume reduction",
+      "Significant ventricular enlargement"
+    ],
+    "MCI": [
+      "Mild hippocampal atrophy",
+      "Mild brain volume reduction",
+      "Mild ventricular enlargement",
+      "Mild local cortical thinning"
+    ],
+    "NC": [
+      "Normal brain volume",
+      "Normal ventricle morphology",
+      "Symmetrical brain structure",
+      "Uniform cortical thickness"
+    ]
+  },
+  "encoder": "OpenAI CLIP RN50, frozen official weights",
+  "gram_reconstruction_max_abs": 2.220446049250313e-16,
+  "gram_sha256": "29662d0c54ab4abac9347afd4f882dc45cbcc48f18baac73c8f4f6c79a128e6f",
+  "groups": {
+    "AD": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "MCI": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "NC": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "mci_mapping_note": "MMGPL Figure 6 uses LMCI; the four MCI concepts are semantic proxies for TADPOLE MCI.",
+  "query_mapping_sha256": "54e79de7f3e8b090dd59de0057c3365690dfc7a2842f10573957be17f60d78e2",
+  "query_shape": [
+    12,
+    32
+  ],
+  "rn50_file_sha256": "92e0cbf0df65343072af0b271ec6512a889f54efc6e63ebc02927132627d77de",
+  "rn50_tensor_sha256": "0aca103a031ae8971a07109603ac52e2a11633cadc675d1380d46f2d907c9d0b",
+  "rn50_tensor_shape": [
+    12,
+    1024
+  ],
+  "scmr_file_sha256": "7e202ee46b034ddb33714c4c50e1c9ad18751dc79a2f84f5e73bcb733c02ceff",
+  "source": "tangaii/sp exp/tadpole_repair/config.py MMGPL_CLASS_PROMPTS, Figure 6 concepts",
+  "weights_path": "/root/.cache/clip/RN50.pt",
+  "weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762"
+}

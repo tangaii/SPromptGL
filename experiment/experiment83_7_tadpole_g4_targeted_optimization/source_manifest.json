@@ -1,0 +1,33 @@
+{
+  "experiment": "Experiment 83.7",
+  "author_repository": "https://github.com/wanxixi11/SPromptGL",
+  "author_commit": "ba3b9446fa451fde6864d6555bdf324de0c4b64a",
+  "project_repository": "https://github.com/tangaii/SPromptGL",
+  "e83_5_reference_commit": "4649c5dddf166a4aa957c16c2f667a5cea485cdc",
+  "e83_5_sealed_runtime_commit": "5ebc4f5a6602d3c2e5ea1ea0ea4c3d9009aa8a11",
+  "sp_repository": "https://github.com/tangaii/sp",
+  "sp_snapshot": "f4534f8",
+  "historical_checkpoint_root": "/model/spromptgl/experiment/experiment83_5_tadpole_five_group_fidelity",
+  "checkpoint_policy": "external absolute paths and SHA-256 references, no checkpoint copies",
+  "sealed_training_sources": [
+    "code/run_e837.py",
+    "code/common/fidelity_model.py",
+    "code/common/fold_checkpoint.py",
+    "code/common/metrics.py",
+    "code/common/run_e833.py",
+    "code/common/scmr_optimization.py",
+    "code/common/scmr_runtime.py",
+    "code/common/source_runtime.py",
+    "code/sources/history_base",
+    "code/sources/history_darg",
+    "code/sources/E82_4_6_G2_SCMR_DA_SRPE"
+  ],
+  "controlled_variables": {
+    "T1": "dpsl_shared_cap=0.003",
+    "T2": "dpsl_shared_cap=0.010",
+    "T3": "pair_mean graph supervision epochs 1-10",
+    "T4": "pair_mean graph supervision epochs 1-10",
+    "T5": "GFR/CAM weight_decay=0.055 from epoch 11",
+    "T6": "GFR/CAM weight_decay=0.055 from epoch 11"
+  }
+}
