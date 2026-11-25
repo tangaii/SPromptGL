@@ -1,0 +1,329 @@
+{
+  "experiment": "Experiment 83.8.1",
+  "EXECUTION_AUDIT": {
+    "status": "PASS",
+    "formal_folds_completed": 60,
+    "expected_formal_folds": 60,
+    "groups": {
+      "X1": 10,
+      "X2": 10,
+      "X3": 10,
+      "X4": 10,
+      "X5": 10,
+      "X6": 10
+    },
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "training_seal_sha256": "2e9ac05cab69fd8da6e19bd185e9820ce539b7f90bb7387d0a5361c95a77e079",
+    "resource_probe_status": "PASS",
+    "worker_count": 8,
+    "oof_each_main_group_598_once": true
+  },
+  "METHOD_FIDELITY": {
+    "status": "PASS",
+    "preflight_status": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT",
+    "warmup_pairing_status": "PASS",
+    "dpsl_residual_cap": 0.08,
+    "dpsl_shared_gradient_cap": 0.001,
+    "new_supervision_uses_train_labels_only": true
+  },
+  "CHECKPOINT_REPLAY": {
+    "status": "PASS",
+    "folds": 60,
+    "best_passes": 60,
+    "latest_passes": 60,
+    "deterministic_next_step_passes": 60
+  },
+  "LOSS_FORMULA_AUDIT": {
+    "status": "PASS",
+    "formula_identity_status": "PASS",
+    "mathematical_objects_are_distinct": true,
+    "per_group_aloss_gradient_gate": {
+      "X1": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT",
+      "X2": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT",
+      "X3": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT",
+      "X4": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT"
+    },
+    "aloss_failure_reason": null,
+    "paper_eq1": "L_G=(1/M) sum_m [L_S(A^(m)) + ||Ahat-A^(m)||_F^2]",
+    "paper_eq7": "L=L_G+L_Label, lambda=eta=1",
+    "author_network_expression": "(1/model_num) sum_m torch.linalg.norm(normalize(A_m+I)-Ahat), unsquared; hard-coded graph branches i=0,1,2,3",
+    "author_model_training_use": "simple-2 backpropagates cls_loss + all_graph_loss; ALoss is only printed after backward",
+    "author_network_sha256": "d0ac59ead2fecdf517845e2c389d361ef9924abff29707386f847e1fbaa22166",
+    "author_model_sha256": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "e836_pair_mean": "mean over six continuous cosine matrices of the MSE over every ordered train-pair entry, including diagonal, coefficient 1.0",
+    "e836_runner_sha256": "1fbd47ff3a00538bcc8a76faea01d38d802dfaae72188154b762c061219da126",
+    "e837_runner_sha256": "e3dd10ac91ed699b9477f26dbe313354d34f092f6f81e5dd1189165a78af7d79",
+    "e838_x1_x4": {
+      "formula": "(1/6) sum_m || normalize(A_m+I)[train,train] - normalize(Ahat_train+I_full)[train,train] ||_F^2",
+      "coefficient": 1.0,
+      "actual_graphs": "six actual GraphLearn adjacency matrices returned by the existing GFR, with DARG original modality graphs for X3/X4",
+      "normalization": "symmetric D^-1/2(A+I)D^-1/2 over 598 transductive nodes before the train-train restriction",
+      "label_mask": "only train_idx x train_idx entries use true labels; all held-out off-diagonal label entries are zero",
+      "diagonal": "included, with the same-label diagonal and the identity self-loop retained",
+      "loss_is_squared_frobenius_not_pair_mse": true,
+      "backward_location": "added directly to historical_total before normal backward or DPSL shared-gradient optimizer step",
+      "preflight_numeric_scale": {
+        "X1": {
+          "aloss_mean": 288.40521240234375,
+          "classification_loss_mean": 1.2055829763412476,
+          "aloss_to_classification_ratio": 239.22468885352683,
+          "per_modality_loss": [
+            529.1170043945312,
+            472.3671569824219,
+            7.193739891052246,
+            224.19308471679688,
+            327.7095031738281,
+            169.85081481933594
+          ],
+          "per_modality_p_weight_gradient_norm": [
+            7.545311218274536e-14,
+            0.4393743872642517,
+            0.0551292821764946,
+            0.5993642807006836,
+            0.6540870666503906,
+            0.8677876591682434
+          ],
+          "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+            0,
+            458,
+            101222,
+            1754,
+            3864,
+            3560
+          ],
+          "per_modality_effective_gradient_at_1e-8": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "effective_gradient_modality_count": 5
+        },
+        "X2": {
+          "aloss_mean": 288.40521240234375,
+          "classification_loss_mean": 1.201848030090332,
+          "aloss_to_classification_ratio": 239.96812007976328,
+          "per_modality_loss": [
+            529.1170043945312,
+            472.3671569824219,
+            7.193739891052246,
+            224.19308471679688,
+            327.7095031738281,
+            169.85081481933594
+          ],
+          "per_modality_p_weight_gradient_norm": [
+            7.545311218274536e-14,
+            0.4393743872642517,
+            0.0551292821764946,
+            0.5993642807006836,
+            0.6540870666503906,
+            0.8677876591682434
+          ],
+          "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+            0,
+            458,
+            101222,
+            1754,
+            3864,
+            3560
+          ],
+          "per_modality_effective_gradient_at_1e-8": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "effective_gradient_modality_count": 5
+        },
+        "X3": {
+          "aloss_mean": 297.404541015625,
+          "classification_loss_mean": 1.3950051069259644,
+          "aloss_to_classification_ratio": 213.1924388943537,
+          "per_modality_loss": [
+            529.1170043945312,
+            496.0379943847656,
+            7.424716949462891,
+            272.05926513671875,
+            318.35064697265625,
+            161.43756103515625
+          ],
+          "per_modality_p_weight_gradient_norm": [
+            7.545311218274536e-14,
+            0.3715176284313202,
+            0.03442151099443436,
+            0.2950816750526428,
+            0.6604506969451904,
+            0.7272078394889832
+          ],
+          "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+            0,
+            204,
+            91690,
+            1162,
+            3334,
+            4276
+          ],
+          "per_modality_effective_gradient_at_1e-8": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "effective_gradient_modality_count": 5
+        },
+        "X4": {
+          "aloss_mean": 297.404541015625,
+          "classification_loss_mean": 1.3950051069259644,
+          "aloss_to_classification_ratio": 213.1924388943537,
+          "per_modality_loss": [
+            529.1170043945312,
+            496.0379943847656,
+            7.424716949462891,
+            272.05926513671875,
+            318.35064697265625,
+            161.43756103515625
+          ],
+          "per_modality_p_weight_gradient_norm": [
+            7.545311218274536e-14,
+            0.3715176284313202,
+            0.03442151099443436,
+            0.2950816750526428,
+            0.6604506969451904,
+            0.7272078394889832
+          ],
+          "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+            0,
+            204,
+            91690,
+            1162,
+            3334,
+            4276
+          ],
+          "per_modality_effective_gradient_at_1e-8": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "effective_gradient_modality_count": 5
+        }
+      }
+    },
+    "e838_x5": {
+      "formula": "mean_m (1/6) sum_s mean_(unique train pairs in s) (S_mij-T_ij)^2",
+      "coefficient": 0.1,
+      "active_from_epoch": 11,
+      "diagonal": "excluded for same-class groups",
+      "class_pair_groups": {
+        "class_0-class_0": 17578,
+        "class_1-class_1": 39903,
+        "class_2-class_2": 2211,
+        "class_0-class_1": 53204,
+        "class_0-class_2": 12596,
+        "class_1-class_2": 18961
+      }
+    },
+    "e838_x6": {
+      "formula": "mean_m (1/6) sum_s sum_(i,j in s) w_ij*(S_mij-T_ij)^2/(sum_s w_ij+eps)",
+      "coefficient": 0.1,
+      "active_from_epoch": 11,
+      "weight": "0.5 + 0.5*(u_i+u_j)/2, u=H(p)/log(3)",
+      "weight_gradient": "detached from native logits and normalized inside each class-pair group"
+    }
+  },
+  "PERFORMANCE_GO_NO_GO": {
+    "status": "NO_GO",
+    "primary_rule": "X4 exceeds historical H4 on both ACC_mean and AUC_original_mean",
+    "x4_exceeds_h4_both": false,
+    "any_new_g4_variant_exceeds_h4_both": false,
+    "any_group_reaches_both_paper_references": false,
+    "best_new_acc_group": "X6",
+    "best_new_auc_original_group": "X6",
+    "outperform_historical": {
+      "X1": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      },
+      "X2": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      },
+      "X3": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      },
+      "X4": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      },
+      "X5": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      },
+      "X6": {
+        "ACC_above": false,
+        "AUC_original_above": false
+      }
+    }
+  },
+  "historical_checkpoint_snapshot_path": "/model/spromptgl/experiment/experiment83_8_1_tadpole_six_group_recovery/audits/historical_checkpoint_snapshot.json",
+  "historical_checkpoints_unchanged": true,
+  "limitations": [
+    "val_idx == test_idx and test ACC selected Best",
+    "full-data RFE and StandardScaler before outer CV",
+    "transductive patient graph"
+  ],
+  "GROUP_PREFLIGHT": {
+    "X1": {"PREFLIGHT_STATUS": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []},
+    "X2": {"PREFLIGHT_STATUS": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []},
+    "X3": {"PREFLIGHT_STATUS": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []},
+    "X4": {"PREFLIGHT_STATUS": "PASS_WITH_STRUCTURAL_ZERO_GRADIENT", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []},
+    "X5": {"PREFLIGHT_STATUS": "PASS", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []},
+    "X6": {"PREFLIGHT_STATUS": "PASS", "METHOD_FIDELITY": "PASS", "FORMAL_TRAINING_ALLOWED": true, "BLOCK_REASON": []}
+  },
+  "STRUCTURAL_ZERO_GRADIENT_WARNING": {
+    "status": "PRESENT_AND_EXPLAINED",
+    "modality": "M1",
+    "threshold": 0.9,
+    "preflight_fold": 1,
+    "offdiagonal_edge_count": 0,
+    "normalized_graph": "identity after self-loop normalization",
+    "aloss_graphlearn_weight_gradient_norm": 7.545311218274536e-14,
+    "other_effective_modalities": 5,
+    "overall_aloss_graphlearn_gradient_norm": 1.1547435522079468,
+    "classification": "STRUCTURAL_ZERO_GRADIENT",
+    "formula_error": false,
+    "detach_error": false,
+    "method_fidelity_failure": false
+  },
+  "SOURCE_COMPARISON": {
+    "status": "PASS",
+    "source_comparison_path": "audits/source_comparison.json",
+    "training_critical_functions_identical": true,
+    "group_method_fields_equal_parent": true,
+    "fidelity_model_identical": true,
+    "permitted_differences": [
+      "per-group preflight policy and audit scripts",
+      "per-group gate call in execute_fold",
+      "resource and experiment identity audit fields",
+      "warmup state hashes used for paired audit"
+    ]
+  },
+  "RESULT_AGGREGATION_NOTE": {
+    "status": "RECOVERED_AFTER_REPORTING_BUG",
+    "issue": "sealed code/finalize_e8381.py references an unset folds global in write_report",
+    "resolution": "audits/finalize_recovery_wrapper.py invokes the unchanged finalizer with the required aggregation state",
+    "training_code_or_seal_changed": false
+  },
+  "source_manifest_sha256": "44ef58561541d3e57bac124d1835d7991ba026c401376342ac226191fe1e3beb",
+  "training_seal_sha256": "2e9ac05cab69fd8da6e19bd185e9820ce539b7f90bb7387d0a5361c95a77e079"
+}

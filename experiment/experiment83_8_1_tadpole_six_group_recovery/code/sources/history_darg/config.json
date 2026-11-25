@@ -1,0 +1,112 @@
+{
+  "experiment": "Experiment 74.4 - CORR Softening and Positive Local-DCR",
+  "root": "/model/spromptgl/experiment/experiment74_4_soft_positive_dcr",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr",
+  "root_fallback_reason": "Attempted preferred directory creation; OSSFS raised OSError(5, Input/output error). The verified /model experiment mount is used.",
+  "reference": {
+    "e741_path": "/model/spromptgl/experiment/experiment74_1_rudag",
+    "e743_path": "/model/spromptgl/experiment/experiment74_3_local_dcr",
+    "e743_branch": "upload/experiment74-3-local-dcr",
+    "e743_commit": "e05275cb4b18dcd01679682b9df02f3cbc13b713",
+    "e743_local_dcr_sha256": "9d288f2a927317a066803b3fe4201af3f933a7e9ddae023126f75d53399e858f",
+    "e743_run_sha256": "727aa2aed0573b120030d43b6fc5b525b1cbe6488c0afd204fb733679c4a504f",
+    "e743_audit_sha256": "7f0a3dddd6e9fdd8464e51611a191bebec5f888cb86eddddd8900dd73cf950e4",
+    "e743_config_sha256": "3b8a6b598bd35d826d1761989057b5f0927295103525cde1a815ea00c55905a8",
+    "e743_manifest_sha256": "7eb54a314e25c81a028cb95538c0ba6c281213b3a43e73df08445e942b9224d5",
+    "e741_branch": "upload/experiment74-1-rudag",
+    "e741_commit": "d1522a23682b62e41d899d95c9721a68d3828456",
+    "e741_rudag_sha256": "7fb5920b21f43a117a47137fcce58b5411b91c13dfaaf7df85fc502124723a8e",
+    "e741_run_sha256": "a487c87d52a0faeded5ff6406ff9908290fc2fdfd9d5b66e6378a5b2aad6ab5c",
+    "e741_audit_sha256": "dc7e6e5850d94faa41a8572c43016bb4c54aaee418528d994dc39454bcd08f43",
+    "e741_config_sha256": "e353b0070e864c988d2b90334b96ac4f292d126052d7b6339fd78c82e37d7612",
+    "e741_manifest_sha256": "adc86de32e8fedaf79635ad3cf9667f1578d17a5eb450448a0d8b269394f0bc0",
+    "e741_report_sha256": "d42ec95a81527a20dc098bd90e4ab3056e4e2cce177058941e783d223ea64921",
+    "e741_mechanism_sha256": "d491fef8b30dbbe7a849811c2eb66e4806c73fa65854c2b1d932c09196adbeec",
+    "e741_interventions_sha256": "38ebf16e134a7feb8489fbd401ef747f465802153745fd829e207d7694d56481",
+    "e741_fold_metrics_sha256": "a14103bc91fe393f0cfab60cd5e45f0c68a071e77c6f543028c49f8a5d12d7cd"
+  },
+  "historical_references": {
+    "e693": "/model/spromptgl/experiment/experiment69_3_g2_two_rows",
+    "e62": "/model/spromptgl/experiment/experiment62_e2e_gate_init_sensitivity",
+    "e74": "/model/spromptgl/experiment/experiment74_udag",
+    "e741": "/model/spromptgl/experiment/experiment74_1_rudag",
+    "e742": "/model/spromptgl/experiment/experiment74_2_dcr_rudag"
+  },
+  "data": {
+    "dataset": "ABIDE A",
+    "subjects": 871,
+    "modalities": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "modality_dims": [48, 6, 10, 256],
+    "feature_dim": 320,
+    "label_encoding": {"ASD": 0, "TD": 1},
+    "seed": 0,
+    "folds": 10,
+    "split": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "validation_equals_test": true,
+    "intentional_fold2_overlap_1based": [377, 407]
+  },
+  "training": {
+    "base": "E61 epoch-10 full warmup, loaded independently for every fold",
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint_selection": "strict test-fold ACC improvement; first epoch at each new maximum",
+    "workers_max": 10,
+    "expected_tasks": 30,
+    "schedule": "interleave groups within fold order; every task independently restores its matching E61 epoch-10 warmup",
+    "optimizers": {
+      "gfr": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "cam": {"class": "Adam", "lr": 0.0038, "weight_decay": 0.11},
+      "darg": {"class": "AdamW", "lr": 0.001, "weight_decay": 0.01}
+    },
+    "loss": "L_cls + L_graph + 0.05*L_pair + 0.01*L_adv + 0.01*L_preserve",
+    "pair_count": 4096,
+    "balanced_pairs": [2048, 2048],
+    "no_per_epoch_reseed": true
+  },
+  "method": {
+    "groups": ["E74.4-G1-Soft-DCR", "E74.4-G2-Positive-DCR", "E74.4-G3-Soft-Positive-DCR"],
+    "base": "E74.3-G1 Local-DCR; each new task independently restores the same E61 epoch-10 warmup",
+    "corr_graph": "A=S*(1+0.8*g*(2*sigmoid(logit/T)-1)) on every original-positive off-diagonal edge; T=2 only for G1/G3 graph construction, pair BCE uses raw logits",
+    "noncorr_graph": "A=S*(1+0.8*g*h(q)) on original-positive support intersected with historical mutual Top-12; h=2q-1 outside (0.45,0.55), otherwise 0",
+    "gate_order": ["PHENO", "ANAT", "FUNC", "CORR"],
+    "gate_scales": [0.01, 0.01, 0.01, 1.0],
+    "gate_initial": [0.001, 0.001, 0.001, 0.99],
+    "normalization": "normalize_adj(A_unified + I), once per modality",
+    "disease_residual": "R=(DeltaA_direct_off@X - row_sum(DeltaA_direct_off)*X)/clamp_min(row_sum(S_off),1)",
+    "bounded_residual": "E53.3 CADR _bounded_block_delta, blocks 48/6/10/256; then P_m keeps only the current modality coordinates",
+    "historical_factorial_baseline": {"corr_graph_temperature": 1.0, "direct_scale": 0.02, "feature_scope": "modality-local", "direct_delta": "signed DeltaA", "source": "E74.3-G1 read-only"},
+    "group_variants": {
+      "E74.4-G1-Soft-DCR": {"corr_graph_temperature": 2.0, "direct_scale": 0.02, "feature_scope": "modality-local", "direct_delta": "signed DeltaA"},
+      "E74.4-G2-Positive-DCR": {"corr_graph_temperature": 1.0, "direct_scale": 0.02, "feature_scope": "modality-local", "direct_delta": "clamp_min(DeltaA,0)"},
+      "E74.4-G3-Soft-Positive-DCR": {"corr_graph_temperature": 2.0, "direct_scale": 0.02, "feature_scope": "modality-local", "direct_delta": "clamp_min(DeltaA,0)"}
+    },
+    "residual_fusion": "F=X+sum_m sigmoid(w_m)*(GCN_m(X,A_norm)+0.02*g_m*P_m(B_m)); positive-only clamp affects B_m only in G2/G3",
+    "direct_off_intervention": "sets only the bounded disease-increment residual to zero; unified graph and GCN unchanged",
+    "score_permutation_seed_base": 741001,
+    "new_parameters": 0,
+    "new_losses": 0
+  },
+  "sources": {
+    "spromptgl_local_workspace_head": "fa1570f45dea5c3027a89ccc93aef3060657bacd",
+    "spromptgl_remote_main_commit": "47b992ad6e11c58b15853cecb03384c0bff372a4",
+    "spromptgl_core_files_match_remote_main": true,
+    "spromptgl_paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "brainprompt_paper": "https://papers.miccai.org/miccai-2025/paper/2260_paper.pdf",
+    "brainprompt_repo": "https://github.com/AngusMonroe/BrainPrompt",
+    "brainprompt_commit": "c85304a023636a2701d465e4cb0acb13b637127e",
+    "brainprompt_source_sha256": {
+      "nets/brainpromptg_net.py": "b04c055c7e20beb9c83097b4415ec8823eaafb96ec3937ed59d3c2508e69ebb4",
+      "nets/brainpromptc_net.py": "390d0906e25e409aa248c9649397b9a41d07feb5fcd5c207fab4f6d767ad2fad",
+      "data/prompts/label_prompts/abide_label.txt": "ce6a7bb9755c26cd9643b6867bac5d1496e93bf9a0d7d8d90944dd3b119c431c"
+    },
+    "saber_paper": "https://arxiv.org/pdf/2607.01901",
+    "saber_arxiv_version": "2607.01901v1",
+    "saber_official_code_audited": false,
+    "e742_branch": "upload/experiment74-2-dcr-rudag",
+    "e742_commit": "6555308455814af5b6b4c82ceece73eb2333be15",
+    "e742_dcr_rudag_sha256": "7f46bc51ef880cbab8d6fe270be4b101cc9a17d31b89117c32083212afdd644d",
+    "e742_run_sha256": "3b15a7827333061be4b52e357743062cd180e764b4cba3c4736d8d72ff38ebc6",
+    "e742_audit_sha256": "6ae53ad1174b9cf7e7f3a4fa19b9f4bc47d4a311988161c9df77a0c333f019fc",
+    "e742_config_sha256": "0c49e2a015b5bab5e067fadeb6eca012f807b2bbe9f09040a7591a1e52559a6c"
+  }
+}

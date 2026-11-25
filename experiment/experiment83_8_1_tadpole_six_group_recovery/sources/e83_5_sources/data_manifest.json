@@ -1,0 +1,84 @@
+{
+  "dataset": "TADPOLE",
+  "raw_source_root": "/model/spromptgl/Tadpole/tadpole_challenge",
+  "preprocessing_script": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/preprocess_tadpole_mmgl.py",
+  "protocol": "MMGL Data_preprocessing_TADPOLE (2).ipynb, stable NC/sMCI/AD DXCHANGE 1/2/3, PMCI_selection=False, baseline VISCODE=bl, full-data RFE and StandardScaler before outer CV, mean imputation",
+  "raw_files": {
+    "TADPOLE_D1_D2.csv": {
+      "path": "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D1_D2.csv",
+      "size_bytes": 71027678,
+      "sha256": "ae4967ad3fb46adf4ea99c96f94b2e0720f4443c57b0debcf9c02fefc9ce45fd"
+    },
+    "TADPOLE_D1_D2_Dict.csv": {
+      "path": "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D1_D2_Dict.csv",
+      "size_bytes": 587397,
+      "sha256": "03456311f2631c3d739df5bcd3b26b9224a3f39254602dc3f57fcb9223d2105d"
+    },
+    "TADPOLE_D3.csv": {
+      "path": "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D3.csv",
+      "size_bytes": 1493762,
+      "sha256": "5fd3ac70ad483d307dc41235402e46ec8b6f144d4ff9faaac7df63d6ce3de634"
+    },
+    "TADPOLE_D4_corr.csv": {
+      "path": "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_D4_corr.csv",
+      "size_bytes": 20304,
+      "sha256": "10c63d7b05b63e50b957756e8c5dadece0d50eb03c5f2a8a10465681bf1ac349"
+    },
+    "TADPOLE_readme.txt": {
+      "path": "/model/spromptgl/Tadpole/tadpole_challenge/TADPOLE_readme.txt",
+      "size_bytes": 4714,
+      "sha256": "6298add607541b2c4657d759a7052f893abdaf5f480fb9459726ebb592688228"
+    }
+  },
+  "processed_files": {
+    "processed_standard_data.csv": {
+      "path": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/processed_standard_data.csv",
+      "size_bytes": 4294435,
+      "sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc"
+    },
+    "modal_feat_dict.npy": {
+      "path": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/modal_feat_dict.npy",
+      "size_bytes": 16928,
+      "sha256": "54eecaf93f2bd942635c5012eb42d6e341760cc162ab53e320dc5ae402716814"
+    },
+    "sample_ids.csv": {
+      "path": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/preprocessing/sample_ids.csv",
+      "size_bytes": 5385,
+      "sha256": "3c354e2623128209544b23d84fbac0e436f55b4c898c74af83d2e99e7f61d8e0"
+    }
+  },
+  "n_samples": 598,
+  "n_features": 365,
+  "label_distribution": {
+    "NC": 209,
+    "MCI": 315,
+    "AD": 74
+  },
+  "label_encoding": {
+    "raw": {
+      "NC": 1,
+      "MCI": 2,
+      "AD": 3
+    },
+    "model": {
+      "NC": 0,
+      "MCI": 1,
+      "AD": 2
+    }
+  },
+  "modalities": {
+    "UCSFFSX": 145,
+    "UCBERKELEYAV45": 148,
+    "UPENNBIOMK9": 3,
+    "RISK_FACTOR": 36,
+    "COGNITIVE_TEST": 24,
+    "ROI_AVERAGE": 9
+  },
+  "sample_id_column": "RID",
+  "sample_id_sha256": "3c354e2623128209544b23d84fbac0e436f55b4c898c74af83d2e99e7f61d8e0",
+  "finite_numeric": true,
+  "duplicate_rid_count": 0,
+  "split_file": "/model/spromptgl/experiment/experiment83_tadpole_four_group_comparison/data_audit/split_indices.json",
+  "split_protocol": "StratifiedKFold(n_splits=10,shuffle=True,random_state=10)",
+  "seed": 0
+}

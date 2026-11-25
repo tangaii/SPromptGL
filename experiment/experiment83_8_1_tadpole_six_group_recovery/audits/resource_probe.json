@@ -1,0 +1,151 @@
+{
+  "experiment": "Experiment 83.8.1",
+  "status": "PASS",
+  "groups": {
+    "X1": {
+      "status": "PASS",
+      "probe_count": 1
+    },
+    "X2": {
+      "status": "PASS",
+      "probe_count": 1
+    },
+    "X3": {
+      "status": "PASS",
+      "probe_count": 1
+    },
+    "X4": {
+      "status": "PASS",
+      "probe_count": 2
+    },
+    "X5": {
+      "status": "PASS",
+      "probe_count": 1
+    },
+    "X6": {
+      "status": "PASS",
+      "probe_count": 2
+    }
+  },
+  "worker_count": 8,
+  "global_worker_limit": 8,
+  "device": "PPU-ZW810E",
+  "training_seal_sha256": "2e9ac05cab69fd8da6e19bd185e9820ce539b7f90bb7387d0a5361c95a77e079",
+  "concurrent_probe_seconds": 17.31029937788844,
+  "peak_reserved_mib_max": 638.0,
+  "peak_allocated_mib_max": 511.6552734375,
+  "records": [
+    {
+      "worker_id": 0,
+      "group": "X1",
+      "fold": 1,
+      "loss": 288.9689636230469,
+      "supervision_kind": "paper_aloss",
+      "supervision": 288.40521240234375,
+      "shared_cap": 0.0,
+      "seconds": 3.736620504409075,
+      "peak_allocated_mib": 233.3515625,
+      "peak_reserved_mib": 264.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 1,
+      "group": "X2",
+      "fold": 2,
+      "loss": 288.2489318847656,
+      "supervision_kind": "paper_aloss",
+      "supervision": 287.6589660644531,
+      "shared_cap": 0.0,
+      "seconds": 3.8565702103078365,
+      "peak_allocated_mib": 227.8837890625,
+      "peak_reserved_mib": 260.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 2,
+      "group": "X3",
+      "fold": 3,
+      "loss": 297.77734375,
+      "supervision_kind": "paper_aloss",
+      "supervision": 296.981201171875,
+      "shared_cap": 0.0,
+      "seconds": 4.216141641139984,
+      "peak_allocated_mib": 357.6748046875,
+      "peak_reserved_mib": 384.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 3,
+      "group": "X4",
+      "fold": 4,
+      "loss": 297.1859130859375,
+      "supervision_kind": "paper_aloss",
+      "supervision": 296.37750244140625,
+      "shared_cap": 0.001,
+      "seconds": 4.849475521594286,
+      "peak_allocated_mib": 511.6552734375,
+      "peak_reserved_mib": 622.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 4,
+      "group": "X5",
+      "fold": 5,
+      "loss": 0.8532502055168152,
+      "supervision_kind": "cb_pair_mean",
+      "supervision": 0.5019482970237732,
+      "shared_cap": 0.001,
+      "seconds": 5.247786577790976,
+      "peak_allocated_mib": 486.7685546875,
+      "peak_reserved_mib": 638.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 5,
+      "group": "X6",
+      "fold": 6,
+      "loss": 0.8543344140052795,
+      "supervision_kind": "cb_uncertainty_pair_mean",
+      "supervision": 0.5037692785263062,
+      "shared_cap": 0.001,
+      "seconds": 4.838822349905968,
+      "peak_allocated_mib": 486.7685546875,
+      "peak_reserved_mib": 638.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 6,
+      "group": "X4",
+      "fold": 7,
+      "loss": 297.0236511230469,
+      "supervision_kind": "paper_aloss",
+      "supervision": 296.20416259765625,
+      "shared_cap": 0.001,
+      "seconds": 4.993316166102886,
+      "peak_allocated_mib": 511.6552734375,
+      "peak_reserved_mib": 622.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    },
+    {
+      "worker_id": 7,
+      "group": "X6",
+      "fold": 8,
+      "loss": 0.8633666038513184,
+      "supervision_kind": "cb_uncertainty_pair_mean",
+      "supervision": 0.49808651208877563,
+      "shared_cap": 0.001,
+      "seconds": 5.0728433430194855,
+      "peak_allocated_mib": 486.7685546875,
+      "peak_reserved_mib": 638.0,
+      "device": "PPU-ZW810E",
+      "finite": true
+    }
+  ]
+}

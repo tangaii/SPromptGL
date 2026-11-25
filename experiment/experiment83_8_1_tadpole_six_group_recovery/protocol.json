@@ -1,0 +1,80 @@
+{
+  "experiment": "Experiment 83.8.1",
+  "title": "TADPOLE Six-Group Recovery with Structural-Zero-Gradient Audit",
+  "status": "REGISTERED_PRETRAINING",
+  "parent_experiment": "/model/spromptgl/experiment/experiment83_8_tadpole_aloss_pairmean_optimization",
+  "actual_root": "/model/spromptgl/experiment/experiment83_8_1_tadpole_six_group_recovery",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment83_8_1_tadpole_six_group_recovery",
+  "preferred_root_result": "OSSFS mkdir returned EIO / errno 5, so execution moved to actual_root",
+  "recovery_scope": "Per-group preflight correction only. Losses, coefficients, schedules, model, data, optimizers, and training protocol inherit E83.8 unchanged.",
+  "parent_failure_record": {
+    "status": "BLOCKED_PREFLIGHT",
+    "preflight_start": "/model/spromptgl/experiment/experiment83_8_tadpole_aloss_pairmean_optimization/audits/preflight_start.json",
+    "loss_fidelity": "/model/spromptgl/experiment/experiment83_8_tadpole_aloss_pairmean_optimization/audits/loss_fidelity.json",
+    "final_audit": "/model/spromptgl/experiment/experiment83_8_tadpole_aloss_pairmean_optimization/audits/final_audit.json",
+    "failure_classification": "Global gate required six nonzero modality gradients. The formula, historical_total backward inclusion, five active modality gradients and independent X5/X6 loss checks passed. Fold-1 M1 had an identity normalized threshold graph and a structural zero gradient.",
+    "formal_folds_completed": 0
+  },
+  "aloss_gradient_gate": "All six actual modality losses must be finite and label-isolated. Any modality with nonzero off-diagonal edges must have finite effective GraphLearn gradient. A no-edge modality may be recorded STRUCTURAL_ZERO_GRADIENT. Overall ALoss GraphLearn gradient must be finite and nonzero.",
+  "group_gate_policy": "Shared data/source failures block all groups. ALoss-specific failures block X1-X4 only. PairMean-specific failures block X5. Uncertainty-weight-specific failures block X6. DPSL failures block X4-X6.",
+  "historical_protocol": {
+    "samples": 598,
+    "class_counts": {"NC": 209, "MCI": 315, "AD": 74},
+    "class_encoding": {"NC": 0, "MCI": 1, "AD": 2},
+    "modality_dimensions": [145, 148, 3, 36, 24, 9],
+    "total_dimensions": 365,
+    "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+    "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+    "split_rule": "StratifiedKFold(n_splits=10, shuffle=True, random_state=10)",
+    "seed": 0,
+    "full_data_rfe": true,
+    "historical_mean_imputation": true,
+    "standard_scaler_before_outer_cv": true,
+    "transductive_patient_graph": true,
+    "val_equals_test": true,
+    "best_rule": "first strict outer-test ACC improvement",
+    "max_epochs": 450,
+    "early_stop": "wait > 200",
+    "per_epoch_rng_reset": false
+  },
+  "historical_reference_groups": {
+    "H1": {"name": "G1 SPromptGL-MMGPL12", "source": "E83.5", "retrain": false},
+    "H2": {"name": "G2 physical No-PEN with GFR", "source": "E83.5", "retrain": false},
+    "H3": {"name": "G3 DARG Positive-DCR", "source": "E83.5", "retrain": false},
+    "H4": {"name": "G4 E82.4.6.10-G1 DARG+DPSL", "source": "E83.5", "retrain": false},
+    "H5": {"name": "G5 Anchored Physical CAM-only", "source": "E83.5", "retrain": false}
+  },
+  "new_groups": {
+    "X1": "G1 + Paper-ALoss",
+    "X2": "G2 + Paper-ALoss",
+    "X3": "G3 Positive-DCR + Paper-ALoss",
+    "X4": "G4 DARG+DPSL + Paper-ALoss",
+    "X5": "G4 + Class-Balanced Pair-Mean, coefficient 0.1 from epoch 11",
+    "X6": "G4 + Class-Balanced Uncertainty-Weighted Pair-Mean, coefficient 0.1 from epoch 11"
+  },
+  "metric_definition": {
+    "ACC": "hard argmax accuracy",
+    "AUC_original": "hard one-hot macro OVR ROC AUC, historical SPromptGL definition",
+    "AUC_probability": "probability macro OVR ROC AUC, supplementary only",
+    "summary": "ten-fold mean and population standard deviation"
+  },
+  "loss_identity": {
+    "paper_eq1": "(1/6) * sum_m [L_S(A_m) + ||Ahat - A_m||_F^2]",
+    "paper_eq7": "L = L_G + L_Label; lambda=eta=1",
+    "author_code": "(1/4) * sum_m torch.linalg.norm(normalize(A_m+I)-Ahat), returned and logged but not included in model.py simple-2 loss.backward()",
+    "e836_pair_mean": "mean across six continuous cosine-score matrices of all train-pair MSE, coefficient 1.0",
+    "e838_paper_aloss": "(1/6) * sum_m || normalize(A_m+I)[train,train] - normalize(Ahat_train+I)[train,train] ||_F^2, coefficient 1.0",
+    "e838_cb_pair_mean": "mean_m mean_of_six_unique_class-pair_group MSE(S_mij,T_ij), coefficient 0.1",
+    "e838_cb_uncertainty_pair_mean": "same six equally weighted groups with detached normalized entropy weights and normalized weighted MSE, coefficient 0.1"
+  },
+  "prohibited_changes": [
+    "changing locked data or split",
+    "using outer-test labels in new supervision targets",
+    "changing GraphLearn threshold or historical message fusion",
+    "changing DARG positive/negative relation definitions",
+    "changing DPSL residual cap 0.08 or shared-gradient budget 0.001",
+    "adjusting registered coefficients after formal training begins",
+    "retraining or relabeling historical H1-H5",
+    "using AUC_probability in place of AUC_original"
+  ]
+}
