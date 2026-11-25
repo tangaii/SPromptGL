@@ -1,0 +1,43 @@
+{
+  "experiment": "DARG + JSL",
+  "status": "TRAINING",
+  "authority_directory": "/model/spromptgl/experiment/experiment_darg_jsl",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment_darg_jsl",
+  "preferred_directory_write_test": "not attempted because the fallback is independently writable and the source mount has prior errno 5 history",
+  "base": "/model/spromptgl/experiment/DPSL",
+  "base_sha256_manifest_sha256": "af1967ff3ccd32124acf35ac99fcba139d274e49d51a945af7d20fe6b7d037b7",
+  "base_frozen_file_count": 3949,
+  "training_started": true,
+  "preflight_status": "PASS",
+  "blocker": null,
+  "external_sources": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "original_repository": "https://github.com/wanxixi11/SPromptGL",
+    "project_repository": "https://github.com/tangaii/SPromptGL"
+  },
+  "forensic_review": {
+    "E61": "E61 epoch-10 complete state restored by historical vendor loader",
+    "E74.4-G2": "DARG graph, relation loss, CAM144, classifier, three historical optimizers",
+    "E82.2-G2": "Original O basis U/mu/lambda; 8 covariance and 8 class-difference directions",
+    "E82.3.2-G2": "adds Gaussian class evidence and EMA; excluded from JSL implementation",
+    "E82.4.6-G2": "SCMR-DA-SRPE adds prompt-conditioned two-space Jacobian residual, Gaussian/EMA evidence and DSE guidance",
+    "E82.4.6.10-G1": "Fold 8 formal adapter carries overlap members 383 and 430"
+  },
+  "log_compatibility": {
+    "reference": "/data/adodas/SPromptGL-main/result_ABIDE.txt",
+    "reference_sha256": "9eaed7f09d031aa751d9473201bfa25eba4b50992a4e6f723c37064e620f851f",
+    "copied_byte_identically": true,
+    "new_training_log_emission": false
+  },
+  "preflight_sha256": "e34ce189c231c84aede99c36428e57470a5cf5aed5d41d4076ddf6f28be80c0d",
+  "formal_source_config_sha256": "a48223f6b55483e9d53b71c3d4855ccfc3e7bccbabdd7f2da4299234b33a1dbd",
+  "rng_forensic_conclusion": {
+    "old_actual_prefix": "c8ed67",
+    "old_archived_prefix": "8b1101",
+    "same_stage_comparison": false,
+    "cause": "different stage extraction and serialization scope",
+    "official_warmup_identity_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+    "old_expected_sha_was_modified": false,
+    "first_divergence": "S0-to-S1 unchanged; S2 model/optimizer load complete; S3 checkpoint RNG restore exact"
+  }
+}

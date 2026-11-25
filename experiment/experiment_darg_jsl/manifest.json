@@ -1,0 +1,96 @@
+{
+  "experiment": "DARG + JSL",
+  "status": "COMPLETE_AUDITED",
+  "authority_directory": "/model/spromptgl/experiment/experiment_darg_jsl",
+  "preferred_directory": "/data/adodas/SPromptGL-main/experiment/experiment_darg_jsl",
+  "preferred_directory_write_test": "not attempted because the fallback is independently writable and the source mount has prior errno 5 history",
+  "base": "/model/spromptgl/experiment/DPSL",
+  "base_sha256_manifest_sha256": "af1967ff3ccd32124acf35ac99fcba139d274e49d51a945af7d20fe6b7d037b7",
+  "base_frozen_file_count": 3949,
+  "training_started": true,
+  "preflight_status": "PASS",
+  "blocker": null,
+  "external_sources": {
+    "paper": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "original_repository": "https://github.com/wanxixi11/SPromptGL",
+    "project_repository": "https://github.com/tangaii/SPromptGL"
+  },
+  "forensic_review": {
+    "E61": "E61 epoch-10 complete state restored by historical vendor loader",
+    "E74.4-G2": "DARG graph, relation loss, CAM144, classifier, three historical optimizers",
+    "E82.2-G2": "Original O basis U/mu/lambda; 8 covariance and 8 class-difference directions",
+    "E82.3.2-G2": "adds Gaussian class evidence and EMA; excluded from JSL implementation",
+    "E82.4.6-G2": "SCMR-DA-SRPE adds prompt-conditioned two-space Jacobian residual, Gaussian/EMA evidence and DSE guidance",
+    "E82.4.6.10-G1": "Fold 8 formal adapter carries overlap members 383 and 430"
+  },
+  "log_compatibility": {
+    "reference": "/data/adodas/SPromptGL-main/result_ABIDE.txt",
+    "reference_sha256": "9eaed7f09d031aa751d9473201bfa25eba4b50992a4e6f723c37064e620f851f",
+    "copied_byte_identically": true,
+    "new_training_log_emission": true,
+    "emitted_sha256": "83cda6dd5dfd0f869b19af51e825718539ed4ff60c8e722ea6084ab54b040ce0",
+    "emitted_epoch_rows": 3878,
+    "emitted_folds": 10,
+    "format_status": "PASS"
+  },
+  "preflight_sha256": "702bf789bfe7dea1d1e6f2785e8b3b1866504ab0d8238ded08112c01e6218269",
+  "formal_source_config_sha256": "a48223f6b55483e9d53b71c3d4855ccfc3e7bccbabdd7f2da4299234b33a1dbd",
+  "frozen_sources": {
+    "code/jsl_model.py": "d884773405203262295384bfc2c26a7f7cfbfbce30cc612cc1079d102c1f7642",
+    "config.json": "c16f7cc7029824a47436a82303147800a37fcb05a1e29ffcdc08ee3a5f538173"
+  },
+  "superseded_attempt": {
+    "directory": "archive/attempt_unsealed",
+    "status": "NON_AUTHORITATIVE",
+    "reason": "The first implementation manifest omitted code/jsl_model.py. Its checkpoints and outputs are preserved as non-authoritative artifacts. The formal run below used the complete pre-training source seal."
+  },
+  "training": {
+    "status": "COMPLETE",
+    "seed": 0,
+    "physical_gpu": 0,
+    "workers": 1,
+    "start_epoch": 11,
+    "completed_folds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "final_epochs": [318, 394, 400, 441, 404, 450, 321, 450, 350, 450],
+    "best_epochs": [117, 193, 199, 240, 203, 303, 120, 299, 149, 398],
+    "best_correct_counts": [84, 83, 78, 83, 80, 84, 78, 79, 78, 81],
+    "checkpoint_count": 20,
+    "state_sha_matches_preserved_attempt": "20/20"
+  },
+  "final_performance_percent_mean_population_sd": {
+    "ACC": [92.76384535005224, 2.6289180767175117],
+    "Hard_AUC_BA": [92.59683050923941, 2.6616076023239836],
+    "Prob_AUC": [94.75143272940592, 2.9448934094270237],
+    "SEN_ASD": [90.32317073170733, 3.93423120740726],
+    "SPE_TD": [94.87049028677152, 3.3387476377474976],
+    "ASD_F1": [92.02129636499776, 2.9474044497745474]
+  },
+  "audit": {
+    "status": "PASS",
+    "receipt": "results/audit_status.json",
+    "best_forward": "10/10",
+    "latest_reload": "10/10",
+    "latest_next_step_replay": "10/10",
+    "rng_and_dropout_archive_replay": "PASS",
+    "dse_independence": "PASS",
+    "overlap_zero_residual": "10/10",
+    "frozen_dpsl_files_before_after": 3949,
+    "frozen_dpsl_manifest_sha256": "af1967ff3ccd32124acf35ac99fcba139d274e49d51a945af7d20fe6b7d037b7"
+  },
+  "result_sha256": {
+    "result_ABIDE.txt": "83cda6dd5dfd0f869b19af51e825718539ed4ff60c8e722ea6084ab54b040ce0",
+    "results/fold_metrics.csv": "e1287239c9c48969c90692b37464d5192c8fa7459bb29265d7a9c7638473cbaa",
+    "results/patient_level.csv": "46e2ff3498899ed262a3b98d8c8fa19e7140e738c4f80276b91c58286fd7edc7",
+    "results/paired_comparisons.csv": "c7770b48abcccabb78cd3433e25cb0ee30e5ccad0dfa39129ba5629f802957c5",
+    "results/mechanism.csv": "4590436c958671feb909710e16c8456c32d186528e62df07ad96be2933a73b3b"
+  },
+  "rng_forensic_conclusion": {
+    "old_actual_prefix": "c8ed67",
+    "old_archived_prefix": "8b1101",
+    "same_stage_comparison": false,
+    "cause": "different stage extraction and serialization scope",
+    "official_warmup_identity_sha": "290e9a08d984adbd56836541bcd09d1f48544f9834485ff1d7222839f8d8566b",
+    "old_expected_sha_was_modified": false,
+    "first_divergence": "S0-to-S1 unchanged; S2 model/optimizer load complete; S3 checkpoint RNG restore exact"
+  }
+}

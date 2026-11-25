@@ -1,0 +1,44 @@
+{
+  "experiment": "DARG + JSL",
+  "seed": 0,
+  "folds": 10,
+  "subjects": 871,
+  "dimensions": [48, 6, 10, 256],
+  "labels": {"ASD": 0, "TD": 1},
+  "warmup": "DPSL frozen E61 epoch 10 full state",
+  "start_epoch_completed": 10,
+  "max_epochs": 450,
+  "early_stop_wait_gt": 200,
+  "pair_count": 4096,
+  "balanced_pairs": [2048, 2048],
+  "gpu": {"index": 0, "uuid": "GPU-019e120d-4831-0206-0000-00004052c46b", "workers": 1, "threads": 1},
+  "spectrum": {"basis": "frozen Original O, 144x16", "coordinate_dim": 16, "orthogonal_complement_dim": 128},
+  "jsl": {
+    "token_width": 32,
+    "controller_width": 24,
+    "jacobian_ridge": 0.0001,
+    "cam_residual_fraction": 0.08,
+    "shared_gradient_cap": 0.001,
+    "shift_cap": 0.75,
+    "optimizer": {"class": "AdamW", "lr": 0.0005, "weight_decay": 0.01}
+  },
+  "loss": {
+    "enhanced_ce": 1.0,
+    "original_ce": 0.5,
+    "full_off_difference": 0.25,
+    "margin_gain": 0.002,
+    "true_margin_protection": 0.001,
+    "spectral_candidate": 0.00025,
+    "complement_candidate": 0.00025,
+    "residual_l2": 0.0005,
+    "margin_temperature": 0.5
+  },
+  "historical_protocol": {
+    "validation_equals_test": true,
+    "selection": "strict test-fold ACC improvement, earliest tie",
+    "pre_cv_rfe_and_preprocessing": true,
+    "transductive_patient_graph": true,
+    "dropout_calls_per_training_forward": 6,
+    "per_epoch_reseed": false
+  }
+}
