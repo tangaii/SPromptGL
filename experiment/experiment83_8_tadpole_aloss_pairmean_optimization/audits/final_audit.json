@@ -1,0 +1,154 @@
+{
+  "CHECKPOINT_REPLAY": {
+    "historical_folds": 50,
+    "historical_hash_mismatches": 0,
+    "historical_hashes_rechecked": 100,
+    "new_group_folds": 0,
+    "status": "PASS_HISTORICAL_ONLY"
+  },
+  "EXECUTION_AUDIT": {
+    "formal_folds_completed": 0,
+    "formal_folds_planned": 60,
+    "reason": "The required six-modality effective-gradient preflight failed.",
+    "status": "BLOCKED"
+  },
+  "LOSS_FORMULA_AUDIT": {
+    "all_six_gradient_branches_effective": false,
+    "status": "PASS_FORMULAS_FAIL_GRADIENT_COVERAGE",
+    "three_object_identity_distinguished": true
+  },
+  "METHOD_FIDELITY": {
+    "formula_identity": "PASS",
+    "reason": "At least one actual thresholded modality graph has no effective ALoss gradient.",
+    "six_modality_effective_gradient": "FAIL",
+    "status": "FAIL"
+  },
+  "PERFORMANCE_GO_NO_GO": {
+    "new_group_metrics": null,
+    "paper_threshold_comparison": "Not applicable to untrained groups",
+    "status": "NO_GO_NOT_RUN"
+  },
+  "actual_root": "/model/spromptgl/experiment/experiment83_8_tadpole_aloss_pairmean_optimization",
+  "data_sha256": "0b8a14a9c066752c2d937c93d43c2824c41beaaa7d0a451b083db8dcba07c5bc",
+  "dpsl_budget_preflight": {
+    "aloss": 120.6248779296875,
+    "base_total_without_aloss": -0.006794174201786518,
+    "cam_historical_gradient_norm": 0.3087625983804359,
+    "cam_shared_gradient_norm": 0.0,
+    "dpsl_parameter_gradient_norm": 0.0046942876651883125,
+    "historical_total_includes_aloss": true,
+    "residual_cap": 0.08,
+    "residual_max": 0.0,
+    "shared_cap": 0.001,
+    "shared_gradient_ratio": 0.0,
+    "status": "PASS",
+    "total": 120.61808013916016,
+    "warmup_epochs": 10
+  },
+  "experiment": "Experiment 83.8",
+  "finalization_script_sha256": "0072ee01d9036c97471af87ebeb5a353c3f976e856da68015c1167e3af7e9f65",
+  "historical_checkpoint_files": 100,
+  "historical_checkpoint_hash_mismatches": 0,
+  "new_checkpoint_files": 0,
+  "preferred_root_eio_fallback": true,
+  "preflight_sha256": "ba72b089fce1c3cf310b0b521733ed5a7789d6bd748793967b55d33f2acbc4ba",
+  "resource_probe": "NOT_RUN",
+  "split_sha256": "7c5a4dc9bd8ee7ffc6e5aff8bf841513f26a5ff6cf1b6c110a8153aa6a106ec5",
+  "status": "BLOCKED_PREFLIGHT",
+  "training_seal_sha256": "55eac51808073513c987f8a29348602cc130f6d3b667c9aaf50383bdf982765d",
+  "warmup_pairing": {
+    "X3_X4": {
+      "compared_fields": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256",
+        "base_state_sha256",
+        "optimizer_state_sha256",
+        "rng_state_sha256",
+        "pair_sha256",
+        "train_index_sha256",
+        "train_labels_sha256"
+      ],
+      "history_exact": true,
+      "status": "PASS",
+      "warmup_graph_supervision": [
+        297.404541015625,
+        243.70791625976562,
+        211.5061492919922,
+        192.85385131835938,
+        172.22726440429688,
+        151.51905822753906,
+        142.30322265625,
+        132.26824951171875,
+        125.35811614990234,
+        121.80555725097656
+      ]
+    },
+    "X5_X6": {
+      "compared_fields": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256",
+        "base_state_sha256",
+        "optimizer_state_sha256",
+        "rng_state_sha256",
+        "pair_sha256",
+        "train_index_sha256",
+        "train_labels_sha256"
+      ],
+      "history_exact": true,
+      "status": "PASS",
+      "warmup_graph_supervision": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "X5_historical_H4": {
+      "history_exact": true,
+      "initial_fields_missing_from_reference": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256"
+      ],
+      "initial_model_sha256": "7088012929b4dbff71206365a1482470a5d1ee767057be815a5eee4b79952115",
+      "initial_optimizer_sha256": "49e71def22a0f209f2174e02b69a2b3d183afcba1d514c7ade9ff86c3c32ea94",
+      "initial_rng_sha256": "4626201325cba493c91475dc0580e9a9c1a79a81c56bf8e9eb8b113cdce295d8",
+      "post_warmup_model_sha256": "1627930e48d7f13cba359718b45421ec1cbd6f762eedf2ab14683842c19b5584",
+      "post_warmup_optimizer_sha256": "2432b78ac4f578ced46374342419e9820aef9d6947c2929ced60f0dbf3ba1b58",
+      "post_warmup_rng_sha256": "829f9d296dfdf450cc0a7ac41c1b4726941db3f88b55cf04945dc1e167df9b77",
+      "reference": "H4_ARCHIVED",
+      "reference_checkpoint_sha256": "b9f220170178064fe067caaa7db4ace86a321162143d24b8ac4530b4266909ec",
+      "relation_pairs_exact": true,
+      "status": "PARTIAL_MATCH",
+      "training_labels_sha256": "e988c0b5081783563eddd90a81e5dbe69c050aea25265409333df9ea3ec892cb"
+    },
+    "X6_historical_H4": {
+      "history_exact": true,
+      "initial_fields_missing_from_reference": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256"
+      ],
+      "initial_model_sha256": "7088012929b4dbff71206365a1482470a5d1ee767057be815a5eee4b79952115",
+      "initial_optimizer_sha256": "49e71def22a0f209f2174e02b69a2b3d183afcba1d514c7ade9ff86c3c32ea94",
+      "initial_rng_sha256": "4626201325cba493c91475dc0580e9a9c1a79a81c56bf8e9eb8b113cdce295d8",
+      "post_warmup_model_sha256": "1627930e48d7f13cba359718b45421ec1cbd6f762eedf2ab14683842c19b5584",
+      "post_warmup_optimizer_sha256": "2432b78ac4f578ced46374342419e9820aef9d6947c2929ced60f0dbf3ba1b58",
+      "post_warmup_rng_sha256": "829f9d296dfdf450cc0a7ac41c1b4726941db3f88b55cf04945dc1e167df9b77",
+      "reference": "H4_ARCHIVED",
+      "reference_checkpoint_sha256": "b9f220170178064fe067caaa7db4ace86a321162143d24b8ac4530b4266909ec",
+      "relation_pairs_exact": true,
+      "status": "PARTIAL_MATCH",
+      "training_labels_sha256": "e988c0b5081783563eddd90a81e5dbe69c050aea25265409333df9ea3ec892cb"
+    },
+    "status": "PASS"
+  }
+}

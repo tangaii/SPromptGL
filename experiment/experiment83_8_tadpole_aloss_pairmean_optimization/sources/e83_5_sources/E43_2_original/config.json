@@ -1,0 +1,76 @@
+{
+  "version": "43.2-frozen-v1",
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2",
+    "seed": 0
+  },
+  "groups": [
+    "E00_FULL_GFR_B0B_REPLAY",
+    "E01_RAW_INPUT_NO_GFR"
+  ],
+  "seed": 0,
+  "folds": 10,
+  "metrics": [
+    "acc",
+    "hard_auc",
+    "spe",
+    "sen"
+  ],
+  "gpu_folds": {
+    "0": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "1": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "checkpoint_every": 10,
+  "cpu_threads": 2,
+  "max_workers_per_gpu": 2,
+  "baseline_source_signature": "d2b4f8a09c0b6a918abe4d69dbb95d2a2e03762619986694ba8d08d760a39b11",
+  "go": {
+    "acc_pp": 0.1,
+    "hard_auc_pp": 0.1,
+    "strict_wins_acc": 7,
+    "strict_wins_auc": 7
+  },
+  "selection": "strict first best test ACC; break when wait>200",
+  "raw_no_gfr": {
+    "forward": "ModalFusion(agent.feat)",
+    "loss": "weighted ClsLoss only",
+    "freeze_gfr": true,
+    "step_gfr_optimizer": false
+  },
+  "rng_check": "full four-family RNG after every common epoch must match; different early stops allowed"
+}

@@ -1,0 +1,371 @@
+{
+  "class_balanced_pair_mean_preflight": {
+    "active_from_epoch": 11,
+    "class_counts_train": [
+      188,
+      283,
+      67
+    ],
+    "coefficient": 0.1,
+    "expected_unique_pairs": 144453,
+    "group_counts": {
+      "class_0-class_0": 17578,
+      "class_0-class_1": 53204,
+      "class_0-class_2": 12596,
+      "class_1-class_1": 39903,
+      "class_1-class_2": 18961,
+      "class_2-class_2": 2211
+    },
+    "native_logits_weight_gradient": null,
+    "six_modality_score_gradient_norms_x6": [
+      0.0011914856731891632,
+      0.0011869804002344608,
+      0.0009696818306110799,
+      0.001278588199056685,
+      0.0007945476681925356,
+      0.0008933813660405576
+    ],
+    "status": "PASS",
+    "test_label_permutation_invariant": true,
+    "unique_pairs": 144453,
+    "x5_formula": "mean_m (1/6) sum_s mean_(unique train pairs in s) (S_mij-T_ij)^2",
+    "x5_loss": 0.5022720694541931,
+    "x6_formula": "mean_m (1/6) sum_s sum_(i,j in s) w_ij*(S_mij-T_ij)^2/(sum_s w_ij+eps)",
+    "x6_group_mean_weights": {
+      "class_0-class_0": {
+        "mean_weight": 0.858160658031346,
+        "pair_count": 17578
+      },
+      "class_0-class_1": {
+        "mean_weight": 0.8694894445201489,
+        "pair_count": 53204
+      },
+      "class_0-class_2": {
+        "mean_weight": 0.8827221005180216,
+        "pair_count": 12596
+      },
+      "class_1-class_1": {
+        "mean_weight": 0.8808182107235045,
+        "pair_count": 39903
+      },
+      "class_1-class_2": {
+        "mean_weight": 0.8940508230710406,
+        "pair_count": 18961
+      },
+      "class_2-class_2": {
+        "mean_weight": 0.907283539687924,
+        "pair_count": 2211
+      }
+    },
+    "x6_loss": 0.5028057098388672,
+    "x6_weights_detached": true
+  },
+  "dpsl_budget_one_step_preflight": {
+    "aloss": 120.6248779296875,
+    "base_total_without_aloss": -0.006794174201786518,
+    "cam_historical_gradient_norm": 0.3087625983804359,
+    "cam_shared_gradient_norm": 0.0,
+    "dpsl_parameter_gradient_norm": 0.0046942876651883125,
+    "historical_total_includes_aloss": true,
+    "residual_cap": 0.08,
+    "residual_max": 0.0,
+    "shared_cap": 0.001,
+    "shared_gradient_ratio": 0.0,
+    "status": "PASS",
+    "total": 120.61808013916016,
+    "warmup_epochs": 10
+  },
+  "formal_training_started": false,
+  "paper_aloss": {
+    "effective_gradient_counts": {
+      "X1": 5,
+      "X2": 5,
+      "X3": 5,
+      "X4": 5
+    },
+    "effective_gradient_threshold": 1e-08,
+    "fold": 1,
+    "groups": {
+      "X1": {
+        "classification_loss": 1.2055829763412476,
+        "diagonal_included": true,
+        "effective_gradient_modality_count": 5,
+        "loss": 288.40521240234375,
+        "loss_to_classification_ratio": 239.22468885352683,
+        "modalities": 6,
+        "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+          0,
+          458,
+          101222,
+          1754,
+          3864,
+          3560
+        ],
+        "per_modality_effective_gradient_at_1e-8": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_modality_graphlearn_p_weight_gradient_norm": [
+          7.545311218274536e-14,
+          0.4393743872642517,
+          0.0551292821764946,
+          0.5993642807006836,
+          0.6540870666503906,
+          0.8677876591682434
+        ],
+        "per_modality_loss": [
+          529.1170043945312,
+          472.3671569824219,
+          7.193739891052246,
+          224.19308471679688,
+          327.7095031738281,
+          169.85081481933594
+        ],
+        "target_sha256": "981c1bf53efe3773f481fb567679cd7de9dc8cc4f9bda03cf5c82285a4ba1f48",
+        "test_label_permutation_target_loss_gradient_invariant": true,
+        "train_pair_count_including_diagonal": 289444,
+        "training_label_permutation_changes_target": true
+      },
+      "X2": {
+        "classification_loss": 1.201848030090332,
+        "diagonal_included": true,
+        "effective_gradient_modality_count": 5,
+        "loss": 288.40521240234375,
+        "loss_to_classification_ratio": 239.96812007976328,
+        "modalities": 6,
+        "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+          0,
+          458,
+          101222,
+          1754,
+          3864,
+          3560
+        ],
+        "per_modality_effective_gradient_at_1e-8": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_modality_graphlearn_p_weight_gradient_norm": [
+          7.545311218274536e-14,
+          0.4393743872642517,
+          0.0551292821764946,
+          0.5993642807006836,
+          0.6540870666503906,
+          0.8677876591682434
+        ],
+        "per_modality_loss": [
+          529.1170043945312,
+          472.3671569824219,
+          7.193739891052246,
+          224.19308471679688,
+          327.7095031738281,
+          169.85081481933594
+        ],
+        "target_sha256": "981c1bf53efe3773f481fb567679cd7de9dc8cc4f9bda03cf5c82285a4ba1f48",
+        "test_label_permutation_target_loss_gradient_invariant": true,
+        "train_pair_count_including_diagonal": 289444,
+        "training_label_permutation_changes_target": true
+      },
+      "X3": {
+        "classification_loss": 1.3950051069259644,
+        "diagonal_included": true,
+        "effective_gradient_modality_count": 5,
+        "loss": 297.404541015625,
+        "loss_to_classification_ratio": 213.1924388943537,
+        "modalities": 6,
+        "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+          0,
+          204,
+          91690,
+          1162,
+          3334,
+          4276
+        ],
+        "per_modality_effective_gradient_at_1e-8": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_modality_graphlearn_p_weight_gradient_norm": [
+          7.545311218274536e-14,
+          0.3715176284313202,
+          0.03442151099443436,
+          0.2950816750526428,
+          0.6604506969451904,
+          0.7272078394889832
+        ],
+        "per_modality_loss": [
+          529.1170043945312,
+          496.0379943847656,
+          7.424716949462891,
+          272.05926513671875,
+          318.35064697265625,
+          161.43756103515625
+        ],
+        "target_sha256": "981c1bf53efe3773f481fb567679cd7de9dc8cc4f9bda03cf5c82285a4ba1f48",
+        "test_label_permutation_target_loss_gradient_invariant": true,
+        "train_pair_count_including_diagonal": 289444,
+        "training_label_permutation_changes_target": true
+      },
+      "X4": {
+        "classification_loss": 1.3950051069259644,
+        "diagonal_included": true,
+        "effective_gradient_modality_count": 5,
+        "loss": 297.404541015625,
+        "loss_to_classification_ratio": 213.1924388943537,
+        "modalities": 6,
+        "per_modality_actual_graph_offdiagonal_nonzero_entries": [
+          0,
+          204,
+          91690,
+          1162,
+          3334,
+          4276
+        ],
+        "per_modality_effective_gradient_at_1e-8": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_modality_graphlearn_p_weight_gradient_norm": [
+          7.545311218274536e-14,
+          0.3715176284313202,
+          0.03442151099443436,
+          0.2950816750526428,
+          0.6604506969451904,
+          0.7272078394889832
+        ],
+        "per_modality_loss": [
+          529.1170043945312,
+          496.0379943847656,
+          7.424716949462891,
+          272.05926513671875,
+          318.35064697265625,
+          161.43756103515625
+        ],
+        "target_sha256": "981c1bf53efe3773f481fb567679cd7de9dc8cc4f9bda03cf5c82285a4ba1f48",
+        "test_label_permutation_target_loss_gradient_invariant": true,
+        "train_pair_count_including_diagonal": 289444,
+        "training_label_permutation_changes_target": true
+      }
+    },
+    "interpretation": "M1 has no actual off-diagonal graph edge, so its normalized adjacency is invariant to GraphLearn projection parameters. The observed 7.5e-14 norm is floating-point residue.",
+    "status": "FAIL",
+    "unanswered_training_questions": [
+      "Per-modality graph changes after formal optimization",
+      "Class-wise accuracy effect for NC, MCI and AD",
+      "DARG relation retention after formal optimization",
+      "X4 native-versus-DPSL-full patient corrections"
+    ]
+  },
+  "status": "PREFLIGHT_ONLY_NO_TRAINED_MECHANISM",
+  "warmup_pairing": {
+    "X3_X4": {
+      "compared_fields": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256",
+        "base_state_sha256",
+        "optimizer_state_sha256",
+        "rng_state_sha256",
+        "pair_sha256",
+        "train_index_sha256",
+        "train_labels_sha256"
+      ],
+      "history_exact": true,
+      "status": "PASS",
+      "warmup_graph_supervision": [
+        297.404541015625,
+        243.70791625976562,
+        211.5061492919922,
+        192.85385131835938,
+        172.22726440429688,
+        151.51905822753906,
+        142.30322265625,
+        132.26824951171875,
+        125.35811614990234,
+        121.80555725097656
+      ]
+    },
+    "X5_X6": {
+      "compared_fields": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256",
+        "base_state_sha256",
+        "optimizer_state_sha256",
+        "rng_state_sha256",
+        "pair_sha256",
+        "train_index_sha256",
+        "train_labels_sha256"
+      ],
+      "history_exact": true,
+      "status": "PASS",
+      "warmup_graph_supervision": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "X5_historical_H4": {
+      "history_exact": true,
+      "initial_fields_missing_from_reference": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256"
+      ],
+      "initial_model_sha256": "7088012929b4dbff71206365a1482470a5d1ee767057be815a5eee4b79952115",
+      "initial_optimizer_sha256": "49e71def22a0f209f2174e02b69a2b3d183afcba1d514c7ade9ff86c3c32ea94",
+      "initial_rng_sha256": "4626201325cba493c91475dc0580e9a9c1a79a81c56bf8e9eb8b113cdce295d8",
+      "post_warmup_model_sha256": "1627930e48d7f13cba359718b45421ec1cbd6f762eedf2ab14683842c19b5584",
+      "post_warmup_optimizer_sha256": "2432b78ac4f578ced46374342419e9820aef9d6947c2929ced60f0dbf3ba1b58",
+      "post_warmup_rng_sha256": "829f9d296dfdf450cc0a7ac41c1b4726941db3f88b55cf04945dc1e167df9b77",
+      "reference": "H4_ARCHIVED",
+      "reference_checkpoint_sha256": "b9f220170178064fe067caaa7db4ace86a321162143d24b8ac4530b4266909ec",
+      "relation_pairs_exact": true,
+      "status": "PARTIAL_MATCH",
+      "training_labels_sha256": "e988c0b5081783563eddd90a81e5dbe69c050aea25265409333df9ea3ec892cb"
+    },
+    "X6_historical_H4": {
+      "history_exact": true,
+      "initial_fields_missing_from_reference": [
+        "initial_model_sha256",
+        "initial_optimizer_sha256",
+        "initial_rng_sha256"
+      ],
+      "initial_model_sha256": "7088012929b4dbff71206365a1482470a5d1ee767057be815a5eee4b79952115",
+      "initial_optimizer_sha256": "49e71def22a0f209f2174e02b69a2b3d183afcba1d514c7ade9ff86c3c32ea94",
+      "initial_rng_sha256": "4626201325cba493c91475dc0580e9a9c1a79a81c56bf8e9eb8b113cdce295d8",
+      "post_warmup_model_sha256": "1627930e48d7f13cba359718b45421ec1cbd6f762eedf2ab14683842c19b5584",
+      "post_warmup_optimizer_sha256": "2432b78ac4f578ced46374342419e9820aef9d6947c2929ced60f0dbf3ba1b58",
+      "post_warmup_rng_sha256": "829f9d296dfdf450cc0a7ac41c1b4726941db3f88b55cf04945dc1e167df9b77",
+      "reference": "H4_ARCHIVED",
+      "reference_checkpoint_sha256": "b9f220170178064fe067caaa7db4ace86a321162143d24b8ac4530b4266909ec",
+      "relation_pairs_exact": true,
+      "status": "PARTIAL_MATCH",
+      "training_labels_sha256": "e988c0b5081783563eddd90a81e5dbe69c050aea25265409333df9ea3ec892cb"
+    },
+    "status": "PASS"
+  }
+}
