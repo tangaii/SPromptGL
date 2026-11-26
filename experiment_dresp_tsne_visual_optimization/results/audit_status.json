@@ -1,0 +1,195 @@
+{
+  "status": "COMPLETE_AUDITED_TSNE_VISUAL_OPTIMIZATION",
+  "selected_parameters": {
+    "id": "B5",
+    "perplexity": 100,
+    "early_exaggeration": 16,
+    "learning_rate": 200,
+    "metric": "euclidean",
+    "init": "pca",
+    "random_state": 0,
+    "max_iter": 3000,
+    "preprocessing": [
+      "StandardScaler",
+      "PCA(n_components=50,random_state=0)"
+    ],
+    "sklearn_version": "1.3.2",
+    "sklearn_iteration_argument": "n_iter"
+  },
+  "checks": {
+    "input_sha_and_structure": true,
+    "stage1_runs": true,
+    "stage2_runs": true,
+    "formal_coordinates": true,
+    "formal_coordinate_shape_finite": true,
+    "metrics_rows": true,
+    "coordinate_csv_rows": true,
+    "individual_png": true,
+    "comparison_png": true,
+    "images_readable": true,
+    "no_non_png_images": true,
+    "uniform_config": "B5",
+    "historical_prediction_feature_bytes_unchanged": true,
+    "all_pass": true
+  },
+  "model_summary": {
+    "SPromptGL": {
+      "silhouette_2d": {
+        "mean": 0.393875328,
+        "population_sd": 0.09128265865689308
+      },
+      "silhouette_raw144": {
+        "mean": 0.3644816286294417,
+        "population_sd": 0.10935061500417634
+      },
+      "trustworthiness_k15": {
+        "mean": 0.9530708756652153,
+        "population_sd": 0.01247364268711528
+      },
+      "trustworthiness_k30": {
+        "mean": 0.9381975321176348,
+        "population_sd": 0.015172486104038367
+      },
+      "between_within_ratio_2d": {
+        "mean": 1.9903563787180256,
+        "population_sd": 0.5689631826773914
+      },
+      "between_within_ratio_raw144": {
+        "mean": 1.8190203784259986,
+        "population_sd": 0.576144134416839
+      }
+    },
+    "DARG": {
+      "silhouette_2d": {
+        "mean": 0.453943207,
+        "population_sd": 0.12767162163180987
+      },
+      "silhouette_raw144": {
+        "mean": 0.38673834829438,
+        "population_sd": 0.09344571670787252
+      },
+      "trustworthiness_k15": {
+        "mean": 0.9563447999480102,
+        "population_sd": 0.007588771293136951
+      },
+      "trustworthiness_k30": {
+        "mean": 0.9395348143965446,
+        "population_sd": 0.009934040734379736
+      },
+      "between_within_ratio_2d": {
+        "mean": 2.462693302683874,
+        "population_sd": 0.768071644165688
+      },
+      "between_within_ratio_raw144": {
+        "mean": 1.912643461577753,
+        "population_sd": 0.46141707031337675
+      }
+    },
+    "DARG_JSL": {
+      "silhouette_2d": {
+        "mean": 0.437050544,
+        "population_sd": 0.1032773842282694
+      },
+      "silhouette_raw144": {
+        "mean": 0.3359229095290612,
+        "population_sd": 0.1270864369518884
+      },
+      "trustworthiness_k15": {
+        "mean": 0.9572527240430647,
+        "population_sd": 0.010473450493031545
+      },
+      "trustworthiness_k30": {
+        "mean": 0.9417242353669847,
+        "population_sd": 0.012258132106046916
+      },
+      "between_within_ratio_2d": {
+        "mean": 2.3112878643888592,
+        "population_sd": 0.6506101385499828
+      },
+      "between_within_ratio_raw144": {
+        "mean": 1.6907571298019626,
+        "population_sd": 0.6647524613020633
+      }
+    },
+    "DReSP": {
+      "silhouette_2d": {
+        "mean": 0.45690960899999994,
+        "population_sd": 0.15439546695736034
+      },
+      "silhouette_raw144": {
+        "mean": 0.3422474983257829,
+        "population_sd": 0.11489922447933214
+      },
+      "trustworthiness_k15": {
+        "mean": 0.9617357425499499,
+        "population_sd": 0.009724406338866023
+      },
+      "trustworthiness_k30": {
+        "mean": 0.9478113555597124,
+        "population_sd": 0.012438421606225191
+      },
+      "between_within_ratio_2d": {
+        "mean": 2.5159555746342104,
+        "population_sd": 0.9770771024028648
+      },
+      "between_within_ratio_raw144": {
+        "mean": 1.6918337854930727,
+        "population_sd": 0.5518800093261768
+      }
+    }
+  },
+  "png_sha256": {
+    "results/figures/individual/SPromptGL/fold10.png": "030fd76d9bcbb60d8dc69fc1e24f0b6dd665858aa8e4a3ef79b1a02e083793ea",
+    "results/figures/individual/SPromptGL/fold02.png": "9de7aca2a6017b5eedd74ab2190efbf438961a49fd556b4b7770f079ffa4ae16",
+    "results/figures/individual/SPromptGL/fold08.png": "4d5fd2c5f033ab48195d0456dad1866f29c78365100d3d0a09ff071cdbec3445",
+    "results/figures/individual/SPromptGL/fold05.png": "6c3b7a25e36f0753671d0d9f7df736d9d8a8092b50ab4d2df439177c34c8a2f6",
+    "results/figures/individual/SPromptGL/fold07.png": "ed5ae5efe55e98f9f84f7a88e571d550f2eaf8bf7b97e047c435c5d30073b16f",
+    "results/figures/individual/SPromptGL/fold03.png": "c88ba37cf00dd6e1dcb39fa8ae6b6c3da826018460c17e5003a0cc50e2091cfc",
+    "results/figures/individual/SPromptGL/fold06.png": "c3fb25b5c0a8827a1ccb2b6330d070b909f4634fd0d3ba96d27e118456d4f939",
+    "results/figures/individual/SPromptGL/fold04.png": "a84979e47fd8e87eac502e41211b522bcd28357fae7ade5f635e0895d75a67c9",
+    "results/figures/individual/SPromptGL/fold01.png": "4d952a893f99056a932937def69ac1993d41cb6acc555072d2795dd08f669ff2",
+    "results/figures/individual/SPromptGL/fold09.png": "d2af81381a32a015bb0a85a2262d50a85ba34196d45d23a73997bdc64f1f6703",
+    "results/figures/individual/DARG_JSL/fold10.png": "287ef725ba2cfb7ec41fc8b8990eb3efcbf5c045ea90d8d1529cd2924441ecc9",
+    "results/figures/individual/DARG_JSL/fold02.png": "9b4dd5668c384be84f4eb6bfbdb8b62b096c9849cc8c281777cd5c345b73b4c3",
+    "results/figures/individual/DARG_JSL/fold08.png": "4fc5528afa0d32d557c9134e0e7ab8b15a9e2494160043b5cb0b91ef8d129b11",
+    "results/figures/individual/DARG_JSL/fold05.png": "9562767d555102ed5cbed4496862207d4c037b8f53e8879ecc12cf6f07011b6c",
+    "results/figures/individual/DARG_JSL/fold07.png": "3e5702d48633560ecb1d2cb45c99926aa3d1b155b31985305a6394eab9b3bcc6",
+    "results/figures/individual/DARG_JSL/fold03.png": "18a3a116bd6ecf0e3d150a21acbbee0ab7a18f1e92da8a6f37be4350bfd6377f",
+    "results/figures/individual/DARG_JSL/fold06.png": "7c9757dc4d1d0a7d1e43dcc319a4e606a3a9f3dc6d5690c7ea995c7da29b95f0",
+    "results/figures/individual/DARG_JSL/fold04.png": "22763fd3556ff28e13ac59d328d4d324e5ad3b9714e61c887fd433bc3353487d",
+    "results/figures/individual/DARG_JSL/fold01.png": "79b16bbc396506dc484abbec77b4cc9d93467365aa299565457e1f2e4618dc9d",
+    "results/figures/individual/DARG_JSL/fold09.png": "400a93e92a668df5fbcd478f140976ea23d282bbafb81e7abe8fbc82c2151127",
+    "results/figures/individual/DReSP/fold10.png": "75b9b519c1e5b9a6a128b5897ffd9cf6d279bf6091f6e76ea6df78a60c9142f7",
+    "results/figures/individual/DReSP/fold02.png": "28f95604899a3ffd4369c71015230d596fe5d2e6a5251fcae8798e6457362382",
+    "results/figures/individual/DReSP/fold08.png": "bc5ad45e55e037773f71af97cf3a5446548b266eae0ddce084e4cc8583c90c88",
+    "results/figures/individual/DReSP/fold05.png": "1da19d4fd2f4d85640e11c021dfbde7b49c7b1139ae7ce389193866323d888ed",
+    "results/figures/individual/DReSP/fold07.png": "720e0a413ef45ef8fd8d743296c9f721759f3f28f0a0ab050cad4d293f450612",
+    "results/figures/individual/DReSP/fold03.png": "aa55c9c722f9c5ccc4018397e06f4715419a19bdb49da946763916a623a0bafe",
+    "results/figures/individual/DReSP/fold06.png": "fab4801e513fb19d5e1a5399fe741f3ef33021043fd1ac204b9d17988f0c3fa4",
+    "results/figures/individual/DReSP/fold04.png": "4f5ad5ca592944ffa0d90ad7590b32b84e548daea27ec597797ceed195962e2b",
+    "results/figures/individual/DReSP/fold01.png": "3072e1b8263a35fcccd81187219fa43ef13c525660f7be8363b3b0da4d0a47df",
+    "results/figures/individual/DReSP/fold09.png": "c5f7caf45721de3ec9a07076214d4f5470b1991455fe9e2b85c281852269738a",
+    "results/figures/individual/DARG/fold10.png": "08cb21d8cbcebbd53028eeea79bd6e14fd94e5cabacacdfa7030ec676ef3f62d",
+    "results/figures/individual/DARG/fold02.png": "bc0f71d075636ad2d4fa3ef6c8fbf9805ce85a0c2af6c9ef35f1f93795814709",
+    "results/figures/individual/DARG/fold08.png": "8934e159f4846e3c2a34d483fdb13c0ef667cf69fc02ae1ecf20254ba11ad2ae",
+    "results/figures/individual/DARG/fold05.png": "b6720aca36f9f94343ca1c18d564cd78c4aa949d01fd2506249a00aaa532f0e5",
+    "results/figures/individual/DARG/fold07.png": "389ca5f37686de15cb0d4f1c370ca98eeb740f19afe98a26c067f284984717bf",
+    "results/figures/individual/DARG/fold03.png": "48a96d23cd209bb50ad26b45c90b59a1ecd4f100817e6e3e39f9e9c2f0f58759",
+    "results/figures/individual/DARG/fold06.png": "a49b6374510824322bb410fb121b1c831b4e2e6bd2ab61c739dabac8291f59f7",
+    "results/figures/individual/DARG/fold04.png": "20191623058270c0cc73b4802c64af787625d0164848c7a845b7525fdeb30bfb",
+    "results/figures/individual/DARG/fold01.png": "c6ff417ddfeb3103a3ee431dd5cf36dd2b4864715d9fe9e6923919794f9a1b3d",
+    "results/figures/individual/DARG/fold09.png": "6a1353c5b5021c151b79c92a944ee4b453e392dbdf3f60cbc9ce6dad685e1f47",
+    "results/figures/comparison/fold03_comparison.png": "aa346ebe614e6f226cdf483384675c00183c9f82295b81afd50366f7197d4918",
+    "results/figures/comparison/fold04_comparison.png": "e108ba84f6d8129f66eb2f7eb3c4944c96a871ead9365f0d5d2375b11442026f",
+    "results/figures/comparison/fold05_comparison.png": "45bf0abf5e0f6faeba435b718b43d333712502edd55c1c4d6df2a7395113fd7e",
+    "results/figures/comparison/fold08_comparison.png": "dda92b098dba9f1ebf0e4461363c425139e62ae6b46747f717dce48cd8c9884d",
+    "results/figures/comparison/fold06_comparison.png": "860a1749d16f40e353a4c22dea73f57e2e0d121714b0e229607fee7329be5834",
+    "results/figures/comparison/fold02_comparison.png": "6e22524115b356e92c9b9d2a7659446490bfb8ac1c3f90a6808ebe819dc6f64f",
+    "results/figures/comparison/fold10_comparison.png": "309294eb7866858e75c6fd29825017d1a0e1e542b750eca0ed92f1fad2033ec7",
+    "results/figures/comparison/fold01_comparison.png": "fe4fa78cf68bdb900626b90a8053d787674c3a90b697b432a84f1140be887f83",
+    "results/figures/comparison/fold07_comparison.png": "a1bc7820bf8008d171968f214922f675ad6b40717257e8d1e0003f93e4cc8ab9",
+    "results/figures/comparison/fold09_comparison.png": "cd6920234d34e18a31ad9a568607c83aaf9bd753e508d47368b300293738e14e"
+  },
+  "non_png_images": [],
+  "prediction_and_classifier_metrics_changed": false
+}

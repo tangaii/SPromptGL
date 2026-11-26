@@ -1,0 +1,55 @@
+{
+  "experiment": "DReSP ABIDE t-SNE visual optimization",
+  "authoritative_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_visual_optimization",
+  "selected": "B5",
+  "models": [
+    "SPromptGL",
+    "DARG",
+    "DARG_JSL",
+    "DReSP"
+  ],
+  "folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "input_patients": 871,
+  "feature_dimension": 144,
+  "stage1_configs": 24,
+  "stage1_runs": 192,
+  "stage2_configs": [
+    "B0",
+    "B1",
+    "B5",
+    "B6",
+    "B9",
+    "B15"
+  ],
+  "stage2_runs": 48,
+  "formal_runs": 40,
+  "parameters": {
+    "perplexity": 100,
+    "early_exaggeration": 16,
+    "learning_rate": 200,
+    "metric": "euclidean",
+    "init": "pca",
+    "random_state": 0,
+    "max_iter": 3000,
+    "preprocessing": "StandardScaler then PCA50"
+  },
+  "plot": {
+    "dpi": 600,
+    "ASD": "#D98282",
+    "TD": "#4C9A91",
+    "size": 12,
+    "alpha": 0.7,
+    "format": "PNG only"
+  }
+}
