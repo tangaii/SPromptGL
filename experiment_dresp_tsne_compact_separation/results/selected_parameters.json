@@ -1,0 +1,1497 @@
+{
+  "id": "C5",
+  "perplexity": 100,
+  "early_exaggeration": 48,
+  "learning_rate": 200,
+  "metric": "euclidean",
+  "init": "pca",
+  "random_state": 0,
+  "iterations": 3000,
+  "preprocessing": [
+    "StandardScaler",
+    "PCA(n_components=50, random_state=0)"
+  ],
+  "sklearn_version": "1.3.2",
+  "sklearn_iteration_argument": "n_iter",
+  "selection_frozen_before_formal_ten_fold": true,
+  "selection_inputs": "Fold 7 and Fold 8, all four models, 104 candidate rows",
+  "selection_uses_true_labels": true,
+  "selection_is_exploratory": true,
+  "selection_rule": {
+    "reference": "C0 (historical B5)",
+    "trustworthiness_15_floor": 0.941015595101416,
+    "trustworthiness_15_rule": "discard candidate if four-model mean falls more than 0.015 below C0",
+    "ranking_order": [
+      "maximize four-model mean Silhouette_2D",
+      "minimize four-model mean Normalized_Within",
+      "maximize four-model mean Separation_Ratio",
+      "minimize four-model mean Cross_Class_Neighbor_Rate@15",
+      "minimize four-model mean Cross_Class_Neighbor_Rate@30",
+      "maximize four-model mean Trustworthiness@15"
+    ],
+    "per_model_or_per_fold_parameters": false
+  },
+  "candidate_aggregate_means": {
+    "C0": {
+      "silhouette_2d": 0.44033464789390564,
+      "normalized_within": 0.6232251938602387,
+      "separation_ratio": 2.3578866599006023,
+      "cross_class_neighbor_rate_15": 0.08677765021048603,
+      "cross_class_neighbor_rate_30": 0.09217853042479908,
+      "trustworthiness_15": 0.956015595101416,
+      "trustworthiness_30": 0.9397226813794792
+    },
+    "C1": {
+      "silhouette_2d": 0.44049275293946266,
+      "normalized_within": 0.6222973284787503,
+      "separation_ratio": 2.3255571204736314,
+      "cross_class_neighbor_rate_15": 0.08479716800612323,
+      "cross_class_neighbor_rate_30": 0.08876291618828933,
+      "trustworthiness_15": 0.9524748129815364,
+      "trustworthiness_30": 0.9399704466531897
+    },
+    "C2": {
+      "silhouette_2d": 0.44395963847637177,
+      "normalized_within": 0.6174748078181833,
+      "separation_ratio": 2.3628782328709748,
+      "cross_class_neighbor_rate_15": 0.09035591274397245,
+      "cross_class_neighbor_rate_30": 0.09596249521622656,
+      "trustworthiness_15": 0.9531534657084678,
+      "trustworthiness_30": 0.9335726263153783
+    },
+    "C3": {
+      "silhouette_2d": 0.4416956529021263,
+      "normalized_within": 0.6218539462445661,
+      "separation_ratio": 2.3417480313945234,
+      "cross_class_neighbor_rate_15": 0.08711251435132034,
+      "cross_class_neighbor_rate_30": 0.09205415231534635,
+      "trustworthiness_15": 0.9558861173089559,
+      "trustworthiness_30": 0.9383351378966882
+    },
+    "C4": {
+      "silhouette_2d": 0.436635036021471,
+      "normalized_within": 0.6245874287148061,
+      "separation_ratio": 2.3131718754188375,
+      "cross_class_neighbor_rate_15": 0.08956180635285113,
+      "cross_class_neighbor_rate_30": 0.09511098354381936,
+      "trustworthiness_15": 0.9520783013452332,
+      "trustworthiness_30": 0.9344686030315273
+    },
+    "C5": {
+      "silhouette_2d": 0.4566514827311039,
+      "normalized_within": 0.6052782943456163,
+      "separation_ratio": 2.4623612094097025,
+      "cross_class_neighbor_rate_15": 0.08539035591274396,
+      "cross_class_neighbor_rate_30": 0.09185323383084577,
+      "trustworthiness_15": 0.954165098401317,
+      "trustworthiness_30": 0.9371424281472014
+    },
+    "C6": {
+      "silhouette_2d": 0.4398522302508354,
+      "normalized_within": 0.6220573880440834,
+      "separation_ratio": 2.348110730195722,
+      "cross_class_neighbor_rate_15": 0.08877726750861079,
+      "cross_class_neighbor_rate_30": 0.09495311902028321,
+      "trustworthiness_15": 0.9558740676154786,
+      "trustworthiness_30": 0.9391233333866473
+    },
+    "C7": {
+      "silhouette_2d": 0.4437466450035572,
+      "normalized_within": 0.6157487483673657,
+      "separation_ratio": 2.361659318534936,
+      "cross_class_neighbor_rate_15": 0.08681592039800995,
+      "cross_class_neighbor_rate_30": 0.09207807118254879,
+      "trustworthiness_15": 0.9527119369588921,
+      "trustworthiness_30": 0.939316811089685
+    },
+    "C8": {
+      "silhouette_2d": 0.45038897544145584,
+      "normalized_within": 0.611590631222219,
+      "separation_ratio": 2.4127486136859115,
+      "cross_class_neighbor_rate_15": 0.08413700727133563,
+      "cross_class_neighbor_rate_30": 0.08945177956371986,
+      "trustworthiness_15": 0.9514004271097343,
+      "trustworthiness_30": 0.9378156044545478
+    },
+    "C9": {
+      "silhouette_2d": 0.4498056247830391,
+      "normalized_within": 0.6148882970218166,
+      "separation_ratio": 2.406327366536843,
+      "cross_class_neighbor_rate_15": 0.08519900497512438,
+      "cross_class_neighbor_rate_30": 0.0900019135093762,
+      "trustworthiness_15": 0.9512348340842955,
+      "trustworthiness_30": 0.9363643681142347
+    },
+    "C10": {
+      "silhouette_2d": 0.45143454894423485,
+      "normalized_within": 0.608658212382071,
+      "separation_ratio": 2.420135390631332,
+      "cross_class_neighbor_rate_15": 0.08539992345962495,
+      "cross_class_neighbor_rate_30": 0.09059988518943743,
+      "trustworthiness_15": 0.950340313580862,
+      "trustworthiness_30": 0.9372922810816624
+    },
+    "C11": {
+      "silhouette_2d": 0.4530631862580776,
+      "normalized_within": 0.61298282776088,
+      "separation_ratio": 2.4019989070677186,
+      "cross_class_neighbor_rate_15": 0.08208955223880597,
+      "cross_class_neighbor_rate_30": 0.08516551856104096,
+      "trustworthiness_15": 0.9469523301489648,
+      "trustworthiness_30": 0.935455920555634
+    },
+    "C12": {
+      "silhouette_2d": 0.44946031644940376,
+      "normalized_within": 0.6126283189422426,
+      "separation_ratio": 2.3897749712014575,
+      "cross_class_neighbor_rate_15": 0.08182166092613855,
+      "cross_class_neighbor_rate_30": 0.08609357060849598,
+      "trustworthiness_15": 0.9481163553603535,
+      "trustworthiness_30": 0.9368092909167066
+    }
+  },
+  "candidate_aggregate_population_sd": {
+    "C0": {
+      "silhouette_2d": 0.10391909101500559,
+      "normalized_within": 0.095027601459065,
+      "separation_ratio": 0.7511905143640346,
+      "cross_class_neighbor_rate_15": 0.03017205055929974,
+      "cross_class_neighbor_rate_30": 0.03316427489186999,
+      "trustworthiness_15": 0.005533489280101141,
+      "trustworthiness_30": 0.006572224678299252
+    },
+    "C1": {
+      "silhouette_2d": 0.09009776414570607,
+      "normalized_within": 0.08023950711956568,
+      "separation_ratio": 0.6359057147171637,
+      "cross_class_neighbor_rate_15": 0.02789194272948755,
+      "cross_class_neighbor_rate_30": 0.029733718818525705,
+      "trustworthiness_15": 0.006398423419887086,
+      "trustworthiness_30": 0.005747836960649633
+    },
+    "C2": {
+      "silhouette_2d": 0.08688989282588383,
+      "normalized_within": 0.07968490304364252,
+      "separation_ratio": 0.6276500530925972,
+      "cross_class_neighbor_rate_15": 0.027267528752988712,
+      "cross_class_neighbor_rate_30": 0.029801100934863503,
+      "trustworthiness_15": 0.004932612674409224,
+      "trustworthiness_30": 0.004234492916938181
+    },
+    "C3": {
+      "silhouette_2d": 0.09248230996357719,
+      "normalized_within": 0.08184432879190988,
+      "separation_ratio": 0.6356573213912248,
+      "cross_class_neighbor_rate_15": 0.025434000320867945,
+      "cross_class_neighbor_rate_30": 0.02903173964625418,
+      "trustworthiness_15": 0.002826214840964358,
+      "trustworthiness_30": 0.005051141261813639
+    },
+    "C4": {
+      "silhouette_2d": 0.09740675641778092,
+      "normalized_within": 0.0870744060897949,
+      "separation_ratio": 0.6849017076727449,
+      "cross_class_neighbor_rate_15": 0.028149861069035748,
+      "cross_class_neighbor_rate_30": 0.031927571971527104,
+      "trustworthiness_15": 0.004511891779865649,
+      "trustworthiness_30": 0.005848127280607808
+    },
+    "C5": {
+      "silhouette_2d": 0.08724370063845335,
+      "normalized_within": 0.08013985150470714,
+      "separation_ratio": 0.6701705939494229,
+      "cross_class_neighbor_rate_15": 0.02509418357289207,
+      "cross_class_neighbor_rate_30": 0.028614652976980445,
+      "trustworthiness_15": 0.006667561667184754,
+      "trustworthiness_30": 0.006687837853837896
+    },
+    "C6": {
+      "silhouette_2d": 0.09401149354367422,
+      "normalized_within": 0.08728028811763887,
+      "separation_ratio": 0.7060449826136187,
+      "cross_class_neighbor_rate_15": 0.02697186155309122,
+      "cross_class_neighbor_rate_30": 0.0313612478845525,
+      "trustworthiness_15": 0.004754735969054224,
+      "trustworthiness_30": 0.00554291122474086
+    },
+    "C7": {
+      "silhouette_2d": 0.0899652044510896,
+      "normalized_within": 0.07861741242269829,
+      "separation_ratio": 0.6292818180111756,
+      "cross_class_neighbor_rate_15": 0.03007047565053505,
+      "cross_class_neighbor_rate_30": 0.03394292726193833,
+      "trustworthiness_15": 0.005911694547705694,
+      "trustworthiness_30": 0.00581458282888715
+    },
+    "C8": {
+      "silhouette_2d": 0.0899194166054962,
+      "normalized_within": 0.0844331361894565,
+      "separation_ratio": 0.6630469620782978,
+      "cross_class_neighbor_rate_15": 0.02578728470824186,
+      "cross_class_neighbor_rate_30": 0.02880952758700418,
+      "trustworthiness_15": 0.00642167286847156,
+      "trustworthiness_30": 0.0056549547461128965
+    },
+    "C9": {
+      "silhouette_2d": 0.08841699791264213,
+      "normalized_within": 0.086333329719441,
+      "separation_ratio": 0.6986736777939023,
+      "cross_class_neighbor_rate_15": 0.027713044884347334,
+      "cross_class_neighbor_rate_30": 0.030537557887871984,
+      "trustworthiness_15": 0.0067600282322483485,
+      "trustworthiness_30": 0.007235984841497418
+    },
+    "C10": {
+      "silhouette_2d": 0.09361070027157017,
+      "normalized_within": 0.08499763442315615,
+      "separation_ratio": 0.6723434842151644,
+      "cross_class_neighbor_rate_15": 0.028280393310060256,
+      "cross_class_neighbor_rate_30": 0.031719596471217075,
+      "trustworthiness_15": 0.004211237299446988,
+      "trustworthiness_30": 0.004527167184992113
+    },
+    "C11": {
+      "silhouette_2d": 0.08103413967528944,
+      "normalized_within": 0.07476161624327982,
+      "separation_ratio": 0.593719448565569,
+      "cross_class_neighbor_rate_15": 0.025741872045079755,
+      "cross_class_neighbor_rate_30": 0.02781312660391582,
+      "trustworthiness_15": 0.0055774534829834636,
+      "trustworthiness_30": 0.005728308105495532
+    },
+    "C12": {
+      "silhouette_2d": 0.08581272700362781,
+      "normalized_within": 0.07970585010040938,
+      "separation_ratio": 0.6489688028191968,
+      "cross_class_neighbor_rate_15": 0.025941598414616233,
+      "cross_class_neighbor_rate_30": 0.02737228804297456,
+      "trustworthiness_15": 0.006000707493319328,
+      "trustworthiness_30": 0.004161760273731295
+    }
+  },
+  "feasible_candidates": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12"
+  ],
+  "b5_b6_comparison": {
+    "B5": {
+      "silhouette_2d": {
+        "reference": 0.44033464789390564,
+        "final": 0.4566514827311039,
+        "delta_final_minus_reference": 0.016316834837198257
+      },
+      "normalized_within": {
+        "reference": 0.6232251938602387,
+        "final": 0.6052782943456163,
+        "delta_final_minus_reference": -0.01794689951462236
+      },
+      "separation_ratio": {
+        "reference": 2.3578866599006023,
+        "final": 2.4623612094097025,
+        "delta_final_minus_reference": 0.10447454950910018
+      },
+      "cross_class_neighbor_rate_15": {
+        "reference": 0.08677765021048603,
+        "final": 0.08539035591274396,
+        "delta_final_minus_reference": -0.0013872942977420644
+      },
+      "cross_class_neighbor_rate_30": {
+        "reference": 0.09217853042479908,
+        "final": 0.09185323383084577,
+        "delta_final_minus_reference": -0.0003252965939533059
+      },
+      "trustworthiness_15": {
+        "reference": 0.956015595101416,
+        "final": 0.954165098401317,
+        "delta_final_minus_reference": -0.001850496700098958
+      },
+      "trustworthiness_30": {
+        "reference": 0.9397226813794792,
+        "final": 0.9371424281472014,
+        "delta_final_minus_reference": -0.0025802532322778404
+      }
+    },
+    "B6": {
+      "silhouette_2d": {
+        "reference": 0.44049275293946266,
+        "final": 0.4566514827311039,
+        "delta_final_minus_reference": 0.016158729791641235
+      },
+      "normalized_within": {
+        "reference": 0.6222973284787503,
+        "final": 0.6052782943456163,
+        "delta_final_minus_reference": -0.017019034133133992
+      },
+      "separation_ratio": {
+        "reference": 2.3255571204736314,
+        "final": 2.4623612094097025,
+        "delta_final_minus_reference": 0.1368040889360711
+      },
+      "cross_class_neighbor_rate_15": {
+        "reference": 0.08479716800612323,
+        "final": 0.08539035591274396,
+        "delta_final_minus_reference": 0.0005931879066207318
+      },
+      "cross_class_neighbor_rate_30": {
+        "reference": 0.08876291618828933,
+        "final": 0.09185323383084577,
+        "delta_final_minus_reference": 0.0030903176425564477
+      },
+      "trustworthiness_15": {
+        "reference": 0.9524748129815364,
+        "final": 0.954165098401317,
+        "delta_final_minus_reference": 0.0016902854197806683
+      },
+      "trustworthiness_30": {
+        "reference": 0.9399704466531897,
+        "final": 0.9371424281472014,
+        "delta_final_minus_reference": -0.00282801850598835
+      }
+    }
+  },
+  "b5_b6_changes_by_model_and_fold": {
+    "B5": {
+      "overall": {
+        "silhouette_2d": {
+          "reference": 0.44033464789390564,
+          "final": 0.4566514827311039,
+          "delta_final_minus_reference": 0.016316834837198257
+        },
+        "normalized_within": {
+          "reference": 0.6232251938602387,
+          "final": 0.6052782943456163,
+          "delta_final_minus_reference": -0.01794689951462236
+        },
+        "separation_ratio": {
+          "reference": 2.3578866599006023,
+          "final": 2.4623612094097025,
+          "delta_final_minus_reference": 0.10447454950910018
+        },
+        "cross_class_neighbor_rate_15": {
+          "reference": 0.08677765021048603,
+          "final": 0.08539035591274396,
+          "delta_final_minus_reference": -0.0013872942977420644
+        },
+        "cross_class_neighbor_rate_30": {
+          "reference": 0.09217853042479908,
+          "final": 0.09185323383084577,
+          "delta_final_minus_reference": -0.0003252965939533059
+        },
+        "trustworthiness_15": {
+          "reference": 0.956015595101416,
+          "final": 0.954165098401317,
+          "delta_final_minus_reference": -0.001850496700098958
+        },
+        "trustworthiness_30": {
+          "reference": 0.9397226813794792,
+          "final": 0.9371424281472014,
+          "delta_final_minus_reference": -0.0025802532322778404
+        }
+      },
+      "by_model": {
+        "SPromptGL": {
+          "silhouette_2d": {
+            "reference": 0.38662202656269073,
+            "final": 0.40520481765270233,
+            "delta_final_minus_reference": 0.018582791090011597
+          },
+          "normalized_within": {
+            "reference": 0.6824872967919051,
+            "final": 0.6513472641233529,
+            "delta_final_minus_reference": -0.031140032668552253
+          },
+          "separation_ratio": {
+            "reference": 1.8912390903992364,
+            "final": 2.059726346970848,
+            "delta_final_minus_reference": 0.16848725657161157
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.0778798316111749,
+            "final": 0.08335246842709529,
+            "delta_final_minus_reference": 0.00547263681592039
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.08515116724071949,
+            "final": 0.09140834290088021,
+            "delta_final_minus_reference": 0.0062571756601607215
+          },
+          "trustworthiness_15": {
+            "reference": 0.9548525514661814,
+            "final": 0.9543112178584581,
+            "delta_final_minus_reference": -0.0005413336077233488
+          },
+          "trustworthiness_30": {
+            "reference": 0.9400982785833216,
+            "final": 0.9361021153376758,
+            "delta_final_minus_reference": -0.0039961632456457785
+          }
+        },
+        "DARG": {
+          "silhouette_2d": {
+            "reference": 0.43298904597759247,
+            "final": 0.4551755338907242,
+            "delta_final_minus_reference": 0.022186487913131714
+          },
+          "normalized_within": {
+            "reference": 0.635484511333388,
+            "final": 0.6137965855093988,
+            "delta_final_minus_reference": -0.021687925823989262
+          },
+          "separation_ratio": {
+            "reference": 2.213263549245412,
+            "final": 2.3730064673098337,
+            "delta_final_minus_reference": 0.15974291806442187
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08358208955223881,
+            "final": 0.08331419823957137,
+            "delta_final_minus_reference": -0.0002678913126674398
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.08746651358591656,
+            "final": 0.08737083811710677,
+            "delta_final_minus_reference": -9.567546880978606e-05
+          },
+          "trustworthiness_15": {
+            "reference": 0.9598462693787955,
+            "final": 0.9595694423383807,
+            "delta_final_minus_reference": -0.00027682704041476214
+          },
+          "trustworthiness_30": {
+            "reference": 0.9454203844496476,
+            "final": 0.9457395267523909,
+            "delta_final_minus_reference": 0.0003191423027433249
+          }
+        },
+        "DARG_JSL": {
+          "silhouette_2d": {
+            "reference": 0.33869877457618713,
+            "final": 0.37251995503902435,
+            "delta_final_minus_reference": 0.03382118046283722
+          },
+          "normalized_within": {
+            "reference": 0.7043918351986493,
+            "final": 0.6764925872659449,
+            "delta_final_minus_reference": -0.027899247932704485
+          },
+          "separation_ratio": {
+            "reference": 1.7414499230314118,
+            "final": 1.904646127770265,
+            "delta_final_minus_reference": 0.16319620473885332
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.13406046689628778,
+            "final": 0.12215843857634903,
+            "delta_final_minus_reference": -0.011902028319938751
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.1433409873708381,
+            "final": 0.13417527745885954,
+            "delta_final_minus_reference": -0.00916570991197857
+          },
+          "trustworthiness_15": {
+            "reference": 0.9605476337470846,
+            "final": 0.9583917314732578,
+            "delta_final_minus_reference": -0.002155902273826782
+          },
+          "trustworthiness_30": {
+            "reference": 0.9417078285597591,
+            "final": 0.9378190582752268,
+            "delta_final_minus_reference": -0.0038887702845322725
+          }
+        },
+        "DReSP": {
+          "silhouette_2d": {
+            "reference": 0.6030287444591522,
+            "final": 0.5937056243419647,
+            "delta_final_minus_reference": -0.0093231201171875
+          },
+          "normalized_within": {
+            "reference": 0.4705371321170125,
+            "final": 0.47947674048376915,
+            "delta_final_minus_reference": 0.008939608366756668
+          },
+          "separation_ratio": {
+            "reference": 3.5855940769263506,
+            "final": 3.512065895587865,
+            "delta_final_minus_reference": -0.0735281813384856
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.05158821278224263,
+            "final": 0.0527363184079602,
+            "delta_final_minus_reference": 0.0011481056257175645
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05275545350172216,
+            "final": 0.05445847684653655,
+            "delta_final_minus_reference": 0.0017030233448143903
+          },
+          "trustworthiness_15": {
+            "reference": 0.9488159258136025,
+            "final": 0.9443880019351718,
+            "delta_final_minus_reference": -0.004427923878430717
+          },
+          "trustworthiness_30": {
+            "reference": 0.9316642339251884,
+            "final": 0.9289090122235119,
+            "delta_final_minus_reference": -0.0027552217016765246
+          }
+        }
+      },
+      "by_fold": {
+        "7": {
+          "silhouette_2d": {
+            "reference": 0.45469101518392563,
+            "final": 0.45918044447898865,
+            "delta_final_minus_reference": 0.004489429295063019
+          },
+          "normalized_within": {
+            "reference": 0.6138253756689687,
+            "final": 0.6078431463960617,
+            "delta_final_minus_reference": -0.005982229272906925
+          },
+          "separation_ratio": {
+            "reference": 2.4074576506431113,
+            "final": 2.415002912484824,
+            "delta_final_minus_reference": 0.007545261841712669
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08463451970914657,
+            "final": 0.08404133180252583,
+            "delta_final_minus_reference": -0.0005931879066207318
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.08650019135093762,
+            "final": 0.08812667432070416,
+            "delta_final_minus_reference": 0.0016264829697665434
+          },
+          "trustworthiness_15": {
+            "reference": 0.9574480193372759,
+            "final": 0.9565384479994801,
+            "delta_final_minus_reference": -0.0009095713377957892
+          },
+          "trustworthiness_30": {
+            "reference": 0.9402655107261995,
+            "final": 0.9393926792446008,
+            "delta_final_minus_reference": -0.0008728314815986682
+          }
+        },
+        "8": {
+          "silhouette_2d": {
+            "reference": 0.42597828060388565,
+            "final": 0.45412252098321915,
+            "delta_final_minus_reference": 0.028144240379333496
+          },
+          "normalized_within": {
+            "reference": 0.6326250120515088,
+            "final": 0.602713442295171,
+            "delta_final_minus_reference": -0.029911569756337797
+          },
+          "separation_ratio": {
+            "reference": 2.3083156691580937,
+            "final": 2.5097195063345814,
+            "delta_final_minus_reference": 0.2014038371764877
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08892078071182549,
+            "final": 0.08673938002296212,
+            "delta_final_minus_reference": -0.002181400688863369
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09785686949866056,
+            "final": 0.09557979334098737,
+            "delta_final_minus_reference": -0.002277076157673183
+          },
+          "trustworthiness_15": {
+            "reference": 0.9545831708655561,
+            "final": 0.9517917488031541,
+            "delta_final_minus_reference": -0.002791422062402016
+          },
+          "trustworthiness_30": {
+            "reference": 0.939179852032759,
+            "final": 0.9348921770498021,
+            "delta_final_minus_reference": -0.004287674982956902
+          }
+        }
+      },
+      "by_model_fold": {
+        "SPromptGL_fold07": {
+          "silhouette_2d": {
+            "reference": 0.39051154255867004,
+            "final": 0.42675626277923584,
+            "delta_final_minus_reference": 0.036244720220565796
+          },
+          "normalized_within": {
+            "reference": 0.6841640016552862,
+            "final": 0.635680877398772,
+            "delta_final_minus_reference": -0.04848312425651424
+          },
+          "separation_ratio": {
+            "reference": 1.8835975221468835,
+            "final": 2.1642051805503177,
+            "delta_final_minus_reference": 0.28060765840343427
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.07439724454649828,
+            "final": 0.08036739380022963,
+            "delta_final_minus_reference": 0.005970149253731349
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.07841561423650976,
+            "final": 0.08507462686567165,
+            "delta_final_minus_reference": 0.006659012629161881
+          },
+          "trustworthiness_15": {
+            "reference": 0.9540908483706287,
+            "final": 0.956767414740521,
+            "delta_final_minus_reference": 0.0026765663698922193
+          },
+          "trustworthiness_30": {
+            "reference": 0.9395203083496926,
+            "final": 0.9398795520603199,
+            "delta_final_minus_reference": 0.00035924371062734384
+          }
+        },
+        "SPromptGL_fold08": {
+          "silhouette_2d": {
+            "reference": 0.3827325105667114,
+            "final": 0.3836533725261688,
+            "delta_final_minus_reference": 0.0009208619594573975
+          },
+          "normalized_within": {
+            "reference": 0.6808105919285241,
+            "final": 0.6670136508479336,
+            "delta_final_minus_reference": -0.013796941080590486
+          },
+          "separation_ratio": {
+            "reference": 1.8988806586515894,
+            "final": 1.955247513391378,
+            "delta_final_minus_reference": 0.05636685473978864
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.0813624186758515,
+            "final": 0.08633754305396096,
+            "delta_final_minus_reference": 0.004975124378109458
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09188672024492921,
+            "final": 0.09774205893608878,
+            "delta_final_minus_reference": 0.005855338691159576
+          },
+          "trustworthiness_15": {
+            "reference": 0.9556142545617341,
+            "final": 0.9518550209763952,
+            "delta_final_minus_reference": -0.003759233585338917
+          },
+          "trustworthiness_30": {
+            "reference": 0.9406762488169506,
+            "final": 0.9323246786150319,
+            "delta_final_minus_reference": -0.008351570201918679
+          }
+        },
+        "DARG_fold07": {
+          "silhouette_2d": {
+            "reference": 0.4495454430580139,
+            "final": 0.4710056483745575,
+            "delta_final_minus_reference": 0.02146020531654358
+          },
+          "normalized_within": {
+            "reference": 0.6206401072168973,
+            "final": 0.5974178479699759,
+            "delta_final_minus_reference": -0.02322225924692145
+          },
+          "separation_ratio": {
+            "reference": 2.32396189864112,
+            "final": 2.50101647048079,
+            "delta_final_minus_reference": 0.17705457183966988
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.07676999617298125,
+            "final": 0.0776884806735553,
+            "delta_final_minus_reference": 0.0009184845005740516
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.07864523536165327,
+            "final": 0.08411787217757367,
+            "delta_final_minus_reference": 0.005472636815920404
+          },
+          "trustworthiness_15": {
+            "reference": 0.9586802922975832,
+            "final": 0.9610451913148337,
+            "delta_final_minus_reference": 0.0023648990172504547
+          },
+          "trustworthiness_30": {
+            "reference": 0.9405646602750122,
+            "final": 0.9452342258330488,
+            "delta_final_minus_reference": 0.004669565558036659
+          }
+        },
+        "DARG_fold08": {
+          "silhouette_2d": {
+            "reference": 0.416432648897171,
+            "final": 0.43934541940689087,
+            "delta_final_minus_reference": 0.02291277050971985
+          },
+          "normalized_within": {
+            "reference": 0.6503289154498786,
+            "final": 0.6301753230488215,
+            "delta_final_minus_reference": -0.020153592401057074
+          },
+          "separation_ratio": {
+            "reference": 2.1025651998497037,
+            "final": 2.2449964641388775,
+            "delta_final_minus_reference": 0.14243126428917385
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.09039418293149637,
+            "final": 0.08893991580558745,
+            "delta_final_minus_reference": -0.0014542671259089174
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09628779181017987,
+            "final": 0.09062380405663988,
+            "delta_final_minus_reference": -0.00566398775353999
+          },
+          "trustworthiness_15": {
+            "reference": 0.9610122464600076,
+            "final": 0.9580936933619276,
+            "delta_final_minus_reference": -0.002918553098079979
+          },
+          "trustworthiness_30": {
+            "reference": 0.9502761086242829,
+            "final": 0.9462448276717331,
+            "delta_final_minus_reference": -0.004031280952549787
+          }
+        },
+        "DARG_JSL_fold07": {
+          "silhouette_2d": {
+            "reference": 0.3924412131309509,
+            "final": 0.3794807493686676,
+            "delta_final_minus_reference": -0.012960463762283325
+          },
+          "normalized_within": {
+            "reference": 0.660274590658644,
+            "final": 0.6732662766752029,
+            "delta_final_minus_reference": 0.012991686016558868
+          },
+          "separation_ratio": {
+            "reference": 2.028193790822556,
+            "final": 1.9141140975131823,
+            "delta_final_minus_reference": -0.11407969330937351
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.1379257558362036,
+            "final": 0.1285878300803674,
+            "delta_final_minus_reference": -0.009337925755836196
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.13784921546115575,
+            "final": 0.13203214695752008,
+            "delta_final_minus_reference": -0.0058170685036356695
+          },
+          "trustworthiness_15": {
+            "reference": 0.9655636007191907,
+            "final": 0.9635667814772293,
+            "delta_final_minus_reference": -0.0019968192419613784
+          },
+          "trustworthiness_30": {
+            "reference": 0.9485485956046539,
+            "final": 0.9422221696808786,
+            "delta_final_minus_reference": -0.006326425923775303
+          }
+        },
+        "DARG_JSL_fold08": {
+          "silhouette_2d": {
+            "reference": 0.28495633602142334,
+            "final": 0.3655591607093811,
+            "delta_final_minus_reference": 0.08060282468795776
+          },
+          "normalized_within": {
+            "reference": 0.7485090797386548,
+            "final": 0.6797188978566869,
+            "delta_final_minus_reference": -0.06879018188196784
+          },
+          "separation_ratio": {
+            "reference": 1.4547060552402677,
+            "final": 1.8951781580273477,
+            "delta_final_minus_reference": 0.44047210278707993
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.13019517795637198,
+            "final": 0.11572904707233066,
+            "delta_final_minus_reference": -0.01446613088404132
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.14883275928052048,
+            "final": 0.136318407960199,
+            "delta_final_minus_reference": -0.01251435132032147
+          },
+          "trustworthiness_15": {
+            "reference": 0.9555316667749785,
+            "final": 0.9532166814692864,
+            "delta_final_minus_reference": -0.0023149853056920744
+          },
+          "trustworthiness_30": {
+            "reference": 0.9348670615148643,
+            "final": 0.9334159468695752,
+            "delta_final_minus_reference": -0.001451114645289131
+          }
+        },
+        "DReSP_fold07": {
+          "silhouette_2d": {
+            "reference": 0.5862658619880676,
+            "final": 0.5594791173934937,
+            "delta_final_minus_reference": -0.026786744594573975
+          },
+          "normalized_within": {
+            "reference": 0.49022280314504724,
+            "final": 0.5250075835402964,
+            "delta_final_minus_reference": 0.03478478039524918
+          },
+          "separation_ratio": {
+            "reference": 3.3940773909618867,
+            "final": 3.0806759013950074,
+            "delta_final_minus_reference": -0.3134014895668793
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.04944508228090318,
+            "final": 0.04952162265595102,
+            "delta_final_minus_reference": 7.654037504783995e-05
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05109070034443169,
+            "final": 0.05128205128205128,
+            "delta_final_minus_reference": 0.00019135093761959293
+          },
+          "trustworthiness_15": {
+            "reference": 0.9514573359617009,
+            "final": 0.9447744044653366,
+            "delta_final_minus_reference": -0.006682931496364342
+          },
+          "trustworthiness_30": {
+            "reference": 0.9324284786754389,
+            "final": 0.9302347694041557,
+            "delta_final_minus_reference": -0.0021937092712831507
+          }
+        },
+        "DReSP_fold08": {
+          "silhouette_2d": {
+            "reference": 0.6197916269302368,
+            "final": 0.6279321312904358,
+            "delta_final_minus_reference": 0.008140504360198975
+          },
+          "normalized_within": {
+            "reference": 0.4508514610889777,
+            "final": 0.4339458974272419,
+            "delta_final_minus_reference": -0.016905563661735845
+          },
+          "separation_ratio": {
+            "reference": 3.7771107628908145,
+            "final": 3.943455889780722,
+            "delta_final_minus_reference": 0.16634512688990766
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.05373134328358209,
+            "final": 0.055951014159969385,
+            "delta_final_minus_reference": 0.002219670876387296
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05442020665901263,
+            "final": 0.057634902411021816,
+            "delta_final_minus_reference": 0.0032146957520091876
+          },
+          "trustworthiness_15": {
+            "reference": 0.9461745156655041,
+            "final": 0.9440015994050069,
+            "delta_final_minus_reference": -0.002172916260497204
+          },
+          "trustworthiness_30": {
+            "reference": 0.9308999891749379,
+            "final": 0.927583255042868,
+            "delta_final_minus_reference": -0.0033167341320698984
+          }
+        }
+      }
+    },
+    "B6": {
+      "overall": {
+        "silhouette_2d": {
+          "reference": 0.44049275293946266,
+          "final": 0.4566514827311039,
+          "delta_final_minus_reference": 0.016158729791641235
+        },
+        "normalized_within": {
+          "reference": 0.6222973284787503,
+          "final": 0.6052782943456163,
+          "delta_final_minus_reference": -0.017019034133133992
+        },
+        "separation_ratio": {
+          "reference": 2.3255571204736314,
+          "final": 2.4623612094097025,
+          "delta_final_minus_reference": 0.1368040889360711
+        },
+        "cross_class_neighbor_rate_15": {
+          "reference": 0.08479716800612323,
+          "final": 0.08539035591274396,
+          "delta_final_minus_reference": 0.0005931879066207318
+        },
+        "cross_class_neighbor_rate_30": {
+          "reference": 0.08876291618828933,
+          "final": 0.09185323383084577,
+          "delta_final_minus_reference": 0.0030903176425564477
+        },
+        "trustworthiness_15": {
+          "reference": 0.9524748129815364,
+          "final": 0.954165098401317,
+          "delta_final_minus_reference": 0.0016902854197806683
+        },
+        "trustworthiness_30": {
+          "reference": 0.9399704466531897,
+          "final": 0.9371424281472014,
+          "delta_final_minus_reference": -0.00282801850598835
+        }
+      },
+      "by_model": {
+        "SPromptGL": {
+          "silhouette_2d": {
+            "reference": 0.38269348442554474,
+            "final": 0.40520481765270233,
+            "delta_final_minus_reference": 0.022511333227157593
+          },
+          "normalized_within": {
+            "reference": 0.6786834612321915,
+            "final": 0.6513472641233529,
+            "delta_final_minus_reference": -0.02733619710883861
+          },
+          "separation_ratio": {
+            "reference": 1.8960900281225077,
+            "final": 2.059726346970848,
+            "delta_final_minus_reference": 0.1636363188483403
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.07833907386146192,
+            "final": 0.08335246842709529,
+            "delta_final_minus_reference": 0.005013394565633364
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.0840604668962878,
+            "final": 0.09140834290088021,
+            "delta_final_minus_reference": 0.007347876004592413
+          },
+          "trustworthiness_15": {
+            "reference": 0.9550845644780452,
+            "final": 0.9543112178584581,
+            "delta_final_minus_reference": -0.0007733466195871674
+          },
+          "trustworthiness_30": {
+            "reference": 0.9407747638363186,
+            "final": 0.9361021153376758,
+            "delta_final_minus_reference": -0.004672648498642795
+          }
+        },
+        "DARG": {
+          "silhouette_2d": {
+            "reference": 0.424761101603508,
+            "final": 0.4551755338907242,
+            "delta_final_minus_reference": 0.030414432287216187
+          },
+          "normalized_within": {
+            "reference": 0.6444051412069701,
+            "final": 0.6137965855093988,
+            "delta_final_minus_reference": -0.03060855569757137
+          },
+          "separation_ratio": {
+            "reference": 2.132276879213144,
+            "final": 2.3730064673098337,
+            "delta_final_minus_reference": 0.24072958809668954
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08128587830080367,
+            "final": 0.08331419823957137,
+            "delta_final_minus_reference": 0.002028319938767703
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.08436662839647914,
+            "final": 0.08737083811710677,
+            "delta_final_minus_reference": 0.0030042097206276347
+          },
+          "trustworthiness_15": {
+            "reference": 0.9536076421232011,
+            "final": 0.9595694423383807,
+            "delta_final_minus_reference": 0.005961800215179558
+          },
+          "trustworthiness_30": {
+            "reference": 0.9439132205533391,
+            "final": 0.9457395267523909,
+            "delta_final_minus_reference": 0.0018263061990517748
+          }
+        },
+        "DARG_JSL": {
+          "silhouette_2d": {
+            "reference": 0.375822052359581,
+            "final": 0.37251995503902435,
+            "delta_final_minus_reference": -0.0033020973205566406
+          },
+          "normalized_within": {
+            "reference": 0.6669113342456171,
+            "final": 0.6764925872659449,
+            "delta_final_minus_reference": 0.009581253020327751
+          },
+          "separation_ratio": {
+            "reference": 1.9604906472517012,
+            "final": 1.904646127770265,
+            "delta_final_minus_reference": -0.055844519481436095
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.12789896670493683,
+            "final": 0.12215843857634903,
+            "delta_final_minus_reference": -0.005740528128587802
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.13406046689628778,
+            "final": 0.13417527745885954,
+            "delta_final_minus_reference": 0.00011481056257175992
+          },
+          "trustworthiness_15": {
+            "reference": 0.9567661059723155,
+            "final": 0.9583917314732578,
+            "delta_final_minus_reference": 0.0016256255009423626
+          },
+          "trustworthiness_30": {
+            "reference": 0.9418303812438529,
+            "final": 0.9378190582752268,
+            "delta_final_minus_reference": -0.004011322968626052
+          }
+        },
+        "DReSP": {
+          "silhouette_2d": {
+            "reference": 0.5786943733692169,
+            "final": 0.5937056243419647,
+            "delta_final_minus_reference": 0.015011250972747803
+          },
+          "normalized_within": {
+            "reference": 0.49918937723022266,
+            "final": 0.47947674048376915,
+            "delta_final_minus_reference": -0.019712636746453516
+          },
+          "separation_ratio": {
+            "reference": 3.3133709273071728,
+            "final": 3.512065895587865,
+            "delta_final_minus_reference": 0.19869496828069222
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.051664753157290466,
+            "final": 0.0527363184079602,
+            "delta_final_minus_reference": 0.0010715652506697315
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05256410256410256,
+            "final": 0.05445847684653655,
+            "delta_final_minus_reference": 0.0018943742824339901
+          },
+          "trustworthiness_15": {
+            "reference": 0.9444409393525839,
+            "final": 0.9443880019351718,
+            "delta_final_minus_reference": -5.293741741208002e-05
+          },
+          "trustworthiness_30": {
+            "reference": 0.9333634209792485,
+            "final": 0.9289090122235119,
+            "delta_final_minus_reference": -0.004454408755736661
+          }
+        }
+      },
+      "by_fold": {
+        "7": {
+          "silhouette_2d": {
+            "reference": 0.4507857859134674,
+            "final": 0.45918044447898865,
+            "delta_final_minus_reference": 0.00839465856552124
+          },
+          "normalized_within": {
+            "reference": 0.6203672658104115,
+            "final": 0.6078431463960617,
+            "delta_final_minus_reference": -0.012524119414349721
+          },
+          "separation_ratio": {
+            "reference": 2.3338847321972844,
+            "final": 2.415002912484824,
+            "delta_final_minus_reference": 0.08111818028753959
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08143895905089935,
+            "final": 0.08404133180252583,
+            "delta_final_minus_reference": 0.002602372751626489
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.08367776502104861,
+            "final": 0.08812667432070416,
+            "delta_final_minus_reference": 0.004448909299655551
+          },
+          "trustworthiness_15": {
+            "reference": 0.9555831825993399,
+            "final": 0.9565384479994801,
+            "delta_final_minus_reference": 0.0009552654001401262
+          },
+          "trustworthiness_30": {
+            "reference": 0.9425964688044658,
+            "final": 0.9393926792446008,
+            "delta_final_minus_reference": -0.003203789559865
+          }
+        },
+        "8": {
+          "silhouette_2d": {
+            "reference": 0.4301997199654579,
+            "final": 0.45412252098321915,
+            "delta_final_minus_reference": 0.02392280101776123
+          },
+          "normalized_within": {
+            "reference": 0.6242273911470893,
+            "final": 0.602713442295171,
+            "delta_final_minus_reference": -0.021513948851918263
+          },
+          "separation_ratio": {
+            "reference": 2.3172295087499784,
+            "final": 2.5097195063345814,
+            "delta_final_minus_reference": 0.19248999758460306
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08815537696134712,
+            "final": 0.08673938002296212,
+            "delta_final_minus_reference": -0.0014159969383849974
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09384806735553004,
+            "final": 0.09557979334098737,
+            "delta_final_minus_reference": 0.0017317259854573303
+          },
+          "trustworthiness_15": {
+            "reference": 0.9493664433637329,
+            "final": 0.9517917488031541,
+            "delta_final_minus_reference": 0.0024253054394212104
+          },
+          "trustworthiness_30": {
+            "reference": 0.9373444245019138,
+            "final": 0.9348921770498021,
+            "delta_final_minus_reference": -0.0024522474521117
+          }
+        }
+      },
+      "by_model_fold": {
+        "SPromptGL_fold07": {
+          "silhouette_2d": {
+            "reference": 0.37108123302459717,
+            "final": 0.42675626277923584,
+            "delta_final_minus_reference": 0.05567502975463867
+          },
+          "normalized_within": {
+            "reference": 0.6972995514547371,
+            "final": 0.635680877398772,
+            "delta_final_minus_reference": -0.061618674055965106
+          },
+          "separation_ratio": {
+            "reference": 1.7842319702384946,
+            "final": 2.1642051805503177,
+            "delta_final_minus_reference": 0.3799732103118232
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.07217757367011099,
+            "final": 0.08036739380022963,
+            "delta_final_minus_reference": 0.008189820130118639
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.07699961729812477,
+            "final": 0.08507462686567165,
+            "delta_final_minus_reference": 0.008075009567546879
+          },
+          "trustworthiness_15": {
+            "reference": 0.9574292001530808,
+            "final": 0.956767414740521,
+            "delta_final_minus_reference": -0.00066178541255979
+          },
+          "trustworthiness_30": {
+            "reference": 0.9439938174291845,
+            "final": 0.9398795520603199,
+            "delta_final_minus_reference": -0.004114265368864611
+          }
+        },
+        "SPromptGL_fold08": {
+          "silhouette_2d": {
+            "reference": 0.3943057358264923,
+            "final": 0.3836533725261688,
+            "delta_final_minus_reference": -0.010652363300323486
+          },
+          "normalized_within": {
+            "reference": 0.6600673710096457,
+            "final": 0.6670136508479336,
+            "delta_final_minus_reference": 0.006946279838287883
+          },
+          "separation_ratio": {
+            "reference": 2.007948086006521,
+            "final": 1.955247513391378,
+            "delta_final_minus_reference": -0.05270057261514283
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08450057405281286,
+            "final": 0.08633754305396096,
+            "delta_final_minus_reference": 0.0018369690011481032
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09112131649445082,
+            "final": 0.09774205893608878,
+            "delta_final_minus_reference": 0.006620742441637961
+          },
+          "trustworthiness_15": {
+            "reference": 0.9527399288030096,
+            "final": 0.9518550209763952,
+            "delta_final_minus_reference": -0.0008849078266144339
+          },
+          "trustworthiness_30": {
+            "reference": 0.9375557102434526,
+            "final": 0.9323246786150319,
+            "delta_final_minus_reference": -0.005231031628420757
+          }
+        },
+        "DARG_fold07": {
+          "silhouette_2d": {
+            "reference": 0.44000622630119324,
+            "final": 0.4710056483745575,
+            "delta_final_minus_reference": 0.030999422073364258
+          },
+          "normalized_within": {
+            "reference": 0.6374426580475497,
+            "final": 0.5974178479699759,
+            "delta_final_minus_reference": -0.04002481007757386
+          },
+          "separation_ratio": {
+            "reference": 2.199921113463239,
+            "final": 2.50101647048079,
+            "delta_final_minus_reference": 0.30109535701755075
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.07386146192116341,
+            "final": 0.0776884806735553,
+            "delta_final_minus_reference": 0.0038270187523918864
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.07619594336012246,
+            "final": 0.08411787217757367,
+            "delta_final_minus_reference": 0.007921928817451213
+          },
+          "trustworthiness_15": {
+            "reference": 0.9528913848753331,
+            "final": 0.9610451913148337,
+            "delta_final_minus_reference": 0.008153806439500588
+          },
+          "trustworthiness_30": {
+            "reference": 0.9414849528159417,
+            "final": 0.9452342258330488,
+            "delta_final_minus_reference": 0.0037492730171071464
+          }
+        },
+        "DARG_fold08": {
+          "silhouette_2d": {
+            "reference": 0.40951597690582275,
+            "final": 0.43934541940689087,
+            "delta_final_minus_reference": 0.029829442501068115
+          },
+          "normalized_within": {
+            "reference": 0.6513676243663905,
+            "final": 0.6301753230488215,
+            "delta_final_minus_reference": -0.021192301317568996
+          },
+          "separation_ratio": {
+            "reference": 2.064632644963049,
+            "final": 2.2449964641388775,
+            "delta_final_minus_reference": 0.18036381917582833
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.08871029468044393,
+            "final": 0.08893991580558745,
+            "delta_final_minus_reference": 0.00022962112514351984
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.09253731343283582,
+            "final": 0.09062380405663988,
+            "delta_final_minus_reference": -0.0019135093761959432
+          },
+          "trustworthiness_15": {
+            "reference": 0.9543238993710692,
+            "final": 0.9580936933619276,
+            "delta_final_minus_reference": 0.0037697939908584166
+          },
+          "trustworthiness_30": {
+            "reference": 0.9463414882907366,
+            "final": 0.9462448276717331,
+            "delta_final_minus_reference": -9.666061900348577e-05
+          }
+        },
+        "DARG_JSL_fold07": {
+          "silhouette_2d": {
+            "reference": 0.4421750009059906,
+            "final": 0.3794807493686676,
+            "delta_final_minus_reference": -0.062694251537323
+          },
+          "normalized_within": {
+            "reference": 0.6105517296411558,
+            "final": 0.6732662766752029,
+            "delta_final_minus_reference": 0.06271454703404711
+          },
+          "separation_ratio": {
+            "reference": 2.3643297992689525,
+            "final": 1.9141140975131823,
+            "delta_final_minus_reference": -0.4502157017557702
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.13011863758132414,
+            "final": 0.1285878300803674,
+            "delta_final_minus_reference": -0.0015308075009567434
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.13027171833141982,
+            "final": 0.13203214695752008,
+            "delta_final_minus_reference": 0.0017604286261002633
+          },
+          "trustworthiness_15": {
+            "reference": 0.9601288730512892,
+            "final": 0.9635667814772293,
+            "delta_final_minus_reference": 0.0034379084259400505
+          },
+          "trustworthiness_30": {
+            "reference": 0.9450418781552332,
+            "final": 0.9422221696808786,
+            "delta_final_minus_reference": -0.002819708474354643
+          }
+        },
+        "DARG_JSL_fold08": {
+          "silhouette_2d": {
+            "reference": 0.3094691038131714,
+            "final": 0.3655591607093811,
+            "delta_final_minus_reference": 0.05609005689620972
+          },
+          "normalized_within": {
+            "reference": 0.7232709388500784,
+            "final": 0.6797188978566869,
+            "delta_final_minus_reference": -0.043552040993391494
+          },
+          "separation_ratio": {
+            "reference": 1.55665149523445,
+            "final": 1.8951781580273477,
+            "delta_final_minus_reference": 0.3385266627928978
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.12567929582854956,
+            "final": 0.11572904707233066,
+            "delta_final_minus_reference": -0.009950248756218902
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.13784921546115575,
+            "final": 0.136318407960199,
+            "delta_final_minus_reference": -0.0015308075009567434
+          },
+          "trustworthiness_15": {
+            "reference": 0.9534033388933417,
+            "final": 0.9532166814692864,
+            "delta_final_minus_reference": -0.00018665742405532537
+          },
+          "trustworthiness_30": {
+            "reference": 0.9386188843324726,
+            "final": 0.9334159468695752,
+            "delta_final_minus_reference": -0.005202937462897461
+          }
+        },
+        "DReSP_fold07": {
+          "silhouette_2d": {
+            "reference": 0.5498806834220886,
+            "final": 0.5594791173934937,
+            "delta_final_minus_reference": 0.00959843397140503
+          },
+          "normalized_within": {
+            "reference": 0.5361751240982031,
+            "final": 0.5250075835402964,
+            "delta_final_minus_reference": -0.011167540557906697
+          },
+          "separation_ratio": {
+            "reference": 2.987056045818452,
+            "final": 3.0806759013950074,
+            "delta_final_minus_reference": 0.09361985557655528
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.04959816303099885,
+            "final": 0.04952162265595102,
+            "delta_final_minus_reference": -7.654037504783301e-05
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05124378109452736,
+            "final": 0.05128205128205128,
+            "delta_final_minus_reference": 3.8270187523919974e-05
+          },
+          "trustworthiness_15": {
+            "reference": 0.951883272317657,
+            "final": 0.9447744044653366,
+            "delta_final_minus_reference": -0.007108867852320455
+          },
+          "trustworthiness_30": {
+            "reference": 0.9398652268175036,
+            "final": 0.9302347694041557,
+            "delta_final_minus_reference": -0.009630457413347893
+          }
+        },
+        "DReSP_fold08": {
+          "silhouette_2d": {
+            "reference": 0.6075080633163452,
+            "final": 0.6279321312904358,
+            "delta_final_minus_reference": 0.020424067974090576
+          },
+          "normalized_within": {
+            "reference": 0.4622036303622422,
+            "final": 0.4339458974272419,
+            "delta_final_minus_reference": -0.028257732935000335
+          },
+          "separation_ratio": {
+            "reference": 3.6396858087958934,
+            "final": 3.943455889780722,
+            "delta_final_minus_reference": 0.3037700809848287
+          },
+          "cross_class_neighbor_rate_15": {
+            "reference": 0.05373134328358209,
+            "final": 0.055951014159969385,
+            "delta_final_minus_reference": 0.002219670876387296
+          },
+          "cross_class_neighbor_rate_30": {
+            "reference": 0.05388442403367776,
+            "final": 0.057634902411021816,
+            "delta_final_minus_reference": 0.0037504783773440534
+          },
+          "trustworthiness_15": {
+            "reference": 0.9369986063875109,
+            "final": 0.9440015994050069,
+            "delta_final_minus_reference": 0.007002993017496073
+          },
+          "trustworthiness_30": {
+            "reference": 0.9268616151409935,
+            "final": 0.927583255042868,
+            "delta_final_minus_reference": 0.0007216399018744601
+          }
+        }
+      }
+    }
+  },
+  "historical_reuse": {
+    "C0": "B5 Fold 7/8 coordinates from historical stage2_coordinates, verified against frozen inputs and reviewed configuration",
+    "C1": "B6 Fold 7/8 coordinates from historical stage2_coordinates, verified against frozen inputs and reviewed configuration"
+  },
+  "formal_generation_policy": "all 40 final embeddings were freshly fitted from the copied frozen 144-dimensional features",
+  "python_version": "3.12.3"
+}

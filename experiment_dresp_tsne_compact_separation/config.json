@@ -1,0 +1,129 @@
+{
+  "experiment": "experiment_dresp_tsne_compact_separation",
+  "description": "DReSP ABIDE t-SNE compactness and class-separation exploratory visualization",
+  "authoritative_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_compact_separation",
+  "history_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_visual_optimization",
+  "models": [
+    "SPromptGL",
+    "DARG",
+    "DARG_JSL",
+    "DReSP"
+  ],
+  "folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "input_patients_per_fold": 871,
+  "feature_dimension": 144,
+  "preprocessing": [
+    "StandardScaler",
+    "PCA(n_components=50, random_state=0)"
+  ],
+  "candidate_count": 13,
+  "candidate_parameters": {
+    "C0": {
+      "perplexity": 100,
+      "early_exaggeration": 16,
+      "learning_rate": 200
+    },
+    "C1": {
+      "perplexity": 150,
+      "early_exaggeration": 24,
+      "learning_rate": 500
+    },
+    "C2": {
+      "perplexity": 80,
+      "early_exaggeration": 24,
+      "learning_rate": 200
+    },
+    "C3": {
+      "perplexity": 100,
+      "early_exaggeration": 24,
+      "learning_rate": 200
+    },
+    "C4": {
+      "perplexity": 100,
+      "early_exaggeration": 32,
+      "learning_rate": 200
+    },
+    "C5": {
+      "perplexity": 100,
+      "early_exaggeration": 48,
+      "learning_rate": 200
+    },
+    "C6": {
+      "perplexity": 100,
+      "early_exaggeration": 32,
+      "learning_rate": 500
+    },
+    "C7": {
+      "perplexity": 150,
+      "early_exaggeration": 32,
+      "learning_rate": 200
+    },
+    "C8": {
+      "perplexity": 150,
+      "early_exaggeration": 32,
+      "learning_rate": 500
+    },
+    "C9": {
+      "perplexity": 150,
+      "early_exaggeration": 48,
+      "learning_rate": 500
+    },
+    "C10": {
+      "perplexity": 150,
+      "early_exaggeration": 64,
+      "learning_rate": 500
+    },
+    "C11": {
+      "perplexity": 200,
+      "early_exaggeration": 24,
+      "learning_rate": 500
+    },
+    "C12": {
+      "perplexity": 200,
+      "early_exaggeration": 32,
+      "learning_rate": 500
+    }
+  },
+  "selected_parameters_file": "results/selected_parameters.json",
+  "selected_candidate": "C5",
+  "selected_parameters": {
+    "perplexity": 100,
+    "early_exaggeration": 48,
+    "learning_rate": 200,
+    "metric": "euclidean",
+    "init": "pca",
+    "random_state": 0,
+    "iterations": 3000,
+    "preprocessing": [
+      "StandardScaler",
+      "PCA(n_components=50, random_state=0)"
+    ]
+  },
+  "scan_folds": [
+    7,
+    8
+  ],
+  "scan_runs": 104,
+  "formal_runs": 40,
+  "sklearn_version": "1.3.2",
+  "sklearn_iteration_argument": "n_iter",
+  "labels_used_only_after_fit": true,
+  "visualization_only": true,
+  "dpi_formal": 600,
+  "image_format": "PNG only",
+  "colors": {
+    "ASD_label_0": "#D98282",
+    "TD_label_1": "#4C9A91"
+  }
+}
