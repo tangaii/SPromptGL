@@ -1,0 +1,76 @@
+{
+  "status": "REPAIRED_AND_RERUN",
+  "failed_worker_invocations": 20,
+  "affected_folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "failed_attempts_per_fold": [
+    {
+      "fold": 3,
+      "attempts": 2
+    },
+    {
+      "fold": 6,
+      "attempts": 2
+    },
+    {
+      "fold": 10,
+      "attempts": 2
+    },
+    {
+      "fold": 1,
+      "attempts": 2
+    },
+    {
+      "fold": 2,
+      "attempts": 2
+    },
+    {
+      "fold": 4,
+      "attempts": 2
+    },
+    {
+      "fold": 5,
+      "attempts": 2
+    },
+    {
+      "fold": 7,
+      "attempts": 2
+    },
+    {
+      "fold": 8,
+      "attempts": 2
+    },
+    {
+      "fold": 9,
+      "attempts": 2
+    }
+  ],
+  "failure": "A diagnostics-only autograd.grad call reused the graph after total.backward().",
+  "stage": "All failures occurred before optimizer.step; no formal epoch update or checkpoint was written.",
+  "repair": "Read the already computed total-loss .grad buffers during training; keep classification-only gradient checks in preflight and independent audit.",
+  "oom_events": 0,
+  "original_verbose_ledger_sha256": "198e5706adafa302b2f282b791fa2f8d61ebedd767cf04ada68aaeb96217f269",
+  "raw_logs": [
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f01.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f02.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f03.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f04.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f05.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f06.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f07.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f08.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f09.stdout.log",
+    ".runtime/logs/E74.2-G1-DCR-RUDAG_f10.stdout.log",
+    ".runtime/logs/controller.jsonl"
+  ]
+}

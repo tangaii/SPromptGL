@@ -1,0 +1,108 @@
+{
+  "experiment": "Experiment 74 — UDAG (Unified Disease-Aware Graph Learning)",
+  "group": "E74-UDAG",
+  "root": "/model/spromptgl/experiment/experiment74_udag",
+  "preferred_root": "/data/adodas/SPromptGL-main/experiment/experiment74_udag",
+  "root_fallback_reason": "OSError errno 5 Input/output error creating preferred experiment directory",
+  "base": {
+    "path": "/model/spromptgl/experiment/experiment69_3_g2_two_rows",
+    "commit": "41dbcb45a0273673857051d8e821b8c3315eef00",
+    "branch": "upload/experiment69-3-g2-two-rows",
+    "group": "E69.3-G2",
+    "run_sha256": "be2d534ea2df90d3b462034ee4c9fc859b3f79507dfba7c62a2faa48aee49c44",
+    "manifest_sha256": "a3620884d501965c9fe71ef51231c693363ba67930a8f084025b47c16f5195f9",
+    "warmup": "/data/adodas/SPromptGL-main/experiment/experiment61_cadr_postalign_vs_e2e/.runtime/warmup"
+  },
+  "data": {
+    "n": 871,
+    "dims": [
+      48,
+      6,
+      10,
+      256
+    ],
+    "modalities": [
+      "PHENO",
+      "ANAT",
+      "FUNC",
+      "CORR"
+    ],
+    "label_encoding": {
+      "ASD": 0,
+      "TD": 1
+    },
+    "outer_folds": 10,
+    "random_state": 10,
+    "shuffle": true,
+    "added_training_rows_by_test_fold": {
+      "2": [
+        377,
+        407
+      ]
+    }
+  },
+  "seed": 0,
+  "optimization": {
+    "gfr": {
+      "class": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "cam": {
+      "class": "Adam",
+      "lr": 0.0038,
+      "weight_decay": 0.11
+    },
+    "cadr": {
+      "class": "AdamW",
+      "lr": 0.001,
+      "weight_decay": 0.01
+    },
+    "warmup_epochs": 10,
+    "max_epochs": 450,
+    "early_stop_wait_gt": 200,
+    "checkpoint": "strict test ACC improvement; post-warmup selection exactly as E69.3-G2",
+    "loss": "L_cls + L_graph + 0.05 L_pair + 0.01 L_adv + 0.01 L_preserve"
+  },
+  "udag": {
+    "edge_gate": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "adaptive_gate_compatibility_values": [
+      0.001,
+      0.001,
+      0.001,
+      0.99
+    ],
+    "adaptive_gate_frozen": true,
+    "positive_threshold": 0.55,
+    "negative_threshold": 0.45,
+    "edge_topk": 12,
+    "original_selected_edge": "A*(1+g*(2*q-1)) for q>=.55 or q<=.45; A otherwise",
+    "fallback_selected_edge": "similarity*2*(q-.5)*g only if A=0 and q>=.55",
+    "unselected_original_edges": "unchanged",
+    "graph_loss": "original GraphLearn adjacency only",
+    "normalize": "unchanged historical normalize_adj(A_tilde+I), adding I once to native GraphLearn adjacency",
+    "gcn_calls_per_modality": 1,
+    "no_oof": true,
+    "no_reliability_multiplier": true
+  },
+  "resources": {
+    "max_workers": 10,
+    "threads_per_worker": 2
+  },
+  "protocol_limits": [
+    "Fold 2 rows 377 and 407 remain test patients and are also training labels after warmup; deliberate historical label exposure.",
+    "val=test checkpoint selection, pre-CV preprocessing and transductive full 871-node graph retained.",
+    "Protocol-matched exploratory mechanism comparison; not unbiased generalization.",
+    "Nine folds without train/test index overlap are separately described; they still retain other historical evaluation limitations."
+  ],
+  "decision_rule": {
+    "GO": "meaningful paired improvement not driven by fold2, no unacceptable AUC/SEN/SPE degradation, active graph/message and net positive intervention evidence",
+    "PARTIAL": "similar diagnosis with simpler computation and actual graph/message changes, or inconsistent benefits",
+    "NO-GO": "material diagnosis degradation or negligible message/intervention effects or benefit confined to fold2"
+  }
+}

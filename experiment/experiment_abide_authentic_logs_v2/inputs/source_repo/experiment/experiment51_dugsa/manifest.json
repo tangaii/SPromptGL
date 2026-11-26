@@ -1,0 +1,86 @@
+{
+  "experiment": "Experiment51_DUGSA",
+  "status": "COMPLETE_AUDITED",
+  "config_sha": "f3447e150bc67ab29860dc0ae4804c194d5607fcbbdeccc9066ae1600c6ba531",
+  "code_sha": {
+    "run.py": "32fc05c0e8c1211947f3003eae74d705eb4087e629b8a6af0fdf1878299a8718",
+    "dugsa.py": "ee59de1eb00fad670a90c732356e2798c31481b9199701ed4bccc6c6c9a76f12",
+    "tests.py": "e56b2bf41b492758e780a98b0d95ad2a3c2deaec49e09e14635264bc3ebc2eaa"
+  },
+  "source_sha": {
+    "network.py": "5542f52d598e2f4d32aaad0c46b80c214fd562f74110a1d0ffcc619b9aefb3d1",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "protected_sha256": {
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e"
+  },
+  "data_shape": [
+    871,
+    320
+  ],
+  "label_counts": [
+    403,
+    468
+  ],
+  "folds": {
+    "1": "0cc747e7624bdd193a94b40b1e3f55441e2b1a3ffc0697125190d0449360eb18",
+    "2": "3f7664e673cb0506cf6cad3725872d3a5274b7b631a81a761224f737c458141b",
+    "3": "d23489a032f584fcacfb62609fc54b7caa38430de4b2d37b0afb057381b20b22",
+    "4": "4dc82f4f258756e661b9f703712a3de0df6334b921fd216e7b57a59232f13328",
+    "5": "8e558ffa6763f924a6e0a5dfb16d7e999f2d074e68cfaa96d738f9318dcea4ca",
+    "6": "d37e616161995f9971c2af773e2c2a4ef3f3757567278c86439a489a95de107c",
+    "7": "8c4c88cc6f1c66c7a707bfbd12f775ffbe518123a9bbd15ca6540848d323e969",
+    "8": "9406e60fa8bca4f17d882166857d5e699abbb5cb680ea3a9d47ad3ef5bbf4962",
+    "9": "1bd7bcf94f0055bd734544210fbe545f0d62629739178c0617ac70ec26bae9c4",
+    "10": "23e618fe3d38d4f038e9cdbdf97af2ee93770d1466444ff36270a44c7f3bce38"
+  },
+  "planned_groups": 12,
+  "historical_e0_folds": 10,
+  "planned_new_folds": 110,
+  "utility_inner_folds": 5,
+  "independent_readback": "110/110_PASS",
+  "diagnostics_rows": 110,
+  "intervention_rows": 40,
+  "utility_rows": 60,
+  "audit_failures": [],
+  "result_sha256": {
+    "results/interventions.csv": "6409a1517ab2a58ec3f28ef99f3ff65174bffb1155dc9f174f55f005573bab6e",
+    "results/diagnostics.csv": "c4c6248b659d7c2d1d77de71fead7557485d06e9e36632e36adcb8d769319ffb",
+    "results/utility_alignment.csv": "25541d01520aec95c231b08ac5069ccb56a3da8b095c7fa6d4b52969f7426b66",
+    "results/summary.csv": "6f5fbf08808dda13f578e0ca4e51c5a69bc4403890e018b3a123fa0cc986b2c7",
+    "results/fold_metrics.csv": "9193879e87a6e7552d28c09d7ad1911e09256ba4f555d2b3338a07fc7bdea3ae",
+    "results/paired_comparisons.csv": "2b51a658e54655251e4d4908cc26b66fdc7f41f64b5a3a177fd69dea6d79a6b7"
+  },
+  "report_sha256": "1ec25289790625b81636528a7c320f078d396119044277e43c4fbba8daf20243",
+  "e0_reference_metrics": {
+    "acc_mean_pct": 91.7293625914,
+    "hard_auc_mean_pct": 91.6045779653,
+    "prob_auc_mean_pct": 93.2321811331,
+    "spe_mean_pct": 93.1359851989,
+    "sen_mean_pct": 90.0731707317
+  },
+  "source_history_audit": {
+    "SPromptGL": "root/network.py,model.py,layers.py,utils.py and paper reviewed",
+    "MGDR": "MICCAI2024 open-access abstract/method reviewed",
+    "MM-GTUNets": "public repository structure/config reviewed",
+    "SMGD": "public repository structure reviewed",
+    "historical_negative_evidence": [
+      "43.2",
+      "47.1",
+      "47.3",
+      "48-50.2"
+    ]
+  },
+  "formal_directory_sync": "PENDING_OSSFS_ERRNO5",
+  "formal_directory": "/data/adodas/SPromptGL-main/experiment/experiment51_dugsa",
+  "scratch_directory": "/tmp/SPromptGL-E51/experiment51_dugsa",
+  "archive": "/tmp/SPromptGL-E51/experiment51_dugsa_complete.tar.gz",
+  "archive_sha256": "e4668c3ae85ac39ab2d1f5ec4cafe9e69db323e84ef43cfbe02875c5605b1a7d"
+}

@@ -1,0 +1,10 @@
+{
+  "fold": 5,
+  "status": "UNCOMMITTED_CAPTURE_ATTEMPT",
+  "failed_transition_epoch": 11,
+  "reason": "A cached base engine retained fold 1's transition wrapper. The fold 5 epoch-11 capture collided with the prior author journal before the official run journal or checkpoint committed the transition.",
+  "durable_run_journal_rows_at_failure": 0,
+  "restart_source_epoch": 10,
+  "formal_attempt_included": false,
+  "recovery": "Restored the frozen transition after each fold and reran fold 5 from epoch 10. The completed fold matches historical Best, Latest, RNG trace, patient outputs, and next-step restoration."
+}
