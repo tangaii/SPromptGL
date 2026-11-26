@@ -1,6 +1,6 @@
 # ABIDE Authentic Training Log Reconstruction v2
 
-The three training stages completed on physical GPU 0. The final audit distinguishes verified historical state and RNG evidence from unavailable raw outputs for a subset of older epoch metrics.
+The three training stages completed on physical GPU 0. Independent metric recalculation evidence is complete for all required Warmup, DARG, and DPSL audit points. E61 source-byte provenance remains unresolved.
 Recovered source snapshot: `https://github.com/tangaii/SPromptGL.git` branch `main` commit `7754df1978286a53a8b86a88af748fc444ace933` (Add experiment_abide training logs).
 
 - Warmup: WARMUP_EXACT_REPLAY_PASS, 10/10 folds, epoch-10 endpoint correct 475/871.
@@ -8,8 +8,8 @@ Recovered source snapshot: `https://github.com/tangaii/SPromptGL.git` branch `ma
 - DPSL: TRAINED_AUDITED_EXACT_FROM_WARMUP, 10/10 folds, 811/871 correct.
 - All three author-format logs pass exact row formatting, field ordering, summary formatting, timing, and attention-map checks.
 - Ten randomly selected DPSL training epochs, one per fold, were independently recomputed from stored train logits and labels for both train and validation metrics.
-- Warmup and DARG per-epoch raw train logits were not archived. Their live-loop scalar records and final outputs were checked, but the raw-output recalculation criterion remains open.
-- COMPLETE_AUDITED_THREE_STAGE_LOG_RECONSTRUCTION is withheld because the Warmup and DARG raw-output recalculation criterion is not verifiable.
+- Warmup and DARG per-epoch raw train logits were captured in this closure replay and independently recalculated. DPSL's existing ten raw-logit samples were revalidated.
+- `METRIC_RECALCULATION_COMPLETE_AUDITED` is reached. `COMPLETE_AUDITED_THREE_STAGE_LOG_RECONSTRUCTION` remains withheld because the historical E61 run.py source-byte provenance discrepancy is unresolved.
 
 ## Logs
 
@@ -49,8 +49,19 @@ Recovered source snapshot: `https://github.com/tangaii/SPromptGL.git` branch `ma
 - DARG and DPSL Best/Latest tensors, per-epoch RNG, patient predictions/probabilities, and post-Latest restoration witnesses match their frozen reference archives in 10/10 folds.
 - DPSL adapter preflights and complete per-update journals preserve the 19 overlap patients in the DARG path while excluding them from new-module legal supervision and EMA/Gaussian statistics. The original transition enforces zero excluded-row residual and the configured residual bound.
 - The frozen historical file inventory passed SHA-256 verification for 1423 files. The original author log SHA-256 is `9eaed7f09d031aa751d9473201bfa25eba4b50992a4e6f723c37064e620f851f`.
-- Earlier experiment manifests record the root attention-map, graph, and dialogue paths as pre-existing local changes. This run did not modify those paths. The current project worktree is clean, and the frozen SHA inventory and task-specific source hashes pass.
+- The project worktree contains pre-existing local changes. This run did not clean or overwrite them. Current status contains 15669 porcelain lines with SHA-256 `27252f5419a359e316b04660d078e010fd2cfabda8970bfa4980887719ecafcc`; the protected historical SHA inventory passes.
 - One preserved fold-2 DPSL partial attempt lacked author capture and was excluded from results. The formal fold was rerun from epoch 10 and matches the archive. A fold-5 capture attempt stopped before durable commit and was also restarted from epoch 10.
 - The fold-2 unlogged checkpoints and journal are preserved under `DPSL/failed_attempts/fold02_unlogged/`.
-- Warmup and DARG raw train outputs are the only remaining audit limitation. See `audit_status.json` and `metrics.csv` for the machine-readable results.
+- The remaining audit limitation is E61 source provenance. The complete metric-recalculation evidence is in `results/metric_recalculation/independent_metric_audit.json`.
 
+
+## Independent metric recalculation closure
+
+- Status: `METRIC_RECALCULATION_COMPLETE_AUDITED`. Warmup was independently recomputed from 100 captured train/evaluation logits and labels across 10 folds. DARG was deterministically replayed from E61 epoch 10 for 30 frozen audit points, with internal epochs 11, one precommitted intermediate epoch, and historical Best per fold. All 130 points matched independently calculated ACC, Hard-AUC/BA, Prob-AUC, SEN, SPE, and ASD-F1, with the four-decimal author-log fields matching exactly. Prob-AUC comparison allows the documented 1e-5 CPU/GPU exponential rounding tolerance.
+- DPSL's existing 10/10 raw-logit evidence was read back and remains `PASS`. No DPSL training or formal model output was changed.
+- The independent calculator uses NumPy argmax and scikit-learn `balanced_accuracy_score`, `roc_auc_score`, `recall_score`, and `f1_score`. It does not call the training `classification_metrics()` implementation.
+- Warmup and DARG capture archives are under `results/metric_recalculation/`. The DARG sampling plan SHA-256 is `cdc90180708714150da85fce0c94e760478ec5f51b76a820eb5f57eccfb3598b`.
+- Reference commit `233ddcd16a9bca24c22ef2e08ebbbc29273f172d` contains the packaged vendor E61 source at `experiment/DPSL/code/vendor/repo/experiment/experiment61_cadr_postalign_vs_e2e/run.py`, SHA-256 `f67b8b11fbe0619fa4a942fa84ce04dca2ae8dac97168e43e7c9087b95b9b0c5`. Its differences are path/runtime adapter constants and imports, so it does not explain the historical checkpoint hash.
+- E61 source provenance remains `SOURCE_PROVENANCE_DISCREPANCY_UNRESOLVED`. `run.py` source SHA recorded in historical checkpoints is `77b0ba096a46df53f69c6b570f1dbbd6f6907f7ada3b2a67b4092f3e0750412b`. The recovered `run.py` is `f5bd8236b6a5f66903f56a01832caab6c21177238f24676562f536df3af2b334` and is byte-identical to GitHub commit `31ced6bdd279654154b90dc2ece056d8e435df2b`. No source override or checkpoint modification was used.
+- The project worktree contains pre-existing local changes. This run did not clean or overwrite them. Current `git status --porcelain=v1 --untracked-files=all` has 15669 lines with SHA-256 `27252f5419a359e316b04660d078e010fd2cfabda8970bfa4980887719ecafcc`. The protected historical SHA inventory remains PASS for 1423 files.
+- Overall status: `INCOMPLETE_SOURCE_PROVENANCE`. The metric-recalculation evidence is complete, but the requested full three-stage status remains withheld because historical E61 `run.py` byte provenance is unresolved.
