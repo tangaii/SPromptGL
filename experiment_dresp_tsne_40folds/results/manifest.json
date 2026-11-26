@@ -1,0 +1,108 @@
+{
+  "status": "COMPLETE_AUDITED_TSNE_40_WITH_E28_METRIC_PARITY",
+  "authoritative_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds",
+  "preflight": {
+    "E28_E0_P0_seed0": {
+      "status": "BLOCKED",
+      "reason": "No authoritative E28 E0_P0 seed=0 fold Best checkpoints found in the formal directory or searched local archives. The available experiment1 P0 checkpoints are from a separate experiment and were not substituted."
+    },
+    "E74.4_G2": {
+      "status": "PRESENT",
+      "directory": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints"
+    },
+    "DARG_JSL": {
+      "status": "PRESENT",
+      "directory": "/model/spromptgl/experiment/experiment_darg_jsl/checkpoints",
+      "formal_status": "COMPLETE_AUDITED"
+    },
+    "DReSP_E82.4.6.10_G1": {
+      "status": "PRESENT",
+      "directory": "/model/spromptgl/experiment/DPSL/checkpoints",
+      "formal_status": "COMPLETE_AUDITED_STANDALONE"
+    }
+  },
+  "execution": {
+    "feature_extractions": 0,
+    "tsne_runs": 0,
+    "individual_png": 0,
+    "comparison_png": 0
+  },
+  "protection": "No historical experiment source, checkpoint, or result files were modified.",
+  "preflight_preserved": {
+    "E28_E0_P0_seed0": {
+      "status": "BLOCKED",
+      "reason": "No authoritative E28 E0_P0 seed=0 fold Best checkpoints found in the formal directory or searched local archives. The available experiment1 P0 checkpoints are from a separate experiment and were not substituted."
+    },
+    "E74.4_G2": {
+      "status": "PRESENT",
+      "directory": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints"
+    },
+    "DARG_JSL": {
+      "status": "PRESENT",
+      "directory": "/model/spromptgl/experiment/experiment_darg_jsl/checkpoints",
+      "formal_status": "COMPLETE_AUDITED"
+    },
+    "DReSP_E82.4.6.10_G1": {
+      "status": "PRESENT",
+      "directory": "/model/spromptgl/experiment/DPSL/checkpoints",
+      "formal_status": "COMPLETE_AUDITED_STANDALONE"
+    }
+  },
+  "model_sources": {
+    "SPromptGL": {
+      "experiment": "E28-E0 (P0)",
+      "seed": 0,
+      "checkpoint_dir": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds/checkpoints/E28_E0_seed0"
+    },
+    "DARG": {
+      "experiment": "E74.4-G2",
+      "checkpoint_dir": "/data/adodas/SPromptGL-main/experiment/experiment74_4_soft_positive_dcr/.runtime/checkpoints"
+    },
+    "DARG_JSL": {
+      "experiment": "DARG + JSL",
+      "checkpoint_dir": "/model/spromptgl/experiment/experiment_darg_jsl/checkpoints"
+    },
+    "DReSP": {
+      "experiment": "E82.4.6.10-G1",
+      "checkpoint_dir": "/model/spromptgl/experiment/DPSL/checkpoints"
+    }
+  },
+  "e28_retrain": {
+    "status": "E28_E0_SEED0_RETRAIN_PARITY_PASS",
+    "checkpoint_sha256": {
+      "fold01.best.pt": "5ee45372efd01505b47d008b683edd7dee3bb16902b2d1f68d3e2856120ffa50",
+      "fold01.latest.pt": "83877a45fe4f9c7d371e2bf23b6090b703a0b3f8e80eec3aeae256e0851d7cde",
+      "fold02.best.pt": "0995617838f15c10c5bfd1741e950289ffcb34a87be535281ebc06dbbbb9713c",
+      "fold02.latest.pt": "988fb1a7e10f0202ef31aa129aa8228e33d21d81454798bd1fb288de737dd46f",
+      "fold03.best.pt": "de25c0b6942387735a479a277f5cea1345f1f4e4de75f570fed6c386835871ce",
+      "fold03.latest.pt": "7cf0f4beda431ee35e4346ecce3581520111f10c71d961b28021398c17986b63",
+      "fold04.best.pt": "700c1a1a19b0f0016db52870681fcea6699aa6f10672c934d2894ea6a21690f1",
+      "fold04.latest.pt": "9051aa67fbc79d78a2dbe0e3790ccd7af58a49224df1de14429a9bcf33a7df2e",
+      "fold05.best.pt": "5ae8d904c15f0c2e82731f12d472929e7a00c20f739fdd2b12359d38209cf5f4",
+      "fold05.latest.pt": "3e0101c667085159bbd915c659d41c9871e2a738cb8e0b7d2b511c7e98906705",
+      "fold06.best.pt": "2186ab99bfebacdd6a420419d5bc489547779ca6ea59fa7528ba248e3da5488e",
+      "fold06.latest.pt": "cdf480f5a9cc6433eeaf322f61354a159d3c55af98a574f22c63e4480eaf3fc0",
+      "fold07.best.pt": "01639e2c86ae9e24fd14013971d02a228d5908edc0146df565483363612d7a48",
+      "fold07.latest.pt": "ea2fa28d831625e3fbd2494f1cfbe5f08e6066cad6a3d790e58c07d4fc3a59ce",
+      "fold08.best.pt": "95e35d7733b826f3aacf50e9f4db9643b1198d005217d125160ee3cca8606ec7",
+      "fold08.latest.pt": "5d12affa3863b22a60f8626ef8bb19df3b474a1742f098b754bbb18ac6041f58",
+      "fold09.best.pt": "22732d199333d071ea2e63b1c2c16617c0b6ded2fbb6986fc1c241abb17d2510",
+      "fold09.latest.pt": "d1089e6c326f5a997c496c9d46d4394266d0c044bca506497509d6019bd7f356",
+      "fold10.best.pt": "bf42a1e1c23eefd9c5cfc75dc2211c9e1f2d03c7c1c7a9733cf55ae20f0c3831",
+      "fold10.latest.pt": "4955d1eb80c997bb9b7889880f4fd2bf8f2abb58a6462bdb4381b7a8b1814c95"
+    },
+    "historical_best_byte_identity_proven": false,
+    "log": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds/results/E28_E0_seed0/result_ABIDE.txt"
+  },
+  "feature_extractions": 40,
+  "feature_shape": [
+    871,
+    144
+  ],
+  "feature_archive": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds/results/features_all_folds.npz",
+  "tsne_coordinate_rows": 34840,
+  "individual_png": 40,
+  "comparison_png": 10,
+  "audit_status": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds/results/audit_status.json",
+  "historical_files_modified": false
+}

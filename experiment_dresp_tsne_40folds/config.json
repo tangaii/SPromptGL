@@ -1,0 +1,48 @@
+{
+  "experiment": "DReSP ABIDE 40-fold t-SNE feature audit",
+  "status": "COMPLETE_AUDITED_TSNE_40_WITH_E28_METRIC_PARITY",
+  "dataset": "ABIDE",
+  "expected_patients": 871,
+  "models": [
+    "SPromptGL",
+    "DARG",
+    "DARG_JSL",
+    "DReSP"
+  ],
+  "seed": 0,
+  "folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "feature_stage": "patient-level feature before classifier; JSL and DPSL use enhanced CAM, expected width 144",
+  "tsne": {
+    "random_state": 0,
+    "n_components": 2,
+    "perplexity": 40,
+    "early_exaggeration": 12,
+    "learning_rate": "auto",
+    "init": "pca",
+    "max_iter": 2000,
+    "metric": "euclidean",
+    "preprocessing": "StandardScaler then PCA to 50 dimensions"
+  },
+  "plot": {
+    "ASD": "#D98282",
+    "TD": "#4C9A91",
+    "dpi": 600
+  },
+  "authoritative_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_40folds",
+  "feature_extractions": 40,
+  "figures": {
+    "individual_png": 40,
+    "comparison_png": 10
+  }
+}

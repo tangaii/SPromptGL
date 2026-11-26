@@ -1,0 +1,573 @@
+{
+  "experiment": "28 IA-FDSA",
+  "status": "PREFLIGHT_PASS",
+  "started_utc": "2026-11-26T04:26:49.846169+00:00",
+  "prepared_utc": "2026-11-26T04:27:05.204666+00:00",
+  "prepare_seconds": 15.358507804572582,
+  "source_local_head": "c7e2edbb8c56bdfc416b708da0ec6d743b0ed7d4",
+  "source_remote_head": "5e88a9dfeff47735e0a5e09a06672161c3b9c1da",
+  "source_remote_core_identical": true,
+  "source_sha256": {
+    "main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67",
+    "ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763"
+  },
+  "data_sha256": {
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+    "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_111_labels.csv": "4f9cd719d27c1e8b9a6cf8933534c0b796101cacf248e509fcfd3c5868fa3ebf"
+  },
+  "protected_files_sha256": {
+    "/data/adodas/SPromptGL-main/ABIDE-simple-2-concat-weighted-cosine.sh": "28c219e7c2deef4078cf8c28dd1b72f06f7494e997b9e38f0d933271521d5763",
+    "/data/adodas/SPromptGL-main/data/ABIDE/modal_feat_dict.npy": "8fbc23f7933b831ad77693fd75e3bca3f295f7efa9fbe5e19b8a1b7abf6f041e",
+    "/data/adodas/SPromptGL-main/data/ABIDE/processed_standard_data.csv": "b58317f1c37fc60a957f946a32dc68dcaa79d46b72d77670b1f5b53d8db57fe1",
+    "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_111_labels.csv": "4f9cd719d27c1e8b9a6cf8933534c0b796101cacf248e509fcfd3c5868fa3ebf",
+    "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/roi_256_named_mapping.csv": "b383308bb413a94d1646511a9bea5bc16f54c975b938ac4d947d676e357c5eb2",
+    "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/e28_integration.py": "3b0c6a0114caf87d989e8af7bd905a26c3ab0661c358ecb8bdfc0869c9d585c2",
+    "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/e28_method.py": "f162285872dcfda9d894ee4b163556a030bda152775720b90629dd26743c3a44",
+    "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/e28_prompts.py": "0c5f09f23e3c0ca9db1f2292cfd957f04f779bab2eb213d5a97a7a947c6a4cb5",
+    "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/manifest.json": "db8c669976e11b69e8921669c72751233c73b212090c2368d78bf51bb4769f30",
+    "/data/adodas/SPromptGL-main/experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/run.py": "47ae00a8c98015cd9cd82bcb63ef1394343cf1edc09153fc03d2fa3e6f36956a",
+    "/data/adodas/SPromptGL-main/layers.py": "4f7c07861bdeeb35fe156448aac4b32bae1b2f813c957d679f50dbd0225e819a",
+    "/data/adodas/SPromptGL-main/main.py": "dbcec1c06dbe42de3b8750d25d49e206aefb13108e0c7032a6b063459ddfb0e2",
+    "/data/adodas/SPromptGL-main/model.py": "254a9d757d5a891e5191b284b9ee4756926804688b1923358e607c1552580cda",
+    "/data/adodas/SPromptGL-main/network.py": "484b61d95b7202140400d361de35fe6ecbce95c8d9823b476027de0059929fec",
+    "/data/adodas/SPromptGL-main/result_ABIDE.txt": "9eaed7f09d031aa751d9473201bfa25eba4b50992a4e6f723c37064e620f851f",
+    "/data/adodas/SPromptGL-main/utils.py": "95a8cd0326bc95e90ff4e0a5fc85ebc2b4fd2150955bc975a604374d81267b67"
+  },
+  "protected_file_count": 16,
+  "original_handoff_size": 1052225,
+  "original_handoff_sha256": "010d71646d49e520f61ab2c65bae56dcb4d821dfbc0f5d1f021569112216a6cc",
+  "original_git_status": " M attn/attn_map_ABIDE.npy\n M \"codex\\345\\257\\271\\350\\257\\235\"\n D experiment/experiment1_modality_aware_semantic_prompt/README.md\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed0.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed1.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P0_seed2.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed0.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed1.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P1_seed2.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed0.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed1.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P2_seed2.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed0.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed1.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/P3_seed2.log\n D experiment/experiment1_modality_aware_semantic_prompt/logs/scheduler.log\n D experiment/experiment1_modality_aware_semantic_prompt/prompt_patch.diff\n D experiment/experiment1_modality_aware_semantic_prompt/prompts.json\n D experiment/experiment1_modality_aware_semantic_prompt/results/fold_results.csv\n D experiment/experiment1_modality_aware_semantic_prompt/results/report.md\n D experiment/experiment1_modality_aware_semantic_prompt/results/summary.csv\n D experiment/experiment1_modality_aware_semantic_prompt/run.py\n D experiment/experiment1_modality_aware_semantic_prompt/source_hashes.json\n D experiment/experiment2_contrastive_state_prompts/README.md\n D experiment/experiment2_contrastive_state_prompts/logs/V2S_seed0.log\n D experiment/experiment2_contrastive_state_prompts/logs/V2S_seed1.log\n D experiment/experiment2_contrastive_state_prompts/logs/V2S_seed2.log\n D experiment/experiment2_contrastive_state_prompts/logs/V2_seed0.log\n D experiment/experiment2_contrastive_state_prompts/logs/V2_seed1.log\n D experiment/experiment2_contrastive_state_prompts/logs/V2_seed2.log\n D experiment/experiment2_contrastive_state_prompts/logs/scheduler.log\n D experiment/experiment2_contrastive_state_prompts/prompt_patch.diff\n D experiment/experiment2_contrastive_state_prompts/prompts.json\n D experiment/experiment2_contrastive_state_prompts/results/fold_results.csv\n D experiment/experiment2_contrastive_state_prompts/results/reference_fold_results.csv\n D experiment/experiment2_contrastive_state_prompts/results/report.md\n D experiment/experiment2_contrastive_state_prompts/results/summary.csv\n D experiment/experiment2_contrastive_state_prompts/run.py\n D experiment/experiment2_contrastive_state_prompts/source_hashes.json\n D experiment/experiment43_corr_anchored_gfr_audit/README.md\n D experiment/experiment43_corr_anchored_gfr_audit/audit.py\n D experiment/experiment43_corr_anchored_gfr_audit/config.json\n D experiment/experiment43_corr_anchored_gfr_audit/integration.patch\n D experiment/experiment43_corr_anchored_gfr_audit/integration.py\n D experiment/experiment43_corr_anchored_gfr_audit/manifest.json\n D experiment/experiment43_corr_anchored_gfr_audit/method.py\n D experiment/experiment43_corr_anchored_gfr_audit/results/diagnostics.csv\n D experiment/experiment43_corr_anchored_gfr_audit/results/fold_metrics.csv\n D experiment/experiment43_corr_anchored_gfr_audit/results/loss_trace.csv\n D experiment/experiment43_corr_anchored_gfr_audit/results/report.md\n D experiment/experiment43_corr_anchored_gfr_audit/results/summary.csv\n D experiment/experiment43_corr_anchored_gfr_audit/run.py\n D experiment/experiment44_counterfactual_utility_graph_learning/README.md\n D experiment/experiment44_counterfactual_utility_graph_learning/config.json\n D experiment/experiment44_counterfactual_utility_graph_learning/cugl.py\n D experiment/experiment44_counterfactual_utility_graph_learning/integration.py\n D experiment/experiment44_counterfactual_utility_graph_learning/manifest.json\n D experiment/experiment44_counterfactual_utility_graph_learning/results/counterfactual.csv\n D experiment/experiment44_counterfactual_utility_graph_learning/results/diagnostics.csv\n D experiment/experiment44_counterfactual_utility_graph_learning/results/fold_metrics.csv\n D experiment/experiment44_counterfactual_utility_graph_learning/results/report.md\n D experiment/experiment44_counterfactual_utility_graph_learning/results/summary.csv\n D experiment/experiment44_counterfactual_utility_graph_learning/run.py\n D experiment/experiment44_counterfactual_utility_graph_learning/teacher.py\n D experiment/experiment45_1_pid_correction_reaudit/README.md\n D experiment/experiment45_1_pid_correction_reaudit/audit.py\n D experiment/experiment45_1_pid_correction_reaudit/config.json\n D experiment/experiment45_1_pid_correction_reaudit/integration.py\n D experiment/experiment45_1_pid_correction_reaudit/manifest.json\n D experiment/experiment45_1_pid_correction_reaudit/method.py\n D experiment/experiment45_1_pid_correction_reaudit/pid_estimator.py\n D experiment/experiment45_1_pid_correction_reaudit/results/before_after.csv\n D experiment/experiment45_1_pid_correction_reaudit/results/code_audit.json\n D experiment/experiment45_1_pid_correction_reaudit/results/gate_power_calibration.json\n D experiment/experiment45_1_pid_correction_reaudit/results/pid_diagnostics.csv\n D experiment/experiment45_1_pid_correction_reaudit/results/pid_pairs.csv\n D experiment/experiment45_1_pid_correction_reaudit/results/pid_weights.csv\n D experiment/experiment45_1_pid_correction_reaudit/results/report.md\n D experiment/experiment45_1_pid_correction_reaudit/run.py\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/README.md\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/config.json\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/integration.py\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/manifest.json\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/method.py\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/pid_estimator.py\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/execution_ledger.json\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/fold_metrics.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/mechanism_diagnostics.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/paired_comparisons.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/pid_diagnostics.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/pid_pairs.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/pid_weights.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/report.md\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/results/summary.csv\n D experiment/experiment45_pid_guided_graph_adversarial_alignment/run.py\n D experiment/experiment46_patient_graph_incremental_value_probe/README.md\n D experiment/experiment46_patient_graph_incremental_value_probe/audit.py\n D experiment/experiment46_patient_graph_incremental_value_probe/config.json\n D experiment/experiment46_patient_graph_incremental_value_probe/integration.py\n D experiment/experiment46_patient_graph_incremental_value_probe/manifest.json\n D experiment/experiment46_patient_graph_incremental_value_probe/probe.py\n D experiment/experiment46_patient_graph_incremental_value_probe/results/diagnostics.csv\n D experiment/experiment46_patient_graph_incremental_value_probe/results/fold_metrics.csv\n D experiment/experiment46_patient_graph_incremental_value_probe/results/report.md\n D experiment/experiment46_patient_graph_incremental_value_probe/results/summary.csv\n D experiment/experiment46_patient_graph_incremental_value_probe/run.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/README.md\n D experiment/experiment47_3_patient_graph_relation_value_verification/audit.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/config.json\n D experiment/experiment47_3_patient_graph_relation_value_verification/finalize.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/handoff_append.md\n D experiment/experiment47_3_patient_graph_relation_value_verification/integration.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/integration_base.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/manifest.json\n D experiment/experiment47_3_patient_graph_relation_value_verification/parity_check.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/relation_controls.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/repair_audit.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/corrected_scale_audit.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f01.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f01.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f02.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f02.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f03.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f03.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f04.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f04.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f05.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f05.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f06.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f06.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f07.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f07.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f08.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f08.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f09.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f09.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f10.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d4_f10.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f01.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f01.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f02.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f02.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f03.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f03.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f04.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f04.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f05.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f05.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f06.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f06.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f07.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f07.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f08.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f08.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f09.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f09.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f10.metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/d5_f10.trajectory.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/fold_metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/interventions.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/null_gates.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/original_D2_effectiveness.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/paired_analysis.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/patient_corrections.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/report.md\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/strong_null_checks.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/strong_null_effectiveness.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/strong_null_structure.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/summary_metrics.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/results/unified_loss_audit.csv\n D experiment/experiment47_3_patient_graph_relation_value_verification/run.py\n D experiment/experiment47_3_patient_graph_relation_value_verification/train.py\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/README.md\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/audit.py\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/config.json\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/manifest.json\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/method.py\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/diagnostics.csv\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/fold_metrics.csv\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/paired_comparisons.csv\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/report.md\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/site_diagnostics.csv\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/results/summary.csv\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/run.py\n D experiment/experiment48_1_dgaa_r_disease_conditional_alignment/site_diagnostics.py\n D experiment/experiment48_2_care_gfr/README.md\n D experiment/experiment48_2_care_gfr/audit.py\n D experiment/experiment48_2_care_gfr/config.json\n D experiment/experiment48_2_care_gfr/finalize_report.py\n D experiment/experiment48_2_care_gfr/manifest.json\n D experiment/experiment48_2_care_gfr/method.py\n D experiment/experiment48_2_care_gfr/results/diagnostics.csv\n D experiment/experiment48_2_care_gfr/results/fold_metrics.csv\n D experiment/experiment48_2_care_gfr/results/paired_comparisons.csv\n D experiment/experiment48_2_care_gfr/results/report.md\n D experiment/experiment48_2_care_gfr/results/site_diagnostics.csv\n D experiment/experiment48_2_care_gfr/results/summary.csv\n D experiment/experiment48_2_care_gfr/run.py\n D experiment/experiment48_2_care_gfr/site_diagnostics.py\n D experiment/experiment50_1_c2r_corrected/README.md\n D experiment/experiment50_1_c2r_corrected/audit.py\n D experiment/experiment50_1_c2r_corrected/config.json\n D experiment/experiment50_1_c2r_corrected/config_base50.json\n D experiment/experiment50_1_c2r_corrected/integration.py\n D experiment/experiment50_1_c2r_corrected/manifest.json\n D experiment/experiment50_1_c2r_corrected/model50_1.py\n D experiment/experiment50_1_c2r_corrected/results/diagnostics.csv\n D experiment/experiment50_1_c2r_corrected/results/fold_metrics.csv\n D experiment/experiment50_1_c2r_corrected/results/interventions.csv\n D experiment/experiment50_1_c2r_corrected/results/paired_comparisons.csv\n D experiment/experiment50_1_c2r_corrected/results/report.md\n D experiment/experiment50_1_c2r_corrected/results/summary.csv\n D experiment/experiment50_1_c2r_corrected/run.py\n D experiment/experiment50_1_c2r_corrected/source/layers.py\n D experiment/experiment50_1_c2r_corrected/source/network.py\n D experiment/experiment50_1_c2r_corrected/source/utils.py\n D experiment/experiment50_1_c2r_corrected/tests.py\n D experiment/experiment50_c2r_align/README.md\n D experiment/experiment50_c2r_align/audit.py\n D experiment/experiment50_c2r_align/config.json\n D experiment/experiment50_c2r_align/integration.py\n D experiment/experiment50_c2r_align/manifest.json\n D experiment/experiment50_c2r_align/model50.py\n D experiment/experiment50_c2r_align/results/diagnostics.csv\n D experiment/experiment50_c2r_align/results/fold_metrics.csv\n D experiment/experiment50_c2r_align/results/interventions.csv\n D experiment/experiment50_c2r_align/results/paired_comparisons.csv\n D experiment/experiment50_c2r_align/results/report.md\n D experiment/experiment50_c2r_align/results/summary.csv\n D experiment/experiment50_c2r_align/run.py\n D experiment/experiment53_2_cadr_gfr_integrated/audit.py\n D experiment/experiment53_2_cadr_gfr_integrated/cadr_gfr.py\n D experiment/experiment53_2_cadr_gfr_integrated/config.json\n D experiment/experiment53_2_cadr_gfr_integrated/config_cadr0001_gfr011_seeds.json\n D experiment/experiment53_2_cadr_gfr_integrated/config_cadr0001_gfr_sweep.json\n D experiment/experiment53_2_cadr_gfr_integrated/config_cadr_gfr_joint_wd_low_sweep.json\n D experiment/experiment53_2_cadr_gfr_integrated/config_cadr_gfr_joint_wd_sweep.json\n D experiment/experiment53_2_cadr_gfr_integrated/config_cadr_wd_sweep.json\n D experiment/experiment53_2_cadr_gfr_integrated/design.md\n D experiment/experiment53_2_cadr_gfr_integrated/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr011_seeds/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr011_seeds/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr011_seeds/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr011_seeds/result_table.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr011_seeds/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr_sweep/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr_sweep/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr_sweep/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr_sweep/result_table.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr0001_gfr_sweep/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_low_sweep/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_low_sweep/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_low_sweep/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_low_sweep/result_table.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_low_sweep/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_sweep/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_sweep/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_sweep/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_sweep/result_table.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_gfr_joint_wd_sweep/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_wd_sweep/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_wd_sweep/manifest.json\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_wd_sweep/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_wd_sweep/result_table.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/cadr_wd_sweep/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/checkpoint_audit.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/diagnostics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/fold_metrics.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/interventions.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/paired_comparisons.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/preflight.csv\n D experiment/experiment53_2_cadr_gfr_integrated/results/report.md\n D experiment/experiment53_2_cadr_gfr_integrated/results/summary.csv\n D experiment/experiment53_2_cadr_gfr_integrated/run.py\n D experiment/experiment53_2_cadr_gfr_integrated/run_cadr_gfr_joint_wd_sweep.py\n D experiment/experiment53_2_cadr_gfr_integrated/run_cadr_seed_sweep.py\n D experiment/experiment53_2_cadr_gfr_integrated/run_cadr_wd_sweep.py\n M graph/ABIDE_weighted-cosine_graph_.npz\n M handoff.md\n?? \"2025 MICCAI BrainPrompt\\343\\200\\201 Multi-Level Brain Prompt Enhancement for Neurological Condition Identification.pdf\"\n?? \"2026 ICME SABER\\343\\200\\201 A Semantic-Aligned Brain Network Analysis Framework via Multi-scale Hypergraphs.pdf\"\n?? analysis/\n?? dataset/\n?? experiment/.model_migration_existing/\n?? experiment/_archive/\n?? experiment/b0_b_seed0_full10fold/\n?? experiment/experiment11_roi_mapping_recovery/\n?? experiment/experiment12_roi_semantic_alignment_feasibility/\n?? experiment/experiment13_patient_specific_fc_prompt/\n?? experiment/experiment14_hierarchical_semantic_prompt/\n?? experiment/experiment15_anatomically_anchored_roi_prompt/\n?? experiment/experiment16_roi_semantic_pathway_repair/\n?? experiment/experiment17_disease_semantic_selective_alignment/\n?? experiment/experiment18_discriminability_preserving_selective_alignment/\n?? experiment/experiment19_contrastive_disease_evidence_alignment/\n?? experiment/experiment21_evidence_constrained_adaptive_alignment/\n?? experiment/experiment22_concept_conditioned_signed_connectivity/\n?? experiment/experiment24_conflict_aware_relational_alignment/\n?? experiment/experiment25_evidence_preserving_asymmetric_graph_calibration/\n?? experiment/experiment27_evidence_grounded_relational_prompt_cam/\n?? experiment/experiment28_imaging_anchored_finegrained_semantic_alignment/\n?? experiment/experiment29_connectivity_semantic_selective_auxiliary/\n?? experiment/experiment30_class_conditional_semantic_shared_repair/\n?? experiment/experiment48_4_verified_apcr/\n?? experiment/experiment51_4_d3sag/\n?? experiment/experiment52_drap_parametric_gcn_wd011/\n?? experiment/experiment53_1_drap_corrected_adversarial_propagation/.runtime/\n?? experiment/experiment53_3_cadr_graph_fallback_fix/.runtime/\n?? experiment/experiment53_drap_disease_relation_propagation/\n?? experiment/experiment54_d2arg/\n?? experiment/experiment55_dcraa_gfr/.runtime/\n?? experiment/experiment56_1_dcraag_gfr_repair/\n?? experiment/experiment56_2_dcraag_gfr_r2/checkpoints/\n?? experiment/experiment56_2_dcraag_gfr_r2/runtime/\n?? experiment/experiment56_dcraag_gfr/\n?? experiment/experiment57_dcraag_gfr_v2/\n?? experiment/experiment60_dss_pen/\n?? experiment/experiment61_cadr_postalign_vs_e2e/\n?? experiment/experiment62_e2e_gate_init_sensitivity/\n?? experiment/experiment63_corr_gate_init_refinement/\n?? experiment/experiment64_corr_fusion_gate_sensitivity/\n?? experiment/experiment65_wd_sensitivity/\n?? experiment/experiment67_e62_direct_scale_gate_lr/\n?? experiment/experiment68_e62_bounded_fusion_gate/\n?? experiment/experiment69_1_zero_noncor_fusion_gate/\n?? experiment/experiment69_3_g2_two_rows/\n?? experiment/experiment69_3_test_samples_in_training/\n?? experiment/experiment69_e2e_soft_edge/\n?? experiment/experiment70_1_dcc_gcdsi/\n?? experiment/experiment70_gcdsi/\n?? experiment/experiment71_gcder/\n?? experiment/experiment72_1_e693_mgdss/\n?? experiment/experiment72_2_darg320_mgdss/\n?? experiment/experiment72_4_dual_level_semantic_coordination/\n?? experiment/experiment72_5_safe_dual_prompt/\n?? experiment/experiment72_mgdss/\n?? experiment/experiment73_tsne_cam144/\n?? experiment/experiment74_1_rudag/\n?? experiment/experiment74_2_dcr_rudag/\n?? experiment/experiment74_3_local_dcr/\n?? experiment/experiment74_4_soft_positive_dcr/\n?? experiment/experiment74_udag/\n?? experiment/experiment75_1_sa_dcer/\n?? experiment/experiment75_2_gc_sper/.runtime/\n?? experiment/experiment75_4_1_baseline_preserved_prompt/\n?? experiment/experiment75_4_prompt_utility_audit/\n?? experiment/experiment75_dcer_v2/\n?? experiment/experiment76_1_dcmpr/.runtime/\n?? experiment/experiment76_2_dcp_probe/.runtime/\n?? experiment/experiment76_3_nonlinear_prototype_probe/.runtime/\n?? experiment/experiment76_4_lbdp/.runtime/\n?? experiment/experiment76_5_scpr/.runtime/\n?? experiment/experiment76_6_bcspc/\n?? experiment/experiment76_6_bcspc_from_model/\n?? experiment/experiment76_7_cje_bcspc/\n?? experiment/experiment76_8_cgd_bcspc/\n?? experiment/experiment76_9_rbcd/\n?? experiment/experiment76_dcmp/\n?? experiment/experiment77_1_sc_perm/\n?? experiment/experiment77_3_ds_cbpm/\n?? experiment/experiment77_4_qcrl_pm/\n?? experiment/experiment77_ecpsm/\n?? experiment/experiment78_1_sh_dcpss/\n?? experiment/experiment78_2_draps/\n?? experiment/experiment78_4_pspal/\n?? experiment/experiment78_5_bspal/\n?? experiment/experiment78_6_pen_semantic_audit/\n?? experiment/experiment78_7_bdpprompt/\n?? experiment/experiment78_8_fapc/\n?? experiment/experiment78_9_loo_fapc/\n?? experiment/experiment78_dcpss/\n?? experiment/experiment79_1_drem/\n?? experiment/experiment79_2_cam_discriminative_memory/\n?? experiment/experiment79_3_competitive_evidence_memory/\n?? experiment/experiment79_4_crossfitted_evidence_memory/\n?? experiment/experiment79_deml/\n?? experiment/experiment80_1_psdc_e2e_static_dynamic_prompt/\n?? experiment/experiment80_2_bp_cpsdc/\n?? experiment/experiment80_psdc_dynamic_incremental_validation/\n?? experiment/experiment81_1_prcl_v2/\n?? experiment/experiment81_2_e2e_relational_correction/\n?? experiment/experiment81_3_e2e_pairwise_relational_learning/\n?? experiment/experiment81_4_gglrf_feature_fusion/\n?? experiment/experiment81_5_unbounded_gglrf/\n?? experiment/experiment81_prcl/\n?? experiment/experiment82_1_pcde_ps/\n?? experiment/experiment82_pssec/\n?? experiment/experiment83_7_tadpole_g4_targeted_optimization/\n?? handoff.md.lock\n?? prompt\n",
+  "prompt_source_sha256": "9806b13c37971af98822f70b364ab5fa79344d3b6cb934e1cbfe3ec25d5641be",
+  "prompt_cache_sha256": "2a3cf9332ad3d1dbdba70731a46acee43f3f7e52c92fe3ab2366fa90b0d54420",
+  "prompt_json_sha256": "1643a70f75f51bf10eb36a5745449183c94d4a1949fbca13e816ed5d4a7b6b90",
+  "clip_weights_sha256": "afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762",
+  "reference_p0_sha256": "8118658fa728a7a239a7648426f0e8b6b097589bd9c3d4b2f8edfc4544f143ad",
+  "reference_e9_sha256": "669b59f2313dd559d5ce5fb5820ee6e9b5fc6da76fca76cdd2b2097a58b2e638",
+  "design": {
+    "E0_P0": {
+      "index": 0,
+      "spgs": true,
+      "new_module": false,
+      "auxiliary": false,
+      "semantic_loss": false,
+      "purpose": "Original P0"
+    },
+    "E1_NO_SPGS": {
+      "index": 1,
+      "spgs": false,
+      "new_module": false,
+      "auxiliary": false,
+      "semantic_loss": false,
+      "purpose": "No SPGS"
+    },
+    "E2_OLD_FC": {
+      "index": 2,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": false,
+      "semantic_loss": true,
+      "purpose": "Original coarse FC teacher"
+    },
+    "E3_FINE_FC": {
+      "index": 3,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": false,
+      "semantic_loss": true,
+      "purpose": "Fine FC teacher"
+    },
+    "E4_FINE_FULL": {
+      "index": 4,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": true,
+      "purpose": "Fine full conditional fusion"
+    },
+    "E5_NUMERIC_FULL": {
+      "index": 5,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": true,
+      "purpose": "Frozen numeric codes"
+    },
+    "E6_WRONG_ROI": {
+      "index": 6,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": true,
+      "purpose": "Wrong ROI identity"
+    },
+    "E7_WRONG_DIRECTION": {
+      "index": 7,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": true,
+      "purpose": "Wrong FC direction"
+    },
+    "E8_FINE_NO_ALIGN": {
+      "index": 8,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": false,
+      "purpose": "No semantic training loss"
+    },
+    "E9_WRONG_AUX_PAIR": {
+      "index": 9,
+      "spgs": false,
+      "new_module": true,
+      "auxiliary": true,
+      "semantic_loss": true,
+      "purpose": "Wrong within-site auxiliary patient"
+    }
+  },
+  "rules": {
+    "semantic_dimension": 64,
+    "td_std_floor": 0.001,
+    "pooled_std_floor": 0.001,
+    "site_min_per_class": 2,
+    "site_shrink_pseudocount": 20.0,
+    "difference_clip": 2.0,
+    "r_clip": 3.0,
+    "evidence_threshold": 0.5,
+    "context_weight": 0.25,
+    "aux_weight": 0.25,
+    "residual_coordinate_bound": 0.1,
+    "new_weight_decay": 0.0,
+    "new_init_seed": 280000,
+    "auxiliary_shuffle_seed": 28009,
+    "qa_off": "replace specified sigmoid gate by ones; remove modulation only",
+    "pheno_off": "zero demographic conditional correction; original PHENO remains",
+    "coarse_teacher": "normalized mean of original abnormal four, common to both directions"
+  },
+  "protocol": {
+    "datadir": "/data/adodas/SPromptGL-main/data/",
+    "datname": "ABIDE",
+    "cpu": false,
+    "gpu": "-1",
+    "nepoch": 450,
+    "early": 200,
+    "lr": 0.0038,
+    "reg": 0.11,
+    "dropout": 0.35,
+    "nlayer": 1,
+    "n_hidden": 18,
+    "n_head": 2,
+    "n_iter": 10,
+    "nmodal": 4,
+    "th": 0.9,
+    "GC_mode": "weighted-cosine",
+    "MP_mode": "GCN",
+    "MF_mode": "concat",
+    "alpha": 0.5,
+    "theta_smooth": 1.0,
+    "theta_degree": 0.5,
+    "theta_sparsity": 0.0,
+    "nclass": 2,
+    "mode": "simple-2"
+  },
+  "contrasts": [
+    [
+      "E3_FINE_FC",
+      "E2_OLD_FC"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E3_FINE_FC"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E5_NUMERIC_FULL"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E6_WRONG_ROI"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E7_WRONG_DIRECTION"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E8_FINE_NO_ALIGN"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E9_WRONG_AUX_PAIR"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E1_NO_SPGS"
+    ],
+    [
+      "E4_FINE_FULL",
+      "E0_P0"
+    ]
+  ],
+  "tasks": [
+    {
+      "config": "E0_P0",
+      "seed": 0,
+      "gpu": 0,
+      "folds": 10,
+      "status": "COMPLETE",
+      "completed_folds": 10,
+      "seconds": 521.720019325614,
+      "resumes": 0
+    },
+    {
+      "config": "E0_P0",
+      "seed": 1,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E0_P0",
+      "seed": 2,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E1_NO_SPGS",
+      "seed": 0,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E1_NO_SPGS",
+      "seed": 1,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E1_NO_SPGS",
+      "seed": 2,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E2_OLD_FC",
+      "seed": 0,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E2_OLD_FC",
+      "seed": 1,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E2_OLD_FC",
+      "seed": 2,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E3_FINE_FC",
+      "seed": 0,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E3_FINE_FC",
+      "seed": 1,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E3_FINE_FC",
+      "seed": 2,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E4_FINE_FULL",
+      "seed": 0,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E4_FINE_FULL",
+      "seed": 1,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E4_FINE_FULL",
+      "seed": 2,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E5_NUMERIC_FULL",
+      "seed": 0,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E5_NUMERIC_FULL",
+      "seed": 1,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E5_NUMERIC_FULL",
+      "seed": 2,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E6_WRONG_ROI",
+      "seed": 0,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E6_WRONG_ROI",
+      "seed": 1,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E6_WRONG_ROI",
+      "seed": 2,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E7_WRONG_DIRECTION",
+      "seed": 0,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E7_WRONG_DIRECTION",
+      "seed": 1,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E7_WRONG_DIRECTION",
+      "seed": 2,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E8_FINE_NO_ALIGN",
+      "seed": 0,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E8_FINE_NO_ALIGN",
+      "seed": 1,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E8_FINE_NO_ALIGN",
+      "seed": 2,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E9_WRONG_AUX_PAIR",
+      "seed": 0,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E9_WRONG_AUX_PAIR",
+      "seed": 1,
+      "gpu": 0,
+      "folds": 10,
+      "status": "PENDING"
+    },
+    {
+      "config": "E9_WRONG_AUX_PAIR",
+      "seed": 2,
+      "gpu": 1,
+      "folds": 10,
+      "status": "PENDING"
+    }
+  ],
+  "target_folds": 300,
+  "completed_folds": 10,
+  "gpu_fold_targets": {
+    "0": 150,
+    "1": 150
+  },
+  "history_audit": {
+    "/data/adodas/SPromptGL-main/experiment/experiment3_prompt_effectiveness_diagnostics/results/report.md": {
+      "sha256": "c0f48f499f0b3f852b6d80af58a5d761f326aecdd201ace05bf0e151282cf14e",
+      "characters": 5773
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment8_scheme1_shared_disease_alignment/results/report.md": {
+      "sha256": "932952b8a78752710a5614a25e2b5d9dba13922df18efb6de43d4ffef5fbecd2",
+      "characters": 13809
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment9_prompt_disease_adversarial_interaction/results/report.md": {
+      "sha256": "ae0649a81484b7f642b6c5bf05680bb13fe45ef6661c0d4513f1136b4d15a905",
+      "characters": 15679
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment10_disease_semantic_specificity/results/report.md": {
+      "sha256": "64152ef7ed5cadc26e8f4f999faca222a65a2a096b0c8c48792fd315f96cc3ae",
+      "characters": 7411
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment11_roi_mapping_recovery/results/report.md": {
+      "sha256": "a6358416262962415aceb99c02948e97ec6a15832229f41ccc9d3dd505534f88",
+      "characters": 3042
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment13_patient_specific_fc_prompt/results/report.md": {
+      "sha256": "579dc6fbbbb9275a27e3146936bea608c827b040b1f549efc656053c5851ae68",
+      "characters": 13893
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment14_hierarchical_semantic_prompt/results/report.md": {
+      "sha256": "00da17b6ad80bae91a14770cdd735dd4908202e0e0932c36f0bfb364d0d9d195",
+      "characters": 23380
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment15_anatomically_anchored_roi_prompt/results/report.md": {
+      "sha256": "2b68c0fe32894f8d9eea243caf03ffac9f18a6872ccfd8d1cc1c5afff8f56886",
+      "characters": 15059
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment16_roi_semantic_pathway_repair/results/report.md": {
+      "sha256": "df2b9478c042af87be2ac44806c156e873f3e09d35dce4c9768c77cc7b3bb1a0",
+      "characters": 27528
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment17_disease_semantic_selective_alignment/results/report.md": {
+      "sha256": "e6b44eb0ab1c37ff2e964f95ba73f3a231bc850b8b06bf547150fc867609c320",
+      "characters": 16033
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment18_discriminability_preserving_selective_alignment/results/report.md": {
+      "sha256": "3f556214fc610dafb184389e5fb6fcb81700678a772b46d2426dda18f42334c1",
+      "characters": 29997
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment19_contrastive_disease_evidence_alignment/results/report.md": {
+      "sha256": "9de20fe5c10e0f559c0cc33e8b4a81c312e9e9df7dc30ec8a3de72261b564ecf",
+      "characters": 31667
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment22_concept_conditioned_signed_connectivity/results/report.md": {
+      "sha256": "cdb26831b50541c5dcae2f7cb03fcd69f538ab2a236de7c6202fbf457e14c6af",
+      "characters": 50748
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment24_conflict_aware_relational_alignment/results/report.md": {
+      "sha256": "202cf507e55121e4e17e86701de8a70e67e9d4bed3965ceba3eb3d28c3dbc407",
+      "characters": 13891
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment25_evidence_preserving_asymmetric_graph_calibration/results/report.md": {
+      "sha256": "a62e05213189f1ddc39f06690b586685a97c45d2347e39697e22a2f9f297db2f",
+      "characters": 12083
+    },
+    "/data/adodas/SPromptGL-main/experiment/experiment27_evidence_grounded_relational_prompt_cam/results/report.md": {
+      "sha256": "7d0c9e8df67e9be10e5836140ee106ff6abe9d9d577b67feccf2ffe9f28ed696",
+      "characters": 11751
+    }
+  },
+  "initialization": {
+    "baseline_parameters": 1462957,
+    "new_parameters": 28517,
+    "old_mlp_retained_registered_but_unused_in_E1_E9": true,
+    "lazy_clip_load": "Match Exp13 first-agent RN50 construction RNG; cached encoding; no training text encoder calls"
+  },
+  "paper_review": {
+    "spromptgl": "https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf",
+    "mmgpl": "https://arxiv.org/html/2312.14574v2",
+    "audit": "Fig1, Section2 Eq1-7/Fig2/Fig3 SPromptGL; MMGPL III-C/III-D Eq7-14/Fig1/Fig2. Existing concept weighting and token graph methods are not claimed novel.",
+    "differences": "Original latent tokens are not ROI; ANAT/FUNC are QA. Here supervised training-fold FC deviations weight frozen real edge text; no new semantic graph or query/key. Evaluation retains original optimistic protocol."
+  },
+  "engineering_fixes": [
+    {
+      "time": "2026-11-26",
+      "change": "Scoped protection and E28 seed0 retrain artifact/log capture in isolated audit directory",
+      "effect": "No model update or RNG operation added"
+    }
+  ],
+  "failures": [],
+  "handoff_appended": false,
+  "code_sha256": {
+    "e28_method.py": "f162285872dcfda9d894ee4b163556a030bda152775720b90629dd26743c3a44",
+    "e28_prompts.py": "0c5f09f23e3c0ca9db1f2292cfd957f04f779bab2eb213d5a97a7a947c6a4cb5",
+    "e28_integration.py": "3b0c6a0114caf87d989e8af7bd905a26c3ab0661c358ecb8bdfc0869c9d585c2",
+    "run.py": "2b442431f5c54467624acfd00c1947304a61de71c67e97788c11655d5ac73e31",
+    "integration.patch": "77cb8197e6af3329c04b4fa86e093be637d058d0a9b0695f0cf28a932caddb6c"
+  },
+  "preflight": {
+    "passed": true,
+    "completed_utc": "2026-11-26T04:27:55.309749+00:00",
+    "checks": {
+      "P0_unpatched_init_forward_two_adam_first_update_rng": "EXACT_PASS",
+      "P0_seed0_fold1_initial_hash": "b464f86ee750e5550a6330942ee102a5d9d1f3ab4967a385e23655741c92ae0f",
+      "new_groups_same_original_parameters_rng_zero_alpha_E1": "EXACT_PASS",
+      "new_parameters_all_eight_groups": 28517,
+      "unknown_edges_zero_semantic_weight": "PASS",
+      "heldout_label_flip_teacher_full_train_update": "EXACT_PASS",
+      "two_step_gradient_norms": {
+        "gfr": 1.5985847042013066,
+        "pln_original": 3.4424670623385034,
+        "alpha": 0.006875439435169571,
+        "fc_encoder": 0.0004854666678527849,
+        "context_encoder": 0.0002692793248830235,
+        "demo_encoder": 9.518379110455574e-06,
+        "anat_gate": 2.6161175959745273e-07,
+        "func_gate": 2.7062072764806413e-07,
+        "decode": 0.00026451171444845427,
+        "active_parameters": 760755
+      },
+      "epoch_resume_model_adam_rng_prediction": "EXACT_PASS",
+      "fold_boundary_next_initialization_rng": "EXACT_PASS",
+      "counterfactual_restore_weights_rng_REAL": "EXACT_PASS",
+      "device": "_CudaDeviceProperties(name='PPU-ZW810E', major=8, minor=0, total_memory=98304MB, multi_processor_count=64, uuid=019e120d-4831-0206-0000-00004052c46b, pci_bus_id=167, pci_device_id=0, pci_domain_id=0, L2_cache_size=64MB)"
+    }
+  },
+  "signature_code_sha256": {
+    "e28_method.py": "f162285872dcfda9d894ee4b163556a030bda152775720b90629dd26743c3a44",
+    "e28_prompts.py": "0c5f09f23e3c0ca9db1f2292cfd957f04f779bab2eb213d5a97a7a947c6a4cb5",
+    "e28_integration.py": "3b0c6a0114caf87d989e8af7bd905a26c3ab0661c358ecb8bdfc0869c9d585c2",
+    "run.py": "2b442431f5c54467624acfd00c1947304a61de71c67e97788c11655d5ac73e31",
+    "integration.patch": "77cb8197e6af3329c04b4fa86e093be637d058d0a9b0695f0cf28a932caddb6c"
+  },
+  "completed_tasks": 1,
+  "gpu_completed_folds": {
+    "0": 10,
+    "1": 0
+  },
+  "refreshed_utc": "2026-11-26T04:44:11.277657+00:00"
+}
