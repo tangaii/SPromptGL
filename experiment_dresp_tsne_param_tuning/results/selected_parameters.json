@@ -1,0 +1,14 @@
+{
+  "config_id": "P3",
+  "perplexity": 60,
+  "early_exaggeration": 12,
+  "learning_rate": "auto",
+  "max_iter": 3000,
+  "random_state": 0,
+  "n_components": 2,
+  "metric": "euclidean",
+  "init": "pca",
+  "preprocessing": "StandardScaler then PCA(50)",
+  "selection_reason": "P3 had the best balanced mean k15/k30 trustworthiness among the stable candidates, lower KL than P0, and less aggressive class-silhouette inflation than P4-P7. One unified setting was applied to all models and folds.",
+  "software_note": "Current sklearn 1.3.2 exposes n_iter instead of max_iter. P3 max_iter=3000 was executed as n_iter=3000."
+}
