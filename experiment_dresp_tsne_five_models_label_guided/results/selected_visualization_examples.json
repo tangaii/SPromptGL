@@ -1,0 +1,21 @@
+{
+  "selection_rule": "Predeclared examples only, without score-based group deletion or per-model parameter tuning.",
+  "model_order": ["CAM_only", "SPromptGL", "DARG", "DARG_JSL", "DReSP"],
+  "label_colors": {"ASD": "#D98282", "TD": "#4C9A91"},
+  "examples": [
+    {"method": "C5", "group": "C5", "folds": [7, 8]},
+    {"method": "A", "group": "P0", "folds": [7, 8]},
+    {"method": "A", "group": "P6", "folds": [7, 8]},
+    {"method": "A", "group": "P9", "folds": [7, 8]},
+    {"method": "A", "group": "N1", "folds": [7, 8]},
+    {"method": "B", "group": "S0", "folds": [7, 8]},
+    {"method": "B", "group": "S6", "folds": [7, 8]},
+    {"method": "B", "group": "S8", "folds": [7, 8]},
+    {"method": "B", "group": "N2", "folds": [7, 8]}
+  ],
+  "method_labels": {
+    "A": "Post-hoc Label-Guided Transformation",
+    "B": "Supervised t-SNE (True Labels Used)",
+    "N1_N2": "Shuffled-Label Control"
+  }
+}
