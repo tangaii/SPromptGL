@@ -1,0 +1,97 @@
+{
+  "experiment": "DReSP Dual Label-Guided t-SNE Exploration",
+  "version": "five-model-v1",
+  "status": "EXPLORATORY_LABEL_GUIDED",
+  "authoritative_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_five_models_label_guided",
+  "models": [
+    {"id": "CAM_only", "display": "CAM-only", "identity": "E43.4-E0", "feature_source": "physical CAM-only pre-OutputLayer x.view(batch_size,-1), 144D"},
+    {"id": "SPromptGL", "display": "SPromptGL", "identity": "E28-E0 (P0)", "feature_source": "historical CAM144"},
+    {"id": "DARG", "display": "DARG", "identity": "E74.4-G2", "feature_source": "historical CAM144"},
+    {"id": "DARG_JSL", "display": "DARG + JSL", "identity": "experiment_darg_jsl", "feature_source": "historical Enhanced CAM144"},
+    {"id": "DReSP", "display": "DReSP", "identity": "E82.4.6.10-G1", "feature_source": "historical Enhanced CAM144", "base_directory": "/model/spromptgl/experiment/DPSL"}
+  ],
+  "data": {
+    "patients": 871,
+    "features": 144,
+    "labels": {"ASD": 0, "TD": 1},
+    "label_counts": {"ASD": 403, "TD": 468},
+    "folds": 10,
+    "patient_id_field": "patient_ids",
+    "historical_input_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_compact_separation/inputs",
+    "historical_c5_directory": "/model/spromptgl/experiment/experiment_dresp_tsne_compact_separation/results/formal_coordinates"
+  },
+  "c5": {
+    "perplexity": 100,
+    "early_exaggeration": 48,
+    "learning_rate": 200,
+    "metric": "euclidean",
+    "init": "pca",
+    "random_state": 0,
+    "n_iter": 3000,
+    "preprocess": ["StandardScaler", "PCA(144->50)"],
+    "historical_coordinates_are_authoritative_for_four_models": true,
+    "cam_only_coordinates_are_replayed_in_this_experiment": true
+  },
+  "method_a": {
+    "name": "Post-hoc Label-Guided Transformation",
+    "scan_alpha": [1.0, 0.85, 0.65, 0.45, 0.25],
+    "scan_beta": [0.0, 0.25, 0.5, 1.0, 2.0],
+    "formal": {
+      "P0": {"alpha": 1.0, "beta": 0.0},
+      "P1": {"alpha": 0.85, "beta": 0.0},
+      "P2": {"alpha": 0.65, "beta": 0.0},
+      "P3": {"alpha": 0.45, "beta": 0.0},
+      "P4": {"alpha": 1.0, "beta": 0.5},
+      "P5": {"alpha": 1.0, "beta": 1.0},
+      "P6": {"alpha": 0.85, "beta": 0.5},
+      "P7": {"alpha": 0.65, "beta": 0.5},
+      "P8": {"alpha": 0.45, "beta": 1.0},
+      "P9": {"alpha": 0.25, "beta": 2.0}
+    }
+  },
+  "method_b": {
+    "name": "Label-Aware Supervised t-SNE",
+    "scan_s": [1.0, 0.9, 0.75, 0.6, 0.4],
+    "scan_gamma": [0.0, 0.1, 0.25, 0.5, 1.0],
+    "formal": {
+      "S0": {"s": 1.0, "gamma": 0.0},
+      "S1": {"s": 0.9, "gamma": 0.0},
+      "S2": {"s": 0.75, "gamma": 0.0},
+      "S3": {"s": 1.0, "gamma": 0.25},
+      "S4": {"s": 0.9, "gamma": 0.25},
+      "S5": {"s": 0.75, "gamma": 0.25},
+      "S6": {"s": 0.75, "gamma": 0.5},
+      "S7": {"s": 0.6, "gamma": 0.5},
+      "S8": {"s": 0.4, "gamma": 1.0},
+      "S9": {"s": 1.0, "gamma": 1.0}
+    }
+  },
+  "negative_controls": {
+    "seed": 2027,
+    "N1": {"method": "A", "alpha": 0.65, "beta": 0.5},
+    "N2": {"method": "B", "s": 0.75, "gamma": 0.5}
+  },
+  "runtime": {
+    "omp_num_threads": 1,
+    "mkl_num_threads": 1,
+    "openblas_num_threads": 1,
+    "max_workers": 10,
+    "scan_folds": [7, 8],
+    "formal_workers": 10,
+    "png_only": true
+  },
+  "cam_only": {
+    "source_commit": "396512c7789d4b27c0651ea85cee60fbc05e0c6a",
+    "source_directory": "inputs/cam_only_source",
+    "anchor_directory_read_only": "/model/spromptgl/experiment/experiment_darg_jsl/code/vendor/repo/experiment/experiment72_mgdss/.runtime/vendor/root/experiment/experiment43_1_b0b_gfr_mechanism_retest/.runtime/anchors",
+    "checkpoint_status": "REBUILT_AND_VERIFIED_REQUIRED",
+    "protocol": {"nepoch": 450, "early": 200, "lr": 0.0038, "reg": 0.11, "dropout": 0.35, "nlayer": 1, "n_hidden": 18, "n_head": 2, "nmodal": 4, "nclass": 2, "seed": 0, "random_state": 10, "input_dims": [48, 6, 10, 256]},
+    "expected_history": {"ACC_percent": "91.7294 +/- 3.0819", "Hard_AUC_percent": "91.4880 +/- 3.0586", "SEN_ASD_percent": "88.3415 +/- 3.3369", "SPE_TD_percent": "94.6346 +/- 3.7878"}
+  },
+  "labels_in_experiment": {
+    "C5": "none",
+    "A": "true labels in coordinate transform, exploratory",
+    "B": "true or fixed shuffled labels in distance matrix before t-SNE, supervised exploratory",
+    "N1_N2": "fixed patient-level shuffled labels, metrics always use true labels"
+  }
+}
