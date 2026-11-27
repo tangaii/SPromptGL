@@ -1,13 +1,14 @@
 {
-  "experiment": "DARG Disease-Aware Patient Relation Quality Analysis figure redesign",
+  "experiment": "DARG Disease-Aware Patient Relation Quality Figure final three-group redesign",
   "authority": "/model/spromptgl/experiment/experiment_darg_relation_quality",
   "model": "E82.4.6.10-G1 / E82.4.6-G2 SCMR-DA-SRPE / E74.4-G2 Positive-DCR",
-  "github_commit_checked": "9b0bc6b",
+  "github_commit_checked": "85826c2",
   "no_retraining": true,
+  "panel_a": "CORR strict clean_test_test ASD-ASD/ASD-TD/TD-TD fold means with population SD",
+  "panel_b": "at_least_one_clean_test Original/DARG paired folds and 20 permutation means",
   "permutations": 20,
   "permutation_seed_base": 741001,
   "permutation_seed_formula": "SEED_BASE + permutation_index * 100003 + fold * 100 + modality",
-  "representative_rule": "CORR original clean_test_test edge density closest to ten-fold median, lower fold on tie",
   "outputs": {
     "figure_pdf": "/model/spromptgl/experiment/experiment_darg_relation_quality/figures/darg_relation_quality.pdf",
     "figure_png": "/model/spromptgl/experiment/experiment_darg_relation_quality/figures/darg_relation_quality.png",
@@ -16,9 +17,9 @@
     "summary": "/model/spromptgl/experiment/experiment_darg_relation_quality/results/summary.json"
   },
   "sha256": {
-    "pdf": "4e232b62b9d76007fb2ee804e7cd3e55690180fb1d4f332902746f7a7a6a1e71",
-    "png": "38a7ccb4fbd7916d84d0b5a18befac71960f89e7965adf7a049ce63e7160af89",
-    "data": "806633ee6fe0161bd7262c1c355c522984180a09bb26d2cc02f719e4d79e1fca"
+    "pdf": "e8121be4dcdf711859a7b5dea6b699d53233535b0542c9e4a42ae917bc923798",
+    "png": "3dcbad7a00437710b9f3bed575261d264679180927ea93d78b0135a68902a752",
+    "data": "aa389bd3e0dc140cab37e044cb564111b626d56632d06ace46493128601532b5"
   },
-  "runtime_seconds": 24.974199771881104
+  "runtime_seconds": 24.18136954307556
 }
