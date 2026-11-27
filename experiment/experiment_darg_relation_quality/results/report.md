@@ -1,81 +1,78 @@
 # DARG Disease-Aware Patient Relation Quality Analysis
 
-## 1. 实验目标
+## 1. 实验目标与源码核验
 
-本实验冻结正式 `E82.4.6.10-G1` 的十折 Best Checkpoint，诊断 DARG 是否在原始 GraphLearn 患者图的有效连接上学习到疾病区分性的重加权。核心指标是排除自环后的 Cross-Disease Propagation Weight Ratio，使用正式 GCN 的对称归一化 `W = normalize_adj(A + I)`。指标只描述传播系数层面的图质量，不等同于消息幅度或分类性能的因果变化。
+本次工作只优化冻结 DReSP 机制 Figure，不重新训练、不微调、不修改正式模型、Checkpoint、DARG/DPSL 封存源码或历史训练结果。正式任务为 E82.4.6.10-G1，内部模型为 E82.4.6-G2 SCMR-DA-SRPE，DARG 为 E74.4-G2 Positive-DCR。服务器关键运行文件与 GitHub 提交 9b0bc6b 的 raw 文件逐字 SHA-256 一致。
 
-## 2. 与 MMGL Fig.4–5 的关系
+封存实现使用 GraphLearn 原始邻接 S_m，在其真实有效支持上根据 q 和 gate 计算 DeltaA_m，形成 A_m = S_m + DeltaA_m。CORR 使用 2q-1，其余模态遵守源码中的 0.45/0.55 资格范围。Positive-DCR 对 direct 增量使用 max(DeltaA_m, 0)。传播权重按照正式 normalize_adj(A_m + I) 计算，自环只用于归一化而不进入评价边集合。
 
-分析思路借鉴 MMGL 对患者表示相似性和错误图连接的诊断，但没有复用错误连接条数。DARG 保留 GraphLearn 原始图支持，只对候选有效边进行关系重加权，因此本实验比较原始图和更新图在归一化传播权重上的跨疾病比例。
+## 2. Panel (a) 最终设计
 
-## 3. 原始图与 DARG 更新公式
+A1 为严格 clean_test_test 范围的十折统计。每个折先在原始图真实存在的非自环边上计算 (A_DARG-A_Original)/A_Original，分别对同病边和跨病边求折内均值，再汇总十折。红色为 Same-Disease，蓝色为 Cross-Disease，灰线连接同一折，箱线图只提供分布概览，不遮挡十个实际点。
 
-对每个模态先得到原始邻接 `S_m`。候选边上的关系分数为 `q_m`，门控为 `gate_m`。CORR 使用 `relation = 2q_m - 1`，其余模态对 `q >= 0.55` 或 `q <= 0.45` 的边使用该关系值，不确定分数的增量为零。更新为 `A_m = S_m + DeltaA_m`，其中 `DeltaA_m = S_m * (0.8 * gate_m * relation)`，随后按源码对称写回。Positive-DCR 的直接增量为 `max(DeltaA_m, 0)`。负向关系增量在本报告中称为边权抑制，不称为负权图传播。
+A2 为客观选择的代表折辅助热力图。选择规则是 CORR 原始 clean test-test 有效边密度最接近十折中位数，距离相同取较小折号。热力图中的浅灰色表示原始图无边，白色表示存在边且相对调整为零附近，红色表示增强，蓝色表示抑制。所有缺失边均被掩码，颜色显示范围以零对称，极端值裁剪只影响颜色映射。
 
-四个模态顺序为 PHENO、ANAT、FUNC、CORR，输入维度为 48、6、10、256。原始图、统一图、增量、q、候选边、门控和融合权重均来自封存的 `soft_positive_dcr.py` 实际前向。
+## 3. Panel (a) 十折结果
 
-## 4. 模型与身份
+| Fold | Clean test n | Same edges | Cross edges | Same mean (%) | Cross mean (%) | Same enhanced | Cross suppressed | Original density |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 88 | 47 | 42 | 37.5566 | -35.3158 | 97.87% | 83.33% | 2.3250% |
+| 2 | 79 | 590 | 619 | 44.6473 | -36.5601 | 85.08% | 77.06% | 39.2405% |
+| 3 | 82 | 72 | 84 | 33.5310 | -39.5712 | 76.39% | 79.76% | 4.6974% |
+| 4 | 83 | 99 | 112 | 34.7710 | -37.6724 | 76.77% | 74.11% | 6.2004% |
+| 5 | 87 | 360 | 379 | 43.2528 | -41.3492 | 80.28% | 76.52% | 19.7541% |
+| 6 | 87 | 60 | 62 | 59.0095 | -56.7835 | 96.67% | 91.94% | 3.2612% |
+| 7 | 87 | 250 | 218 | 48.2609 | -37.1143 | 88.80% | 77.98% | 12.5100% |
+| 8 | 85 | 479 | 449 | 35.9849 | -28.9757 | 76.20% | 69.49% | 25.9944% |
+| 9 | 87 | 74 | 82 | 50.9134 | -34.3214 | 89.19% | 74.39% | 4.1700% |
+| 10 | 87 | 220 | 238 | 37.4495 | -37.0189 | 82.73% | 76.89% | 12.2427% |
 
-正式任务为 `E82.4.6.10-G1`，checkpoint 内部模型为 `E82.4.6-G2 SCMR-DA-SRPE`，DARG 为 `E74.4-G2 Positive-DCR`。ABIDE A 共 871 名受试者，seed=0，十折，ASD=0、TD=1。Fold 2、3、4、8 通过封存的历史成员适配器恢复。十折均读取对应 `foldXX.best.pt`，未使用 Latest。
+十折同病相对调整均值为 42.5377%，跨病为 -38.4682%。同病增强比例按折均值为 85.00%，跨病抑制比例按折均值为 78.15%。
+代表折为 Fold 04。其 clean test-test 原始 CORR 有效边为 211，患者数为 83，边密度为 6.2004%。十折密度中位数为 9.2216%，该折到中位数的绝对距离为 3.0212 个百分点。
+Fold 04 热图有限相对调整值范围为 [-0.7924, 0.7639]，颜色显示对称范围为 [-0.7912, 0.7912]，被颜色裁剪的有限值为 4。
 
-十折正式预测与归档 Best evaluation 逐项相等，独立历史 evaluator 逐项相等。每折 checkpoint SHA、来源、Best epoch 和折身份写入 `results/run_manifest.json`。DARG 源码 SHA-256 为 `3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718`，封存 CADR 源码 SHA-256 为 `f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d`。
+## 4. Panel (b) 十折结果
 
-## 5. 评价范围与负控
+Panel (b) 使用主评价范围 at_least_one_clean_test。Original 与 DARG 是同一正式 DReSP Checkpoint 内部的 GraphLearn 原图和 DARG 重加权图，不是单独训练的基线模型。
 
-主范围为至少一端属于当前折未参与 DARG 标签监督的测试患者。严格敏感性范围为两端均属于该集合。Fold 2、3、4、8 的历史训练—测试重叠患者从新增机制评价对象中排除，历史训练集和模型状态没有改变。
-
-Score-Permuted DARG 使用同一冻结模型、同一原始图、同一候选边、同一门控和同一 q 数值集合，只通过局部生成器置乱 q 与患者边的对应关系。每折每模态固定 20 次置乱，不改变正式全局 RNG。`disease_neutral` 验证恢复原始图。
-
-## 6. 十折结果
-
-主范围的均值为：
-
-| 模态 | Original (%) | DARG (%) | Score-Permuted (%) | DARG-Original (pp) | 改善/持平/下降折数 |
-|---|---:|---:|---:|---:|---:|
-| PHENO | 49.8816 | 49.8816 | 49.8816 | +0.0000 | 5/0/5 |
-| ANAT | 49.4690 | 49.4690 | 49.4690 | -0.0000 | 6/2/2 |
-| FUNC | 49.2332 | 49.2332 | 49.2332 | -0.0000 | 8/0/2 |
-| CORR | 48.1945 | 25.4142 | 48.2344 | -22.7802 | 10/0/0 |
-
-严格 test-test 范围的 DARG-Original 配对变化为 PHENO `+0.0000 pp`、ANAT `+0.0000 pp`、FUNC `-0.0000 pp`、CORR `-19.1829 pp`。有效边数量没有按权重阈值裁剪，主范围平均为 PHENO 15157.5、ANAT 26852.9、FUNC 13371.5、CORR 9409.0。严格范围的有效边数量由各折测试样本量决定，完整逐折数值在 CSV 中保存。
-
-CORR 的 DARG 图在主范围平均同病边调整为 `+0.4630`，异病边调整为 `-0.4498`，增强边比例 `53.04%`，抑制边比例 `46.96%`，邻接相对变化 `66.90%`。q 的候选边均值为同病 `0.8645`、异病 `0.1297`。PHENO、ANAT、FUNC 的邻接相对变化均低于 `0.005%`，同病和异病平均调整量接近零，方向没有形成稳定的跨折证据。
-
-CORR 主范围十折 Original / DARG / Score-Permuted (%) 依次为：
-
-| Fold | Original | DARG | Score-Permuted |
+| Fold | Original (%) | DARG (%) | DARG−Original (pp) |
 |---:|---:|---:|---:|
-| 1 | 49.1968 | 32.5975 | 49.0815 |
-| 2 | 49.6284 | 25.5208 | 49.5720 |
-| 3 | 48.5272 | 26.4131 | 48.7911 |
-| 4 | 46.7431 | 22.6895 | 46.6800 |
-| 5 | 48.8393 | 22.5995 | 48.7859 |
-| 6 | 45.3349 | 19.9880 | 45.4102 |
-| 7 | 47.7125 | 24.5224 | 47.6514 |
-| 8 | 48.9748 | 26.5982 | 49.0007 |
-| 9 | 49.8409 | 27.6834 | 50.1167 |
-| 10 | 47.1466 | 25.5298 | 47.2549 |
+| 1 | 49.1968 | 32.5975 | -16.5993 |
+| 2 | 49.6284 | 25.5208 | -24.1076 |
+| 3 | 48.5272 | 26.4131 | -22.1141 |
+| 4 | 46.7431 | 22.6895 | -24.0536 |
+| 5 | 48.8393 | 22.5995 | -26.2398 |
+| 6 | 45.3349 | 19.9880 | -25.3469 |
+| 7 | 47.7125 | 24.5224 | -23.1901 |
+| 8 | 48.9748 | 26.5982 | -22.3766 |
+| 9 | 49.8409 | 27.6834 | -22.1576 |
+| 10 | 47.1466 | 25.5298 | -21.6168 |
 
-CORR 主范围的 Score-Permuted 折均值为 `48.2344%`，折间 SD 为 `1.3763 pp`。20 次置乱重复的折内 SD 均值为 `0.5280 pp`。置乱结果接近 Original，且明显高于 DARG，支持改善依赖 q 与具体患者边的对应关系。
+Original 十折均值为 48.1945%，DARG 为 25.4142%，配对平均下降 22.7802 pp，十折改善 10/10。严格 clean_test_test 的复算结果为 Original 51.6350%、DARG 32.4521%，平均下降 19.1829 pp。
+Score-Permuted DARG 对每个折使用 20 次置乱，保持原始图、候选边、门控和 q 数值多重集合不变，只置乱 q 与患者边的对应关系。对置乱编号 p，先收集十折结果，再计算该 p 的十折均值，得到 20 个十折平均值。图中橙色散点就是这 20 个均值，误差线明确表示这 20 个均值的最小值至最大值，不是置信区间。置乱均值为 48.2344%，实际范围为 [47.8079%, 48.7299%]。
 
-## 7. Figure
+## 5. 四模态和融合辅助汇总
 
-Figure X(a) 固定 Fold 1，仅展示测试患者之间的 CORR 有效连接，按真实 ASD、TD 标签分组排序。原始不存在的边为掩码，颜色显示 `DeltaA_CORR / S_CORR`，零为中性，红色为增强，蓝色为抑制。实际有限值范围为 `[-0.7673, 0.5778]`，颜色显示采用对称 99% 分位范围 `[-0.7487, 0.7487]`，178 个有限值中 2 个仅被颜色裁剪，数值统计未裁剪。
+下表保留上一轮正式图质量结果中的四模态十折主范围汇总。FUSED 是历史辅助代理项，不作为真实多模态 GCN 融合传播图，也不进入本 Figure 的主结论。
 
-Figure X(b) 展示十折 CORR 主范围 Original 与 DARG 的逐折配对线，以及 20 次 Score-Permuted 的汇总区间。没有隐藏下降折。
+| Modality | Original mean (%) | DARG mean (%) | Score-Permuted mean (%) | Improved / unchanged / declined |
+|---|---:|---:|---:|---:|
+| PHENO | 49.8816 | 49.8816 | 49.8816 | 5/0/5 |
+| ANAT | 49.4690 | 49.4690 | 49.4690 | 6/2/2 |
+| FUNC | 49.2332 | 49.2332 | 49.2332 | 8/0/2 |
+| CORR | 48.1945 | 25.4142 | 48.2344 | 10/0/0 |
+| FUSED | 49.5443 | 46.3652 | not stored | 10/0/0 |
 
-英文 Figure Caption：
+## 6. 审计与历史限制
 
-*Disease-Aware Patient Relation Analysis. (a) Fold 1 CORR edges among held-out patients, ordered by ASD and TD, showing the signed relative DARG adjustment on the original GraphLearn support; red and blue indicate enhancement and suppression, respectively, and absent edges are masked. (b) Ten-fold paired cross-disease propagation-weight ratios for the original and DARG graphs, with the score-permuted DARG negative-control distribution. Ratios use the formal symmetric normalization of each updated adjacency after excluding self-loops and historically supervised test-overlap patients.*
+独立审计状态为 PASS。逐折检查正式 Best Checkpoint 身份、归档预测和独立 evaluator、原图/DARG 图共同来源、矩阵尺寸/有限性/对称性/非负性、DeltaA=A_DARG-A_Original、Positive-DCR 正向截断、无新边、正式归一化、disease-neutral 原图恢复、标签事后评价隔离、q 多重集合和置乱支持均由实际条件判断。原始主指标与历史结果逐折一致：True。
 
-## 8. 审计
+分析继承历史 val=test Checkpoint 选择、CV 前 RFE/填补/标准化、transductive 患者图和 19 名训练—测试重叠事实。重叠患者只从机制评价对象中排除，没有修改历史训练集或模型状态。该 Figure 只支持传播系数层面的机制结论，不直接证明分类准确率因果提高。
 
-十折审计状态为 `PASS`。逐折通过 checkpoint SHA、正式预测、独立 evaluator、矩阵尺寸与有限性、对称性、`DeltaA=A-S`、Positive-DCR 正向截断、disease-neutral 原图恢复、候选边支持、归一化有限且非负、置乱 q 多重集合保持和标签事后评价隔离。独立 CSV 复算验证 280 行结果均有 Original、DARG、Score-Permuted 三个条件。
+## 7. Figure Caption
 
-## 9. 科研判断
+Disease-Aware Patient Relation Analysis. (a) Ten-fold relative edge-weight adjustments on the strict clean test-test support, computed within each fold for same-disease and cross-disease patient pairs before averaging across folds. Points show all folds, with paired lines linking the same fold and boxplots summarizing the fold distribution. The auxiliary heatmap shows the signed adjustment on the original CORR GraphLearn support for the objectively selected fold whose clean test-test edge density is closest to the ten-fold median; absent original edges are masked. (b) Ten-fold paired cross-disease propagation-weight ratios from the same frozen DReSP checkpoints before and after DARG reweighting, together with 20 score-permuted negative-control means. Each permutation mean is first computed across the ten folds, and the orange range denotes the minimum to maximum of these 20 permutation means. Ratios use the model's symmetric normalization of A+I with self-loops excluded from the evaluation edges.
 
-结论为 `PARTIAL_RELATION_QUALITY_SUPPORT`。CORR 显示稳定且与置乱负控区分明显的疾病关系质量改善，同病边增强、异病边抑制，十折方向一致。PHENO、ANAT、FUNC 的变化极小且跨折不稳定，因此不能声称四个模态均改善。该结果支持 DARG 在 CORR 模态上学习到疾病区分性的患者边权调整，但不证明最终 GCN 消息或分类准确率的因果提高。
+## 8. 文件与校验
 
-## 10. 历史限制与运行记录
-
-结果继承正式历史的 `val=test` checkpoint 选择、CV 前 RFE/填补/标准化、transductive 患者图和 19 名训练—测试重叠患者。重叠患者只从本机制分析对象中排除，没有修改历史训练或重新训练。十折冻结分析耗时约 `25.6 s`。运行代码为 `run_analysis.py`，结果为 `graph_quality_by_fold.csv`、`summary.json`、`audit_status.json`、`run_manifest.json`，图为 `darg_relation_quality.pdf` 和 `darg_relation_quality.png`，Fold 1 热图数据为 `corr_fold1_heatmap.npz`。
+最终 Figure：figures/darg_relation_quality.pdf、figures/darg_relation_quality.png。可复核 Figure 数据：results/figure_data.npz。逐折原始图质量数据保留于 results/graph_quality_by_fold.csv。代码和图文件 SHA：{"pdf": "4e232b62b9d76007fb2ee804e7cd3e55690180fb1d4f332902746f7a7a6a1e71", "png": "38a7ccb4fbd7916d84d0b5a18befac71960f89e7965adf7a049ce63e7160af89", "data": "806633ee6fe0161bd7262c1c355c522984180a09bb26d2cc02f719e4d79e1fca"}。
