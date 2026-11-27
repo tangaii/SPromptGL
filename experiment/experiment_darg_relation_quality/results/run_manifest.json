@@ -1,0 +1,211 @@
+{
+  "experiment": "DARG Disease-Aware Patient Relation Quality Analysis",
+  "authority": "/model/spromptgl/experiment/experiment_darg_relation_quality",
+  "model": "E82.4.6.10-G1 / E82.4.6-G2 SCMR-DA-SRPE / E74.4-G2 Positive-DCR",
+  "labels": {
+    "ASD": 0,
+    "TD": 1
+  },
+  "subjects": 871,
+  "seed": 0,
+  "permutations": 20,
+  "darg_sha256": "3374598e5ab5547a853c4298000710bb7e8f11f93ec3bd63ddb8ff330aa36718",
+  "cadr_sha256": "f5032d96c9ac68afda47a253f794ddfe41373fabebbbbe27057f1425f988815d",
+  "checkpoint_sources": {
+    "1": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold01.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f01.best.pt",
+      "sha256": "ee6e80b46e4bfd41efae1bec8156c2a5ff370aafb33c7b1deb99afae7fce6d9c",
+      "best_epoch": 102,
+      "fold": 1,
+      "seed": 0
+    },
+    "2": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold02.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_4_cumulative_overlap_paired/checkpoints/G1_f02.best.pt",
+      "sha256": "b003b2779e8ef559389caa0bbec9fb296a6081010ada96a82a40724df3e43340",
+      "best_epoch": 166,
+      "fold": 2,
+      "seed": 0
+    },
+    "3": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold03.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_3_darg_only_overlap/checkpoints/G2_f03.best.pt",
+      "sha256": "97b9e3f8121eda63fc7841e64402bdd4b9c65c973aa8532f859b9a8c7a37bb6b",
+      "best_epoch": 244,
+      "fold": 3,
+      "seed": 0
+    },
+    "4": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold04.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_6_g1_fold4_add712/checkpoints/G1_f04.best.pt",
+      "sha256": "51c92445fd8c97905eb8d7d05ba48f6a47b7a5566302fb81de0285acb4eea1ff",
+      "best_epoch": 182,
+      "fold": 4,
+      "seed": 0
+    },
+    "5": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold05.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f05.best.pt",
+      "sha256": "b22868fac2ab832fcd7948ef29b61601a9ed9908f284f1cba51dc3fddd481dba",
+      "best_epoch": 428,
+      "fold": 5,
+      "seed": 0
+    },
+    "6": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold06.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f06.best.pt",
+      "sha256": "9193d847d51a11e0f4c766ef56b42318848925ed051152a8c88b45b0e631e123",
+      "best_epoch": 157,
+      "fold": 6,
+      "seed": 0
+    },
+    "7": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold07.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f07.best.pt",
+      "sha256": "84955835d460e44de338a806eb64179fab4b5c829ef2c6762fd60e3064626a92",
+      "best_epoch": 166,
+      "fold": 7,
+      "seed": 0
+    },
+    "8": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold08.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_10_fold8_dual_asd/checkpoints/G1_f08.best.pt",
+      "sha256": "c1db66335d709e49b04d03e3c61f090075e21a39c0ba7e021ea9fcf1a88a3102",
+      "best_epoch": 201,
+      "fold": 8,
+      "seed": 0
+    },
+    "9": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold09.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f09.best.pt",
+      "sha256": "8b789dccb37bb55f834a086029789b25ef0e877229f021d6a7c8ed7c1ce64b2a",
+      "best_epoch": 231,
+      "fold": 9,
+      "seed": 0
+    },
+    "10": {
+      "path": "/model/spromptgl/experiment/DPSL/checkpoints/fold10.best.pt",
+      "source": "/model/spromptgl/experiment/experiment82_4_6_pcsr_scmr/checkpoints/G2_f10.best.pt",
+      "sha256": "82fa8f4709b4d8dc2544691e93081ede41a46ffcd579f31d0b03c5f2eca48b06",
+      "best_epoch": 152,
+      "fold": 10,
+      "seed": 0
+    }
+  },
+  "folds": {
+    "1": {
+      "test_count": 88,
+      "clean_test_count": 88,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "dfa5dbfb7a20fa127c3d2ea4848f9bdeb23027c13b7d07108b6404c2da68650d"
+    },
+    "2": {
+      "test_count": 87,
+      "clean_test_count": 79,
+      "overlap_1based": [
+        376,
+        406,
+        680,
+        778,
+        783,
+        259,
+        287,
+        374
+      ],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "b9c350f45d1a32cda4ebba98b39c16b584710a8d2efb9d32cf2171f8a0935f42"
+    },
+    "3": {
+      "test_count": 87,
+      "clean_test_count": 82,
+      "overlap_1based": [
+        45,
+        65,
+        171,
+        265,
+        387
+      ],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "88c0e6fe1d876a6b3bdfe117b02895e95a317d865f0c566aa7d6220bd705bcaf"
+    },
+    "4": {
+      "test_count": 87,
+      "clean_test_count": 83,
+      "overlap_1based": [
+        711,
+        712,
+        726,
+        772
+      ],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "d4306f433da76766283e0e6eb03cb377fd10fe99c126fa33563770aba5b6a063"
+    },
+    "5": {
+      "test_count": 87,
+      "clean_test_count": 87,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "c2c7caaeb88f19f904ea2ef686e46e39122f155a83162b8f8d738faa8d651268"
+    },
+    "6": {
+      "test_count": 87,
+      "clean_test_count": 87,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "87286894ee949da47bfe399c34533a3c70ca65950a84ade94e416f7b91b22025"
+    },
+    "7": {
+      "test_count": 87,
+      "clean_test_count": 87,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "6a6955ebf3ec0c11080fe0c5f69c47cc05d8fc7e63fb8df29fe2725c92457dd8"
+    },
+    "8": {
+      "test_count": 87,
+      "clean_test_count": 85,
+      "overlap_1based": [
+        382,
+        429
+      ],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "d3a1e52ba1fa1b49ec744994d9518519970768a6b17c666b135afb79219080db"
+    },
+    "9": {
+      "test_count": 87,
+      "clean_test_count": 87,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "5a0160a86fb9e4129d988800c8f03dbc948635d47579f6a5cf920ba1ede51382"
+    },
+    "10": {
+      "test_count": 87,
+      "clean_test_count": 87,
+      "overlap_1based": [],
+      "prediction_exact": true,
+      "independent_evaluator_exact": true,
+      "test_order_sha256": "d9f07df9e1fefebae956aaa8c3ae412dbefdf13a50ec2ea4ed92f5b9358f905a"
+    }
+  },
+  "normalization": "formal model.utils.normalize_adj(A + I)",
+  "runtime_seconds": 25.6059513092041,
+  "outputs": {
+    "csv": "/model/spromptgl/experiment/experiment_darg_relation_quality/results/graph_quality_by_fold.csv",
+    "audit": "/model/spromptgl/experiment/experiment_darg_relation_quality/results/audit_status.json",
+    "summary": "/model/spromptgl/experiment/experiment_darg_relation_quality/results/summary.json",
+    "figure_pdf": "/model/spromptgl/experiment/experiment_darg_relation_quality/figures/darg_relation_quality.pdf",
+    "figure_png": "/model/spromptgl/experiment/experiment_darg_relation_quality/figures/darg_relation_quality.png",
+    "heatmap": "/model/spromptgl/experiment/experiment_darg_relation_quality/results/corr_fold1_heatmap.npz"
+  }
+}
