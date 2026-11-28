@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the ABIDE ablation figure from the adjacent CSV data file."""
+"""Render the ABIDE ablation preview from the adjacent CSV data file."""
 
 from __future__ import annotations
 
@@ -22,10 +22,23 @@ EXPECTED_GROUPS = ["(a)", "(b)", "(c)", "(d)"]
 ACC_COLOR = "#91BEF5"
 BA_COLOR = "#F4A7D2"
 Y_MIN, Y_MAX = 80.0, 100.0
-Y_TICKS = np.arange(80.0, 100.1, 5.0)
+Y_TICKS = np.arange(80.0, 100.1, 4.0)
+PREVIEW_PNG = FIGURE_DIR / "abide_ablation_preview.png"
+PREVIEW_PDF = FIGURE_DIR / "abide_ablation_preview.pdf"
+
+# The requested Baseline means are substitute preview values. No reliable
+# ten-fold SD for these new means was found, so its preview error bars are
+# intentionally omitted. The formal CSV remains the source of the original
+# values and is never rewritten by this script.
+PREVIEW_BASELINE = {
+    "acc_mean_pct": 86.64,
+    "acc_sd_pct": None,
+    "ba_mean_pct": 86.40,
+    "ba_sd_pct": None,
+}
 
 
-def read_data() -> list[dict[str, str]]:
+def read_data() -> list[dict[str, object]]:
     with DATA_PATH.open(newline="", encoding="utf-8") as source:
         rows = list(csv.DictReader(source))
 
@@ -45,29 +58,87 @@ def read_data() -> list[dict[str, str]]:
     return rows
 
 
+def prepare_preview_data(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Apply the requested Baseline substitute values to an in-memory copy."""
+
+    preview_rows = [dict(row) for row in rows]
+    preview_rows[0].update(PREVIEW_BASELINE)
+    return preview_rows
+
+
+def metric_array(
+    rows: list[dict[str, object]], field: str
+) -> np.ndarray:
+    """Convert numeric fields while retaining missing SD values as NaN."""
+
+    return np.asarray(
+        [np.nan if row[field] is None else float(row[field]) for row in rows],
+        dtype=float,
+    )
+
+
+def draw_errorbars(
+    ax: plt.Axes,
+    positions: np.ndarray,
+    means: np.ndarray,
+    sds: np.ndarray,
+    error_style: dict[str, object],
+) -> None:
+    """Draw error bars only for metrics with verified SD values."""
+
+    valid = np.isfinite(sds)
+    if valid.any():
+        ax.errorbar(positions[valid], means[valid], yerr=sds[valid], **error_style)
+
+
+def annotate_values(
+    ax: plt.Axes,
+    positions: np.ndarray,
+    means: np.ndarray,
+    sds: np.ndarray,
+    x_offset_points: float,
+) -> None:
+    """Place mean labels above an error-bar cap or the bar when SD is absent."""
+
+    for x_value, mean, sd in zip(positions, means, sds):
+        has_sd = np.isfinite(sd)
+        anchor_y = mean + sd if has_sd else mean
+        offset_points = 2.0 if has_sd else 2.8
+        ax.annotate(
+            f"{mean:.2f}",
+            xy=(x_value, anchor_y),
+            xytext=(x_offset_points, offset_points),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=5.7,
+            color="#24282C",
+            clip_on=False,
+        )
+
+
 def main() -> None:
-    rows = read_data()
+    rows = prepare_preview_data(read_data())
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
 
     centers = np.arange(len(rows), dtype=float)
-    bar_width = 0.27
-    separation = 0.21
-    acc_positions = centers - separation
-    ba_positions = centers + separation
-    acc_means = np.asarray([row["acc_mean_pct"] for row in rows], dtype=float)
-    acc_sds = np.asarray([row["acc_sd_pct"] for row in rows], dtype=float)
-    ba_means = np.asarray([row["ba_mean_pct"] for row in rows], dtype=float)
-    ba_sds = np.asarray([row["ba_sd_pct"] for row in rows], dtype=float)
+    bar_width = 0.30
+    acc_positions = centers - bar_width / 2.0
+    ba_positions = centers + bar_width / 2.0
+    acc_means = metric_array(rows, "acc_mean_pct")
+    acc_sds = metric_array(rows, "acc_sd_pct")
+    ba_means = metric_array(rows, "ba_mean_pct")
+    ba_sds = metric_array(rows, "ba_sd_pct")
 
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "font.size": 7.4,
-            "axes.labelsize": 8.0,
+            "font.size": 7.2,
+            "axes.labelsize": 7.6,
             "axes.titlesize": 9.5,
-            "xtick.labelsize": 7.6,
-            "ytick.labelsize": 7.1,
-            "legend.fontsize": 7.4,
+            "xtick.labelsize": 7.0,
+            "ytick.labelsize": 6.8,
+            "legend.fontsize": 7.0,
             "pdf.fonttype": 42,
             "ps.fonttype": 42,
             "axes.linewidth": 0.65,
@@ -82,7 +153,7 @@ def main() -> None:
 
     edge_color = "#34383D"
     error_color = "#34383D"
-    bar_style = {"edgecolor": edge_color, "linewidth": 0.45, "zorder": 2}
+    bar_style = {"edgecolor": edge_color, "linewidth": 0.40, "zorder": 2}
     ax_acc.bar(
         acc_positions,
         acc_means - Y_MIN,
@@ -108,25 +179,10 @@ def main() -> None:
         "capthick": 0.7,
         "zorder": 4,
     }
-    ax_acc.errorbar(acc_positions, acc_means, yerr=acc_sds, **error_style)
-    ax_acc.errorbar(ba_positions, ba_means, yerr=ba_sds, **error_style)
-
-    for positions, means, sds in (
-        (acc_positions, acc_means, acc_sds),
-        (ba_positions, ba_means, ba_sds),
-    ):
-        for x_value, mean, sd in zip(positions, means, sds):
-            ax_acc.annotate(
-                f"{mean:.2f}",
-                xy=(x_value, mean + sd),
-                xytext=(0, 2.0),
-                textcoords="offset points",
-                ha="center",
-                va="bottom",
-                fontsize=5.7,
-                color="#24282C",
-                clip_on=False,
-            )
+    draw_errorbars(ax_acc, acc_positions, acc_means, acc_sds, error_style)
+    draw_errorbars(ax_acc, ba_positions, ba_means, ba_sds, error_style)
+    annotate_values(ax_acc, acc_positions, acc_means, acc_sds, x_offset_points=-2.2)
+    annotate_values(ax_acc, ba_positions, ba_means, ba_sds, x_offset_points=2.2)
 
     ax_acc.set_xlim(-0.56, len(rows) - 0.44)
     ax_acc.set_ylim(Y_MIN, Y_MAX)
@@ -134,14 +190,14 @@ def main() -> None:
     ax_acc.set_yticks(Y_TICKS)
     ax_ba.set_yticks(Y_TICKS)
     ax_acc.set_xticks(centers, [row["group"] for row in rows])
-    ax_acc.set_ylabel("ACC (%)", labelpad=4)
-    ax_ba.set_ylabel("BA (%)", labelpad=4)
+    ax_acc.set_ylabel("ACC (%)", labelpad=3)
+    ax_ba.set_ylabel("BA (%)", labelpad=3)
     ax_acc.spines["top"].set_visible(False)
     ax_ba.spines["top"].set_visible(False)
     ax_ba.spines["left"].set_visible(False)
     ax_ba.spines["bottom"].set_visible(False)
-    ax_acc.tick_params(axis="both", length=2.5, width=0.6, color=edge_color, pad=2.5)
-    ax_ba.tick_params(axis="y", length=2.5, width=0.6, color=edge_color, pad=2.5)
+    ax_acc.tick_params(axis="both", length=2.1, width=0.55, color=edge_color, pad=2.0)
+    ax_ba.tick_params(axis="y", length=2.1, width=0.55, color=edge_color, pad=2.0)
     ax_acc.grid(False)
     ax_ba.grid(False)
 
@@ -164,8 +220,8 @@ def main() -> None:
     )
     fig.subplots_adjust(left=0.16, right=0.84, bottom=0.19, top=0.79)
 
-    fig.savefig(FIGURE_DIR / "abide_ablation.png", dpi=600)
-    fig.savefig(FIGURE_DIR / "abide_ablation.pdf")
+    fig.savefig(PREVIEW_PNG, dpi=600)
+    fig.savefig(PREVIEW_PDF)
     plt.close(fig)
 
 

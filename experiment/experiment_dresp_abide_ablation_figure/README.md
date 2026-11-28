@@ -30,7 +30,7 @@ Values were supplied for this figure and cross-checked against historical summar
 
 ## Figure method
 
-`plot_ablation.py` reads `ablation_data.csv` and uses NumPy and Matplotlib to produce a grouped chart with four equally spaced groups and two bars per group. ACC is light blue (`#91BEF5`) and BA is light pink (`#F4A7D2`). The left and right axes both span 80–100% with identical 5-point ticks. Error bars show the exact ten-fold SD, with end caps. Mean labels display two decimal places above the upper error-bar caps. The chart uses a white background without grid lines, significance markers, gain labels, or probability AUC. PDF fonts are embedded as TrueType using `pdf.fonttype=42`.
+`plot_ablation.py` reads `ablation_data.csv` and uses NumPy and Matplotlib to produce the independent preview files `figures/abide_ablation_preview.png` and `figures/abide_ablation_preview.pdf`. The preview uses the requested substitute Baseline means, 86.64% ACC and 86.40% BA. A reliable ten-fold SD for these new means was not found in the historical records, so the Baseline preview bars intentionally have no error bars. The other three groups retain the CSV means and SDs exactly. ACC is light blue (`#91BEF5`) and BA is light pink (`#F4A7D2`). The left and right axes both span 80–100% with identical ticks at 80, 84, 88, 92, 96, and 100. The paired bars touch within each group, while adjacent groups remain separated. Verified error bars show the exact ten-fold SD with end caps. Mean labels display two decimal places above the upper error-bar caps, or above the bar when its SD is unavailable. The chart uses a white background without grid lines, significance markers, gain labels, or probability AUC. PDF fonts are embedded as TrueType using `pdf.fonttype=42`. The existing formal figure files and `ablation_data.csv` are not rewritten.
 
 The style reference is Fig. 2 of [SPromptGL: Semantic Prompt Guided Graph Learning for Multi-modal Brain Disease Prediction](https://papers.miccai.org/miccai-2025/paper/5129_paper.pdf). Its ABIDE panel uses four `(a)`–`(d)` groups, paired metric bars, error bars, and value labels. The current [SPromptGL GitHub repository](https://github.com/tangaii/SPromptGL) and repository-local Python files were checked. No reusable Python/Matplotlib plotting script was located in the current repository tree.
 
@@ -42,8 +42,10 @@ Fig. X. Ablation study on the ABIDE dataset.
 (c) Baseline + DARG + JSL;
 (d) Baseline + DARG + DPSL (DSE + JSL).
 Bars represent the ten-fold mean values of accuracy (ACC)
-and balanced accuracy (BA), with error bars indicating
-standard deviations.
+and balanced accuracy (BA). Error bars indicate verified
+standard deviations for groups (b)-(d); the substitute
+Baseline means in (a) have no error bars because no reliable
+corresponding ten-fold SD was found.
 
 ## Reproduction
 
@@ -53,4 +55,4 @@ Run from this directory:
 python plot_ablation.py
 ```
 
-The script writes `figures/abide_ablation.png` at 600 DPI and vector `figures/abide_ablation.pdf`. It requires Python, NumPy, and Matplotlib. No training or checkpoint access is needed to reproduce the figure.
+The script writes `figures/abide_ablation_preview.png` at 600 DPI and vector `figures/abide_ablation_preview.pdf`. It requires Python, NumPy, and Matplotlib. No training or checkpoint access is needed to reproduce the preview.
